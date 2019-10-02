@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $username = !empty($_GET['username']) ? $_GET['username'] : '';
     $userid = !empty($_GET['userid']) ? $_GET['userid'] : '';
 }
-$lang = array_merge($lang, load_language('ad_reset'));
 global $container, $CURUSER;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -24,27 +23,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $user_class->getUserFromId($uid);
     $password = bin2hex(random_bytes(12));
     $auth = $container->get(Auth::class);
-    $auth->forgotPassword($user['email'], function ($selector, $token) use ($password, $lang, $CURUSER, $username, $user_class) {
+    $auth->forgotPassword($user['email'], function ($selector, $token) use ($password, $CURUSER, $username, $user_class) {
         $details = [
             'selector' => $selector,
             'token' => $token,
             'password' => $password,
         ];
-        if ($user_class->reset_password($lang, $details, true)) {
-            write_log($lang['reset_pw_log1'] . $username . $lang['reset_pw_log2'] . htmlsafechars($CURUSER['username']));
-            stderr($lang['reset_pw_success'], $lang['reset_pw_success1'] . ' <b>' . $username . '</b>' . $lang['reset_pw_success2'] . '<b>' . format_comment($password) . '</b>.');
+        if ($user_class->reset_password($details, true)) {
+            write_log(_('Password reset for ') . $username . _(' by ') . htmlsafechars($CURUSER['username']));
+            stderr(_('Success'), _('The password for account ') . ' <b>' . $username . '</b>' . _(' is now ') . '<b>' . format_comment($password) . '</b>.');
         } else {
-            stderr('Error', 'Password reset failed.');
+            stderr(_('Error'), 'Password reset failed.');
         }
     });
 }
-$body = "
+$body = '
     <tr>
-        <td>{$lang['reset_id']}</td>
+        <td>' . _('ID: ') . "</td>
         <td><input type='number' name='uid' size='10' value='$userid' class='w-100'></td>
     </tr>
     <tr>
-        <td>{$lang['reset_username']}</td>
+        <td>" . _('Username') . "</td>
         <td><input name='username' value='$username' class='w-100'></td>
     </tr>
     <tr>
@@ -53,7 +52,12 @@ $body = "
         </td>
     </tr>";
 $HTMLOUT .= "
-<h1 class='has-text-centered'>{$lang['reset_title']}</h1>
-<form method='post' action='staffpanel.php?tool=reset&amp;action=reset' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body) . '
+<h1 class='has-text-centered'>" . _("Reset User's Lost Password") . "</h1>
+<form method='post' action='{$site_config[paths]['baseurl']}/staffpanel.php?tool=reset&amp;action=reset' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body) . '
 </form>';
-echo stdhead($lang['reset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Reset Password');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

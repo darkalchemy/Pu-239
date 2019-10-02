@@ -6,7 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $site_config;
 
 $scores = '';
@@ -17,7 +16,7 @@ $all_our_games = $site_config['arcade']['games'];
 if (isset($_GET['gamename'])) {
     $gamename = strip_tags($_GET['gamename']);
     if (!in_array($gamename, $all_our_games)) {
-        stderr('Error', 'No game with that name! (' . $gamename . ')');
+        stderr(_('Error'), _f('No game with that name! (%s)', $gamename));
     }
 }
 
@@ -26,7 +25,7 @@ if (isset($_GET['gameURI'])) {
     $gameURI = strip_tags($_GET['gameURI']);
     $gameURIclean = str_replace('.swf', '', $gameURI);
     if (!in_array($gameURIclean, $all_our_games)) {
-        stderr('Error', 'Could not find game!');
+        stderr(_('Error'), _('Could not find game!'));
     }
 }
 if (!isset($user['gameheight']) || $user['gameheight'] === 0) {
@@ -41,15 +40,15 @@ $HTMLOUT .= "
         <div class='bottom20'>
             <ul class='level-center bg-06'>
                 <li class='is-link margin10'>
-                    <a href='{$site_config['paths']['baseurl']}/arcade.php'>Arcade</a>
+                    <a href='{$site_config['paths']['baseurl']}/arcade.php'>" . _('Arcade') . "</a>
                 </li>
                 <li class='is-link margin10'>
-                    <a href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
+                    <a href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>" . _('Top Scores') . "</a>
                 </li>
             </ul>
         </div>
-        <h1>{$site_config['site']['name']} Old School Arcade!</h1>
-        <span>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</span>";
+        <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Old School Arcade!') . "</h1>
+        <div class='has-text-centered'>" . _f('Top Scores Earn %d Karma Points', $site_config['arcade']['top_score_points']) . '</div>';
 
 $HTMLOUT .= "
         <div class='bordered top20'>
@@ -78,13 +77,13 @@ if (mysqli_num_rows($res) > 0) {
                     </th>
                 </tr>
                 <tr>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th>Level</th>
-                    <th>Score</th>
+                    <th>" . _('Rank') . '</th>
+                    <th>' . _('Name') . '</th>
+                    <th>' . _('Level') . '</th>
+                    <th>' . _('Score') . '</th>
                 </tr>
             </thead>
-            <tbody>";
+            <tbody>';
     $at_score_res = sql_query('SELECT * FROM highscores WHERE game = ' . sqlesc($gamename) . ' ORDER BY score DESC LIMIT 15') or sqlerr(__FILE__, __LINE__);
     while ($at_score_arr = mysqli_fetch_assoc($at_score_res)) {
         $at_username = format_username((int) $at_score_arr['user_id']);
@@ -154,12 +153,16 @@ else {
                 <tr>
                     <td>
                         <div class='has-text-centered'>
-                            Sorry, we cannot save scores of this game or there are no scores saved, yet.
+                            " . _('Sorry, we cannot save scores of this game or there are no scores saved, yet.') . '
                         </div>
                     </td>
                 </tr>
             </tbody>
-        </table>";
+        </table>';
 }
-
-echo stdhead('Old School Arcade') . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
+$title = _('Old School Arcade');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

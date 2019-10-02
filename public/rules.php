@@ -17,8 +17,6 @@ if (!$auth->isLoggedIn()) {
 } else {
     $user = check_user_status();
 }
-$lang = array_merge(load_language('global'), load_language('rules'));
-
 $HTMLOUT = "
         <fieldset id='rules'>
             <legend class='level-center-center padding20 size_7'>
@@ -28,146 +26,153 @@ $HTMLOUT = "
 $main_div = "
                     <div id='accordion'>
                         <p class='accordion-toggle has-text-black round5-top'>
-                            {$lang['rules_general_header']}<span class='is-blue'>{$lang['rules_general_header_sub']}</span>
+                            " . _('General rules -') . "<span class='is-blue'>" . _(' Breaking these rules can and will get you banned!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_general_body']}</li>
-                                <li>{$lang['rules_general_body1']}</li>
-                                <li><a id='warning'></a>{$lang['rules_general_body2']}</li>
+                                <li>" . _('Do not defy the moderators expressed wishes!') . '</li>
+                                <li>' . _("Do not upload our torrents to other trackers! (See the <a href='http://Pu239.silly/faq.php#up3' class='is-link'><b>FAQ</b></a> for details.)") . "</li>
+                                <li><a id='warning'></a>" . _("Disruptive behaviour in the forums or on the site will result in a warning (<img src='./images/warned.gif' alt=''> ).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!") . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_downloading_header']}<span class='is-blue'>{$lang['rules_downloading_header_sub']}</span>
+                            " . _('Downloading rules -') . "<span class='is-blue'>" . _(' By not following these rules you will lose download privileges!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_downloading_body']}</li>
-                                <li>{$lang['rules_downloading_body1']}</li>
+                                <li>" . _("Access to the newest torrents is conditional on a good ratio! (See the <a href='http://Pu239.silly/faq.php#dl8' class='is-link'><b>FAQ</b></a> for details.)") . '</li>
+                                <li>' . _('Low ratios may result in severe consequences, including banning in extreme cases.') . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_forum_header']}<span class='is-blue'>{$lang['rules_forum_header_sub']}</span>
+                            " . _('General Forum Guidelines -') . "<span class='is-blue'>" . _(' Please follow these guidelines or else you might end up with a warning!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_forum_body']}</li>
-                                <li>{$lang['rules_forum_body1']}</li>
-                                <li>{$lang['rules_forum_body2']}</li>
-                                <li>{$lang['rules_forum_body3']}</li>
-                                <li>{$lang['rules_forum_body4']}</li>
-                                <li>{$lang['rules_forum_body5']}</li>
-                                <li>{$lang['rules_forum_body6']}</li>
-                                <li>{$lang['rules_forum_body7']}</li>
-                                <li>{$lang['rules_forum_body8']}</li>
-                                <li>{$lang['rules_forum_body9']}</li>
-                                <li>{$lang['rules_forum_body10']}</li>
-                                <li>{$lang['rules_forum_body11']}</li>
+                                <li>" . _('No aggressive behaviour or flaming in the forums.') . '</li>
+                                <li>' . _('No trashing of other peoples topics (i.e. SPAM).') . '</li>
+                                <li>' . _('No language other than English in the forums.') . '</li>
+                                <li>' . _('No systematic foul language (and none at all on  titles).') . '</li>
+                                <li>' . _('No links to warez or crack sites in the forums.') . '</li>
+                                <li>' . _('No requesting or posting of serials, CD keys, passwords or cracks in the forums.') . '</li>
+                                <li>' . _("No requesting if there has been no '<a href='https://nullrefer.com/?https://www.nforce.nl/'>scene</a>' release in the last 7 days.") . '</li>
+                                <li>' . _('No bumping... (All bumped threads will be deleted.)') . '</li>
+                                <li>' . _('No images larger than 800x600, and preferably web-optimised.') . '</li>
+                                <li>' . _('No double posting. If you wish to post again, and yours is the last post in the thread please use the EDIT function, instead of posting a double.') . '</li>
+                                <li>' . _('Please ensure all questions are posted in the correct section!<br>(Game questions in the Games section, Apps questions in the Apps section, etc.)') . '</li>
+                                <li>' . _("Last, please read the <a href='http://Pu239.silly/faq.php' class='is-link'><b>FAQ</b></a> before asking any questions!") . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black" . (!$auth->hasRole(Roles::UPLOADER) ? ' round5-bottom' : '') . "'>
-                            {$lang['rules_avatar_header']}<span class='is-blue'>{$lang['rules_avatar_header_sub']}</span>
+                            " . _('Avatar Guidelines -') . "<span class='is-blue'>" . _(' Please try to follow these guidelines') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_avatar_body']}</li>
-                                <li>{$lang['rules_avatar_body1']}</li>
-                                <li>{$lang['rules_avatar_body2']}</li>
+                                <li>" . _('The allowed formats are .gif, .jpg and .png.') . '</li>
+                                <li>' . _('Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB.
+    (Browsers will rescale them anyway: smaller images will be expanded and will not look good;
+    larger images will just waste bandwidth and CPU cycles.) For now this is just a guideline but
+    it will be automatically enforced in the near future.') . '</li>
+                                <li>' . _('Do not use potentially offensive material involving porn, religious material, animal / human
+    cruelty or ideologically charged images. Mods have wide discretion on what is acceptable.
+    If in doubt PM one.') . '</li>
                             </ul>
-                        </div>";
+                        </div>';
 
 if ($auth->hasRole(Roles::UPLOADER)) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black" . ($user['class'] < UC_STAFF ? ' round5-bottom' : '') . "'>
-                            {$lang['rules_uploading_header']}<span class='is-blue'>{$lang['rules_uploading_header_sub']}</span>
+                            " . _('Uploading rules -') . "<span class='is-blue'>" . _(' Torrents violating these rules may be deleted without notice') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_uploading_body']}</li>
-                                <li>{$lang['rules_uploading_body1']}</li>
-                                <li>{$lang['rules_uploading_body2']}</li>
-                                <li>{$lang['rules_uploading_body3']}</li>
-                                <li>{$lang['rules_uploading_body4']}</li>
-                                <li>{$lang['rules_uploading_body5']}</li>
-                                <li>{$lang['rules_uploading_body6']}</li>
-                                <li>{$lang['rules_uploading_body7']}</li>
-                                <li>{$lang['rules_uploading_body8']}</li>
-                                <li>{$lang['rules_uploading_body9']}</li>
+                                <li>" . _('All uploads must include a proper NFO.') . '</li>
+                                <li>' . _("Only scene releases. If it's not on <a href='https://nullrefer.com/?https://www.nforce.nl' class='is-link'>NFOrce</a> or <a href='https://nullrefer.com/?https://www.grokmusiq.com/' class='is-link'>grokMusiQ</a> then forget it!") . '</li>
+                                <li>' . _('The stuff must not be older than seven (7) days.') . '</li>
+                                <li>' . _('All files must be in original format (usually 14.3 MB RARs).') . '</li>
+                                <li>' . _('Pre-release stuff should be labeled with an *ALPHA* or *BETA* tag.') . '</li>
+                                <li>' . _('Make sure not to include any serial numbers, CD keys or similar in the description (you do <b>not</b> need to edit the NFO!).') . '</li>
+                                <li>' . _('Make sure your torrents are well-seeded for at least 24 hours.') . '</li>
+                                <li>' . _('Do not include the release date in the torrent name.') . '</li>
+                                <li>' . _('Stay active! You risk being demoted if you have no active torrents.') . '</li>
+                                <li>' . _('If you have something interesting that somehow violate these rules (e.g. not ISO format), ask a mod and we might make an exception.') . '</li>
                             </ul>
-                        </div>";
+                        </div>';
 }
 if ($user['class'] >= UC_STAFF) {
     $main_div .= "
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_moderating_header']}<span class='is-blue'>{$lang['rules_moderating_header_sub']}</span>
+                            " . _('Moderating rules -') . "<span class='is-blue'>" . _(' Whom to promote and why') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <table class='table table-bordered table-striped'>
                                 <tr>
                                     <td class='w-15'>
-                                        <span class='power_user'>{$lang['rules_moderating_pu']}</span>
+                                        <span class='power_user'>" . _('Power User') . '</span>
                                     </td>
-                                    <td>{$lang['rules_moderating_body']}</td>
+                                    <td>' . _('Automatically given to (and revoked from) users who have been members for at least 20 days, have uploaded at least 50 GB and have a share ratio above 1.25. Moderator changes of status last only until the next execution of the script.') . "</td>
+                                </tr>
+                                <tr>
+                                    <td class='w-15'>
+                                        <span class='super_user'>" . _('Super User') . '</span>
+                                    </td>
+                                    <td>' . _('Automatically given to (and revoked from) users who have been members for at least 90 days, have uploaded at least 250 GB and have a share ratio above 1.35. Moderator changes of status last only until the next execution of the script.') . "</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <img src='{$site_config['paths']['images_baseurl']}star.png' alt='Donor' class='tooltipper' title='Donor'>
                                     </td>
-                                    <td>{$lang['rules_moderating_body1']}</td>
+                                    <td>" . _('This status is given ONLY by the Sysops since only they can verify that they actually donated something.') . "</td>
                                 </tr>
                                 <tr>
-                                    <td><span class='vip'>{$lang['rules_moderating_vip']}</span></td>
-                                    <td>{$lang['rules_moderating_body2']}</td>
+                                    <td><span class='vip'>" . _('VIP') . '</span></td>
+                                    <td>' . _('Conferred to users you feel contribute something special to the site. (Anyone begging for VIP status will be automatically disqualified)') . '</td>
                                 </tr>
                                 <tr>
-                                    <td>{$lang['rules_moderating_other']}</td>
-                                    <td>{$lang['rules_moderating_body3']}</td>
+                                    <td>' . _('Other') . '</td>
+                                    <td>' . _('Customised title given to special users only (Not available to Users or Power Users).') . "</td>
                                 </tr>
                                 <tr>
-                                    <td><span class='uploader'>{$lang['rules_moderating_uploader']}</span></td>
-                                    <td>{$lang['rules_moderating_body4']}</td>
-                                </tr>
-                                <tr>
-                                    <td><span class='moderator'>{$lang['rules_moderating_mod']}</span></td>
-                                    <td>{$lang['rules_moderating_body5']}</td>
+                                    <td><span class='moderator'>" . _('Moderator') . '</span></td>
+                                    <td>' . _("Appointed by Sysop only. If you think you've got a good candidate, send him a <a class='is-link' href='http://Pu239.silly/messages.php?action=send_message&amp;receiver=1'>PM</a>") . "</td>
                                 </tr>
                             </table>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            {$lang['rules_mod_rules_header']}<span class='is-blue'>{$lang['rules_mod_rules_header_sub']}</span>
+                            " . _('Moderating Rules -') . "<span class='is-blue'>" . _(' Use your better judgement!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_mod_rules_body']}</li>
-                                <li>{$lang['rules_mod_rules_body1']}</li>
-                                <li>{$lang['rules_mod_rules_body2']}</li>
-                                <li>{$lang['rules_mod_rules_body3']}</li>
-                                <li>{$lang['rules_mod_rules_body4']}</li>
-                                <li>{$lang['rules_mod_rules_body5']}</li>
-                                <li>{$lang['rules_mod_rules_body6']}</li>
-                                <li>{$lang['rules_mod_rules_body7']}</li>
-                                <li>{$lang['rules_mod_rules_body8']}</li>
-                                <li>{$lang['rules_mod_rules_body9']}</li>
-                                <li>{$lang['rules_mod_rules_body10']}</li>
-                                <li>{$lang['rules_mod_rules_body11']}</li>
+                                <li>" . _('The most important rule: Use your better judgment!') . '</li>
+                                <li>' . _("Don't be afraid to say <b>NO</b>! (a.k.a. 'Helshad's rule'.)") . '</li>
+                                <li>' . _("Don't defy another mod in public, instead send a PM or through IM.") . '</li>
+                                <li>' . _('Be tolerant! Give the user(s) a chance to reform.') . '</li>
+                                <li>' . _("Don't act prematurely, let the users make their mistakes and THEN correct them.") . '</li>
+                                <li>' . _("Try correcting any 'off topics' rather then closing a thread.") . '</li>
+                                <li>' . _('Move topics rather than locking them.') . '</li>
+                                <li>' . _('Be tolerant when moderating the Chit-chat section (give them some slack).') . '</li>
+                                <li>' . _("If you lock a topic, give a brief explanation as to why you're locking it.") . '</li>
+                                <li>' . _('Before you disable a user account, send him/her a PM and if they reply, put them on a 2 week trial.') . '</li>
+                                <li>' . _("Don't disable a user account until he or she has been a member for at least 4 weeks.") . '</li>
+                                <li>' . _('<b>Always</b> state a reason (in the user comment box) as to why the user is being banned / warned.') . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black round5-bottom'>
-                            {$lang['rules_mod_options_header']}<span class='is-blue'>{$lang['rules_mod_options_header_sub']}</span>
+                            " . _('Moderating options -') . "<span class='is-blue'>" . _(' What are my privileges as a mod?') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
                             <ul>
-                                <li>{$lang['rules_mod_options_body']}</li>
-                                <li>{$lang['rules_mod_options_body1']}</li>
-                                <li>{$lang['rules_mod_options_body2']}</li>
-                                <li>{$lang['rules_mod_options_body3']}</li>
-                                <li>{$lang['rules_mod_options_body4']}</li>
-                                <li>{$lang['rules_mod_options_body5']}</li>
-                                <li>{$lang['rules_mod_options_body6']}</li>
-                                <li>{$lang['rules_mod_options_body7']}</li>
-                                <li>{$lang['rules_mod_options_body8']}</li>
+                                <li>" . _('You can delete and edit forum posts.') . '</li>
+                                <li>' . _('You can delete and edit torrents.') . '</li>
+                                <li>' . _('You can delete and change users avatars.') . '</li>
+                                <li>' . _('You can disable user accounts.') . '</li>
+                                <li>' . _("You can edit the title of VIP's.") . '</li>
+                                <li>' . _('You can see the complete info of all users.') . '</li>
+                                <li>' . _('You can add comments to users (for other mods and admins to read).') . '</li>
+                                <li>' . _('You can stop reading now because you already knew about these options. ;)') . '</li>
+                                <li>' . _("Lastly, check out the <a href='http://Pu239.silly/staff.php' class='is-link'>Staff</a> page (top right corner).") . '</li>
                             </ul>
-                        </div>";
+                        </div>';
 }
 
 $main_div .= '
@@ -175,4 +180,8 @@ $main_div .= '
 $HTMLOUT .= main_div($main_div) . '
     </fieldset>';
 
-echo stdhead('Rules') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Rules');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

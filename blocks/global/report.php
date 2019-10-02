@@ -6,7 +6,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 if ($site_config['alerts']['report'] && has_access($user['class'], UC_STAFF, 'coder')) {
@@ -26,19 +26,19 @@ if ($site_config['alerts']['report'] && has_access($user['class'], UC_STAFF, 'co
     <li>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
             <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
-                " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
+                " . _pf('%d New Report', '%d New Reports', $delt_with) . "
             </span>
             <div class='tooltip_templates'>
                 <div id='reportmessage_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "
+                        " . _pf('%d New Report', '%d New Reports', $delt_with) . "
                     </div>
                     <div class='has-text-centered'>
-                        {$lang['gl_hey']} {$user['username']}!<br> $delt_with " . ($delt_with > 1 ? $lang['gl_reportss'] . $lang['gl_reports_news'] : $lang['gl_reports'] . $lang['gl_reports_new']) . "{$lang['gl_reports_dealt']}
+                        " . _pf('Hey %1$s!<br>%2$d new report to be dealt with.', 'Hey %1$s!<br>%2$d new reports to be dealt with.', $user['username'], $delt_with) . '
                     </div>
                 </div>
             </div>
         </a>
-    </li>";
+    </li>';
     }
 }

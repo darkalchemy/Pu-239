@@ -7,7 +7,6 @@ use Pu239\Session;
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_block_settings'));
 
 $list = [
     'ie_user_alert',
@@ -97,7 +96,7 @@ $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $updated = [];
     $filename = CACHE_DIR . 'block_settings_cache.php';
-    $block_out = '<' . "?php\n\ndeclare(strict_types = 1);\n\n\$BLOCKS = [\n";
+    $block_out = "<?php\n\ndeclare(strict_types = 1);\n\n\$BLOCKS = [\n";
     foreach ($_POST as $k => $v) {
         $updated[] = $k;
         $block_out .= ($k === 'block_undefined') ? "\t'{$k}' => '" . htmlsafechars($v) . "',\n" : "\t'{$k}' => " . (int) $v . ",\n";
@@ -110,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     file_put_contents($filename, $block_out);
     clearstatcache(true, $filename);
 
-    $session->set('is-success', $lang['block_updated']);
+    $session->set('is-success', _('Block Settings Have Been Updated!'));
     $session->set('is-success', "Don't forget to run\n\nphp bin/uglify.php\n\nto update the css/js files.");
     unset($_POST, $block_out, $block_set_cache);
     $cache->delete('site_blocks_');
@@ -121,157 +120,157 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $HTMLOUT = "
     <form action='{$_SERVER['PHP_SELF']}?tool=block.settings' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
-        <h1 class='has-text-centered'>{$lang['block_global']}</h1>
+        <h1 class='has-text-centered'>" . _('Global Block Settings') . "</h1>
         <div class='bg-02'>
         <fieldset id='user_blocks_index' class='header'>
-            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_index']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>" . _('Index Display Settings') . "</legend>
             <div>
                 <div class='level-center'>";
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_iealert']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable IE alert?') . "</div>
                             <div class='slideThree'><#ie_user_alert#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_iealert_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the IE user alert.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_cooker']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Cooker?') . "</div>
                             <div class='slideThree'><#cooker_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_cooker_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("et this option to 'On' if you want to enable the Cooker.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_requests']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Requests?') . "</div>
                             <div class='slideThree'><#requests_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_requests_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Requests.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_offers']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Offers?') . "</div>
                             <div class='slideThree'><#offers_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_offers_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Offers.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_news']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable News?') . "</div>
                             <div class='slideThree'><#news_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_news_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the News Block.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_ajaxchat']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable AJAX Chat?') . "</div>
                             <div class='slideThree'><#ajaxchat_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_ajaxchat_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable AJAX Chat.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_trivia']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Trivia?') . "</div>
                             <div class='slideThree'><#trivia_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_trivia_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable Trivia.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_active_user']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Active Users?') . "</div>
                             <div class='slideThree'><#active_users_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_active_user_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Active Users.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_active_user24']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Active Users Over 24hours?') . "</div>
                             <div class='slideThree'><#active_24h_users_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_active_user24_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Active Users visited over 24hours.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_active_irc']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Active Irc Users?') . "</div>
                             <div class='slideThree'><#active_irc_users_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_active_irc_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Active Irc Users.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_birthday']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Birthday Users?') . "</div>
                             <div class='slideThree'><#active_birthday_users_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_birthday_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Active Birthday Users.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_stats']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Site Stats?') . "</div>
                             <div class='slideThree'><#stats_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_stats_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Stats.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_disclaimer']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Disclaimer?') . "</div>
                             <div class='slideThree'><#disclaimer_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_disclaimer_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable Disclaimer.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_latest_users']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest User?') . "</div>
                             <div class='slideThree'><#latest_user_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_latest_users_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable Latest User.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_latest_comments']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest Comments?') . "</div>
                             <div class='slideThree'><#latest_comments_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_latest_comments_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable Latest Comments.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_forum_post']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest Forum Posts?') . "</div>
                             <div class='slideThree'><#forum_posts_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_forum_post_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable latest Forum Posts.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_picks']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Staff Picks') . "</div>
                             <div class='slideThree'><#staff_picks_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_picks_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable staff picks.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest Torrents?') . "</div>
                             <div class='slideThree'><#latest_torrents_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable latest torrents.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_movies']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest Movie Torrents?') . "</div>
                             <div class='slideThree'><#latest_movies_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_movies_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the latest movie torrents.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_tv']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest TV Torrents?') . "</div>
                             <div class='slideThree'><#latest_tv_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_tv_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the latest tv torrents.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_scroll']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest torrents scroll?') . "</div>
                             <div class='slideThree'><#latest_torrents_scroll_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_scroll_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable latest torrents marquee.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_slider']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Latest torrents slider?') . "</div>
                             <div class='slideThree'><#latest_torrents_slider_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrents_slider_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable latest torrents banner slider.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_announcement']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Announcement?') . "</div>
                             <div class='slideThree'><#announcement_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_announcement_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Announcement Block.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_donation']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Donation Progress?') . "</div>
                             <div class='slideThree'><#donation_progress_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_donation_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Donation Progress.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_advertise']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Advertisements?') . "</div>
                             <div class='slideThree'><#ads_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_advertise_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Advertisements.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_freak']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Torrent Freak?') . "</div>
                             <div class='slideThree'><#torrentfreak_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_freak_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the torrent freak news.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_christmas']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Christmas Gift?') . "</div>
                             <div class='slideThree'><#christmas_gift_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_christmas_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Christmas Gift.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_poll']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Poll?') . "</div>
                             <div class='slideThree'><#active_poll_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_poll_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Active Poll.") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_movie']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Enable Movie of the week?') . "</div>
                             <div class='slideThree'><#movie_ofthe_week_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_movie_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the movie of the week.") . '</div>';
 
 $level1 = "
                 <div class='level-center'>";
@@ -292,76 +291,76 @@ $HTMLOUT .= main_div($level1);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
+                <input class='button is-small' type='submit' name='submit' value='" . _('Submit') . "'>
             </div>
         </fieldset>
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_stdhead' class='header'>
-            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_stdhead_settings']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>" . _('Stdhead Display Settings') . "</legend>
             <div>
                 <div class='level-center'>";
 
 $contents = [];
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_freeleech']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Freeleech?') . "</div>
                             <div class='slideThree'><#global_freeleech_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_freeleech_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("Enable 'freeleech mark' in stdhead") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_demotion']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Demotion') . "</div>
                             <div class='slideThree'><#global_demotion_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_demotion_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable the global demotion alert block') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_message']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Message block?') . "</div>
                             <div class='slideThree'><#global_message_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_message_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable message alert block') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_warnings']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Staff Warning?') . "</div>
                             <div class='slideThree'><#global_staff_warn_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_warnings_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Shows a warning if there is a new message for staff') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_reports']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Staff Reports?') . "</div>
                             <div class='slideThree'><#global_staff_report_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_reports_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable reports alert in stdhead') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_upload_alert']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Upload App Alert?') . "</div>
                             <div class='slideThree'><#global_staff_uploadapp_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_upload_alert_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _("'Enable upload application alerts in stdhead") . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_happyhour']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Happyhour?') . "</div>
                             <div class='slideThree'><#global_happyhour_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_happyhour_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable happy hour alerts in stdhead') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_crazyhour']}</div>
+                            <div class='w-100 has-text-centered'>" . _('CrazyHour?') . "</div>
                             <div class='slideThree'><#global_crazyhour_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_crazyhour_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable crazyhour alerts in stdhead') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_bug']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Bug Message Alert?') . "</div>
                             <div class='slideThree'><#global_bug_message_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_bug_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Bug message alerts in stdhead') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_karma_contributions']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Karma Contributions') . "</div>
                             <div class='slideThree'><#global_freeleech_contribution_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_karma_contributions_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable karma contribution status alert in stdhead') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_menu']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Staff Menu') . "</div>
                             <div class='slideThree'><#global_staff_menu_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_menu_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Staff Menu in Navbar') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_flash_messages']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Flash Messages') . "</div>
                             <div class='slideThree'><#global_flash_messages_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_flash_messages_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Flash Messages on page refresh') . '</div>';
 
 $level2 = "
                 <div class='level-center'>";
@@ -382,172 +381,172 @@ $HTMLOUT .= main_div($level2);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
+                <input class='button is-small' type='submit' name='submit' value='" . _('Submit') . "'>
             </div>
         </fieldset>
         </div>
         <div class='bg-02 top20'>
         <fieldset id='user_blocks_userdetails' class='header'>
-            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_userdetails']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>" . _('Userdetails Display Settings') . "</legend>
             <div>
                 <div class='level-center'>";
 
 $contents = [];
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_showfriends']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Show Friends?') . "</div>
                             <div class='slideThree'><#userdetails_showfriends_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_showfriends_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Show Friends') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_flush']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Flush Torrents?') . "</div>
                             <div class='slideThree'><#userdetails_flush_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_flush_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable flush torrents') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_joined']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Joined date?') . "</div>
                             <div class='slideThree'><#userdetails_joined_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_joined_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable join date') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_user_online_time']}</div>
+                            <div class='w-100 has-text-centered'>" . _('User online time?') . "</div>
                             <div class='slideThree'><#userdetails_online_time_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_user_online_time_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable user online time') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_browser_os']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Browser and OS detect?') . "</div>
                             <div class='slideThree'><#userdetails_browser_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_browser_os_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable browser and os detection') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_reputation']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Reputation?') . "</div>
                             <div class='slideThree'><#userdetails_reputation_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_reputation_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable reputation link') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_userhits']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Userhits?') . "</div>
                             <div class='slideThree'><#userdetails_profile_hits_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_userhits_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable user hits') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_birthday_userdetails']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Birthday?') . "</div>
                             <div class='slideThree'><#userdetails_birthday_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_birthday_userdetails_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable birthday display') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_contact']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Contact info?') . "</div>
                             <div class='slideThree'><#userdetails_contact_info_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_contact_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable contact info') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_iphistory']}</div>
+                            <div class='w-100 has-text-centered'>" . _('IP history?') . "</div>
                             <div class='slideThree'><#userdetails_iphistory_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_iphistory_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable IP history') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_traffic']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Traffic?') . "</div>
                             <div class='slideThree'><#userdetails_traffic_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_traffic_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable uploaded and downloaded') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_shareratio']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Share ratio?') . "</div>
                             <div class='slideThree'><#userdetails_share_ratio_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_shareratio_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable share ratio') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_seedtime']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Seed time ratio?') . "</div>
                             <div class='slideThree'><#userdetails_seedtime_ratio_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_seedtime_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable seedtime ratio') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_seedbonus']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Seedbonus?') . "</div>
                             <div class='slideThree'><#userdetails_seedbonus_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_seedbonus_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable seedbonus') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_ircstats']}</div>
+                            <div class='w-100 has-text-centered'>" . _('IRC stats?') . "</div>
                             <div class='slideThree'><#userdetails_irc_stats_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_ircstats_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable irc stats') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_conn_port']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Connectable and port?') . "</div>
                             <div class='slideThree'><#userdetails_connectable_port_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_conn_port_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable connectable and port') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_avatar']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Avatar?') . "</div>
                             <div class='slideThree'><#userdetails_avatar_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_avatar_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable avatar') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_userclass']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Userclass?') . "</div>
                             <div class='slideThree'><#userdetails_userclass_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_userclass_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable userclass') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_gender']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Gender?') . "</div>
                             <div class='slideThree'><#userdetails_gender_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_gender_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable gender') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_freeslot_freeleech']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Freeslots and Freeleech?') . "</div>
                             <div class='slideThree'><#userdetails_freestuffs_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_freeslot_freeleech_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable freeslots and freeleech') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_comment']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Torrent comments?') . "</div>
                             <div class='slideThree'><#userdetails_comments_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_comment_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable torrent comments history') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_forum_user_post']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Forum posts?') . "</div>
                             <div class='slideThree'><#userdetails_forumposts_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_forum_user_post_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable forum posts history') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_invitedby']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Invited by?') . "</div>
                             <div class='slideThree'><#userdetails_invitedby_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_invitedby_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable invited by') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_info']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Torrent info?') . "</div>
                             <div class='slideThree'><#userdetails_torrents_block_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_torrent_info_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable seeding, leeching, snatched, uploaded torrents') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_completed']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Completed?') . "</div>
                             <div class='slideThree'><#userdetails_completed_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_completed_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable completed torrents') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_snatched']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Staff snatched?') . "</div>
                             <div class='slideThree'><#userdetails_snatched_staff_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_staff_snatched_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable staff snatched torrents') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_user_info']}</div>
+                            <div class='w-100 has-text-centered'>" . _('User info?') . "</div>
                             <div class='slideThree'><#userdetails_userinfo_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_user_info_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable user info') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_show_pm']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Show pm?') . "</div>
                             <div class='slideThree'><#userdetails_showpm_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_show_pm_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable send message button') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_report']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Report?') . "</div>
                             <div class='slideThree'><#userdetails_report_user_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_report_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable report user') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_user_status']}</div>
+                            <div class='w-100 has-text-centered'>" . _('User status?') . "</div>
                             <div class='slideThree'><#userdetails_user_status_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_user_status_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable user status') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['block_user_comments']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Usercomments?') . "</div>
                             <div class='slideThree'><#userdetails_user_comments_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['block_user_comments_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable usercomments') . '</div>';
 
 $level3 = "
                 <div class='level-center'>";
@@ -568,51 +567,51 @@ $HTMLOUT .= main_div($level3);
 $HTMLOUT .= "
                 </div>
             <div class='has-text-centered margin20'>
-                <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
+                <input class='button is-small' type='submit' name='submit' value='" . _('Submit') . "'>
             </div>
         </fieldset>
     </div>
     <div class='bg-02 top20'>
         <fieldset id='user_blocks_apis' class='header'>
-            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>{$lang['block_apis_settings']}</legend>
+            <legend class='flipper has-text-primary padding20 left10'><i class='icon-down-open size_4 right5' aria-hidden='true'></i>" . _('APIs Display Settings') . "</legend>
             <div>
                 <div class='level-center'>";
 
 $contents = [];
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['fanart_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('FANART.tv API') . "</div>
                             <div class='slideThree'><#fanart_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['fanart_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable FANART.tv API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['tmdb_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('The Movie Database API') . "</div>
                             <div class='slideThree'><#tmdb_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['tmdb_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable The Movie Database (TMDb) API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['imdb_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('IMDb API') . "</div>
                             <div class='slideThree'><#imdb_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['imdb_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable IMDb API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['bluray_com_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Bluray.com RSS API') . "</div>
                             <div class='slideThree'><#bluray_com_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['bluray_com_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Bluray.com RSS API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['google_books_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('Google Books API') . "</div>
                             <div class='slideThree'><#google_books_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['google_books_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable Google Books API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['tvmaze_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('TvMaze API') . "</div>
                             <div class='slideThree'><#tvmaze_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['tvmaze_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable TvMaze API') . '</div>';
 
 $contents[] = "
-                            <div class='w-100 has-text-centered'>{$lang['anidb_api']}</div>
+                            <div class='w-100 has-text-centered'>" . _('AniDb API') . "</div>
                             <div class='slideThree'><#anime_api_on#></div>
-                            <div class='w-100 has-text-centered'>{$lang['anidb_api_set']}</div>";
+                            <div class='w-100 has-text-centered'>" . _('Enable AniDb API') . '</div>';
 
 $level4 = "
                 <div class='level-center'>";
@@ -633,14 +632,19 @@ $HTMLOUT .= main_div($level4);
 $HTMLOUT .= "
                     </div>
                 <div class='has-text-centered margin20'>
-                    <input class='button is-small' type='submit' name='submit' value='{$lang['block_submit']}'>
+                    <input class='button is-small' type='submit' name='submit' value='" . _('Submit') . "'>
                 </div>
             </fieldset>
         </div>
     </form>";
 
 $HTMLOUT = preg_replace_callback('|<#(.*?)#>|', 'template_out', $HTMLOUT);
-echo stdhead($lang['block_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Block Settings');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 
 /**
  * @param $matches

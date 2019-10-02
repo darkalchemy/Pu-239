@@ -636,14 +636,14 @@ function can_delete(string $file, bool $delete)
             $group = get_webserver_user();
             $user_group = php_sapi_name() == 'cli' ? "{$user}:{$group}" : "{$group}:{$group}";
             if ($delete) {
-                $msg = "{$br}Unable to delete file:{$file}.{$br}Please check your permissions.{$br}sudo chown -R $user_group .{$br}sudo php bin/set_perms.php\n";
+                $msg = _fe('{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php', $br, $file, $br, $br, $user_group, $br);
             } else {
-                $msg = "{$br}Unable to modify file:{$file}.{$br}Please check your permissions.{$br}sudo chown -R $user_group .{$br}sudo php bin/set_perms.php\n";
+                $msg = _fe('{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}} .{5}sudo php bin/set_perms.php', $br, $file, $br, $br, $user_group, $br);
             }
             if (php_sapi_name() === 'cli') {
                 die($msg);
             } else {
-                stderr('Error', $msg);
+                stderr(_('Error'), $msg);
             }
         }
     }

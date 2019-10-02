@@ -9,7 +9,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('achievementbonus'));
 global $container, $site_config;
 
 $id = $user['id'];
@@ -22,9 +21,9 @@ $count = $row['0'];
 $session = $container->get(Session::class);
 $cache = $container->get(Cache::class);
 if (!$count) {
-    $session->set('is-warning', $lang['achbon_no_ach_bon_pnts_msg']);
+    $session->set('is-warning', _('It appears that you currently have no Achievement Bonus Points available to spend.'));
     header("Refresh: 3; url=achievementhistory.php?id=$id");
-    stderr($lang['achbon_no_ach_bon_pnts'], $lang['achbon_no_ach_bon_pnts_msg']);
+    stderr(_('No Achievement Bonus Points'), _('It appears that you currently have no Achievement Bonus Points available to spend.'));
     die();
 }
 $HTMLOUT = '';
@@ -41,47 +40,47 @@ $invite = (int) $dn['invites'];
 $karma = (float) $dn['seedbonus'];
 if ($bonus_type === 1) {
     if ($down >= $bonus_do) {
-        $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
+        $msg = '' . _('Congratulations') . ', ' . _('you have just won') . " $bonus_desc";
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $sql = 'UPDATE users SET downloaded = downloaded - ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
     } elseif ($down < $bonus_do) {
-        $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_your_dl_been_reset_0']}";
+        $msg = '' . _('Congratulations') . ', ' . _('your downloaded total has been reset from a negative value back to 0') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $sql = "UPDATE users SET downloaded = '0' WHERE id =" . sqlesc($id);
         sql_query($sql) or sqlerr(__FILE__, __LINE__);
     }
 } elseif ($bonus_type == 2) {
-    $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
+    $msg = '' . _('Congratulations') . ', ' . _('you have just won') . " $bonus_desc";
     sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $sql = 'UPDATE users SET uploaded = uploaded + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 } elseif ($bonus_type == 3) {
-    $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
+    $msg = '' . _('Congratulations') . ', ' . _('you have just won') . " $bonus_desc";
     sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $sql = 'UPDATE users SET invites = invites + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 } elseif ($bonus_type == 4) {
-    $msg = "{$lang['achbon_congratulations']}, {$lang['achbon_you_hv_just_won']} $bonus_desc";
+    $msg = '' . _('Congratulations') . ', ' . _('you have just won') . " $bonus_desc";
     sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $sql = 'UPDATE users SET seedbonus = seedbonus + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 } elseif ($bonus_type == 5) {
     $rand_fail = random_int(1, 5);
     if ($rand_fail == 1) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg1']}";
+        $msg = '' . _('Sorry') . ', ' . _('Dunk64 has just run over you with his ultra-powered wheelchair. Better luck next time.') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     } elseif ($rand_fail == 2) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg2']}";
+        $msg = '' . _('Sorry') . ', ' . _('We put your achievement bonus point into the collection plate in an attempt to get Ducktape a prostitute.') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     } elseif ($rand_fail == 3) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg3']}";
+        $msg = '' . _('Sorry') . ', ' . _('The evil villian Adam has stolen your bonus point.') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     } elseif ($rand_fail == 4) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg4']}";
+        $msg = '' . _('Sorry') . ', ' . _('Somehelp has used your achievement bonus point in attempt to buy puppy chow to lure doggies into his dinner plate.') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     } elseif ($rand_fail == 5) {
-        $msg = "{$lang['gl_sorry']}, {$lang['achbon_failed_msg5']}";
+        $msg = '' . _('Sorry') . ', ' . _('Hoodini has magically made your achievement bonus point dissapear, better luck next time.') . '';
         sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     }
 }
@@ -89,5 +88,9 @@ if (isset($bonus_type)) {
     $cache->delete('user_' . $id);
 }
 header("Refresh: 3; url=achievementhistory.php?id=$id");
-stderr($lang['achbon_random_achievement_bonus'], "$msg");
-echo stdhead($lang['achbon_std_head']) . $HTMLOUT . stdfoot();
+stderr(_('Random Achievement Bonus'), "$msg");
+$title = _('Random Bonus');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

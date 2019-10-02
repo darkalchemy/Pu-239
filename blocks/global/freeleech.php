@@ -31,7 +31,7 @@ if ($user) {
     <li>
         <a href='#'>
             <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#free_tooltip_{$free['modifier']}'>
-                {$lang['gl_freeleech']}
+                " . _('FreeLeech ON') . "
             </span>
             <div class='tooltip_templates'>
                 <div id='free_tooltip_{$free['modifier']}' class='margin20'>
@@ -39,7 +39,7 @@ if ($user) {
                         {$mode}
                     </div>
                     <div class='has-text-centered'>
-                        {$free['title']} {$lang['gl_freeleech_sb']} {$username}<br>" . ($free['expires'] != 1 ? $lang['gl_freeleech_u'] . ' ' . get_date((int) $free['expires'], 'DATE') . ' (' . mkprettytime($free['expires'] - TIME_NOW) . ' ' . $lang['gl_freeleech_tg'] . ')' : '') . '
+                        " . _f('%1$s set by %2$s<br>%3$s', $free['title'], $username) . ($free['expires'] != 1 ? _f(' Until %1$s (%2$s to go).', get_date((int) $free['expires'], 'DATE'), mkprettytime($free['expires'] - TIME_NOW)) : '') . '
                     </div>
                 </div>
             </div>

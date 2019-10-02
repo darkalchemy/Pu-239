@@ -20,7 +20,7 @@ if ($usercomments === false || is_null($usercomments)) {
 }
 
 if ($user['paranoia'] < 2 || $CURUSER['id'] == $user['id'] || has_access($CURUSER['class'], UC_STAFF, '')) {
-    $HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_comments']}</td>";
+    $HTMLOUT .= "<tr><td class='rowhead'>" . _('Torrent Comments') . '</td>';
     if ($usercomments && ((has_access($CURUSER['class'], UC_STAFF + 1, '') && $user['id'] == $CURUSER['id']) || has_access($CURUSER['class'], UC_STAFF, ''))) {
         $HTMLOUT .= "<td><a href='{$site_config['paths']['baseurl']}/userhistory.php?action=viewcomments&amp;id={$user['id']}'>" . (int) $usercomments . "</a></td></tr>\n";
     } else {

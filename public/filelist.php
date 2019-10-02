@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('filelist'));
 global $container, $site_config;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
@@ -38,10 +37,10 @@ $files = $fluent->from('files')
 
 $header = "
             <tr>
-                <th class='has-text-centered w-1'>{$lang['filelist_type']}</th>
-                <th>{$lang['filelist_path']}</th>
-                <th class='has-text-right w-10'>{$lang['filelist_size']}</th>
-            </tr>";
+                <th class='has-text-centered w-1'>" . _('Type') . '</th>
+                <th>' . _('Path') . "</th>
+                <th class='has-text-right w-10'>" . _('Size') . '</th>
+            </tr>';
 $body = '';
 foreach ($files as $subrow) {
     $ext = pathinfo($subrow['filename'], PATHINFO_EXTENSION);
@@ -63,4 +62,8 @@ $HTMLOUT .= main_table($body, $header);
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['filelist_header']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Filelist');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

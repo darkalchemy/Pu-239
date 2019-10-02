@@ -9,4 +9,9 @@ class_check($class);
 $HTMLOUT = "
     <h1 class='has-text-centered'>Not Implemented Yet</h1>";
 
-echo stdhead('Ban Torrent Clients') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Ban Torrent Clients');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

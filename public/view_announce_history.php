@@ -9,12 +9,11 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('announce_history'));
 global $container, $site_config;
 
-stderr('Error', 'This page is not completed.');
+stderr(_('Error'), 'This page is not completed.');
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
-$HTMLOUT = "<h2><span class='size_6'>{$lang['annhistory_ann']}</span></h2>";
+$HTMLOUT = "<h2><span class='size_6'>" . _('Announcement History') . '</span></h2>';
 $fluent = $container->get(Database::class);
 $query1 = sprintf('SELECT m.main_id, m.subject, m.body
             FROM announcement_main AS m 
@@ -32,9 +31,12 @@ $body = '';
 if ($action === 'read_announce') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if (!is_int($id)) {
-        $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_invalid']);
-        echo stdhead($lang['annhistory_ann']) . wrapper($HTMLOUT) . stdfoot();
-        die();
+        $HTMLOUT .= stdmsg(_('Error'), _('Invalid ID'));
+        $title = _('Announcement History');
+        $breadcrumbs = [
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
     foreach ($ann_list as $x) {
         if ($x[0] == $id) {
@@ -42,13 +44,16 @@ if ($action === 'read_announce') {
         }
     }
     if (empty($subject) || empty($body)) {
-        $HTMLOUT .= stdmsg($lang['annhistory_error'], $lang['annhistory_not']);
-        echo stdhead($lang['annhistory_ann']) . wrapper($HTMLOUT) . stdfoot();
-        die();
+        $HTMLOUT .= stdmsg(_('Error'), _('Invalid ID'));
+        $title = _('Announcement History');
+        $breadcrumbs = [
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
-    $header = "
+    $header = '
          <tr>
-             <th>{$lang['annhistory_subject']}<b>" . htmlsafechars($subject) . '</b></th>
+             <th>' . _('Subject: ') . '<b>' . htmlsafechars($subject) . '</b></th>
          </tr>';
     $body = '
          <tr>
@@ -56,15 +61,15 @@ if ($action === 'read_announce') {
          </tr>
          <tr>
              <td>
-                 <a href='" . $_SERVER['PHP_SELF'] . "'>{$lang['annhistory_back']}</a>
+                 <a href='" . $_SERVER['PHP_SELF'] . "'>" . _('Back') . '</a>
              </td>
-         </tr>";
+         </tr>';
     $HTMLOUT .= main_table($body, $header);
 }
-$header = "
+$header = '
         <tr>
-            <th><b>{$lang['annhistory_subject1']}</b></th>
-        </tr>";
+            <th><b>' . _('Subject') . '</b></th>
+        </tr>';
 $body = '';
 if (!empty(($ann_list))) {
     foreach ($ann_list as $x) {
@@ -85,4 +90,8 @@ if (!empty(($ann_list))) {
 }
 
 $HTMLOUT .= main_table($body, $header);
-echo stdhead($lang['annhistory_ann']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Announcement History');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

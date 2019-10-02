@@ -35,7 +35,7 @@ global $container, $site_config, $CURUSER;
 $users_class = $container->get(User::class);
 if ($author) {
     $author_id = $users_class->getUserIdFromName($author);
-    $author_error = empty($author_id) ? $lang['sea_sorry_no_member_found_with_that_username.'] . ' ' . $lang['sea_please_check_the_spelling.'] : '';
+    $author_error = empty($author_id) ? _('Sorry no member found with that username.') . ' ' . _('Please check the spelling.') : '';
 }
 $fluent = $container->get(Database::class);
 if ($search || $author_id) {
@@ -150,7 +150,7 @@ if ($search || $author_id) {
     $results = $results->limit($pager['pdo']['limit'])
                        ->offset($pager['pdo']['offset']);
     if ($count === 0) {
-        $content .= stdmsg($lang['sea_nothing_found'], $lang['sea_please_try_again_with_a_refined_search_string.'], 'top20');
+        $content .= stdmsg(_('Nothing Found'), _('Please try again with a refined search string.'), 'top20');
     } else {
         if (empty($author_error)) {
             if ($show_as === 'list') {
@@ -158,13 +158,13 @@ if ($search || $author_id) {
         <a id="results"></a>';
                 $heading = '
         <tr>
-            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></th>
-            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_thread_icon'] . '" title="' . $lang['fe_thread_icon'] . '" class="emoticon tooltipper"></th>
-            <th class="w-40">' . $lang['sea_topic_post'] . '</th>
-            <th class="w-40">' . $lang['sea_in_forum'] . '</th>
-            <th class="w-1">' . $lang['fe_replies'] . '</th>
-            <th class="w-1">' . $lang['fe_views'] . '</th>
-            <th class="w-1">' . $lang['sea_date'] . '</th>
+            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></th>
+            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Thread Icon') . '" title="' . _('Thread Icon') . '" class="emoticon tooltipper"></th>
+            <th class="w-40">' . _('Topic / Post') . '</th>
+            <th class="w-40">' . _('in Forum') . '</th>
+            <th class="w-1">' . _('Replies') . '</th>
+            <th class="w-1">' . _('Views') . '</th>
+            <th class="w-1">' . _('Date') . '</th>
         </tr>';
                 foreach ($results as $arr) {
                     $table_body = '';
@@ -180,20 +180,20 @@ if ($search || $author_id) {
                     $body = format_comment($arr['body'], true, false);
                     $post_id = $arr['post_id'];
                     $posts = $arr['post_count'];
-                    $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . $lang['fe_post_preview'] . '');
+                    $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . _('Post Preview') . '');
                     $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
                     $table_body .= '
         <tr>
-            <td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon tooltipper"></td>
-            <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '" class="emoticon">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars((string) $arr['icon']) . '.gif" alt="' . htmlsafechars((string) $arr['icon']) . '" title="' . htmlsafechars((string) $arr['icon']) . '" class="emoticon tooltipper">') . '</td>
+            <td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></td>
+            <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars((string) $arr['icon']) . '.gif" alt="' . htmlsafechars((string) $arr['icon']) . '" title="' . htmlsafechars((string) $arr['icon']) . '" class="emoticon tooltipper">') . '</td>
             <td>
                 <div class="padding20">
                     <div class="columns">
                         <div class="column is-one-fifth">
-                            <span class="has-text-weight-bold">' . $lang['fe_post'] . ': </span>
+                            <span class="has-text-weight-bold">' . _('Post') . ': </span>
                         </div>
                         <div class="column">
-                            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . $lang['sea_go_to_the_post'] . '">' . (empty($post_title) ? '' . $lang['fe_link_to_post'] . '' : $post_title) . '</a>
+                            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . _('go to the post') . '">' . (empty($post_title) ? '' . _('Link to Post') . '' : $post_title) . '</a>
                         </div>
                     </div>
                     <div class="columns">
@@ -206,11 +206,11 @@ if ($search || $author_id) {
                     </div>
                     <div class="columns">
                         <div class="column is-one-fifth">
-                            <span style="font-style: italic;">' . $lang['ep_in_topic'] . ': </span>
+                            <span style="font-style: italic;">' . _('In topic') . ': </span>
                         </div>
                         <div class="column">
-                            ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
-                                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . $lang['sea_go_to_topic'] . '">' . $topic_title . '</a>' . $post_text . '
+                            ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . _('Pinned') . '" title="' . _('Pinned') . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
+                                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('go to topic') . '">' . $topic_title . '</a>' . $post_text . '
                         </div>' . (!empty($rpic) ? '
                         <div class="column is-1">
                             ' . $rpic . '
@@ -225,7 +225,7 @@ if ($search || $author_id) {
                 </div>
             </td>
             <td>
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . $lang['sea_go_to_forum'] . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('go to forum') . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
                 ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars((string) $arr['forum_desc']) . '</span>' : '') . '
             </td>
             <td>' . number_format($posts - 1) . '</td>
@@ -239,7 +239,7 @@ if ($search || $author_id) {
         <a id="results"></a>';
                 $x = 0;
                 foreach ($results as $arr) {
-                    $user = $users_class->getUserFromId($arr['userid']);
+                    $user = $users_class->getUserFromId((int) $arr['userid']);
                     $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title']) . '</span>' : 'Link to Post');
                     if ($search_what === 'all' || $search_what === 'title') {
                         $topic_title = highlightWords(htmlsafechars($arr['topic_title']), $search);
@@ -254,17 +254,17 @@ if ($search || $author_id) {
                     $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
                     $edited_by = '';
                     if ($arr['edit_date'] > 0) {
-                        $edited_username = $users_class->get_item('username', $arr['edited_by']);
+                        $edited_username = $users_class->get_item('username', (int) $arr['edited_by']);
                         $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
                     }
                     $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
                     $table_body = '
         <tr>
             <td colspan="3">in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'Forum') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _f('Link to %s', 'Forum') . '">
                     <span>' . htmlsafechars($arr['forum_name']) . '</span>
                 </a> in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . sprintf($lang['sea_link_to_x'], 'topic') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _f('Link to %s', 'Ttopic') . '">
                     <span>' . $topic_title . '</span>
                 </a>
             </td>
@@ -277,13 +277,13 @@ if ($search || $author_id) {
                 <span style="white-space:nowrap;">' . $post_icon . '
                     <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
                     </a>
-                    <span class="left20">' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
+                    <span class="left20">' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
                 </span>
             </td>
             <td>
                 <span>
-                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . $lang['fe_top'] . '" title="' . $lang['fe_top'] . '" class="emoticon tooltipper"></a>
-                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . $lang['fe_bottom'] . '" title="' . $lang['fe_bottom'] . '" class="emoticon tooltipper"></a>
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . _('Top') . '" title="' . _('Top') . '" class="emoticon tooltipper"></a>
+                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . _('Bottom') . '" title="' . _('Bottom') . '" class="emoticon tooltipper"></a>
                 </span>
             </td>
         </tr>
@@ -337,42 +337,42 @@ foreach ($forums as $arr_forums) {
 $search_in_forums .= '
                 <tr>
                     <td class="has-no-border">
-                        <span class="has-text-weight-bold">' . $lang['sea_if_none_are_selected_all_are_searched.'] . '</span>
+                        <span class="has-text-weight-bold">' . _('If none are selected all are searched.') . '</span>
                     </td>
                 </tr>
             </table>';
 $search_when_drop_down = '
         <select name="search_when">
-            <option class="body" value="0" ' . ($search_when === 0 ? 'selected' : '') . '>' . $lang['sea_no_time_frame'] . '</option>
-            <option class="body" value="604800" ' . ($search_when === 604800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_week_ago'], '1') . '</option>
-            <option class="body" value="1209600" ' . ($search_when === 1209600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '2') . '</option>
-            <option class="body" value="1814400" ' . ($search_when === 1814400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_weeks_ago'], '3') . '</option>
-            <option class="body" value="2419200" ' . ($search_when === 2419200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_month_ago'], '1') . '</option>
-            <option class="body" value="4838400" ' . ($search_when === 4838400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '2') . '</option>
-            <option class="body" value="7257600" ' . ($search_when === 7257600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '3') . '</option>
-            <option class="body" value="9676800" ' . ($search_when === 9676800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '4') . '</option>
-            <option class="body" value="12096000" ' . ($search_when === 12096000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '5') . '</option>
-            <option class="body" value="14515200" ' . ($search_when === 14515200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '6') . '</option>
-            <option class="body" value="16934400" ' . ($search_when === 16934400 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '7') . '</option>
-            <option class="body" value="19353600" ' . ($search_when === 19353600 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '8') . '</option>
-            <option class="body" value="21772800" ' . ($search_when === 21772800 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '9') . '</option>
-            <option class="body" value="24192000" ' . ($search_when === 24192000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '10') . '</option>
-            <option class="body" value="26611200" ' . ($search_when === 26611200 ? 'selected' : '') . '>' . sprintf($lang['sea_x_months_ago'], '11') . '</option>
-            <option class="body" value="30800000" ' . ($search_when === 30800000 ? 'selected' : '') . '>' . sprintf($lang['sea_x_year_ago'], '1') . '</option>
-            <option class="body" value="0">' . $lang['sea_13.73_billion_years_ago'] . '</option>
+            <option class="body" value="0" ' . ($search_when === 0 ? 'selected' : '') . '>' . _('No time frame') . '</option>
+            <option class="body" value="604800" ' . ($search_when === 604800 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 1) . '</option>
+            <option class="body" value="1209600" ' . ($search_when === 1209600 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 2) . '</option>
+            <option class="body" value="1814400" ' . ($search_when === 1814400 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 3) . '</option>
+            <option class="body" value="2419200" ' . ($search_when === 2419200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 1) . '</option>
+            <option class="body" value="4838400" ' . ($search_when === 4838400 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 2) . '</option>
+            <option class="body" value="7257600" ' . ($search_when === 7257600 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 3) . '</option>
+            <option class="body" value="9676800" ' . ($search_when === 9676800 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 4) . '</option>
+            <option class="body" value="12096000" ' . ($search_when === 12096000 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 5) . '</option>
+            <option class="body" value="14515200" ' . ($search_when === 14515200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 6) . '</option>
+            <option class="body" value="16934400" ' . ($search_when === 16934400 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 7) . '</option>
+            <option class="body" value="19353600" ' . ($search_when === 19353600 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 8) . '</option>
+            <option class="body" value="21772800" ' . ($search_when === 21772800 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 9) . '</option>
+            <option class="body" value="24192000" ' . ($search_when === 24192000 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 10) . '</option>
+            <option class="body" value="26611200" ' . ($search_when === 26611200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 11) . '</option>
+            <option class="body" value="30800000" ' . ($search_when === 30800000 ? 'selected' : '') . '>' . _p('%1 year ago', '%1 years ago', 1) . '</option>
+            <option class="body" value="0">' . _('Eternity') . '</option>
         </select>';
 $sort_by_drop_down = '
         <select name="sort_by">
-            <option class="body" value="relevance" ' . ($sort_by === 'relevance' ? 'selected' : '') . '>' . $lang['sea_relevance'] . ' [default]</option>
-            <option class="body" value="date" ' . ($sort_by === 'date' ? 'selected' : '') . '>' . $lang['sea_post_date'] . '</option>
+            <option class="body" value="relevance" ' . ($sort_by === 'relevance' ? 'selected' : '') . '>' . _('Relevance') . ' [default]</option>
+            <option class="body" value="date" ' . ($sort_by === 'date' ? 'selected' : '') . '>' . _('Post date') . '</option>
         </select>';
 $HTMLOUT .= $mini_menu . '
-        <h1 class="has-text-centered">' . $lang['sea_forums'] . '</h1>
+        <h1 class="has-text-centered">' . _('Search Forums') . '</h1>
             <form method="get" action="forums.php?"><input type="hidden" name="action" value="search" accept-charset="utf-8">';
 $table_body = '
                 <tr>
                     <td>
-                        <span>' . $lang['sea_search_in'] . ':</span>
+                        <span>' . _('Search In') . ':</span>
                     </td>
                     <td>
                         <div class="level-left is-flex">
@@ -387,7 +387,7 @@ $table_body = '
                 </tr>
                 <tr>
                     <td>
-                        <span>' . $lang['sea_search_terms'] . ':</span>
+                        <span>' . _('Search Terms') . ':</span>
                     </td>
                     <td>
                         <input type="text" class="search" name="search" value="' . htmlsafechars($search) . '" required> Surround with double quotes to search for a phrase.
@@ -395,7 +395,7 @@ $table_body = '
                 </tr>
                 <tr>
                     <td>
-                        <span>' . $lang['sea_by_member'] . ':</span>
+                        <span>' . _('By Member') . ':</span>
                     </td>
                     <td>
                         <input type="text" class="member" name="author" value="' . $author . '"> ' . $author_error . '
@@ -403,28 +403,28 @@ $table_body = '
                 </tr>
                 <tr>
                     <td>
-                        <span>' . $lang['sea_time_frame'] . ':</span>
+                        <span>' . _('Time Frame') . ':</span>
                     </td>
                     <td>
-                        <span>' . $search_when_drop_down . ' ' . $lang['sea_how_far_back_to_search'] . '.</span>
+                        <span>' . $search_when_drop_down . ' ' . _('How far back to search') . '.</span>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span>' . $lang['sea_sort_by'] . ':</span>
+                        <span>' . _('Sort By') . ':</span>
                     </td>
                     <td>' . $sort_by_drop_down . '
                         <div class="level-left is-flex top10">
                             <input type="radio" id="asc_asc" name="asc_desc" value="ASC" ' . ($asc_desc === 'ASC' ? 'checked' : '') . '>
-                            <label for="asc_asc" class="left5">' . $lang['sea_ascending'] . '</label>
+                            <label for="asc_asc" class="left5">' . _('Ascending') . '</label>
                             <input type="radio" id="asc_desc" name="asc_desc" value="DESC" ' . ($asc_desc === 'DESC' ? 'checked' : '') . ' class="left10">
-                            <label for="asc_desc" class="left5">' . $lang['sea_descending'] . '</label>
+                            <label for="asc_desc" class="left5">' . _('Descending') . '</label>
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span>' . $lang['sea_forums'] . ':</span>
+                        <span>' . _('Search Forums') . ':</span>
                     </td>
                     <td>' . $search_in_forums . '
                     </td>
@@ -433,11 +433,11 @@ $table_body = '
                     <td colspan="2" class="has-text-centered">
                         <div class="level-center-center is-flex">
                             <input type="radio" id="show_list" name="show_as" value="list" ' . ($show_as === 'list' ? 'checked' : '') . '>
-                            <label for="show_list" class="left5">' . $lang['sea_results_as_list'] . '</label>
+                            <label for="show_list" class="left5">' . _('Results as list') . '</label>
                             <input type="radio" id="show_GETs" name="show_as" value="posts" ' . ($show_as === 'posts' ? 'checked' : '') . ' class="left10">
-                            <label for="show_GETs" class="left5">' . $lang['sea_results_as_posts'] . '</label>
+                            <label for="show_GETs" class="left5">' . _('Results as posts') . '</label>
                         </div>
-                        <input type="submit" name="button" class="button is-small" value="' . $lang['gl_search'] . '">
+                        <input type="submit" name="button" class="button is-small" value="' . _('Search') . '">
                     </td>
                 </tr>';
 

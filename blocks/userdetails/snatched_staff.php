@@ -8,7 +8,7 @@ $count_snatched = $count2 = $dlc = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $table_data .= "
         <tr>
-            <td class='rowhead'>{$lang['userdetails_snatched']}</td>
+            <td class='rowhead'>" . _('Snatched:') . "</td>
             <td>
                 <a id='snatched-staff-hash'></a>
                 <fieldset id='snatched-staff_{$curuser['id']}' class='header'>

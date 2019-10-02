@@ -8,7 +8,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 class_check(UC_MAX);
-$lang = array_merge($lang, load_language('ad_mysql_overview'));
 global $site_config;
 
 if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
@@ -16,7 +15,7 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
     if (!preg_match('/[^A-Za-z_]+/', $table)) {
         $Table = "`{$table}`";
     } else {
-        stderr($lang['mysql_over_error'], $lang['mysql_over_pg']);
+        stderr(_('Error'), _('Invalid Data!'));
     }
     $sql = "OPTIMIZE TABLE $Table";
     if (preg_match('@^(CHECK|ANALYZE|REPAIR|OPTIMIZE)[[:space:]]TABLE[[:space:]]' . $Table . '$@i', $sql)) {
@@ -29,7 +28,7 @@ if (isset($_GET['Do']) && $_GET['Do'] === 'optimize' && isset($_GET['table'])) {
 }
 
 $HTMLOUT = "
-    <h1 class='has-text-centered is-wrapped'>{$lang['mysql_over_title']}</h1>";
+    <h1 class='has-text-centered is-wrapped'>" . _('MySQL Server Table Status') . '</h1>';
 
 $count = 0;
 $fluent = $container->get(Database::class);
@@ -43,21 +42,21 @@ foreach ($query as $row) {
         $innodb = false;
     }
 }
-$heading = "
+$heading = '
         <tr>
-            <th>{$lang['mysql_over_name']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_rows']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_avg_row']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_data_length']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_index_length']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_table_length']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_overhead']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_auto_increment']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_rf']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_collation']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_ct']}</th>" . (!$innodb ? "
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_ut']}</th>
-            <th class='has-text-centered is-wrapped'>{$lang['mysql_over_chkt']}</th>" : '') . '
+            <th>' . _('Name') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Rows') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Avg Row Length') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Data Size') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Index Size') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Table Size') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Overhead (Waste)') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Auto Increment') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Row Format') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Collation') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Create Time') . '</th>' . (!$innodb ? "
+            <th class='has-text-centered is-wrapped'>" . _('Update Time') . "</th>
+            <th class='has-text-centered is-wrapped'>" . _('Check Time') . '</th>' : '') . '
         </tr>';
 $body = '';
 if (!empty($query)) {
@@ -95,12 +94,17 @@ if (!empty($query)) {
         ++$count;
     }
 }
-$body .= "
+$body .= '
         <tr>
-            <td><b>{$lang['mysql_over_tables']} {$count}</b></td>
-            <td colspan='12'>{$lang['mysql_over_if']} <span class='has-text-danger has-text-weight-bold'>{$lang['mysql_over_red']}</span>{$lang['mysql_over_it_needs']}<p>{$lang['mysql_innodb']}</p></td>
-        </tr>";
+            <td><b>' . _('Tables') . " {$count}</b></td>
+            <td colspan='12'>" . _('If it is') . " <span class='has-text-danger has-text-weight-bold'>" . _('RED') . '</span>' . _(' it probably needs optimizing!!') . '<p>' . _('Optimizing InnoDB tables is usually not needed.') . '</p></td>
+        </tr>';
 
 $HTMLOUT .= main_table($body, $heading);
 
-echo stdhead($lang['mysql_over_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('MySQL Overview');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

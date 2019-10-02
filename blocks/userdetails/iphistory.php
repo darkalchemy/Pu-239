@@ -6,7 +6,7 @@ use Delight\Auth\Auth;
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config, $CURUSER, $user;
+global $container, $site_config, $CURUSER, $user;
 
 $cache = $container->get(Cache::class);
 $auth = $container->get(Auth::class);
@@ -26,10 +26,10 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         } else {
             $ipcheck = $user['ip'];
             $iphistory['use'] = "
-        <span class='has-text-danger'>{$lang['userdetails_ip_warn']}</span>
+        <span class='has-text-danger'>" . _('Warning :') . "</span>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
-            {$lang['userdetails_ip_used']}{$lang['userdetails_ip_users']}
-        </a>";
+            " . _('Used by ') . '' . _(' users!') . '
+        </a>';
         }
         $iphistory['ips'] = $fluent->from('ips')
                                    ->select(null)
@@ -43,23 +43,23 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
         if ($CURUSER['id'] == $id || has_access($CURUSER['class'], UC_STAFF, '')) {
             $HTMLOUT .= "
             <tr>
-                <td class='rowhead'>{$lang['userdetails_address']}</td>
+                <td class='rowhead'>" . _('Address') . "</td>
                 <td>
                     $addr<br>
                     {$iphistory['use']}<br>
-                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$lang['userdetails_ip_hist']}</a>
-                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iplist&amp;id={$user['id']}'>{$lang['userdetails_ip_list']}</a>
+                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>" . _('History') . "</a>
+                    <a class='button is-small top10' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iplist&amp;id={$user['id']}'>" . _('List') . '</a>
                 </td>
-            </tr>";
+            </tr>';
         }
     }
     if (has_access($CURUSER['class'], UC_STAFF, '') && $iphistory['ips'] > 0) {
         $HTMLOUT .= "
             <tr>
-                <td class='rowhead'>{$lang['userdetails_ip_history']}</td>
+                <td class='rowhead'>" . _('IP History') . '</td>
                 <td>
-                    {$lang['userdetails_ip_earlier']}<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$ipsinuse} {$lang['userdetails_ip_different']}</a>
+                    ' . _('This user has earlier used ') . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$ipsinuse} " . _(' different IP addresses') . '</a>
                 </td>
-            </tr>";
+            </tr>';
     }
 }

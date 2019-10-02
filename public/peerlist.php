@@ -10,10 +10,9 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bt_client.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('peerlist'));
 $id = (int) $_GET['id'];
 if (!isset($id) || !is_valid_id($id)) {
-    stderr($lang['peerslist_user_error'], $lang['peerslist_invalid_id']);
+    stderr(_('Error'), _('Invalid ID.'));
 }
 $HTMLOUT = '';
 /**
@@ -28,25 +27,25 @@ $HTMLOUT = '';
  */
 function dltable($name, $arr, $torrent, $user)
 {
-    global $site_config, $lang;
+    global $site_config;
 
     if (!count($arr)) {
-        return $htmlout = main_div("<div><b>{$lang['peerslist_no']} $name {$lang['peerslist_data_available']}</b></div>", '', 'padding20 has-text-centered');
+        return $htmlout = main_div('<div><b>' . _('No') . " $name " . _('data available') . '</b></div>', '', 'padding20 has-text-centered');
     }
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['peerslist_user_ip']}</th>
-            <th>{$lang['peerslist_connectable']}</th>
-            <th>{$lang['peerslist_uploaded']}</th>
-            <th>{$lang['peerslist_rate']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-            <th>{$lang['peerslist_downloaded']}</th>") . ($site_config['site']['ratio_free'] ? '' : "
-            <th>{$lang['peerslist_rate']}</th>") . "
-            <th>{$lang['peerslist_ratio']}</th>
-            <th>{$lang['peerslist_complete']}</th>
-            <th>{$lang['peerslist_connected']}</th>
-            <th>{$lang['peerslist_idle']}</th>
-            <th>{$lang['peerslist_client']}</th>
-        </tr>";
+            <th>' . _('User/IP') . '</th>
+            <th>' . _('Connectable') . '</th>
+            <th>' . _('Uploaded') . '</th>
+            <th>' . _('Rate') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Downloaded') . '</th>') . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Rate') . '</th>') . '
+            <th>' . _('Ratio') . '</th>
+            <th>' . _('Complete') . '</th>
+            <th>' . _('Connected') . '</th>
+            <th>' . _('Idle') . '</th>
+            <th>' . _('Client') . '</th>
+        </tr>';
     $now = TIME_NOW;
     $mod = $user['class'] >= UC_STAFF;
     $body = '';
@@ -67,7 +66,7 @@ function dltable($name, $arr, $torrent, $user)
             <td>' . ($mod ? $e['ip'] : preg_replace('/\.\d+$/', '.xxx', $e['ip'])) . '</td>';
         }
         $secs = max(1, ($now - $e['st']) - ($now - $e['la']));
-        $body .= '<td>' . ($e['connectable'] === 'yes' ? $lang['peerslist_yes'] : "<span class='has-text-danger'>{$lang['peerslist_no']}</span>") . "</td>\n";
+        $body .= '<td>' . ($e['connectable'] === 'yes' ? _('Yes') : "<span class='has-text-danger'>" . _('No') . '</span>') . "</td>\n";
         $body .= '<td>' . mksize($e['uploaded']) . "</td>\n";
         $body .= '<td><span style="white-space: nowrap;">' . mksize(($e['uploaded'] - $e['uploadoffset']) / $secs) . "/s</span></td>\n";
         $body .= '' . ($site_config['site']['ratio_free'] ? '' : '<td>' . mksize($e['downloaded']) . '</td>') . "\n";
@@ -93,7 +92,7 @@ global $container, $site_config;
 $torrents_class = $container->get(Torrent::class);
 $torrent = $torrents_class->get($id);
 if (empty($torrent)) {
-    stderr($lang['peerslist_error'], $lang['peerslist_nothing']);
+    stderr(_('Error'), _('Nothing to see here, move along!'));
 }
 $downloaders = [];
 $seeders = [];
@@ -125,7 +124,7 @@ $peers = $fluent->from('peers AS p')
                 ->fetchAll();
 
 if (empty($peers)) {
-    stderr($lang['peerslist_warning'], $lang['peerslist_no_data']);
+    stderr(_('Warning'), _('No downloader/uploader data available!'));
 }
 foreach ($peers as $subrow) {
     if ($subrow['seeder'] === 'yes') {
@@ -182,6 +181,10 @@ usort($seeders, 'seed_sort');
 usort($downloaders, 'leech_sort');
 $HTMLOUT .= "
     <h1 class='has-text-centered'>Peerlist for <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . htmlsafechars($torrent['name']) . '</a></h1>';
-$HTMLOUT .= dltable("{$lang['peerslist_seeders']}<a id='seeders'></a>", $seeders, $torrent, $user);
-$HTMLOUT .= '<br>' . dltable("{$lang['peerslist_leechers']}<a id='leechers'></a>", $downloaders, $torrent, $user);
-echo stdhead($lang['peerslist_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$HTMLOUT .= dltable('' . _('Seeder') . "<a id='seeders'></a>", $seeders, $torrent, $user);
+$HTMLOUT .= '<br>' . dltable('' . _('Leecher') . "<a id='leechers'></a>", $downloaders, $torrent, $user);
+$title = _('Peerlist');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stfoot);

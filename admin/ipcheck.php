@@ -7,22 +7,21 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_ipcheck'));
 global $site_config;
 
 $res = sql_query("SELECT count(*) AS dupl, INET6_NTOA(ip) AS ip FROM users WHERE status = 0 AND ip != '' AND INET6_NTOA(ip) NOT IN ('127.0.0.1', '10.0.0.1', '10.10.10.10') GROUP BY users.ip ORDER BY dupl DESC, ip") or sqlerr(__FILE__, __LINE__);
 
-$heading = "
+$heading = '
     <tr>
-        <th>{$lang['ipcheck_user']}</th>
-        <th>{$lang['ipcheck_email']}</th>
-        <th>{$lang['ipcheck_regged']}</th>
-        <th>{$lang['ipcheck_lastacc']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-        <th>{$lang['ipcheck_dload']}</th>") . "
-        <th>{$lang['ipcheck_upped']}</th>
-        <th>{$lang['ipcheck_ratio']}</th>
-        <th>{$lang['ipcheck_ip']}</th>
-    </tr>";
+        <th>' . _('User') . '</th>
+        <th>' . _('Email') . '</th>
+        <th>' . _('Registered') . '</th>
+        <th>' . _('Last access') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
+        <th>' . _('Downloaded') . '</th>') . '
+        <th>' . _('Uploaded') . '</th>
+        <th>' . _('Ratio') . '</th>
+        <th>' . _('IP') . '</th>
+    </tr>';
 $ip = '';
 $uc = 0;
 $body = '';
@@ -53,7 +52,7 @@ while ($ras = mysqli_fetch_assoc($res)) {
                     <td>$last_access</td>" . ($site_config['site']['ratio_free'] ? '' : "
                     <td>$downloaded</td>") . "
                     <td>$uploaded</td>
-                    <td>" . member_ratio($arr['uploaded'], $arr['downloaded']) . '</td>
+                    <td>" . member_ratio((float) $arr['uploaded'], (float) $arr['downloaded']) . '</td>
                     <td><span class="has-text-weight-bold">' . format_comment($arr['ip']) . '</span></td>
                 </tr>';
                 $ip = htmlsafechars($arr['ip']);
@@ -66,6 +65,11 @@ $HTMLOUT = '<h1 class="has-text-centered">Duplicate IP Check</h1>';
 if (!empty($body)) {
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stdmsg($lang['ipcheck_sorry'], $lang['ipcheck_no_dupes']);
+    $HTMLOUT .= stdmsg(_('Sorry'), _("There are no duplicate IP's in use."));
 }
-echo stdhead($lang['ipcheck_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('IP Check');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

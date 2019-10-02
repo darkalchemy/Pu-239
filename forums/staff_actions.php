@@ -31,19 +31,19 @@ $staff_action = in_array($posted_staff_action, $valid_staff_actions) ? $posted_s
 global $container, $site_config;
 
 if (!has_access($user['class'], UC_STAFF, 'coder')) {
-    stderr($lang['gl_error'], $lang['fe_no_access_for_you_mr']);
+    stderr(_('Error'), _('No access for you Mr. Fancy-Pants...'));
 }
 if ($staff_action === 1) {
-    stderr($lang['gl_error'], $lang['fe_no_action_selected']);
+    stderr(_('Error'), _('No action selected!'));
 }
 $post_id = isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0;
 $topic_id = isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0;
 $forum_id = isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0;
 if ($topic_id > 0) {
-    $res_check = sql_query('SELECT f.min_class_read FROM forums AS f LEFT JOIN topics AS t ON t.forum_id=f.id WHERE f.id=t.forum_id AND t.id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
+    $res_check = sql_query('SELECT f.min_class_read FROM forums AS f LEFT JOIN topics AS t ON t.forum_id = f.id WHERE f.id = t.forum_id AND t.id = ' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $arr_check = mysqli_fetch_row($res_check);
     if ($user['class'] < $arr_check[0]) {
-        stderr($lang['gl_error'], $lang['gl_bad_id']);
+        stderr(_('Error'), _('Bad ID.'));
         exit();
     }
 }
@@ -73,7 +73,7 @@ switch ($staff_action) {
                     sql_query('UPDATE forums SET post_count = post_count - ' . sqlesc($posts_count) . ' WHERE id=' . sqlesc($arr['forum_id'])) or sqlerr(__FILE__, __LINE__);
                 }
             } else {
-                stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
+                stderr(_('Error'), _('Nothing deleted!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
@@ -93,7 +93,7 @@ switch ($staff_action) {
                 sql_query('UPDATE posts SET status = "ok" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
-                stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_trash']);
+                stderr(_('Error'), _('Nothing removed from the trash!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
@@ -102,12 +102,12 @@ switch ($staff_action) {
 
     case 'split_topic':
         if (!is_valid_id($topic_id) || !is_valid_id($forum_id)) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         $new_topic_name = strip_tags(isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : '');
         $new_topic_desc = strip_tags(isset($_POST['new_topic_desc']) ? trim($_POST['new_topic_desc']) : '');
         if ($new_topic_name === '') {
-            stderr($lang['gl_error'], $lang['fe_to_split_this_topic_you_must_supply_a_name_for_the_new_topic']);
+            stderr(_('Error'), _('To split this topic, you must supply a name for the new topic!'));
         }
         if (isset($_POST['post_to_mess_with'])) {
             sql_query('INSERT INTO topics (topic_name, forum_id, topic_desc) VALUES (' . sqlesc($new_topic_name) . ', ' . sqlesc($forum_id) . ', ' . sqlesc($new_topic_desc) . ')') or sqlerr(__FILE__, __LINE__);
@@ -132,7 +132,7 @@ switch ($staff_action) {
                 $arr_owner = mysqli_fetch_row($res_owner);
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_split_to[0]) . ', post_count = ' . sqlesc($posts_count) . ', user_id=' . sqlesc($arr_owner[0]) . ' WHERE id=' . sqlesc($new_topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {
-                stderr($lang['gl_error'], $lang['fe_topic_not_split']);
+                stderr(_('Error'), _('Topic not split!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $new_topic_id);
             die();
@@ -144,7 +144,7 @@ switch ($staff_action) {
         $topic_res = sql_query('SELECT id  FROM topics WHERE id=' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_row($topic_res);
         if (!is_valid_id((int) $topic_arr[0])) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
@@ -166,7 +166,7 @@ switch ($staff_action) {
                 sql_query('UPDATE topics SET last_post = ' . sqlesc($arr_to['id']) . ', post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id=' . sqlesc($topic_to_merge_with)) or sqlerr(__FILE__, __LINE__);
                 sql_query('UPDATE forums SET post_count = post_count + ' . sqlesc($posts_count) . ' WHERE id=' . sqlesc($arr_to['forum_id'])) or sqlerr(__FILE__, __LINE__);
             } else {
-                stderr($lang['gl_error'], $lang['fe_posts_were_not_merged']);
+                stderr(_('Error'), _('Posts were NOT merged!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_to_merge_with);
             die();
@@ -178,7 +178,7 @@ switch ($staff_action) {
         $topic_res = sql_query('SELECT id  FROM topics WHERE id=' . sqlesc($topic_to_append_to)) or sqlerr(__FILE__, __LINE__);
         $topic_arr = mysqli_fetch_row($topic_res);
         if (!is_valid_id((int) $topic_arr[0])) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
@@ -238,7 +238,7 @@ switch ($staff_action) {
                 sql_query('UPDATE posts SET status = "recycled" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
-                stderr($lang['gl_error'], $lang['fe_nothing_sent_to_recy']);
+                stderr(_('Error'), _('Nothing sent to recycle bin!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
@@ -258,7 +258,7 @@ switch ($staff_action) {
                 sql_query('UPDATE posts SET status = "ok" WHERE id IN (' . implode(', ', $post_to_mess_with) . ') AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
                 clr_forums_cache($topic_id);
             } else {
-                stderr($lang['gl_error'], $lang['fe_nothing_removed_from_the_recy']);
+                stderr(_('Error'), _('Nothing removed from the recycle bin!'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
             die();
@@ -267,13 +267,13 @@ switch ($staff_action) {
 
     case 'send_pm':
         if (!is_valid_id($topic_id)) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         $subject = strip_tags(isset($_POST['subject']) ? trim($_POST['subject']) : '');
         $message = (isset($_POST['message']) ? htmlsafechars($_POST['message']) : '');
         $from = ((isset($_POST['pm_from']) && $_POST['pm_from'] == 0) ? 2 : $user['id']);
         if ($subject == '' || $message == '') {
-            stderr($lang['gl_error'], $lang['fe_you_must_enter_both_a_subj_mes']);
+            stderr(_('Error'), _('You must enter both a subject and message.'));
         }
         if (isset($_POST['post_to_mess_with'])) {
             $_POST['post_to_mess_with'] = (isset($_POST['post_to_mess_with']) ? $_POST['post_to_mess_with'] : '');
@@ -293,7 +293,7 @@ switch ($staff_action) {
 
     case 'set_pinned':
         if (!is_valid_id($topic_id)) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         sql_query('UPDATE topics SET sticky = "' . ($_POST['pinned'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
@@ -303,7 +303,7 @@ switch ($staff_action) {
 
     case 'set_locked':
         if (!is_valid_id($topic_id)) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         sql_query('UPDATE topics SET locked = "' . ($_POST['locked'] === 'yes' ? 'yes' : 'no') . '" WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
@@ -316,7 +316,7 @@ switch ($staff_action) {
         $arr = mysqli_fetch_row($res);
 
         if (!is_valid_id((int) $arr[0])) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         sql_query('UPDATE topics SET forum_id=' . sqlesc($forum_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
@@ -327,7 +327,7 @@ switch ($staff_action) {
     case 'rename_topic':
         $new_topic_name = strip_tags((isset($_POST['new_topic_name']) ? trim($_POST['new_topic_name']) : ''));
         if ($new_topic_name === '') {
-            stderr($lang['gl_error'], $lang['fe_if_you_want_to_ren_topic_must_sup_a_name']);
+            stderr(_('Error'), _('If you want to rename the topic, you must supply a name!'));
         }
         sql_query('UPDATE topics SET topic_name = ' . sqlesc($new_topic_name) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         clr_forums_cache($topic_id);
@@ -349,7 +349,7 @@ switch ($staff_action) {
         $topic_arr = mysqli_fetch_assoc($topic_res);
         $count = $topic_arr['count'];
         if (!is_valid_id((int) $topic_arr['id'])) {
-            stderr($lang['gl_error'], $lang['gl_bad_id']);
+            stderr(_('Error'), _('Bad ID.'));
         }
         sql_query('UPDATE posts SET topic_id=' . sqlesc($topic_to_merge_with) . ' WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         sql_query('UPDATE subscriptions SET topic_id=' . sqlesc($topic_to_merge_with) . ' WHERE topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -378,12 +378,12 @@ switch ($staff_action) {
 
     case 'delete_topic':
         if (!isset($_POST['sanity_check'])) {
-            stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_you_want_to_delete_this_topic_msg'] . '<br>
+            stderr(_('Sanity Check!'), '' . _('Are you sure you want to delete this topic? If you are sure, click the delete button.') . '<br>
 	<form action="forums.php?action=staff_actions" method="post" accept-charset="utf-8">
 	<input type="hidden" name="action_2" value="delete_topic">
 	<input type="hidden" name="sanity_check" value="1">
 	<input type="hidden" name="topic_id" value="' . $topic_id . '">
-	<input type="submit" name="button" class="top20 button is-small" value="' . $lang['fe_del_topic'] . '">
+	<input type="submit" name="button" class="top20 button is-small" value="' . _('Delete Topic') . '">
 	</form>');
         }
         if ($site_config['forum_config']['delete_for_real']) {

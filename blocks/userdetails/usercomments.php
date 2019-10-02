@@ -4,13 +4,13 @@ declare(strict_types = 1);
 
 use Pu239\Database;
 
-global $container, $CURUSER, $lang, $user, $id, $site_config;
+global $container, $CURUSER, $user, $id, $site_config;
 
 $fluent = $container->get(Database::class);
 $text = "
     <a id='startcomments'></a>
     <div>
-        <h1 class='has-text-centered'>{$lang['userdetails_comm_left']}" . format_username((int) $id) . "</a></h1>
+        <h1 class='has-text-centered'>" . _('Comments left for ') . '' . format_username((int) $id) . "</a></h1>
         <div class='has-text-centered bottom20'>
             <a href='{$site_config['paths']['baseurl']}/usercomment.php?action=add&amp;userid={$id}' class='button is-small'>Add a comment</a>
         </div>";
@@ -21,7 +21,7 @@ $count = $fluent->from('usercomments')
                 ->fetch('count');
 
 if (!$count) {
-    $text .= "<div class='has-text-centered padding20 size_6'>{$lang['userdetails_comm_yet']}</div>";
+    $text .= "<div class='has-text-centered padding20 size_6'>" . _('No comments yet') . '</div>';
 } else {
     require_once INCL_DIR . 'function_pager.php';
     $perpage = 5;

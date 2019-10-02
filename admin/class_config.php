@@ -14,7 +14,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once BIN_DIR . 'uglify.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_class_config'));
 global $container, $CURUSER, $site_config;
 
 $style = get_stylesheet();
@@ -37,7 +36,7 @@ $possible_modes = [
 ];
 $mode = isset($_POST['mode']) ? htmlsafechars($_POST['mode']) : '';
 if (!in_array($mode, $possible_modes)) {
-    stderr($lang['classcfg_error'], $lang['classcfg_error1']);
+    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
 }
 
 /**
@@ -109,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($mode === 'edit') {
         $edited = false;
         if ($_POST['UC_MAX'] > UC_MAX || $_POST['UC_STAFF'] > UC_MAX || $_POST['UC_MIN'] > UC_MAX || $_POST['UC_MAX'] < UC_MIN || $_POST['UC_STAFF'] < UC_MIN || $_POST['UC_MIN'] < UC_MIN || $_POST['UC_MAX'] < $_POST['UC_MIN'] || $_POST['UC_MAX'] < $_POST['UC_STAFF'] || $_POST['UC_STAFF'] < $_POST['UC_MIN']) {
-            stderr('Error', 'Invalid Class Configuration UC_MAX|UC_STAFF|UC_MIN');
+            stderr(_('Error'), 'Invalid Class Configuration UC_MAX|UC_STAFF|UC_MIN');
         }
         if (!empty($class_config)) {
             foreach ($class_config as $current_name => $value) {
@@ -143,9 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if ($edited) {
-            $session->set('is-success', "{$lang['classcfg_success_save']}");
+            $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
         } else {
-            $session->set('is-warning', $lang['classcfg_error_query1']);
+            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 1.'));
         }
         unset($_POST);
     } elseif ($mode === 'add') {
@@ -153,17 +152,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (isset($_POST['name'])) {
                 $name = htmlsafechars($_POST['name']);
             } else {
-                stderr($lang['classcfg_error'], $lang['classcfg_error_class_name']);
+                stderr(_('Error'), _('We cannot have empty class name!'));
             }
             if (isset($_POST['value'])) {
                 $value = (int) $_POST['value'];
             } else {
-                stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+                stderr(_('Error'), _('We cannot have empty class values!'));
             }
             if (isset($_POST['cname'])) {
                 $r_name = htmlsafechars($_POST['cname']);
             } else {
-                stderr($lang['classcfg_error'], $lang['classcfg_error_class_value']);
+                stderr(_('Error'), _('We cannot have empty class values!'));
             }
             $color = isset($_POST['color']) ? htmlsafechars($_POST['color']) : '';
             $color = str_replace('#', '', "$color");
@@ -232,9 +231,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_class_files($stylesheet['id']);
             }
             if ($class_id) {
-                $session->set('is-success', "{$lang['classcfg_success_save']}");
+                $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
             } else {
-                $session->set('is-warning', $lang['classcfg_error_query2']);
+                $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 2.'));
             }
             update_forum_classes($value, 'increment');
             unset($_POST);
@@ -296,9 +295,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_class_files($stylesheet['id']);
             }
             update_forum_classes($value, 'decrement');
-            $session->set('is-success', "{$lang['classcfg_success_reset']}");
+            $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
         } else {
-            $session->set('is-warning', $lang['classcfg_error_query2']);
+            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 2.'));
         }
         unset($_POST);
     }
@@ -308,21 +307,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     die();
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered top20'>{$lang['classcfg_class_settings']} for Template $style</h1>
+        <h1 class='has-text-centered top20'>" . _('User Class Settings') . " for Template $style</h1>
         <br>
-        <h2 class='has-text-centered top20'>{$lang['classcfg_class_config']}</h2>
+        <h2 class='has-text-centered top20'>" . _('Edit Class Settings') . "</h2>
         <form name='edit' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
-                        <th>{$lang['classcfg_class_name']}</th>
-                        <th class='has-text-centered'>{$lang['classcfg_class_value']}</th>
-                        <th class='has-text-centered'>{$lang['classcfg_class_refname']}</th>
-                        <th class='has-text-centered'>{$lang['classcfg_class_color']}</th>
-                        <th class='has-text-centered'>{$lang['classcfg_class_pic']}</th>
+                        <th>" . _('Class Name') . "</th>
+                        <th class='has-text-centered'>" . _('Class Value') . "</th>
+                        <th class='has-text-centered'>" . _('Class Reference Name') . "</th>
+                        <th class='has-text-centered'>" . _('Class Color') . "</th>
+                        <th class='has-text-centered'>" . _('Class Pic') . '</th>
                     </tr>
                 </thead>
-                <tbody>";
+                <tbody>';
 
 $classes = $fluent->from('class_config')
                   ->where('template = ?', $style)
@@ -385,7 +384,7 @@ $HTMLOUT .= "
                         <td colspan='5'>
                             <div class='has-text-centered'>
                                 <input type='hidden' name='mode' value='edit'>
-                                <input type='submit' class='button is-small' value='{$lang['classcfg_class_apply']}'>
+                                <input type='submit' class='button is-small' value='" . _('Apply changes') . "'>
                             </div>
                         </td>
                     </tr>
@@ -394,7 +393,7 @@ $HTMLOUT .= "
         </form>";
 
 $HTMLOUT .= "
-        <h2 class='has-text-centered top20'>{$lang['classcfg_class_del']}</h2>
+        <h2 class='has-text-centered top20'>" . _('Delete Class') . "</h2>
         <form name='add' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <tr>
@@ -415,7 +414,7 @@ foreach ($classes as $class) {
 $HTMLOUT .= "
                             </select>
                             <input type='hidden' name='mode' value='remove'>
-                            <input type='submit' class='button is-small left10' value='{$lang['classcfg_class_remove']}'>
+                            <input type='submit' class='button is-small left10' value='" . _('Remove Class') . "'>
                         </div>
                     </td>
                 </tr>
@@ -423,16 +422,16 @@ $HTMLOUT .= "
         </form>";
 
 $HTMLOUT .= "
-        <h2 class='has-text-centered top20'>{$lang['classcfg_class_add']}</h2>
+        <h2 class='has-text-centered top20'>" . _('Add a New Class') . "</h2>
         <form name='add' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-stiped'>
                 <thead>
                     <tr>
-                        <th>{$lang['classcfg_class_name']}</th>
-                        <th>{$lang['classcfg_class_level']}</th>
-                        <th>{$lang['classcfg_class_refname']}</th>
-                        <th>{$lang['classcfg_class_color']}</th>
-                        <th>{$lang['classcfg_class_pic']}</th>
+                        <th>" . _('Class Name') . '</th>
+                        <th>' . _('Class Level') . '</th>
+                        <th>' . _('Class Reference Name') . '</th>
+                        <th>' . _('Class Color') . '</th>
+                        <th>' . _('Class Pic') . "</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -447,12 +446,16 @@ $HTMLOUT .= "
                         <td colspan='5'>
                             <div class='has-text-centered'>
                                 <input type='hidden' name='mode' value='add'>
-                                <input type='submit' class='button is-small' value='{$lang['classcfg_add_new']}'>
+                                <input type='submit' class='button is-small' value='" . _('Add new class') . "'>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </form>";
-
-echo stdhead($lang['classcfg_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('User Settings');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

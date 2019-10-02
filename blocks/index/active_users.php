@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 $active = $cache->get('activeusers_');
@@ -26,7 +26,7 @@ if ($active === false || is_null($active)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $active['activeusers'] = format_comment($lang['index_blocks_too_many']);
+        $active['activeusers'] = format_comment(_('Too many to list here.'));
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
@@ -37,7 +37,7 @@ if ($active === false || is_null($active)) {
         }
         $active['activeusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
-        $active['activeusers'] = $lang['index_active_users_no'];
+        $active['activeusers'] = _('There have been no active users in the last 15 minutes.');
     }
 
     $active['actcount'] = number_format($count);
@@ -50,7 +50,7 @@ $active_users .= "
             <div class='bordered'>
                 <div class='alt_bordered bg-00'>
                     <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>
-                        {$lang['index_active']} ({$active['actcount']})
+                        " . _pf('%d Active User', '%d Active Users', $active['actcount']) . "
                     </div>
                     <div class='level-item is-wrapped padding20'>
                         {$active['activeusers']}

@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_warn'));
 $HTMLOUT = '';
 $dt = TIME_NOW;
 $this_url = $_SERVER['SCRIPT_NAME'];
@@ -22,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $r = isset($_POST['ref']) ? $_POST['ref'] : $this_url;
     $_uids = isset($_POST['users']) ? array_map('intval', $_POST['users']) : 0;
     if ($_uids == 0 || count($_uids) == 0) {
-        stderr($lang['warn_stderr'], $lang['warn_stderr_msg']);
+        stderr(_('Error'), _("Looks like you didn't select any user!"));
     }
     $valid = [
         'unwarn',
@@ -31,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     $act = isset($_POST['action']) && in_array($_POST['action'], $valid) ? $_POST['action'] : false;
     if (!$act) {
-        stderr('Err', $lang['warn_stderr_msg1']);
+        stderr('Error', _('Something went wrong!'));
     }
     global $CURUSER;
 
@@ -46,14 +45,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_log("User: {$arr_del['username']} Was deleted by " . $CURUSER['username'] . ' Via Warn Page');
             }
         } else {
-            stderr($lang['warn_stderr'], $lang['warn_stderr_msg2']);
+            stderr(_('Error'), _('Something went wrong!'));
         }
     }
     if ($act === 'disable') {
         global $container;
 
         $cache = $container->get(Cache::class);
-        if (sql_query('UPDATE users SET status = 2, modcomment=CONCAT(' . sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['warn_disabled_by'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query('UPDATE users SET status = 2, modcomment=CONCAT(' . sqlesc(get_date((int) $dt, 'DATE', 1) . _('- Disabled by  ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user_' . $uid, [
                     'status' => 2,
@@ -61,13 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
-            stderr($lang['warn_stdmsg_success'], $d . $lang['warn_stdmsg_user'] . ($d > 1 ? 's' : '') . $lang['warn_stdmsg_disabled']);
+            stderr(_('Success'), _p('%$1d user disabled!', '%$1d users disabled!', $d));
         } else {
-            stderr($lang['warn_stderr'], $lang['warn_stderr_msg3']);
+            stderr(_('Error'), _('Something went wrong!'));
         }
     } elseif ($act === 'unwarn') {
-        $subject = $lang['warn_removed'];
-        $msg = $lang['warn_removed_msg'] . $CURUSER['username'] . $lang['warn_removed_msg1'];
+        $subject = _('Warn removed');
+        $msg = _('Hey, your warning was removed by ') . $CURUSER['username'] . _('
+Please keep in your best behaviour from now on.');
         global $container;
 
         $cache = $container->get(Cache::class);
@@ -87,12 +87,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $messages_class = $container->get(Message::class);
             $messages_class->insert($msgs_buffer);
-            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . $lang['warn_removed_msg'] . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . _('Hey, your warning was removed by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);
-                stderr($lang['warn_stdmsg_success'], count($msgs_buffer) . $lang['warn_stdmsg_user'] . (count($msgs_buffer) > 1 ? 's' : '') . $lang['warn_stdmsg_unwarned']);
+                stderr(_('Success'), _pf('%1$s user unwarned.', '%1$s users unwarned.', count($msgs_buffer)));
             } else {
-                stderr($lang['warn_stderr'], $lang['warn_stderr_msgq1'] . $lang['warn_stderr_msgq2'] . $q2_err);
+                stderr(_('Error'), _('Something went wrong!'));
             }
         }
     }
@@ -101,14 +101,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 switch ($do) {
     case 'disabled':
         $query = "SELECT id,username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, disable_reason, registered, last_access FROM users WHERE status = 2 ORDER BY last_access DESC ";
-        $title = $lang['warn_disable_title'];
-        $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;?do=warned\">{$lang['warn_warned_users']}</a>";
+        $title = _('Disabled users');
+        $link = '<a href="staffpanel.php?tool=warn&amp;action=warn&amp;?do=warned">' . _('warned users') . '</a>';
         break;
 
     case 'warned':
         $query = "SELECT id, username, class, downloaded, uploaded, IF(downloaded>0, round((uploaded/downloaded),2), '---') AS ratio, warn_reason, warned, registered, last_access FROM users WHERE warned>='1' ORDER BY last_access DESC, warned DESC ";
-        $title = $lang['warn_warned_title'];
-        $link = "<a href=\"staffpanel.php?tool=warn&amp;action=warn&amp;do=disabled\">{$lang['warn_disabled_users']}</a>";
+        $title = _('Warned users');
+        $link = '<a href="staffpanel.php?tool=warn&amp;action=warn&amp;do=disabled">' . _('disabled users') . '</a>';
         break;
 }
 $g = sql_query($query) or print (is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false);
@@ -119,29 +119,29 @@ $HTMLOUT .= "
                 $link
             </li>
         </ul>
-        <h1 class='has-text-centered'>{$lang['warn_total']} $count {$lang['warn_total_user']}" . plural($count) . '</h1>';
+        <h1 class='has-text-centered'>" . _(' total - ') . " $count " . _(' user') . '' . plural($count) . '</h1>';
 if ($count == 0) {
-    $HTMLOUT .= stdmsg('', $lang['warn_hey_msg'] . strtolower($title));
+    $HTMLOUT .= stdmsg('', _('There is no ') . strtolower($title));
 } else {
     global $site_config;
 
     $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=warn&amp;action=warn' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['warn_user']}</th>
-            <th>{$lang['warn_ratio']}</th>
-            <th>{$lang['warn_class']}</th>
-            <th>{$lang['warn_ltacces']}</th>
-            <th>{$lang['warn_joined']}</th>
+            <th>' . _('User') . '</th>
+            <th>' . _('Ratio') . '</th>
+            <th>' . _('Class') . '</th>
+            <th>' . _('Last access') . '</th>
+            <th>' . _('Joined') . "</th>
             <th><input type='checkbox' id='checkThemAll'></th>
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ($do === 'warned' ? $lang['warn_for'] . $a['warn_reason'] . '<br>' . $lang['warn_till'] . get_date((int) $a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : $lang['warn_disabled_for'] . $a['disable_reason']);
+        $tip = ($do === 'warned' ? _('Warned for : ') . $a['warn_reason'] . '<br>' . _(' Warned till ') . get_date((int) $a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : _('Disabled for ') . $a['disable_reason']);
         $body .= "
         <tr>
             <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . '</a></td>
-            <td>' . (float) $a['ratio'] . "<br><span class='small'><b>{$lang['warn_down']}</b>" . mksize($a['downloaded']) . "&#160;<b>{$lang['warn_upl']}</b> " . mksize($a['uploaded']) . '</span></td>
+            <td>' . (float) $a['ratio'] . "<br><span class='small'><b>" . _('D:') . '</b>' . mksize($a['downloaded']) . '&#160;<b>' . _('U:') . '</b> ' . mksize($a['uploaded']) . '</span></td>
             <td>' . get_user_class_name((int) $a['class']) . '</td>
             <td>' . get_date((int) $a['last_access'], 'LONG', 0, 1) . '</td>
             <td>' . get_date((int) $a['registered'], 'DATE', 1) . "</td>
@@ -153,9 +153,9 @@ if ($count == 0) {
     $HTMLOUT .= "
         <div class='has-text-centered margin20'>
             <select name='action'>
-                <option value='unwarn'>{$lang['warn_unwarn']}</option>
-                <option value='disable'>{$lang['warn_disable']}</option>
-                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP, 'coder') ? 'disabled' : '') . ">{$lang['warn_delete']}</option>
+                <option value='unwarn'>" . _('Unwarn') . "</option>
+                <option value='disable'>" . _('Disable') . "</option>
+                <option value='delete' " . (!has_access($CURUSER['class'], UC_SYSOP, 'coder') ? 'disabled' : '') . '>' . _('Delete') . "</option>
             </select>
             &raquo;
             <input type='submit' value='Apply' class='button is-small'>
@@ -163,4 +163,8 @@ if ($count == 0) {
         </div>
         </form>";
 }
-echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

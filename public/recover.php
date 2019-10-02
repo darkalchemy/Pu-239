@@ -23,10 +23,9 @@ if ($auth->isLoggedIn()) {
     die();
 }
 if (!$site_config['mail']['smtp_enable']) {
-    stderr('Error', 'Mail functions have not been enabled.');
+    stderr(_('Error'), 'Mail functions have not been enabled.');
 }
 $stdfoot = [];
-$lang = array_merge(load_language('global'), load_language('recover'), load_language('signup'));
 $HTMLOUT = '';
 $auth = $container->get(Auth::class);
 $user = $container->get(User::class);
@@ -43,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         die();
     }
     $email = trim($post['email']);
-    $user->create_reset($email, $lang);
+    $user->create_reset($email);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['selector'])) {
     $post = $_POST;
     unset($_POST, $_GET, $_FILES);
@@ -58,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
-    $user->reset_password($lang, $post, false);
+    $user->reset_password($post, false);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET)) {
     $get = $_GET;
     unset($_POST, $_GET, $_FILES);
@@ -81,14 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         $HTMLOUT = "
     <form method='post' action='{$site_config['paths']['baseurl']}/recover.php' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='has-text-centered'>
-            <h2 class='has-text-centered'>{$lang['set_new_password']}</h2>";
+            <h2 class='has-text-centered'>" . _('Set New Password') . '</h2>';
 
         $body = "
             <div class='bottom20'>
-                <input type='password' id='password' name='password' class='w-100' autocomplete='on' placeholder='{$lang['signup_pass']}' required minlength='8'>
+                <input type='password' id='password' name='password' class='w-100' autocomplete='on' placeholder='" . _('Password') . "' required minlength='8'>
             </div>
             <div>
-                <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' placeholder='{$lang['signup_passa']}' required minlength='8'>
+                <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' placeholder='" . _('Password') . "' required minlength='8'>
                 <input type='hidden' name='selector' value='{$get['selector']}'>
                 <input type='hidden' name='token' value='{$get['token']}'>
             </div>
@@ -99,28 +98,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         </div>
     </form>';
 
-        echo stdhead($lang['head_recover'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        die();
+        $title = _('Reset');
+        $breadcrumbs = [
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'w-50 min-350 has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     } catch (InvalidSelectorTokenPairException $e) {
-        stderr($lang['stderr_errorhead'], 'Invalid token');
+        stderr(_('Error'), _('Token is Invalid'));
     } catch (TokenExpiredException $e) {
-        stderr($lang['stderr_errorhead'], 'Token expired');
+        stderr(_('Error'), _('Token is Expired'));
     } catch (ResetDisabledException $e) {
-        stderr($lang['stderr_errorhead'], 'Password reset is disabled');
+        stderr(_('Error'), _('Password Reset is Disabled'));
     } catch (TooManyRequestsException $e) {
-        stderr($lang['stderr_errorhead'], 'Too many requests');
+        stderr(_('Error'), _('Too many requests from your IP'));
     }
 } else {
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-            <h2 class='has-text-centered'>{$lang['recover_unamepass']}</h2>";
+            <h2 class='has-text-centered'>" . _('Enter your email address') . '</h2>';
     $HTMLOUT .= main_div("
             <div class='bottom20'>
-                <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['recover_regdemail']}' required>
+                <input type='email' class='w-100' name='email' autocomplete='on' placeholder='" . _('Email Address') . "' required>
             </div>
             <div class='has-text-centered'>
                 <input type='submit' class='button is-small'>
             </div>", '', 'padding20') . '
         </form>';
-    echo stdhead($lang['head_recover'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+
+    $title = _('Reset Password');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'w-50 min-350 has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

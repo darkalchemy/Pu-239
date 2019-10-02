@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 
 $user = check_user_status();
-$lang = load_language('global');
 global $container, $site_config;
 
 $uploaded = $user['uploaded'];
@@ -52,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $message_class = $container->get(Message::class);
     $message_class->insert($msgs_buffer);
     if (!$res) {
-        stderr('Error', 'It appears that something went wrong while trying to add 10% to your upload amount.');
+        stderr(_('Error'), 'It appears that something went wrong while trying to add 10% to your upload amount.');
     } else {
         stderr('10% Added', 'Your total upload amount has been increased by 10% from <b>' . mksize($uploaded) . '</b> to <b>' . mksize($newuploaded) . "</b>, which brings your ratio to <b>$newratio</b>.");
     }
@@ -72,7 +71,7 @@ if ($user['tenpercent'] === 'no') {
   </script>';
 }
 if ($user['tenpercent'] === 'yes') {
-    stderr('Oops', 'It appears that you have already used your 10% addition');
+    stderr(_('Error'), 'It appears that you have already used your 10% addition');
     die();
 }
 $HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
@@ -113,4 +112,8 @@ $HTMLOUT .= "<h1 class='has-text-centered'>10&#37;</h1>" . main_div("
             <input type='submit' name='submit' value='Add 10%' class='button is-small' disabled>
         </div>
     </form>");
-echo stdhead('Ten Percent') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Ten Percent');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

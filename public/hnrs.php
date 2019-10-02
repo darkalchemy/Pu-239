@@ -17,7 +17,6 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 $user = check_user_status();
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('userdetails'));
 global $container, $site_config;
 
 if ($user['class'] < UC_MIN) {
@@ -154,20 +153,20 @@ $hnrs = $fluent->from('snatched AS s')
 $completed .= '
 <h1>Hit and Runs for: ' . format_username($userid) . '</h1>';
 if (count($hnrs) > 0) {
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['userdetails_type']}</th>
-            <th>{$lang['userdetails_name']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_s']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_l']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_ul']}</th>
-            " . ($site_config['site']['ratio_free'] ? "
-            <th class='has-text-centered'>{$lang['userdetails_size']}</th>" : "
-            <th class='has-text-centered'>{$lang['userdetails_dl']}</th>") . "
-            <th class='has-text-centered'>{$lang['userdetails_ratio']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_wcompleted']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_laction']}</th>
-            <th class='has-text-centered'>{$lang['userdetails_speed']}</th>
+            <th>' . _('Type') . '</th>
+            <th>' . _('Name') . "</th>
+            <th class='has-text-centered'>" . _('S') . "</th>
+            <th class='has-text-centered'>" . _('L') . "</th>
+            <th class='has-text-centered'>" . _('UL') . '</th>
+            ' . ($site_config['site']['ratio_free'] ? "
+            <th class='has-text-centered'>" . _('Size') . '</th>' : "
+            <th class='has-text-centered'>" . _('DL') . '</th>') . "
+            <th class='has-text-centered'>" . _('Ratio') . "</th>
+            <th class='has-text-centered'>" . _('When Completed') . "</th>
+            <th class='has-text-centered'>" . _('Last Action') . "</th>
+            <th class='has-text-centered'>" . _('Speed') . "</th>
             <th class='has-text-centered'>Buyout</th>
         </tr>";
     $body = '';
@@ -239,9 +238,9 @@ if (count($hnrs) > 0) {
         }
 
         $dl_speed = mksize($dl_speed);
-        $checkbox_for_delete = ($user['class'] >= UC_STAFF && $user['id'] != $userid ? " [<a href='" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>{$lang['userdetails_c_remove']}</a>]" : '');
-        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}moc.gif' width='40px' alt='{$lang['userdetails_c_mofcain']}' class='tooltipper' title='{$lang['userdetails_c_tmofcain']}'>" . $checkbox_for_delete : '');
-        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['paths']['images_baseurl']}hnr.gif' width='40px' alt='{$lang['userdetails_c_hitrun']}' class='tooltipper' title='{$lang['userdetails_c_hitrun1']}'>" : '');
+        $checkbox_for_delete = ($user['class'] >= UC_STAFF && $user['id'] != $userid ? " [<a href='" . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . $userid . '&amp;delete_hit_and_run=' . (int) $a['sid'] . "'>" . _('Remove') . '</a>]' : '');
+        $mark_of_cain = ($a['mark_of_cain'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}moc.gif' width='40px' alt='" . _('Mark Of Cain') . "' class='tooltipper' title='" . _('The mark of Cain!') . "'>" . $checkbox_for_delete : '');
+        $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['paths']['images_baseurl']}hnr.gif' width='40px' alt='" . _('Hit and run') . "' class='tooltipper' title='" . _('Hit and run!') . "'>" : '');
         $needs_seed = time() < $a['hit_and_run'] + 86400 ? ' in ' . mkprettytime($a['hit_and_run'] + 86400 - time()) : '';
 
         if ($bp >= $cost && $cost != 0) {
@@ -284,7 +283,7 @@ if (count($hnrs) > 0) {
         <tr>
             <td style='padding: 5px'>$caticon</td>
             <td><a class='is-link' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? "{$lang['userdetails_c_seedfor']}</font>: " . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? "<br>{$lang['userdetails_c_should']}" . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>{$lang['userdetails_c_seeding']}</b>]</span>" : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? '' . _('seeded for') . '</font>: ' . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? '<br>' . _('should still seed for: ') . '' . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>" . _('seeding') . '</b>]</span>' : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
@@ -293,13 +292,17 @@ if (count($hnrs) > 0) {
             <td class='has-text-centered'>" . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color($a['uploaded'] / $a['downloaded']) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . "<br></td>
             <td class='has-text-centered'>" . get_date((int) $a['complete_date'], 'DATE') . "</td>
             <td class='has-text-centered'>" . get_date((int) $a['last_action'], 'DATE') . "</td>
-            <td class='has-text-centered'><span style='color: $dlc;'>{$lang['userdetails_c_dled']}<br>{$dl_speed}ps</span></td>
+            <td class='has-text-centered'><span style='color: $dlc;'>" . _(' DLed at: ') . "<br>{$dl_speed}ps</span></td>
             <td class='has-text-centered'>{$buyout}{$buybytes}{$sucks}</td>
         </tr>";
     }
     $completed .= main_table($body, $heading);
 } else {
-    $session->set('is-success', '[color=#' . get_user_class_color($user_stuff['class']) . ']' . $user_stuff['username'] . "[/color] {$lang['userdetails_no_hnrs']}");
-    $completed = main_div("<div class='padding20'>" . format_username($userid) . ' ' . $lang['userdetails_no_hnrs'] . '</div>');
+    $completed = main_div("<div class='padding20 has-text-centered'>" . _f('%s has no Hit and Runs!', format_username($userid)) . '</div>');
 }
-echo stdhead('HnRs') . wrapper($completed, 'has-text-centered') . stdfoot();
+
+$title = _('HnRs');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($completed) . stdfoot();

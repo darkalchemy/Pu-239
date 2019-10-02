@@ -9,12 +9,12 @@ use Pu239\Database;
 flood_limit('forums');
 $forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 if (!is_valid_id($forum_id)) {
-    stderr($lang['gl_error'], $lang['gl_bad_id']);
+    stderr(_('Error'), _('Invalid ID.'));
 }
 global $container, $CURUSER, $site_config;
 
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
-    stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
+    stderr(_('Error'), _('Your posting rights have been suspended.'));
 }
 $topic_name = isset($_POST['topic_name']) ? htmlsafechars($_POST['topic_name']) : '';
 $topic_desc = isset($_POST['topic_desc']) ? htmlsafechars($_POST['topic_desc']) : '';
@@ -33,21 +33,21 @@ $subscribe = isset($_POST['subscribe']) && $_POST['subscribe'] === 'yes' ? 'yes'
 $fluent = $container->get(Database::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
     if (empty($body)) {
-        stderr($lang['gl_error'], $lang['fe_no_body_txt']);
+        stderr(_('Error'), _('No body text.'));
     }
     if (empty($topic_name)) {
-        stderr($lang['gl_error'], $lang['fe_no_topic_name']);
+        stderr(_('Error'), _('No Topic name!'));
     }
     $poll_id = 0;
     if (!empty($poll_answers)) {
         $break_down_poll_options = explode("\n", $poll_answers);
         for ($i = 0; $i < count($break_down_poll_options); ++$i) {
             if (strlen($break_down_poll_options[$i]) < 2) {
-                stderr($lang['gl_error'], $lang['fe_no_blank_lines_in_poll']);
+                stderr(_('Error'), _("No blank lines in the poll, each option should be on it's own line, one line, one option."));
             }
         }
         if ($i > 20 || $i < 2) {
-            stderr($lang['gl_error'], '' . $lang['fe_there_is_min_max_options'] . ' ' . $i . '.');
+            stderr(_('Error'), '' . _('There is a minimum of 2 options, and a maximun of 20 options. you have entered') . ' ' . $i . '.');
         }
         $multi_options = isset($_POST['multi_options']) && $_POST['multi_options'] <= $i ? (int) $_POST['multi_options'] : 1;
 
@@ -128,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['button'] === 'Post') {
            ->execute();
 
     if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
-        $message = format_comment($CURUSER['username']) . ' ' . $lang['nt_created_new_topic'] . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]" . format_comment($topic_name) . '[/url][/quote]';
+        $message = format_comment($CURUSER['username']) . ' ' . _('Created a new topic') . " [quote][url={$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id=$topic_id&page=last]" . format_comment($topic_name) . '[/url][/quote]';
         if (!in_array($forum_id, $site_config['staff_forums'])) {
             autoshout($message);
         }
@@ -177,13 +177,13 @@ $forum_name = $fluent->from('forums')
 $section_name = htmlsafechars($forum_name);
 
 $HTMLOUT .= '
-    <h1 class="has-text-centered">' . $lang['nt_new_topic_in'] . ' "<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
+    <h1 class="has-text-centered">' . _('New topic in') . ' "<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $forum_id . '">' . $section_name . '</a>"</h1>
     <form method="post" action="' . $site_config['paths']['baseurl'] . '/forums.php?action=new_topic&amp;forum_id=' . $forum_id . '" enctype="multipart/form-data" accept-charset="utf-8">';
 
 require_once FORUM_DIR . 'editor.php';
 
 $HTMLOUT .= '
         <div class="has-text-centered margin20">
-            <input type="submit" name="button" class="button is-small" value="' . $lang['fe_post'] . '">
+            <input type="submit" name="button" class="button is-small" value="' . _('Post') . '">
         </div>
     </form>';

@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class.bencdec.php';
 require_once INCL_DIR . 'function_common.php';
 $curuser = check_user_status();
-$lang = array_merge(load_language('global'), load_language('index'));
 global $container, $site_config;
 
 $userid = isset($_GET['userid']) ? (int) $_GET['userid'] : $curuser['id'];
@@ -27,15 +26,15 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);
     if (!$user) {
-        show_error($lang['download_user_error'], $lang['download_passkey']);
+        show_error(_('USER ERROR'), _('Your download link has an invalid or missing torrent_pass'));
     } elseif ($user['status'] === 5) {
-        show_error($lang['download_user_error'], $lang['download_suspended']);
+        show_error(_('USER ERROR'), _("Permission denied, you're account is suspended"));
     } elseif ($user['status'] === 2) {
-        show_error($lang['download_user_error'], $lang['download_disabled']);
+        show_error(_('USER ERROR'), _("Permission denied, you're account is disabled"));
     } elseif ($user['status'] === 1) {
-        show_error($lang['download_user_error'], $lang['download_parked']);
+        show_error(_('USER ERROR'), _("Permission denied, you're account is parked"));
     } elseif (($user['downloadpos'] !== 1 || $user['can_leech'] !== 1) && $user['id'] !== $row['owner']) {
-        show_error($lang['download_user_error'], $lang['download_download_disabled']);
+        show_error(_('USER ERROR'), _('Your download privileges have been removed.'));
     }
     if (!empty($_GET['owner'])) {
         $torrents = $torrents_class->get_all_by_owner($userid);

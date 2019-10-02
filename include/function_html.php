@@ -533,7 +533,6 @@ function validate_promo(string $code, bool $full)
 }
 
 /**
- * @param array $lang
  * @param array $classes
  *
  * @throws DependencyException
@@ -542,14 +541,14 @@ function validate_promo(string $code, bool $full)
  *
  * @return string
  */
-function category_dropdown(array $lang, array $classes = [])
+function category_dropdown(array $classes = [])
 {
     global $post_data;
 
     $cats = genrelist(true);
     $s = "
             <select id='upload_category' name='type' class='w-100' required>
-                <option value='' disabled selected>{$lang['upload_choose_one']}</option>";
+                <option value='' disabled selected>" . _('Choose One') . '</option>';
     foreach ($cats as $cat) {
         foreach ($cat['children'] as $row) {
             if (empty($classes) || in_array($row['id'], $classes)) {

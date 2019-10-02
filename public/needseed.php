@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('needseed'));
 global $container, $site_config;
 
 $possible_actions = [
@@ -21,7 +20,7 @@ $possible_actions = [
 $fluent = $container->get(Database::class);
 $needed = isset($_GET['needed']) && !is_array($_GET['needed']) ? htmlsafechars($_GET['needed']) : 'seeders';
 if (!in_array($needed, $possible_actions)) {
-    stderr('Error', 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
+    stderr(_('Error'), 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
 }
 $categorie = genrelist(false);
 $change = [];
@@ -37,13 +36,13 @@ if ($needed === 'leechers') {
         <div class='padding20'>
             <ul class='tabs'>
                 <li>
-                    <a href='#' class='active is-link'>{$lang['needseed_sin']}</a>
+                    <a href='#' class='active is-link'>" . _('Seeders in need') . "</a>
                 </li>
                 <li>
-                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders' class='is-link'>{$lang['needseed_tns']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders' class='is-link'>" . _('Torrents Needing Seeds') . '</a>
                 </li>
             </ul>
-        </div>";
+        </div>';
 
     $Dur = TIME_NOW - (86400 * 7);
     $res = $fluent->from('peers AS p')
@@ -69,13 +68,13 @@ if ($needed === 'leechers') {
     }
     $res = $res->fetchAll();
     if (!empty($res)) {
-        $header = "
+        $header = '
                 <tr>
-                    <th>{$lang['needseed_user']}</th>
-                    <th>{$lang['needseed_tor']}</th>
-                    <th>{$lang['needseed_cat']}</th>
-                    <th>{$lang['needseed_peer']}</th>
-                </tr>";
+                    <th>' . _('User') . '</th>
+                    <th>' . _('Torrent') . '</th>
+                    <th>' . _('Category') . '</th>
+                    <th>' . _('Peers') . '</th>
+                </tr>';
         $body = '';
         foreach ($res as $arr) {
             $What_ID = $arr['torrent'];
@@ -91,7 +90,7 @@ if ($needed === 'leechers') {
             $peers = (int) $arr['seeders'] . ' seeder' . ((int) $arr['seeders'] > 1 ? 's' : '') . ', ' . (int) $arr['leechers'] . ' leecher' . ((int) $arr['leechers'] > 1 ? 's' : '');
             $body .= '
                 <tr>
-                    <td>' . format_username((int) $arr['id']) . ' (' . member_ratio($arr['uploaded'], $arr['downloaded']) . ")</td>
+                    <td>' . format_username((int) $arr['id']) . ' (' . member_ratio((float) $arr['uploaded'], (float) $arr['downloaded']) . ")</td>
                     <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $What_ID . "' title='{$torrname}' class='tooltipper'>{$torrname}</a></td>
                     <td>{$cat}</td>
                     <td>{$peers}</td>
@@ -99,21 +98,27 @@ if ($needed === 'leechers') {
         }
         $HTMLOUT .= main_table($body, $header);
     } else {
-        $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noleech']}</div>");
+        $HTMLOUT .= main_div("<div class='padding20'>" . _('There are no torrents needing leechers right now.') . '</div>');
     }
-    echo stdhead($lang['needseed_lin']) . wrapper($HTMLOUT) . stdfoot();
+
+    $title = _('Leechers in Need');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } else {
     $HTMLOUT .= "
         <div class='padding20'>
             <ul class='tabs'>
                 <li>
-                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=leechers'  class='is-link'>{$lang['needseed_sin']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/needseed.php?needed=leechers'  class='is-link'>" . _('Seeders in need') . "</a>
                 </li>
                 <li>
-                    <a href='#' class='active is-link'>{$lang['needseed_tns']}</a>
+                    <a href='#' class='active is-link'>" . _('Torrents Needing Seeds') . '</a>
                 </li>
             </ul>
-        </div>";
+        </div>';
     $res = $fluent->from('torrents AS t')
                   ->select(null)
                   ->select('t.id')
@@ -134,11 +139,11 @@ if ($needed === 'leechers') {
     if (!empty($res)) {
         $header = "
                 <tr>
-                    <th class='has-text-centered'>{$lang['needseed_cat']}</th>
-                    <th>{$lang['needseed_tor']}</th>
-                    <th class='has-text-centered'>{$lang['needseed_seed']}</th>
-                    <th class='has-text-centered'>{$lang['needseed_leech']}</th>
-                </tr>";
+                    <th class='has-text-centered'>" . _('Category') . '</th>
+                    <th>' . _('Torrent') . "</th>
+                    <th class='has-text-centered'>" . _('Seeders') . "</th>
+                    <th class='has-text-centered'>" . _('Leechers') . '</th>
+                </tr>';
         $body = '';
         foreach ($res as $arr) {
             $needseed['cat_name'] = htmlsafechars($change[$arr['category']]['name']);
@@ -159,7 +164,12 @@ if ($needed === 'leechers') {
         }
         $HTMLOUT .= main_table($body, $header);
     } else {
-        $HTMLOUT .= main_div("<div class='padding20'>{$lang['needseed_noseed']}</div>");
+        $HTMLOUT .= main_div("<div class='padding20'>" . _('There are no torrents needing seeds right now.') . '</div>');
     }
-    echo stdhead($lang['needseed_sin']) . wrapper($HTMLOUT) . stdfoot();
+    $title = _('Seeders in Need');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }

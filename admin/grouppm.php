@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_grouppm'));
 global $container, $site_config, $CURUSER;
 
 $stdhead = [
@@ -47,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $msg = str_replace('&amp', '&', $_POST['body']);
     $sender = isset($_POST['system']) && $_POST['system'] === 'yes' ? 2 : $CURUSER['id'];
     if (empty($subject)) {
-        $err[] = $lang['grouppm_nosub'];
+        $err[] = _("Your message doesn't have a subject");
     }
     if (empty($msg)) {
-        $err[] = $lang['grouppm_nomsg'];
+        $err[] = _('There is not any text in your message!');
     }
     if (empty($groups)) {
-        $err[] = $lang['grouppm_nogrp'];
+        $err[] = _('You have to select a group to send your message');
     }
     if (count($err) == 0) {
         $where = $classes = $ids = [];
@@ -72,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     case 'fls':
                         $where[] = "u.support='yes'";
-                        $sent2classes[] = '' . $lang['grouppm_fls'] . '';
+                        $sent2classes[] = '' . _('First line support') . '';
                         break;
 
                     case 'donor':
                         $where[] = "u.donor = 'yes'";
-                        $sent2classes[] = '' . $lang['grouppm_donor'] . '';
+                        $sent2classes[] = '' . _('Donors') . '';
                         break;
 
                     case 'all_friends':
@@ -108,7 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $ids = array_unique($ids);
         if (count($ids) > 0) {
-            $msg .= '[class=top20][p]' . $lang['grouppm_this'] . implode(', ', $sent2classes) . '[/p][/class]';
+            $msg .= '[class=top20][p]' . _('
+This message was set to the following class(es)') . ' ' . implode(', ', $sent2classes) . '[/p][/class]';
             foreach ($ids as $rid) {
                 $msgs_buffer[] = [
                     'sender' => $sender,
@@ -121,37 +121,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $messages_class = $container->get(Message::class);
             $r = $messages_class->insert($msgs_buffer);
-            $err[] = $r ? $lang['grouppm_sent'] . ' to ' . count($msgs_buffer) . ' users' : $lang['grouppm_again'];
+            $err[] = $r ? _('Message sent') . ' to ' . count($msgs_buffer) . ' users' : _('Unable to send the message try again!');
         } else {
-            $err[] = $lang['grouppm_nousers'];
+            $err[] = _('There are not any users in the groups you selected!');
         }
     }
 }
 
 $groups = [];
 $groups['staff'] = [
-    'opname' => $lang['grouppm_staff'],
+    'opname' => _('Site Staff'),
     'minclass' => UC_MIN,
 ];
 for ($i = UC_STAFF; $i <= UC_MAX; ++$i) {
     $groups['staff']['ops'][$i] = get_user_class_name((int) $i);
 }
-$groups['staff']['ops']['fls'] = $lang['grouppm_fls'];
-$groups['staff']['ops']['all_staff'] = $lang['grouppm_allstaff'];
+$groups['staff']['ops']['fls'] = _('First line support');
+$groups['staff']['ops']['all_staff'] = _('All staff');
 $groups['members'] = [];
 $groups['members'] = [
-    'opname' => $lang['grouppm_mem'],
+    'opname' => _('Members Groups'),
     'minclass' => UC_STAFF,
 ];
 for ($i = UC_MIN; $i <= $last_user_class; ++$i) {
     $groups['members']['ops'][$i] = get_user_class_name((int) $i);
 }
-$groups['members']['ops']['donor'] = $lang['grouppm_donor'];
-$groups['members']['ops']['all_users'] = $lang['grouppm_allusers'];
+$groups['members']['ops']['donor'] = _('Donors');
+$groups['members']['ops']['all_users'] = _('All users');
 $groups['friends'] = [
-    'opname' => $lang['grouppm_related'],
+    'opname' => _('Related to you'),
     'minclass' => UC_MIN,
-    'ops' => ['all_friends' => $lang['grouppm_friends']],
+    'ops' => ['all_friends' => _('Your friends')],
 ];
 
 /**
@@ -186,16 +186,16 @@ if (count($err) > 0) {
     }
 }
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>{$lang['grouppm_head']}</h1>
+    <h1 class='has-text-centered'>" . _('Group message') . "</h1>
     <form action='staffpanel.php?tool=grouppm&amp;action=grouppm' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
       <table class='table table-bordered table-striped'>
         <tr>
-          <td colspan='2'>{$lang['grouppm_sub']}
+          <td colspan='2'>" . _('Subject') . "
             <input type='text' name='subject' class='w-100'></td>
         </tr>
         <tr>
-          <td>{$lang['grouppm_body']}</td>
-          <td>{$lang['grouppm_groups']}</td>
+          <td>" . _('Body') . '</td>
+          <td>' . _('Groups') . "</td>
           </tr>
         <tr>
           <td class='is-paddingless'>" . BBcode() . '</td>
@@ -204,9 +204,14 @@ $HTMLOUT .= "
         </tr>
       </table>
         <div class='has-text-centered margin20'>
-            <label for='sys'>{$lang['grouppm_sendas']}</label>
+            <label for='sys'>" . _('Send as System') . "</label>
             <input id='sys' type='checkbox' name='system' value='yes' class=''>
-            <input type='submit' value='{$lang['grouppm_send']}' class='button is-small left20'>
+            <input type='submit' value='" . _('Send!') . "' class='button is-small left20'>
         </div>
     </form>";
-echo stdhead($lang['grouppm_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Group PM');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

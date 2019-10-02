@@ -6,34 +6,34 @@ use Pu239\Cache;
 use Pu239\Database;
 
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 if ($site_config['alerts']['bug'] && has_access($user['class'], UC_STAFF, 'coder')) {
-    $bugs = $cache->get('bug_mess_');
-    if ($bugs === false || is_null($bugs)) {
+    $bug_count = $cache->get('bug_mess_');
+    if ($bug_count === false || is_null($bug_count)) {
         $fluent = $container->get(Database::class);
-        $bugs = $fluent->from('bugs')
-                       ->select(null)
-                       ->select('COUNT(id) AS count')
-                       ->where('status = ?', 'na')
-                       ->fetch('count');
+        $bug_count = $fluent->from('bugs')
+                            ->select(null)
+                            ->select('COUNT(id) AS count')
+                            ->where('status = ?', 'na')
+                            ->fetch('count');
 
-        $cache->set('bug_mess_', $bugs, $site_config['expires']['alerts']);
+        $cache->set('bug_mess_', $bug_count, $site_config['expires']['alerts']);
     }
-    if ($bugs > 0) {
+    if ($bug_count > 0) {
         $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/bugs.php?action=bugs'>
             <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#bugmessage_tooltip'>
-                {$lang['gl_bug_alert']}
+                " . _('Bug Alert Message') . "
             </span>
             <div class='tooltip_templates'>
                 <div id='bugmessage_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        {$lang['gl_bug_alert1']}
+                        " . _('New Bug Message') . "
                     </div>
-                    <div class='has-text-centered'>{$lang['gl_bug_alert2']} {$user['username']}!<br> " . sprintf($lang['gl_bugs'], $bugs[0]) . ($bugs[0] > 1 ? $lang['gl_bugss'] : '') . '!</div>
+                    <div class='has-text-centered'>" . _('New Bug Message') . " {$user['username']}!<br> " . _pf('There is %s new bug!', 'There are %s new bugs!', $bug_count) . '</div>
                  </div>
             </div>
         </a>

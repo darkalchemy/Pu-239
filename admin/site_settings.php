@@ -8,7 +8,6 @@ use Pu239\Session;
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_sitesettings'));
 $home = 'site';
 $stdfoot = [
     'js' => [
@@ -69,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fluent->deleteFrom('site_config')
                        ->where('id = ?', $id)
                        ->execute();
-                $session->set('is-success', "$parentname {$lang['sitesettings_deleted']}");
+                $session->set('is-success', "$parentname " . _('Deleted') . '');
             }
         } elseif ($id === 'Add') {
             if (isset($item)) {
@@ -79,13 +78,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        ->where('parent = ?', $parent)
                        ->where('name = ?', $name)
                        ->execute();
-                $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
+                $session->set('is-success', "$parentname " . _('Updated') . '');
             } else {
                 if (!isset($item)) {
                     $fluent->insertInto('site_config')
                            ->values($set)
                            ->execute();
-                    $session->set('is-success', "$parentname {$lang['sitesettings_added']}");
+                    $session->set('is-success', "$parentname " . _('Added') . '');
                 }
             }
         } else {
@@ -94,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               ->where('id = ?', $id)
                               ->execute();
             if ($results) {
-                $session->set('is-success', "$parentname {$lang['sitesettings_updated']}");
+                $session->set('is-success', "$parentname " . _('Updated') . '');
             }
         }
     }
@@ -106,12 +105,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT .= "
-    <h1 class='has-text-centered top20'>{$lang['sitesettings_sitehead']}</h1>
+    <h1 class='has-text-centered top20'>" . _('View Site Settings') . "</h1>
     <div class='padding20 margin20 bg-01 round10'>
-        <p class='has-text-centered'>{$lang['sitesettings_add']}</p>
-        <p class='has-text-centered'>{$lang['sitesettings_update']}</p>
-        <p class='has-text-centered'>{$lang['sitesettings_delete']}</p>
-    </div>";
+        <p class='has-text-centered'>" . _("To add a new site config setting or add to an existing array, select 'New' from the dropdown menu and fill in the blanks and click 'Apply Changes'.") . "</p>
+        <p class='has-text-centered'>" . _("To update any config setting, simply edit and click 'Apply Changes'.") . "</p>
+        <p class='has-text-centered'>" . _("To delete any config setting, simply clear and leave blank the setting 'Name' and click 'Apply Changes'.") . '</p>
+    </div>';
 
 $heading = "
             <tr>
@@ -268,7 +267,11 @@ foreach ($keys as $key) {
                 </td>
                 <td>
                     <div class='top5 bottom5'>
-                        <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='{$lang['sitesettings_info']}'>{$row['description']}</textarea>
+                        <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='" . _('"Boolean" is true or false
+"Integer" is a whole number
+"Float" is decimal
+"String" is any string of characters
+"Array" is an array of strings, if more than 1 item in the array, the strings should be separated by a |') . "'>{$row['description']}</textarea>
                     </div>
                 </td>
             </tr>" . (isset($row['parent']) ? "
@@ -281,7 +284,7 @@ foreach ($keys as $key) {
             <tr>
                 <td colspan='6'>
                     <div class='margin20 has-text-centered'>
-                        <input type='submit' class='button is-small' value='{$lang['sitesettings_apply']}'>
+                        <input type='submit' class='button is-small' value='" . _('Apply changes') . "'>
                     </div>
                 </td>
             </tr>
@@ -292,5 +295,9 @@ foreach ($keys as $key) {
         <h2 class='has-text-centered top20'> Key: " . strtoupper($key) . '</h1>' . main_table($body, $heading, 'top20') . '
     </div>';
 }
-
-echo stdhead($lang['sitesettings_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Site Settings');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_html.php';
 
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_usersearch'));
 global $container, $site_config, $CURUSER;
 
 $search = array_merge($_POST, $_GET);
@@ -36,29 +35,38 @@ $where_is = ' i.type = "login" ';
 $HTMLOUT .= "
         <ul class='level-center bg-06'>
             <li class='is-link margin10'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>{$lang['usersearch_inlink']}</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;h=1'>" . _('Instructions') . "</a>
             </li>
             <li class='is-link margin10'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch'>{$lang['usersearch_reset']}</a>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch'>" . _('Reset') . "</a>
             </li>
         </ul>
-        <h1 class='has-text-centered'>{$lang['usersearch_window_title']}</h1>";
+        <h1 class='has-text-centered'>" . _('Administrative User Search') . '</h1>';
 
-$HTMLOUT .= stdmsg('', $lang['usersearch_instructions'], 'bottom20');
+$HTMLOUT .= stdmsg('', '<div>' . _("
+Fields left blank will be ignored; Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values separated by spaces (e.g. 'wyz Max*' in Name will list both users named 'wyz' and those whose names start by 'Max'. Similarly  '~' can be used for negation, e.g. '~alfiest' in comments will restrict the search to users that do not have 'alfiest' in their comments).<br><br>
+
+The Ratio field accepts 'Inf' and '---' besides the usual numeric values.<br><br>
+The subnet mask may be entered either in dotted decimal or CIDR notation (e.g. 255.255.255.0 is the same as /24).<br><br>
+Uploaded and Downloaded should be entered in GB.<br><br>
+For search parameters with multiple text fields the second will be ignored unless relevant for the type of search chosen. <br><br>
+'Active only' restricts the search to users currently leeching or seeding, 'Disabled IPs' to those whose IPs also show up in disabled accounts.<br><br>
+The 'p' columns in the results show partial stats, that is, those of the torrents in progress. <br><br>
+The History column lists the number of forum posts and torrent comments, respectively, as well as linking to the history page.") . '</div>', 'bottom20');
 $HTMLOUT .= "
     <form method='post' action='{$_SERVER['PHP_SELF']}?tool=usersearch' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
         <tr>
-            <td class='w-1'>{$lang['usersearch_name']}</td>
+            <td class='w-1'>" . _('Name') . "</td>
             <td class='w-10'><input name='n' type='text' value='" . (isset($search['n']) ? $search['n'] : '') . "' class='w-100'></td>
-            <td class='w-1'>{$lang['usersearch_ratio']}</td>
+            <td class='w-1'>" . _('Ratio') . "</td>
             <td class='w-10'>
                 <select name='rt' class='w-100'>";
 $options = [
-    $lang['usersearch_equal'],
-    $lang['usersearch_above'],
-    $lang['usersearch_below'],
-    $lang['usersearch_between'],
+    _('equal'),
+    _('above'),
+    _('below'),
+    _('between'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
@@ -69,52 +77,52 @@ $body .= "
                 <input name='r' type='test' value='" . (isset($search['r']) ? $search['r'] : '') . "' class='top10 w-100'>
                 <input name='r2' type='text' value='" . (isset($search['r2']) ? $search['r2'] : '') . "' class='top10 w-100'>
             </td>
-            <td class='w-1'>{$lang['usersearch_status']}</td>
+            <td class='w-1'>" . _('Member status') . "</td>
             <td class='w-10'>
                 <select name='st' class='w-100'>";
 $options = [
-    $lang['usersearch_any'],
-    $lang['usersearch_confirmed'],
-    $lang['usersearch_pending'],
+    _('(any)'),
+    _('confirmed'),
+    _('pending'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
                     <option value='$i' " . (isset($search['st']) && $search['st'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
-$body .= "
+$body .= '
                 </select>
             </td>
         </tr>
         <tr>
-            <td>{$lang['usersearch_email']}</td>
+            <td>' . _('Email') . "</td>
             <td><input name='em' type='text' value='" . (isset($search['em']) ? $search['em'] : '') . "' class='w-100'></td>
-            <td>{$lang['usersearch_ip']}</td>
+            <td>" . _('IP') . "</td>
             <td><input name='ip' type='text' value='" . (isset($search['ip']) ? $search['ip'] : '') . "' maxlength='17' class='w-100'></td>
-            <td>{$lang['usersearch_acstatus']}</td>
+            <td>" . _('Account status') . "</td>
             <td>
                 <select name='as' class='w-100'>";
 $options = [
-    $lang['usersearch_any'],
-    $lang['usersearch_enabled'],
-    $lang['usersearch_disabled'],
+    _('(any)'),
+    _('Enabled'),
+    _('disabled'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
                     <option value='$i' " . (isset($search['as']) && $search['as'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
-$body .= "
+$body .= '
                 </select>
             </td>
         </tr>
         <tr>
-            <td>{$lang['usersearch_comments']}</td>
+            <td>' . _('Comments') . "</td>
             <td><input name='co' type='text' value='" . (isset($search['co']) ? $search['co'] : '') . "' class='w-100'></td>
-            <td>{$lang['usersearch_mask']}</td>
+            <td>" . _('Mask') . "</td>
             <td><input name='ma' type='text' value='" . (isset($search['ma']) ? $search['ma'] : '') . "' maxlength='17' class='w-100'></td>
-            <td>{$lang['usersearch_class']}</td>
+            <td>" . _('Class') . "</td>
             <td>
                 <select name='c' class='w-100'>
-                    <option value=''>{$lang['usersearch_any']}</option>";
+                    <option value=''>" . _('(any)') . '</option>';
 
 $class = isset($search['c']) ? (int) $search['c'] : '';
 for ($i = 2;; ++$i) {
@@ -125,19 +133,19 @@ for ($i = 2;; ++$i) {
         break;
     }
 }
-$body .= "
+$body .= '
                 </select>
             </td>
         </tr>
         <tr>
-            <td>{$lang['usersearch_joined']}</td>
+            <td>' . _('Joined') . "</td>
             <td>
                 <select name='dt' class='w-100'>";
 $options = [
-    $lang['usersearch_on'],
-    $lang['usersearch_before'],
-    $lang['usersearch_after'],
-    $lang['usersearch_between'],
+    _('on'),
+    _('before'),
+    _('after'),
+    _('between'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
@@ -148,15 +156,15 @@ $body .= "
                 <input name='d' type='date' value='" . (isset($search['d']) ? $search['d'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
                 <input name='d2' type='date' value='" . (isset($search['d2']) ? $search['d2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
-            <td>{$lang['usersearch_uploaded']}</td>
+            <td>" . _('Uploaded') . "</td>
             <td>
                 <select name='ult' id='ult' class='w-100'>";
 
 $options = [
-    $lang['usersearch_equal'],
-    $lang['usersearch_above'],
-    $lang['usersearch_below'],
-    $lang['usersearch_between'],
+    _('equal'),
+    _('above'),
+    _('below'),
+    _('between'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
@@ -167,31 +175,31 @@ $body .= "
                 <input name='ul' type='number' id='ul' maxlength='7' value='" . (isset($search['ul']) ? $search['ul'] : '') . "' class='top10 w-100'>
                 <input name='ul2' type='number' id='ul2' maxlength='7' value='" . (isset($search['ul2']) ? $search['ul2'] : '') . "' class='top10 w-100'>
             </td>
-            <td>{$lang['usersearch_donor']}</td>
+            <td>" . _('Donor') . "</td>
             <td>
                 <select name='do' class='w-100'>";
 $options = [
-    $lang['usersearch_any'],
-    $lang['usersearch_yes'],
-    $lang['usersearch_no'],
+    _('(any)'),
+    _('Yes'),
+    _('No'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
                     <option value='$i' " . (isset($search['do']) && $search['do'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
-$body .= "
+$body .= '
                 </select>
             </td>
         </tr>
         <tr>
-            <td>{$lang['usersearch_lastseen']}</td>
+            <td>' . _('Last seen') . "</td>
             <td>
                 <select name='lst' class='w-100'>";
 $options = [
-    $lang['usersearch_on'],
-    $lang['usersearch_before'],
-    $lang['usersearch_after'],
-    $lang['usersearch_between'],
+    _('on'),
+    _('before'),
+    _('after'),
+    _('between'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
@@ -202,14 +210,14 @@ $body .= "
                 <input name='ls' type='date' value='" . (isset($search['ls']) ? $search['ls'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
                 <input name='ls2' type='date' value='" . (isset($search['ls2']) ? $search['ls2'] : '') . "' min='$oldest' max='$today' class='top10 w-100'>
             </td>
-            <td>{$lang['usersearch_downloaded']}</td>
+            <td>" . _('Downloaded') . "</td>
             <td>
                 <select name='dlt' id='dlt' class='w-100'>";
 $options = [
-    $lang['usersearch_equal'],
-    $lang['usersearch_above'],
-    $lang['usersearch_below'],
-    $lang['usersearch_between'],
+    _('equal'),
+    _('above'),
+    _('below'),
+    _('between'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
@@ -220,30 +228,30 @@ $body .= "
                 <input name='dl' type='number' id='dl' maxlength='7' value='" . (isset($search['dl']) ? $search['dl'] : '') . "' class='top10 w-100'>
                 <input name='dl2' type='number' id='dl2' maxlength='7' value='" . (isset($search['dl2']) ? $search['dl2'] : '') . "' class='top10 w-100'>
             </td>
-            <td>{$lang['usersearch_warned']}</td>
+            <td>" . _('Warned') . "</td>
             <td>
                 <select name='w' class='w-100'>";
 $options = [
-    $lang['usersearch_any'],
-    $lang['usersearch_yes'],
-    $lang['usersearch_no'],
+    _('(any)'),
+    _('Yes'),
+    _('No'),
 ];
 for ($i = 0; $i < count($options); ++$i) {
     $body .= "
                     <option value='$i' " . (isset($search['w']) && $search['w'] == $i ? 'selected' : '') . ">{$options[$i]}</option>";
 }
-$body .= "
+$body .= '
                 </select>
             </td>
         </tr>
         <tr>
             <td></td>
             <td></td>
-            <td>{$lang['usersearch_active']}</td>
+            <td>' . _('Active only') . "</td>
             <td>
-                <input name='ac' type='checkbox' value='1' " . (isset($search['ac']) ? 'checked' : '') . ">
+                <input name='ac' type='checkbox' value='1' " . (isset($search['ac']) ? 'checked' : '') . '>
             </td>
-            <td>{$lang['usersearch_banned']}</td>
+            <td>' . _('Disabled IP') . "</td>
             <td><input name='dip' type='checkbox' value='1' " . (isset($search['dip']) ? 'checked' : '') . "></td>
         </tr>
         <tr>
@@ -372,7 +380,7 @@ if (!empty($search)) {
             foreach ($emaila as $email) {
                 if (strpos($email, '*') === false && strpos($email, '?') === false && strpos($email, '%') === false) {
                     if (validemail($email) !== 1) {
-                        stdmsg($lang['usersearch_error'], $lang['usersearch_bademail']);
+                        stdmsg(_('Error'), _('Bad email'));
                         stdfoot();
                         die();
                     }
@@ -404,7 +412,7 @@ if (!empty($search)) {
         $ip = trim($search['ip']);
         $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
         if (!preg_match($regex, $ip)) {
-            stdmsg($lang['usersearch_error'], $lang['usersearch_badip']);
+            stdmsg(_('Error'), _('Bad ip'));
             stdfoot();
             die();
         }
@@ -415,14 +423,14 @@ if (!empty($search)) {
             if (substr($mask, 0, 1) == '/') {
                 $n = substr($mask, 1, strlen($mask) - 1);
                 if (!is_numeric($n) or $n < 0 or $n > 32) {
-                    stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
+                    stdmsg(_('Error'), _('Bad subnet mask'));
                     stdfoot();
                     die();
                 } else {
                     $mask = long2ip(pow(2, 32) - pow(2, 32 - $n));
                 }
             } elseif (!preg_match($regex, $mask)) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_badmask']);
+                stdmsg(_('Error'), _('Bad subnet mask'));
                 stdfoot();
                 die();
             }
@@ -444,7 +452,7 @@ if (!empty($search)) {
             $where_is .= ' u.uploaded > 0 and u.downloaded = 0';
         } else {
             if (!is_numeric($ratio) || $ratio < 0) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_badratio']);
+                stdmsg(_('Error'), _('Bad ratio'));
                 stdfoot();
                 die();
             }
@@ -455,12 +463,12 @@ if (!empty($search)) {
             if ($ratiotype === 3) {
                 $ratio2 = trim($search['r2']);
                 if (!$ratio2) {
-                    stdmsg($lang['usersearch_error'], $lang['usersearch_badratio2']);
+                    stdmsg(_('Error'), _('Two ratios needed for this type of search.'));
                     stdfoot();
                     die();
                 }
                 if (!is_numeric($ratio2) || $ratio2 < $ratio) {
-                    stdmsg($lang['usersearch_error'], $lang['usersearch_badratio3']);
+                    stdmsg(_('Error'), $lang['usersearch_badratio3']);
                     stdfoot();
                     die();
                 }
@@ -538,7 +546,7 @@ if (!empty($search)) {
     if (is_set_not_empty('ul')) {
         $ul = trim($search['ul']);
         if (!is_numeric($ul) || $ul < 0) {
-            stdmsg($lang['usersearch_error'], $lang['usersearch_badup']);
+            stdmsg(_('Error'), _('Bad upload ammount.'));
             stdfoot();
             die();
         }
@@ -549,12 +557,12 @@ if (!empty($search)) {
         if ($ultype === 3) {
             $ul2 = trim($search['ul2']);
             if (!$ul2) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_badup2']);
+                stdmsg(_('Error'), _('Two uploaded amounts needed for this type of search.'));
                 stdfoot();
                 die();
             }
             if (!is_numeric($ul2) || $ul2 < $ul) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_badup3']);
+                stdmsg(_('Error'), _('Bad second uploaded amount.'));
                 stdfoot();
                 die();
             }
@@ -573,7 +581,7 @@ if (!empty($search)) {
     if (is_set_not_empty('dl')) {
         $dl = trim($search['dl']);
         if (!is_numeric($dl) || $dl < 0) {
-            stdmsg($lang['usersearch_error'], $lang['usersearch_baddl']);
+            stdmsg(_('Error'), _('Bad download ammount.'));
             stdfoot();
             die();
         }
@@ -584,12 +592,12 @@ if (!empty($search)) {
         if ($dltype === 3) {
             $dl2 = trim($search['dl2']);
             if (!$dl2) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_baddl2']);
+                stdmsg(_('Error'), _('Two downloaded amounts needed for this type of search.'));
                 stdfoot();
                 die();
             }
             if (!is_numeric($dl2) || $dl2 < $dl) {
-                stdmsg($lang['usersearch_error'], $lang['usersearch_baddl3']);
+                stdmsg(_('Error'), _('Bad second downloaded amount.'));
                 stdfoot();
                 die();
             }
@@ -726,26 +734,26 @@ if (!empty($search)) {
     $query1 .= $pager['limit'];
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        stdmsg($lang['usersearch_warn'], $lang['usersearch_nouser']);
+        stdmsg(_('Warning'), _('No user was found.'));
     } else {
         if ($count > $perpage) {
             $HTMLOUT .= $pager['pagertop'];
         }
-        $heading = "
+        $heading = '
         <tr>
-            <th>{$lang['usersearch_name']}</th>
-            <th>{$lang['usersearch_ratio']}</th>
-            <th>{$lang['usersearch_ip']}</th>
-            <th>{$lang['usersearch_email']}</th>
-            <th>{$lang['usersearch_joined']}</th>
-            <th>{$lang['usersearch_lastseen']}</th>
-            <th>{$lang['usersearch_asts']}</th>
-            <th>{$lang['usersearch_enabled']}</th>
-            <th>{$lang['usersearch_pR']}</th>
-            <th>{$lang['usersearch_pUL']}</th>
-            <th>{$lang['usersearch_pDL']}</th>
-            <th>{$lang['usersearch_history']}</th>
-        </tr>";
+            <th>' . _('Name') . '</th>
+            <th>' . _('Ratio') . '</th>
+            <th>' . _('IP') . '</th>
+            <th>' . _('Email') . '</th>
+            <th>' . _('Joined') . '</th>
+            <th>' . _('Last seen') . '</th>
+            <th>' . _('Status') . '</th>
+            <th>' . _('Enabled') . '</th>
+            <th>' . _('pR') . '</th>
+            <th>' . _('pUL (MB)') . '</th>
+            <th>' . _('pDL(MB)') . '</th>
+            <th>' . _('History') . '</th>
+        </tr>';
         $body = $ids = '';
         while ($user = mysqli_fetch_array($res)) {
             if (!empty($user['ip'])) {
@@ -810,14 +818,18 @@ if (!empty($search)) {
     <div class='has-text-centered margin20'>
         <input name='n_pms' type='hidden' value='" . $count . "'>
         <input name='ann_query' type='hidden' value='" . rawurlencode($announcement_query) . "'>
-        <button type='submit' class='button is-small' disabled>{$lang['usersearch_create_ann']}</button>
+        <button type='submit' class='button is-small' disabled>" . _('Create New Announcement') . '</button>
     </div>
-</form>";
+</form>';
     }
 }
 if (isset($pagemenu)) {
     $HTMLOUT .= ("<p>$pagemenu<br>$browsemenu</p>");
 }
 
-echo stdhead() . wrapper($HTMLOUT) . stdfoot();
-die();
+$title = _('User Search');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

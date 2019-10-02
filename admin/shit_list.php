@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_shitlist'));
 global $site_config, $CURUSER;
 
 $HTMLOUT = $message = $title = '';
@@ -31,39 +30,39 @@ switch ($action2) {
         $return_to = str_replace('&amp;', '&', htmlsafechars($_GET['return_to']));
         $cache->delete('shit_list_' . $CURUSER['id']);
         if ($shit_list_id == $CURUSER['id']) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_stderr1']);
+            stderr(_('Error'), _("Can't add yourself"));
         }
         if (!is_valid_id($shit_list_id)) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
+            stderr(_('Error'), _('Invalid ID'));
         }
         $res_name = sql_query('SELECT username FROM users WHERE id=' . sqlesc($shit_list_id));
         $arr_name = mysqli_fetch_assoc($res_name);
         $check_if_there = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_num_rows($check_if_there) == 1) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_already1'] . htmlsafechars($arr_name['username']) . $lang['shitlist_already2']);
+            stderr(_('Error'), _('The member ') . htmlsafechars($arr_name['username']) . _(' is already on your shit list!'));
         }
         $level_of_shittyness = '';
-        $level_of_shittyness .= '<select name="shittyness"><option value="0">' . $lang['shitlist_level'] . '</option>';
+        $level_of_shittyness .= '<select name="shittyness"><option value="0">' . _('level of shittyness') . '</option>';
         $i = 1;
         while ($i <= 10) {
-            $level_of_shittyness .= '<option value="' . $i . '">' . $i . '' . $lang['shitlist_outof'] . '</option>';
+            $level_of_shittyness .= '<option value="' . $i . '">' . $i . '' . _(' out of 10') . '</option>';
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . $lang['shitlist_add1'] . '' . htmlsafechars($arr_name['username']) . '' . $lang['shitlist_add2'] . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . _(' Add ') . '' . htmlsafechars($arr_name['username']) . '' . _(' to your Shit List ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add" accept-charset="utf-8">
    <table>
    <tr>
       <td class="colhead" colspan="2">new <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">
       <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">
-      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . $lang['shitlist_outof2'] . '</td>
+      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _('out of 10, 1 being not so shitty, 10 being really shitty... Please select one.') . '</td>
    </tr>
    <tr>
-      <td><b>' . $lang['shitlist_shittyness'] . '</b></td>
+      <td><b>' . _('Shittyness:') . '</b></td>
       <td>' . $level_of_shittyness . '</td>
    </tr>
    <tr>
-      <td><b>' . $lang['shitlist_reason'] . '</b></td>
+      <td><b>' . _('Reason:') . '</b></td>
       <td><textarea cols="60" rows="5" name="text"></textarea></td>
    </tr>
    <tr>
@@ -71,7 +70,7 @@ switch ($action2) {
       <input type="hidden" name="shit_list_id" value="' . $shit_list_id . '">
       <input type="hidden" name="return_to" value="' . $return_to . '">
      
-      <input type="submit" class="button is-small" value="' . $lang['shitlist_addthis'] . '"></td>
+      <input type="submit" class="button is-small" value="' . _('add this shit bag!') . '"></td>
    </tr>
    </table></form>';
         break;
@@ -82,15 +81,15 @@ switch ($action2) {
         $shittyness = isset($_POST['shittyness']) ? (int) $_POST['shittyness'] : 0;
         $return_to = str_replace('&amp;', '&', htmlsafechars($_POST['return_to']));
         if (!is_valid_id($shit_list_id) || !is_valid_id($shittyness)) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
+            stderr(_('Error'), _('Invalid ID'));
         }
         $check_if_there = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_num_rows($check_if_there) == 1) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_stderr3']);
+            stderr(_('Error'), _('That user is already on your shit list.'));
         }
         sql_query('INSERT INTO shit_list VALUES (' . $CURUSER['id'] . ',' . sqlesc($shit_list_id) . ', ' . sqlesc($shittyness) . ', ' . TIME_NOW . ', ' . sqlesc($_POST['text']) . ')');
         $cache->delete('shit_list_' . $shit_list_id);
-        $message = '<h1>' . $lang['shitlist_success'] . '</h1><a class="is-link" href="' . $return_to . '"><span class="button is-small" style="padding:1px;">' . $lang['shitlist_success1'] . '</span></a>';
+        $message = '<h1>' . _('Success! Member added to your personal shitlist!') . '</h1><a class="is-link" href="' . $return_to . '"><span class="button is-small" style="padding:1px;">' . _('go back to where you were?') . '</span></a>';
         break;
     //=== action2: delete
 
@@ -98,20 +97,20 @@ switch ($action2) {
         $shit_list_id = isset($_GET['shit_list_id']) ? (int) $_GET['shit_list_id'] : 0;
         $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : 0;
         if (!is_valid_id($shit_list_id)) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_stderr2']);
+            stderr(_('Error'), _('Invalid ID'));
         }
         $res_name = sql_query('SELECT username FROM users WHERE id=' . sqlesc($shit_list_id));
         $arr_name = mysqli_fetch_assoc($res_name);
         if (!$sure) {
-            stderr($lang['shitlist_delete1'] . htmlsafechars($arr_name['username']) . $lang['shitlist_delete2'], '' . $lang['shitlist_delete3'] . '<b>' . htmlsafechars($arr_name['username']) . '</b>' . $lang['shitlist_delete4'] . '  
-         <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . $lang['shitlist_delete5'] . '</span></a>' . $lang['shitlist_delete6'] . '');
+            stderr(_('Delete ') . htmlsafechars($arr_name['username']) . _(' from shit list'), '' . _('Do you really want to delete ') . '<b>' . htmlsafechars($arr_name['username']) . '</b>' . _(' from your shit list?') . '  
+         <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . _('Click  here ') . '</span></a>' . _(' if you are sure.') . '');
         }
         sql_query('DELETE FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_affected_rows($mysqli) == 0) {
-            stderr($lang['shitlist_stderr'], $lang['shitlist_nomember']);
+            stderr(_('Error'), _('No member found to delete!'));
         }
         $cache->delete('shit_list_' . $shit_list_id);
-        $message = '<legend>' . $lang['shitlist_delsuccess'] . ' <b>' . htmlsafechars($arr_name['username']) . '</b>' . $lang['shitlist_delsuccess1'] . ' </legend>';
+        $message = '<legend>' . _('Success! ') . ' <b>' . htmlsafechars($arr_name['username']) . '</b>' . _(' deleted from your shit list!') . ' </legend>';
         break;
 } //=== end switch
 //=== get stuff ready for page
@@ -123,24 +122,24 @@ $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added 
                   ORDER BY shittyness DESC');
 //=== default page
 $HTMLOUT .= $message . '
-   <legend>' . $lang['shitlist_message1'] . '' . htmlsafechars($CURUSER['username']) . '</legend>
+   <legend>' . _('Shit List for ') . '' . htmlsafechars($CURUSER['username']) . '</legend>
    <table class="table table-bordered">
    <tr>
      <td class="colhead" colspan="4">
-     <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . $lang['shitlist_message2'] . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "></td>
+     <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _(' shittiest at the top ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "></td>
    </tr>';
 $i = 1;
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= '
    <tr>
       <td colspan="4">
-      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . $lang['shitlist_empty'] . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></td>
+      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _(' Your shit list is empty. ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></td>
    </tr>';
 } else {
     while ($shit_list = mysqli_fetch_array($res)) {
         $shit = '';
         for ($poop = 1; $poop <= $shit_list['shittyness']; ++$poop) {
-            $shit .= ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" title="' . (int) $shit_list['shittyness'] . '' . $lang['shitlist_scale'] . '" alt=" * ">';
+            $shit .= ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" title="' . (int) $shit_list['shittyness'] . '' . _(' out of 10 on the shittyness scale') . '" alt=" * ">';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="has-text-centered w-15 mw-150 ' . (($i % 2 == 0) ? 'one' : 'two') . '">' . get_avatar($shit_list) . '<br>
@@ -149,12 +148,12 @@ if (mysqli_num_rows($res) == 0) {
 
       <b> [ ' . get_user_class_name((int) $shit_list['class']) . ' ]</b><br>
 
-      <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_remove1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif" alt="Delete">' . $lang['shitlist_remove2'] . '</span></a>
-      <a class="is-link" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . $lang['shitlist_send1'] . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif" alt="Message">' . $lang['shitlist_send2'] . '</span></a></td>
+      <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . (int) $shit_list['suspect_id'] . '" title="' . _('remove this toad from your shit list') . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'polls/p_delete.gif" alt="Delete">' . _('Remove') . '</span></a>
+      <a class="is-link" href="messages.php?action=send_message&amp;receiver=' . (int) $shit_list['suspect_id'] . '" title="' . _('send a PM to this evil toad') . '"><span class="button is-small" style="padding:1px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'message.gif" alt="Message">' . _('Send PM') . '</span></a></td>
       <td class="' . (($i % 2 == 0) ? 'one' : 'two') . '">' . $shit . '
-      <b>' . $lang['shitlist_joined'] . '</b> ' . get_date((int) $shit_list['added'], '') . '
+      <b>' . _('joined: ') . '</b> ' . get_date((int) $shit_list['added'], '') . '
       [ ' . get_date((int) $shit_list['added'], '', 0, 1) . ' ]
-      <b>' . $lang['shitlist_added'] . '</b> ' . get_date((int) $shit_list['shit_list_added'], '') . '
+      <b>' . _('added to shit list: ') . '</b> ' . get_date((int) $shit_list['shit_list_added'], '') . '
       [ ' . get_date((int) $shit_list['shit_list_added'], '', 0, 1) . ' ]
       <b>last seen:</b> ' . get_date((int) $shit_list['last_access'], '') . ' 
       [ ' . get_date((int) $shit_list['last_access'], '', 0, 1) . ' ]<hr>
@@ -163,5 +162,10 @@ if (mysqli_num_rows($res) == 0) {
     }
 }
 $HTMLOUT .= (($i % 2 == 0) ? '<td class="one" colspan="2"></td></tr>' : '');
-$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'btn_search.gif" alt="Search"><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/users.php">' . $lang['shitlist_find'] . '</span></a></p>';
-echo stdhead($lang['shitlist_stdhead'] . htmlsafechars($CURUSER['username'])) . wrapper($HTMLOUT) . stdfoot();
+$HTMLOUT .= '</table><p><span class="button is-small" style="padding:3px;"><img style="vertical-align:middle;" src="' . $site_config['paths']['images_baseurl'] . 'btn_search.gif" alt="Search"><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/users.php">' . _('Find Member / Browse Member List') . '</span></a></p>';
+$title = _('Shitlist');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

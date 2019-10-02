@@ -11,7 +11,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_bans'));
 global $container, $CURUSER, $site_config;
 
 $session = $container->get(Session::class);
@@ -26,7 +25,7 @@ if ($remove > 0) {
                   ->fetch();
 
     if (!$res) {
-        stderr($lang['stderr_error'], $lang['stderr_error1']);
+        stderr(_('Error'), _('A Ban with that ID could not be found'));
     }
     for ($i = $res['first']; $i <= $res['last']; ++$i) {
         $cache->delete('bans_' . $i);
@@ -35,8 +34,7 @@ if ($remove > 0) {
         $fluent->deleteFrom('bans')
                ->where('id = ?', $remove)
                ->execute();
-        $removed = sprintf($lang['text_banremoved'], $remove);
-        write_log("{$removed}" . $CURUSER['id'] . ' (' . $CURUSER['username'] . ')');
+        write_log(_f('Ban %1$s was removed by %2$s', $remove, $CURUSER['username']));
         $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
         unset($_GET);
     }
@@ -46,10 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
     $last = trim($_POST['last']);
     $comment = htmlsafechars(trim($_POST['comment']));
     if (!$first || !$last || !$comment) {
-        stderr($lang['stderr_error'], $lang['text_missing']);
+        stderr(_('Error'), _('Missing form data.'));
     }
     if (!validip($first) || !validip($last)) {
-        stderr($lang['stderr_error'], $lang['text_badip']);
+        stderr(_('Error'), _('Bad IP address.'));
     }
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {
@@ -89,23 +87,23 @@ $HTMLOUT = "
         <h1 class='has-text-centered'>Bans</h1>
         <div class='top20 bg-00 round10'>
             <div class='padding20'>
-                <h2>{$lang['text_current']}</h2>
-            </div>";
+                <h2>" . _('Current bans') . '</h2>
+            </div>';
 if ($count == 0) {
-    $HTMLOUT .= main_div("<div class='padding20'>{$lang['text_nothing']}</div>");
+    $HTMLOUT .= main_div("<div class='padding20'>" . _('Nothing found.') . '</div>');
 } else {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
-    $header = "
+    $header = '
                 <tr>
-                    <th>{$lang['header_added']}</th>
-                    <th>{$lang['header_firstip']}</th>
-                    <th>{$lang['header_lastip']}</th>
-                    <th>{$lang['header_by']}</th>
-                    <th>{$lang['header_comment']}</th>
-                    <th>{$lang['header_remove']}</th>
-                </tr>";
+                    <th>' . _('Added') . '</th>
+                    <th>' . _('First IP') . '</th>
+                    <th>' . _('Last IP') . '</th>
+                    <th>' . _('By') . '</th>
+                    <th>' . _('Comment') . '</th>
+                    <th>' . _('Remove') . '</th>
+                </tr>';
     $body = '';
     foreach ($bans as $banned) {
         $body .= '
@@ -115,7 +113,7 @@ if ($count == 0) {
                     <td>' . htmlsafechars($banned['last']) . '</td>
                     <td>' . format_username((int) $banned['addedby']) . '</td>
                     <td>' . htmlsafechars($banned['comment']) . "</td>
-                    <td><a href='" . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='{$lang['text_remove']}'></i></a></td>
+                    <td><a href='" . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=bans&amp;remove=' . $banned['id'] . "'><i class='icon-trash-empty icon tooltipper has-text-danger' title='" . _('Remove') . "'></i></a></td>
                </tr>";
     }
     $HTMLOUT .= main_table($body, $header);
@@ -129,26 +127,31 @@ if ($CURUSER['class'] >= UC_MAX) {
     $HTMLOUT .= "
         <div class='top20 bg-00 round10'>
             <div class='padding20'>
-                <h2>{$lang['text_addban']}</h2>
+                <h2>" . _('Add ban') . "</h2>
             </div>
             <form method='post' action='staffpanel.php?tool=bans' enctype='multipart/form-data' accept-charset='utf-8'>";
     $HTMLOUT .= main_table("
                 <tr>
-                    <td class='rowhead'>{$lang['table_firstip']}</td>
+                    <td class='rowhead'>" . _('First IP') . "</td>
                     <td><input type='text' name='first' class='w-100'></td>
                 </tr>
                 <tr>
-                    <td class='rowhead'>{$lang['table_lastip']}</td>
+                    <td class='rowhead'>" . _('Last IP') . "</td>
                     <td><input type='text' name='last' class='w-100'></td>
                 </tr>
                 <tr>
-                    <td class='rowhead'>{$lang['table_comment']}</td><td><input type='text' name='comment' class='w-100'></td>
+                    <td class='rowhead'>" . _('Comment') . "</td><td><input type='text' name='comment' class='w-100'></td>
                 </tr>");
     $HTMLOUT .= "
                 <div class='has-text-centered padding20'>
-                    <input type='submit' name='okay' value='{$lang['btn_add']}' class='button is-small'>
+                    <input type='submit' name='okay' value='" . _('Add') . "' class='button is-small'>
                 </div>
             </form>
         </div>";
 }
-echo stdhead($lang['stdhead_adduser']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Bans');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

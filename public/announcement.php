@@ -10,8 +10,7 @@ $user = check_user_status();
 global $site_config;
 
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('index'), load_language('announcement'));
-stderr('Error', 'This page is not complete.');
+stderr(_('Error'), _('This page is not complete.'));
 $dt = TIME_NOW;
 $res = sql_query('
         SELECT u.id, u.curr_ann_id, u.curr_ann_last_check, u.last_access, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body
@@ -95,21 +94,26 @@ if ((!empty($ann_subject)) && (!empty($ann_body))) {
 
     $HTMLOUT .= "
     <div class='article'>
-        <div class='article_header'>{$lang['index_announce']}</div>
+        <div class='article_header'>" . _('Announcements') . "</div>
         <div class='tabular'>
             <div class='tabular-row'>
-                <div class='tabular-cell'><b><span class='has-text-danger'>{$lang['annouce_announcement']}: " . htmlsafechars($ann_subject) . "</span></b></div>
+                <div class='tabular-cell'><b><span class='has-text-danger'>" . _('Announcement') . ': ' . htmlsafechars($ann_subject) . "</span></b></div>
             </div>
-            <span class='is-blue'>" . format_comment($ann_body) . "</span>
-            {$lang['annouce_click']} <a href='{$site_config['paths']['baseurl']}/clear_announcement.php'>
-            <i><b>{$lang['annouce_here']}</b></i></a> {$lang['annouce_to_clr_annouce']}.
+            <span class='is-blue'>" . format_comment($ann_body) . '</span>
+            ' . _('Click') . " <a href='{$site_config['paths']['baseurl']}/clear_announcement.php'>
+            <i><b>" . _('here') . '</b></i></a> ' . _('to clear this announcement') . '.
         </div>
-    </div>";
+    </div>';
 } else {
     $HTMLOUT .= main_div("
         <div class='padding20'>
-            <h1>{$lang['index_announce']}</h1>
-            <div>{$lang['annouce_announcement']}: <span class='has-text-success'>{$lang['annouce_cur_no_new_ann']}</span></div>
-        </div>", 'has-text-centered');
+            <h1>" . _('Announcements') . '</h1>
+            <div>' . _('Announcement') . ": <span class='has-text-success'>" . _('Currently no new announcements') . '</span></div>
+        </div>', 'has-text-centered');
 }
-echo stdhead($lang['annouce_std_head']) . wrapper($HTMLOUT) . stdfoot();
+
+$title = _('Announcements');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

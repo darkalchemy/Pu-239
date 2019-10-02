@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb9ae2ac0e3715061b654f8c03a03e22",
+    "content-hash": "d68b95d6b88b42c41c61d8627f5cd847",
     "packages": [
         {
             "name": "amnuts/opcache-gui",
@@ -650,208 +650,6 @@
                 "parser"
             ],
             "time": "2019-03-17T18:48:37+00:00"
-        },
-        {
-            "name": "firebase/php-jwt",
-            "version": "v5.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/firebase/php-jwt.git",
-                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/firebase/php-jwt/zipball/9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
-                "reference": "9984a4d3a32ae7673d6971ea00bae9d0a1abba0e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": " 4.8.35"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Firebase\\JWT\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Neuman Vong",
-                    "email": "neuman+pear@twilio.com",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Anant Narayanan",
-                    "email": "anant@php.net",
-                    "role": "Developer"
-                }
-            ],
-            "description": "A simple library to encode and decode JSON Web Tokens (JWT) in PHP. Should conform to the current spec.",
-            "homepage": "https://github.com/firebase/php-jwt",
-            "time": "2017-06-27T22:17:23+00:00"
-        },
-        {
-            "name": "google/auth",
-            "version": "v1.5.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-auth-library-php.git",
-                "reference": "2ee962e5df3e9427fda859f1b0515d6d62c4afa5"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-auth-library-php/zipball/2ee962e5df3e9427fda859f1b0515d6d62c4afa5",
-                "reference": "2ee962e5df3e9427fda859f1b0515d6d62c4afa5",
-                "shasum": ""
-            },
-            "require": {
-                "firebase/php-jwt": "~2.0|~3.0|~4.0|~5.0",
-                "guzzlehttp/guzzle": "~5.3.1|~6.0",
-                "guzzlehttp/psr7": "^1.2",
-                "php": ">=5.4",
-                "psr/cache": "^1.0",
-                "psr/http-message": "^1.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^1.11",
-                "guzzlehttp/promises": "0.1.1|^1.3",
-                "phpseclib/phpseclib": "^2",
-                "phpunit/phpunit": "^4.8.36|^5.7",
-                "sebastian/comparator": ">=1.2.3"
-            },
-            "suggest": {
-                "phpseclib/phpseclib": "May be used in place of OpenSSL for signing strings. Please require version ^2."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Google\\Auth\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Google Auth Library for PHP",
-            "homepage": "http://github.com/google/google-auth-library-php",
-            "keywords": [
-                "Authentication",
-                "google",
-                "oauth2"
-            ],
-            "time": "2019-07-22T21:01:31+00:00"
-        },
-        {
-            "name": "google/cloud-core",
-            "version": "v1.33.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-cloud-php-core.git",
-                "reference": "c8a83c12af2c860afe86b4d7c36e38b878d8d4ec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-core/zipball/c8a83c12af2c860afe86b4d7c36e38b878d8d4ec",
-                "reference": "c8a83c12af2c860afe86b4d7c36e38b878d8d4ec",
-                "shasum": ""
-            },
-            "require": {
-                "google/auth": "^1.5.1",
-                "guzzlehttp/guzzle": "^5.3|^6.0",
-                "guzzlehttp/promises": "^1.3",
-                "guzzlehttp/psr7": "^1.2",
-                "monolog/monolog": "^1.1|^2.0",
-                "php": ">=5.5",
-                "psr/http-message": "1.0.*",
-                "rize/uri-template": "~0.3"
-            },
-            "require-dev": {
-                "erusev/parsedown": "^1.6",
-                "google/common-protos": "^1.0",
-                "google/gax": "^1.1",
-                "opis/closure": "^3",
-                "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "suggest": {
-                "opis/closure": "May be used to serialize closures to process jobs in the batch daemon. Please require version ^3.",
-                "symfony/lock": "Required for the Spanner cached based session pool. Please require the following commit: 3.3.x-dev#1ba6ac9"
-            },
-            "bin": [
-                "bin/google-cloud-batch"
-            ],
-            "type": "library",
-            "extra": {
-                "component": {
-                    "id": "cloud-core",
-                    "target": "googleapis/google-cloud-php-core.git",
-                    "path": "Core",
-                    "entry": "src/ServiceBuilder.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Google\\Cloud\\Core\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Google Cloud PHP shared dependency, providing functionality useful to all components.",
-            "time": "2019-09-12T22:13:37+00:00"
-        },
-        {
-            "name": "google/cloud-translate",
-            "version": "v1.4.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/googleapis/google-cloud-php-translate.git",
-                "reference": "2ce7b5825d581b300b6369cd45f4583b2dedaaec"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-translate/zipball/2ce7b5825d581b300b6369cd45f4583b2dedaaec",
-                "reference": "2ce7b5825d581b300b6369cd45f4583b2dedaaec",
-                "shasum": ""
-            },
-            "require": {
-                "google/cloud-core": "^1.32"
-            },
-            "require-dev": {
-                "erusev/parsedown": "^1.6",
-                "phpdocumentor/reflection": "^3.0",
-                "phpunit/phpunit": "^4.8|^5.0",
-                "squizlabs/php_codesniffer": "2.*"
-            },
-            "type": "library",
-            "extra": {
-                "component": {
-                    "id": "cloud-translate",
-                    "target": "googleapis/google-cloud-php-translate.git",
-                    "path": "Translate",
-                    "entry": "src/TranslateClient.php"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Google\\Cloud\\Translate\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Cloud Translation Client for PHP",
-            "time": "2019-08-29T21:08:15+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1608,87 +1406,6 @@
             "time": "2019-08-30T09:35:02+00:00"
         },
         {
-            "name": "monolog/monolog",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "68545165e19249013afd1d6f7485aecff07a2d22"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/68545165e19249013afd1d6f7485aecff07a2d22",
-                "reference": "68545165e19249013afd1d6f7485aecff07a2d22",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2",
-                "psr/log": "^1.0.1"
-            },
-            "provide": {
-                "psr/log-implementation": "1.0.0"
-            },
-            "require-dev": {
-                "aws/aws-sdk-php": "^2.4.9 || ^3.0",
-                "doctrine/couchdb": "~1.0@dev",
-                "elasticsearch/elasticsearch": "^6.0",
-                "graylog2/gelf-php": "^1.4.2",
-                "jakub-onderka/php-parallel-lint": "^0.9",
-                "php-amqplib/php-amqplib": "~2.4",
-                "php-console/php-console": "^3.1.3",
-                "phpspec/prophecy": "^1.6.1",
-                "phpunit/phpunit": "^8.3",
-                "predis/predis": "^1.1",
-                "rollbar/rollbar": "^1.3",
-                "ruflin/elastica": ">=0.90 <3.0",
-                "swiftmailer/swiftmailer": "^5.3|^6.0"
-            },
-            "suggest": {
-                "aws/aws-sdk-php": "Allow sending log messages to AWS services like DynamoDB",
-                "doctrine/couchdb": "Allow sending log messages to a CouchDB server",
-                "elasticsearch/elasticsearch": "Allow sending log messages to an Elasticsearch server via official client",
-                "ext-amqp": "Allow sending log messages to an AMQP server (1.0+ required)",
-                "ext-mbstring": "Allow to work properly with unicode symbols",
-                "ext-mongodb": "Allow sending log messages to a MongoDB server (via driver)",
-                "graylog2/gelf-php": "Allow sending log messages to a GrayLog2 server",
-                "mongodb/mongodb": "Allow sending log messages to a MongoDB server (via library)",
-                "php-amqplib/php-amqplib": "Allow sending log messages to an AMQP server using php-amqplib",
-                "php-console/php-console": "Allow sending log messages to Google Chrome",
-                "rollbar/rollbar": "Allow sending log messages to Rollbar",
-                "ruflin/elastica": "Allow sending log messages to an Elastic Search server"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Monolog\\": "src/Monolog"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jordi Boggiano",
-                    "email": "j.boggiano@seld.be",
-                    "homepage": "http://seld.be"
-                }
-            ],
-            "description": "Sends your logs to files, sockets, inboxes, databases and various web services",
-            "homepage": "http://github.com/Seldaek/monolog",
-            "keywords": [
-                "log",
-                "logging",
-                "psr-3"
-            ],
-            "time": "2019-08-30T09:56:44+00:00"
-        },
-        {
             "name": "mtdowling/cron-expression",
             "version": "v1.2.1",
             "source": {
@@ -2381,50 +2098,6 @@
             "time": "2019-03-08T08:55:37+00:00"
         },
         {
-            "name": "rize/uri-template",
-            "version": "0.3.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/rize/UriTemplate.git",
-                "reference": "9e5fdd5c47147aa5adf7f760002ee591ed37b9ca"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/rize/UriTemplate/zipball/9e5fdd5c47147aa5adf7f760002ee591ed37b9ca",
-                "reference": "9e5fdd5c47147aa5adf7f760002ee591ed37b9ca",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Rize\\UriTemplate": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Marut K",
-                    "homepage": "http://twitter.com/rezigned"
-                }
-            ],
-            "description": "PHP URI Template (RFC 6570) supports both expansion & extraction",
-            "keywords": [
-                "RFC 6570",
-                "template",
-                "uri"
-            ],
-            "time": "2017-06-14T03:57:53+00:00"
-        },
-        {
             "name": "scriptotek/google-books",
             "version": "v0.2.4",
             "source": {
@@ -2700,9 +2373,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Manipulate images with an expressive API",
@@ -2750,9 +2423,9 @@
             "authors": [
                 {
                     "name": "Freek Van der Herten",
-                    "role": "Developer",
                     "email": "freek@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Easily optimize images using PHP",
@@ -2796,9 +2469,9 @@
             "authors": [
                 {
                     "name": "Alex Vanderbist",
-                    "role": "Developer",
                     "email": "alex@spatie.be",
-                    "homepage": "https://spatie.be"
+                    "homepage": "https://spatie.be",
+                    "role": "Developer"
                 }
             ],
             "description": "Easily create, use and destroy temporary directories",
@@ -3442,16 +3115,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "fa4c4e861e809d6a1103bd620cce63ed91aedfeb"
+                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/fa4c4e861e809d6a1103bd620cce63ed91aedfeb",
-                "reference": "fa4c4e861e809d6a1103bd620cce63ed91aedfeb",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/904dca4eb10715b92569fbcd79e201d5c349b6bc",
+                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc",
                 "shasum": ""
             },
             "require": {
@@ -3460,7 +3133,7 @@
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^7.5@dev"
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "extra": {
@@ -3506,7 +3179,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2019-08-08T18:11:40+00:00"
+            "time": "2019-10-01T18:55:10+00:00"
         },
         {
             "name": "friendsofphp/php-cs-fixer",

@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $container, $site_config;
 
 $id = (isset($_GET['id']) ? $_GET['id'] : $user['id']);
@@ -18,7 +17,7 @@ if (!is_valid_id($id) || $user['class'] < UC_STAFF) {
 }
 $got_moods = $user['opt2'] & user_options_2::GOT_MOODS === user_options_2::GOT_MOODS;
 if ($user['class'] < UC_STAFF && $got_moods) {
-    stderr('Error', "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
+    stderr(_('Error'), "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
     die();
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -82,9 +81,12 @@ $HTMLOUT = '
                         </div>
                     </div>
                     <div class="has-text-centered margin20">
-                        <input class="button" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s">
+                        <input class="button is-small" type="submit" name="submit" value="Submit" tabindex="2" accesskey="s">
                     </div>
                 </form>
             </div>';
-
-echo stdhead('User unlocks') . wrapper($HTMLOUT) . stdfoot();
+$title = _('User Unlocks');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

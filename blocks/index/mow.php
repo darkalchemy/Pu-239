@@ -6,7 +6,7 @@ use Pu239\Image;
 use Pu239\Torrent;
 
 require_once PARTIALS_DIR . 'torrent_table.php';
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
 $motw = $torrent->get_mow();
@@ -16,7 +16,7 @@ $torrents_mow .= "
     <div id='mow' class='box'>
         <div class='has-text-centered'>
             <div class='table-wrapper module'>
-                <!-- <div class='badge badge-hot'></div> -->" . torrent_table($lang['index_mow_title']);
+                <!-- <div class='badge badge-hot'></div> -->" . torrent_table(_('Movie of the Week'));
 
 $images_class = $container->get(Image::class);
 foreach ($motw as $last) {
@@ -39,8 +39,8 @@ foreach ($motw as $last) {
 if (count($motw) === 0) {
     $torrents_mow .= "
                         <tr>
-                            <td colspan='7'>{$lang['index_mow_no']}!</td>
-                        </tr>";
+                            <td colspan='7'>" . _('There are no torrents.') . '</td>
+                        </tr>';
 }
 $torrents_mow .= '
                     </tbody>

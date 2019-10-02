@@ -7,14 +7,13 @@ use Pu239\Database;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'phpzip.php';
 check_user_status();
-$lang = load_language('global');
 global $container;
 
 $action = isset($_POST['action']) ? htmlsafechars($_POST['action']) : '';
 if ($action === 'download') {
     $id = isset($_POST['sid']) ? (int) $_POST['sid'] : 0;
     if ($id == 0) {
-        stderr($lang['gl_error'], $lang['gl_not_a_valid_id']);
+        stderr(_('Error'), _('Invalid ID'));
     } else {
         $fluent = $container->get(Database::class);
         $subtitle = $fluent->from('subtitles')
@@ -45,5 +44,5 @@ if ($action === 'download') {
         sql_query('UPDATE subtitles SET hits = hits + 1 WHERE id = ' . sqlesc($id));
     }
 } else {
-    stderr($lang['gl_error'], $lang['gl_no_way']);
+    stderr(_('Error'), _('No way'));
 }

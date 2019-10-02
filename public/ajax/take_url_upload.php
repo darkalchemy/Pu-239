@@ -10,18 +10,17 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 $user = check_user_status();
-$lang = load_language('bitbucket');
 global $container, $site_config;
 
 header('content-type: application/json');
 if (empty($user['id'])) {
-    echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
+    echo json_encode(['msg' => _('Invalid UserId')]);
     die();
 }
 
 $url = $_POST['url'];
 if (!filter_var($url, FILTER_VALIDATE_URL)) {
-    echo json_encode(['msg' => $lang['bitbucket_invalid_url']]);
+    echo json_encode(['msg' => _('This does not appear to be a valid URL.')]);
     die();
 }
 $username = $user['username'];
@@ -43,17 +42,17 @@ make_month(BITBUCKET_DIR);
 
 $image = fetch($url);
 if (!$image) {
-    echo json_encode(['msg' => $lang['bitbucket_download_failed']]);
+    echo json_encode(['msg' => _('There was an error trying to fetch the image.')]);
     die();
 }
 if (!file_put_contents($temppath, $image)) {
-    echo json_encode(['msg' => $lang['bitbucket_store_failed']]);
+    echo json_encode(['msg' => _('There was an error trying to save the image to BitBucket.')]);
     die();
 }
 
 $it1 = exif_imagetype($temppath);
 if (!in_array($it1, $site_config['images']['exif'])) {
-    echo json_encode(['msg' => $lang['bitbucket_invalid']]);
+    echo json_encode(['msg' => _('Invalid file extension. jpg, gif, png and webp only.')]);
     die();
 }
 switch ($it1) {
@@ -74,12 +73,12 @@ switch ($it1) {
 $path = $bucketdir . $USERSALT . '_' . $rand . $ext;
 $pathlink = $bucketlink . $USERSALT . '_' . $rand . $ext;
 if (!rename($temppath, $path)) {
-    echo json_encode(['msg' => $lang['bitbucket_upfail_save']]);
+    echo json_encode(['msg' => _('Upload failed to save image.')]);
     die();
 }
 
 if (!file_exists($path)) {
-    echo json_encode(['msg' => $lang['bitbucket_upfail_save']]);
+    echo json_encode(['msg' => _('Upload failed to save image.')]);
     die();
 }
 $image_proxy = $container->get(ImageProxy::class);
@@ -88,11 +87,11 @@ $image = "{$site_config['paths']['baseurl']}/img.php?{$pathlink}";
 
 if (!empty($image)) {
     echo json_encode([
-        'msg' => $lang['bitbucket_success'],
+        'msg' => _('Success! Paste the following url to Poster.'),
         'url' => $image,
     ]);
     die();
 } else {
-    echo json_encode(['msg' => $lang['bitbucket_unknown']]);
+    echo json_encode(['msg' => _('Unknown failure occurred')]);
     die();
 }

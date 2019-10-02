@@ -16,7 +16,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('comment'), load_language('capprove'));
 global $container, $site_config;
 
 $comments = $container->get(Comment::class);
@@ -75,16 +74,16 @@ if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = isset($_POST['tid']) ? (int) $_POST['tid'] : 0;
         if (!is_valid_id($id)) {
-            stderr($lang['comment_error'], $lang['comment_invalid_id']);
+            stderr(_('Error'), _('Invalid ID.'));
         }
         $res = sql_query("SELECT $sql_1 WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
         $arr = mysqli_fetch_array($res);
         if (!$arr) {
-            stderr($lang['comment_error'], "No $locale with that ID.");
+            stderr(_('Error'), "No $locale with that ID.");
         }
         $body = isset($_POST['body']) ? trim($_POST['body']) : '';
         if (!$body) {
-            stderr($lang['comment_error'], $lang['comment_body']);
+            stderr(_('Error'), _('Comment body cannot be empty!'));
         }
         $owner = isset($arr['owner']) ? (int) $arr['owner'] : 0;
         $arr['anonymous'] = isset($arr['anonymous']) && $arr['anonymous'] === '1' ? '1' : '0';
@@ -139,16 +138,16 @@ if ($action === 'add') {
     }
     $id = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($id)) {
-        stderr($lang['comment_error'], $lang['comment_invalid_id']);
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $res = sql_query("SELECT $sql_1 WHERE id=" . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr($lang['comment_error'], "No $locale with that ID.");
+        stderr(_('Error'), "No $locale with that ID.");
     }
     $HTMLOUT = '';
     $body = htmlsafechars((isset($_POST['body']) ? $_POST['body'] : ''));
-    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_add']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>" . _('Add a comment to ') . "'" . htmlsafechars($arr[$name]) . "'</h1>
       <br><form name='compose' method='post' action='{$_SERVER['PHP_SELF']}?action=add' enctype='multipart/form-data' accept-charset='utf-8'>
       <input type='hidden' name='tid' value='{$id}'/>
       <input type='hidden' name='locale' value='$name'>";
@@ -157,7 +156,7 @@ if ($action === 'add') {
         <div class='has-text-centered margin20'>
             <label for='anonymous'>Tick this to post anonymously</label>
             <input id='anonymous' type='checkbox' name='anonymous' value='1'><br>
-            <input type='submit' class='button is-small top20' value='{$lang['comment_doit']}'>
+            <input type='submit' class='button is-small top20' value='" . _('Do it!') . "'>
         </div>
     </form>";
     $sql = "SELECT c.id, c.text, c.added, c.$locale, c.anonymous, c.editedby, c.editedat, c.user, u.id as user, u.title, u.avatar, u.offensive_avatar, u.class, u.reputation, u.mood, u.donor, u.warned
@@ -177,27 +176,30 @@ if ($action === 'add') {
         require_once INCL_DIR . 'function_users.php';
         require_once INCL_DIR . 'function_comments.php';
         $HTMLOUT = wrapper($HTMLOUT);
-        $HTMLOUT .= wrapper("<h2 class='has-text-centered'>{$lang['comment_recent']}</h2>" . commenttable($allrows, $locale));
+        $HTMLOUT .= wrapper("<h2 class='has-text-centered'>" . _('Most recent comments, in reverse order') . '</h2>' . commenttable($allrows, $locale));
     }
-    echo stdhead("{$lang['comment_add']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Add Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } elseif ($action === 'edit') {
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr($lang['comment_error'], $lang['comment_invalid_id']);
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $res = sql_query("SELECT c.*, t.$name, t.id as tid FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr($lang['comment_error'], "{$lang['comment_invalid_id']}.");
+        stderr(_('Error'), _('Invalid ID.'));
     }
     if ($arr['user'] != $user['id'] && $user['class'] < UC_STAFF) {
-        stderr($lang['comment_error'], $lang['comment_denied']);
+        stderr(_('Error'), _('Permission denied.'));
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = isset($_POST['body']) ? $_POST['body'] : '';
         if ($body == '') {
-            stderr($lang['comment_error'], $lang['comment_body']);
+            stderr(_('Error'), _('Comment body cannot be empty!'));
         }
         $text = htmlsafechars($body);
         if (isset($_POST['lasteditedby']) || $user['class'] < UC_STAFF) {
@@ -215,12 +217,12 @@ if ($action === 'add') {
             ];
             $comments->update($update, $commentid);
         }
-        $session->set('is-success', 'The comment has been updated');
+        $session->set('is-success', _('The comment has been updated'));
         header("Refresh: 0; url=$locale_link.php?id=" . (int) $arr['tid'] . "$extra_link&viewcomm=$commentid#comm$commentid");
         die();
     }
     $HTMLOUT = '';
-    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['comment_edit']}'" . htmlsafechars($arr[$name]) . "'</h1>
+    $HTMLOUT .= "<h1 class='has-text-centered'>" . _f("Edit comment to '%s'", htmlsafechars($arr[$name])) . "</h1>
       <form method='post' action='{$_SERVER['PHP_SELF']}?action=edit&amp;cid=$commentid' enctype='multipart/form-data' accept-charset='utf-8'>
       <input type='hidden' name='locale' value='$name'>
        <input type='hidden' name='tid' value='" . (int) $arr['tid'] . "'>
@@ -229,24 +231,27 @@ if ($action === 'add') {
     $HTMLOUT .= '
       <br>' . ($user['class'] >= UC_STAFF ? '<input type="checkbox" value="lasteditedby" checked name="lasteditedby" id="lasteditedby"> Show Last Edited By<br><br>' : '') . '
         <div class="has-text-centered margin20">
-            <input type="submit" class="button is-small" value="' . $lang['comment_doit'] . '">
+            <input type="submit" class="button is-small" value="' . _('Do it!') . '">
         </div>
     </form>';
-    echo stdhead("{$lang['comment_edit']}'" . $arr[$name] . "'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Edit Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } elseif ($action === 'delete') {
     if ($user['class'] < UC_STAFF) {
-        stderr($lang['comment_error'], $lang['comment_denied']);
+        stderr(_('Error'), _('Permission denied.'));
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     $tid = isset($_GET['tid']) ? (int) $_GET['tid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr($lang['comment_error'], $lang['comment_invalid_id']);
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
-        stderr($lang['comment_delete'], $lang['comment_about_delete'] . " <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
-          <span class='has-text-success'>here</span></a> {$lang['comment_delete_sure']}");
+        stderr(_('Delete comment'), _('You are about to delete a comment. Click') . " <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;cid=$commentid&amp;tid=$tid&amp;sure=1" . ($locale === 'request' ? '&amp;type=request' : '') . "'>
+          <span class='has-text-success'>here</span></a> " . _('if you are sure.') . '');
     }
     $res = sql_query("SELECT $locale FROM comments WHERE id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
@@ -274,19 +279,19 @@ if ($action === 'add') {
     die();
 } elseif ($action === 'vieworiginal') {
     if ($user['class'] < UC_STAFF) {
-        stderr($lang['comment_error'], $lang['comment_denied']);
+        stderr(_('Error'), _('Permission denied.'));
     }
     $commentid = isset($_GET['cid']) ? (int) $_GET['cid'] : 0;
     if (!is_valid_id($commentid)) {
-        stderr($lang['comment_error'], $lang['comment_invalid_id']);
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $res = sql_query("SELECT c.*, t.$name FROM comments AS c LEFT JOIN $table_type AS t ON c.$locale = t.id WHERE c.id=" . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     if (!$arr) {
-        stderr($lang['comment_error'], "{$lang['comment_invalid_id']} $commentid.");
+        stderr(_('Error'), '' . _('Invalid ID.') . " $commentid.");
     }
     $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
+        <h1 class='has-text-centered'>" . _('Original contents of comment ') . "#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
     $returnto = isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '';
     if ($returnto) {
@@ -297,9 +302,12 @@ if ($action === 'add') {
                 <a href='$returnto{$hashtag}' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Origianl Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } else {
-    stderr($lang['comment_error'], $lang['comment_unknown']);
+    stderr(_('Error'), _('Unknown action'));
 }
 die();

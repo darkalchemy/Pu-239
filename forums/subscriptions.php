@@ -16,10 +16,10 @@ $count = $fluent->from('subscriptions')
                 ->fetch('count');
 if ($count === 0) {
     $HTMLOUT .= main_div("
-        <h1 class='has-text-centered'>{$lang['sub_no_subscript_found']}!</h1>
-        <p>{$lang['sub_you_have_yet_sub_forums']} {$lang['sub_subscrib_to_forum']} {$lang['sub_no_subscript_found_msg1']}.</p>
-		<p>{$lang['sub_to_be_notified_via_pm']} <a class='is-link has-text-success' href='usercp.php?action=default'>{$lang['sub_profile']}</a>
-		{$lang['sub_page_and_set']} {$lang['sub_pm_on_subcript']} {$lang['sub_to_yes']}.</p>", '', 'padding20');
+        <h1 class='has-text-centered'>" . _('No Subscriptions Found') . '!</h1>
+        <p>' . _('You are not yet subscribed to any forums... To subscribe to a forum, click the') . ' ' . _('Subscribe to this Forum') . ' ' . _('link on the thread page') . '.</p>
+		<p>' . _('To be notified via PM when there is a new post, go to your') . " <a class='is-link has-text-success' href='usercp.php?action=default'>" . _('profile') . '</a>
+		' . _('page and set') . ' ' . _('PM on Subscriptions') . ' ' . _('to yes') . '.</p>', '', 'padding20');
 
     return;
 }
@@ -43,15 +43,15 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] === '1') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         } else {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username((int) $first_post_arr['id']) . ']' : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username((int) $first_post_arr['id']) . ']' : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = (!empty($first_post_arr['username']) ? format_username((int) $first_post_arr['id']) : '' . $lang['fe_lost'] . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+        $thread_starter = (!empty($first_post_arr['username']) ? format_username((int) $first_post_arr['id']) : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
     }
-    $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" class="icon tooltipper" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '">');
-    $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($first_post_arr['body'], true, true, false), '' . $lang['fe_first_post'] . ' ' . $lang['fe_preview'] . '');
+    $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . _('Topic') . '" title="' . _('Topic') . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" class="icon tooltipper" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '">');
+    $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($first_post_arr['body'], true, true, false), '' . _('First Post') . ' ' . _('Preview') . '');
     $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
     $did_i_post_here = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
@@ -84,12 +84,12 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     }
     $new = ($topic_arr['added'] > (TIME_NOW - $site_config['forum_config']['readpost_expiry'])) ? (!$last_unread_post_arr || $lppostid > $last_unread_post_arr[0]) : 0;
     $topicpic = ($posts < 30 ? ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'topicnew' : 'topic')) : ($locked ? ($new ? 'lockednew' : 'locked') : ($new ? 'hot_topic_new' : 'hot_topic')));
-    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . $lang['fe_pinned'] . '" title="' . $lang['fe_pinned'] . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . $lang['fe_poll'] . '" title="' . $lang['fe_poll'] . '"> ' : ' ') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . format_comment($topic_arr['topic_name']) . '</a> ' . $multi_pages;
+    $topic_name = ($sticky ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned2.gif" class="icon tooltipper" alt="' . _('Pinned') . '" title="' . _('Pinned') . '"> ' : ' ') . ($topicpoll ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" class="icon tooltipper" alt="' . _('Poll') . '" title="' . _('Poll') . '"> ' : ' ') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $topic_id . '">' . format_comment($topic_arr['topic_name']) . '</a> ' . $multi_pages;
     $body .= '<tr>
-		<td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></td>
+		<td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $topicpic . '.gif" class="icon tooltipper" alt="' . _('Topic') . '" title="' . _('Topic') . '"></td>
 		<td>' . $icon . '</td>
 		<td>
-	    	' . $topic_name . $first_post_text . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . $lang['fe_new_post_in_topic'] . '!" title="' . $lang['fe_new_post_in_topic'] . '!">' : '') . '</td>
+	    	' . $topic_name . $first_post_text . ($new ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'forums/new.gif" class="icon tooltipper" alt="' . _('New post in topic') . '!" title="' . _('New post in topic') . '!">' : '') . '</td>
     		' . $rpic . '
 		    ' . (!empty($topic_arr['topic_desc']) ? '&#9658; <span style="font-size: x-small;">' . format_comment($topic_arr['topic_desc']) . '</span>' : '') . '
         </td>
@@ -106,19 +106,19 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
 $HTMLOUT .= ($count > $perpage ? $menu_top : '') . '<form action="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_subscription" method="post" name="checkme" accept-charset="utf-8">';
 $heading = '
 		<tr>
-		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . $lang['fe_topic'] . '" title="' . $lang['fe_topic'] . '"></th>
-		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . $lang['fe_thread_icon'] . '" title=' . $lang['fe_thread_icon'] . '"></th>
-		<th>' . $lang['fe_topic'] . '</th>
-		<th>' . $lang['fe_started_by'] . '</th>
-		<th>' . $lang['fe_replies'] . '</th>
-		<th>' . $lang['fe_views'] . '</th>
-		<th>' . $lang['fe_last_post'] . '</th>
+		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" class="icon tooltipper" alt="' . _('Topic') . '" title="' . _('Topic') . '"></th>
+		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt=' . _('Thread Icon') . '" title=' . _('Thread Icon') . '"></th>
+		<th>' . _('Topic') . '</th>
+		<th>' . _('Started By') . '</th>
+		<th>' . _('Replies') . '</th>
+		<th>' . _('Views') . '</th>
+		<th>' . _('Last Post') . '</th>
 		<th><img src="' . $site_config['paths']['images_baseurl'] . 'forums/last_post.gif" class="icon tooltipper" alt="Last post" title="Last post"></th>
 		<th> <input type="checkbox" id="checkThemAll" class="tooltipper" title="Select All"></th>
 		</tr>';
 
 $HTMLOUT .= main_table($body, $heading) . '
 		<div class="has-text-centered margin20">
-		    <input type="submit" name="button" class="button is-small" value="' . $lang['fe_remove'] . ' Selected">
+		    <input type="submit" name="button" class="button is-small" value="' . _('Remove') . ' Selected">
         </div>
         </form>' . ($count > $perpage ? $menu_bottom : '');

@@ -30,7 +30,7 @@ if (isset($_POST['delete'])) {
         $id = (int) $id;
         $message = $messages_class->get_by_id($id);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
-            stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_back'] . '</a>' . $lang['pm_delete_msg'] . '');
+            stderr(_('Error'), '' . _('You MUST read this message before you delete it!!!  ') . '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . _('BACK') . '</a>' . _(' to message.') . '');
         }
         if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == $site_config['pm']['deleted']) {
             $result = $messages_class->delete($id, $CURUSER['id']);
@@ -50,7 +50,7 @@ if (isset($_POST['delete'])) {
     }
 
     if (!$result) {
-        stderr($lang['pm_error'], $lang['pm_delete_err_multi']);
+        stderr(_('Error'), _("Messages couldn't be deleted!"));
     }
     if (isset($_POST['returnto'])) {
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=' . $_POST['returnto'] . '&multi_delete=1');

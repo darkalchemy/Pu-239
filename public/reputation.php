@@ -15,7 +15,6 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = load_language('reputation');
 global $container, $site_config;
 
 $is_mod = $user['class'] >= UC_STAFF ? true : false;
@@ -24,7 +23,7 @@ $closewindow = true;
 require_once CACHE_DIR . 'rep_settings_cache.php';
 
 if (!$GVARS['rep_is_online']) {
-    die($lang['info_reputation_offline']);
+    die(_('Reputation system offline, sorry'));
 }
 
 if (isset($_POST) || isset($_GET)) {
@@ -32,7 +31,7 @@ if (isset($_POST) || isset($_GET)) {
 }
 
 if (isset($input['done'])) {
-    rep_output($lang['info_reputation_added']);
+    rep_output(_('Reputation added!'));
 }
 
 $input['pid'] = isset($input['pid']) ? (int) $input['pid'] : 0;
@@ -119,10 +118,10 @@ if (!$is_mod) {
         $i = 0;
         while ($check = mysqli_fetch_assoc($flood)) {
             if (($i < $GVARS['rep_repeat']) && ($check['userid'] == $user['id'])) { //$res['userid'] ) )
-                rep_output($lang['info_cannot_rate_own']);
+                rep_output(_('You cannot rep your own stuffs!'));
             }
             if ((($i + 1) == $GVARS['rep_maxperday']) && (($check['dateadd'] + 86400) > TIME_NOW)) {
-                rep_output($lang['info_daily_rep_limit_expired']);
+                rep_output(_('The game is up, you rep spammer!'));
             }
             ++$i;
         }
@@ -137,16 +136,16 @@ if (isset($input['reason']) && !empty($input['reason'])) {
     $reason = trim($input['reason']);
     $temp = stripslashes($input['reason']);
     if ((strlen(trim($temp)) < 2) || ($reason == '')) {
-        rep_output($lang['info_reason_too_short']);
+        rep_output(_('Reputation reasion is too short!'));
     }
     if (strlen(preg_replace('/&#([0-9]+);/', '-', stripslashes($input['reason']))) > 250) {
-        rep_output($lang['info_reason_too_long']);
+        rep_output(_('Reputation reasion is too long!'));
     }
 }
 
 if (isset($input['do']) && $input['do'] === 'addrep') {
     if ($res['userid'] == $user['id']) { // sneaky bastiges!
-        rep_output($lang['info_cannot_rate_own']);
+        rep_output(_('You cannot rep your own stuffs!'));
     }
     $score = fetch_reppower($user, $input['reputation']);
     $res['reputation'] += $score;
@@ -190,7 +189,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                     $posneg = 'balance';
                 }
                 if ($GVARS['g_rep_seeown']) {
-                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>{$lang['rep_left_by']} " . format_username((int) $postrep['leftby_id']) . '</span>';
+                    $postrep['reason'] = $postrep['reason'] . " <span class='desc'>" . _('Left by') . ' ' . format_username((int) $postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
     <td class='row2'><img src='{$site_config['paths']['images_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
@@ -199,26 +198,26 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
             }
 
             if ($total == 0) {
-                $rep = $lang['rep_even'];
+                $rep = _('Even');
             } elseif ($total > 0 && $total <= 5) {
-                $rep = $lang['rep_somewhat_positive'];
+                $rep = _('Somewhat Positive');
             } elseif ($total > 5 && $total <= 15) {
-                $rep = $lang['rep_positive'];
+                $rep = _('Positive');
             } elseif ($total > 15 && $total <= 25) {
-                $rep = $lang['rep_very_positive'];
+                $rep = _('Very Positive');
             } elseif ($total > 25) {
-                $rep = $lang['rep_extremely_positive'];
+                $rep = _('Extremely Positive');
             } elseif ($total < 0 && $total >= -5) {
-                $rep = $lang['rep_somewhat_negative'];
+                $rep = _('Somewhat Negative');
             } elseif ($total < -5 && $total >= -15) {
-                $rep = $lang['rep_negative'];
+                $rep = _('Negative');
             } elseif ($total < -15 && $total >= -25) {
-                $rep = $lang['rep_very_negative'];
+                $rep = _('Very Negative');
             } elseif ($total < -25) {
-                $rep = $lang['rep_extremely_negative'];
+                $rep = _('Extremely Negative');
             }
         } else {
-            $rep = $lang['rep_even']; //Ok, dunno what to do, so just make it quits!
+            $rep = _('Even'); //Ok, dunno what to do, so just make it quits!
         }
         switch ($rep_locale) {
             case 'comments':
@@ -236,7 +235,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
             default:
                 $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
         }
-        $rep_points = sprintf('' . $lang['info_you_have'] . ' %d ' . $lang['info_reputation_points'] . '', $user['reputation']);
+        $rep_points = sprintf('' . _('You have') . ' %d ' . _('Reputation Point(s).') . '', $user['reputation']);
         $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>
@@ -247,7 +246,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         if ($reasonbits) {
             $html .= "
                                     <fieldset class='fieldset'>
-                                        <legend>{$lang['rep_comments']}</legend>
+                                        <legend>" . _('Reputation Comments') . "</legend>
                                         <table class='table table-bordered table-striped'>
                                             $reasonbits
                                         </table>
@@ -265,7 +264,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         $closewindow = false;
         $html = "
                         <tr>
-                            <td class='has-text-centered'>{$lang['info_add_rep']} <b>" . htmlsafechars($res['username']) . "</b></td>
+                            <td class='has-text-centered'>" . _('Add To Reputation') . ' <b>' . htmlsafechars($res['username']) . "</b></td>
                         </tr>
                         <tr>
                             <td class='row2'>
@@ -278,22 +277,22 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                     <td>
                                                         <div>
                                                             <label for='rb_reputation_pos'>
-                                                                <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton'> &#160;{$lang['rep_i_approve']}
+                                                                <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton'> &#160;" . _('I Approve') . '
                                                             </label>
-                                                        </div>";
+                                                        </div>';
         if ($negativerep) {
             $html .= "
                                                         <div>
                                                             <label for='rb_reputation_neg'>
-                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton'> &#160;{$lang['rep_i_disapprove']}
+                                                                <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton'> &#160;" . _('I Disapprove') . '
                                                             </label>
-                                                        </div>";
+                                                        </div>';
         }
-        $html .= "                                  </td>
+        $html .= '                                  </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        {$lang['rep_your_comm_on_this_post']} " . $this_rep . "<br>
+                                                        ' . _('Your comments on this :') . ' ' . $this_rep . "<br>
                                                         <input type='text' maxlength='250' name='reason' class='w-100'>
                                                     </td>
                                                 </tr>
@@ -305,7 +304,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                         <input type='hidden' name='do' value='addrep'>
                                         <input type='hidden' name='pid' value='{$input['pid']}'>
                                         <input type='hidden' name='locale' value='{$input['locale']}'>
-                                        <input type='submit' value='" . $lang['info_add_rep'] . "' class='button is-small' accesskey='s'>
+                                        <input type='submit' value='" . _('Add To Reputation') . "' class='button is-small' accesskey='s'>
                                         <input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()'>
                                     </div>
                                 </form>
@@ -358,9 +357,9 @@ function rep_output($msg = '', $html = '')
         $htmlout .= "
                 <tr>
                     <td class='has-text-centered'>
-                        <a href='javascript:self.close();'><b>{$lang['info_close_rep']}</b></a>
+                        <a href='javascript:self.close();'><b>" . _('Close Rep') . '</b></a>
                     </td>
-                </tr>";
+                </tr>';
     }
     $htmlout .= '
             </table>

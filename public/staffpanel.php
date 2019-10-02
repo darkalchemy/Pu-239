@@ -19,9 +19,8 @@ global $container, $site_config;
 $session = $container->get(Session::class);
 
 class_check(UC_STAFF);
-$lang = array_merge(load_language('global'), load_language('index'), load_language('staff_panel'));
 if (!$site_config['site']['staffpanel_online']) {
-    stderr($lang['spanel_information'], $lang['spanel_panel_cur_offline']);
+    stderr(_('Information'), _('The staffpanel is currently offline for maintainance work'));
 }
 $stdhead = [
     'css' => [
@@ -97,10 +96,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                       ->where('id = ?', $id)
                       ->fetch();
         if ($user['class'] < $arr['av_class']) {
-            stderr($lang['spanel_error'], $lang['spanel_you_not_allow_del_page']);
+            stderr(_('Error'), _('You are not allowed to delete this page.'));
         }
         if (!$sure) {
-            stderr($lang['spanel_sanity_check'], $lang['spanel_are_you_sure_del'] . ': "' . htmlsafechars($arr['page_name']) . '"? ' . $lang['spanel_click'] . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_del_it_or'] . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . $lang['spanel_here'] . '</a> ' . $lang['spanel_to_go_back'] . '.');
+            stderr(_('Sanity check'), _('Are you sure you want to delete this page') . ': "' . htmlsafechars($arr['page_name']) . '"? ' . _('Click') . ' <a href="' . $_SERVER['PHP_SELF'] . '?action=' . $action . '&amp;id=' . $id . '&amp;sure=yes">' . _('here') . '</a> ' . _('to delete it or') . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . _('here') . '</a> ' . _('to go back') . '.');
         }
         $cache->delete('staff_classes_');
         $result = $fluent->deleteFrom('staffpanel')
@@ -112,14 +111,14 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->delete('staff_panels_4');
         if ($result >= 1) {
             if ($user['class'] <= UC_MAX) {
-                $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
+                $page = '' . _('Page') . " '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
-                write_log("$page {$lang['spanel_in_the_sp_was']} $action by $user_bbcode");
+                write_log("$page " . _('in the staff panel was') . " $action by $user_bbcode");
             }
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         } else {
-            stderr($lang['spanel_error'], $lang['spanel_db_error_msg']);
+            stderr(_('Error'), _('There was a database error, please retry.'));
         }
     } elseif ($action === 'flush' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $cache->flushDB();
@@ -179,39 +178,39 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             ${$name} = (isset($_POST[$name]) ? $_POST[$name] : ($action === 'edit' ? $arr[$name] : ''));
         }
         if ($action === 'edit' && $user['class'] < $arr['av_class']) {
-            stderr($lang['spanel_error'], $lang['spanel_cant_edit_this_pg']);
+            stderr(_('Error'), _('You are not allowed to edit this page.'));
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             if (empty($page_name)) {
-                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
+                $errors[] = _('The page name') . ' ' . _('cannot be empty') . '.';
             }
             if (empty($file_name)) {
-                $errors[] = $lang['spanel_the_filename'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
+                $errors[] = _('The filename') . ' ' . _('cannot be empty') . '.';
             }
             if (empty($description)) {
-                $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_cannot_be_empty'] . '.';
+                $errors[] = _('The description') . ' ' . _('cannot be empty') . '.';
             }
             if (!isset($navbar)) {
-                $errors[] = 'Show in Navbar ' . $lang['spanel_cannot_be_empty'] . '.';
+                $errors[] = 'Show in Navbar ' . _('cannot be empty') . '.';
             }
             if (!in_array((int) $_POST['av_class'], $staff_classes)) {
-                $errors[] = $lang['spanel_selected_class_not_valid'];
+                $errors[] = _('The selected class is not a valid staff class.');
             }
             if (!empty($file_name) && !is_file($file_name . '.php') && !preg_match('/.php/', $file_name)) {
-                $errors[] = $lang['spanel_inexistent_php_file'];
+                $errors[] = _('Inexistent php file.');
             }
             if (!empty($page_name) && strlen($page_name) < 4) {
-                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_short_min_4'] . '.';
+                $errors[] = _('The page name') . ' ' . _('is too short (min 4 chars)') . '.';
             }
             if (!empty($page_name) && strlen($page_name) > 80) {
-                $errors[] = $lang['spanel_the_pg_name'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
+                $errors[] = _('The page name') . ' ' . _('is too long') . ' (' . _('max 80 chars') . ').';
             }
             if (!empty($file_name) && strlen($file_name) > 80) {
-                $errors[] = $lang['spanel_the_filename'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_80'] . ').';
+                $errors[] = _('The filename') . ' ' . _('is too long') . ' (' . _('max 80 chars') . ').';
             }
             if (strlen($description) > 100) {
-                $errors[] = $lang['spanel_the_descr'] . ' ' . $lang['spanel_is_too_long'] . ' (' . $lang['spanel_max_100'] . ').';
+                $errors[] = _('The description') . ' ' . _('is too long') . ' (' . _('max 100 chars') . ').';
             }
             if (empty($errors)) {
                 if ($action === 'add') {
@@ -263,15 +262,15 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         $cache->delete('staff_panels_' . $class['value']);
                     }
                     if (empty($res)) {
-                        $errors[] = $lang['spanel_db_error_msg'];
+                        $errors[] = _('There was a database error, please retry.');
                     }
                 }
                 if (empty($errors)) {
                     if ($user['class'] <= UC_MAX) {
-                        $page = "{$lang['spanel_page']} '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
+                        $page = '' . _('Page') . " '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = $action === 'add' ? 'added' : 'edited';
                         $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
-                        write_log("$page {$lang['spanel_in_the_sp_was']} $what by $user_bbcode");
+                        write_log("$page " . _('in the staff panel was') . " $what by $user_bbcode");
                     }
                     $session->set('is-success', "'{$page_name}' " . ucwords($action) . 'ed Successfully');
                     header('Location: ' . $_SERVER['PHP_SELF']);
@@ -280,7 +279,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
         }
         if (!empty($errors)) {
-            $HTMLOUT .= stdmsg($lang['spanel_there'] . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . $lang['spanel_in_the_form'] . '.', '<b>' . implode('<br>', $errors) . '</b>');
+            $HTMLOUT .= stdmsg(_('There') . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . _('in the form') . '.', '<b>' . implode('<br>', $errors) . '</b>');
             $HTMLOUT .= '<br>';
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
@@ -291,13 +290,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $header = "
                 <tr>
                     <th colspan='2'>
-                        " . ($action === 'edit' ? $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' Staffpage' . '
+                        <h2 class='has-text-centered'>" . ($action === 'edit' ? _f('Editing: %s', $page_name) : _('Add A New Staff Page')) . '</h2>
                     </th>
                 </tr>';
         $body = "
                 <tr>
                     <td class='rowhead'>
-                        {$lang['spanel_pg_name']}
+                        " . _('Page name') . "
                     </td>
                     <td>
                         <input type='text' class='w-100' name='page_name' value='{$page_name}' required>
@@ -305,7 +304,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['spanel_filename']}
+                        " . _('Filename') . "
                     </td>
                     <td>
                         <input type='text' class='w-100' name='file_name' value='{$file_name}' required>
@@ -313,7 +312,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['spanel_description']}
+                        " . _('Description') . "
                     </td>
                     <td>
                         <input type='text' class='w-100' name='description' value='{$description}' required>
@@ -338,7 +337,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
 
         $body .= "
                 <tr>
-                    <td class='rowhead'>{$lang['spanel_type_of_tool']}</td>
+                    <td class='rowhead'>" . _('Type Of Tool') . "</td>
                     <td>
                         <select name='type' required>
                             <option value=''>Choose Type</option>";
@@ -352,7 +351,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        <span>{$lang['spanel_available_for']}</span>
+                        <span>" . _('Available for') . "</span>
                         </td>
                     <td>
                         <select name='av_class' required>
@@ -372,34 +371,38 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $HTMLOUT .= main_table($body, $header);
         $HTMLOUT .= "
     <div class='level-center margin20'>
-            <input type='submit' class='button is-small' value='{$lang['spanel_submit']}'>
+            <input type='submit' class='button is-small' value='" . _('Submit') . "'>
         </form>
         <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-            <input type='submit' class='button is-small' value='{$lang['spanel_cancel']}'>
+            <input type='submit' class='button is-small' value='" . _('Cancel') . "'>
         </form>
     </div>";
-        echo stdhead($lang['spanel_header'] . ' :: ' . ($action == 'edit' ? '' . $lang['spanel_edit'] . ' "' . $page_name . '"' : $lang['spanel_add_a_new']) . ' page', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        $title = $action === 'edit' ? _('Edit Staff Page') : _('Add Staff Page');
+        $breadcrumbs = [
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     } else {
         $add_button = '';
         if (has_access($user['class'], UC_SYSOP, 'coder')) {
             $add_button = "
                 <ul class='level-center bg-06'>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=add' class='tooltipper' title='{$lang['spanel_add_a_new_pg']}'>{$lang['spanel_add_a_new_pg']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=add' class='tooltipper' title='" . _('Add A New Page') . "'>" . _('Add A New Page') . "</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='{$lang['spanel_clear_chat_caution']}'>{$lang['spanel_clear_chat']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='" . _('CAUTION: This DELETES all messages in AJAX Chat!') . "'>" . _('Clear Chat') . "</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=uglify' class='tooltipper' title='{$lang['spanel_uglify']}'>{$lang['spanel_uglify']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=uglify' class='tooltipper' title='" . _('Uglify') . "'>" . _('Uglify') . "</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='{$lang['spanel_flush_cache']}'>{$lang['spanel_flush_cache']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='" . _('Flush Cache') . "'>" . _('Flush Cache') . "</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=toggle_status' class='tooltipper' title='{$lang['spanel_toggle_status_title']}'>{$lang['spanel_toggle_status']}</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=toggle_status' class='tooltipper' title='" . _('Toggle Site Online/Offline') . "'>" . _('Toggle Site') . '</a>
                     </li>
-                </ul>";
+                </ul>';
         }
         $user_class = $user['class'] >= UC_STAFF ? $user['class'] : UC_MAX;
         $data = $fluent->from('staffpanel AS s')
@@ -416,17 +419,17 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
             $i = 1;
             $HTMLOUT .= "{$add_button}
-            <h1 class='has-text-centered'>{$lang['spanel_welcome']} {$user['username']} {$lang['spanel_to_the']} {$lang['spanel_header']}!</h1>";
+            <h1 class='has-text-centered'>" . _('Welcome') . " {$user['username']} " . _('to the') . ' ' . _('Staff Panel') . '!</h1>';
 
             $header = "
                     <tr>
-                        <th class='w-50'>{$lang['spanel_pg_name']}</th>
+                        <th class='w-50'>" . _('Page name') . "</th>
                         <th><div class='has-text-centered'>Show in Navbar</div></th>
-                        <th><div class='has-text-centered'>{$lang['spanel_added_by']}</div></th>
-                        <th><div class='has-text-centered'>{$lang['spanel_date_added']}</div></th>";
+                        <th><div class='has-text-centered'>" . _('Added by') . "</div></th>
+                        <th><div class='has-text-centered'>" . _('Date added') . '</div></th>';
             if ($user['class'] >= UC_MAX) {
                 $header .= "
-                        <th><div class='has-text-centered'>{$lang['spanel_links']}</div></th>";
+                        <th><div class='has-text-centered'>" . _('Links') . '</div></th>';
             }
             $header .= '
                     </tr>';
@@ -468,10 +471,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     $body .= "
                         <td>
                             <div class='level-center'>
-                                <a href='{$_SERVER['PHP_SELF']}?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_edit']}'>
+                                <a href='{$_SERVER['PHP_SELF']}?action=edit&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='" . _('Edit') . "'>
                                     <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                                 </a>
-                                <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='{$lang['spanel_delete']}'>
+                                <a href='{$_SERVER['PHP_SELF']}?action=delete&amp;id=" . (int) $arr['id'] . "' class='tooltipper' title='" . _('Delete') . "'>
                                     <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                                 </a>
                             </div>
@@ -487,8 +490,12 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 }
             }
         } else {
-            $HTMLOUT .= stdmsg($lang['spanel_sorry'], $lang['spanel_nothing_found']);
+            $HTMLOUT .= stdmsg(_('Sorry'), _('Nothing found.'));
         }
-        echo stdhead($lang['spanel_header'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+        $title = _('Staff Panel');
+        $breadcrumbs = [
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     }
 }

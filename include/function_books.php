@@ -85,11 +85,11 @@ function get_book_info(?string $isbn, ?string $name, ?int $tid, ?string $poster)
  * @param array $ebook
  * @param int   $api_hits
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool
  */
@@ -164,7 +164,7 @@ function format_ebook_html(array $ebook, int $api_hits)
                     </div>";
     }
 
-    if (!empty($user) && has_access($user['class'], UC_STAFF, 'coder')) {
+    if (!empty($user) && has_access((int) $user['class'], UC_STAFF, 'coder')) {
         $ebook_info .= "<div class='columns'>
                         <span class='has-text-danger column is-2 size_5 padding5'>API Hits: </span>
                         <span class='column padding5'>$api_hits</span>
@@ -209,8 +209,8 @@ function format_ebook_html(array $ebook, int $api_hits)
  * @param string|null $isbn
  * @param string|null $name
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
  */
@@ -229,11 +229,11 @@ function fetch_book_info(?string $isbn, ?string $name)
     $ebook = $cache->get('book_info_' . $hash);
     if ($ebook === false || is_null($ebook)) {
         $api_limit = 100;
-        if (!empty($site_config['api']['google'])) {
+        if (!empty($site_config['api']['google_books'])) {
             $api_limit = 1000;
         }
         if ($api_hits >= $api_limit) {
-            if (!empty($user) && has_access($user['class'], UC_STAFF, 'coder')) {
+            if (!empty($user) && has_access((int) $user['class'], UC_STAFF, 'coder')) {
                 return [
                     "
                 <div class='padding10'>

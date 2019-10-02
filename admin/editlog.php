@@ -8,7 +8,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('editlog'));
 global $site_config, $CURUSER;
 
 $HTMLOUT = '';
@@ -87,10 +86,10 @@ $HTMLOUT .= "
         <table class='table table-bordered table-striped'>
             <thead>
                 <tr>
-                    <th>{$lang['editlog_new']}</th>
-                    <th class='w-15'>{$lang['editlog_added']}</th>
+                    <th>" . _('New files added since last check.') . "</th>
+                    <th class='w-15'>" . _('Added.') . '</th>
                 </tr>
-            </thead>";
+            </thead>';
 reset($current);
 $count = 0;
 $current = array_msort($current, ['name' => SORT_ASC]);
@@ -109,8 +108,8 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_new']}</td>
-                </tr>";
+                    <td colspan='2' class='has-text-primary'>" . _('No new files added since last check.') . '</td>
+                </tr>';
 }
 $HTMLOUT .= "
         </table>
@@ -119,10 +118,10 @@ $HTMLOUT .= "
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
-                    <th>{$lang['editlog_modified']}</th>
-                    <th class='w-15'>{$lang['editlog_modified1']}</th>
+                    <th>" . _('Modified files since last check.') . "</th>
+                    <th class='w-15'>" . _('Modified.') . '</th>
                 </tr>
-            </thead>";
+            </thead>';
 reset($current);
 $count = 0;
 foreach ($current as $x) {
@@ -140,8 +139,8 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_modified']}</td>
-                </tr>";
+                    <td colspan='2' class='has-text-primary'>" . _('No files modified since last check.') . '</td>
+                </tr>';
 }
 $HTMLOUT .= "
         </table>
@@ -150,10 +149,10 @@ $HTMLOUT .= "
         <table class='table table-bordered table-striped top20'>
             <thead>
                 <tr>
-                    <th>{$lang['editlog_deleted']}</th>
-                    <th class='w-15'>{$lang['editlog_deleted1']}</th>
+                    <th>" . _('Files deleted since last check.') . "</th>
+                    <th class='w-15'>" . _('Deleted.') . '</th>
                 </tr>
-            </thead>";
+            </thead>';
 reset($current);
 $count = 0;
 foreach ($current as $x) {
@@ -171,15 +170,20 @@ foreach ($current as $x) {
 if (!$count) {
     $HTMLOUT .= "
                 <tr>
-                    <td colspan='2' class='has-text-primary'>{$lang['editlog_no_deleted']}</td>
-                </tr>";
+                    <td colspan='2' class='has-text-primary'>" . _('No files deleted since last check.') . '</td>
+                </tr>';
 }
 $HTMLOUT .= "
         </table>
         </div>
         <form method='post' action='staffpanel.php?tool=editlog&amp;action=editlog' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered top20 bottom20'>
-                <input name='update' type='submit' value='{$lang['editlog_update']}' class='button is-small'>
+                <input name='update' type='submit' value='" . _('Update') . "' class='button is-small'>
             </div>
         </form>";
-echo stdhead($lang['editlog_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('File Edit Log');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

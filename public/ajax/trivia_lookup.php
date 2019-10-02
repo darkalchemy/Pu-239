@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_trivia.php';
 $curuser = check_user_status();
-$lang = array_merge(load_language('global'), load_language('trivia'));
 global $container;
 
 header('content-type: application/json');
@@ -38,9 +37,9 @@ $user = $fluent->from('triviausers')
 $cleanup = trivia_time();
 if (!empty($user)) {
     if ($user['correct'] == 1) {
-        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>" . _('Awesome, that was the correct answer') . '</h3>';
     } else {
-        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>" . _('Sorry, that was not the correct answer') . '</h3>';
     }
     echo json_encode([
         'content' => $table . $answered . trivia_clocks(),

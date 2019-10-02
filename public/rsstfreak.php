@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
 $html = '';
-$lang = load_language('global');
 global $site_config;
 
 $use_limit = true;
@@ -60,4 +59,8 @@ foreach ($matches[1] as $match) {
     $html = str_replace($match, url_proxy($match, true), $html);
 }
 
-echo stdhead('Torrent freak news') . wrapper($html) . stdfoot();
+$title = _('TorrentFreak');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot();

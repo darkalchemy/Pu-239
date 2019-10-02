@@ -6,14 +6,15 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('chat'));
 global $site_config;
 
-$nick = $user ? $user['username'] : ('Guest' . random_int(1000, 9999));
-$irc_url = 'irc.p2p-network.net';
-$irc_channel = '#pu-239';
-$HTMLOUT = "
+$nick = $user ? $user['username'] : ('Guest_' . random_int(1000, 9999));
+$HTMLOUT = main_div("
     <div class='padding20'>
-    <p>{$lang['chat_channel']}<a href='irc://{$irc_url}'>{$irc_channel}</a> {$lang['chat_network']}</p>";
+    <p class='has-text-centered'>" . _fe('The official IRC channel is {0}#pu-239{1}</a></p>', "<a href='irc://irc.p2p-network.net'>", '</a>'));
 
-echo stdhead($lang['chat_chat']) . wrapper(main_div($HTMLOUT)) . stdfoot();
+$title = _('IRC');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

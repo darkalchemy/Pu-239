@@ -6,11 +6,10 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('blackjack'));
 global $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr($lang['bj_sorry'], 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
+    stderr(_('Sorry...'), 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
     exit;
 }
 /**
@@ -23,20 +22,18 @@ if ($user['class'] < $site_config['allowed']['play']) {
  */
 function bjtable($res, $frame_caption)
 {
-    global $lang;
-
     $htmlout = '';
     $htmlout .= begin_frame($frame_caption, true);
     $htmlout .= begin_table();
     $htmlout .= "<tr>
-    <td class='colhead'>Rank</td>
-    <td class='colhead'>{$lang['bj_user']}</td>
-    <td class='colhead has-text-right'>{$lang['bj_wins']}</td>
-    <td class='colhead has-text-right'>{$lang['bj_losses']}</td>
-    <td class='colhead has-text-right'>{$lang['bj_games']}</td>
-    <td class='colhead has-text-right'>{$lang['bj_percentage']}</td>
-    <td class='colhead has-text-right'>{$lang['bj_win_loss']}</td>
-    </tr>";
+    <td class='colhead'>" . _('Rank') . "</td>
+    <td class='colhead'>" . _('User') . "</td>
+    <td class='colhead has-text-right'>" . _('Wins') . "</td>
+    <td class='colhead has-text-right'>" . _('Losses') . "</td>
+    <td class='colhead has-text-right'>" . _('Games') . "</td>
+    <td class='colhead has-text-right'>" . _('Percentage') . "</td>
+    <td class='colhead has-text-right'>" . _('Win/Loss') . '</td>
+    </tr>';
     $num = 0;
     while ($a = mysqli_fetch_assoc($res)) {
         ++$num;
@@ -62,17 +59,21 @@ $HTMLOUT = '';
 $mingames = 10;
 $HTMLOUT .= '<br>';
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY games DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, "{$lang['bj_most']} {$lang['bj_games_played']}");
+$HTMLOUT .= bjtable($res, '' . _('Most') . ' ' . _('Games Played') . '');
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins / (bjwins + bjlosses) AS winperc FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winperc DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, $lang['bj_highest_win_per']);
+$HTMLOUT .= bjtable($res, _('Highest Win Percentage'));
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins - bjlosses AS winnings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winnings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, $lang['bj_most_credit_won']);
+$HTMLOUT .= bjtable($res, _('Most Credit Won'));
 $HTMLOUT .= '<br><br>';
 $res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjlosses - bjwins AS losings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY losings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, $lang['bj_most_credit_loss']);
+$HTMLOUT .= bjtable($res, _('Most Credit Lost'));
 $HTMLOUT .= '<br><br>';
-echo stdhead($lang['bj_blackjack_stats']) . $HTMLOUT . stdfoot();
+$title = _('Blackjack Stats');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

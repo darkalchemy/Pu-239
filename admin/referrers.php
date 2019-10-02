@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('referrers'));
 global $site_config;
 
 $HTMLOUT = '';
@@ -16,17 +15,17 @@ $res = sql_query('SELECT * FROM referrers') or sqlerr(__FILE__, __LINE__);
 $count = mysqli_num_rows($res);
 if ($count > 0) {
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>{$lang['ref_last']}</h1>";
-    $heading = "
+    <h1 class='has-text-centered'>" . _('Last referers') . '</h1>';
+    $heading = '
         <tr>
-            <th>{$lang['ref_nr']}</th>
-            <th>{$lang['ref_date']}</th>
-            <th>{$lang['ref_browser']}</th>
-            <th>{$lang['ref_ip']}</th>
-            <th>{$lang['ref_user']}</th>
-            <th>{$lang['ref_url']}</th>
-            <th>{$lang['ref_result']}</th>
-        </tr>";
+            <th>' . _('Nr.') . '</th>
+            <th>' . _('Date / Time') . '</th>
+            <th>' . _('Browser') . '</th>
+            <th>' . _('IP') . '</th>
+            <th>' . _('User') . '</th>
+            <th>' . _('URL') . '</th>
+            <th>' . _('Result') . '</th>
+        </tr>';
     $perpage = 10;
     $i = (int) $_GET['page'] * $perpage;
     $pager = pager($perpage, $count, 'staffpanel.php?tool=referrers&amp;');
@@ -47,7 +46,7 @@ if ($count > 0) {
             } elseif ((strstr($http_agent, 'Nav')) || (strstr($http_agent, 'Gold')) || (strstr($http_agent, 'X11')) || (strstr($http_agent, 'Mozilla')) || (strstr($http_agent, 'Netscape'))) {
                 $browser = "<img src='{$site_config['paths']['images_baseurl']}referrers/firefox.png' alt='FireFox' title='FireFox' width='25' height='25'>&#160;&#160;Mozilla";
             } else {
-                $browser = $lang['ref_unknow'];
+                $browser = _('Unknow Browser');
             }
             $body .= '
         <tr>
@@ -55,17 +54,21 @@ if ($count > 0) {
             <td>' . get_date((int) $data['date'], '') . '</td>
             <td>' . $browser . '</td>
             <td>' . htmlsafechars($data['ip']) . '</td>
-            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username((int) $data['uid']) : $lang['ref_guest']) . "</td>
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username((int) $data['uid']) : _('&#160;[Guest]')) . "</td>
             <td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], 50)) . "</a></td>
-            <td><a href='" . htmlsafechars($data['page']) . "'>{$lang['ref_view']}</a></td>
-        </tr>";
+            <td><a href='" . htmlsafechars($data['page']) . "'>" . _('page viewed') . '</a></td>
+        </tr>';
             $browser = '';
         }
     }
     $HTMLOUT .= main_table($body, $heading);
     $HTMLOUT .= $pager['pagerbottom'];
 } else {
-    $HTMLOUT .= stdmsg($lang['ref_nothing'], $lang['ref_nothing_1']);
+    $HTMLOUT .= stdmsg(_('Nothing found!'), _('Try again with a refined search string.'));
 }
-
-echo stdhead($lang['ref_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Referers');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

@@ -6,7 +6,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_index'));
 global $site_config;
 
 /**
@@ -16,12 +15,10 @@ global $site_config;
  */
 function is_s($n)
 {
-    global $lang;
-
     if ($n == 1) {
         return '';
     } else {
-        return $lang['index_load_s'];
+        return _('s');
     }
 }
 
@@ -30,21 +27,19 @@ function is_s($n)
  */
 function uptime()
 {
-    global $lang;
-
     $filename = '/proc/uptime';
     $fd = fopen($filename, 'r');
     if ($fd === false) {
-        $res = $lang['index_load_uptime'];
+        $res = _('Could not retrieve uptime');
     } else {
         $uptime = fgets($fd, 64);
         fclose($fd);
         $mults = [
-            4 => $lang['index_load_month'],
-            7 => $lang['index_load_week'],
-            24 => $lang['index_load_day'],
-            60 => $lang['index_load_hour'],
-            1 => $lang['index_load_minute'],
+            4 => _('month'),
+            7 => _('week'),
+            24 => _('day'),
+            60 => _('hour'),
+            1 => _('minute'),
         ];
         $n = 2419200;
         $shown = false;
@@ -77,12 +72,10 @@ function uptime()
  */
 function loadavg($return_all = false)
 {
-    global $lang;
-
     $filename = '/proc/loadavg';
     $fd = fopen($filename, 'r');
     if ($fd === false) {
-        $res = $lang['index_load_average'];
+        $res = _('Could not retrieve load average');
     } else {
         $loadavg = fgets($fd, 64);
         fclose($fd);
@@ -106,7 +99,7 @@ function loadavg($return_all = false)
 }
 
 $HTMLOUT = "
-    <h1 class='has-text-centered'>{$lang['index_serverload']}</h1>";
+    <h1 class='has-text-centered'>" . _('Server Load') . '</h1>';
 $body = "
     <div id='load' class='padding20'>
         <div style='width: 100%; height: 15px; background: url({$site_config['paths']['images_baseurl']}/loadbarbg.gif) repeat-x;' class='bottom20 round5'>";
@@ -123,31 +116,31 @@ $body .= "
         </div>
         <div class='padding20'>
             <span class='columns'>
-            <span class='column'>{$lang['index_load_curr']} </span><span class='has-text-success column has-text-right is-one-third'>{$percent}{$lang['index_load_cpu']}</span>
+            <span class='column'>" . _('Currently ') . " </span><span class='has-text-success column has-text-right is-one-third'>{$percent}" . _('&#37; CPU usage.') . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_uptime1']} </span><span class='has-text-success column has-text-right is-one-third'>" . uptime() . '</span>
+                <span class='column'>" . _('Uptime: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . uptime() . '</span>
             </span>';
 
 $loadinfo = loadavg(true);
 $body .= "
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
+                <span class='column'>" . _('Load average for processes running for the past minute: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin5']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
+                <span class='column'>" . _('Load average for processes running for the past 5 minutes: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pastmin15']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
+                <span class='column'>" . _('Load average for processes running for the past 15 minutes: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_numtsk']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
+                <span class='column'>" . _('Number of tasks currently running: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_numproc']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
+                <span class='column'>" . _('Number of processes currently running: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>{$lang['index_load_pid']} </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
+                <span class='column'>" . _('PID of last process executed: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
             </span>
         </div>
     </div>';
@@ -161,4 +154,9 @@ $HTMLOUT .= main_div($body) . "
         console.log(percent);
         console.log(width);
     </script>";
-echo stdhead($lang['index_serverload']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Server Load');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

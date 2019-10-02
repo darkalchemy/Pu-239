@@ -14,7 +14,11 @@ if (!empty($markdown)) {
     <h1 class='has-text-centered'>CHANGELOG</h1><div class='padding20 round10 bg-00'>" . $parsedown->parse($markdown) . '</div>';
     $HTMLOUT .= main_div($content, null, 'padding20');
 } else {
-    stderr('Error', 'No content');
+    stderr(_('Error'), 'No content');
 }
-
-echo stdhead() . wrapper($HTMLOUT) . stdfoot();
+$title = _('CHANGELOG Reader');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

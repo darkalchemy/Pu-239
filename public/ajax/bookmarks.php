@@ -6,7 +6,6 @@ use Pu239\Cache;
 use Pu239\Database;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
-$lang = load_language('bookmark');
 $user = check_user_status();
 global $container;
 
@@ -34,10 +33,10 @@ if ($private === 'true') {
 
     if ($bookmark === 'yes') {
         $private = 'no';
-        $text = $lang['bookmarks_private2'];
+        $text = _('Mark Bookmark Private!');
     } else {
         $private = 'yes';
-        $text = $lang['bookmarks_public2'];
+        $text = _('Mark Bookmark Public!');
     }
     $set = [
         'private' => $private,
@@ -74,7 +73,7 @@ if (!empty($bookmark)) {
     $cache->delete('bookmarks_' . $user['id']);
     echo json_encode([
         'content' => 'deleted',
-        'text' => $lang['bookmark_add'],
+        'text' => _('Add Bookmark'),
         'tid' => $tid,
         'remove' => $remove,
     ]);
@@ -90,7 +89,7 @@ if (!empty($bookmark)) {
     $cache->delete('bookmarks_' . $user['id']);
     echo json_encode([
         'content' => 'added',
-        'text' => $lang['bookmarks_del'],
+        'text' => _('Delete Bookmark'),
         'tid' => $tid,
         'remove' => $remove,
     ]);

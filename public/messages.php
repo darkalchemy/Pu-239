@@ -28,7 +28,6 @@ $stdfoot = [
         get_file_name('user_search_js'),
     ],
 ];
-$lang = array_merge(load_language('global'), load_language('takesignup'), load_language('pm'));
 $HTMLOUT = $count2 = $other_box_info = $maxpic = $maxbox = '';
 
 global $site_config;
@@ -54,7 +53,7 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'view_mailbox');
 if (!in_array($action, $possible_actions)) {
-    stderr($lang['pm_error'], $lang['pm_error_ruffian']);
+    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
 }
 
 $change_pm_number = isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : (isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 0);
@@ -75,17 +74,17 @@ $good_order_by = [
 ];
 $order_by = (isset($_GET['order_by']) ? htmlsafechars($_GET['order_by']) : 'added');
 if (!in_array($order_by, $good_order_by)) {
-    stderr($lang['pm_error'], $lang['pm_error_temp']);
+    stderr(_('Error'), _('Tempt not too much the hatred of my spirit, for I am sick when I do look on thee.'));
 }
 
 $top_links = '
     <div class="bottom20">
         <ul class="level-center bg-06">
-            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=search">' . $lang['pm_search'] . '</a></li>
-            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=edit_mailboxes">' . $lang['pm_manager'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=search">' . _('Search Messages') . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=edit_mailboxes">' . _('Mailbox Manager / PM settings') . '</a></li>
             <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
-            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=new_draft">' . $lang['pm_write_new'] . '</a></li>
-            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">' . $lang['pm_in_box'] . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=new_draft">' . _('Write New Draft') . '</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">' . _('Inbox') . '</a></li>
         </ul>
     </div>';
 
@@ -126,20 +125,20 @@ if (isset($_GET['show_pm_avatar'])) {
     die();
 }
 $session = $container->get(Session::class);
-isset($_GET['deleted']) ? $session->set('is-success', $lang['pm_deleted']) : null;
-isset($_GET['avatar']) ? $session->set('is-success', $lang['pm_avatar']) : null;
-isset($_GET['pm']) ? $session->set('is-success', $lang['pm_changed']) : null;
-isset($_GET['singlemove']) ? $session->set('is-success', $lang['pm_moved']) : null;
-isset($_GET['multi_move']) ? $session->set('is-success', $lang['pm_moved_s']) : null;
-isset($_GET['multi_delete']) ? $session->set('is-success', $lang['pm_deleted_s']) : null;
-isset($_GET['forwarded']) ? $session->set('is-success', $lang['pm_forwarded']) : null;
-isset($_GET['boxes']) ? $session->set('is-success', $lang['pm_box_added']) : null;
-isset($_GET['name']) ? $session->set('is-success', $lang['pm_box_updated']) : null;
-isset($_GET['new_draft']) ? $session->set('is-success', $lang['pm_draft_saved']) : null;
-isset($_GET['sent']) ? $session->set('is-success', $lang['pm_msg_sent']) : null;
-isset($_GET['pms']) ? $session->set('is-success', $lang['pm_msg_sett']) : null;
+isset($_GET['deleted']) ? $session->set('is-success', _('Message deleted!')) : null;
+isset($_GET['avatar']) ? $session->set('is-success', _('Avatars settings changed!')) : null;
+isset($_GET['pm']) ? $session->set('is-success', _('PMs per page settings changed!')) : null;
+isset($_GET['singlemove']) ? $session->set('is-success', _('Message moved!')) : null;
+isset($_GET['multi_move']) ? $session->set('is-success', _('Messages moved!')) : null;
+isset($_GET['multi_delete']) ? $session->set('is-success', _('Messages deleted!')) : null;
+isset($_GET['forwarded']) ? $session->set('is-success', _('Message forwarded!')) : null;
+isset($_GET['boxes']) ? $session->set('is-success', _('boxes added!')) : null;
+isset($_GET['name']) ? $session->set('is-success', _('box names updated!')) : null;
+isset($_GET['new_draft']) ? $session->set('is-success', _('draft saved!')) : null;
+isset($_GET['sent']) ? $session->set('is-success', _('message sent!')) : null;
+isset($_GET['pms']) ? $session->set('is-success', _('message setting updated!')) : null;
 
-$mailbox_name = ($mailbox === $site_config['pm']['inbox'] ? $lang['pm_inbox'] : ($mailbox === $site_config['pm']['sent'] ? $lang['pm_sentbox'] : ($mailbox === $site_config['pm']['deleted'] ? $lang['pm_deleted_box'] : $lang['pm_drafts'])));
+$mailbox_name = ($mailbox === $site_config['pm']['inbox'] ? _('Inbox') : ($mailbox === $site_config['pm']['sent'] ? _('Sentbox') : ($mailbox === $site_config['pm']['deleted'] ? _('Deleted') : _('Drafts'))));
 switch ($action) {
     case 'view_mailbox':
         require_once PM_DIR . 'view_mailbox.php';
@@ -206,7 +205,7 @@ switch ($action) {
  */
 function get_all_boxes(int $box, int $userid)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $cache = $container->get(Cache::class);
     $get_all_boxes = $cache->get('get_all_boxes_' . $userid);
@@ -225,11 +224,11 @@ function get_all_boxes(int $box, int $userid)
 
     $boxes = "
         <select name='boxx' class='margin10'>
-            <option value='10000'>{$lang['pm_search_move_to']}</option>" . ($box !== 1 ? "
-            <option value='1'>{$lang['pm_inbox']}</option>" : '') . ($box !== -1 ? "
-            <option value='-1'>{$lang['pm_sentbox']}</option>" : '') . ($box !== -2 ? "
-            <option value='-2'>{$lang['pm_drafts']}</option>" : '') . ($box !== 0 ? "
-            <option value='0'>{$lang['pm_deleted_box']}</option>" : '');
+            <option value='10000'>" . _('Move to') . '</option>' . ($box !== 1 ? "
+            <option value='1'>" . _('Inbox') . '</option>' : '') . ($box !== -1 ? "
+            <option value='-1'>" . _('Sentbox') . '</option>' : '') . ($box !== -2 ? "
+            <option value='-2'>" . _('Drafts') . '</option>' : '') . ($box !== 0 ? "
+            <option value='0'>" . _('Deleted') . '</option>' : '');
     if (!empty($get_all_boxes)) {
         foreach ($get_all_boxes as $boxx) {
             $boxes .= $box === (int) $boxx['boxnumber'] ? '' : "
@@ -254,7 +253,7 @@ function get_all_boxes(int $box, int $userid)
  */
 function insertJumpTo(int $mailbox, int $userid)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $cache = $container->get(Cache::class);
     $cache->delete('insertJumpTo_' . $userid);
@@ -264,12 +263,12 @@ function insertJumpTo(int $mailbox, int $userid)
         $insertJumpTo = '
             <form action="messages.php" method="get" accept-charset="utf-8">
                 <input type="hidden" name="action" value="view_mailbox">
-                <label for="box" class="right10">' . $lang['pm_jump_to'] . '</label>
+                <label for="box" class="right10">' . _('Jump to:') . '</label>
                 <select id="box" name="box" onchange="location=this.options[this.selectedIndex].value;">
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox === 1 ? 'selected' : '') . '>' . $lang['pm_inbox'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox === -1 ? 'selected' : '') . '>' . $lang['pm_sentbox'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox === -2 ? 'selected' : '') . '>' . $lang['pm_drafts'] . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . $lang['pm_deleted_box'] . '</option>';
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox === 1 ? 'selected' : '') . '>' . _('Inbox') . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox === -1 ? 'selected' : '') . '>' . _('Sentbox') . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox === -2 ? 'selected' : '') . '>' . _('Drafts') . '</option>
+                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . _('Deleted') . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
                     <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ($mailbox === (int) $row['boxnumber'] ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
@@ -282,5 +281,8 @@ function insertJumpTo(int $mailbox, int $userid)
 
     return $insertJumpTo;
 }
-
-echo stdhead($lang['pm_stdhead'], $stdhead) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot($stdfoot);
+$title = _('Mailbox');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

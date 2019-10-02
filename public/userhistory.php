@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 $curuser = check_user_status();
-$lang = array_merge(load_language('global'), load_language('userhistory'));
 global $container, $site_config, $curuser;
 
 $userid = !empty($_GET['id']) ? (int) $_GET['id'] : $curuser['id'];
@@ -19,10 +18,10 @@ if ($userid != $curuser['id']) {
     $user = $users_class->getUserFromId($userid);
 }
 if (!is_valid_id($userid)) {
-    stderr($lang['stderr_errorhead'], $lang['stderr_invalidid']);
+    stderr(_('Error'), _('Invalid User ID'));
 }
 if ($curuser['class'] == UC_MIN || ($curuser['id'] != $userid && $curuser['class'] < UC_STAFF)) {
-    stderr($lang['stderr_errorhead'], $lang['stderr_perms']);
+    stderr(_('Error'), _('Permission denied'));
 }
 $page = isset($_GET['page']) ? $_GET['page'] : '';
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'viewposts';
@@ -35,22 +34,22 @@ if ($action === 'viewposts') {
     $order_is = 'p.id DESC';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_noposts']);
+    $arr = mysqli_fetch_row($res) or stderr(_('Error'), _('No posts found'));
     $postcount = (int) $arr[0];
     $pager = pager($perpage, $postcount, "userhistory.php?action=viewposts&amp;id=$userid&amp;");
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {
-        $subject = $lang['posts_unknown'] . '[' . $userid . ']';
+        $subject = _('unknown') . '[' . $userid . ']';
     }
     $from_is = 'posts AS p LEFT JOIN topics as t ON p.topic_id=t.id LEFT JOIN forums AS f ON t.forum_id=f.id LEFT JOIN read_posts as r ON p.topic_id=r.topic_id AND p.user_id=r.user_id';
     $select_is = 'f.id AS f_id, f.name, t.id AS t_id, t.topic_name, t.last_post, r.last_post_read, p.*';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is ORDER BY $order_is {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        stderr($lang['stderr_errorhead'], $lang['top_noposts']);
+        stderr(_('Error'), _('No posts found'));
     }
-    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['top_posthfor']} $subject</h1>\n";
+    $HTMLOUT .= "<h1 class='has-text-centered'>" . _('Post history for') . " $subject</h1>\n";
     if ($postcount > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
@@ -69,13 +68,13 @@ if ($action === 'viewposts') {
         }
         $added = get_date((int) $arr['added'], '');
         $title = "
-        $added -- <b>{$lang['posts_forum']}: </b>
+        $added -- <b>" . _('Forum') . ": </b>
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id=$forumid'>$forumname</a>
-        -- <b>{$lang['posts_topic']}: </b>
+        -- <b>" . _('Topic') . ": </b>
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid'>$topicname</a>
-        -- <b>{$lang['posts_post']}: </b>
+        -- <b>" . _('Post') . ": </b>
         <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=p$postid#$postid'>#{$postid}</a>" . ($newposts ? "
-        <b>(<span class='has-text-danger'>{$lang['posts_new']}</span>)</b>" : '');
+        <b>(<span class='has-text-danger'>" . _('NEW!') . '</span>)</b>' : '');
         $body = format_comment($arr['body']);
 
         if (is_valid_id($editedby)) {
@@ -83,7 +82,7 @@ if ($action === 'viewposts') {
             $body .= "
                 <p>
                     <div class='size_4'>
-                        {$lang['posts_lasteditedby']} " . format_username($editedby) . " {$lang['posts_at']} " . get_date((int) $arr['edit_date'], 'LONG', 0, 1) . '
+                        " . _('Last edited by') . ' ' . format_username($editedby) . ' ' . _('at') . ' ' . get_date((int) $arr['edit_date'], 'LONG', 0, 1) . '
                     </div>
                 </p>';
         }
@@ -98,8 +97,11 @@ if ($action === 'viewposts') {
     if ($postcount > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
-    echo stdhead($lang['head_post']) . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $title = _('Posts Histroy');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } elseif ($action === 'viewcomments') {
     $select_is = 'COUNT(t.id)';
     $from_is = 'comments AS c LEFT JOIN torrents as t
@@ -108,21 +110,21 @@ if ($action === 'viewposts') {
     $order_is = 'c.id DESC';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is ORDER BY $order_is";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $arr = mysqli_fetch_row($res) or stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
+    $arr = mysqli_fetch_row($res) or stderr(_('Error'), _('No comments found'));
     $commentcount = (int) $arr[0];
     $pager = pager($perpage, $commentcount, "userhistory.php?action=viewcomments&amp;id=$userid&amp;");
     if (!empty($user)) {
         $subject = format_username((int) $user['id']);
     } else {
-        $subject = $lang['posts_unknown'] . '[' . $userid . ']';
+        $subject = _('unknown') . '[' . $userid . ']';
     }
     $select_is = 't.name, c.torrent AS t_id, c.id, c.added, c.text';
     $query = "SELECT $select_is FROM $from_is WHERE $where_is ORDER BY $order_is {$pager['limit']}";
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        stderr($lang['stderr_errorhead'], $lang['top_nocomms']);
+        stderr(_('Error'), _('No comments found'));
     }
-    $HTMLOUT .= "<h1 class='has-text-centered'>{$lang['top_commhfor']} $subject</h1>\n";
+    $HTMLOUT .= "<h1 class='has-text-centered'>" . _('Comments history for') . " $subject</h1>\n";
     if ($commentcount > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
@@ -144,17 +146,20 @@ if ($action === 'viewposts') {
         $HTMLOUT .= "
         <div class='portlet'>
             <h3 class='has-text-centered'>
-                $added --- <b>{$lang['posts_torrent']}: </b>" . ($torrent ? ("<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [{$lang['posts_del']}] ") . " --- <b>{$lang['posts_comment']}: </b>#<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
+                $added --- <b>" . _('Torrent:') . ': </b>' . ($torrent ? ("<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : ' [' . _('Deleted') . '] ') . ' --- <b>' . _('Comment') . ": </b>#<a href='{$site_config['paths']['baseurl']}/details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
             </h3>" . main_div($body, '', 'padding20') . '
         </div>';
     }
     if ($commentcount > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
-    echo stdhead($lang['head_comm']) . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $title = _('Comments History');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }
 if (empty($action)) {
-    stderr($lang['stderr_histerrhead'], $lang['stderr_unknownact']);
+    stderr(_('History Error'), _('Unknown action.'));
 }
-stderr($lang['stderr_histerrhead'], $lang['stderr_invalidq']);
+stderr(_('History Error'), _('Invalid or no query.'));

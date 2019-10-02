@@ -38,6 +38,7 @@ require_once CLASS_DIR . 'class_blocks_stdhead.php';
 require_once CLASS_DIR . 'class_blocks_userdetails.php';
 require_once CLASS_DIR . 'class_blocks_apis.php';
 require_once CACHE_DIR . 'block_settings_cache.php';
+require_once INCL_DIR . 'function_translate.php';
 
 if (!PRODUCTION) {
     $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
@@ -75,9 +76,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -104,9 +105,9 @@ function getip()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
  */
@@ -197,9 +198,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -231,11 +232,7 @@ function make_freeslots(int $userid, string $key, bool $clear)
  */
 function unesc($x)
 {
-    if (get_magic_quotes_gpc()) {
-        return stripslashes($x);
-    }
-
-    return $x;
+    return stripslashes($x);
 }
 
 /**
@@ -379,8 +376,11 @@ function searchfield($s)
  */
 function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null)
 {
-    echo stdhead() . stdmsg($heading, $text, $outer_class, $inner_class) . stdfoot();
-    die();
+    $title = _('Error');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page_wrapper', $breadcrumbs) . stdmsg($heading, $text, $outer_class, $inner_class) . stdfoot();
 }
 
 /**
@@ -403,8 +403,8 @@ function write_log($text)
 }
 
 /**
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return int
  */
@@ -422,9 +422,9 @@ function get_userid()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return float|int
  */
@@ -478,51 +478,13 @@ function CutName(string $txt, int $len = 40)
 }
 
 /**
- * @param string $file
- *
- * @throws DependencyException
- * @throws InvalidManipulation
- * @throws NotFoundException
- * @throws NotLoggedInException
- * @throws UnbegunTransaction
- * @throws \Envms\FluentPDO\Exception
- * @throws AuthError
- *
- * @return array|bool|string
- */
-function load_language($file = '')
-{
-    try {
-        $site_lang = get_language();
-        $lang = [];
-        $path = LANG_DIR . "{$site_lang}/lang_{$file}.php";
-        if (file_exists($path)) {
-            require $path;
-
-            return $lang;
-        }
-        $path = LANG_DIR . "1/lang_{$file}.php";
-        if (file_exists($path)) {
-            require $path;
-
-            return $lang;
-        }
-    } catch (Exception $e) {
-        return $e->getMessage();
-    }
-    stderr('System Error', "Can't find language file specified(user or site)");
-
-    return false;
-}
-
-/**
  * @param $table
  *
  * @throws Exception
  */
 function flood_limit($table)
 {
-    global $container, $site_config, $CURUSER, $lang;
+    global $container, $site_config, $CURUSER;
 
     $session = $container->get(Session::class);
     if (!file_exists($site_config['paths']['flood_file']) || !is_array($max = json_decode(file_get_contents($site_config['paths']['flood_file'])))) {
@@ -542,7 +504,7 @@ function flood_limit($table)
     }
 
     if ($last_post[1] > $max[$CURUSER['class']] && TIME_NOW - $last_post[0] < $site_config['flood']['time']) {
-        stderr($lang['gl_sorry'], $lang['gl_flood_msg'] . mkprettytime($site_config['flood']['time'] - (TIME_NOW - $last_post[0])));
+        stderr(_('Error'), _fe('Anti-Flood limit in effect - you need to wait - {0}', mkprettytime($site_config['flood']['time'] - (TIME_NOW - $last_post[0]))));
     }
 
     $count = $last_post[1] + 1;
@@ -724,12 +686,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
  * @throws NotLoggedInException
+ * @throws UnbegunTransaction
  *
  * @return bool|mixed|User
  */
@@ -798,8 +760,8 @@ function check_user_status(string $type = 'browse')
  * @param int         $class
  * @param string|null $role
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -863,9 +825,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -942,9 +904,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
  */
@@ -1048,7 +1010,6 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
 {
     global $container, $site_config;
 
-    $lang = load_language('takesignup');
     $validator = $container->get(Validator::class);
     $check = [
         'username' => $username,
@@ -1058,15 +1019,15 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     ]);
     if ($validation->fails()) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_username_length']}</div> 3 - 64 characters";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username too long or too short') . '</div> 3 - 64 characters';
             die();
         } else {
-            stderr($lang['takesignup_user_error'], $lang['takesignup_username_length']);
+            stderr(_('Error'), _('Username too long or too short'));
         }
     }
     if (!preg_match("/^[\p{L}\p{M}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_allowed_chars']}</div>";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Invalid characters users.') . '</div>';
             die();
         }
 
@@ -1074,7 +1035,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     }
     if (preg_match('/' . urldecode($username) . '/i', strtolower(implode('|', $site_config['site']['badwords'])))) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>{$lang['takesignup_badwords']}</div>";
+            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username not allowed.') . '</div>';
             die();
         }
 
@@ -1208,9 +1169,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|null
  */
@@ -1251,9 +1212,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|null
  */
@@ -1287,9 +1248,9 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return false|mixed|string
  */
@@ -1357,9 +1318,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -1388,9 +1349,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool|null $fresh
  * @param bool|null $async
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -1443,32 +1404,32 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 /**
  * @param bool $details
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string
  */
 function get_body_image(bool $details)
 {
-    global $container, $torrent;
+    global $container, $imdb_id;
 
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
     $image = '';
-    if ($details && !empty($torrent['imdb_id'])) {
-        $images = $cache->get('backgrounds_' . $torrent['imdb_id']);
+    if ($details && !empty($imdb_id)) {
+        $images = $cache->get('backgrounds_' . $imdb_id);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
                              ->select(null)
                              ->select('url')
                              ->where('type = "background"')
-                             ->where('imdb_id = ?', $torrent['imdb_id'])
+                             ->where('imdb_id = ?', $imdb_id)
                              ->fetchAll();
             if (!empty($images)) {
-                $cache->set('backgrounds_' . $torrent['imdb_id'], $images, 86400);
+                $cache->set('backgrounds_' . $imdb_id, $images, 86400);
             } else {
-                $cache->set('backgrounds_' . $torrent['imdb_id'], [], 3600);
+                $cache->set('backgrounds_' . $imdb_id, [], 3600);
             }
         }
 
@@ -1513,9 +1474,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed
  */

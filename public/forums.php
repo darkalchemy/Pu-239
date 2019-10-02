@@ -16,7 +16,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_user_options.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('forums'), load_language('forums_global'));
 global $container, $site_config;
 
 $image = placeholder_image();
@@ -33,7 +32,7 @@ $stdfoot = [
 ];
 $over_forum_id = $count = $now_viewing = $child_boards = '';
 if (!$site_config['forum_config']['online'] && !has_access($user['class'], UC_STAFF, 'coder')) {
-    stderr($lang['fm_information'], $lang['fm_the_forums_are_currently_offline']);
+    stderr(_('Information'), _('The forums are currently offline for maintainance work'));
 }
 $HTMLOUT = '';
 $fluent = $container->get(Database::class);
@@ -101,7 +100,7 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
     $HTMLOUT .= "
     <script>
         function confirm_delete(id) {
-            if(confirm('" . $lang['fm_are_you_sure_you_want_to_delete_this_forum?'] . "')) {
+            if(confirm('" . _('Are you sure you want to delete this forum?') . "')) {
                 self.location.href='staffpanel.php?tool=forum_manage&action=delete&id='+id;
             }
         }
@@ -111,81 +110,81 @@ $mini_menu = "
     <div class='bottom20'>
         <ul class='level-center bg-06'>" . ($action !== 'forum' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php'>{$lang['fe_forums_main']}</a>
-            </li>" : '') . ($action !== 'subscriptions' ? "
+                <a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Main Forums') . '</a>
+            </li>' : '') . ($action !== 'subscriptions' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php?action=subscriptions'>{$lang['fm_my_subscriptions']}</a>
-            </li>" : '') . ($action !== 'search' ? "
+                <a href='{$site_config['paths']['baseurl']}/forums.php?action=subscriptions'>" . _('My Subscriptions') . '</a>
+            </li>' : '') . ($action !== 'search' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php?action=search'>{$lang['fe_search']}</a>
-            </li>" : '') . ($action !== 'view_unread_posts' ? "
+                <a href='{$site_config['paths']['baseurl']}/forums.php?action=search'>" . _('Search') . '</a>
+            </li>' : '') . ($action !== 'view_unread_posts' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_unread_posts'>{$lang['fm_unread_posts']}</a>
-            </li>" : '') . ($action !== 'new_replies' ? "
+                <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_unread_posts'>" . _('Unread Posts') . '</a>
+            </li>' : '') . ($action !== 'new_replies' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php?action=new_replies'>{$lang['fm_new_replies']}</a>
-            </li>" : '') . ($action !== 'vew_my_posts' ? "
+                <a href='{$site_config['paths']['baseurl']}/forums.php?action=new_replies'>" . _('New Replies') . '</a>
+            </li>' : '') . ($action !== 'vew_my_posts' ? "
             <li class='margin10'>
-                <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_my_posts'>{$lang['fm_my_posts']}</a>
-            </li>" : '') . "
+                <a href='{$site_config['paths']['baseurl']}/forums.php?action=view_my_posts'>" . _('My Posts') . '</a>
+            </li>' : '') . "
             <li class='margin10'>
-        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_read'>{$lang['fm_mark_all_as_read']}</a>
+        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_read'>" . _('Mark All As Read') . "</a>
         	</li>
             <li class='margin10'>
-        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_unread'>{$lang['fm_mark_all_as_unread']}</a>
-        	</li>" . (has_access($user['class'], UC_SYSOP, 'coder') && $action !== 'member_post_history' ? "
+        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=mark_all_as_unread'>" . _('Mark All As Unread') . '</a>
+        	</li>' . (has_access($user['class'], UC_SYSOP, 'coder') && $action !== 'member_post_history' ? "
             <li class='margin10'>
-        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>{$lang['fm_member_post_history']}</a>
-        	</li>" : '') . '
+        	    <a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>" . _('Member Post History') . '</a>
+        	</li>' : '') . '
         </ul>
     </div>';
 
 $legend = main_table("
     <tr>
-        <td colspan='8'>{$lang['fm_legend']}</td>
+        <td colspan='8'>" . _('Legend') . "</td>
     </tr>
     <tr>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/unlockednew.gif' alt='unlockednew' title='{$lang['fm_unlocked_new']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_unread_forum']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/unlocked.gif' alt='unlocked' title='{$lang['fm_unlocked']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_read_forum']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topicnew.gif' alt='topicnew' title='{$lang['fe_new_topic']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_unread_post']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topic.gif' alt='topic' title='{$lang['fe_topic']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_read_post']}</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/unlockednew.gif' alt='unlockednew' title='" . _('Unlocked new') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Unread forum') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/unlocked.gif' alt='unlocked' title='" . _('Unlocked') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Read forum') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topicnew.gif' alt='topicnew' title='" . _('New Topic') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Unread post') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topic.gif' alt='topic' title='" . _('Topic') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Read post') . "</td>
     </tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/hot_topic_new.gif' alt='hot_topic_new' title='{$lang['fm_hot_topic_new']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_hot_topic_unread']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/hot_topic.gif' alt='hot_topic' title='{$lang['fm_hot_topic']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_hot_topic_more_than_30_replies']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/lockednew.gif' alt='lockednew' title='{$lang['fm_locked_new']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_locked_un-read']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/locked.gif' alt='locked' title='{$lang['fe_locked']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_locked']}</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/hot_topic_new.gif' alt='hot_topic_new' title='" . _('Hot Topic New') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Hot topic un-read') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/hot_topic.gif' alt='hot_topic' title='" . _('Hot Topic') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Hot topic [more than 30 replies]') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/lockednew.gif' alt='lockednew' title='" . _('Locked new') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Locked un-read') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/locked.gif' alt='locked' title='" . _('Locked') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Locked') . "</td>
 	</tr>
 	<tr>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/poll.gif' alt='poll' title='{$lang['fe_poll']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_poll']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/pinned.gif' alt='pinned' title='{$lang['fe_pinned']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_pinned']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/subscriptions.gif' alt='{$lang['fe_subscribed']}' title='{$lang['fe_subscribed']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_subscribed_to_thread']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/posted.gif' alt='posted' title='{$lang['fm_posted']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fm_you_have_posted_here']}</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/poll.gif' alt='poll' title='" . _('Poll') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Poll') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/pinned.gif' alt='pinned' title='" . _('Pinned') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Pinned') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/subscriptions.gif' alt='" . _('Subscribed') . "' title='" . _('Subscribed') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Subscribed to thread') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/posted.gif' alt='posted' title='" . _('Posted') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('You have posted here') . "</td>
 	</tr>
 	<tr>
         <td class='has-text-centered'>
-            <i class='icon-search icon tooltipper' aria-hidden='true' title='{$lang['fm_1st_post_preview']}'></i>
+            <i class='icon-search icon tooltipper' aria-hidden='true' title='" . _('1st Post Preview') . "'></i>
         </td>
-        <td>{$lang['fm_1st_post_preview']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/last_post.gif' alt='last post' title='{$lang['fe_last_post']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_last_post']}</td>
-        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topic_normal.gif' alt='{$lang['fe_thread_icon']}' title='{$lang['fe_thread_icon']}' class='tooltipper emoticon lazy'></td>
-        <td>{$lang['fe_thread_icon']}</td>
+        <td>" . _('1st Post Preview') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/last_post.gif' alt='last post' title='" . _('Last Post') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Last Post') . "</td>
+        <td class='has-text-centered'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/topic_normal.gif' alt='" . _('Thread Icon') . "' title='" . _('Thread Icon') . "' class='tooltipper emoticon lazy'></td>
+        <td>" . _('Thread Icon') . '</td>
         <td></td>
         <td></td>
-	</tr>");
+	</tr>');
 
 $poll_starts = isset($_POST['poll_starts']) ? (int) $_POST['poll_starts'] : 0;
 $poll_ends = isset($_POST['poll_ends']) ? (int) $_POST['poll_ends'] : 1356048000;
@@ -200,12 +199,12 @@ for ($i = 2; $i < 21; ++$i) {
 $accept_types = str_replace('|', ', ', $site_config['forum_config']['accepted_file_types']);
 $more_options = '
 <div id="staff_tools" ' . ((isset($_POST['poll_question']) && $_POST['poll_question'] !== '') ? '' : 'style="display:none"') . '>' . main_table(($user['class'] < $site_config['forum_config']['min_upload_class'] ? '' : '<tr>
-<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/attach.gif" alt="' . $lang['fm_attach'] . '" class="emoticon lazy"></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['fe_attachments'] . ':</span></td>
+<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/attach.gif" alt="' . _('Attach') . '" class="emoticon lazy"></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Attachments') . ':</span></td>
 <td>
-<input type="file" size="30" name="attachment[]" accept="' . $accept_types . '"> <a title="' . $lang['fm_add_more_attachments'] . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . $lang['fm_add_more_attachments'] . '</a>
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . $lang['fe_zip'] . '}" class="emoticon lazy tooltipper" title="Zip Files">
-<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . $lang['fe_rar'] . '" class="emoticon lazy tooltipper" title="Rar Files"><br>
+<input type="file" size="30" name="attachment[]" accept="' . $accept_types . '"> <a title="' . _('Add more attachments') . '"  id="more" style="white-space:nowrap;font-weight:bold;cursor:pointer;">' . _('Add more attachments') . '</a>
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/zip.gif" alt="' . _('Zip') . '}" class="emoticon lazy tooltipper" title="Zip Files">
+<img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/rar.gif" alt="' . _('Rar') . '" class="emoticon lazy tooltipper" title="Rar Files"><br>
 <div id="attach_more" style="display:none">
 <input type="file" size="30" name="attachment[]"><br>
 <input type="file" size="30" name="attachment[]"><br>
@@ -215,65 +214,65 @@ $more_options = '
 </tr>') . ((isset($_GET['action']) && $_GET['action'] != 'new_topic') ? '' : '<tr>
 <td></td>
 <td></td>
-<td><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="emoticon lazy">' . $lang['poll_add_poll_to_topic'] . '</span>
+<td><span style="white-space:nowrap;font-weight: bold;"> <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="" class="emoticon lazy">' . _('Add poll to topic') . '</span>
 </td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/question.png" alt="Question" class="emoticon lazy"></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_question'] . ':</span></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll question') . ':</span></td>
 <td><input type="text" name="poll_question" class="w-100" value="' . (isset($_POST['poll_question']) ? strip_tags($_POST['poll_question']) : '') . '"></td>
 </tr>
 <tr>
-<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/options.gif" alt="' . $lang['poll_answers'] . '" class="emoticon lazy"></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_answers'] . ':</span></td>
-<td><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . (isset($_POST['poll_answers']) ? strip_tags($_POST['poll_answers']) : '') . '</textarea><br>' . $lang['poll_one_option_per_line_min_2_op_max_20_options_bbcode_is_enabled.'] . '</td>
+<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/options.gif" alt="' . _('Poll answers') . '" class="emoticon lazy"></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll answers') . ':</span></td>
+<td><textarea cols="30" rows="4" name="poll_answers" class="text_area_small">' . (isset($_POST['poll_answers']) ? strip_tags($_POST['poll_answers']) : '') . '</textarea><br>' . _('One option per line. There is a minimum of 2 options, and a maximun of 20 options. BBcode is enabled.') . '</td>
 </tr>
 <tr>
-<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt=' . $lang['poll_starts'] . ' class="emoticon lazy"></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_starts'] . ':</span></td>
+<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/clock.png" alt=' . _('Poll starts') . ' class="emoticon lazy"></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll starts') . ':</span></td>
 <td><select name="poll_starts">
-<option value="0" ' . ($poll_starts === 0 ? 'selected' : '') . '>' . $lang['poll_start_now'] . '!</option>
-<option value="1" ' . ($poll_starts === 1 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . ($poll_starts === 2 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . ($poll_starts === 3 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . ($poll_starts === 4 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . ($poll_starts === 5 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . ($poll_starts === 6 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . ($poll_starts === 7 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
-</select>' . $lang['fm_when_to_start_the_poll'] . ' ' . $lang['poll_start_now'] . '!</td>
+<option value="0" ' . ($poll_starts === 0 ? 'selected' : '') . '>' . _('Start Now') . '!</option>
+<option value="1" ' . ($poll_starts === 1 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 1) . '</option>
+<option value="2" ' . ($poll_starts === 2 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 2) . '</option>
+<option value="3" ' . ($poll_starts === 3 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 3) . '</option>
+<option value="4" ' . ($poll_starts === 4 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 4) . '</option>
+<option value="5" ' . ($poll_starts === 5 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 5) . '</option>
+<option value="6" ' . ($poll_starts === 6 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 6) . '</option>
+<option value="7" ' . ($poll_starts === 7 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 16) . '</option>
+</select>' . _('When to start the poll. Default is: Start Now!') . '</td>
 </tr>
 <tr>
-<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop.png" alt=' . $lang['poll_ends'] . ' class="emoticon lazy"></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_ends'] . ':</span></td>
+<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/stop.png" alt=' . _('Poll ends') . ' class="emoticon lazy"></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll ends') . ':</span></td>
 <td><select name="poll_ends">
-<option value="1356048000" ' . ($poll_ends === 1356048000 ? 'selected' : '') . '>' . $lang['poll_run_forever'] . '</option>
-<option value="1" ' . ($poll_ends === 1 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_day'], '1') . '</option>
-<option value="2" ' . ($poll_ends === 2 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '2') . '</option>
-<option value="3" ' . ($poll_ends === 3 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '3') . '</option>
-<option value="4" ' . ($poll_ends === 4 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '4') . '</option>
-<option value="5" ' . ($poll_ends === 5 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '5') . '</option>
-<option value="6" ' . ($poll_ends === 6 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_days'], '6') . '</option>
-<option value="7" ' . ($poll_ends === 7 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_week'], '1') . '</option>
-<option value="14" ' . ($poll_ends === 14 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '2') . '</option>
-<option value="21" ' . ($poll_ends === 21 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_weeks'], '3') . '</option>
-<option value="28" ' . ($poll_ends === 28 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_month'], '1') . '</option>
-<option value="56" ' . ($poll_ends === 56 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '2') . '</option>
-<option value="84" ' . ($poll_ends === 84 ? 'selected' : '') . '>' . sprintf($lang['poll_in_x_months'], '3') . '</option>
+<option value="1356048000" ' . ($poll_ends === 1356048000 ? 'selected' : '') . '>' . _('Run Forever') . '</option>
+<option value="1" ' . ($poll_ends === 1 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 1) . '</option>
+<option value="2" ' . ($poll_ends === 2 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 2) . '</option>
+<option value="3" ' . ($poll_ends === 3 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 3) . '</option>
+<option value="4" ' . ($poll_ends === 4 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 4) . '</option>
+<option value="5" ' . ($poll_ends === 5 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 5) . '</option>
+<option value="6" ' . ($poll_ends === 6 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 6) . '</option>
+<option value="7" ' . ($poll_ends === 7 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 1) . '</option>
+<option value="14" ' . ($poll_ends === 14 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 2) . '</option>
+<option value="21" ' . ($poll_ends === 21 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 3) . '</option>
+<option value="28" ' . ($poll_ends === 28 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 1) . '</option>
+<option value="56" ' . ($poll_ends === 56 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 2) . '</option>
+<option value="84" ' . ($poll_ends === 84 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 3) . '</option>
 </select> How long should this poll run? Default is "run forever"</td>
 </tr>
 <tr>
-<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/multi.gif" alt=' . $lang['poll_multi_options'] . ' class="emoticon lazy"/></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_multi_options'] . ':</span></td>
+<td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/multi.gif" alt=' . _('Multi options') . ' class="emoticon lazy"/></td>
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Multi options') . ':</span></td>
 <td><select name="multi_options">
-<option value="1" ' . ($multi_options === 1 ? 'selected' : '') . '>' . $lang['poll_single_option'] . '!</option>
+<option value="1" ' . ($multi_options === 1 ? 'selected' : '') . '>' . _('Single option') . '!</option>
 ' . $options . '
-</select>' . $lang['fm_allow_members_to_have_more_then_one_selection'] . ' ' . $lang['poll_single_option'] . '}!</td>
+</select>' . _('Allow members to have more then one selection? Default is') . ' ' . _('Single option') . '}!</td>
 </tr>
 <tr>
 <td></td>
-<td><span style="white-space:nowrap;font-weight: bold;">' . $lang['poll_change_vote'] . ':</span></td>
-<td><input name="change_vote" value="yes" type="radio" ' . ($change_vote === 'yes' ? 'checked' : '') . '>' . $lang['fm_yes'] . '
-<input name="change_vote" value="no" type="radio" ' . ($change_vote === 'no' ? 'checked' : '') . '>' . $lang['fm_no'] . '<br> ' . $lang['fm_allow_members_to_change_their_vote'] . ' "no"
+<td><span style="white-space:nowrap;font-weight: bold;">' . _('Change vote') . ':</span></td>
+<td><input name="change_vote" value="yes" type="radio" ' . ($change_vote === 'yes' ? 'checked' : '') . '>' . _('Yes') . '
+<input name="change_vote" value="no" type="radio" ' . ($change_vote === 'no' ? 'checked' : '') . '>' . _('No') . '<br> ' . _('Allow members to change their vote? Default is') . ' "no"
 </td></tr>'), '', '', 'padding20') . '
 </div>';
 $forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
@@ -376,7 +375,7 @@ switch ($action) {
 
     case 'view_post_history':
         if (!has_access($user['class'], UC_STAFF, 'coder') && !has_access($user['class'], UC_STAFF, 'forum_mod')) {
-            stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
+            stderr(_('Error'), _('No access for you Mr. Fancy-Pants.'));
         }
         require_once FORUM_DIR . 'view_post_history.php';
         $HTMLOUT .= $the_bottom_of_the_page;
@@ -384,14 +383,14 @@ switch ($action) {
 
     case 'staff_actions':
         if (!has_access($user['class'], UC_STAFF, 'coder') && !has_access($user['class'], UC_STAFF, 'forum_mod')) {
-            stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
+            stderr(_('Error'), _('No access for you Mr. Fancy-Pants.'));
         }
         require_once FORUM_DIR . 'staff_actions.php';
         break;
 
     case 'staff_lock':
         if (!has_access($user['class'], UC_MAX, 'coder')) {
-            stderr('Error', $lang['fm_no_access_for_you_mr_fancy']);
+            stderr(_('Error'), _('No access for you Mr. Fancy-Pants.'));
         }
         require_once FORUM_DIR . 'stafflock_post.php';
         break;
@@ -494,12 +493,12 @@ switch ($action) {
 
                     if ($last_post_arr['tan'] === '1') {
                         if (!has_access($user['class'], UC_STAFF, 'coder') && $last_post_arr['user_id'] != $user['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . $lang['fe_last_post_by'] . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : $lang['fe_lost']) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -518,20 +517,20 @@ switch ($action) {
                                     ->orderBy('sort');
 
                     foreach ($query as $arr) {
-                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . $lang['fm_click_to_view'] . '!" class="is-link tooltipper">' . format_comment($arr['name']) . '</a>';
+                        $child_boards_cache[] = '<a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . (int) $arr['id'] . '" title="' . _('click to view') . '!" class="is-link tooltipper">' . format_comment($arr['name']) . '</a>';
                     }
                     $cache->set($keys['child_boards'], $child_boards_cache, $site_config['expires']['child_boards']);
                 }
                 $child_boards = '';
                 if (!empty($child_boards_cache)) {
-                    $child_boards = '<hr class="is-marginless"><div class="top10"><span class="size_3">' . $lang['sv_child_boards'] . ': </span>' . implode(', ', $child_boards_cache) . '</div>';
+                    $child_boards = '<hr class="is-marginless"><div class="top10"><span class="size_3">' . _('child boards') . ': </span>' . implode(', ', $child_boards_cache) . '</div>';
                 }
                 $body .= '
                     <tr class="min-600">
                         <td class="min-350 w-40">
                             <div class="level">
                                 <span class="level-left">
-                                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . $lang['fm_unlocked'] . '" class="tooltipper emoticon lazy right10">
+                                    <img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/' . $img . '.gif" alt="' . $img . '" title="' . _('Unlocked') . '" class="tooltipper emoticon lazy right10">
                                     ' . bubble('<a href="?action=view_forum&amp;forum_id=' . $arr_forums['real_forum_id'] . '">' . $forum_name . '</a>', $forum_description) . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? '
                                 </span>
                                 <span class="level-right">
@@ -552,7 +551,7 @@ switch ($action) {
                             <div>' . $forum_description . '</div>' . $child_boards . $now_viewing . '
                         </td>
                         <td class="min-150 w-25">
-                            <span>' . $post_count . ' ' . $lang['fe_posts'] . '<br>' . $topic_count . ' ' . $lang['fe_topics'] . '</span>
+                            <span>' . $post_count . ' ' . _('Posts') . '<br>' . $topic_count . ' ' . _('Topics') . '</span>
                         </td>
                         <td class="min-150 w-25"><span>' . $last_post . '</span></td>
                     </tr>';
@@ -586,13 +585,13 @@ switch ($action) {
             $cache->set('now_viewing_', $forum_users_cache, $site_config['expires']['forum_users']);
         }
         if (!$forum_users_cache['forum_users']) {
-            $forum_users_cache['forum_users'] = $lang['fm_there_have_been_no_active_users_in_the_last_15_minutes'];
+            $forum_users_cache['forum_users'] = _('There have been no active users in the last 15 minutes');
         }
 
         $forum_users = $forum_users_cache['forum_users'];
 
-        $body .= main_div("
-            <h2>{$lang['fm_members_currently_active']}</h2>
+        $body .= main_div('
+            <h2>' . _('Members currently active') . "</h2>
 	        <div class='padding10'>{$forum_users}</div>", 'bottom20 has-text-centered') . $legend;
         $HTMLOUT .= $body;
         break;
@@ -619,8 +618,8 @@ function highlightWords($text, $words)
 /**
  * @param $num
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return string|void
  */
@@ -641,16 +640,16 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return string
  */
 function insert_quick_jump_menu($current_forum = 0, $staff = false)
 {
-    global $container, $site_config, $user, $lang;
+    global $container, $site_config, $user;
 
     $cache = $container->get(Cache::class);
     $cachename = 'f_insertJumpTo_' . $user['id'] . ($staff ? '' : '_staff' === false);
@@ -680,7 +679,7 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
             <span>
                 <input type="hidden" name="action" value="view_forum">
                 <select name="forum_id" onchange="if (this.options[this.selectedIndex].value != -1) {forms[\'jump\'].submit()}">
-                    <option class="head" value="0">' . $lang['fm_select_a_forum_to_jump_to'] . '</option>' : '');
+                    <option class="head" value="0">' . _('Select a forum to jump to') . '</option>' : '');
 
     foreach ($qjcache as $arr) {
         if ($user['class'] >= $arr['min_class_read']) {
@@ -703,4 +702,8 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
     return $body;
 }
 
-echo stdhead($lang['fe_forums'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Forums');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

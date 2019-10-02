@@ -11,7 +11,6 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('userdetails'));
 header('content-type: application/json');
 global $container;
 
@@ -24,7 +23,7 @@ $type = $_POST['type'];
 if ($type === 'torrents') {
     $torrents = get_uploaded($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not uploaded any torrents'), null, 'padding20')]);
         die();
     }
     $data = maketable($torrents);
@@ -32,13 +31,13 @@ if ($type === 'torrents') {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div($lang['userdetails_no_upload'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not uploaded any torrents'), null, 'padding20')]);
         die();
     }
 } elseif ($type === 'seeding') {
     $torrents = get_seeding($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You are not seeding any torrents'), null, 'padding20')]);
         die();
     }
     $data = maketable($torrents);
@@ -46,13 +45,13 @@ if ($type === 'torrents') {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div($lang['userdetails_no_seed'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You are not seeding any torrents'), null, 'padding20')]);
         die();
     }
 } elseif ($type === 'leeching') {
     $torrents = get_leeching($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You are not leeching any torrents'), null, 'padding20')]);
         die();
     }
     $data = maketable($torrents);
@@ -60,13 +59,13 @@ if ($type === 'torrents') {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div($lang['userdetails_no_leech'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You are not leeching any torrents'), null, 'padding20')]);
         die();
     }
 } elseif ($type === 'snatched') {
     $torrents = get_snatched($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not downloaded any torrents'), null, 'padding20')]);
         die();
     }
     $data = snatchtable($torrents);
@@ -74,13 +73,13 @@ if ($type === 'torrents') {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not downloaded any torrents'), null, 'padding20')]);
         die();
     }
 } elseif ($type === 'snatched_staff' && $user['class'] >= UC_STAFF) {
     $torrents = get_snatched_staff($uid);
     if (!$torrents) {
-        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not downloaded any torrents'), null, 'padding20')]);
         die();
     }
     $data = staff_snatchtable($torrents, $uid);
@@ -88,7 +87,7 @@ if ($type === 'torrents') {
         echo json_encode(['content' => $data]);
         die();
     } else {
-        echo json_encode(['content' => main_div($lang['userdetails_no_snatch'], null, 'padding20')]);
+        echo json_encode(['content' => main_div(_('You have not downloaded any torrents'), null, 'padding20')]);
         die();
     }
 }
@@ -357,26 +356,26 @@ function get_snatched_staff(int $userid)
  */
 function maketable(array $torrents)
 {
-    global $site_config, $lang;
+    global $site_config;
 
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['userdetails_type']}</th>
-            <th>{$lang['userdetails_name']}</th>
-            <th>{$lang['userdetails_size']}</th>
-            <th>{$lang['userdetails_se']}</th>
-            <th>{$lang['userdetails_le']}</th>
-            <th>{$lang['userdetails_upl']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . "
-            <th>{$lang['userdetails_ratio']}</th>
-        </tr>";
+            <th>' . _('Type') . '</th>
+            <th>' . _('Name') . '</th>
+            <th>' . _('Size') . '</th>
+            <th>' . _('Se.') . '</th>
+            <th>' . _('Le.') . '</th>
+            <th>' . _('Upl.') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Downl.') . '</th>') . '
+            <th>' . _('Ratio') . '</th>
+        </tr>';
     $body = '';
     foreach ($torrents as $torrent) {
         if ($torrent['downloaded'] > 0) {
             $ratio = $torrent['uploaded'] / $torrent['downloaded'];
             $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'>" . number_format($ratio, 3) . '</span>';
         } elseif ($torrent['uploaded'] > 0) {
-            $ratio = $lang['userdetails_inf'];
+            $ratio = _('Inf.');
         } else {
             $ratio = '---';
         }
@@ -414,20 +413,20 @@ function maketable(array $torrents)
  */
 function snatchtable(array $torrents)
 {
-    global $site_config, $lang;
+    global $site_config;
 
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['userdetails_s_cat']}</th>
-            <th>{$lang['userdetails_s_torr']}</th>
-            <th>{$lang['userdetails_s_up']}</th>
-            <th>{$lang['userdetails_rate']}</th>" . ($site_config['site']['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_downl']}</th>") . ($site_config['site']['ratio_free'] ? '' : "
-            <th>{$lang['userdetails_rate']}</th>") . "
-            <th>{$lang['userdetails_ratio']}</th>
-            <th>{$lang['userdetails_activity']}</th>
-            <th>{$lang['userdetails_s_fin']}</th>
-        </tr>";
+            <th>' . _('Category') . '</th>
+            <th>' . _('Torrent') . '</th>
+            <th>' . _('Up') . '</th>
+            <th>' . _('Rate') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Downl.') . '</th>') . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Rate') . '</th>') . '
+            <th>' . _('Ratio') . '</th>
+            <th>' . _('Activity') . '</th>
+            <th>' . _('Finished') . '</th>
+        </tr>';
     $body = '';
     foreach ($torrents as $torrent) {
         $upspeed = $torrent['upspeed'] > 0 ? mksize($torrent['upspeed']) : ($torrent['seedtime'] > 0 ? mksize($torrent['uploaded'] / ($torrent['seedtime'] + $torrent['leechtime'])) : mksize(0));
@@ -449,8 +448,8 @@ function snatchtable(array $torrents)
             <td>$ratio</td>
             <td>" . mkprettytime($torrent['seedtime'] + $torrent['leechtime']) . '</td>
             <td>' . ($XBT_or_PHP_TIME != 0 ? "
-                <span class='has-text-success'><b>{$lang['userdetails_yes']}</b></span>" : "
-                <span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . '
+                <span class='has-text-success'><b>" . _('Yes') . '</b></span>' : "
+                <span class='has-text-danger'><b>" . _('No') . '</b></span>') . '
             </td>
         </tr>';
     }
@@ -471,18 +470,18 @@ function snatchtable(array $torrents)
  */
 function staff_snatchtable(array $torrents, int $userid)
 {
-    global $site_config, $lang;
+    global $site_config;
 
-    $heading = "
+    $heading = '
                     <tr>
-                        <th>{$lang['userdetails_s_cat']}</th>
-                        <th>{$lang['userdetails_s_torr']}</th>
-                        <th>{$lang['userdetails_s_sl']}</th>
-                        <th>{$lang['userdetails_s_up']}" . ($site_config['site']['ratio_free'] ? '' : $lang['userdetails_s_down']) . "</th>
-                        <th>{$lang['userdetails_s_tsize']}</th>
-                        <th>{$lang['userdetails_ratio']}</th>
-                        <th>{$lang['userdetails_client']}</th>
-                    </tr>";
+                        <th>' . _('Category') . '</th>
+                        <th>' . _('Torrent') . '</th>
+                        <th>' . _('S / L') . '</th>
+                        <th>' . _('Up') . '' . ($site_config['site']['ratio_free'] ? '' : _('/ Down')) . '</th>
+                        <th>' . _('Torrent Size') . '</th>
+                        <th>' . _('Ratio') . '</th>
+                        <th>' . _('Client') . '</th>
+                    </tr>';
     $body = '';
     foreach ($torrents as $arr) {
         if ($arr['upspeed'] > 0) {
@@ -518,9 +517,9 @@ function staff_snatchtable(array $torrents, int $userid)
         }
         if ($arr['downloaded'] > 0) {
             $ratio = $arr['uploaded'] / $arr['downloaded'];
-            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'><b>{$lang['userdetails_s_ratio']}</b><br>" . number_format($ratio, 3) . '</span>';
+            $ratio = "<span style='color: " . get_ratio_color($ratio) . ";'><b>" . _('Ratio:') . '</b><br>' . number_format($ratio, 3) . '</span>';
         } elseif ($arr['uploaded'] > 0) {
-            $ratio = $lang['userdetails_inf'];
+            $ratio = _('Inf.');
         } else {
             $ratio = 'N/A';
         }
@@ -528,36 +527,36 @@ function staff_snatchtable(array $torrents, int $userid)
         $body .= '
             <tr>
                 <td>' . ($arr['owner'] === $userid ? "
-                    <b><span class='is-orange'>{$lang['userdetails_s_towner']}</span></b><br>" : '' . ($arr['complete_date'] != '0' ? "
-                    <b><span class='is-lightgreen'>{$lang['userdetails_s_fin']}</span></b><br>" : "
-                    <b><span class='has-text-danger'>{$lang['userdetails_s_notfin']}</span></b><br>") . '') . $cat_info . "
+                    <b><span class='is-orange'>" . _('Torrent owner') . '</span></b><br>' : '' . ($arr['complete_date'] != '0' ? "
+                    <b><span class='is-lightgreen'>" . _('Finished') . '</span></b><br>' : "
+                    <b><span class='has-text-danger'>" . _('Not Finished') . '</span></b><br>') . '') . $cat_info . "
                 </td>
                 <td>
                     <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$arr['torrentid']}'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
-                    <span class='is-warning'>{$lang['userdetails_s_started']}" . get_date($arr['start_date'], 'LONG', 0, 1) . "</span><br>
-                    <span class='is-orange'>{$lang['userdetails_s_laction']} " . get_date($arr['last_action'], 'LONG', 0, 1) . '</span>' . ($arr['complete_date'] === 0 ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . "{$lang['userdetails_s_still']}]") : '') : '') . '<br>' . $lang['userdetails_s_finished'] . get_date($arr['complete_date'], 'LONG', 0, 1) . '' . ($arr['complete_date'] != 0 ? "<br>
-                    <span style='color: silver;'>{$lang['userdetails_s_ttod']}" . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
-                    <span style='color: $dlc'>[ {$lang['userdetails_s_dled']} $dl_speed ]</span><br>" : '<br>') . "
-                    <span class='is-lightblue'>" . ($arr['seedtime'] != '0' ? $lang['userdetails_s_tseed'] . mkprettytime($arr['seedtime']) . " </span>
-                    <span style='color: $dlc;'> " : $lang['userdetails_s_tseedn']) . "</span>
-                    <span class='is-lightgreen'> [ {$lang['userdetails_s_uspeed']} " . $ul_speed . ' ] </span>' . ($arr['complete_date'] == '0' ? "<br>
-                    <span style='color: $dlc;'>{$lang['userdetails_s_dspeed']}$dl_speed</span>" : '') . "
+                    <span class='is-warning'>" . _('started: ') . '' . get_date($arr['start_date'], 'LONG', 0, 1) . "</span><br>
+                    <span class='is-orange'>" . _('Last Action:') . ' ' . get_date($arr['last_action'], 'LONG', 0, 1) . '</span>' . ($arr['complete_date'] === 0 ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . '' . _(' still to go ') . ']') : '') : '') . '<br>' . _(' Finished: ') . get_date($arr['complete_date'], 'LONG', 0, 1) . '' . ($arr['complete_date'] != 0 ? "<br>
+                    <span style='color: silver;'>" . _('Time to download: ') . '' . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
+                    <span style='color: $dlc'>[ " . _(' DLed at: ') . " $dl_speed ]</span><br>" : '<br>') . "
+                    <span class='is-lightblue'>" . ($arr['seedtime'] != '0' ? _('Total seeding time: ') . mkprettytime($arr['seedtime']) . " </span>
+                    <span style='color: $dlc;'> " : _('Total seeding time: N/A')) . "</span>
+                    <span class='is-lightgreen'> [ " . _(' up speed: ') . ' ' . $ul_speed . ' ] </span>' . ($arr['complete_date'] == '0' ? "<br>
+                    <span style='color: $dlc;'>" . _('Download speed: ') . "$dl_speed</span>" : '') . '
                 </td>
-                <td>{$lang['userdetails_s_seed']}" . $arr['seeders'] . "<br>{$lang['userdetails_s_leech']}" . $arr['leechers'] . "</td>
+                <td>' . _('Seeds: ') . '' . $arr['seeders'] . '<br>' . _('Leechers: ') . '' . $arr['leechers'] . "</td>
                 <td>
-                    <span class='is-lightgreen'>{$lang['userdetails_s_upld']}<br><b>" . mksize($arr['uploaded']) . '</b></span>' . ($site_config['site']['ratio_free'] ? '' : "<br>
-                    <span class='is-orange'>{$lang['userdetails_s_dld']}<br><b>" . mksize($arr['downloaded']) . '</b></span>') . '
+                    <span class='is-lightgreen'>" . _('Uploaded: ') . '<br><b>' . mksize($arr['uploaded']) . '</b></span>' . ($site_config['site']['ratio_free'] ? '' : "<br>
+                    <span class='is-orange'>" . _('Downloaded: ') . '<br><b>' . mksize($arr['downloaded']) . '</b></span>') . '
                 </td>
-                <td>' . mksize($arr['size']) . ($site_config['site']['ratio_free'] ? '' : "<br>{$lang['userdetails_s_diff']}<br>
+                <td>' . mksize($arr['size']) . ($site_config['site']['ratio_free'] ? '' : '<br>' . _('Difference of:') . "<br>
                     <span class='is-orange'><b>" . mksize($arr['size'] - $arr['downloaded']) . '</b></span>') . '
                 </td>
                 <td>' . $ratio . '<br>' . ($arr['seeder'] === 'yes' ? "
-                    <span class='is-lightgreen'><b>{$lang['userdetails_s_seeding']}</b></span>" : "
-                    <span class='has-text-danger'><b>{$lang['userdetails_s_nseeding']}</b></span>") . '
+                    <span class='is-lightgreen'><b>" . _('seeding') . '</b></span>' : "
+                    <span class='has-text-danger'><b>" . _('Not seeding') . '</b></span>') . '
                 </td>
-                <td>' . (!empty($arr['agent']) ? htmlsafechars($arr['agent']) : '') . '<br>IP: ' . $arr['ip'] . "<br>{$lang['userdetails_s_port']}" . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? "<b>{$lang['userdetails_s_conn']}</b> 
-                    <span class='is-lightgreen'>{$lang['userdetails_yes']}</span>" : "<b>{$lang['userdetails_s_conn']}</b>
-                    <span class='has-text-danger'><b>{$lang['userdetails_no']}</b></span>") . '
+                <td>' . (!empty($arr['agent']) ? htmlsafechars($arr['agent']) : '') . '<br>IP: ' . $arr['ip'] . '<br>' . _('port: ') . '' . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? '<b>' . _('Connectable:') . "</b> 
+                    <span class='is-lightgreen'>" . _('Yes') . '</span>' : '<b>' . _('Connectable:') . "</b>
+                    <span class='has-text-danger'><b>" . _('No') . '</b></span>') . '
                 </td>
             </tr>';
     }

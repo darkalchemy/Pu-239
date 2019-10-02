@@ -24,22 +24,22 @@ if ($user) {
     <li>
         <a href='{$site_config['paths']['baseurl']}/lottery.php'>
             <b class='button tag is-success is-small dt-tooltipper-large' data-tooltip-content='#lottery_tooltip'>
-                Lottery in Progress
+                " . _('Lottery in Progress') . "
             </b>
             <div class='tooltip_templates'>
                 <div id='lottery_tooltip' class='margin20'>
                     <div>
                         <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                            Lottery Info
+                            " . _('Lottery Info') . "
                         </div>
                         <div class='level-wide is-marginless'>
-                            <div>Started at: </div><div>" . get_date((int) $lottery_info['start_date'], 'LONG') . "</div>
+                            <div>" . _('Started at') . ': </div><div>' . get_date((int) $lottery_info['start_date'], 'LONG') . "</div>
                         </div>
                         <div class='level-wide is-marginless'>
-                            <div class='right20'>Ends at: </div><div class='left20'>" . get_date((int) $lottery_info['end_date'], 'LONG') . "</div>
+                            <div class='right20'>" . _('Ends at') . ": </div><div class='left20'>" . get_date((int) $lottery_info['end_date'], 'LONG') . "</div>
                         </div>
                         <div class='level-wide is-marginless'>
-                            <div>Remaining: </div><div>" . mkprettytime($lottery_info['end_date'] - TIME_NOW) . '</div>
+                            <div>" . _('Remaining') . ': </div><div>' . mkprettytime($lottery_info['end_date'] - TIME_NOW) . '</div>
                         </div>
                     </div>
                 </div>

@@ -11,7 +11,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('inactive'));
 global $container, $CURUSER, $site_config;
 
 $HTMLOUT = '';
@@ -21,7 +20,7 @@ $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
-        $session->set('is-warning', $lang['inactive_selectuser']);
+        $session->set('is-warning', _('For this to work you must select at least a user!'));
     }
 
     if ($action === 'deluser' && (!empty($_POST['userid']))) {
@@ -34,12 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_log("User: $username Was deleted by {$CURUSER['username']}");
             }
         }
-        $session->set('is-success', $lang['inactive_deleted']);
+        $session->set('is-success', _('You have successfully deleted the selected accounts!'));
     }
 
     if ($action === 'disable' && (!empty($_POST['userid']))) {
         sql_query('UPDATE users SET status = 2 WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['userid'])) . ') ');
-        $session->set('is-success', $lang['inactive_disabled']);
+        $session->set('is-success', _('You have successfully disabled the selected accounts!'));
     }
 
     if ($action === 'mail' && (!empty($_POST['userid']))) {
@@ -50,20 +49,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $username = htmlsafechars($arr['username']);
             $added = get_date((int) $arr['registered'], 'DATE');
             $last_access = get_date((int) $arr['last_access'], 'DATE');
-            $body = doc_head($lang['inactive_youracc']) . "
+            $body = doc_head(_('Your account at ')) . '
 </head>
 <body>
-<p>{$lang['inactive_hey']} $username,</p>
-<p>{$lang['inactive_youracc']} {$site_config['site']['name']} {$lang['inactive_marked']} {$site_config['site']['name']}{$lang['inactive_plogin']}<br>
-{$lang['inactive_yourusername']} $username<br>
-{$lang['inactive_created']} $added<br>
-{$lang['inactive_lastaccess']} $last_access<br>
-{$lang['inactive_loginat']} {$site_config['paths']['baseurl']}/login.php<br>
-{$lang['inactive_forgotten']} {$site_config['paths']['baseurl']}/resetpw.php<br>
-{$lang['inactive_welcomeback']} {$site_config['site']['name']}</p>
+<p>' . _('Hey') . " $username,</p>
+<p>" . _('Your account at ') . " {$site_config['site']['name']} " . _(' has been marked as inactive and will be deleted. If you wish to remain a member at') . " {$site_config['site']['name']}" . _(', please login.') . '<br>
+' . _('Your username is :') . " $username<br>
+" . _('And was created :') . " $added<br>
+" . _('Last accessed :') . " $last_access<br>
+" . _('Login at :') . " {$site_config['paths']['baseurl']}/login.php<br>
+" . _('If you have forgotten your password you can retrieve it at') . " {$site_config['paths']['baseurl']}/resetpw.php<br>
+" . _('Welcome back!') . " {$site_config['site']['name']}</p>
 </body>
 </html>";
-            $mail = send_mail($arr['email'], "{$lang['inactive_youracc']}{$site_config['site']['name']}!", $body, strip_tags($body));
+            $mail = send_mail($arr['email'], '' . _('Your account at ') . "{$site_config['site']['name']}!", $body, strip_tags($body));
         }
 
         if ($record_mail) {
@@ -75,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if ($mail) {
-            $session->set('is-success', $lang['inactive_msgsent']);
+            $session->set('is-success', _('Messages sent.'));
         } else {
-            $session->set('is-error', $lang['inactive_tryagain']);
+            $session->set('is-error', _('Try again'));
         }
     }
 }
@@ -112,16 +111,16 @@ if ($count_inactive > 0) {
     </script>";
     $HTMLOUT .= "
     <div class='row'><div class='col-md-12'>
-    <h1 class='has-text-centered'>$count{$lang['inactive_accounts']} $days {$lang['inactive_days']}</h1>
+    <h1 class='has-text-centered'>$count" . _(' accounts inactive for longer than') . " $days " . _('days.') . "</h1>
     <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' enctype='multipart/form-data' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
-    <td class='colhead'>{$lang['inactive_username']}</td>
-    <td class='colhead'>{$lang['inactive_class']}</td>
-    <td class='colhead'>{$lang['inactive_mail']}</td>
-    <td class='colhead'>{$lang['inactive_ratio']}</td>
-    <td class='colhead'>{$lang['inactive_lastseen']}</td>
-    <td class='colhead'>{$lang['inactive_x']}</td></tr>";
+    <td class='colhead'>" . _('Username') . "</td>
+    <td class='colhead'>" . _('Class') . "</td>
+    <td class='colhead'>" . _('Email') . "</td>
+    <td class='colhead'>" . _('Ratio') . "</td>
+    <td class='colhead'>" . _('Last seen') . "</td>
+    <td class='colhead'>" . _('X') . '</td></tr>';
     while ($arr = mysqli_fetch_assoc($res)) {
         $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
         $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date((int) $arr['last_access'], 'DATE') . '&#160;');
@@ -138,23 +137,28 @@ if ($count_inactive > 0) {
     $HTMLOUT .= "<tr>
     <td colspan='6' class='colhead'>
     <select name='action'>
-    <option value='mail'>{$lang['inactive_sendmail']}</option>
-    <option value='deluser' " . (!has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder') ? 'disabled' : '') . ">{$lang['inactive_deleteusers']}</option>
-    <option value='disable'>{$lang['inactive_disaccounts']}</option>
-    </select>&#160;&#160;<input type='submit' name='submit' value='{$lang['inactive_apchanges']}' class='button is-small'>&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small'></td></tr>";
+    <option value='mail'>" . _('Send email') . "</option>
+    <option value='deluser' " . (!has_access($CURUSER['class'], UC_ADMINISTRATOR, 'coder') ? 'disabled' : '') . '>' . _('Delete users') . "</option>
+    <option value='disable'>" . _('Disable accounts') . "</option>
+    </select>&#160;&#160;<input type='submit' name='submit' value='" . _('Apply Changes') . "' class='button is-small'>&#160;&#160;<input type='button' value='Check all' onclick='this.value=check(form)' class='button is-small'></td></tr>";
     if ($record_mail) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>{$lang['inactive_lastmail']} " . format_username((int) $date['userid']) . " {$lang['inactive_on']} <b>" . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . "</b>{$lang['inactive_email']} " . ($date['mails'] > 1 ? 's' : '') . "  {$lang['inactive_sent']}</td></tr>";
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>" . _('Last Email sent by') . ' ' . format_username((int) $date['userid']) . ' ' . _('on') . ' <b>' . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . '</b>' . _(' Email') . ' ' . ($date['mails'] > 1 ? 's' : '') . '  ' . _('sent!') . '</td></tr>';
         }
     }
     $HTMLOUT .= '</table></form>';
     $HTMLOUT .= '</div></div>';
 } else {
-    $HTMLOUT .= stdmsg("<h2>{$lang['inactive_noaccounts']}</h2>", '<p>' . $days . " {$lang['inactive_days']}</p>");
+    $HTMLOUT .= stdmsg('<h2>' . _('No account inactive for longer than') . '</h2>', '<p>' . $days . ' ' . _('days.') . '</p>');
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['inactive_users']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Inactive Users');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

@@ -10,15 +10,14 @@ require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
 global $container, $site_config;
 
-$lang = load_language('global');
 $HTMLOUT = "
-        <h1 class='has-text-centered'>{$site_config['site']['name']} Arcade Top Scores!</h1>
+        <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Arcade Top Scores!') . "</h1>
         <div class='bottom10 has-text-centered'>
-            <div>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</div>
+            <div>" . _f('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</div>
             <div class='level-center top10'>
-                <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade.php'>Back to the Arcade</a>
+                <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade.php'>" . _('Back to the Arcade') . '</a>
             </div>
-        </div>";
+        </div>';
 
 $fluent = $container->get(Database::class);
 $scores = $fluent->from('flashscores')
@@ -69,10 +68,10 @@ $list = $site_config['arcade']['game_names'];
 sort($list);
 $heading = '
                     <tr>
-                        <th>Rank</th>
-                        <th>Name</th>
-                        <th>Level</th>
-                        <th>Score</th>
+                        <th>' . _('Rank') . '</th>
+                        <th>' . _('Name') . '</th>
+                        <th>' . _('Level') . '</th>
+                        <th>' . _('Score') . '</th>
                     </tr>';
 foreach ($list as $gname) {
     $game_id = array_search($gname, $site_config['arcade']['game_names']);
@@ -127,4 +126,9 @@ foreach ($list as $gname) {
     }
 }
 
-echo stdhead('Top Scores') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Top Scores');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

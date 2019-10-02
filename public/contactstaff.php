@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('contactstaff'));
 global $container;
 
 $stdhead = [
@@ -35,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $returnto = isset($_POST['returnto']) ? htmlsafechars($_POST['returnto']) : $_SERVER['PHP_SELF'];
     $fail = false;
     if (empty($msg)) {
-        $session->set('is-warning', $lang['contactstaff_no_msg']);
+        $session->set('is-warning', _("Your messages doesn't have a body"));
         $fail = true;
     }
     if (empty($subject)) {
-        $session->set('is-warning', $lang['contactstaff_no_sub']);
+        $session->set('is-warning', _("Your messages doesn't have a subject"));
         $fail = true;
     }
 
@@ -47,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $sql = 'INSERT INTO staffmessages (sender, added, msg, subject) VALUES(' . sqlesc($user['id']) . ', ' . TIME_NOW . ', ' . sqlesc($msg) . ', ' . sqlesc($subject) . ')';
         if (sql_query($sql)) {
             $cache->delete('staff_mess_');
-            $session->set('is-success', $lang['contactstaff_success_msg']);
+            $session->set('is-success', _('Message was sent! Wait for staff to respond now!'));
             header('Location: ' . $site_config['paths']['baseurl']);
         } else {
-            $session->set('is-warning', sprintf($lang['contactstaff_mysql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+            $session->set('is-warning', _f('There was something wrong, Mysql Err: %s') . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
         }
     }
 } else {
@@ -60,14 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tr>
                         <th colspan='2'>
                             <div class='has-text-centered'>
-                                <h1>{$lang['contactstaff_title']}</h1>
-                                <p class='small'>{$lang['contactstaff_info']}</p>
+                                <h1>" . _('Send message to staff') . "</h1>
+                                <p class='small'>" . _('If you wish to contact the staff due to a certain user or just a general problem please use this!') . "</p>
                             </div>
                         </th>
                     </tr>
                     <tr>
                         <th class='w-10'>
-                            {$lang['contactstaff_subject']}
+                            " . _('Subject') . "
                         </th>
                         <th>
                             <input type='text' name='subject' class='w-100'/>
@@ -82,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['contactstaff_sendit']}' class='button is-small'>
+                                <input type='submit' value='" . _('Send It!') . "' class='button is-small'>
                             </div>
                         </td>
                     </tr>";
@@ -95,6 +94,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $HTMLOUT .= '
             </form>';
-
-    echo stdhead($lang['contactstaff_header'], $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+    $title = _('Contact Staff');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 }

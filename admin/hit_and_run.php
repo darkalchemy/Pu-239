@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_hit_and_run'));
 global $site_config;
 
 $query = (isset($_GET['really_bad']) ? 'SELECT COUNT(id) FROM snatched LEFT JOIN users ON users.id=snatched.userid WHERE snatched.finished = \'yes\' AND snatched.hit_and_run>0 AND users.hit_and_run_total>2' : 'SELECT COUNT(id) FROM `snatched` WHERE `finished` = \'yes\' AND `hit_and_run`>0');
@@ -30,19 +29,19 @@ $hit_and_run_rez = sql_query($query_2) or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
             <ul class='level-center bg-06'>
                 <li class='is-link margin10'>
-                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run'>{$lang['hitnrun_show_current']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run'>" . _('show all current hit and runs') . "</a>
                 </li>
                 <li class='is-link margin10'>
-                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them'>{$lang['hitnrun_show_disabled']}</a>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=hit_and_run&amp;really_bad=show_them'>" . _('show disabled hit and runs') . "</a>
                 </li>
             </ul>
-            <h1 class='has-text-centered'>" . (!isset($_GET['really_bad']) ? $lang['hitnrun_chance'] : $lang['hitnrun_nochance']) . '</h1>' . ($count > $perpage ? '<p>' . $menu_top . '</p>' : '') . '
-        <table class="table table-bordered table-striped">' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td class="colhead">' . $lang['hitnrun_avatar'] . '</td>
-        <td class="colhead"><b>' . $lang['hitnrun_member'] . '</b></td>
-        <td class="colhead"><b>' . $lang['hitnrun_torrent'] . '</b></td>
-        <td class="colhead"><b>' . $lang['hitnrun_times'] . '</b></td>
-        <td class="colhead"><b>' . $lang['hitnrun_stats'] . '</b></td>
-        <td class="colhead">' . $lang['hitnrun_actions'] . '</td>' : '<tr><td><div class="padding20">' . $lang['hitnrun_none'] . '</div></td>') . '</tr>';
+            <h1 class='has-text-centered'>" . (!isset($_GET['really_bad']) ? _('Current Hit and Runs who still have a chance') : _('Hit and Runs with no chance')) . '</h1>' . ($count > $perpage ? '<p>' . $menu_top . '</p>' : '') . '
+        <table class="table table-bordered table-striped">' . (mysqli_num_rows($hit_and_run_rez) > 0 ? '<tr><td class="colhead">' . _('Avatar') . '</td>
+        <td class="colhead"><b>' . _('Member') . '</b></td>
+        <td class="colhead"><b>' . _('Torrent') . '</b></td>
+        <td class="colhead"><b>' . _('Times') . '</b></td>
+        <td class="colhead"><b>' . _('Stats') . '</b></td>
+        <td class="colhead">' . _('Actions') . '</td>' : '<tr><td><div class="padding20">' . _(' no hit and runners at the moment...') . '</div></td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     $Xbt_Seed = $hit_and_run_arr['seeder'] !== 'yes';
     $Uid_ID = (int) $hit_and_run_arr['userid'];
@@ -53,8 +52,8 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
         if ($Uid_ID !== $hit_and_run_arr['owner']) {
             $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['down']);
             $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['dload']);
-            $ratio_site = member_ratio($hit_and_run_arr['up'], $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio($hit_and_run_arr['uload'], $hit_and_run_arr['dload']);
+            $ratio_site = member_ratio((float) $hit_and_run_arr['up'], (float) $hit_and_run_arr['down']);
+            $ratio_torrent = member_ratio((float) $hit_and_run_arr['uload'], (float) $hit_and_run_arr['dload']);
             $avatar = get_avatar($hit_and_run_arr);
             $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
             switch (true) {
@@ -105,21 +104,26 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name((int) $hit_and_run_arr['class']) . ' ]
 </td>
             <td><a class="is-link" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
-            ' . $lang['hitnrun_leechers'] . '' . (int) $hit_and_run_arr['numleeching'] . '<br>
-            ' . $lang['hitnrun_seeders'] . ' ' . (int) $hit_and_run_arr['numseeding'] . '
+            ' . _('Leechers:') . ' ' . (int) $hit_and_run_arr['numleeching'] . '<br>
+            ' . _('Seeders:') . ' ' . (int) $hit_and_run_arr['numseeding'] . '
          </td>
-            <td>' . $lang['hitnrun_finished'] . ' ' . get_date($C_Date, 'LONG') . '<br>
-            ' . $lang['hitnrun_stopped'] . ' ' . get_date($hit_and_run_arr['hit_and_run'], '') . '<br>
-            ' . $lang['hitnrun_seeded'] . '' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
-            **' . $lang['hitnrun_still'] . ' ' . mkprettytime($minus_ratio) . '</td>
-            <td>' . $lang['hitnrun_uploaded'] . '' . mksize($hit_and_run_arr['uload']) . '<br>
-            ' . ($site_config['site']['ratio_free'] ? '' : $lang['hitnrun_downloaded'] . mksize($hit_and_run_arr['dload']) . '<br>') . '
-            ' . $lang['hitnrun_ratio'] . '<span style="color: "' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
-            ' . $lang['hitnrun_site_ratio'] . '<span style="color: "' . get_ratio_color($site_ratio) . '" title="' . $lang['hitnrun_includes'] . '">' . $ratio_site . '</font></td>
-            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . $lang['hitnrun_send'] . '"></a><br>
-            <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . $lang['hitnrun_shit'] . '"></a></td></tr>';
+            <td>' . _('Finished DL at:') . ' ' . get_date($C_Date, 'LONG') . '<br>
+            ' . _('Stopped seeding at:') . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
+            ' . _('Seeded for:') . ' ' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
+            **' . _('**Should still seed for:') . ' ' . mkprettytime($minus_ratio) . '</td>
+            <td>' . _('Uploaded:') . ' ' . mksize($hit_and_run_arr['uload']) . '<br>
+            ' . ($site_config['site']['ratio_free'] ? ' ' : _('Downloaded') . mksize($hit_and_run_arr['dload']) . '<br>') . '
+            ' . _('Torrent ratio:') . '<span style="color: " ' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
+            ' . _('Site ratio:') . ' <span style="color: "' . get_ratio_color($site_ratio) . '" title="' . _('includes all bonus and karma stuff') . '">' . $ratio_site . '</font></td>
+            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . _('send this mofo a PM and give them a piece of your mind...') . '"></a><br>
+            <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . _('Shit') . '"></a></td></tr>';
         }
     }
 }
 $HTMLOUT .= '</table>' . ($count > $perpage ? '<p>' . $menu_bottom . '</p>' : '');
-echo stdhead($lang['hitnrun_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Hit and Runs');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

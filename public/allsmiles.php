@@ -6,7 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $ontainer, $site_config;
 
 $body_class = 'background-16 skin-2';

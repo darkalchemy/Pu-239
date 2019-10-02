@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
 $image = placeholder_image();
-$lang = array_merge(load_language('global'), load_language('staff'));
 global $container, $site_config;
 
 $support = $mods = $admin = $sysop = [];
@@ -98,24 +97,31 @@ if (!empty($support)) {
                 <tr>
                     <td>' . format_username((int) $a['id']) . "</td>
                     <td><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}" . ($a['last_access'] > $dt ? 'online.png' : 'offline.png') . "' alt='' class='emoticon lazy'></td>
-                    <td><a href='{$site_config['paths']['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='{$lang['alt_pm']}'></i></a></td>
+                    <td><a href='{$site_config['paths']['baseurl']}messages.php?action=send_message&amp;receiver=" . (int) $a['id'] . "'><i class='icon-mail icon tooltipper' aria-hidden='true' title='" . _('Personal Message') . "'></i></a></td>
                     <td><img src='{$image}' data-src='$flagpic' alt='" . htmlsafechars($flagname) . "' class='emoticon lazy'></td>
                     <td>" . htmlsafechars($a['supportfor']) . '</td>
                 </tr>';
     }
     $htmlout .= "
-            <h2 class='left10 top20'>{$lang['header_fls']}</h2>";
+            <h2 class='left10 top20'>" . _('First Line Support') . '</h2>';
     $heading = "
                     <tr>
-                        <th class='staff_username' colspan='5'>{$lang['text_first']}<br><br></th>
+                        <th class='staff_username' colspan='5'>" . _('General support questions should be directed 
+to these users.<br>
+Note that they are volunteers, giving away their time and effort to help 
+you. Treat them accordingly. (Languages listed are those besides English.)') . "<br><br></th>
                     </tr>
                     <tr>
-                        <th class='staff_username'>{$lang['first_name']}</th>
-                        <th>{$lang['first_active']}</th>
-                        <th>{$lang['first_contact']}</th>
-                        <th>{$lang['first_lang']}</th>
-                        <th>{$lang['first_supportfor']}</th>
-                    </tr>";
+                        <th class='staff_username'>" . _('Username') . '</th>
+                        <th>' . _('Active') . '</th>
+                        <th>' . _('Contact') . '</th>
+                        <th>' . _('Language') . '</th>
+                        <th>' . _('Support for:') . '</th>
+                    </tr>';
     $htmlout .= main_table($body, $heading);
 }
-echo stdhead('Staff') . wrapper($htmlout) . stdfoot();
+$title = _('Staff');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();

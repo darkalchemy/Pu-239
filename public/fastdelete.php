@@ -11,15 +11,14 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('fastdelete'));
 global $container, $site_config;
 
 if ($user['class'] < UC_STAFF) {
-    stderr($lang['fastdelete_error'], $lang['fastdelete_no_acc']);
+    stderr(_('Error'), _('You do not have permission to do this.'));
 }
 
 if (!isset($_GET['id']) || !is_valid_id((int) $_GET['id'])) {
-    stderr($lang['fastdelete_error'], $lang['fastdelete_error_id']);
+    stderr(_('Error'), _('Invalid ID'));
 }
 
 $id = (int) $_GET['id'];
@@ -37,25 +36,26 @@ $tid = $fluent->from('torrents AS t')
               ->fetch();
 
 if (!$tid) {
-    stderr('Oops', 'Something went wrong - Contact admin!!');
+    stderr(_('Error'), _('Something went wrong!'));
 }
 
 $sure = isset($_GET['sure']) && (int) $_GET['sure'];
 if (!$sure) {
     $returnto = !empty($_GET['returnto']) ? '&amp;returnto=' . urlencode($_GET['returnto']) : '';
-    stderr($lang['fastdelete_sure'], sprintf($lang['fastdelete_sure_msg'], $returnto));
+    stderr(_('Security Check'), _fe('Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are.', "<a href='{$site_config['paths']['baseurl']}/fastdelete.php?id={$_GET['id']}&sure=1{$returnto}' class='is-link'>", '</a>'));
 }
+
 $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($tid['id']);
 $torrents_class->remove_torrent($tid['info_hash']);
 if ($user['id'] != $tid['owner']) {
-    $msg = sqlesc("{$lang['fastdelete_msg_first']} [b]{$tid['name']}[/b] {$lang['fastdelete_msg_last']} {$user['username']}");
+    $msg = sqlesc('' . _('Your upload') . " [b]{$tid['name']}[/b] " . _('has been deleted by') . " {$user['username']}");
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (2, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
-write_log("{$lang['fastdelete_log_first']} {$tid['name']} {$lang['fastdelete_log_last']} {$user['username']}");
+write_log('' . _('Torrent') . " {$tid['name']} " . _('was deleted by') . " {$user['username']}");
 $cache = $container->get(Cache::class);
 if ($site_config['bonus']['on']) {
-    $dt = sqlesc(TIME_NOW - (14 * 86400)); // lose karma if deleted within 2 weeks
+    $dt = sqlesc(TIME_NOW - (14 * 86400));
     if ($tid['added'] > $dt) {
         $sb = $tid['seedbonus'] - $site_config['bonus']['per_delete'];
         $set = [

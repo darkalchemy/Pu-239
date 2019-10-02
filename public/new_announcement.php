@@ -17,11 +17,10 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$lang = load_language('global');
 global $site_config;
 
 if ($user['class'] < UC_MAX) {
-    stderr('Error', "You're not authorised");
+    stderr(_('Error'), _("You're not authorised"));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -113,12 +112,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else { // Shouldn't be here
     header('HTTP/1.0 404 Not Found');
-    $HTMLOUT = '<h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME'], strrpos($_SERVER['SCRIPT_NAME'], '/') + 1) . " was not found on this server.</p>
+    $HTMLOUT = '<h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME']) . " was not found on this server.</p>
 <hr>
 <address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['paths']['baseurl']} Port 80</address></body></html>\n";
     echo $HTMLOUT;
     die();
 }
 
-$HTMLOUT = '';
-echo stdhead('New Announcement', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('New Announcement');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

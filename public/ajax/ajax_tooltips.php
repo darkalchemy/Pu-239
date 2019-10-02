@@ -8,7 +8,6 @@ require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('index'));
 
 global $container, $site_config;
 
@@ -22,18 +21,18 @@ if (!empty($user) && is_array($user)) {
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {
             case 1:
-                $connectable = "<img src='{$site_config['paths']['images_baseurl']}notcon.png' alt='{$lang['gl_not_connectable']}' class='tooltipper' title='{$lang['gl_not_connectable']}'>";
+                $connectable = "<img src='{$site_config['paths']['images_baseurl']}notcon.png' alt='" . _('Not Connectable') . "' class='tooltipper' title='" . _('Not Connectable') . "'>";
                 break;
 
             case 2:
-                $connectable = "<img src='{$site_config['paths']['images_baseurl']}yescon.png' alt='{$lang['gl_connectable']}' class='tooltipper' title='{$lang['gl_connectable']}'>";
+                $connectable = "<img src='{$site_config['paths']['images_baseurl']}yescon.png' alt='" . _('Connectable') . "' class='tooltipper' title='" . _('Connectable') . "'>";
                 break;
 
             default:
-                $connectable = $lang['gl_na_connectable'];
+                $connectable = _('N/A');
         }
     } else {
-        $connectable = $lang['gl_na_connectable'];
+        $connectable = _('N/A');
     }
 
     if ($user['override_class'] != 255) {
@@ -46,49 +45,49 @@ if (!empty($user) && is_array($user)) {
     $member_reputation = get_reputation($user);
 
     $StatusBar = "
-    <span class='navbar-start'>{$lang['gl_pstats']}</span>
+    <span class='navbar-start'>" . _(':: Personal Stats') . "</span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_uclass']}</span>
+        <span class='navbar-start'>" . _('User Class') . "</span>
         <span>{$usrclass}</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_rep']}</span>
+        <span class='navbar-start'>" . _('Reputation') . "</span>
         <span>$member_reputation</span>
     </span>
 
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_invites']}</span>
+        <span class='navbar-start'>" . _('Invites') . "</span>
         <span><a href='{$site_config['paths']['baseurl']}/invite.php'>{$user['invites']}</a></span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_karma']}</span>
+        <span class='navbar-start'>" . _('Karma Store') . "</span>
         <span><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . number_format((float) $user['seedbonus']) . "</a></span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_achpoints']}</span>
+        <span class='navbar-start'>" . _('Achievements') . "</span>
         <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}'>" . $user['achpoints'] . "</a></span>
     </span>
     <br>
-    <span class='navbar-start' id='hide_html'>{$lang['gl_tstats']}</span>
+    <span class='navbar-start' id='hide_html'>" . _(':: Torrent Stats') . "</span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_shareratio']}</span>
-        <span>" . member_ratio($user['uploaded'], $user['downloaded']) . '</span>
+        <span class='navbar-start'>" . _('Share Ratio') . '</span>
+        <span>' . member_ratio($user['uploaded'], $user['downloaded']) . '</span>
     </span>';
 
     if ($site_config['site']['ratio_free']) {
         $StatusBar .= "
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_uploaded']}</span>
+        <span class='navbar-start'>" . _('Uploaded') . "</span>
         <span>$upped</span>
     </span>";
     } else {
         $StatusBar .= "
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_uploaded']}</span>
+        <span class='navbar-start'>" . _('Uploaded') . "</span>
         <span>$upped</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_downloaded']}</span>
+        <span class='navbar-start'>" . _('Downloaded') . "</span>
         <span>$downed</span>
     </span>";
     }
@@ -96,28 +95,28 @@ if (!empty($user) && is_array($user)) {
     $got_moods = ($user['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
     $StatusBar .= "
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_seed_torrents']}</span>
+        <span class='navbar-start'>" . _('Uploading Files') . "</span>
         <span>{$seed['yes']}</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_leech_torrents']}</span>
+        <span class='navbar-start'>" . _('Downloading Files') . "</span>
         <span>{$seed['no']}</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_connectable']}</span>
+        <span class='navbar-start'>" . _('Connectable') . "</span>
         <span>{$connectable}</span>
     </span>
     " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' ? "
     <br>
-    <span class='navbar-start'>{$lang['gl_userblocks']}</span>
+    <span class='navbar-start'>" . _('User Blocks') . "</span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_myblocks']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>{$lang['gl_click']}</a></span>" : '') . '
+        <span class='navbar-start'>" . _('My Blocks') . "</span>
+        <span><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>" . _('Click here') . '</a></span>' : '') . '
     </span>
     ' . ($user['class'] >= UC_STAFF || $got_moods ? "
     <span class='level is-marginless'>
-        <span class='navbar-start'>{$lang['gl_myunlocks']}</span>
-        <span><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>{$lang['gl_click']}</a></span>" : '') . '
+        <span class='navbar-start'>" . _('My Unlocks') . "</span>
+        <span><a href='{$site_config['paths']['baseurl']}/user_unlocks.php'>" . _('Click here') . '</a></span>' : '') . '
     </span>';
 
     echo json_encode($StatusBar);

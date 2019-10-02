@@ -14,7 +14,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_stats_extra'));
 $inbound = $_GET;
 unset($inbound['page']);
 if (!isset($inbound['mode'])) {
@@ -22,18 +21,18 @@ if (!isset($inbound['mode'])) {
 }
 $form_code = '';
 $month_names = [
-    1 => $lang['stats_ex_jan'],
-    $lang['stats_ex_jan'],
-    $lang['stats_ex_feb'],
-    $lang['stats_ex_mar'],
-    $lang['stats_ex_apr'],
-    $lang['stats_ex_may'],
-    $lang['stats_ex_jun'],
-    $lang['stats_ex_jul'],
-    $lang['stats_ex_sep'],
-    $lang['stats_ex_oct'],
-    $lang['stats_ex_nov'],
-    $lang['stats_ex_dec'],
+    1 => _('January'),
+    _('January'),
+    _('February'),
+    _('March'),
+    _('April'),
+    _('May'),
+    _('June'),
+    _('July'),
+    _('September'),
+    _('October'),
+    _('November'),
+    _('December'),
 ];
 switch ($inbound['mode']) {
     case 'show_reg':
@@ -113,9 +112,9 @@ switch ($inbound['mode']) {
  */
 function show_views(array $inbound, array $month_names)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
-    $page_title = $lang['stats_ex_ptitle'];
+    $page_title = _('Statistic Center Results');
     $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
     $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
     $human_to_date = getdate($to_time - 86400);
@@ -154,18 +153,18 @@ function show_views(array $inbound, array $month_names)
     $max_result = 0;
     $results = [];
     $menu = make_side_menu();
-    $heading = "{$lang['stats_ex_topicv']} ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} {$lang['stats_ex_topict']} {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
+    $heading = '' . _('Topic Views') . " ({$human_from_date['mday']} {$month_names[$human_from_date['mon']]} {$human_from_date['year']} " . _(' to ') . " {$human_to_date['mday']} {$month_names[$human_to_date['mon']]} {$human_to_date['year']})";
     $htmlout = $menu . "
-        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <h1 class='has-text-centered'>" . _('Statistics Center') . "</h1>
         <div class='has-text-centered padding20 bg-02 round10 bottom20 size_5'>
             $heading
         </div>";
-    $table_heading = "
+    $table_heading = '
             <tr>
-                <th>{$lang['stats_ex_forum_name']}</th>
-                <th>{$lang['stats_ex_result']}</th>
-                <th>{$lang['stats_ex_count']}</th>
-            </tr>";
+                <th>' . _('Forum Name') . '</th>
+                <th>' . _('Result') . '</th>
+                <th>' . _('Count') . '</th>
+            </tr>';
 
     $body = '';
     if ($count > 0) {
@@ -198,23 +197,26 @@ function show_views(array $inbound, array $month_names)
                 <td class='has-text-centered'>{$data['result_count']}</td>
             </tr>";
         }
-        $body .= "
+        $body .= '
             <tr>
                 <td></td>
                 <td>
-                    <div><b>{$lang['stats_ex_total']}</b></div>
+                    <div><b>' . _('Total') . "</b></div>
                 </td>
                 <td class='has-text-centered'><b>{$running_total}</b></td>
             </tr>";
     } else {
         $body .= "
             <tr>
-                <td colspan='3'>{$lang['stats_ex_noresult']}</td>
-            </tr>";
+                <td colspan='3'>" . _('No results found') . '</td>
+            </tr>';
     }
     $htmlout .= $pagertop . main_table($body, $table_heading) . $pagerbottom;
-
-    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
+    ];
+    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -230,49 +232,49 @@ function show_views(array $inbound, array $month_names)
  */
 function result_screen(string $mode, array $inbound, array $month_names)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
-    $page_title = $lang['stats_ex_center_result'];
+    $page_title = _('Statistic Center Results');
     $table = $page_detail = $sql_table = $sql_field = '';
     $from_time = strtotime("MIDNIGHT {$inbound['olddate']}");
     $to_time = strtotime("MIDNIGHT {$inbound['newdate']}") + 86400;
     $human_to_date = getdate($to_time - 86400);
     $human_from_date = getdate($from_time);
     if ($mode === 'reg') {
-        $table = $lang['stats_ex_registr'];
+        $table = _('Registration Statistics');
         $sql_table = 'users';
         $sql_field = 'registered';
-        $page_detail = $lang['stats_ex_rdetails'];
+        $page_detail = _('Showing the number of users registered.');
     } elseif ($mode === 'topic') {
-        $table = $lang['stats_ex_newtopicst'];
+        $table = _('New Topic Statistics');
         $sql_table = 'topics';
         $sql_field = 'added';
-        $page_detail = $lang['stats_ex_topdetails'];
+        $page_detail = _('Showing the number of topics started.');
     } elseif ($mode === 'post') {
-        $table = $lang['stats_ex_poststs'];
+        $table = _('Post Statistics');
         $sql_table = 'posts';
         $sql_field = 'added';
-        $page_detail = $lang['stats_ex_postdetails'];
+        $page_detail = _('Showing the number of posts.');
     } elseif ($mode === 'msg') {
-        $table = $lang['stats_ex_pmsts'];
+        $table = _('PM Sent Statistics');
         $sql_table = 'messages';
         $sql_field = 'added';
-        $page_detail = $lang['stats_ex_pmdetails'];
+        $page_detail = _('Showing the number of sent messages.');
     } elseif ($mode === 'comms') {
-        $table = $lang['stats_ex_commsts'];
+        $table = _('Comment Statistics');
         $sql_table = 'comments';
         $sql_field = 'added';
-        $page_detail = $lang['stats_ex_cdetails'];
+        $page_detail = _('Showing the number of sent comments.');
     } elseif ($mode === 'torrents') {
-        $table = $lang['stats_ex_torrsts'];
+        $table = _('Torrents Statistics');
         $sql_table = 'torrents';
         $sql_field = 'added';
-        $page_detail = $lang['stats_ex_tordetails'];
+        $page_detail = _('Showing the number of Torrents.');
     } elseif ($mode === 'reps') {
-        $table = $lang['stats_ex_repsts'];
+        $table = _('Reputation Statistics');
         $sql_table = 'reputation';
         $sql_field = 'dateadd';
-        $page_detail = $lang['stats_ex_repdetails'];
+        $page_detail = _('Showing the number of Reputations.');
     }
     switch ($inbound['timescale']) {
         case 'daily':
@@ -327,17 +329,17 @@ function result_screen(string $mode, array $inbound, array $month_names)
     $menu = make_side_menu();
 
     $htmlout = $menu . "
-        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <h1 class='has-text-centered'>" . _('Statistics Center') . "</h1>
         <div class='has-text-centered padding20 bg-02 round10 bottom20 size_5'>
             {$heading}<br><br>
             {$page_detail}
         </div>";
-    $table_heading = "
+    $table_heading = '
             <tr>
-                <th>{$lang['stats_ex_date']}</th>
-                <th>{$lang['stats_ex_result']}</th>
-                <th>{$lang['stats_ex_count']}</th>
-            </tr>";
+                <th>' . _('Date') . '</th>
+                <th>' . _('Result') . '</th>
+                <th>' . _('Count') . '</th>
+            </tr>';
     foreach ($query as $row) {
         if ($row['result_count'] > $max_result) {
             $max_result = $row['result_count'];
@@ -375,23 +377,26 @@ function result_screen(string $mode, array $inbound, array $month_names)
                 <td class='has-text-centered'>{$data['result_count']}</td>
             </tr>";
         }
-        $body .= "
+        $body .= '
             <tr>
                 <td></td>
                 <td>
-                    <div><b>{$lang['stats_ex_total']}</b></div>
+                    <div><b>' . _('Total') . "</b></div>
                 </td>
                 <td class='has-text-centered'><b>{$running_total}</b></td>
             </tr>";
     } else {
         $body = "
             <tr>
-                <td colspan='3'>{$lang['stats_ex_noresult']}</td>
-            </tr>";
+                <td colspan='3'>" . _('No results found') . '</td>
+            </tr>';
     }
     $htmlout .= $pagertop . main_table($body, $table_heading) . $pagerbottom;
-
-    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
+    ];
+    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -405,35 +410,35 @@ function result_screen(string $mode, array $inbound, array $month_names)
  */
 function main_screen($mode)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $form_code = $table = '';
-    $page_title = $lang['stats_ex_center'];
-    $page_detail = $lang['stats_ex_details_main'] . '<br>' . $lang['stats_ex_details_main1'];
+    $page_title = _('Statistics Center');
+    $page_detail = _('Please define the date ranges and other options below.') . '<br>' . _('Note: The statistics generated are based on the information currently held in the database');
     if ($mode === 'reg') {
         $form_code = 'show_reg';
-        $table = $lang['stats_ex_registr'];
+        $table = _('Registration Statistics');
     } elseif ($mode === 'topic') {
         $form_code = 'show_topic';
-        $table = $lang['stats_ex_newtopicst'];
+        $table = _('New Topic Statistics');
     } elseif ($mode === 'post') {
         $form_code = 'show_post';
-        $table = $lang['stats_ex_poststs'];
+        $table = _('Post Statistics');
     } elseif ($mode === 'msg') {
         $form_code = 'show_msg';
-        $table = $lang['stats_ex_pmsts'];
+        $table = _('PM Sent Statistics');
     } elseif ($mode === 'views') {
         $form_code = 'show_views';
-        $table = $lang['stats_ex_topicv'];
+        $table = _('Topic Views');
     } elseif ($mode === 'comms') {
         $form_code = 'show_comms';
-        $table = $lang['stats_ex_commsts'];
+        $table = _('Comment Statistics');
     } elseif ($mode === 'torrents') {
         $form_code = 'show_torrents';
-        $table = $lang['stats_ex_torrsts'];
+        $table = _('Torrents Statistics');
     } elseif ($mode === 'reps') {
         $form_code = 'show_reps';
-        $table = $lang['stats_ex_repsts'];
+        $table = _('Reputation Statistics');
     }
     $cache = $container->get(Cache::class);
     $oldest = $cache->get('oldest_');
@@ -451,63 +456,67 @@ function main_screen($mode)
     $new_date = get_date((int) TIME_NOW, 'FORM', 1, 0);
     $menu = make_side_menu();
     $htmlout = $menu . "
-        <h1 class='has-text-centered'>{$lang['stats_ex_center']}</h1>
+        <h1 class='has-text-centered'>" . _('Statistics Center') . "</h1>
         <form action='{$site_config['paths']['baseurl']}/staffpanel.php' method='get' name='StatsForm' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered'>
                 <input name='tool' value='stats_extra' type='hidden'>
                 <input name='mode' value='{$form_code}' type='hidden'>
                 <h2 class='has-text-centered'>{$table}</h2>";
     $div = "
-                <h2 class='has-text-centered'>{$lang['stats_ex_infor']}</h2>$page_detail
+                <h2 class='has-text-centered'>" . _('Info') . "</h2>$page_detail
                 <div class='is-flex level-center padding20'>
                     <div class='padding20'>
-                    <label for='olddate' class='right5'>{$lang['stats_ex_datefrom']}</label>
+                    <label for='olddate' class='right5'>" . _('Date From') . "</label>
                     <input id='olddate' name='olddate' type='date' value='$old_date' required>
                     </div>
                     <div class='padding20'>
-                    <label for='newdate' class='left20 right5'>{$lang['stats_ex_dateto']}</label>
+                    <label for='newdate' class='left20 right5'>" . _('Date to') . "</label>
                     <input id='newdate' name='newdate' type='date' value='$new_date' required>
                     </div>";
     $timescale = '';
     if ($mode != 'views') {
         $timescale .= "
                 <div class='padding20'>
-                <label for='timescale' class='left20 right5'>{$lang['stats_ex_timescale']}</label>";
+                <label for='timescale' class='left20 right5'>" . _('Time scale') . '</label>';
         $timescale .= make_select('timescale', [
             0 => [
                 'daily',
-                $lang['stats_ex_daily'],
+                _('Daily'),
             ],
             1 => [
                 'weekly',
-                $lang['stats_ex_weekly'],
+                _('Weekly'),
             ],
             2 => [
                 'monthly',
-                $lang['stats_ex_monthly'],
+                _('Monthly'),
             ],
         ]);
     }
     $timescale .= "
                 <div class='padding20'>
-                <label for='sortby' class='left20 right5'>{$lang['stats_ex_ressort']}</label>";
+                <label for='sortby' class='left20 right5'>" . _('Result Sorting') . '</label>';
     $timescale .= make_select('sortby', [
         0 => [
             'asc',
-            $lang['stats_ex_asc'],
+            _('Ascending - Oldest dates first'),
         ],
         1 => [
             'desc',
-            $lang['stats_ex_desc'],
+            _('Descending - Newest dates first'),
         ],
     ], 'desc');
     $div .= $timescale;
     $htmlout .= main_div($div . '</div>');
     $htmlout .= "
-                <input value='{$lang['stats_ex_submit']}' class='button is-small margin20' accesskey='s' type='submit'>
+                <input value='" . _('Submit it!') . "' class='button is-small margin20' accesskey='s' type='submit'>
             </div>
         </form>";
-    echo stdhead($page_title) . wrapper($htmlout) . stdfoot();
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
+    ];
+    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -541,19 +550,19 @@ function make_select($name, $in = [], $default = '')
  */
 function make_side_menu()
 {
-    global $site_config, $lang;
+    global $site_config;
 
     $htmlout = "
     <ul class='level-center bg-06'>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reg'>{$lang['stats_ex_menureg']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=topic'>{$lang['stats_ex_menutopnew']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=post'>{$lang['stats_ex_menuposts']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=msg'>{$lang['stats_ex_menupm']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=views'>{$lang['stats_ex_menutopic']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=comms'>{$lang['stats_ex_menucomm']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=torrents'>{$lang['stats_ex_menutorr']}</a></li>
-        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reps'>{$lang['stats_ex_menurep']}</a></li>
-    </ul>";
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reg'>" . _('Registration Stats') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=topic'>" . _('New Topic Stats') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=post'>" . _('Post Stats') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=msg'>" . _('Personal Message') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=views'>" . _('Topic Views') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=comms'>" . _('Comment Stats') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=torrents'>" . _('Torrents Stats') . "</a></li>
+        <li class='margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats_extra&amp;mode=reps'>" . _('Reputation Stats') . '</a></li>
+    </ul>';
 
     return $htmlout;
 }

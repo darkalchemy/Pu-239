@@ -10,17 +10,17 @@ $qid = $table['qid'];
 $gamenum = $table['gamenum'];
 $table = $table['table'];
 
-$table = !empty($table) ? $table : stdmsg('', 'No one has attempted any questions, yet.');
+$table = !empty($table) ? $table : stdmsg('', _('No one has attempted any questions, yet.'));
 
 $buttons = "
     <ul class='level-center'>
         <li class='margin20'>
-            <button id='button' onclick=\"get_trivia_question()\" class='button is-small'>Get Trivia Question</button>
+            <button id='button' onclick=\"get_trivia_question()\" class='button is-small'>" . _('Get Trivia Question') . "</button>
         </li>
         <li  class='margin20'>
-            <a href='{$site_config['paths']['baseurl']}/trivia_results.php' target='_top' class='button is-small'>Get Trivia Results</a>
+            <a href='{$site_config['paths']['baseurl']}/trivia_results.php' target='_top' class='button is-small'>" . _('Get Trivia Results') . '</a>
         </li>
-    </ul>";
+    </ul>';
 $content = "
         <div class='bordered' style='display: none;'>
             <div class='alt_bordered bg-00'>

@@ -6,8 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('trivia'));
-
 $sql = 'SELECT gamenum, IFNULL(unix_timestamp(finished), 0) AS ended, IFNULL(unix_timestamp(started), 0) AS started FROM triviasettings GROUP BY gamenum, finished, started ORDER BY gamenum DESC LIMIT 10';
 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 $table = "
@@ -68,4 +66,8 @@ if (empty($div)) {
 }
 $table .= $div . '
             </div>';
-echo stdhead('Trivia') . wrapper($table) . stdfoot();
+$title = _('Trivia');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($table) . stdfoot();

@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
+use Delight\I18n\Codes;
+use Delight\I18n\I18n;
 use Imdb\Config;
 use Jobby\Jobby;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -216,5 +218,14 @@ return [
         $validator = new Validator();
 
         return $validator;
+    }),
+    I18n::class => DI\factory(function () {
+        $i18n = new I18n([
+            Codes::EN_US,
+            Codes::FR_FR,
+            Codes::NB_NO,
+        ]);
+
+        return $i18n;
     }),
 ];

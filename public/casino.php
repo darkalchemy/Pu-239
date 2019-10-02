@@ -15,13 +15,12 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('casino'));
 global $container, $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . [$site_config['allowed']['play']] . ' to play in the casino!', 'bottom20');
+    stderr('Error', _f('Sorry, you must be a %s to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
-    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20');
+    stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
     die();
 } elseif ($user['uploaded'] < 1073741824 * 100) {
     stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
@@ -81,10 +80,10 @@ $user_deposit = $row['deposit'];
 $user_enableplay = $row['enableplay'];
 unset($row);
 if ($user_enableplay === 'no') {
-    stderr($lang['gl_sorry'], htmlsafechars($user['username']) . " {$lang['casino_your_banned_from_casino']}", 'bottom20');
+    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('your banned from casino') . '', 'bottom20');
 }
 if (($user_win - $user_lost) > $max_download_user) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " {$lang['casino_you_have_reached_the_max_dl_for_a_single_user']}", 'bottom20');
+    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('you have reached the max download for a single user') . '', 'bottom20');
 }
 if ($user['downloaded'] > 0) {
     $ratio = $user['uploaded'] / $user['downloaded'];
@@ -94,7 +93,7 @@ if ($user['downloaded'] > 0) {
     $ratio = 0;
 }
 if (!$site_config['site']['ratio_free'] && $ratio < $required_ratio) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " {$lang['casino_your_ratio_is_under']} {$required_ratio}", 'bottom20');
+    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('your ratio is under') . " {$required_ratio}", 'bottom20');
 }
 $row = $casino->get_totals();
 $global_down = $row['globaldown'];
@@ -133,10 +132,10 @@ if ($user_win < $user_everytimewin_mb) {
     }
 }
 if ($global_down > $max_download_global) {
-    stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " {$lang['casino_but_global_max_win_is_above']} " . htmlsafechars(mksize($max_download_global)), 'bottom20');
+    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('but global max win is above') . ' ' . htmlsafechars(mksize($max_download_global)), 'bottom20');
 }
 
-$goback = "<a href='{$_SERVER['PHP_SELF']}'>{$lang['casino_go_back']}</a>";
+$goback = "<a href='{$_SERVER['PHP_SELF']}'>" . _('Go back') . '</a>';
 $color_options = [
     'red' => 1,
     'black' => 2,
@@ -175,7 +174,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $win = $win_amount * $betmb;
     if ($user['uploaded'] < $betmb) {
-        stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " {$lang['casino_but_you_have_not_uploaded']} " . htmlsafechars(mksize($betmb)), 'bottom20');
+        stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('but you have not uploaded') . ' ' . htmlsafechars(mksize($betmb)), 'bottom20');
     }
     if (random_int(0, $cheat_value) == $cheat_value) {
         $update = [
@@ -188,7 +187,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             'win' => new Literal('win + ' . $win),
         ];
         $casino->update_user($update, $user['id']);
-        stderr($lang['casino_yes'], '' . htmlsafechars($winner_was) . " {$lang['casino_is_the_result']} " . htmlsafechars($user['username']) . " {$lang['casino_you_got_it_and_win']} " . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback", 'bottom20');
+        stderr(_('Yes'), '' . htmlsafechars($winner_was) . ' ' . _('is the result') . ' ' . htmlsafechars($user['username']) . ' ' . _('you got it and win') . ' ' . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback", 'bottom20');
     } else {
         if (isset($_POST['number'])) {
             do {
@@ -211,7 +210,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             'lost' => new Literal('lost + ' . $betmb),
         ];
         $casino->update_user($update, $user['id']);
-        stderr($lang['gl_sorry'], "$fake_winner {$lang['casino_is_the_winner_and_not']} $winner_was, " . htmlsafechars($user['username']) . " {$lang['casino_you_lost']} " . mksize($betmb) . "&#160;&#160;&#160;$goback", 'bottom20');
+        stderr(_('Sorry'), "$fake_winner " . _('is the winner and not') . " $winner_was, " . htmlsafechars($user['username']) . ' ' . _('you lost') . ' ' . mksize($betmb) . "&#160;&#160;&#160;$goback", 'bottom20');
     }
 } else {
     $openbet = $casino_bets->get_open_bets($user['username']);
@@ -240,16 +239,16 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $tbet = $casino_bets->get_bet($betid);
         $nogb = mksize($tbet['amount']);
         if ($user['id'] == $tbet['userid']) {
-            stderr($lang['gl_sorry'], "{$lang['casino_you_want_to_bet_against_yourself_lol']} ?&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), '' . _('You want to bet against yourself lol') . " ?&#160;&#160;&#160;$goback", 'bottom20');
         } elseif ($tbet['challenged'] != 'empty') {
-            stderr($lang['gl_sorry'], "{$lang['casino_someone_has_already_taken_that_bet']}!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), '' . _('Someone has already taken that bet') . "!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($user['uploaded'] < $tbet['amount']) {
             $debt = $tbet['amount'] - $user['uploaded'];
             $newup = $user['uploaded'] - $debt;
         }
         if (isset($debt) && $alwdebt != 1) {
-            stderr($lang['gl_sorry'], "<h2>{$lang['casino_you_are']} " . htmlsafechars(mksize(($nobits - $user['uploaded']))) . " {$lang['casino_short_of_making_that_bet']}!</h2>&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), '<h2>' . _('You are') . ' ' . htmlsafechars(mksize(($nobits - $user['uploaded']))) . ' ' . _('short of making that bet') . "!</h2>&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($rand > 50000) {
             $update = [
@@ -272,7 +271,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'winner' => $user['username'],
             ];
             $casino_bets->update($update, $betid);
-            $subject = $lang['casino_casino_results'];
+            $subject = _('Casino Results');
             $msg = 'You lost a bet! ' . htmlsafechars($user['username']) . ' just won ' . htmlsafechars($nogb) . ' of your upload credit!';
             $msgs_buffer[] = [
                 'receiver' => $tbet['userid'],
@@ -282,12 +281,12 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             ];
             $messages_class->insert($msgs_buffer);
             if ($writelog == 1) {
-                write_log($user['username'] . " won $nogb {$lang['casino_of_upload_credit_off']} " . htmlsafechars($tbet['proposed']));
+                write_log($user['username'] . " won $nogb " . _('of upload credit off') . ' ' . htmlsafechars($tbet['proposed']));
             }
             if ($delold === 1) {
                 $casino_bets->delete_bet($tbet['id']);
             }
-            stderr($lang['casino_you_got_it'], "<h2>{$lang['casino_you_won_the_bet']}, " . htmlsafechars($nogb) . " {$lang['casino_has_been_credited_to_your_account']}, at " . format_username($tbet['userid']) . "</a> {$lang['casino_expense']}!</h2>&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('You got it'), '<h2>' . _('You won the bet') . ', ' . htmlsafechars($nogb) . ' ' . _('has been credited to your account') . ', at ' . format_username($tbet['userid']) . '</a> ' . _('expense') . "!</h2>&#160;&#160;&#160;$goback", 'bottom20');
             die();
         } else {
             if (empty($newup)) {
@@ -325,8 +324,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                 'winner' => $tbet['proposed'],
             ];
             $casino_bets->update($update, $betid);
-            $subject = $lang['casino_casino_results'];
-            $msg = "{$lang['casino_you_just_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_upload_credit_from']} " . $user['username'] . '!';
+            $subject = _('Casino Results');
+            $msg = '' . _('You just won') . ' ' . htmlsafechars($nogb) . ' ' . _('of upload credit from') . ' ' . $user['username'] . '!';
 
             $msgs_buffer[] = [
                 'receiver' => $tbet['userid'],
@@ -337,12 +336,12 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $messages_class->insert($msgs_buffer);
 
             if ($writelog == 1) {
-                write_log('' . htmlsafechars($tbet['proposed']) . " won $nogb {$lang['casino_of_upload_credit_off']} " . $user['username']);
+                write_log('' . htmlsafechars($tbet['proposed']) . " won $nogb " . _('of upload credit off') . ' ' . $user['username']);
             }
             if ($delold === 1) {
                 $casino_bets->delete_bet($tbet['id']);
             }
-            stderr($lang['casino_damn_it'], "<h2>{$lang['casino_you_lost_the_bet']} " . format_username($tbet['userid']) . " {$lang['casino_has_won']} " . htmlsafechars($nogb) . " {$lang['casino_of_your_hard_earnt_upload_credit']}!</h2> &#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Damn it'), '<h2>' . _('You lost the bet') . ' ' . format_username($tbet['userid']) . ' ' . _('has won') . ' ' . htmlsafechars($nogb) . ' ' . _('of your hard earnt upload credit') . "!</h2> &#160;&#160;&#160;$goback", 'bottom20');
         }
         die();
     }
@@ -357,34 +356,34 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     if (isset($_POST['unit'])) {
         if ($openbet >= $maxusrbet) {
-            stderr($lang['gl_sorry'], "{$lang['casino_there_are_already']} $openbet {$lang['casino_bets_open_take_an_open_bet']}!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), '' . _('There are already') . " $openbet " . _('bets open, take an open bet or wait till someone plays') . "!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 0) {
-            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_a_pos_val']}?&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _("This won't work, are you trying to cheat? Enter a positive value.") . "&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits === '.') {
-            stderr($lang['gl_sorry'], " {$lang['casino_this_wont_work_enter_without_a_dec']}?&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _("This won't work enter without a decimal point") . "?&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($maxbet < $nobits) {
-            stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " The Max allowed bet is $maxbetGB GB!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _f("%1$s The Max allowed bet is %2$s GB!", htmlsafechars($user['username']), $maxbetGB) . "&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 104857599) {
-            stderr($lang['gl_sorry'], '' . htmlsafechars($user['username']) . " The Min allowed bet is 100 MB!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _f("%1$s The Min allowed bet is 100 MB!", htmlsafechars($user['username'])) . "&#160;&#160;&#160;$goback", 'bottom20');
         }
 
         $newups = $user['uploaded'] - $nobits;
         $debt = $nobits - $user['uploaded'];
         if ($user['uploaded'] < $nobits) {
             if ($alwdebt != 1) {
-                stderr($lang['gl_sorry'], "<h2>{$lang['casino_thats']} " . htmlsafechars(mksize($debt)) . " {$lang['casino_more_than_you_got']}!</h2>$goback", 'bottom20');
+                stderr(_('Sorry'), '<h2>' . _('Thats') . ' ' . htmlsafechars(mksize($debt)) . ' ' . _('more than you got') . "!</h2>$goback", 'bottom20');
             }
         }
         $betsp = $casino_bets->get_bets($user['id']);
-        $session->set('is-success', $lang['casino_bet_added_you_will_receive_a_pm_notify']);
+        $session->set('is-success', _('Bet added, you will receive a PM notifying you of the results when someone has taken it'));
         $bet = mksize($nobits);
         $classColor = get_user_class_color($user['class']);
-        $message = "[color=#$classColor][b]" . format_comment($user['username']) . "[/b][/color] {$lang['casino_has_just_placed_a']} [color=red][b]{$bet}[/b][/color] {$lang['casino_bet_in_the_casino']}";
-        $messages = "{$user['username']} {$lang['casino_has_just_placed_a']} {$bet} {$lang['casino_bet_in_the_casino']}";
+        $message = "[color=#$classColor][b]" . format_comment($user['username']) . '[/b][/color] ' . _('has just placed a') . " [color=red][b]{$bet}[/b][/color] " . _('bet in the Casino') . '';
+        $messages = "{$user['username']} " . _('has just placed a') . " {$bet} " . _('bet in the Casino') . '';
         $values = [
             'userid' => $user['id'],
             'proposed' => $user['username'],
@@ -414,55 +413,55 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             <h1 class='has-text-centered'>{$site_config['site']['name']} Casino</h1>";
     if ($openbet < $maxusrbet) {
         if ($totbets >= $maxtotbet) {
-            $HTMLOUT .= "{$lang['casino_there_are_already']} $maxtotbet {$lang['casino_bets_open_take_an_open_bet']}!";
+            $HTMLOUT .= '' . _('There are already') . " $maxtotbet " . _('bets open, take an open bet or wait till someone plays') . '!';
         } else {
             $blocks[] = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
                 <form name='p2p' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-                    <h1 class='has-text-centered'>{$site_config['site']['name']} {$lang['casino_stdhead']} - {$lang['casino_bet_p2p_with_other_users']}:</h1>
-                    <div>{$lang['casino_place_bet']}</div>
-                    <div>{$lang['casino_amount_to_bet']}</div>
+                    <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Casino') . ' - ' . _('Bet P2P with other users') . ':</h1>
+                    <div>' . _('Place Bet') . '</div>
+                    <div>' . _('Amount to bet') . "</div>
                     <input type='text' name='amnt' size='5' value='1'>
                     <select name='unit'>
                         <option value='1'>MB</option>
                         <option value='2'>GB</option>
                     </select>
-                    <input type='submit' class='button is-small' value='{$lang['casino_gamble']}!'>
+                    <input type='submit' class='button is-small' value='" . _('Gamble') . "!'>
                 </form>
             </div>";
         }
     } else {
-        $HTMLOUT .= "{$lang['casino_you_already_have']} $maxusrbet {$lang['casino_open_bets_wait_until_they_are_comp']}.";
+        $HTMLOUT .= _p('You already have %d open bet. Wait until it is completed before you start another.', 'You already have %d open bets. Wait until they are completed before you start another.', $maxusrbet);
     }
     $maxbetShow = mksize($maxbet);
     $open_bets = "
                 <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
-                    <h2 class='has-text-centered'>{$lang['casino_open_bets']} - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</h2>";
+                    <h2 class='has-text-centered'>" . _('Open Bets') . " - Max Bet {$maxbetShow} - Limit {$maxusrbet} Active Bets</h2>";
     if (!empty($empty_bets)) {
         $heading = "    
                         <tr>
-                            <th class='has-text-centered'>{$lang['casino_name']}</th>
-                            <th class='has-text-centered'>{$lang['casino_amount']}</th>
-                            <th class='has-text-centered'>{$lang['casino_time']}</th>
-                            <th class='has-text-centered'>{$lang['casino_take_bet']}</th>
-                        </tr>";
+                            <th class='has-text-centered'>" . _('Name') . "</th>
+                            <th class='has-text-centered'>" . _('Amount') . "</th>
+                            <th class='has-text-centered'>" . _('Time') . "</th>
+                            <th class='has-text-centered'>" . _('Take Bet') . '</th>
+                        </tr>';
         $body = '';
 
         foreach ($empty_bets as $res) {
             $body .= "
                         <tr>
-                            <td class='has-text-centered'>" . format_username($res['userid']) . "</td>
-                            <td class='has-text-centered'>" . htmlsafechars(mksize($res['amount'])) . "</td>
-                            <td class='has-text-centered'>" . get_date($res['time'], 'LONG', 0, 1) . "</td>
+                            <td class='has-text-centered'>" . format_username((int) $res['userid']) . "</td>
+                            <td class='has-text-centered'>" . htmlsafechars(mksize((int) $res['amount'])) . "</td>
+                            <td class='has-text-centered'>" . get_date((int) $res['time'], 'LONG', 0, 1) . "</td>
                             <td class='has-text-centered'>
-                                <a href='{$_SERVER['PHP_SELF']}?takebet=" . $res['id'] . "'>{$lang['casino_take_bet']}</a>
+                                <a href='{$_SERVER['PHP_SELF']}?takebet=" . $res['id'] . "'>" . _('Take Bet') . '</a>
                             </td>
-                        </tr>";
+                        </tr>';
         }
         $blocks[] = $open_bets . main_table($body, $heading) . '
                 </div>';
     } else {
-        $blocks[] = $open_bets . main_div($lang['casino_sorry_no_bets_currently'], '', 'has-text-centered') . '
+        $blocks[] = $open_bets . main_div(_('Sorry no bets currently'), '', 'has-text-centered') . '
                 </div>';
     }
 
@@ -473,19 +472,19 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     $table = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
             <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-                <h2 class='has-text-centered'>{$lang['casino_bet_on_a_colour']}</h2>";
+                <h2 class='has-text-centered'>" . _('Bet on a colour') . '</h2>';
 
-    $body = "
+    $body = '
                     <tr>
-                        <td>{$lang['casino_black']}</td>
+                        <td>' . _('Black') . "</td>
                         <td><input name='color' type='radio' checked value='black'></td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_red']}</td>
+                        <td>" . _('Red') . "</td>
                         <td><input name='color' type='radio' checked value='red'></td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_how_much']}</td>
+                        <td>" . _('How much') . "</td>
                         <td><select name='betmb'>
                                 <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
                                 <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
@@ -494,21 +493,21 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                                 <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
                                 <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
                                 <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
-                                <option value='{$bet_value8}'>" . mksize($bet_value8) . "</option>
+                                <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_your_chance']}</td>
+                        <td>' . _('Your chance') . "</td>
                         <td>1 : {$real_chance}</td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_you_can_win']}</td>
+                        <td>" . _('You can win') . "</td>
                         <td>{$win_amount} * stake</td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_bet_on_color']}</td>
-                        <td><input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'></td>
+                        <td>" . _('Bet on color') . "</td>
+                        <td><input type='submit' class='button is-small' value='" . _('Do it') . "!'></td>
                     </tr>";
     $blocks[] = $table . main_table($body) . '
             </form>
@@ -521,11 +520,11 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     $table = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>
             <form name='casino' method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-                <h2 class='has-text-centered'>{$lang['casino_bet_on_a_number']}</h2>";
+                <h2 class='has-text-centered'>" . _('Bet on a number') . '</h2>';
 
-    $body = "
+    $body = '
                     <tr>
-                        <td>{$lang['casino_number']}</td>
+                        <td>' . _('Number') . "</td>
                         <td>
                             <div class='level-left'>";
     for ($i = 1; $i <= 6; ++$i) {
@@ -533,12 +532,12 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                                 <label>$i</label>
                                 <input name='number' type='radio' value='$i' class='left5 right10'>";
     }
-    $body .= "
+    $body .= '
                             </div>        
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_how_much']}</td>
+                        <td>' . _('How much') . "</td>
                         <td><select name='betmb'>
                                 <option value='{$bet_value1}'>" . mksize($bet_value1) . "</option>
                                 <option value='{$bet_value2}'>" . mksize($bet_value2) . "</option>
@@ -547,21 +546,21 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
                                 <option value='{$bet_value5}'>" . mksize($bet_value5) . "</option>
                                 <option value='{$bet_value6}'>" . mksize($bet_value6) . "</option>
                                 <option value='{$bet_value7}'>" . mksize($bet_value7) . "</option>
-                                <option value='{$bet_value8}'>" . mksize($bet_value8) . "</option>
+                                <option value='{$bet_value8}'>" . mksize($bet_value8) . '</option>
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_your_chance']}</td>
+                        <td>' . _('Your chance') . "</td>
                         <td>1 : {$real_chance}</td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_you_can_win']}</td>
+                        <td>" . _('You can win') . "</td>
                         <td>{$win_amount} * stake</td>
                     </tr>
                     <tr>
-                        <td>{$lang['casino_bet_on_a_number']}</td>
-                        <td><input type='submit' class='button is-small' value='{$lang['casino_do_it']}!'></td>
+                        <td>" . _('Bet on a number') . "</td>
+                        <td><input type='submit' class='button is-small' value='" . _('Do it') . "!'></td>
                     </tr>";
     $blocks[] = $table . main_table($body) . '
             </form>
@@ -571,69 +570,69 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             <div class='w-100'>
                 <div class='level-center flex-top'>
                     <div class='has-text-centered w-30 bg-03 margin20 padding20 round10'>
-                        <h2>User @ {$site_config['site']['name']} {$lang['casino_stdhead']}</h2>";
-    $body = "
+                        <h2>User @ {$site_config['site']['name']} " . _('Casino') . '</h2>';
+    $body = '
                         <tr>
-                            <td>{$lang['casino_you_can_win']}</td>
-                            <td>" . mksize($max_download_user) . "</td>
+                            <td>' . _('You can win') . '</td>
+                            <td>' . mksize($max_download_user) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_won']}</td>
-                            <td>" . mksize($user_win) . "</td>
+                            <td>' . _('Won') . '</td>
+                            <td>' . mksize($user_win) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_lost']}</td>
-                            <td>" . mksize($user_lost) . "</td>
+                            <td>' . _('Lost') . '</td>
+                            <td>' . mksize($user_lost) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_ratio']}</td>
+                            <td>' . _('Ratio') . "</td>
                             <td>{$casino_ratio_user}</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_deposit_on_p2p']}</td>
-                            <td>" . mksize($user_deposit + $nobits) . '</td>
+                            <td>" . _('Deposit on P2P') . '</td>
+                            <td>' . mksize($user_deposit + $nobits) . '</td>
                         </tr>';
     $details = $table . main_table($body) . "
                     </div>
                     <div class='has-text-centered w-30 bg-03 margin20 padding20 round10'>
-                        <h2>{$lang['casino_global_stats']}</h2>";
-    $body = "
+                        <h2>" . _('Global stats') . '</h2>';
+    $body = '
                         <tr>
-                            <td>{$lang['casino_users_can_win']}</td>
-                            <td>" . mksize($max_download_global) . "</td>
+                            <td>' . _('Users can win') . '</td>
+                            <td>' . mksize($max_download_global) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_won']}</td>
-                            <td>" . mksize($global_win) . "</td>
+                            <td>' . _('Won') . '</td>
+                            <td>' . mksize($global_win) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_lost']}</td>
-                            <td>" . mksize($global_lost) . "</td>
+                            <td>' . _('Lost') . '</td>
+                            <td>' . mksize($global_lost) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_ratio']}</td>
+                            <td>' . _('Ratio') . "</td>
                             <td>{$casino_ratio_global}</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_deposit']}</td>
-                            <td>" . mksize($global_deposit) . '</td>
+                            <td>" . _('Deposit') . '</td>
+                            <td>' . mksize($global_deposit) . '</td>
                         </tr>';
 
     $details .= main_table($body) . "
                     </div>
                     <div class='has-text-centered w-30 bg-03 margin20 padding20 round10'>
-                        <h2>{$lang['casino_user_stats']}</h2>";
-    $body = "
+                        <h2>" . _('User stats') . '</h2>';
+    $body = '
                         <tr>
-                            <td>{$lang['casino_uploaded']}</td>
-                            <td>" . mksize($user['uploaded'] - $nobits) . "</td>
+                            <td>' . _('Uploaded') . '</td>
+                            <td>' . mksize($user['uploaded'] - $nobits) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_downloaded']}</td>
-                            <td>" . mksize($user['downloaded']) . "</td>
+                            <td>' . _('Downloaded') . '</td>
+                            <td>' . mksize($user['downloaded']) . '</td>
                         </tr>
                         <tr>
-                            <td>{$lang['casino_ratio']}</td>
+                            <td>' . _('Ratio') . "</td>
                             <td>{$ratio}</td>
                         </tr>";
     $details .= main_table($body) . '
@@ -643,4 +642,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
 }
 
 $HTMLOUT = main_div($HTMLOUT . "<div class='level-center'>" . implode('', $blocks) . '</div>' . $details);
-echo stdhead($lang['casino_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Casino');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

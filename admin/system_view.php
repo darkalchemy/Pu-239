@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_html.php';
 class_check(UC_MAX);
-$lang = array_merge($lang, load_language('ad_systemview'));
 global $site_config;
 
 if (isset($_GET['phpinfo']) && $_GET['phpinfo']) {
@@ -45,14 +44,18 @@ img {float: right; border: 0;}
 hr {width: 100%; background-color: #ccc; border: 0; height: 1px;}
 </style>\n";
     $html = $php_style . $php_body;
-    echo stdhead('PHP Info') . wrapper($html) . stdfoot();
-    die();
+    $title = _('PHP Info');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot();
 }
 $html = [];
 
 /**
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -136,7 +139,7 @@ if (strstr(strtolower(PHP_OS), 'win')) {
     $total_memory = $mem[1] . ' MB';
     $avail_memory = $mem[3] . ' MB';
 }
-$disabled_functions = @ini_get('disable_functions') ? str_replace(',', ', ', @ini_get('disable_functions')) : "<i>{$lang['system_noinf']}</i>";
+$disabled_functions = @ini_get('disable_functions') ? str_replace(',', ', ', @ini_get('disable_functions')) : '<i>' . _('no information') . '</i>';
 if (strstr(strtolower(PHP_OS), 'win')) {
     $tasks = @shell_exec('tasklist');
     $tasks = str_replace(' ', ' ', $tasks);
@@ -145,45 +148,45 @@ if (strstr(strtolower(PHP_OS), 'win')) {
     $tasks = str_replace(' ', ' ', $tasks);
 }
 if (!$tasks) {
-    $tasks = "<i>{$lang['system_unable']}</i>";
+    $tasks = '<i>' . _('Unable to obtain process information') . '</i>';
 } else {
     $tasks = '<pre>' . $tasks . '</pre>';
 }
-$load_limit = $load_limit . " ({$lang['system_fromcache']}" . ($using_cache == 1 ? "<span style='color:green;font-weight:bold;'>{$lang['system_true']})</span>" : "<span style='color:red;font-weight:bold;'>{$lang['system_false']})</span>");
+$load_limit = $load_limit . ' (' . _('From Cache: ') . '' . ($using_cache == 1 ? "<span style='color:green;font-weight:bold;'>" . _('True') . ')</span>' : "<span style='color:red;font-weight:bold;'>" . _('False') . ')</span>');
 $html[] = [
-    $lang['system_mysql'],
+    _('MySQL Version'),
     sql_get_version(),
 ];
 $html[] = [
-    $lang['system_php'],
+    _('PHP Version'),
     $php_version,
 ];
 $html[] = [
-    $lang['system_safe'],
-    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>{$lang['system_on']}</span>" : "<span style='color:green;font-weight:bold;'>{$lang['system_off']}</span>",
+    _('Safe Mode'),
+    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>" . _('ON') . '</span>' : "<span style='color:green;font-weight:bold;'>" . _('OFF') . '</span>',
 ];
 $html[] = [
-    $lang['system_disabled'],
+    _('Disabled PHP Functions'),
     $disabled_functions,
 ];
 $html[] = [
-    $lang['system_server_soft'],
+    _('Server Software'),
     $server_software,
 ];
 $html[] = [
-    $lang['system_server_load'],
+    _('Current Server Load'),
     $load_limit,
 ];
 $html[] = [
-    $lang['system_server_memory'],
+    _('Total Server Memory'),
     $total_memory,
 ];
 $html[] = [
-    $lang['system_server_avail'],
+    _('Available Physical Memory'),
     $avail_memory,
 ];
 $html[] = [
-    $lang['system_sys_proc'],
+    _('System Processes'),
     $tasks,
 ];
 $body = '';
@@ -197,7 +200,7 @@ foreach ($html as $key => $value) {
 $htmlout = "
     <ul class='level-center bg-06 bottom10'>
         <li class='is-link margin10'>
-            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>{$lang['system_phpinfo']}</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>" . _('PHP INFO') . "</a>
         </li>
         <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>
@@ -213,4 +216,9 @@ $htmlout = "
         </li>
     </ul>";
 $htmlout .= main_table($body);
-echo stdhead($lang['system_stdhead']) . wrapper($htmlout) . stdfoot();
+$title = _('System Overview');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();

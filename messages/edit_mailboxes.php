@@ -26,7 +26,7 @@ if (isset($_POST['action2'])) {
     $action2 = isset($_POST['action2']) ? strip_tags($_POST['action2']) : '';
     $worked = $deleted = '';
     if (!in_array($action2, $good_actions)) {
-        stderr($lang['pm_error'], $lang['pm_edmail_error']);
+        stderr(_('Error'), _("His wit's as thick as a Tewkesbury mustard."));
     }
 
     switch ($action2) {
@@ -41,7 +41,7 @@ if (isset($_POST['action2'])) {
 
         case 'add':
             if ($_POST['new'] === '') {
-                stderr($lang['pm_error'], $lang['pm_edmail_err']);
+                stderr(_('Error'), _('to add new PM boxes you MUST enter at least one PM box name!'));
             }
             $boxnumber = $fluent->from('pmboxes')
                                 ->select(null)
@@ -77,7 +77,7 @@ if (isset($_POST['action2'])) {
                             ->fetchAll();
 
             if (empty($boxes)) {
-                stderr($lang['pm_error'], $lang['pm_edmail_err1']);
+                stderr(_('Error'), _('No Mailboxes to edit'));
             }
             foreach ($boxes as $row) {
                 $name = htmlsafechars(preg_replace('/[^\da-z\-_]/i', '', $_POST['edit' . $row['id']]));
@@ -123,8 +123,8 @@ if (isset($_POST['action2'])) {
             $deletepms = isset($_POST['deletepms']) && $_POST['deletepms'] === 'yes' ? 'yes' : 'no';
             $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
             $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
-            $notifs = $pmnotif == 'yes' ? $lang['pm_edmail_pm_1'] : '';
-            $notifs .= $emailnotif == 'yes' ? $lang['pm_edmail_email_1'] : '';
+            $notifs = $pmnotif == 'yes' ? _('[pm]') : '';
+            $notifs .= $emailnotif == 'yes' ? _('[email]') : '';
             $category_ids = $fluent->from('categories')
                                    ->select(null)
                                    ->select('id')
@@ -168,43 +168,43 @@ $count_boxes = !empty($boxes) ? count($boxes) : 0;
 
 if (!empty($boxes)) {
     foreach ($boxes as $row) {
-        $messages = $messages_class->get_count($CURUSER['id'], $row['boxnumber'], false);
+        $messages = $messages_class->get_count($CURUSER['id'], (int) $row['boxnumber'], false);
         $all_my_boxes .= '
                     <tr>
                         <td colspan="2">
-                            ' . $lang['pm_edmail_box'] . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
-                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . $lang['pm_edmail_contain'] . $messages . $lang['pm_edmail_messages'] . '
+                            ' . _('Box #') . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
+                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . _('[ contains ') . $messages . _(' messages ]') . '
                         </td>
                     </tr>';
     }
     $all_my_boxes .= '
                     <tr>
-                        <td colspan="2">' . $lang['pm_edmail_names'] . '<br>
-                        ' . $lang['pm_edmail_if'] . '</td>
+                        <td colspan="2">' . _('You may edit the names of your PM boxes here.') . '<br>
+                        ' . _(' If you wish to delete 1 or more PM boxes, remove the name from the text field leaving it blank.') . '</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><span>' . $lang['pm_edmail_note'] . '</span>
+                        <td colspan="2"><span>' . _('Please note!!!') . '</span>
                         <ul>
-                            <li>' . $lang['pm_edmail_if1'] . '</li>
-                            <li>' . $lang['pm_edmail_if2'] . '<a class="is-link" href="messages.php?action=view_mailbox">' . $lang['pm_edmail_main'] . '</a>.</li>
+                            <li>' . _('If you delete the name of one or more boxes,  all messages in that directory will be sent to your inbox!!!') . '</li>
+                            <li>' . _('If you wish to delete the messages as well, you can do that from the ') . '<a class="is-link" href="messages.php?action=view_mailbox">' . _('main page') . '</a>.</li>
                         </ul></td>
                     </tr>
                     <tr>
                         <td colspan="2" class="has-text-centered">
-                            <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_edit'] . '">
+                            <input type="submit" class="button is-small margin20" value="' . _('Edit') . '">
                         </td>
                     </tr>';
 } else {
     $all_my_boxes .= '
                     <tr>
-                        <td><span>' . $lang['pm_edmail_nobox'] . '</span></td>
+                        <td><span>' . _('There are currently no PM boxes to edit.') . '</span></td>
                     </tr>';
 }
 
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . $lang['pm_edmail_perpage'] . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . _(' PMs per page') . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -237,17 +237,17 @@ if (!empty($category_set)) {
         }
     }
 }
-$HTMLOUT .= $top_links . '<h1>' . $lang['pm_edmail_title'] . '</h1>
+$HTMLOUT .= $top_links . '<h1>' . _('Mailbox Manager / Message settings') . '</h1>
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="add">
-        <h2 class="has-text-centered">' . $lang['pm_edmail_add_mbox'] . '</h2>';
+        <h2 class="has-text-centered">' . _('Add mail boxes') . '</h2>';
 $body = '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . $lang['pm_edmail_as_a'] . '' . get_user_class_name((int) $CURUSER['class']) . $lang['pm_edmail_you_may'] . $maxboxes . $lang['pm_edmail_pm_box'] . ($maxboxes !== 1 ? $lang['pm_edmail_pm_boxes'] : '') . '' . $lang['pm_edmail_other'] . '<br>' . $lang['pm_edmail_currently'] . $count_boxes . $lang['pm_edmail_custom'] . ($count_boxes !== 1 ? $lang['pm_edmail_custom_es'] : '') . $lang['pm_edmail_may_add'] . ($maxboxes - $count_boxes) . '' . $lang['pm_edmail_more_extra'] . '
+                    ' . _('As a ') . '' . get_user_class_name((int) $CURUSER['class']) . _(' you may have up to ') . $maxboxes . _('PM box') . ($maxboxes !== 1 ? _('es') : '') . '' . _(' other then your in, sent and draft boxes.') . '<br>' . _('Currently you have ') . $count_boxes . _(' custom box') . ($count_boxes !== 1 ? _('es') : '') . _('. You may add up to ') . ($maxboxes - $count_boxes) . '' . _(' additional mailboxes.') . '
                     <p class="top10">
-                        <span>' . $lang['pm_edmail_following'] . '</span>' . $lang['pm_edmail_chars'] . '
+                        <span>' . _('The following characters can be used: ') . '</span>' . _(' a-z, A-Z, 1-9, - and _ [ all other characters will be ignored ]') . '
                     </p>
                 </td>
             </tr>';
@@ -263,15 +263,15 @@ for ($i = 1; $i < 6; ++$i) {
 $body .= '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . $lang['pm_edmail_only_fill'] . '<br>
-                    ' . $lang['pm_edmail_blank'] . '<br>
-                    <input type="submit" class="button is-small margin20" name="move" value="' . $lang['pm_edmail_add'] . '">
+                    ' . _('Only fill in add as many boxes that you would like to add and click "Add"') . '<br>
+                    ' . _('Blank entries will be ignored.') . '<br>
+                    <input type="submit" class="button is-small margin20" name="move" value="' . _('Add') . '">
                 </td>
             </tr>
         </form>';
 
 $HTMLOUT .= main_table($body);
-$HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_ed_del'] . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Edit / Delete mail boxes') . '</h2>';
 $HTMLOUT .= '
         <form action="' . $site_config['paths']['baseurl'] . '/messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
@@ -281,54 +281,54 @@ $HTMLOUT .= '
         </form>';
 $cache->delete('user_' . $CURUSER['id']);
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
-$HTMLOUT .= '<h2 class="top20 has-text-centered">' . $lang['pm_edmail_msg_settings'] . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Message settings') . '</h2>';
 $HTMLOUT .= main_table('
     <tr>
-        <td class="w-25"><span>' . $lang['pm_edmail_pm_page'] . '</span></td>
+        <td class="w-25"><span>' . _('PMs per page:') . '</span></td>
         <td>
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="message_settings">
-        ' . $per_page_drop_down . '' . $lang['pm_edmail_s_how_many'] . '</td>
+        ' . $per_page_drop_down . '' . _(' [ Select how many PMs you would like to see per page. ]') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_av'] . '</span></td>
+        <td><span>' . _('Avatars:') . '</span></td>
         <td>
         <select name="show_pm_avatar">
-        <option value="yes" ' . ($show_pm_avatar ? 'selected' : '') . '>' . $lang['pm_edmail_show_av'] . '</option>
-        <option value="no" ' . (!$show_pm_avatar ? 'selected' : '') . '>' . $lang['pm_edmail_dshow_av'] . '</option>
-        </select>' . $lang['pm_edmail_show_av_box'] . '</td>
+        <option value="yes" ' . ($show_pm_avatar ? 'selected' : '') . '>' . _('show avatars on view mailbox') . '</option>
+        <option value="no" ' . (!$show_pm_avatar ? 'selected' : '') . '>' . _("don't show avatars on view mailbox") . '</option>
+        </select>' . _(' [ Show avatars when viewing your mailboxes. ]') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_accept'] . '</span></td>
+        <td><span>' . _('Accept PMs:') . '</span></td>
         <td>
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_all'] . '
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'friends' ? 'checked' : '') . ' value="friends">' . $lang['pm_edmail_friend'] . '
-        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'no' ? 'checked' : '') . ' value="no">' . $lang['pm_edmail_staff'] . '</td>
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'yes' ? 'checked' : '') . ' value="yes">' . _('All (except blocks)') . '
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'friends' ? 'checked' : '') . ' value="friends">' . _('Friends only') . '
+        <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'no' ? 'checked' : '') . ' value="no">' . _('Staff only') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_save'] . '</span></td>
-        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_default'] . '</td>
+        <td><span>' . _('Save PMs:') . '</span></td>
+        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . _(' [ Default for "Save PM to Sentbox" ]') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_del_pms'] . '</span></td>
-        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . $lang['pm_edmail_default_r'] . '</td>
+        <td><span>' . _('Delete PMs:') . '</span></td>
+        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . _(' [ Default for "Delete PM on reply"') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_email_notif'] . '</span></td>
-        <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_pm_1']) !== false ? 'checked' : '') . '  value="yes">' . $lang['pm_edmail_notify'] . '</td>
+        <td><span>' . _('Email notification:') . '</span></td>
+        <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], _('[pm]')) !== false ? 'checked' : '') . '  value="yes">' . _(' Notify me when I have received a PM') . '</td>
     </tr>
     <tr>
         <td></td>
-        <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], $lang['pm_edmail_email_1']) !== false ? 'checked' : '') . '  value="yes">' . $lang['pm_edmail_notify1'] . '</td>
+        <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], _('[email]')) !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . '</td>
     </tr>
     <tr>
-        <td><span>' . $lang['pm_edmail_cats'] . '</span></td>
-        <td><a class="is-link"  title="' . $lang['pm_edmail_clickmore'] . '" id="cat_open">' . $lang['pm_edmail_show_hide'] . '</a>' . $lang['pm_edmail_torr'] . '
-        <div id="defcat" class="is_hidden">' . $lang['pm_edmail_def_cats'] . '<br>' . $categories . '</div></td>
+        <td><span>' . _('Categories:') . '</span></td>
+        <td><a class="is-link"  title="' . _('Click for more info') . '" id="cat_open">' . _('show / hide categories') . '</a>' . _(' [ for torrent notifications ]') . '
+        <div id="defcat" class="is_hidden">' . _('Your default categories can be changed here as well.') . '<br>' . $categories . '</div></td>
     </tr>
     <tr>
         <td colspan="2" class="has-text-centered">
-        <input type="submit" class="button is-small margin20" value="' . $lang['pm_edmail_change'] . '"></form></td>
+        <input type="submit" class="button is-small margin20" value="' . _('Change') . '"></form></td>
     </tr>
     </table></form>');

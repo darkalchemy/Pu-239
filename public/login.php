@@ -19,7 +19,6 @@ if ($auth->isLoggedIn()) {
     die();
 }
 
-$lang = array_merge(load_language('global'), load_language('login'));
 get_template();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
@@ -37,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die();
     }
     $user_class = $container->get(User::class);
-    if ($user_class->login($post['email'], $post['password'], (int) isset($post['remember']) ? 1 : 0, $lang)) {
+    if ($user_class->login($post['email'], $post['password'], (int) isset($post['remember']) ? 1 : 0)) {
         $userid = $auth->getUserId();
         $user = $user_class->getUserFromId($userid);
         if ($site_config['site']['ip_logging'] || !($user['perms'] & PERMS_NO_IP)) {
@@ -49,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($count > $site_config['site']['limit_ips_count']) {
                 $user_class->logout($userid, false);
                 $session->set('is-danger', 'You have exceeded the maximum number of IPs allowed');
-                stderr('Error', "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
+                stderr(_('Error'), "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
             }
         }
         if (!empty($post['returnto'])) {
@@ -80,31 +79,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && !empty($_GET['returnto']) && !is_arr
 $HTMLOUT = "
             <form id='site_login' class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/login.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
-                <div class='columns'>
-                    <div class='column is-one-quarter'>{$lang['login_email']}</div>
+                <div class='columns level'>
+                    <div class='column is-one-quarter'>" . _('Email Address') . "</div>
                     <div class='column'>
-                        <input type='email' class='w-100' name='email' autocomplete='on' placeholder='{$lang['login_email']}' required>
+                        <input type='email' class='w-100' name='email' autocomplete='on' placeholder='" . _('Email Address') . "' required>
                     </div>
                 </div>
-                <div class='columns'>
-                    <div class='column is-one-quarter'>{$lang['login_password']}</div>
+                <div class='columns level'>
+                    <div class='column is-one-quarter'>" . _('Password') . "</div>
                     <div class='column'>
-                        <input type='password' class='w-100' name='password' autocomplete='on' placeholder='{$lang['login_password']}' required>
+                        <input type='password' class='w-100' name='password' autocomplete='on' placeholder='" . _('Password') . "' required>
                     </div>
                 </div>$return_to
                 <div class='level-center-center bottom10'>
                     <input type='checkbox' name='remember' value='1' id='remember' class='right10' checked>
-                    <label for='remember' class='level-item tooltipper' title='{$lang['login_remember_title']}'>{$lang['login_remember']}</label>
+                    <label for='remember' class='level-item tooltipper' title='" . _('Keep me logged in.') . "'>" . _('Remember Me?') . "</label>
                 </div>
                 <div class='has-text-centered'>
-                    <input id='login' type='submit' value='Login' class='button is-small'>
+                    <input id='login' type='submit' value='" . _('Login') . "' class='button is-small'>
                 </div>
                 <div class='level-center top20'>
-                    <span class='tab'>{$lang['login_signup']}</span>" . ($site_config['mail']['smtp_enable'] ? "
-                    <span class='tab'>{$lang['login_forgot_1']}</span>" : '') . '
+                    <a href='{$site_config['paths']['baseurl']}/signup.php'>" . _('Signup') . '</a>' . ($site_config['mail']['smtp_enable'] ? "
+                    <a href='{$site_config['paths']['baseurl']}/recover.php'>" . _('Forgot Password') . '</a>' : '') . '
                 </div>';
 
 $HTMLOUT .= main_div($body, '', 'padding20') . '
             </form>';
 
-echo stdhead($lang['login_login_btn'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Login');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'w-50 min-350 has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

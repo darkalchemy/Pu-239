@@ -19,14 +19,13 @@ require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_event.php';
 require_once INCL_DIR . 'function_bonus.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('mybonus'));
 global $container, $site_config;
 
 $auth = $container->get(Auth::class);
 $auth->isSuspended();
 
 if (!$site_config['bonus']['on']) {
-    stderr('Information', 'The Karma bonus system is currently offline for maintainance work');
+    stderr(_('Error'), 'The Karma bonus system is currently offline for maintainance work');
 }
 
 $dt = TIME_NOW;
@@ -827,4 +826,8 @@ $HTMLOUT .= "
         </div>
     </div>";
 
-echo stdhead($user['username'] . "'s Karma Bonus Points Page") . $HTMLOUT . stdfoot();
+$title = _('Karma Store');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_report'));
 global $container, $site_config, $CURUSER;
 
 $stdhead = [
@@ -60,7 +59,7 @@ function round_time($ts)
 if (isset($_GET['id'])) {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     if (!is_valid_id($id)) {
-        stderr($lang['reports_error'], $lang['reports_error1']);
+        stderr(_('Error'), _('Bad ID!'));
     }
 }
 if (isset($_GET['type'])) {
@@ -77,13 +76,13 @@ if (isset($_GET['type'])) {
         'Post',
     ];
     if (!in_array($type, $typesallowed)) {
-        stderr($lang['reports_error'], $lang['reports_error2']);
+        stderr(_('Error'), _('Bad report type!'));
     }
 }
 $cache = $container->get(Cache::class);
 if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     if (!is_valid_id((int) $_POST['id'])) {
-        stderr($lang['reports_error'], $lang['reports_error3']);
+        stderr(_('Error'), _('I smell a rat!'));
     }
     $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['body']);
     $when_delt_with = 'when_delt_with = ' . sqlesc(TIME_NOW);
@@ -91,13 +90,13 @@ if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     $cache->delete('new_report_');
 }
 
-$HTMLOUT .= "<h1 class='has-text-centered'>{$lang['reports_active']}</h1>";
+$HTMLOUT .= "<h1 class='has-text-centered'>" . _('Active Reports') . '</h1>';
 
 if ((isset($_GET['delete'])) && ($CURUSER['class'] >= UC_MAX)) {
     $res = sql_query('DELETE FROM reports WHERE id =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
     $cache->delete('new_report_');
     $session = $container->get(Session::class);
-    $session->set('is-success', $lang['reports_deleted']);
+    $session->set('is-success', _('Report Deleted!'));
 }
 
 $res = sql_query('SELECT count(id) FROM reports') or sqlerr(__FILE__, __LINE__);
@@ -106,21 +105,21 @@ $count = (int) $row[0];
 $perpage = 15;
 $pager = pager($perpage, $count, "{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;");
 if ($count === 0) {
-    $HTMLOUT .= stdmsg('', $lang['reports_nice'], 'bottom20');
+    $HTMLOUT .= stdmsg('', _('No Reports, they are all playing nice!'), 'bottom20');
 } else {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $HTMLOUT .= "
         <form method='post' action='{$_SERVER['PHP_SELF']}?tool=reports&amp;action=reports&amp;deal_with_report=1' enctype='multipart/form-data' accept-charset='utf-8'>";
-    $header = "
+    $header = '
         <tr>
-            <th>{$lang['reports_added']}</th>
-            <th>{$lang['reports_report']}</th>
-            <th>{$lang['reports_report1']}</th>
-            <th>{$lang['reports_type']}</th>
-            <th>{$lang['reports_reason']}</th>
-            <th>{$lang['reports_dealt']}</th>
-            <th>{$lang['reports_deal']}</th>" . ($CURUSER['class'] >= UC_MAX ? "
-            <th>{$lang['reports_delete']}</th>" : '') . '
+            <th>' . _('Added') . '</th>
+            <th>' . _('Reported by') . '</th>
+            <th>' . _('Reporting What') . '</th>
+            <th>' . _('Type') . '</th>
+            <th>' . _('Reason') . '</th>
+            <th>' . _('Dealt With') . '</th>
+            <th>' . _('Deal With It') . '</th>' . ($CURUSER['class'] >= UC_MAX ? '
+            <th>' . _('Delete') . '</th>' : '') . '
         </tr>';
 
     $res_info = sql_query("SELECT reports.id, reports.reported_by, reports.reporting_what, reports.reporting_type, reports.reason, reports.who_delt_with_it, reports.delt_with, reports.added, reports.how_delt_with, reports.when_delt_with, reports.2nd_value, users.username FROM reports INNER JOIN users on reports.reported_by = users.id ORDER BY id DESC {$pager['limit']}");
@@ -147,10 +146,10 @@ if ($count === 0) {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<span style='color: {$solved_color};'><b>{$lang['reports_yes']}</b> </span> {$lang['reports_by']} " . format_username((int) $arr_info['who_delt_with_it']) . "<br>{$lang['reports_in']} <span style='color: {$solved_color};'>{$solved_in}</span>";
+            $dealtwith = "<span style='color: {$solved_color};'><b>" . _('Yes -') . '</b> </span> ' . _('by:') . ' ' . format_username((int) $arr_info['who_delt_with_it']) . '<br>' . _('in:') . " <span style='color: {$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . $arr_info['id'] . "' disabled>";
         } else {
-            $dealtwith = "<span class='has-text-danger'><b>{$lang['reports_no']}</b></span>";
+            $dealtwith = "<span class='has-text-danger'><b>" . _('No') . '</b></span>';
             $checkbox = "<input type='radio' name='id' value='" . $arr_info['id'] . "'>";
         }
 
@@ -201,14 +200,14 @@ if ($count === 0) {
                     $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $name = !empty($arr_who2['name']) ? format_comment($arr_who2['name']) : '';
-                    $link_to_thing = "<b>{$lang['reports_user']}</b> " . format_username($arr_info['reporting_what']) . "<br>{$lang['reports_hit']}<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
+                    $link_to_thing = '<b>' . _('user:') . '</b> ' . format_username((int) $arr_info['reporting_what']) . '<br>' . _('hit and run on:') . "<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Post':
                     $res_who2 = sql_query('SELECT topic_name FROM topics WHERE id =' . sqlesc($arr_info['2nd_value']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $name = !empty($arr_who2['topic_name']) ? format_comment($arr_who2['topic_name']) : '';
-                    $link_to_thing = "<b>{$lang['reports_post']}</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . $arr_info['2nd_value'] . '&amp;page=last#' . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
+                    $link_to_thing = '<b>' . _('post:') . "</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . $arr_info['2nd_value'] . '&amp;page=last#' . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
             }
         }
@@ -222,14 +221,14 @@ if ($count === 0) {
             <td>{$dealtwith} {$delt_link}</td>
             <td>{$checkbox}</td>" . ($CURUSER['class'] >= UC_MAX ? "
             <td><a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports&amp;id=" . $arr_info['id'] . "&amp;delete=1'>
-                    <i class='icon-trash-empty tooltipper has-text-danger' title='{$lang['reports_delete']}' aria-hidden='true'></i>
+                    <i class='icon-trash-empty tooltipper has-text-danger' title='" . _('Delete') . "' aria-hidden='true'></i>
                 </a>
             </td>" : '') . '
         </tr>';
         if ($arr_info['how_delt_with']) {
             $body .= "
         <tr>
-            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'><b>{$lang['reports_with']} " . format_comment($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'><b>" . _('Dealt with by') . ' ' . format_comment($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
             <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'>" . format_comment($arr_info['how_delt_with']) . '<br><br></td>
@@ -241,9 +240,13 @@ if ($count === 0) {
 }
 
 if ($count > 0) {
-    $HTMLOUT .= main_div("{$lang['reports_how']} {$CURUSER['username']} {$lang['reports_dealt1']}<br>{$lang['reports_please']}" . BBcode('', 'top20', 200) . "
-    <input type='submit' class='button is-small margin20' value='{$lang['reports_confirm']}'>
+    $HTMLOUT .= main_div('' . _('How') . " {$CURUSER['username']} " . _('Dealt with this report:') . '<br>' . _('Please explain below how this Report has been dealt with.') . '' . BBcode('', 'top20', 200) . "
+    <input type='submit' class='button is-small margin20' value='" . _('Confirm') . "'>
     </form>", 'top20 has-text-centered', 'padding20');
 }
-echo stdhead($lang['reports_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-die();
+$title = _('Active Reports');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

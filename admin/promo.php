@@ -14,7 +14,6 @@ require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('signup'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -27,21 +26,21 @@ $sure = isset($_GET['sure']) && $_GET['sure'] === 'yes' ? 'yes' : 'no';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     $promoname = isset($_POST['promoname']) ? $_POST['promoname'] : '';
     if (empty($promoname)) {
-        stderr('Error', 'No name for the promo');
+        stderr(_('Error'), 'No name for the promo');
     }
     $days_valid = isset($_POST['days_valid']) ? (int) $_POST['days_valid'] : 0;
     if ($days_valid === 0) {
-        stderr('Error', "Link will be valid for 0 days ? I don't think so!");
+        stderr(_('Error'), "Link will be valid for 0 days ? I don't think so!");
     }
     $max_users = isset($_POST['max_users']) ? (int) $_POST['max_users'] : 0;
     if ($max_users === 0) {
-        stderr('Error', 'Max users cant be 0 i think you missed that!');
+        stderr(_('Error'), 'Max users cant be 0 i think you missed that!');
     }
     $bonus_upload = isset($_POST['bonus_upload']) ? (int) $_POST['bonus_upload'] : 0;
     $bonus_invites = isset($_POST['bonus_invites']) ? (int) $_POST['bonus_invites'] : 0;
     $bonus_karma = isset($_POST['bonus_karma']) ? (int) $_POST['bonus_karma'] : 0;
     if ($bonus_upload === 0 && $bonus_invites === 0 && $bonus_karma === 0) {
-        stderr('Error', 'No gift for the new users? Give them some gifts :D');
+        stderr(_('Error'), 'No gift for the new users? Give them some gifts :D');
     }
     $token = make_password(32);
     $values = [
@@ -59,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                        ->values($values)
                        ->execute();
     if (empty($promo_id)) {
-        stderr('Error', 'Something wrong happened, please retry');
+        stderr(_('Error'), 'Something wrong happened, please retry');
     } else {
         $session->set('is-success', 'The promo link [b]' . htmlsafechars($promoname) . '[/b] was added!');
         unset($_POST);
@@ -85,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
 } elseif ($do === 'addpromo') {
     if (!has_access($user['class'], UC_STAFF, 'coder')) {
-        stderr('Error', 'There is nothing for you here! Go play somewhere else');
+        stderr(_('Error'), 'There is nothing for you here! Go play somewhere else');
     }
     $HTMLOUT .= '
         <h1 class="has-text-centered">Add Promo Link</h1>
@@ -135,11 +134,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
             </tr>";
     $HTMLOUT .= main_table($body) . '
                 </form>';
-    echo stdhead('Add Promo Link') . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $title = _('Add Promo Link');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($do === 'accounts') {
     if (empty($link)) {
-        stderr('Error', 'Invalid Promo ID');
+        stderr(_('Error'), 'Invalid Promo ID');
     }
     $name = $fluent->from('promo')
                    ->select(null)
@@ -151,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     if (!empty($name)) {
         $accounts = explode('|', $name['users']);
         if (empty($accounts)) {
-            stderr('Error', 'No users have signed up from this promo');
+            stderr(_('Error'), 'No users have signed up from this promo');
         }
     }
     $users_class = $container->get(User::class);
@@ -169,8 +172,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                     </div>';
 
     $HTMLOUT .= main_div($body);
-    echo stdhead('Current Promos') . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $title = _('Current Promos');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }
 
 if (empty($_POST)) {
@@ -183,12 +190,12 @@ if (empty($_POST)) {
             <button class="modal-close is-large" aria-label="close"></button>
         </div>';
     if (!has_access($user['class'], UC_STAFF, 'coder')) {
-        stderr('Error', 'There is nothing for you here! Go play somewhere else');
+        stderr(_('Error'), 'There is nothing for you here! Go play somewhere else');
     }
     $r = $fluent->from('promo')
                 ->fetchAll();
     if (empty($r)) {
-        stderr('Error', 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>', 'bottom20');
+        stderr(_('Error'), 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>', 'bottom20');
     } else {
         $HTMLOUT .= '
                 <div class="has-text-centered bottom20"> 
@@ -230,6 +237,11 @@ if (empty($_POST)) {
             </tr>";
         }
         $HTMLOUT .= main_table($body, $heading);
-        echo stdhead('Current Promos') . wrapper($HTMLOUT) . stdfoot();
+        $title = _('Current Promos');
+        $breadcrumbs = [
+            "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
 }

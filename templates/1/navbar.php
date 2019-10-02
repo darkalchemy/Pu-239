@@ -8,7 +8,6 @@ use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Roles;
-use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @throws Exception
@@ -17,7 +16,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  */
 function navbar()
 {
-    global $container, $CURUSER, $site_config, $BLOCKS, $lang;
+    global $container, $CURUSER, $site_config, $BLOCKS;
 
     $auth = $container->get(Auth::class);
     $navbar = '';
@@ -39,91 +38,92 @@ function navbar()
                                 <span class='home'>{$site_config['site']['name']}</span>
                             </a>
                         </li>" . ($BLOCKS['bluray_com_api_on'] || $BLOCKS['imdb_api_on'] || $BLOCKS['tvmaze_api_on'] ? "
-                        <li id='movies_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_movies_tv']}</a>
+                        <li id='movies_links'>
+                            <a href='#' class='has-text-weight-bold'>" . _('Movies & TV') . "</a>
                             <ul class='ddFade ddFadeFast'>" . ($BLOCKS['bluray_com_api_on'] ? "
-                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_bluray']}</span></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=bluray'>{$lang['gl_bluray_releases']}</a></li>" : '') . ($BLOCKS['imdb_api_on'] ? "
-                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_imdb']}</span></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top100'>{$lang['gl_movies_top_100']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_theaters'>{$lang['gl_movies_theaters']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=upcoming'>{$lang['gl_movies_upcoming']}</a></li>" : '') . ($BLOCKS['tmdb_api_on'] ? "
-                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_tmdb']}</span></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=top100'>{$lang['gl_movies_top_100']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=theaters'>{$lang['gl_movies_theaters']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tv'>{$lang['gl_tv_today']}</a></li>" : '') . ($BLOCKS['tvmaze_api_on'] ? "
-                                <li><span class='left10 has-text-weight-bold'>{$lang['gl_tvmaze']}</span></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tvmaze'>{$lang['gl_tvmaze_today']}</a></li>" : '') . '
+                                <li><span class='left10 has-text-weight-bold'>" . _('Blu-Ray.com') . "</span></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=bluray'>" . _('Bluray Releases') . '</a></li>' : '') . ($BLOCKS['imdb_api_on'] ? "
+                                <li><span class='left10 has-text-weight-bold'>" . _('IMDb') . "</span></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top100'>" . _('Top 100') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_theaters'>" . _('In Theaters') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=upcoming'>" . _('Upcoming') . '</a></li>' : '') . ($BLOCKS['tmdb_api_on'] ? "
+                                <li><span class='left10 has-text-weight-bold'>" . _('TMDb') . "</span></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=top100'>" . _('Top 100') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=theaters'>" . _('In Theaters') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tv'>" . _('TV Airing') . '</a></li>' : '') . ($BLOCKS['tvmaze_api_on'] ? "
+                                <li><span class='left10 has-text-weight-bold'>" . _('TVMaze') . "</span></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/movies.php?list=tvmaze'>" . _('TV Airing') . '</a></li>' : '') . '
                             </ul>
                         </li>' : '') . "
-                        <li id='torrents_links' class='clickable'>
-                            <a href='{$site_config['paths']['baseurl']}/browse.php'' class='has-text-weight-bold'>{$lang['gl_torrent']}</a>
+                        <li id='torrents_links'>
+                            <a href='{$site_config['paths']['baseurl']}/browse.php'' class='has-text-weight-bold'>" . _('Torrent') . "</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li><a href='{$site_config['paths']['baseurl']}/browse.php'>{$lang['gl_browse']} {$lang['gl_torrents']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/catalog.php'>{$lang['gl_catalogue']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/upcoming.php'>{$lang['gl_cooker']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>{$lang['gl_movies']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders'><span class='has-text-weight-bold has-text-danger'>{$lang['gl_nseeds']}</span></a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1' class='has-text-weight-bold has-text-green'>{$lang['gl_newtor']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/offers.php'>{$lang['gl_offers']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/requests.php'>{$lang['gl_requests']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/subtitles.php'>{$lang['gl_subtitles']}</a></li>" . (!$auth->hasRole(Roles::UPLOADER) ? "
-                                <li><a href='{$site_config['paths']['baseurl']}/uploadapp.php'>{$lang['gl_uapp']}</a></li>" : "
-                                <li><a href='{$site_config['paths']['baseurl']}/upload.php'>{$lang['gl_upload']}</a></li>") . "
+                                <li><a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/catalog.php'>" . _('Catalog') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/upcoming.php'>" . _('Cooker') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/tmovies.php'>" . _('Movies') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/needseed.php?needed=seeders'><span class='has-text-weight-bold has-text-danger'>" . _('Needs Seeds') . "</span></a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/browse.php?today=1' class='has-text-weight-bold has-text-green'>" . _('New Torrents Today') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/offers.php'>" . _('Offers') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/requests.php'>" . _('Requests') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/subtitles.php'>" . _('Subtitles') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/tvshows.php'>" . _('TV Shows') . '</a></li>' . (!$auth->hasRole(Roles::UPLOADER) ? "
+                                <li><a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('Uploader Application') . '</a></li>' : "
+                                <li><a href='{$site_config['paths']['baseurl']}/upload.php'>" . _('Upload') . '</a></li>') . "
                             </ul>
                         </li>
-                        <li id='general_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_general']}</a>
+                        <li id='general_links'>
+                            <a href='#' class='has-text-weight-bold'>" . _('General') . "</a>
                             <ul class='ddFade ddFadeFast'>" . ($site_config['bucket']['allowed'] ? "
-                                <li><a href='{$site_config['paths']['baseurl']}/bitbucket.php'>{$lang['gl_bitbucket']}</a></li>" : '') . "
-                                <li><a href='{$site_config['paths']['baseurl']}/bot_triggers.php'>{$lang['gl_bot_triggers']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/faq.php'>{$lang['gl_faq']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/chat.php'>{$lang['gl_irc']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/mybonus.php'>{$lang['gl_karma']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/getrss.php'>{$lang['gl_getrss']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/rules.php'>{$lang['gl_rules']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/announcement.php'>{$lang['gl_announcements']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/topten.php'>{$lang['gl_stats']}</a></li>" . ($BLOCKS['torrentfreak_on'] ? "
-                                <li><a href='{$site_config['paths']['baseurl']}/rsstfreak.php'>{$lang['gl_tfreak']}</a></li>" : '') . "
-                                <li><a href='{$site_config['paths']['baseurl']}/wiki.php'>{$lang['gl_wiki']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/bitbucket.php'>" . _('BitBucket') . '</a></li>' : '') . "
+                                <li><a href='{$site_config['paths']['baseurl']}/bot_triggers.php'>" . _('Bot Triggers') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/faq.php'>" . _('FAQ') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/chat.php'>" . _('IRC') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/mybonus.php'>" . _('Karma Store') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/getrss.php'>" . _('Get RSS') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/rules.php'>" . _('Rules') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/announcement.php'>" . _('Site Announcements') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/topten.php'>" . _('Statistics') . '</a></li>' . ($BLOCKS['torrentfreak_on'] ? "
+                                <li><a href='{$site_config['paths']['baseurl']}/rsstfreak.php'>" . _('Torrent Freak') . '</a></li>' : '') . "
+                                <li><a href='{$site_config['paths']['baseurl']}/wiki.php'>" . _('Wiki') . "</a></li>
                             </ul>
                         </li>
-                        <li id='games_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_games']}</a>
+                        <li id='games_links'>
+                            <a href='#' class='has-text-weight-bold'>" . _('Games') . "</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li><a href='{$site_config['paths']['baseurl']}/arcade.php'>{$lang['gl_arcade']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/games.php'>{$lang['gl_games']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/lottery.php'>{$lang['gl_lottery']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/arcade.php'>" . _('Arcade') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/lottery.php'>" . _('Lottery') . "</a></li>
                             </ul>
                         </li>
-                        <li id='user_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_users']}</a>
+                        <li id='user_links'>
+                            <a href='#' class='has-text-weight-bold'>" . _('Users') . "</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li><a href='{$site_config['paths']['baseurl']}/bookmarks.php'>{$lang['gl_bookmarks']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/categoryids.php'>{$lang['gl_catids']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/friends.php'>{$lang['gl_friends']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/hnrs.php'>{$lang['gl_hnrs']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/invite.php?do=view_page'>{$lang['gl_invites']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/messages.php'>{$lang['gl_pms']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/port_check.php'>{$lang['gl_port_check']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/users.php'>{$lang['gl_search_users']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default' class='has-text-weight-bold'>{$lang['gl_usercp']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/bookmarks.php'>" . _('Bookmarks') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/categoryids.php'>" . _("Category ID's") . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/friends.php'>" . _('Friends') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/hnrs.php'>" . _("Hit 'n Runs") . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/invite.php?do=view_page'>" . _('Invites') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/messages.php'>" . _('Messages') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/port_check.php'>" . _('Port Check') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/users.php'>" . _('Search Users') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default' class='has-text-weight-bold'>" . _('User Control Panel') . "</a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/forums.php' class='has-text-weight-bold'>{$lang['gl_forums']}</a>
-                        </li>" . (!has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
-                        <li id='staff_links' class='clickable'>
-                            <a href='#' class='has-text-weight-bold'>{$lang['gl_help']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/forums.php' class='has-text-weight-bold'>" . _('Forums') . '</a>
+                        </li>' . (!has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
+                        <li id='staff_links'>
+                            <a href='#' class='has-text-weight-bold'>" . _('Help') . "</a>
                             <ul class='ddFade ddFadeFast'>
-                                <li><a href='{$site_config['paths']['baseurl']}/bugs.php?action=add'>{$lang['gl_breport']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/contactstaff.php'>{$lang['gl_cstaff']}</a></li>
-                                <li><a href='{$site_config['paths']['baseurl']}/staff.php'>{$lang['gl_staff_list']}</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/bugs.php?action=add'>" . _('Bug Report') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/contactstaff.php'>" . _('Contact Staff') . "</a></li>
+                                <li><a href='{$site_config['paths']['baseurl']}/staff.php'>" . _('Staff List') . '</a></li>
                             </ul>
-                        </li>" : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : (has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
+                        </li>' : '') . ($BLOCKS['global_staff_menu_on'] ? $staff_links : (has_access($CURUSER['class'], UC_STAFF, 'coder') ? "
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/staffpanel.php'>{$lang['gl_staffpanel']}</a>
-                        </li>" : '')) . "
+                            <a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>
+                        </li>' : '')) . "
                         <li>
                             <a href='{$site_config['paths']['baseurl']}/logout.php' class='is-flex'>
                             <i class='icon-logout size_6' aria-hidden='true'></i>
@@ -143,11 +143,6 @@ function navbar()
 /**
  * @param $value
  *
- * @throws InvalidManipulation
- * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- *
  * @return string
  */
 function make_link($value)
@@ -155,16 +150,17 @@ function make_link($value)
     global $site_config;
 
     $link = "
-                            <li><a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . format_comment($value['page_name']) . '</a></li>';
+                            <li>
+                                <a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . _($value['page_name']) . '</a>
+                            </li>';
 
     return $link;
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -190,9 +186,9 @@ function staff_panel()
         }
         $staff_panel[] = [
             'id' => 0,
-            'page_name' => 'Staff Messages',
+            'page_name' => _('Staff Messages'),
             'file_name' => 'staffbox.php',
-            'description' => 'View Staff Messages',
+            'description' => _('View Staff Messages'),
             'type' => 'user',
             'av_class' => UC_STAFF,
             'added_by' => 1,
@@ -201,7 +197,7 @@ function staff_panel()
         ];
         if (in_array($CURUSER['id'], $site_config['adminer']['allowed_ids'])) {
             $staff_panel[] = [
-                'page_name' => 'Adminer',
+                'page_name' => _('Adminer'),
                 'file_name' => 'view_sql.php',
                 'type' => 'other',
                 'av_class' => UC_MAX,
@@ -225,11 +221,11 @@ function staff_panel()
         ksort($panels);
         foreach ($panels as $key => $value) {
             $panel .= "
-                <li class='clickable'>
+                <li>
                     <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>[" . substr($key, 1) . "]</a>
                     <ul class='ddFade ddFadeFast'>" . make_link([
                 'file_name' => 'staffpanel.php',
-                'page_name' => 'Staff Panel',
+                'page_name' => _('Staff Panel'),
             ]) . implode('', $value) . '
                     </ul>
                 </li>';

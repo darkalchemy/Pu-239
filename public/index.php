@@ -27,7 +27,6 @@ $stdfoot = [
         has_access($user['class'], UC_STAFF, '') ? get_file_name('offer_js') : '',
     ],
 ];
-$lang = array_merge(load_language('global'), load_language('index'), load_language('trivia'));
 if ((isset($_GET['act']) && $_GET['act'] === 'Arcade' && isset($_POST['gname'])) || (isset($_POST['module']) && $_POST['module'] === 'pnFlashGames')) {
     include_once INCL_DIR . 'arcade.php';
 }
@@ -350,6 +349,12 @@ function wrap_it($item, $data)
     <div class='$class' id='" . strtolower($item) . "_'>{$data}
     </div>";
     }
+
+    return '';
 }
 
-echo stdhead('Home', $stdhead) . $HTMLOUT . stdfoot($stdfoot);
+$title = _('Home');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

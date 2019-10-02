@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('report'));
 global $container, $site_config;
 
 $stdhead = [
@@ -27,11 +26,11 @@ $stdfoot = [
 $HTMLOUT = $id_2 = '';
 
 if (!$site_config['staff']['reports']) {
-    stderr('Error', 'The report system is offline');
+    stderr(_('Error'), 'The report system is offline');
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
-    stderr($lang['report_error'], $lang['report_error1']);
+    stderr(_('Error'), _('Bad ID!'));
 }
 $type = isset($_GET['type']) ? htmlsafechars($_GET['type']) : (!empty($_POST['type']) ? htmlsafechars($_POST['type']) : '');
 $typesallowed = [
@@ -46,19 +45,19 @@ $typesallowed = [
     'Post',
 ];
 if (!in_array($type, $typesallowed)) {
-    stderr($lang['report_error'], $lang['report_error2']);
+    stderr(_('Error'), _("What you are trying to report doesn't exist!"));
 }
 if (isset($_POST['do_it'])) {
     $id = !empty($_POST['id']) ? (int) $_POST['id'] : 0;
     $id_2 = !empty($_POST['id_2']) ? (int) $_POST['id_2'] : 0;
     $do_it = !empty($_POST['do_it']) ? (int) $_POST['do_it'] : 0;
     if (!is_valid_id($do_it)) {
-        stderr($lang['report_error'], $lang['report_error3']);
+        stderr(_('Error'), _('I smell a rat!'));
     }
 
     $reason = !empty($_POST['body']) ? htmlsafechars($_POST['body']) : '';
     if (empty($reason)) {
-        stderr($lang['report_error'], $lang['report_error4']);
+        stderr(_('Error'), _('You MUST enter a reason for this report! Use your back button and fill in the reason'));
     }
     $fluent = $container->get(Database::class);
     $previous = $fluent->from('reports')
@@ -70,7 +69,7 @@ if (isset($_POST['do_it'])) {
                        ->fetch('id');
 
     if (!empty($previous)) {
-        stderr($lang['report_error5'], "{$lang['report_error6']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b>!");
+        stderr(_('Report Failure!'), '' . _('You have already reported') . ' <b>' . str_replace('_', ' ', $type) . '</b> ' . _('with id:') . " <b>$id</b>!");
     }
 
     $values = [
@@ -88,20 +87,23 @@ if (isset($_POST['do_it'])) {
     $cache = $container->get(Cache::class);
     $cache->delete('new_report_');
     $session = $container->get(Session::class);
-    $session->set('is-success', str_replace('_', ' ', $type) . " {$lang['report_id']} {$id} report sent.");
+    $session->set('is-success', str_replace('_', ' ', $type) . ' ' . _('with id:') . " {$id} report sent.");
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
 $HTMLOUT .= main_div("
     <form method='post' action='{$site_config['paths']['baseurl']}/report.php' enctype='multipart/form-data' accept-charset='utf-8'>
-    <h1>Report: " . str_replace('_', ' ', $type) . "</h1>
-        {$lang['report_report']} <b>" . str_replace('_', ' ', $type) . "</b> {$lang['report_id']} <b>$id</b> {$lang['report_report1']} <a class='is-link' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>{$lang['report_rules']}</a>?</td></tr>
-        <p class='top10'><b>{$lang['report_reason']}</b></p>" . BBcode('', 'w-100', 200) . "
+    <h1>Report: " . str_replace('_', ' ', $type) . '</h1>
+        ' . _('Are you sure you would like to report') . ' <b>' . str_replace('_', ' ', $type) . '</b> ' . _('with id:') . " <b>$id</b> " . _('to the Staff for violation of the') . " <a class='is-link' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>" . _('rules') . "</a>?</td></tr>
+        <p class='top10'><b>" . _('Reason:') . '</b></p>' . BBcode('', 'w-100', 200) . "
         <input type='hidden' name='id' value='$id'>
         <input type='hidden' name='type' value='$type'>
         <input type='hidden' name='do_it' value='1'>
-        <input type='submit' class='button is-small margin20' value='{$lang['report_confirm']}'>
+        <input type='submit' class='button is-small margin20' value='" . _('Confirm Report') . "'>
     </form>", '', 'padding20 has-text-centered');
-echo stdhead('Report', $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-die();
+$title = _('Report');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

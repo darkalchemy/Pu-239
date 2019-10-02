@@ -842,5 +842,9 @@ switch ($_GET['op']) {
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache");
         break;
 }
-
-echo stdhead('Memcached') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Memcached');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

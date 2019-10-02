@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_snatched_torrents'));
 global $site_config;
 
 $HTMLOUT = '';
@@ -22,8 +21,6 @@ $HTMLOUT = '';
  */
 function get_snatched_color($st)
 {
-    global $lang;
-
     $secs = $st;
     $mins = floor($st / 60);
     $hours = floor($mins / 60);
@@ -89,7 +86,7 @@ function get_snatched_color($st)
         return "<span class='has-text-danger'><b>0:0:$secs</b></span>";
     }
 
-    return "<span class='has-text-danger'><b>{$lang['ad_snatched_torrents_none']}<br>{$lang['ad_snatched_torrents_reported']}</b></span>";
+    return "<span class='has-text-danger'><b>" . _('None') . '<br>' . _('reported') . '</b></span>';
 }
 
 global $container;
@@ -142,8 +139,8 @@ for ($i = 0; $i <= count($valid_sort); ++$i) {
     }
 }
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>{$lang['ad_snatched_torrents_allsnatched']}</h1>
-    <div class='has-text-centered size_4 bottom20'>{$lang['ad_snatched_torrents_currently']}&#160;" . $count . "&#160;{$lang['ad_snatched_torrents_snatchedtor']}</div>";
+    <h1 class='has-text-centered'>" . _('All snatched torrents') . "</h1>
+    <div class='has-text-centered size_4 bottom20'>" . _('We currently have') . '&#160;' . $count . '&#160;' . _('snatched torrents') . '</div>';
 $snatchedperpage = 25;
 $pager = pager($snatchedperpage, $count, $_SERVER['PHP_SELF'] . '?tool=snatched_torrents&amp;' . $pagerlink);
 if ($count > $snatchedperpage) {
@@ -158,25 +155,25 @@ $snatched = $fluent->from('snatched AS sn')
 if ($count > 0) {
     $heading = "
     <tr>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=1&amp;type={$link[1]}'>{$lang['ad_snatched_torrents_name']}</a></th>
-        <th class='min-150 has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=2&amp;type={$link[2]}'>{$lang['ad_snatched_torrents_torname']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=3&amp;type={$link[3]}'>{$lang['ad_snatched_torrents_hnr']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=4&amp;type={$link[4]}'>{$lang['ad_snatched_torrents_marked']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=5&amp;type={$link[5]}'>{$lang['ad_snatched_torrents_announced']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=6&amp;type={$link[6]}'>{$lang['ad_snatched_torrents_upload']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=7&amp;type={$link[7]}'>{$lang['ad_snatched_torrents_download']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=8&amp;type={$link[8]}'>{$lang['ad_snatched_torrents_seedtime']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=9&amp;type={$link[9]}'>{$lang['ad_snatched_torrents_leechtime']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=10&amp;type={$link[10]}'>{$lang['ad_snatched_torrents_startdate']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=11&amp;type={$link[11]}'>{$lang['ad_snatched_torrents_enddate']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=12&amp;type={$link[12]}'>{$lang['ad_snatched_torrents_seeding']}</a></th>
-    </tr>";
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=1&amp;type={$link[1]}'>" . _('Username') . "</a></th>
+        <th class='min-150 has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=2&amp;type={$link[2]}'>" . _('Torrent name') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=3&amp;type={$link[3]}'>" . _('HitnRun') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=4&amp;type={$link[4]}'>" . _('Mark of cain') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=5&amp;type={$link[5]}'>" . _('Announced') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=6&amp;type={$link[6]}'>" . _('Uploaded') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=7&amp;type={$link[7]}'>" . _('Downloaded') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=8&amp;type={$link[8]}'>" . _('Seedtime') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=9&amp;type={$link[9]}'>" . _('Leechtime') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=10&amp;type={$link[10]}'>" . _('Start date') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=11&amp;type={$link[11]}'>" . _('End date') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=snatched_torrents&amp;sort=12&amp;type={$link[12]}'>" . _('Seeder') . '</a></th>
+    </tr>';
     $body = '';
     foreach ($snatched as $row) {
         $smallname = format_comment($row['name']);
         $body .= '
     <tr>
-        <td>' . format_username($row['userid']) . "</td>
+        <td>' . format_username((int) $row['userid']) . "</td>
         <td><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['torrentid'] . "'><b>" . $smallname . '</b></a></td>
         <td class="has-text-centered"><b>' . get_date((int) $row['hit_and_run'], 'LONG', 0, 1) . '</b></td>
         <td class="has-text-centered"><b>' . format_comment($row['mark_of_cain']) . '</b></td>
@@ -191,18 +188,22 @@ if ($count > 0) {
         <td class="has-text-centered"><b>' . get_date((int) $row['complete_date'], 'LONG', 0, 1) . '</b></td>';
         } else {
             $body .= "
-        <td class='has-text-centered'><b><span class='has-text-danger'>{$lang['ad_snatched_torrents_ncomplete']}</span></b></td>";
+        <td class='has-text-centered'><b><span class='has-text-danger'>" . _('Not completed') . '</span></b></td>';
         }
         $body .= '
-        <td class="has-text-centered"><b>' . ($row['seeder'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success tooltipper' title='{$lang['ad_snatched_torrents_yes']}'></i>" : "<i class='icon-thumbs-down icon has-text-danger tooltipper' title='{$lang['ad_snatched_torrents_no']}'></i>") . '</b></td>
+        <td class="has-text-centered"><b>' . ($row['seeder'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success tooltipper' title='" . _('Yes') . "'></i>" : "<i class='icon-thumbs-down icon has-text-danger tooltipper' title='" . _('No') . "'></i>") . '</b></td>
     </tr>';
     }
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stdmsg('', $lang['ad_snatched_torrents_nothing']);
+    $HTMLOUT .= stdmsg('', _('Nothing here :('));
 }
 if ($count > $snatchedperpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['ad_snatched_torrents_stdhead']) . wrapper($HTMLOUT) . stdfoot();
-die();
+$title = _('Snatched Torrents');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

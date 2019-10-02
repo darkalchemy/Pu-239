@@ -11,7 +11,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang);
 global $container, $site_config;
 
 require_once DATABASE_DIR . 'sql_updates.php';
@@ -160,5 +159,9 @@ if (file_exists(DATABASE_DIR)) {
 }
 
 $HTMLOUT = wrapper(main_table($body, $heading));
-
-echo stdhead('Update Database') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Update Database');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

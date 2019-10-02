@@ -14,16 +14,16 @@ if ($site_config['bonus']['crazy_hour']) {
 }
 
 /**
- * @throws Exception
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws Exception
  *
  * @return string
  */
 function crazyhour()
 {
-    global $CURUSER, $container, $lang;
+    global $CURUSER, $container;
 
     $cache = $container->get(Cache::class);
     $fluent = $container->get(Database::class);
@@ -84,22 +84,22 @@ function crazyhour()
                        ->where("type = 'crazyhour'")
                        ->execute();
                 $cache->set('crazyhour_', $crazyhour['crazyhour'], 0);
-                write_log('w00t! It\'s [color=#FFCC00][b]Crazyhour[/b][/color]!');
-                $msg = 'w00t! It\'s [color=orange][b]Crazyhour[/b][/color] :w00t:';
+                $msg = _("It's CrazyHour");
+                write_log($msg);
                 autoshout($msg);
             }
         }
         $crazyhour['remaining'] = $crazyhour['crazyhour']['var'] - TIME_NOW;
-        $crazytitle = $lang['gl_crazy_title'];
-        $crazymessage = $lang['gl_crazy_message'] . ' <b> ' . $lang['gl_crazy_message1'] . '</b> ' . $lang['gl_crazy_message2'] . ' <strong> ' . $lang['gl_crazy_message3'] . '</strong>!';
+        $crazytitle = _("It's Crazyhour!");
+        $crazymessage = _('All torrents are FREE and upload stats are TRIPLED');
         $htmlout .= "
     <li>
         <a href='#'>
-            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>{$lang['gl_crazy_on']}</span>
+            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>" . _('CrazyHour ON') . "</span>
             <div class='tooltip_templates'>
                 <div id='crazy_tooltip' class='margin20'>
                     <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        {$lang['gl_crazy_']} {$crazytitle} {$crazymessage} {$lang['gl_crazy_ends']}<br>" . mkprettytime($crazyhour['remaining']) . "<br>{$lang['gl_crazy_at']} " . get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1) . '
+                        " . _f('CrazyHour %1$s %2$s Ends in %3$s at %4$s', $crazytitle, $crazymessage, mkprettytime($crazyhour['remaining']), get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1)) . '
                     </div>
                 </div>
             </div>
@@ -111,16 +111,17 @@ function crazyhour()
     $htmlout .= "
     <li>
         <a href='#'>
-            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>{$lang['gl_crazy_']}</span>
+            <span class='button tag is-success dt-tooltipper-small' data-tooltip-content='#crazy_tooltip'>" . _('CrazyHour') . "</span>
             <div class='tooltip_templates'>
                 <div id='crazy_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        {$lang['gl_crazy_']}
+                        " . _('CrazyHour') . "
                     </div>
                     <div class='has-text-centered is-primary'>
-                        {$lang['gl_crazy_message4']}<br>
-                        {$lang['gl_crazy_message5']}<br>
-                        {$lang['gl_crazy_message6']} " . mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW) . "<br>{$lang['gl_crazy_at']} " . get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1) . '
+                        " . _('All torrents are FREE') . '<br>
+                        ' . _('and triple upload credit!') . '<br>
+                        ' . _f('starts in %s', mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW)) . '<br>
+                        ' . _f('at %s', get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1)) . '
                     </div>
                 </div>
             </div>

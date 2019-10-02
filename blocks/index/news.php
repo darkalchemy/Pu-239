@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $cache = $container->get(Cache::class);
 $news = $cache->get('latest_news_');
@@ -25,7 +25,7 @@ if ($news === false || is_null($news)) {
 $adminbutton = '';
 if ($CURUSER['class'] >= UC_STAFF) {
     $adminbutton = "
-        <a class='is-pulled-right size_2' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>{$lang['index_news_title']}</a>";
+        <a class='is-pulled-right size_2' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=news'>" . _('Title') . '</a>';
 }
 $site_news .= "
     <a id='news-hash'></a>
@@ -42,10 +42,10 @@ if ($news) {
             $button = "
                 <div class='is-pulled-right'>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=" . (int) $array['id'] . "'>
-                        <i class='icon-edit icon has-text-info size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_ed']}'></i>
+                        <i class='icon-edit icon has-text-info size_4 tooltipper' aria-hidden='true' title='" . _('Edit') . "'></i>
                     </a>
                     <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=" . (int) $array['id'] . "&amp;h={$hash}'>
-                        <i class='icon-trash-empty icon has-text-danger size_4 tooltipper' aria-hidden='true' title='{$lang['index_news_del']}'></i>
+                        <i class='icon-trash-empty icon has-text-danger size_4 tooltipper' aria-hidden='true' title='" . _('Delete') . "'></i>
                     </a>
                 </div>";
         }
@@ -61,7 +61,7 @@ if ($news) {
             <div class='bordered{$padding}'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00'>
                     <div class='has-text-primary size_5 padding10 has-text-centered'>" . htmlsafechars($array['title']) . "</div>
-                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . get_date((int) $array['added'], 'DATE') . "{$lang['index_news_added']} {$username}{$button}</div>
+                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . _f('%1$s - Added by %2$s', get_date((int) $array['added'], 'DATE'), $username) . "{$button}</div>
                     <div class='is-primary padding20'>
                         " . format_comment($array['body']) . '
                     </div>
@@ -72,7 +72,7 @@ if ($news) {
     $site_news .= main_div("
                     <div class='bg-02 round5 padding20'>
                         <div class='is-primary level-center-center'>
-                            " . format_comment($lang['index_news_not']) . '
+                            " . format_comment(_('No news is good news!')) . '
                         </div>
                     </div>');
 }

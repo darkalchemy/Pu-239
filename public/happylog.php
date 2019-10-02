@@ -10,18 +10,17 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-$lang = load_language('global');
 $HTMLOUT = '';
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : '';
 if (empty($id)) {
-    stderr('Err', 'I dont think so!');
+    stderr('Error', 'I dont think so!');
 }
 global $container, $site_config;
 
 $users_class = $container->get(User::class);
 $user = $users_class->getUserFromId($id);
 if (empty($user)) {
-    stderr('Error', 'User not found');
+    stderr(_('Error'), 'User not found');
 }
 $happylog_class = $container->get(HappyLog::class);
 $count = $happylog_class->get_count($id);
@@ -52,4 +51,8 @@ if ($count > 0) {
 } else {
     $HTMLOUT .= main_div('No torrents downloaded in happy hour!');
 }
-echo stdhead('Happy hour log for ' . htmlsafechars($user['username']) . '') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Happy Log');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

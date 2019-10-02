@@ -6,7 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('userdetails'));
 $stdfoot = [
     'js' => [
         get_file_name('checkport_js'),
@@ -21,22 +20,25 @@ if ($user['class'] >= UC_STAFF && !empty($_GET['id']) && is_valid_id((int) $_GET
 $username = format_username($id);
 
 $completed = "
-    <h1 class='has-text-centered'>$username Port Status</h1>";
+    <h1 class='has-text-centered'>" . _f('Port Status for %s', $username) . '</h1>';
 $completed .= main_div("
     <div id='ipports' data-uid='{$id}' class='bg-04 round10'></div>
     <div class='columns top10 is-variable is-0-mobile is-1-tablet is-2-desktop padding20'>
         <div class='has-text-centered column is-one-third'>
-            <input class='w-100' type='text' id='userip' placeholder='Your Torrent Client IP [" . getip() . "]'>
+            <input class='w-100' type='text' id='userip' placeholder='" . _f('Your Torrent Client IP [%s]', getip()) . "'>
         </div>
         <div class='has-text-centered column is-one-third'>
-            <input class='w-100' type='text' id='userport' placeholder='Your Torrent Client Port'>
+            <input class='w-100' type='text' id='userport' placeholder='" . _('Your Torrent Client Port') . "'>
         </div>
         <div class='has-text-centered column is-one-third'>
-            <input class='w-100' type='text' id='ipport' placeholder='Check Status' readonly>
+            <input class='w-100' type='text' id='ipport' placeholder='" . _('Check Status') . "' readonly>
         </div>
     </div>
     <div class='has-text-centered'>
         <input id='portcheck' type='submit' value='Test Connectivity' class='button is-small margin20'>
     </div>");
-
-echo stdhead('Check My Ports') . wrapper($completed) . stdfoot($stdfoot);
+$title = _('Check My Ports');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($completed) . stdfoot($stdfoot);

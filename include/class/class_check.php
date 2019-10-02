@@ -26,7 +26,6 @@ function class_check(int $class = UC_STAFF)
 {
     global $container, $site_config;
 
-    $lang = load_language('staff_panel');
     $user = check_user_status();
     if (empty($user)) {
         header("Location: {$site_config['paths']['baseurl']}/404.html");
@@ -35,14 +34,14 @@ function class_check(int $class = UC_STAFF)
     $auth = $container->get(Auth::class);
     if ($auth->isRemembered()) {
         $session = $container->get(Session::class);
-        $session->set('is-danger', $lang['spanel_confirm_password']);
+        $session->set('is-danger', _('Please confirm your password.'));
         header("Location: {$site_config['paths']['baseurl']}/verify.php?page=" . urlencode($_SERVER['REQUEST_URI']));
         die();
     }
     $userid = $user['id'];
     if (!has_access($user['class'], $class, 'coder')) {
         write_info("{$user['username']} attempted to access a staff page");
-        stderr('ERROR', 'No Permission. Page is for ' . get_user_class_name((int) $class) . ' and above. Read the FAQ.');
+        stderr(_('Error'), 'No Permission. Page is for ' . get_user_class_name((int) $class) . ' and above. Read the FAQ.');
     }
     if ($user['class'] > UC_MAX || (!in_array($user['id'], $site_config['is_staff']) && (!$user['roles_mask'] & Roles::CODER))) {
         $ip = getip();
@@ -57,7 +56,7 @@ function class_check(int $class = UC_STAFF)
             $users_class = $container->get(User::class);
             $users_class->update($update, $userid);
             write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
-            stderr('Error!', 'Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here!');
+            stderr('Error', 'Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here!');
         }
     }
 }

@@ -8,15 +8,14 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('index'));
 $parents = genrelist(true);
 
 $heading = "
         <tr>
-            <th class='has-text-centered w-25'>Cat ID</th>
-            <th class='has-text-centered'>Cat Name</th>
-            <th class='has-text-centered w-25'>Torrents Uploaded</th>
-        </tr>";
+            <th class='has-text-centered w-25'>" . _('Cat ID') . "</th>
+            <th class='has-text-centered'>" . _('Cat Name') . "</th>
+            <th class='has-text-centered w-25'>" . _('Torrents Uploaded') . '</th>
+        </tr>';
 $body = '';
 global $container, $site_config;
 
@@ -53,5 +52,8 @@ foreach ($parents as $parent) {
 $HTMLOUT = "
     <h1 class='has-text-centered'>Category ID's</h1>";
 $HTMLOUT .= main_table($body, $heading, 'w-50 has-text-centered');
-
-echo stdhead("Category ID's") . wrapper($HTMLOUT) . stdfoot();
+$title = _("Category ID's");
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

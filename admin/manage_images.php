@@ -126,5 +126,9 @@ if (!empty($images)) {
 } else {
     $HTMLOUT .= main_div('There are no images to view', '', 'padding20');
 }
-
-echo stdhead('Manage Images') . wrapper($HTMLOUT, 'is-paddingless') . stdfoot();
+$title = _('Images Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

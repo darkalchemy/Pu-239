@@ -20,7 +20,6 @@ require_once INCL_DIR . 'function_details.php';
 require_once INCL_DIR . 'function_categories.php';
 require_once INCL_DIR . 'function_event.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('details'));
 global $container, $site_config, $BLOCKS;
 
 $isfree = [];
@@ -53,13 +52,13 @@ $sections = [
 ];
 $session = $container->get(Session::class);
 if (!isset($_GET['id'])) {
-    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_missing_id']}");
+    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Missing ID') . '');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
 if (!is_valid_id((int) $_GET['id'])) {
-    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']} {$_GET['id']}");
+    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Bad ID') . " {$_GET['id']}");
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -76,7 +75,7 @@ if (!empty($torrent['next']['id'])) {
     $next = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['next']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars((string) $torrent['next']['name']) . "'><i class='icon-right-open size_2' aria-hidden='true'></i></a>";
 }
 if (empty($torrent)) {
-    $session->set('is-warning', "[h3]{$lang['details_user_error']}[/h3] {$lang['details_bad_id']}{$_GET['id']}");
+    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Bad ID') . "{$_GET['id']}");
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -249,6 +248,7 @@ if ($BLOCKS['tvmaze_api_on'] && in_array($torrent['category'], $site_config['cat
     }
 }
 if ($BLOCKS['imdb_api_on'] && (in_array($torrent['category'], $site_config['categories']['movie']) || in_array($torrent['category'], $site_config['categories']['tv'])) && !empty($torrent['imdb_id'])) {
+    $imdb_id = $torrent['imdb_id'];
     $imdb_data = $cache->get('imdb_fullset_title_' . $torrent['imdb_id']);
     if ($imdb_data === false || is_null($imdb_data)) {
         $imdb_data = "
@@ -277,7 +277,7 @@ if (!empty($torrent['subs'])) {
     foreach ($subtitles as $k => $subname) {
         foreach ($subs as $sub) {
             if (strtolower($sub['name']) === strtolower($subname)) {
-                $Subs[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . " {$lang['details_subtitle']}'>";
+                $Subs[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . ' ' . _('Subtitle') . "'>";
             }
         }
     }
@@ -293,7 +293,7 @@ if (!empty($torrent['audios'])) {
     foreach ($audios as $k => $subname) {
         foreach ($subs as $sub) {
             if (strtolower($sub['name']) === strtolower($subname)) {
-                $Audios[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . " {$lang['details_audio']}'>";
+                $Audios[] = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' class='sub_flag tooltipper left10' alt='" . htmlsafechars($sub['name']) . "' title='" . htmlsafechars($sub['name']) . ' ' . _('Audio') . "'>";
             }
         }
     }
@@ -322,19 +322,19 @@ $torrent['silver_color'] = 'silver';
 require_once PARTIALS_DIR . 'free_details.php';
 $info_block = '';
 if ($user['class'] >= (UC_MIN + 1) && $torrent['nfosz'] > 0) {
-    $info_block .= tr($lang['details_nfo'], "<div class='left10'><a href='{$site_config['paths']['baseurl']}/viewnfo.php?id={$torrent['id']}'>{$lang['details_view_nfo']}</a> (" . mksize($torrent['nfosz']) . ')</div>', 1);
+    $info_block .= tr(_('NFO'), "<div class='left10'><a href='{$site_config['paths']['baseurl']}/viewnfo.php?id={$torrent['id']}'>" . _('View NFO') . '</a> (' . mksize($torrent['nfosz']) . ')</div>', 1);
 }
 if (!empty($torrent['subs'])) {
-    $info_block .= tr($lang['details_subs'], $subtitles, 1);
+    $info_block .= tr(_('Subtitles'), $subtitles, 1);
 }
 if (!empty($torrent['audios'])) {
-    $info_block .= tr($lang['details_audios'], $audios, 1);
+    $info_block .= tr(_('Audios'), $audios, 1);
 }
 if ($torrent['visible'] === 'no') {
-    $info_block .= tr($lang['details_visible'], '<div class="left10">' . $lang['details_no'] . $lang['details_dead'] . '</div>', 1);
+    $info_block .= tr(_('Visible'), '<div class="left10">' . _('No') . _(' (dead)') . '</div>', 1);
 }
 if ($moderator) {
-    $info_block .= tr($lang['details_banned'], "<div class='left10'>{$torrent['banned']}</div>", 1);
+    $info_block .= tr(_('Banned'), "<div class='left10'>{$torrent['banned']}</div>", 1);
 }
 if ($torrent['nuked'] === 'yes') {
     $reason = !empty($torrent['nukereason']) ? $torrent['nukereason'] : '';
@@ -342,22 +342,22 @@ if ($torrent['nuked'] === 'yes') {
 }
 $torrent['cat_name'] = htmlsafechars((string) $change[$torrent['category']]['name']);
 if (isset($torrent['cat_name'])) {
-    $info_block .= tr($lang['details_type'], '<div class="left10">' . htmlsafechars((string) $torrent['cat_name']) . '</div>', 1);
+    $info_block .= tr(_('Type'), '<div class="left10">' . htmlsafechars((string) $torrent['cat_name']) . '</div>', 1);
 } else {
-    $info_block .= tr($lang['details_type'], '<div class="left10">None</div>', 1);
+    $info_block .= tr(_('Type'), '<div class="left10">None</div>', 1);
 }
 $lastseed = $torrents_class->get_items(['last_action'], $id);
 $info_block .= tr('Rating', '<div class="left10">' . getRate($id, 'torrent') . '</div>', 1);
-$info_block .= tr($lang['details_last_seeder'], '<div class="left10">' . $lang['details_last_activity'] . get_date(strtotime($lastseed), '', 0, 1) . '</div>', 1);
+$info_block .= tr(_('Last&#160;seeder'), '<div class="left10">' . _('Last Activity ') . get_date(strtotime($lastseed), '', 0, 1) . '</div>', 1);
 if (!isset($_GET['filelist'])) {
-    $info_block .= tr($lang['details_num_files'], "<div class='level-left is-flex left10'><a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='tooltipper' title='{$lang['details_list']}'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . '</a></div>', 1);
+    $info_block .= tr(_('Num Files'), "<div class='level-left is-flex left10'><a href='{$site_config['paths']['baseurl']}/filelist.php?id=$id' class='tooltipper' title='" . _('See full list') . "'>{$torrent['numfiles']} file" . plural($torrent['numfiles']) . '</a></div>', 1);
 }
-$info_block .= tr($lang['details_size'], '<div class="left10">' . mksize($torrent['size']) . ' (' . number_format($torrent['size']) . " {$lang['details_bytes']})</div>", 1);
-$info_block .= tr($lang['details_added'], '<div class="left10">' . get_date((int) $torrent['added'], 'LONG') . '</div>', 1);
-$info_block .= tr($lang['details_views'], "<div class='left10'>{$torrent['views']}</div>", 1);
-$info_block .= tr($lang['details_hits'], "<div class='left10'>{$torrent['hits']}</div>", 1);
-$info_block .= tr($lang['details_snatched'], '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} {$lang['details_times']}" . plural($torrent['times_completed']) . '</a>' : "0 {$lang['details_times']}") . '</div>', 1);
-$info_block .= tr($lang['details_peers'], "<div class='left10'><a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='tooltipper' title='{$lang['details_list']}'>{$torrent['seeders']} seeder" . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . "{$lang['details_peer_total']}", 1);
+$info_block .= tr(_('Size'), '<div class="left10">' . mksize($torrent['size']) . ' (' . number_format($torrent['size']) . ' ' . _('bytes ') . ')</div>', 1);
+$info_block .= tr(_('Added'), '<div class="left10">' . get_date((int) $torrent['added'], 'LONG') . '</div>', 1);
+$info_block .= tr(_('Views'), "<div class='left10'>{$torrent['views']}</div>", 1);
+$info_block .= tr(_('Hits'), "<div class='left10'>{$torrent['hits']}</div>", 1);
+$info_block .= tr(_('Snatched'), '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} " . _(' time') . '' . plural($torrent['times_completed']) . '</a>' : '0 ' . _(' time') . '') . '</div>', 1);
+$info_block .= tr(_('Peers'), "<div class='left10'><a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='tooltipper' title='" . _('See full list') . "'>{$torrent['seeders']} seeder" . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . '' . _(' peer(s) total') . '', 1);
 
 if (!empty($torrent['descr'])) {
     $descr = $cache->get('torrent_descr_' . $id);
@@ -406,7 +406,7 @@ foreach ($tags as $tag) {
         <a href='{$site_config['paths']['baseurl']}/browse.php?search=$tag&amp;searchin=all&amp;incldead=1'>" . htmlsafechars((string) $tag) . '</a>';
     }
 }
-$points = tr($lang['details_tags'], "<div class='left10'>$keywords</div>", 1);
+$points = tr(_('Tags'), "<div class='left10'>$keywords</div>", 1);
 $coin_class = $container->get(Coin::class);
 $coins = $coin_class->get($id);
 $my_points = $total_coins = 0;
@@ -489,18 +489,18 @@ $sr = "
         <img src='{$site_config['paths']['images_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
         <span class='right10' style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
 if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $is_free['free'] > 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || $user['free_switch'] != 0) {
-    $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} {$lang['details_new_ratio']}</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
+    $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} " . _('Your new ratio if you download this torrent') . "</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
 } else {
-    $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} {$lang['details_new_ratio']}</div>", 1);
+    $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} " . _('Your new ratio if you download this torrent') . '</div>', 1);
 }
 $info_hash = $torrent['info_hash'];
-$points .= tr($lang['details_info_hash'], "<div title='$info_hash' class='tooltipper left10'>" . substr($info_hash, 0, 40) . '<br>' . substr($info_hash, 40, 80) . '</div>', 1);
+$points .= tr(_('Info hash'), "<div title='$info_hash' class='tooltipper left10'>" . substr($info_hash, 0, 40) . '<br>' . substr($info_hash, 40, 80) . '</div>', 1);
 
 $url = $site_config['paths']['baseurl'] . '/edit.php?id=' . $torrent['id'];
 if (isset($_GET['returnto'])) {
     $url .= '&amp;returnto=' . urlencode($_GET['returnto']);
 }
-$rowuser = !empty($owner) ? format_username((int) $owner) : $lang['details_unknown'];
+$rowuser = !empty($owner) ? format_username((int) $owner) : _('unknown');
 $uprow = $torrent['anonymous'] === '1' ? (!$moderator && !$owner ? '' : $rowuser . ' - ') . '<i>' . get_anonymous_name() . '</i>' : $rowuser;
 $audit = tr('Upped by', "<div class='level-left left10'>$uprow</div>", 1);
 $users_class = $container->get(User::class);
@@ -526,7 +526,7 @@ $audit .= tr('Report Torrent', "
     </form>", 1);
 
 if ($owned) {
-    $audit .= tr('Edit Torrent', "<a href='$url' class='button is-small left10'>{$lang['details_edit']}</a>", 1);
+    $audit .= tr('Edit Torrent', "<a href='$url' class='button is-small left10'>" . _('Edit this torrent') . '</a>', 1);
 }
 if ($moderator) {
     $audit .= tr('Clear Cache', "
@@ -562,7 +562,7 @@ if ($moderator) {
     }
 }
 
-$audit .= tr($lang['details_thanks'], "
+$audit .= tr(_('Thanks list'), "
         <noscript>
             <iframe id='thanked' src ='{$site_config['paths']['baseurl']}/ajax/thanks.php?torrentid={$id}'>
                 Your browser does not support iframes. And it has Javascript disabled!
@@ -612,7 +612,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
     $count = $torrent['comments'];
     if (!$count) {
         $comments .= "
-            <h2 class='has-text-centered top10'>{$lang['details_no_comment']}</h2>";
+            <h2 class='has-text-centered top10'>" . _('No Comments yet!') . '</h2>';
     } else {
         $perpage = 15;
         $comments_class = $container->get(Comment::class);
@@ -630,7 +630,7 @@ if ($torrent['allow_comments'] === 'yes' || $moderator) {
     }
 } else {
     $comments = "
-        <a id='startcomments'></a>" . main_div($lang['details_com_disabled'], 'has-text-centered', 'padding20');
+        <a id='startcomments'></a>" . main_div(_('Sorry Comments disabled!'), 'has-text-centered', 'padding20');
 }
 if ($user['downloadpos'] === 1 || $owner) {
     $slots = "
@@ -673,19 +673,19 @@ if ($user['downloadpos'] === 1 || $owner) {
     $Free_Slot_Text = $freeslot_text;
     $slots .= main_table("
                     <tr>
-                        <td class='rowhead w-1'>{$lang['details_download']}</td>
+                        <td class='rowhead w-1'>" . _('Download') . "</td>
                         <td>
                             <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "'>" . htmlsafechars($torrent['filename']) . "</a><br>{$Free_Slot}
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['details_zip']}</td>
+                        <td>" . _('Zip') . "</td>
                         <td>
                             <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;zip=1'>" . htmlsafechars($torrent['filename']) . ".zip</a><br>{$Free_Slot_Zip}
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['details_text']}</td>
+                        <td>" . _('Text') . "</td>
                         <td>
                             <a class='index' href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}" . $scheme . "&amp;text=1'>" . htmlsafechars($torrent['filename']) . ".txt</a><br>{$Free_Slot_Text}
                         </td>
@@ -711,4 +711,9 @@ foreach ($sections as $section => $wrapper) {
     }
 }
 
-echo stdhead(htmlsafechars($torrent['name']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Torrent Details');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

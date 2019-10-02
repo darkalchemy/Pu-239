@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\User;
 
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $user_class = $container->get(User::class);
 $userid = $user_class->get_latest_user();
@@ -14,7 +14,7 @@ $latest_user .= "
         <div id='latestuser' class='box'>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 level-item is-wrapped padding20'>
-                    {$lang['index_wmember']}&nbsp;{$latestuser}!
+                    " . _f('Welcome to our newest member&nbsp;%s!', $latestuser) . '
                 </div>
             </div>
-        </div>";
+        </div>';

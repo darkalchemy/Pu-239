@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 $birthday = $cache->get('birthdayusers_');
@@ -26,7 +26,7 @@ if ($birthday === false || is_null($birthday)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $birthday['birthdayusers'] = format_comment($lang['index_blocks_too_many']);
+        $birthday['birthdayusers'] = format_comment(_('Too many to list here.'));
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
@@ -37,7 +37,7 @@ if ($birthday === false || is_null($birthday)) {
         }
         $birthday['birthdayusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
-        $birthday['birthdayusers'] = $lang['index_birthday_no'];
+        $birthday['birthdayusers'] = _('There are no members with birthdays today.');
     }
 
     $birthday['count'] = number_format($count);
@@ -49,7 +49,7 @@ $birthday_users .= "
     <div id='birthday' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
-                <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>{$lang['index_birthday']} ({$birthday['count']})</div>
+                <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>" . _pf('There is %d Birthday Today', 'There are %d Birthdays Today', $birthday['count']) . "</div>
                 <div class='level-item is-wrapped padding20'>
                     {$birthday['birthdayusers']}
                 </div>

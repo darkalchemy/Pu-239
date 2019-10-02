@@ -6,7 +6,7 @@ use Envms\FluentPDO\Literal;
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0);
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
@@ -32,31 +32,28 @@ $arr_post = $fluent->from('posts AS p')
 
 $can_delete = $arr_post['user_id'] === $CURUSER['id'] || has_access($CURUSER['class'], UC_STAFF, 'forum_mod');
 if (!has_access($CURUSER['class'], (int) $arr_post['min_class_read'], '') || !has_access($CURUSER['class'], (int) $arr_post['min_class_write'], '')) {
-    stderr($lang['gl_error'], $lang['fe_topic_not_found']);
-}
-if (!has_access($CURUSER['class'], (int) $arr_post['min_class_read'], '') || !has_access($CURUSER['class'], (int) $arr_post['min_class_write'], '')) {
-    stderr($lang['gl_error'], $lang['fe_topic_not_found']);
+    stderr(_('Error'), _('Topic not found.'));
 }
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
-    stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
+    stderr(_('Error'), _('Your posting rights have been suspended.'));
 }
 if (!$can_delete) {
-    stderr($lang['gl_error'], $lang['fe_no_your_post_del']);
+    stderr(_('Error'), _('This is not your post to delete.'));
 }
 if ($arr_post['locked'] === 'yes') {
-    stderr($lang['gl_error'], $lang['fe_this_topic_is_locked']);
+    stderr(_('Error'), _('This topic is locked'));
 }
 if ($arr_post['staff_lock'] === 1) {
-    stderr($lang['gl_error'], $lang['fe_this_topic_is_locked_staff']);
+    stderr(_('Error'), _('This post staff is locked my friend, deleting the evidence you wont be.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_cant_del_1st_post_staff']);
+    stderr(_('Error'), _('This is the first post in the topic, only Staff can delete topics.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
+    stderr(_('Error'), _f('This is the first post in the topic, you must use %s', '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . _('Delete Topic') . '</a>.'));
 }
 if ($arr_post['post_status'] !== 'deleted') {
-    stderr($lang['gl_error'], $lang['fm_not_soft_deleted']);
+    stderr(_('Error'), _("This post was not soft deleted, it can't be undeleted"));
 }
 
 $update = [

@@ -21,7 +21,6 @@ $cache = $container->get(Cache::class);
 $fluent = $container->get(Database::class);
 $trigger_class = $container->get(BotTriggers::class);
 $replies_class = $container->get(BotReplies::class);
-$lang = array_merge(load_language('global'), load_language('bot_triggers'));
 $editable = false;
 if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
     $stdfoot['js'][] = 'editable';
@@ -384,4 +383,9 @@ if (empty($triggers)) {
     }
     $HTMLOUT .= main_table($body, $heading, '', 'top20');
 }
-echo stdhead($lang['gl_bottriggers']) . wrapper($HTMLOUT) . stdfoot();
+
+$title = _('Bot Triggers');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

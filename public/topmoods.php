@@ -6,7 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
 $HTMLOUT = '';
-$lang = load_language('global');
 global $site_config;
 
 $abba = '
@@ -30,4 +29,8 @@ if ($topmoods === false || is_null($topmoods)) {
     $cache->set($key, $topmoods, 0);
 }
 $HTMLOUT .= $abba . $topmoods . '</table>';
-echo stdhead('Top Moods') . $HTMLOUT . stdfoot();
+$title = _('Top Moods');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

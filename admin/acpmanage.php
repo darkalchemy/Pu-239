@@ -11,7 +11,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_account_delete.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_acp'), load_language('ad_delacct'));
 $stdfoot = [
     'js' => [
         get_file_name('acp_js'),
@@ -27,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     foreach ($ids as $id) {
         $id = (int) $id;
         if (!is_valid_id($id)) {
-            stderr($lang['std_error'], $lang['text_invalid']);
+            stderr(_('Error'), _('Invalid UserID/Username Combination'));
         }
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
@@ -45,13 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
         foreach ($ids as $id) {
             $username = account_delete((int) $id);
             if ($username) {
-                write_log("User: $username Was deleted by {$CURUSER['username']}");
-                $session->set('is-success', $lang['text_success']);
+                write_log(_fe('User: {0} was deleted by {1}', $username, $CURUSER['username']));
+                $session->set('is-success', _('The account was deleted.'));
             } else {
-                stderr($lang['text_error'], $lang['text_unable']);
+                stderr(_('Error'), _('Unable to delete the account.'));
             }
         }
-        $session->set('is-success', $lang['text_success']);
+        $session->set('is-success', _('The account was deleted.'));
     }
     header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=acpmanage&amp;action=acpmanage');
     exit;
@@ -83,17 +82,17 @@ if (mysqli_num_rows($res) != 0) {
     $HTMLOUT .= "<form action='{$_SERVER['PHP_SELF']}?tool=acpmanage&amp;action=acpmanage' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $HTMLOUT .= begin_table();
     $HTMLOUT .= "<tr><td class='colhead'>
-      <input style='margin: 0;' type='checkbox' title='" . $lang['text_markall'] . "' value='" . $lang['text_markall'] . "' onclick=\"this.value=check(form);\"></td>
-      <td class='colhead'>{$lang['text_username']}</td>
-      <td class='colhead' style='white-space: nowrap;'>{$lang['text_reg']}</td>
-      <td class='colhead' style='white-space: nowrap;'>{$lang['text_la']}</td>
-      <td class='colhead'>{$lang['text_class']}</td>
-      <td class='colhead'>{$lang['text_dload']}</td>
-      <td class='colhead'>{$lang['text_upload']}</td>
-      <td class='colhead'>{$lang['text_ratio']}</td>
-      <td class='colhead'>{$lang['text_status']}</td>
-      <td class='colhead' style='white-space: nowrap;'>{$lang['text_enabled']}</td>
-      </tr>";
+      <input class='is-marginless' type='checkbox' title='" . _('Mark All') . "' value='" . _('Mark All') . "' onclick=\"this.value=check(form);\"></td>
+      <td class='colhead'>" . _('Username') . "</td>
+      <td class='colhead has-no-wrap'>" . _('Registered') . "</td>
+      <td class='colhead has-no-wrap'>" . _('Last access') . "</td>
+      <td class='colhead'>" . _('Class') . "</td>
+      <td class='colhead'>" . _('Downloaded') . "</td>
+      <td class='colhead'>" . _('Uploaded') . "</td>
+      <td class='colhead'>" . _('Ratio') . "</td>
+      <td class='colhead'>" . _('Status') . "</td>
+      <td class='colhead has-no-wrap'>" . _('Enabled') . '</td>
+      </tr>';
     while ($arr = mysqli_fetch_assoc($res)) {
         $uploaded = mksize($arr['uploaded']);
         $downloaded = mksize($arr['downloaded']);
@@ -113,8 +112,8 @@ if (mysqli_num_rows($res) != 0) {
                 <input type='checkbox' name='ids[]' value='{$arr['id']}'>
             </td>
             <td>" . format_username((int) $arr['id']) . "</td>
-            <td style='white-space: nowrap;'>{$added}</td>
-            <td style='white-space: nowrap;'>{$last_access}</td>
+            <td class='has-no-wrap'>{$added}</td>
+            <td class='has-no-wrap'>{$last_access}</td>
             <td>{$class}</td>
             <td>{$downloaded}</td>
             <td>{$uploaded}</td>
@@ -124,9 +123,9 @@ if (mysqli_num_rows($res) != 0) {
         </tr>";
     }
     if (($CURUSER['class'] >= UC_MAX)) {
-        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option><option value='delete'>{$lang['text_ds']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>" . _('What to do?') . "</option><option value='enabled'>" . _('Enabled selected') . "</option><option value='confirm'>" . _('Confirm selected') . "</option><option value='delete'>" . _('Delete selected') . "</option></select><br><input type='submit' class='margin20 button is-small' value='" . _('Submit') . "'></td></tr>";
     } else {
-        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>{$lang['text_wtd']}</option><option value='enabled'>{$lang['text_es']}</option><option value='confirm'>{$lang['text_cs']}</option></select><br><input type='submit' class='margin20 button is-small' value='" . $lang['text_submit'] . "'></td></tr>";
+        $HTMLOUT .= "<tr><td colspan='10' class='has-text-centered'><select name='do'><option value='enabled' disabled selected>" . _('What to do?') . "</option><option value='enabled'>" . _('Enabled selected') . "</option><option value='confirm'>" . _('Confirm selected') . "</option></select><br><input type='submit' class='margin20 button is-small' value='" . _('Submit') . "'></td></tr>";
     }
 
     $HTMLOUT .= end_table();
@@ -135,7 +134,11 @@ if (mysqli_num_rows($res) != 0) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 } else {
-    $HTMLOUT = stdmsg("<h2>{$lang['std_sorry']}</h2>", "<p>{$lang['std_nf']}</p>");
+    $HTMLOUT = stdmsg('<h2>' . _('Sorry') . '</h2>', '<p>' . _('Nothing found!') . '</p>');
 }
-
-echo stdhead($lang['text_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Account Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
