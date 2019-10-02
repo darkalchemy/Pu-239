@@ -13,7 +13,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('edit'), load_language('upload'));
 global $container, $site_config;
 
 $stdhead = [
@@ -47,10 +46,10 @@ $row = $fluent->from('torrents')
               ->where('id = ?', $id)
               ->fetch();
 if (!$row) {
-    stderr($lang['edit_user_error'], $lang['edit_no_torrent']);
+    stderr(_('USER ERROR'), _('No torrent found'));
 }
 if (!isset($user) || ($user['id'] != $row['owner'] && !has_access($user['class'], UC_STAFF, 'torrent_mod'))) {
-    stderr($lang['edit_user_error'], sprintf($lang['edit_no_permission'], urlencode($_SERVER['REQUEST_URI'])));
+    stderr(_('USER ERROR'), _f("<h1>Can't edit this torrent</h1><p>You're not the rightful owner, or you're not <a href='" . $site_config['paths']['baseurl'] . "/login.php?returnto=%s&amp;nowarn=1'>logged in</a> properly.</p>", urlencode($_SERVER['REQUEST_URI'])));
 }
 $HTMLOUT = $currently_editing = $subs_list = $audios_list = '';
 if ($user['class'] >= UC_STAFF) {
@@ -69,25 +68,25 @@ if (isset($_GET['returnto'])) {
     $HTMLOUT .= "<input type='hidden' name='returnto' value='" . htmlsafechars($_GET['returnto']) . "'>\n";
 }
 $HTMLOUT .= "<table class='table table-bordered table-striped'>\n";
-$HTMLOUT .= tr($lang['edit_imdb_url'], "<input type='text' name='url' class='w-100' value='" . (!empty($row['url']) ? htmlsafechars($row['url']) : '') . "'>", 1);
-$HTMLOUT .= tr($lang['edit_isbn'], "<input type='text' name='isbn' min_length='10' max_length='13' class='w-100' value='" . (!empty($row['isbn']) ? htmlsafechars($row['isbn']) : '') . "'><br>{$lang['edit_isbn_details']}", 1);
-$HTMLOUT .= tr($lang['edit_title'], "<input type='text' name='title' class='w-100' value='" . (!empty($row['title']) ? htmlsafechars($row['title']) : '') . "'><br>{$lang['edit_title_details']}", 1);
-$HTMLOUT .= tr($lang['edit_poster'], "<input type='text' name='poster' class='w-100' value='" . (!empty($row['poster']) ? htmlsafechars($row['poster']) : '') . "'><br>{$lang['edit_poster1']}\n", 1);
-$HTMLOUT .= tr($lang['edit_youtube'], "<input type='text' name='youtube' value='" . (!empty($row['youtube']) ? htmlsafechars($row['youtube']) : '') . "' class='w-100'><br>({$lang['edit_youtube_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_name'], "<input type='text' name='name' value='" . (!empty($row['name']) ? htmlsafechars($row['name']) : '') . "' class='w-100'>", 1);
-$HTMLOUT .= tr($lang['edit_torrent_tags'], "<input type='text' name='tags' value='" . (!empty($row['tags']) ? htmlsafechars($row['tags']) : '') . "' class='w-100'><br>({$lang['edit_tags_info']})\n", 1);
-$HTMLOUT .= tr($lang['edit_torrent_description'], "<input type='text' name='description' value='" . (!empty($row['description']) ? htmlsafechars($row['description']) : '') . "' class='w-100'>", 1);
-$HTMLOUT .= tr($lang['edit_nfo'], "
-    <label for='nfoaction'>{$lang['edit_keep_current']}</label>
+$HTMLOUT .= tr(_("<a href='https://nullrefer.com/?https://www.imdb.com' target='_blank'>IMDb Url</a>"), "<input type='text' name='url' class='w-100' value='" . (!empty($row['url']) ? htmlsafechars($row['url']) : '') . "'>", 1);
+$HTMLOUT .= tr(_('ISBN'), "<input type='text' name='isbn' min_length='10' max_length='13' class='w-100' value='" . (!empty($row['isbn']) ? htmlsafechars($row['isbn']) : '') . "'><br>" . _('Used for Books, ISBN 13 or ISBN 10, no spaces or dashes') . '', 1);
+$HTMLOUT .= tr(_('Title'), "<input type='text' name='title' class='w-100' value='" . (!empty($row['title']) ? htmlsafechars($row['title']) : '') . "'><br>" . _('Either this or the ISBN must be set in order to lookup the books details. The ISBN should yield better results.') . '', 1);
+$HTMLOUT .= tr(_('Poster'), "<input type='text' name='poster' class='w-100' value='" . (!empty($row['poster']) ? htmlsafechars($row['poster']) : '') . "'><br>" . _('Minimum Poster Width should be 400 Px , larger sizes will be scaled.') . "\n", 1);
+$HTMLOUT .= tr(_("<a href='https://nullrefer.com/?https://youtube.com' target='_blank'>Youtube</a>"), "<input type='text' name='youtube' value='" . (!empty($row['youtube']) ? htmlsafechars($row['youtube']) : '') . "' class='w-100'><br>(" . _('Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>') . ")\n", 1);
+$HTMLOUT .= tr(_('Torrent name'), "<input type='text' name='name' value='" . (!empty($row['name']) ? htmlsafechars($row['name']) : '') . "' class='w-100'>", 1);
+$HTMLOUT .= tr(_('Torrent tags'), "<input type='text' name='tags' value='" . (!empty($row['tags']) ? htmlsafechars($row['tags']) : '') . "' class='w-100'><br>(" . _('Multiple tags must be seperated by a comma like tag1,tag2') . ")\n", 1);
+$HTMLOUT .= tr(_('Small Description'), "<input type='text' name='description' value='" . (!empty($row['description']) ? htmlsafechars($row['description']) : '') . "' class='w-100'>", 1);
+$HTMLOUT .= tr(_('NFO file'), "
+    <label for='nfoaction'>" . _('Keep current') . "</label>
     <input type='radio' id='nfoaction' name='nfoaction' value='keep' checked class='right5'><br>
-    <input type='radio' name='nfoaction' value='update' class='right5'>{$lang['edit_update']}<br>
+    <input type='radio' name='nfoaction' value='update' class='right5'>" . _('Update:') . "<br>
     <input type='file' name='nfo' class='w-100'>", 1);
 if ((strpos($row['ori_descr'], '<') === false) || (strpos($row['ori_descr'], '&lt;') !== false)) {
     $c = '';
 } else {
     $c = 'checked';
 }
-$HTMLOUT .= tr($lang['edit_description'], BBcode($row['ori_descr']) . "<br>({$lang['edit_tags']})", 1, 'is-paddingless');
+$HTMLOUT .= tr(_('Description'), BBcode($row['ori_descr']) . '<br>(' . _("HTML is not allowed. <a href='http://Pu239.silly/tags.php'>Click here</a> for information on available tags.") . ')', 1, 'is-paddingless');
 $s = "
     <select name='type'>";
 $cats = genrelist(true);
@@ -99,7 +98,7 @@ foreach ($cats as $cat) {
 }
 $s .= '
     </select>';
-$HTMLOUT .= tr($lang['edit_type'], $s, 1);
+$HTMLOUT .= tr(_('Type'), $s, 1);
 
 $subs_list .= "
         <div class='level-center'>";
@@ -134,11 +133,11 @@ $HTMLOUT .= tr('Subtitles', $subs_list, 1);
 $HTMLOUT .= tr('Audios', $audios_list, 1);
 $rg = "<select name='release_group'>\n<option value='scene' " . ($row['release_group'] === 'scene' ? 'selected' : '') . ">Scene</option>\n<option value='p2p' " . ($row['release_group'] === 'p2p' ? 'selected' : '') . ">p2p</option>\n<option value='none' " . ($row['release_group'] === 'none' ? 'selected' : '') . ">None</option> \n</select>\n";
 $HTMLOUT .= tr('Release Group', $rg, 1);
-$HTMLOUT .= tr($lang['edit_visible'], "<input type='checkbox' name='visible' " . (($row['visible']) === 'yes' ? 'checked' : '') . " value='1'> {$lang['edit_visible_mainpage']}<br><table class='table table-bordered table-striped'><tr><td class='embedded'>{$lang['edit_visible_info']}</td></tr></table>", 1);
+$HTMLOUT .= tr(_('Visible'), "<input type='checkbox' name='visible' " . (($row['visible']) === 'yes' ? 'checked' : '') . " value='1'> " . _('Visible on main page') . "<br><table class='table table-bordered table-striped'><tr><td class='embedded'>" . _("Note that the torrent will automatically become visible when there's a seeder, and will become automatically invisible(dead) when there has been no seeder for a while.  switch to speed the process up manually . Also note that invisible(dead) torrents can still be viewed or searched for, it's just not the default.") . '</td></tr></table>', 1);
 if ($user['class'] >= UC_STAFF) {
-    $HTMLOUT .= tr($lang['edit_banned'], "<input type='checkbox' name='banned' " . (($row['banned']) === 'yes' ? 'checked' : '') . " value='1'> {$lang['edit_banned']}", 1);
+    $HTMLOUT .= tr(_('Banned'), "<input type='checkbox' name='banned' " . (($row['banned']) === 'yes' ? 'checked' : '') . " value='1'> " . _('Banned') . '', 1);
 }
-$HTMLOUT .= tr($lang['edit_recommend_torrent'], "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>{$lang['edit_recommend']}</font>", 1);
+$HTMLOUT .= tr(_('Recommend Torrent'), "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><font class='small'>" . _('If you want to recommend this torrent check this box!') . '</font>', 1);
 $auth = $container->get(Auth::class);
 if ($auth->hasRole(Roles::UPLOADER)) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked' " . ($row['nuked'] === 'yes' ? 'checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked' " . ($row['nuked'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No", 1);
@@ -182,7 +181,7 @@ if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
         $messc = '&#160;Only staff members are able to comment on this torrent!';
     }
     $HTMLOUT .= "<tr>
-    <td><span class='has-text-danger'>&#160;*&#160;</span>&#160;{$lang['edit_comment']}</td>
+    <td><span class='has-text-danger'>&#160;*&#160;</span>&#160;" . _('Allow Comments') . "</td>
     <td>
     <select name='allow_comments'>
     <option value='" . htmlsafechars($row['allow_comments']) . "'>" . htmlsafechars($row['allow_comments']) . "</option>
@@ -191,7 +190,7 @@ if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
 
 if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr('Sticky', "<input type='checkbox' name='sticky' " . (($row['sticky']) === 'yes' ? 'checked' : '') . " value='yes'>Sticky this torrent !", 1);
-    $HTMLOUT .= tr($lang['edit_anonymous'], "<input type='checkbox' name='anonymous' " . (($row['anonymous'] === '1') ? 'checked' : '') . " value='1'>{$lang['edit_anonymous1']}", 1);
+    $HTMLOUT .= tr(_('Anonymous Uploader'), "<input type='checkbox' name='anonymous' " . (($row['anonymous'] === '1') ? 'checked' : '') . " value='1'>" . _('Check this box to hide the uploader of the torrent') . '', 1);
     $HTMLOUT .= tr('VIP Torrent?', "<input type='checkbox' name='vip' " . (($row['vip'] == 1) ? 'checked' : '') . " value='1'> If this one is checked, only VIPs can download this torrent", 1);
 }
 
@@ -201,8 +200,8 @@ $HTMLOUT .= "
             <tr>
                 <td colspan='2'>
                     <div class='has-text-centered margin20'>
-                        <input type='submit' value='{$lang['edit_submit']}' class='button is-small right20'>
-                        <input type='reset' value='{$lang['edit_revert']}' class='button is-small'>
+                        <input type='submit' value='" . _('Edit it!') . "' class='button is-small right20'>
+                        <input type='reset' value='" . _('Revert changes') . "' class='button is-small'>
                     </div>
                 </td>
             </tr>
@@ -211,38 +210,38 @@ $HTMLOUT .= "
     <form name='delete_form' method='post' action='{$site_config['paths']['baseurl']}/delete.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 $body = "
             <tr>
-                <td class='colhead' colspan='2'>{$lang['edit_delete_torrent']}. {$lang['edit_reason']}</td>
+                <td class='colhead' colspan='2'>" . _('Delete torrent') . '. ' . _('Reason:') . "</td>
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='1' class='right5'>{$lang['edit_dead']}
+                    <input name='reasontype' type='radio' value='1' class='right5'>" . _('Dead') . '
                 </td>
-                <td> {$lang['edit_peers']}</td>
+                <td> ' . _('0 seeders, 0 leechers = 0 peers total') . "</td>
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='2' class='right5'>{$lang['edit_dupe']}
+                    <input name='reasontype' type='radio' value='2' class='right5'>" . _('Dupe') . "
                 </td>
-                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='{$lang['edit_req']}'></td>
+                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='" . _('required') . "'></td>
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='3' class='right5'>{$lang['edit_nuked']}
+                    <input name='reasontype' type='radio' value='3' class='right5'>" . _('Nuked') . "
                 </td>
-                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='{$lang['edit_req']}'></td>
+                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='" . _('required') . "'></td>
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='4' class='right5'>{$lang['edit_rules']}
+                    <input name='reasontype' type='radio' value='4' class='right5'>" . _('Crafty Rules') . "
                 </td>
-                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='{$lang['edit_req']}'></td>
+                <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='" . _('required') . "'></td>
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='5' checked class='right5'>{$lang['edit_other']}
+                    <input name='reasontype' type='radio' value='5' checked class='right5'>" . _('Other:') . "
                 </td>
                 <td>
-                    <input type='text' size='40' name='reason[]' class='w-100 right5' placeholder='{$lang['edit_req']}'>
+                    <input type='text' size='40' name='reason[]' class='w-100 right5' placeholder='" . _('required') . "'>
                     <input type='hidden' name='id' value='$id'>
                 </td>
             </tr>";
@@ -254,11 +253,14 @@ $body .= "
             <tr>
                 <td colspan='2'>
                     <div class='has-text-centered margin20'>
-                        <input type='submit' value='{$lang['edit_delete']}' class='button is-small'>
+                        <input type='submit' value='" . _('Delete it!') . "' class='button is-small'>
                     </div>
                 </td>
             </tr>";
 $HTMLOUT .= main_table($body, null, 'top20') . '
     </form>';
-
-echo stdhead("{$lang['edit_stdhead']} '{$row['name']}'", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Edit Torrent');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_comments.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('credits'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -25,7 +24,7 @@ $act_validation = [
 $id = (isset($_GET['id']) ? (int) $_GET['id'] : '');
 
 if (!in_array($action, $act_validation)) {
-    stderr('Error', 'Unknown action.');
+    stderr(_('Error'), 'Unknown action.');
 }
 
 if (isset($_POST['action']) === 'add' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -42,7 +41,7 @@ if (isset($_POST['action']) === 'add' && has_access($user['class'], UC_SYSOP, 'c
 
 if ($action === 'delete' && has_access($user['class'], UC_SYSOP, 'coder')) {
     if (!$id) {
-        stderr($lang['credits_error'], $lang['credits_error2']);
+        stderr(_('Error'), _('Fuck something went Pete Tong!'));
     }
     sql_query("DELETE FROM modscredits where id='$id'") or sqlerr(__FILE__, __LINE__);
     header("Location: {$_SERVER['PHP_SELF']}");
@@ -53,15 +52,15 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
     $id = (int) $_GET['id'];
     $res = sql_query('SELECT name, description, category, pu239lnk, status, credit FROM modscredits WHERE id =' . $id . '') or sqlerr(__FILE__, __LINE__);
     if (mysqli_num_rows($res) == 0) {
-        stderr($lang['credits_error'], $lang['credits_nocr']);
+        stderr(_('Error'), _('No credit mod found with that ID!'));
     }
     while ($mod = mysqli_fetch_assoc($res)) {
         $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' enctype='multipart/form-data' accept-charset='utf-8'>
   <table>
-    <tr><td class='rowhead'>{$lang['credits_mod']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
-    <td class='rowhead'>{$lang['credits_description']}</td>" . "<td style='padding: 0'>
+    <tr><td class='rowhead'>" . _('Mod name') . '</td>' . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
+    <td class='rowhead'>" . _('Description') . '</td>' . "<td style='padding: 0'>
     <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "'></td></tr>\n" . "<tr>
-    <td class='rowhead'>{$lang['credits_category']}</td>
+    <td class='rowhead'>" . _('Category') . "</td>
   <td style='padding: 0'>
   <select name='category'>";
 
@@ -74,8 +73,8 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_link']}</td>" . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "'></td></tr>\n" . "<tr>
-  <td class='rowhead'>{$lang['credits_status']}</td>
+        $HTMLOUT .= "<tr><td class='rowhead'>" . _('Link') . '</td>' . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "'></td></tr>\n" . "<tr>
+  <td class='rowhead'>" . _('Status') . "</td>
   <td style='padding: 0'>
   <select name='modstatus'>";
 
@@ -88,13 +87,16 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
 
         $HTMLOUT .= '</select></td></tr>';
 
-        $HTMLOUT .= "<tr><td class='rowhead'>{$lang['credits_credits']}</td><td style='padding: 0'>
+        $HTMLOUT .= "<tr><td class='rowhead'>" . _('Credits') . "</td><td style='padding: 0'>
   <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "'></td></tr>\n";
         $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit'></td></tr>\n";
         $HTMLOUT .= '</table></form>';
     }
-    echo stdhead($lang['credits_editmod']) . $HTMLOUT . stdfoot();
-    die();
+    $title = _('Mod Credits');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($action === 'update' && has_access($user['class'], UC_SYSOP, 'coder')) {
     $id = (int) $_GET['id'];
     if (!is_valid_id($id)) {
@@ -102,7 +104,7 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
     }
     $res = sql_query('SELECT id FROM modscredits WHERE id=' . sqlesc($id));
     if (mysqli_num_rows($res) == 0) {
-        stderr($lang['credits_error'], $lang['credits_nocr']);
+        stderr(_('Error'), _('No credit mod found with that ID!'));
     }
 
     $name = $_POST['name'];
@@ -113,19 +115,19 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
     $credit = $_POST['credits'];
 
     if (empty($name)) {
-        stderr($lang['credits_error'], $lang['credits_error3']);
+        stderr(_('Error'), _('You must specify a name for this credit.'));
     }
 
     if (empty($description)) {
-        stderr($lang['credits_error'], $lang['credits_error4']);
+        stderr(_('Error'), _('You must provide a description for this credit.'));
     }
 
     if (empty($link)) {
-        stderr($lang['credits_error'], $lang['credits_error5']);
+        stderr(_('Error'), _('You must provide a link for this credit.'));
     }
 
     if (empty($credit)) {
-        stderr($lang['credits_error'], $lang['credits_error6']);
+        stderr(_('Error'), _('You must provide a credit for the author(s) of this credit.'));
     }
 
     sql_query('UPDATE modscredits SET name = ' . sqlesc($name) . ', category = ' . sqlesc($category) . ', status = ' . sqlesc($modstatus) . ',  pu239lnk = ' . sqlesc($link) . ', credit = ' . sqlesc($credit) . ', description = ' . sqlesc($description) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
@@ -151,19 +153,19 @@ $fluent = $container->get(Database::class);
 $credits = $fluent->from('modscredits')
                   ->orderBy('id')
                   ->fetchAll();
-$heading = "
+$heading = '
     <tr>
-        <th>{$lang['credits_name']}</th>
-        <th>{$lang['credits_category']}</th>
-        <th>{$lang['credits_status']}</th>
-        <th>{$lang['credits_credits']}</th>
-    </tr>";
+        <th>' . _('Name') . '</th>
+        <th>' . _('Category') . '</th>
+        <th>' . _('Status') . '</th>
+        <th>' . _('Credits') . '</th>
+    </tr>';
 
 if (empty($credits)) {
     $body = "
     <tr>
-        <td colspan='4' class='has-text-centered'>{$lang['credits_nosofar']}</td>
-    </tr>";
+        <td colspan='4' class='has-text-centered'>" . _('There are no credits so far!!') . '</td>
+    </tr>';
 } else {
     $body = '';
     foreach ($credits as $row) {
@@ -183,7 +185,7 @@ if (empty($credits)) {
     <tr>
         <td><a target='_blank' class='is-link' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
         if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
-            $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>{$lang['credits_edit']}</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ");\">{$lang['credits_delete']}</a>";
+            $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>" . _('[Edit]') . "</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ');">' . _('[Delete]') . '</a>';
         }
 
         $body .= "<br><span class='small'>" . htmlsafechars($descr) . '</span></td>
@@ -198,54 +200,58 @@ $HTMLOUT .= main_table($body, $heading);
 if ($user['class'] >= UC_MAX) {
     $HTMLOUT .= "
     <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-    <h2 class='has-text-centered top20'>{$lang['credits_add']}</h2>
+    <h2 class='has-text-centered top20'>" . _('Add Mods & Credits') . "</h2>
         <input type='hidden' name='action' value='add'>";
-    $body = "
+    $body = '
     <tr>
-        <td>{$lang['credits_name1']}</td>
+        <td>' . _('Name:') . "</td>
         <td><input name='name' type='text' class='w-100'></td>
     </tr>
     <tr>
-        <td>{$lang['credits_description1']}</td>
+        <td>" . _('Description:') . "</td>
         <td><input name='description' type='text' class='w-100' maxlength='120'></td>
     </tr>
     <tr>
-        <td>{$lang['credits_category1']}</td>
+        <td>" . _('Category:') . "</td>
         <td>
             <select name='category'>
-                <option value='Addon'>{$lang['credits_addon']}</option>
-                <option value='Forum'>{$lang['credits_forum']}</option>
-                <option value='Message/Email'>{$lang['credits_mes']}</option>
-                <option value='Display/Style'>{$lang['credits_disp']}</option>
-                <option value='Staff/Tools'>{$lang['credits_staff']}</option>
-                <option value='Browse/Torrent/Details'>{$lang['credits_btd']}</option>
-                <option value='Misc'>{$lang['credits_misc']}</option>
+                <option value='Addon'>" . _('Addon') . "</option>
+                <option value='Forum'>" . _('Forum') . "</option>
+                <option value='Message/Email'>" . _('Message/E-mail') . "</option>
+                <option value='Display/Style'>" . _('Display/Style') . "</option>
+                <option value='Staff/Tools'>" . _('Staff Tools') . "</option>
+                <option value='Browse/Torrent/Details'>" . _('Browse/Torrents/Details') . "</option>
+                <option value='Misc'>" . _('Misc') . '</option>
             </select>
         </td>
     </tr>
     <tr>
-        <td>{$lang['credits_link1']}</td>
+        <td>' . _('Link:') . "</td>
         <td><input name='link' type='text' class='w-100'></td>
     </tr>
     <tr>
-        <td>{$lang['credits_status1']}</td>
+        <td>" . _('Status:') . "</td>
         <td>
             <select name='status'>
-                <option value='In-Progress'>{$lang['credits_progress']}</option>
-                <option value='Complete'>{$lang['credits_complete']}</option>
+                <option value='In-Progress'>" . _('In-Progress') . "</option>
+                <option value='Complete'>" . _('Complete') . '</option>
             </select>
         </td>
     </tr>
     <tr>
-        <td>{$lang['credits_credits1']}</td>
-        <td><input name='credit' type='text' class='w-100' maxlength='120'><br><span class='small'>{$lang['credits_val']}</span></td>
+        <td>' . _('Credits:') . "</td>
+        <td><input name='credit' type='text' class='w-100' maxlength='120'><br><span class='small'>" . _('Values separated by commas') . "</span></td>
     </tr>
     <tr>
         <td colspan='2' class='has-text-centered'>
-            <input type='submit' value='{$lang['credits_addc']}' class='button is-small'>
+            <input type='submit' value='" . _('Add Credits') . "' class='button is-small'>
         </td>
     </tr>";
     $HTMLOUT .= main_table($body) . '
     </form>';
 }
-echo stdhead($lang['credits_headers']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Mod Credits');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

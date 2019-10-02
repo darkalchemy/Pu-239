@@ -14,7 +14,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_torrent_hover.php';
 require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('upcoming'), load_language('upload'), load_language('bitbucket'));
 global $container, $site_config;
 
 $stdfoot = [
@@ -86,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($add) {
         if ($cooker_class->insert($values)) {
             $session->unset('post_data');
-            $session->set('is-success', sprintf($lang['upcoming_added'], format_comment($_POST['name'])));
+            $session->set('is-success', _f('Recipe: %s Added', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }
     } elseif ($edit) {
         if ($cooker_class->update($values, (int) $_POST['id'])) {
-            $session->set('is-success', sprintf($lang['upcoming_updated'], format_comment($_POST['name'])));
+            $session->set('is-success', _f('Recipe: %s Updated', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }
@@ -104,25 +103,25 @@ $date = strtotime('+7 day');
 $future = empty($post_data['expected']) ? date('Y-m-d\TH:i', $date) : date('Y-m-d\TH:i', strtotime($post_data['expected']));
 $form = "
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_cat']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Category') . "</div>
                     <div class='column'>
-                        " . category_dropdown($lang, $site_config['categories']['movie']) . "
+                        " . category_dropdown($site_config['categories']['movie']) . "
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_name']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Upcoming') . "</div>
                     <div class='column'>
                         <input type='text' class='w-100' name='name' autocomplete='on' value='" . (!empty($post_data['name']) ? htmlsafechars($post_data['name']) : '') . "' required>
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_poster']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Poster') . "</div>
                     <div class='column'>
-                        <input type='url' id='image_url' placeholder='{$lang['upcoming_external']}' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
+                        <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
                         <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden'>
                         <div class='poster_container has-text-centered'></div>
                         <div id='droppable' class='droppable bg-03 top20'>
-                            <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
+                            <span id='comment'>" . _('Drop images or click here to select images.') . "</span>
                             <div id='loader' class='is-hidden'>
                                 <img src='{$site_config['paths']['images_baseurl']}/forums/updating.svg' alt='Loading...'>
                             </div>
@@ -131,10 +130,10 @@ $form = "
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_status']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Status') . "</div>
                     <div class='column'>
                         <select name='status' class='w-100' required>
-                            <option value='' disabled selected>{$lang['upcoming_select']}</option>
+                            <option value='' disabled selected>" . _('Select Status') . "</option>
                             <option value='sourcing' " . (!empty($post_data['status']) && $post_data['status'] === 'sourcing' ? 'selected' : '') . ">Sourcing</option>
                             <option value='ftping' " . (!empty($post_data['status']) && $post_data['status'] === 'ftping' ? 'selected' : '') . ">FTPing</option>
                             <option value='encoding' " . (!empty($post_data['status']) && $post_data['status'] === 'encoding' ? 'selected' : '') . ">Encoding</option>
@@ -144,14 +143,14 @@ $form = "
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_imdb']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('IMDb Link') . "</div>
                     <div class='column'>
                         <input type='url' class='w-100' id='url' name='url' autocomplete='on' value='" . (!empty($post_data['url']) ? htmlsafechars($post_data['url']) : '') . "' required>
                         <div id='imdb_outer'></div>
                     </div>
                 </div>
                <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_expected']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Expected') . "</div>
                     <div class='column'>
                         <input type='datetime-local' class='w-100' name='expected' value='$future' min='$today' required>
                     </div>
@@ -178,9 +177,9 @@ if ($has_access) {
         $update = main_div($update, 'has-text-centered w-75 min-350', 'padding20');
     } elseif ($delete && is_valid_id($id)) {
         if ($cooker_class->delete($id, $user['class'] >= UC_STAFF, $user['id']) === 1) {
-            $session->set('is-success', $lang['upcoming_deleted']);
+            $session->set('is-success', _('Recipe Deleted'));
         } else {
-            $session->set('is-warning', $lang['upcoming_not_deleted']);
+            $session->set('is-warning', _('Recipe was NOT Deleted'));
         }
     }
 }
@@ -192,11 +191,11 @@ $menu_bottom = $count > $perpage ? $pager['pagerbottom'] : '';
 $recipes = $cooker_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'expected', true, $view_all, false, (bool) $user['hidden']);
 $HTMLOUT .= "
     <ul class='level-center bg-06 padding10'>
-        <li><a href='{$_SERVER['PHP_SELF']}?action=add_recipe'>{$lang['upcoming_add']}</a></li>" . ($view_all ? "
-        <li><a href='{$_SERVER['PHP_SELF']}'>{$lang['upcoming_view']}</a></li>" : "
-        <li><a href='{$_SERVER['PHP_SELF']}?action=view_all'>{$lang['upcoming_view_all']}</a></li>") . "
+        <li><a href='{$_SERVER['PHP_SELF']}?action=add_recipe'>" . _('Add Recipe') . '</a></li>' . ($view_all ? "
+        <li><a href='{$_SERVER['PHP_SELF']}'>" . _('View Recipes in the Oven') . '</a></li>' : "
+        <li><a href='{$_SERVER['PHP_SELF']}?action=view_all'>" . _('View All Recipes') . '</a></li>') . "
     </ul>
-    <h1 class='has-text-centered'>{$site_config['site']['name']}'s {$lang['upcoming_title']}</h1>";
+    <h1 class='has-text-centered'>{$site_config['site']['name']}'s " . _('Cooker') . '</h1>';
 
 if (!empty($add_new)) {
     $HTMLOUT .= $add_new;
@@ -205,10 +204,10 @@ if (!empty($add_new)) {
 } else {
     $heading = "
                     <tr>
-                        <th class='has-text-centered'>{$lang['upcoming_cat']}</th>
-                        <th class='has-text-centered min-250'>{$lang['upcoming_name']}</th>
-                        <th class='has-text-centered'>{$lang['upcoming_chef']}</th>
-                        <th class='has-text-centered'>{$lang['upcoming_status']}</th>
+                        <th class='has-text-centered'>" . _('Category') . "</th>
+                        <th class='has-text-centered min-250'>" . _('Upcoming') . "</th>
+                        <th class='has-text-centered'>" . _('Chef') . "</th>
+                        <th class='has-text-centered'>" . _('Status') . "</th>
                         <th class='has-text-centered'><i class='icon-hourglass-3 icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered'><i class='icon-user-plus icon' aria-hidden='true'></i></th>" . ($has_access ? "
                         <th class='has-text-centered'><i class='icon-tools icon' aria-hidden='true'></i></th>" : '') . '
@@ -235,7 +234,7 @@ if (!empty($add_new)) {
                 $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
                 $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_plot']}:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Plot') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
@@ -243,7 +242,7 @@ if (!empty($add_new)) {
             } else {
                 $plot = '';
             }
-            $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $lang);
+            $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot);
             $body .= "
                     <tr>
                         <td class='has-text-centered'>{$caticon}</td>
@@ -252,7 +251,7 @@ if (!empty($add_new)) {
                         <td class='has-text-centered'>" . ucfirst($recipe['status']) . "</td>
                         <td class='has-text-centered'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . "</span></td>
                         <td class='has-text-centered'>
-                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notify']}' class='cooker_notify tooltipper' title='" . ($recipe['notify'] === 1 ? $lang['upcoming_notified'] : $lang['upcoming_not_notified']) . "'>
+                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notify']}' class='cooker_notify tooltipper' title='" . ($recipe['notify'] === 1 ? _('You will be notified when this has been uploaded.') : _('You will NOT be notified when this has been uploaded.')) . "'>
                                 <span id='notify_{$recipe['id']}'>" . ($recipe['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
                             </div>
                         </td>' . ($has_access ? "
@@ -266,10 +265,15 @@ if (!empty($add_new)) {
         $cols = $has_access ? 7 : 6;
         $body = "
                     <tr>
-                        <td colspan='{$cols}' class='has-text-centered'>{$lang['upcoming_none']}</td>
-                    </tr>";
+                        <td colspan='{$cols}' class='has-text-centered'>" . _("Nothing Cookin'") . '</td>
+                    </tr>';
     }
     $HTMLOUT .= $menu_top . main_table($body, $heading) . $menu_bottom;
 }
 
-echo stdhead($lang['upcoming_title']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Cooker');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

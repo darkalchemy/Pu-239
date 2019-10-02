@@ -6,8 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-$lang = load_language('global');
-
 $HTMLOUT = main_div("
 <p>
     There seems to be a lot of confusion about how the statistics updates work. The following is a capture of a full session to see what's going on behind the scenes. The client communicates with the tracker via simple http GET commands. The very first in this case was:
@@ -83,8 +81,12 @@ Let's dissect this:
 </p>
 <p>
     One last note: some clients have a pause/resume option. This will not send any message to the server. Do not use it as a way of updating stats more often, it just doesn't work.
-</p>");
+</p>", '', 'padding20');
 
 $HTMLOUT = wrapper($HTMLOUT, 'has-text-left');
-
-echo stdhead('FAQ') . $HTMLOUT . stdfoot();
+$title = _('Anatomy of a Torrent');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

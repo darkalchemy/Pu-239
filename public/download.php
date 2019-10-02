@@ -15,7 +15,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_happyhour.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class.bencdec.php';
-$lang = array_merge(load_language('global'), load_language('download'));
 global $container, $site_config;
 
 $users_class = $container->get(User::class);
@@ -30,15 +29,15 @@ if (!empty($T_Pass)) {
     $user = check_user_status();
 }
 if (!$user) {
-    show_error($lang['download_user_error'], $lang['download_passkey']);
+    show_error(_('USER ERROR'), _('Your download link has an invalid or missing torrent_pass'));
 } elseif ($user['status'] === 5) {
-    show_error($lang['download_user_error'], $lang['download_suspended']);
+    show_error(_('USER ERROR'), _("Permission denied, you're account is suspended"));
 } elseif ($user['status'] === 2) {
-    show_error($lang['download_user_error'], $lang['download_disabled']);
+    show_error(_('USER ERROR'), _("Permission denied, you're account is disabled"));
 } elseif ($user['status'] === 1) {
-    show_error($lang['download_user_error'], $lang['download_parked']);
+    show_error(_('USER ERROR'), _("Permission denied, you're account is parked"));
 } elseif (($user['downloadpos'] !== 1 || $user['can_leech'] !== 1) && $user['id'] !== $row['owner']) {
-    show_error($lang['download_user_error'], $lang['download_download_disabled']);
+    show_error(_('USER ERROR'), _('Your download privileges have been removed.'));
 }
 
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
@@ -46,18 +45,18 @@ $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
-    show_error($lang['download_user_error'], $lang['download_no_id']);
+    show_error(_('USER ERROR'), _('No torrent with that ID exists'));
 }
 $row = $torrent_class->get($id);
 $fn = TORRENTS_DIR . $id . '.torrent';
 if (!$row || !is_file($fn) || !is_readable($fn)) {
-    show_error($lang['download_user_error'], $lang['download_not_found']);
+    show_error(_('USER ERROR'), _('There was an error with the file or with the query, please contact staff'));
 } elseif ($user['seedbonus'] === 0 || $user['seedbonus'] < $site_config['bonus']['per_download']) {
-    show_error($lang['download_user_error'], $lang['download_insufficient_seedbonus']);
+    show_error(_('USER ERROR'), _("You don't have enough karma[seedbonus] to download, try seeding back some torrents =]"));
 } elseif ($site_config['site']['require_credit'] && ($row['size'] > ($user['uploaded'] - $user['downloaded']))) {
-    show_error($lang['download_user_error'], $lang['download_insufficient_upload']);
+    show_error(_('USER ERROR'), _("You don't have enough upload credit to download, try seeding back some torrents =]"));
 } elseif ($row['vip'] === 1 && $user['class'] < UC_VIP) {
-    show_error($lang['download_user_error'], $lang['download_vip_access']);
+    show_error(_('USER ERROR'), _('You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!'));
 } elseif (happyHour('check') && happyCheck('checkid', $row['category']) && $site_config['bonus']['happy_hour']) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
@@ -98,10 +97,10 @@ if (isset($_GET['slot'])) {
     $used_slot = $slot['torrentid'] === $id && $slot['userid'] === $user['id'];
     if ($_GET['slot'] === 'free') {
         if ($used_slot && $slot['free'] === 'yes') {
-            show_error($lang['download_user_error'], $lang['freeslot_in_use']);
+            show_error(_('USER ERROR'), _('Freeleech slot already in use.'));
         }
         if ($user['freeslots'] < 1) {
-            show_error($lang['download_user_error'], $lang['no_freeslots']);
+            show_error(_('USER ERROR'), _('No Freeslots left.'));
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -122,10 +121,10 @@ if (isset($_GET['slot'])) {
                ->execute();
     } elseif ($_GET['slot'] === 'double') {
         if ($used_slot && $slot['doubleup'] === 'yes') {
-            show_error($lang['download_user_error'], $lang['doubleslot_in_use']);
+            show_error(_('USER ERROR'), _('Doubleseed slot already in use.'));
         }
         if ($user['freeslots'] < 1) {
-            show_error($lang['download_user_error'], $lang['no_doubleslots']);
+            show_error(_('USER ERROR'), _('No Doubleslots left.'));
         }
         $update = [
             'freeslots' => $user['freeslots'] - 1,
@@ -145,7 +144,7 @@ if (isset($_GET['slot'])) {
                ->onDuplicateKeyUpdate($update)
                ->execute();
     } else {
-        show_error($lang['download_user_error'], $lang['download_unknown']);
+        show_error(_('USER ERROR'), _('An unknown error has occurred.'));
     }
     make_freeslots($user['id'], 'fllslot_', true);
 }

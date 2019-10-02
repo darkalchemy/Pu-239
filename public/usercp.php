@@ -14,6 +14,7 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once CACHE_DIR . 'timezones.php';
 require_once INCL_DIR . 'function_categories.php';
+
 $user = check_user_status();
 $stdhead = [
     'css' => [
@@ -26,9 +27,8 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-global $container, $TZ, $site_config;
+global $container, $TZ, $site_config, $i18n;
 
-$lang = array_merge(load_language('global'), load_language('usercp'));
 $HTMLOUT = $stylesheets = $wherecatina = '';
 $templates = sql_query('SELECT id, name FROM stylesheets ORDER BY id');
 while ($templ = mysqli_fetch_assoc($templates)) {
@@ -36,7 +36,7 @@ while ($templ = mysqli_fetch_assoc($templates)) {
         $stylesheets .= "<option value='" . (int) $templ['id'] . "' " . ($templ['id'] == get_stylesheet() ? 'selected' : '') . '>' . format_comment($templ['name']) . '</option>';
     }
 }
-$countries = "<option value='0'>---- {$lang['usercp_none']} ----</option>\n";
+$countries = "<option value='0'>---- " . _('None selected') . " ----</option>\n";
 $ct_r = sql_query('SELECT id,name FROM countries ORDER BY name') or sqlerr(__FILE__, __LINE__);
 while ($ct_a = mysqli_fetch_assoc($ct_r)) {
     $countries .= "<option value='" . (int) $ct_a['id'] . "' " . ($user['country'] == $ct_a['id'] ? 'selected' : '') . '>' . format_comment($ct_a['name']) . "</option>\n";
@@ -84,7 +84,7 @@ if (!in_array($action, $possible_actions)) {
     $session->set('is-warning', '[h2]Error! Change a few things up and try submitting again.[/h2]');
 }
 if (isset($_GET['edited'])) {
-    $session->set('is-success', "[h2]{$lang['usercp_updated']}![/h2]");
+    $session->set('is-success', '[h2]' . _('Profile updated') . '![/h2]');
 }
 if ($action === 'reset_torrent_pass') {
     $update['torrent_pass'] = make_password(32);
@@ -155,14 +155,14 @@ if ($action === 'avatar') {
     if (!($user['avatarpos'] == 0 || $user['avatarpos'] != 1)) {
         $HTMLOUT .= "
                                     <tr>
-                                        <td class='rowhead'>{$lang['usercp_avatar']}</td>
+                                        <td class='rowhead'>" . _('Avatar URL') . "</td>
                                         <td>
-                                            <input type='url' id='image_url' placeholder='{$lang['usercp_external_url']}' class='w-100' onchange=\"return grab_url(event)\">
+                                            <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\">
                                             <input type='url' id='poster' maxlength='255' name='avatar' class='w-100 is-hidden' value='" . htmlsafechars((string) $user['avatar']) . "'>
-                                            <br>{$lang['usercp_avatar_size']}
+                                            <br>" . _('Width should be 150px. (Will be resized if necessary)') . "
                                             <div class='poster_container has-text-centered'></div>
                                             <div id='droppable' class='has-text-centered droppable bg-03 top20'>
-                                                <span id='comment'>{$lang['usercp_dragndrop']}</span>
+                                                <span id='comment'>" . _('Drop images or click here to select images.') . "</span>
                                                 <div id='loader' class='is-hidden'>
                                                     <img src='{$site_config['paths']['images_baseurl']}forums/updating.svg' alt='Loading...'>
                                                 </div>
@@ -173,12 +173,12 @@ if ($action === 'avatar') {
     } else {
         $HTMLOUT .= "
                                     <tr>
-                                        <td class='rowhead'>{$lang['usercp_avatar']}</td>
+                                        <td class='rowhead'>" . _('Avatar URL') . "</td>
                                         <td>
                                             <input type='text' name='avatar' class='w-100' value='" . htmlsafechars($user['avatar']) . "' readonly='readonly'>
-                                            {$lang['usercp_no_avatar_allow']}
+                                            " . _('Sorry - Avatar changing disabled to your current user class') . '
                                         </td>
-                                    </tr>";
+                                    </tr>';
     }
     $HTMLOUT .= tr('Is your avatar offensive', '
                                             <input type="radio" name="offensive_avatar" ' . ($user['offensive_avatar'] === 'yes' ? 'checked' : '') . ' value="yes"> Yes
@@ -218,8 +218,8 @@ if ($action === 'avatar') {
                                             <input type="radio" name="signatures" ' . ($user['signatures'] !== 'yes' ? 'checked' : '') . ' value="no"> No', 1);
     $HTMLOUT .= tr('Signature', '
                                             <textarea name="signature" class="w-100" rows="4">' . format_comment((string) $user['signature']) . '</textarea><br>Must be an image url.', 1);
-    $HTMLOUT .= tr($lang['usercp_info'], "
-                                            <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . "</textarea><br>{$lang['usercp_tags']}", 1);
+    $HTMLOUT .= tr(_('Info'), "
+                                            <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . '</textarea><br>' . _f('Displayed on your public page. May contain %s.', "<a href='{$site_config['paths']['baseurl']}/tags.php' target='_new'>BB codes</a>"), 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -281,7 +281,7 @@ if ($action === 'avatar') {
                                 <tbody>";
     $HTMLOUT .= tr('<img width="16" src="' . $site_config['paths']['images_baseurl'] . 'forums/skype.png" alt="Icq" class="tooltipper right10" title="Skype"> Skype ', '
                                             <input type="text" class="w-100" name="skype"  value="' . htmlsafechars((string) $user['skype']) . '">
-                                            <p class="top10 bottom10">' . $lang['usercp_skype_share'] . '</p>', 1);
+                                            <p class="top10 bottom10">' . _('Click your username, then Share profile, then Copy to clipboard. Then paste the link here.') . '</p>', 1);
     $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px"> Website ', '
                                             <input type="text" class="w-100" name="website"  value="' . htmlsafechars((string) $user['website']) . '">', 1);
     $HTMLOUT .= "
@@ -310,21 +310,35 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
 
-    $HTMLOUT .= tr($lang['usercp_tz'], $time_select, 1);
-    $HTMLOUT .= tr($lang['usercp_checkdst'], "
-                                            <input type='checkbox' name='checkdst' id='tz-checkdst' value='1' $dst_correction> {$lang['usercp_auto_dst']}
+    $HTMLOUT .= tr(_('Timezone'), $time_select, 1);
+    $HTMLOUT .= tr(_('Daylight Saving'), "
+                                            <input type='checkbox' name='checkdst' id='tz-checkdst' value='1' $dst_correction> " . _('Auto correct DST?') . "
                                             <div id='tz-checkmanual' class='is_hidden'>
-                                                <input type='checkbox' name='manualdst' value='1' $dst_check> {$lang['usercp_is_dst']}
-                                            </div>", 1);
-    $HTMLOUT .= tr($lang['usercp_country'], "
+                                                <input type='checkbox' name='manualdst' value='1' $dst_check> " . _('Is daylight saving time in effect?') . '
+                                            </div>', 1);
+    $HTMLOUT .= tr(_('Country'), "
                                             <select name='country' class='w-100'>
                                                 $countries
                                             </select>", 1);
     $current_lang = get_language();
-    $HTMLOUT .= tr($lang['usercp_language'], "
+    $options = '';
+    $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(LOCALES_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
+    foreach ($objects as $name => $object) {
+        $basename = basename($name);
+        if (is_dir($name) && $basename !== 'LC_MESSAGES') {
+            $available_languages[$basename] = $i18n->getLanguageName($basename);
+        }
+    }
+    natsort($available_languages);
+    foreach ($available_languages as $key => $value) {
+        $options .= "
+                                                <option value='$key' " . ($user['language'] === $key ? 'selected' : '') . ">{$value}</option>";
+    }
+
+    $HTMLOUT .= tr(_('Language'), "
                                             <select name='language' class='w-100'>
-                                                <option value='1' " . ($current_lang == '1' ? 'selected' : '') . '>English</option>
-                                            </select>', $current_lang);
+                                                <option value=''>Select</option>{$options}
+                                            </select>", $current_lang);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -352,17 +366,17 @@ if ($action === 'avatar') {
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <a href='{$site_config['paths']['baseurl']}/mytorrents.php'><div>{$lang['usercp_edit_torrents']}</div></a>
+                                                <a href='{$site_config['paths']['baseurl']}/mytorrents.php'><div>" . _('View/Edit your Torrents') . "</div></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href='{$site_config['paths']['baseurl']}/friends.php'><div>{$lang['usercp_edit_friends']}</div></a>
+                                                <a href='{$site_config['paths']['baseurl']}/friends.php'><div>" . _('View/Edit your Friends') . "</div></a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <a href='{$site_config['paths']['baseurl']}/users.php'><div>{$lang['usercp_search']}</div></a>
+                                                <a href='{$site_config['paths']['baseurl']}/users.php'><div>" . _('Search Members') . "</div></a>
                                             </td>
                                         </tr>
                                         <tr>
@@ -438,17 +452,17 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
     if ($user['status'] === 1) {
-        $HTMLOUT .= tr($lang['usercp_acc_parked'], "
+        $HTMLOUT .= tr(_('Account parked'), "
                                         <input type='radio' name='parked' " . ($user['status'] === 1 ? 'checked' : '') . " value='yes'> Yes
                                         <input type='radio' name='parked' " . ($user['status'] === 0 ? 'checked' : '') . " value='no'> No
                                         <div class='size_2'>
-                                            <p>{$lang['usercp_acc_parked_message']}<br>
-                                            {$lang['usercp_acc_parked_message1']}</p>
-                                        </div>", 1);
+                                            <p>" . _('You can park your account to prevent it from being deleted because of inactivity, for example, you go away on a vacation.') . '<br>
+                                            ' . _('When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages.') . '</p>
+                                        </div>', 1);
     }
     if ($user['anonymous_until'] != 0) {
-        $HTMLOUT .= tr($lang['usercp_anonymous'], "
-                                        <input type='checkbox' name='anonymous' " . ($user['anonymous_until'] > TIME_NOW ? 'checked' : '') . "> {$lang['usercp_default_anonymous']}", 1);
+        $HTMLOUT .= tr(_('Anonymous'), "
+                                        <input type='checkbox' name='anonymous' " . ($user['anonymous_until'] > TIME_NOW ? 'checked' : '') . '> ' . _('(Anonymous Status - check to protect your profile!)') . '', 1);
     }
     $HTMLOUT .= tr('Hide current seed and leech', "
                                         <input type='radio' name='hidecur' " . ($user['hidecur'] === 'yes' ? 'checked' : '') . " value='yes'> Yes
@@ -489,19 +503,19 @@ if ($action === 'avatar') {
                                             </div>
                                         </div>", 1);
     }
-    $HTMLOUT .= tr($lang['usercp_email'], "
+    $HTMLOUT .= tr(_('Email address'), "
                                         <input type='text' name='email' class='w-100' value='" . format_comment($user['email']) . "'>
-                                        <p class='top20 bottom10'>{$lang['usercp_email_pass']}</p>
+                                        <p class='top20 bottom10'>" . _('Please enter your password if changing your email address!') . "</p>
                                         <input type='password' name='chmailpass' class='w-100' placeholder='Current Password'>", 1);
     $HTMLOUT .= "
                                 <tr>
-                                    <td colspan='2'>{$lang['usercp_note']}</td>
-                                </tr>";
+                                    <td colspan='2'>" . _('<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.') . '</td>
+                                </tr>';
     $HTMLOUT .= tr('Show Email', '
                                         <input type="radio" name="show_email" ' . ($user['show_email'] === 'yes' ? 'checked' : '') . ' value="yes"> Yes
                                         <input type="radio" name="show_email" ' . ($user['show_email'] === 'no' ? 'checked' : '') . ' value="no"> No
                                         <p>Do you wish to have your email address visible on the forums?</p>', 1);
-    $HTMLOUT .= tr($lang['usercp_chpass'], "
+    $HTMLOUT .= tr(_('Change password'), "
                                         <input type='password' name='password' id='password' class='w-100' autocomplete='on' minlength='8'> 
                                         <input type='password' name='confirm_password' id='confirm_password' class='w-100 top10' autocomplete='on' minlength='8'> 
                                         <p class='top20 bottom10'>You must enter your current password.</p>
@@ -579,33 +593,33 @@ if ($action === 'avatar') {
         $categories .= '
                                             </div>';
     }
-    $HTMLOUT .= tr($lang['usercp_pm_notif'], "
-                                            <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pmail]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
-    $HTMLOUT .= tr($lang['usercp_email_notif'], "
-                                            <input type='checkbox' name='emailnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[email]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_torrent']}\n", 1);
-    $HTMLOUT .= tr($lang['usercp_show_hidden'], "
-                                            <input type='checkbox' name='hidden' value='1' " . ($user['hidden'] === 1 ? 'checked' : '') . "> {$lang['usercp_show_hidden_desc']}", 1);
-    $HTMLOUT .= tr($lang['usercp_browse'], $categories, 1);
-    $HTMLOUT .= tr($lang['usercp_clearnewtagmanually'], "
-                                            <input type='checkbox' name='clear_new_tag_manually' value='yes' " . (($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? 'checked' : '') . "> {$lang['usercp_default_clearnewtagmanually']}", 1);
-    $HTMLOUT .= tr($lang['usercp_scloud'], "
-                                            <input type='checkbox' name='viewscloud' value='yes' " . (($user['opt1'] & user_options::VIEWSCLOUD) ? 'checked' : '') . "> {$lang['usercp_scloud1']}", 1);
+    $HTMLOUT .= tr(_('PM Notification'), "
+                                            <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pmail]') !== false ? 'checked' : '') . " value='yes'> " . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . "\n", 1);
+    $HTMLOUT .= tr(_('Email Notification'), "
+                                            <input type='checkbox' name='emailnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[email]') !== false ? 'checked' : '') . " value='yes'> " . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . "\n", 1);
+    $HTMLOUT .= tr(_('Show hidden Categories'), "
+                                            <input type='checkbox' name='hidden' value='1' " . ($user['hidden'] === 1 ? 'checked' : '') . '> ' . _('(Check to show all hidden categories!)') . '', 1);
+    $HTMLOUT .= tr(_('Browse default<br>categories'), $categories, 1);
+    $HTMLOUT .= tr(_('Manually Clear New Tag'), "
+                                            <input type='checkbox' name='clear_new_tag_manually' value='yes' " . (($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? 'checked' : '') . '> ' . _('(Check to use - Default value is no!)') . '', 1);
+    $HTMLOUT .= tr(_('Search Cloud'), "
+                                            <input type='checkbox' name='viewscloud' value='yes' " . (($user['opt1'] & user_options::VIEWSCLOUD) ? 'checked' : '') . '> ' . _('(Enable/Disable searchcloud on browse!)') . '', 1);
 
     $split = ($user['opt2'] & user_options_2::SPLIT) === user_options_2::SPLIT;
-    $HTMLOUT .= tr($lang['usercp_split'], "
+    $HTMLOUT .= tr(_('Split Torrents by Days'), "
                                             <input type='checkbox' name='split' " . ($split ? 'checked' : '') . " value='yes'> (Split torrents uploaded by days)", 1);
 
     $browse_icons = ($user['opt2'] & user_options_2::BROWSE_ICONS) === user_options_2::BROWSE_ICONS;
-    $HTMLOUT .= tr($lang['usercp_icons'], "
+    $HTMLOUT .= tr(_('Categories as images'), "
                                             <input type='checkbox' name='browse_icons' " . ($browse_icons ? 'checked' : '') . " value='yes'> (View categories as icons)", 1);
 
-    $HTMLOUT .= tr($lang['usercp_cats_sets'], "
+    $HTMLOUT .= tr(_('Category icon set'), "
                                             <select name='categorie_icon'>
                                                 <option value='1' " . (get_category_icons() == 1 ? 'selected' : '') . '>Default</option>
                                             </select>', get_category_icons());
-    $HTMLOUT .= tr($lang['usercp_tor_perpage'], "
+    $HTMLOUT .= tr(_('Torrents per page'), "
                                             <input type='text' class='w-25' name='torrentsperpage' value='{$user['torrentsperpage']}'>
-                                            <div>{$lang['usercp_default']}</div>", 1);
+                                            <div>" . _('(0 = use default setting)') . '</div>', 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -631,13 +645,13 @@ if ($action === 'avatar') {
                                 </thead>
                                 <tbody>";
     if ($user['class'] >= UC_VIP) {
-        $HTMLOUT .= tr($lang['usercp_title'], "
+        $HTMLOUT .= tr(_('Custom Title'), "
                                                 <input type='text' class='w-100' value='" . htmlsafechars((string) $user['title']) . "' name='title'>", 1);
     }
-    $HTMLOUT .= tr($lang['usercp_top_perpage'], "
-                                            <input type='text' class='w-100' name='topicsperpage' value='{$user['topicsperpage']}'> {$lang['usercp_default']}", 1);
-    $HTMLOUT .= tr($lang['usercp_post_perpage'], "
-                                            <input type='text' class='w-100' name='postsperpage' value='{$user['postsperpage']}'> {$lang['usercp_default']}", 1);
+    $HTMLOUT .= tr(_('Topics per page'), "
+                                            <input type='text' class='w-100' name='topicsperpage' value='{$user['topicsperpage']}'> " . _('(0 = use default setting)') . '', 1);
+    $HTMLOUT .= tr(_('Posts per page'), "
+                                            <input type='text' class='w-100' name='postsperpage' value='{$user['postsperpage']}'> " . _('(0 = use default setting)') . '', 1);
     $HTMLOUT .= tr('Forum Sort Order', "
                                             <input type='radio' name='forum_sort' " . ($user['forum_sort'] === 'ASC' ? 'checked' : '') . " value='ASC'> At Bottom
                                             <input type='radio' name='forum_sort' " . ($user['forum_sort'] !== 'ASC' ? 'checked' : '') . " value='DESC'> At Top<br>What order you want the posts to be listed in.", 1);
@@ -645,26 +659,26 @@ if ($action === 'avatar') {
                                             <input type='radio' name='use_12_hour' " . ($user['use_12_hour'] ? 'checked' : '') . " value='1'> Yes
                                             <input type='radio' name='use_12_hour' " . (!$user['use_12_hour'] ? 'checked' : '') . " value='0'> No", 1);
 
-    $HTMLOUT .= tr($lang['usercp_stylesheet'], "
+    $HTMLOUT .= tr(_('Stylesheet'), "
                                             <select name='stylesheet'>
                                                 $stylesheets
                                             </select>", 1);
-    $HTMLOUT .= tr($lang['usercp_ajaxchat_height'], "
-                                            <input type='text' class='w-100' name='ajaxchat_height' value='{$user['ajaxchat_height']}'> {$lang['usercp_default']}", 1);
-    $HTMLOUT .= tr($lang['usercp_fontsize'], "
-                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> {$lang['usercp_default_size']}", 1);
-    $HTMLOUT .= tr($lang['usercp_gender'], "
+    $HTMLOUT .= tr(_('AJAX Chat height'), "
+                                            <input type='text' class='w-100' name='ajaxchat_height' value='{$user['ajaxchat_height']}'> " . _('(0 = use default setting)') . '', 1);
+    $HTMLOUT .= tr(_('Site Wide Font Scale'), "
+                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> " . _('100 = 100% font scaling<br>50 = 50% font scaling<br>This overides the default font size.') . '', 1);
+    $HTMLOUT .= tr(_('Gender'), "
                                             <div class='level'>
                                                 <span>
-                                                    <input type='radio' name='gender' " . ($user['gender'] === 'Male' ? 'checked' : '') . " value='Male'> {$lang['usercp_male']}
+                                                    <input type='radio' name='gender' " . ($user['gender'] === 'Male' ? 'checked' : '') . " value='Male'> " . _('Male') . "
                                                 </span>
                                                 <span>
-                                                    <input type='radio' name='gender' " . ($user['gender'] === 'Female' ? 'checked' : '') . " value='Female'> {$lang['usercp_female']}
+                                                    <input type='radio' name='gender' " . ($user['gender'] === 'Female' ? 'checked' : '') . " value='Female'> " . _('Female') . "
                                                 </span>
                                                 <span>
-                                                    <input type='radio' name='gender' " . ($user['gender'] == 'N/A' ? 'checked' : '') . " value='N/A'> {$lang['usercp_na']}
+                                                    <input type='radio' name='gender' " . ($user['gender'] == 'N/A' ? 'checked' : '') . " value='N/A'> " . _('Not Sure') . '
                                                 </span>
-                                            </div>", 1);
+                                            </div>', 1);
 
     if ($user['birthday'] === '1970-01-01' || empty($user['birthday'])) {
         $time = strtotime('-100 year', time());
@@ -703,24 +717,24 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>";
-        $HTMLOUT .= tr($lang['usercp_email_notif'], "
-                                            <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pm]') !== false ? 'checked' : '') . " value='yes'> {$lang['usercp_notify_pm']}", 1);
-        $HTMLOUT .= tr($lang['usercp_accept_pm'], "
+        $HTMLOUT .= tr(_('Email Notification'), "
+                                            <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pm]') !== false ? 'checked' : '') . " value='yes'> " . _('Notify me when I have received a PM') . '', 1);
+        $HTMLOUT .= tr(_('Accept PMs'), "
                                             <div class='level'>
                                                 <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'yes' ? 'checked' : '') . " value='yes'> {$lang['usercp_except_blocks']}
+                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('All (except blocks)') . "
                                                 </span>
                                                 <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'friends' ? 'checked' : '') . " value='friends'> {$lang['usercp_only_friends']}
+                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'friends' ? 'checked' : '') . " value='friends'> " . _('Friends only') . "
                                                 </span>
                                                 <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'no' ? 'checked' : '') . " value='no'> {$lang['usercp_only_staff']}
+                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'no' ? 'checked' : '') . " value='no'> " . _('Staff only') . '
                                                 </span>
-                                            </div>", 1);
-        $HTMLOUT .= tr($lang['usercp_delete_pms'], "
-                                            <input type='checkbox' name='deletepms' " . ($user['deletepms'] === 'yes' ? 'checked' : '') . "> {$lang['usercp_default_delete']}", 1);
-        $HTMLOUT .= tr($lang['usercp_save_pms'], "
-                                            <input type='checkbox' name='savepms' " . ($user['savepms'] === 'yes' ? 'checked' : '') . "> {$lang['usercp_default_save']}", 1);
+                                            </div>', 1);
+        $HTMLOUT .= tr(_('Delete PMs'), "
+                                            <input type='checkbox' name='deletepms' " . ($user['deletepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Delete PM on reply")') . '', 1);
+        $HTMLOUT .= tr(_('Save PMs'), "
+                                            <input type='checkbox' name='savepms' " . ($user['savepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Save PM to Sentbox")') . '', 1);
         $HTMLOUT .= tr('Forum Subscribe PM', "
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'yes' ? 'checked' : '') . " value='yes'> Yes
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'no' ? 'checked' : '') . " value='no'> No<br>When someone posts in a subscribed thread, you will be PMed.", 1);
@@ -752,5 +766,8 @@ $HTMLOUT .= '
                     </div>
                 </form>
             </div>';
-
-echo stdhead(format_comment($user['username']) . "{$lang['usercp_stdhead']} ", $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('User CP');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\AuthError;
-use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
@@ -14,7 +12,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_rep_ad'));
 $input = array_merge($_GET, $_POST);
 $input['mode'] = isset($input['mode']) ? $input['mode'] : '';
 $reputationid = 0;
@@ -88,9 +85,9 @@ switch ($input['mode']) {
  */
 function show_level(array $input)
 {
-    global $site_config, $lang;
+    global $site_config;
 
-    $title = $lang['rep_ad_show_title'];
+    $title = _('User Reputation Manager - Overview');
     $html = '';
     $query = sql_query('SELECT * FROM reputationlevel ORDER BY minimumreputation') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
@@ -99,30 +96,30 @@ function show_level(array $input)
         return;
     }
     $html .= "
-        <h1 class='has-text-centered'>{$lang['rep_ad_show_head']}</h1>
-        <p class='margin20'>{$lang['rep_ad_show_html1']}<br>{$lang['rep_ad_show_html2']}</p>
+        <h1 class='has-text-centered'>" . _('User Reputation Manager') . "</h1>
+        <p class='margin20'>" . _('On this page you can modify the minimum amount required for each reputation level. Make sure you press Update Minimum Levels to save your changes. You cannot set the same minimum amount to more than one level.') . '<br>' . _('From here you can also choose to edit or remove any single level. Click the Edit link to modify the Level description (see Editing a Reputation Level) or click Remove to delete a level. If you remove a level or modify the minimum reputation needed to be at a level, all users will be updated to reflect their new level if necessary.') . "</p>
         <div class='has-text-centered bottom20'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list'>
                 <span class='button is-small has-text-black'>
-                    {$lang['rep_ad_show_comments']}
+                    " . _('View comments') . '
                 </span>
             </a>
-        </div>";
+        </div>';
     $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='show_rep_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='mode' value='doupdate' type='hidden'>";
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['rep_ad_show_id']}</th>
-            <th>{$lang['rep_ad_show_level']}</th>
-            <th>{$lang['rep_ad_show_min']}</th>
-            <th>{$lang['rep_ad_show_controls']}</th>
-        </tr>";
+            <th>' . _('ID') . '</th>
+            <th>' . _('Reputation Level') . '</th>
+            <th>' . _('Minimum Reputation Level') . '</th>
+            <th>' . _('Controls') . '</th>
+        </tr>';
     $body = '';
     while ($res = mysqli_fetch_assoc($query)) {
         $body .= "
         <tr>
             <td>#{$res['reputationlevelid']}</td>
-            <td>{$lang['rep_ad_show_user']} <b>" . htmlsafechars($res['level']) . "</b></td>
+            <td>" . _('User') . ' <b>' . htmlsafechars($res['level']) . "</b></td>
             <td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "'></td>
             <td>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
@@ -137,15 +134,15 @@ function show_level(array $input)
     $body .= "
         <tr>
             <td colspan='4' class='has-text-centered'>
-                <input type='submit' value='{$lang['rep_ad_show_update']}' accesskey='s' class='button is-small'>
-                <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='button is-small'>
+                <input type='submit' value='" . _('Update') . "' accesskey='s' class='button is-small'>
+                <input type='reset' value='" . _('Reset') . "' accesskey='r' class='button is-small'>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=add'>
                     <span class='button is-small has-text-black'>
-                        {$lang['rep_ad_show_add']}
+                        " . _('Add New') . '
                     </span>
                 </a>
             </td>
-        </tr>";
+        </tr>';
 
     $html .= main_table($body, $heading);
     $html .= '</form>';
@@ -162,25 +159,23 @@ function show_level(array $input)
  */
 function show_form(array $input, string $type)
 {
-    global $lang;
-
-    $html = $lang['rep_ad_form_html'];
+    $html = _('This allows you to add a new reputation level or edit an existing reputation level.');
     $res = [];
     if ($type === 'edit') {
         $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . (int) $input['reputationlevelid']) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
-            stderr($lang['rep_ad_form_error'], $lang['rep_ad_form_error_msg']);
+            stderr(_('Error:'), _('Please specify an ID.'));
         }
-        $title = $lang['rep_ad_form_title'];
-        $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . " ({$lang['rep_ad_form_id']}{$res['reputationlevelid']})</span><br>";
-        $button = $lang['rep_ad_form_btn'];
-        $extra = "<input type='button' class='button is-small' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='history.back()'>";
+        $title = _('Edit Reputation Level');
+        $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . ' (' . _('ID:#') . "{$res['reputationlevelid']})</span><br>";
+        $button = _('Update');
+        $extra = "<input type='button' class='button is-small' value='" . _('Back') . "' accesskey='b' class='button is-small' onclick='history.back()'>";
         $mode = 'doedit';
     } else {
-        $title = $lang['rep_ad_form_add_title'];
-        $button = $lang['rep_ad_form_add_btn'];
+        $title = _('Add New Reputation Level');
+        $button = _('Save');
         $mode = 'doadd';
-        $extra = "<input type='button' value='{$lang['rep_ad_form_back']}' accesskey='b' class='button is-small' onclick='history.back()'>";
+        $extra = "<input type='button' value='" . _('Back') . "' accesskey='b' class='button is-small' onclick='history.back()'>";
     }
     $replevid = isset($res['reputationlevelid']) ? $res['reputationlevelid'] : '';
     $replevel = isset($res['level']) ? $res['level'] : '';
@@ -191,11 +186,11 @@ function show_form(array $input, string $type)
     $html .= "<h2>$title</h2><table><tr>
         <td>&#160;</td>
         <td>&#160;</td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_form_desc']}<div class='desctext'>{$lang['rep_ad_form_descr']}</div></td>";
+    $html .= '<tr><td>' . _('Level Description') . "<div class='desctext'>" . _('This is what is displayed for the user when their reputation points are above the amount entered as the minimum.') . '</div></td>';
     $html .= "<td><input type='text' name='level' value=\"{$replevel}\" maxlength='250'></td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_form_min']}<div>{$lang['rep_ad_form_option']}</div></td>";
+    $html .= '<tr><td>' . _('Minimum amount of reputation points required for this level') . '<div>' . _("This can be a positive or a negative amount. When the user's reputation points reaches this amount, the above description will be displayed.") . '</div></td>';
     $html .= "<td><input type='text' name='minimumreputation' value=\"{$minrep}\" maxlength='10'></td></tr>";
-    $html .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='$button' accesskey='s' class='button is-small'> <input type='reset' value='{$lang['rep_ad_show_reset']}' accesskey='r' class='button is-small'> $extra</td></tr>";
+    $html .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='$button' accesskey='s' class='button is-small'> <input type='reset' value='" . _('Reset') . "' accesskey='r' class='button is-small'> $extra</td></tr>";
     $html .= '</table>';
     $html .= '</form>';
     html_out($html, $title);
@@ -211,21 +206,19 @@ function show_form(array $input, string $type)
  */
 function do_update(array $input, string $type)
 {
-    global $lang;
-
     $minrep = $level = $redirect = '';
     if ($type != '') {
         $level = strip_tags($input['level']);
         $level = trim($level);
         if ((strlen($input['level']) < 2) || ($level == '')) {
-            stderr('', $lang['rep_ad_update_err1']);
+            stderr(_('Error'), _('The text you entered was too short.'));
         }
         if (strlen($input['level']) > 250) {
-            stderr('', $lang['rep_ad_update_err2']);
+            stderr(_('Error'), _('The text entry is too long.'));
         }
         $level = sqlesc($level);
         $minrep = sqlesc(intval($input['minimumreputation']));
-        $redirect = '' . $lang['rep_ad_update_saved'] . ' <i>' . htmlsafechars($input['level']) . '</i> ' . $lang['rep_ad_update_success'] . '';
+        $redirect = '' . _('Saved Reputation Level') . ' <i>' . htmlsafechars($input['level']) . '</i> ' . _('Successfully.') . '';
     }
     // what we gonna do?
     if ($type === 'new') {
@@ -233,12 +226,12 @@ function do_update(array $input, string $type)
     } elseif ($type === 'edit') {
         $levelid = intval($input['reputationlevelid']);
         if (!is_valid_id($levelid)) {
-            stderr('', $lang['rep_ad_update_err3']);
+            stderr(_('Error'), _('Invalid ID.'));
         }
         // check it's a valid rep id
         $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
-            stderr('', $lang['rep_ad_update_err4']);
+            stderr(_('Error'), _('No valid ID.'));
         }
         sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
     } else {
@@ -248,9 +241,9 @@ function do_update(array $input, string $type)
                 sql_query('UPDATE reputationlevel SET minimumreputation = ' . (int) $v . ' WHERE reputationlevelid=' . sqlesc($k)) or sqlerr(__FILE__, __LINE__);
             }
         } else {
-            stderr('', $lang['rep_ad_update_err4']);
+            stderr(_('Error'), _('No valid ID.'));
         }
-        $redirect = $lang['rep_ad_update_save_success'];
+        $redirect = _('Saved Reputation Level Successfully.');
     }
     rep_cache();
     redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', $redirect);
@@ -265,21 +258,19 @@ function do_update(array $input, string $type)
  */
 function do_delete(array $input)
 {
-    global $lang;
-
     if (!isset($input['reputationlevelid']) || !is_valid_id((int) $input['reputationlevelid'])) {
-        stderr('', 'No valid ID.');
+        stderr(_('Error'), 'No valid ID.');
     }
     $levelid = intval($input['reputationlevelid']);
     // check the id is valid within db
     $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
-        stderr('', $lang['rep_ad_delete_no']);
+        stderr(_('Error'), _("Rep ID doesn't exist"));
     }
     // if we here, we delete it!
     sql_query("DELETE FROM reputationlevel WHERE reputationlevelid = $levelid") or sqlerr(__FILE__, __LINE__);
     rep_cache();
-    redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', $lang['rep_ad_delete_success'], 5);
+    redirect('staffpanel.php?tool=reputation_ad&amp;mode=done', _('Reputation deleted successfully'), 5);
 }
 
 /**
@@ -291,12 +282,12 @@ function do_delete(array $input)
  */
 function show_form_rep(array $input)
 {
-    global $site_config, $lang;
+    global $site_config;
 
     if (!isset($input['reputationid']) || !is_valid_id((int) $input['reputationid'])) {
-        stderr('', $lang['rep_ad_rep_form_nothing']);
+        stderr(_('Error'), _('Nothing here by that ID.'));
     }
-    $title = $lang['rep_ad_rep_form_title'];
+    $title = _('User Reputation Manager');
     $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
                     leftby.username AS leftby_name
                     FROM reputation r
@@ -306,20 +297,20 @@ function show_form_rep(array $input)
                     LEFT JOIN users leftby ON leftby.id=r.whoadded
                     WHERE reputationid=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (!$res = mysqli_fetch_assoc($query)) {
-        stderr('', $lang['rep_ad_rep_form_erm']);
+        stderr(_('Error'), _("Erm, it's not there!"));
     }
     $html = "<form action='staffpanel.php?tool=reputation_ad' name='show_rep_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='reputationid' value='{$res['reputationid']}' type='hidden'>
                 <input name='oldreputation' value='{$res['reputation']}' type='hidden'>
                 <input name='mode' value='doeditrep' type='hidden'>";
-    $html .= "<h2>{$lang['rep_ad_rep_form_head']}</h2>";
+    $html .= '<h2>' . _('Edit Reputation') . '</h2>';
     $html .= '<table>';
-    $html .= "<tr><td>{$lang['rep_ad_rep_form_topic']}</td><td><a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
-    $html .= "<tr><td>{$lang['rep_ad_rep_form_left_by']}</td><td>{$res['leftby_name']}</td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_rep_form_left_for']}</td><td>{$res['leftfor_name']}</td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_rep_form_comment']}</td><td><input type='text' name='reason' value='" . htmlsafechars($res['reason']) . "' maxlength='250'></td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_rep_form_rep']}</td><td><input type='text' name='reputation' value='{$res['reputation']}' maxlength='10'></td></tr>";
-    $html .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['rep_ad_rep_form_save']}' accesskey='s' class='button is-small'> <input type='reset' tabindex='1' value='{$lang['rep_ad_rep_form_reset']}' accesskey='r' class='button is-small'></td></tr>";
+    $html .= '<tr><td>' . _('Topic') . "</td><td><a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['topic_id']}&amp;page=p{$res['postid']}#{$res['postid']}' target='_blank'>" . htmlsafechars($res['topic_name']) . '</a></td></tr>';
+    $html .= '<tr><td>' . _('Left By') . "</td><td>{$res['leftby_name']}</td></tr>";
+    $html .= '<tr><td>' . _('Left For') . "</td><td>{$res['leftfor_name']}</td></tr>";
+    $html .= '<tr><td>' . _('Comment') . "</td><td><input type='text' name='reason' value='" . htmlsafechars($res['reason']) . "' maxlength='250'></td></tr>";
+    $html .= '<tr><td>' . _('Reputation') . "</td><td><input type='text' name='reputation' value='{$res['reputation']}' maxlength='10'></td></tr>";
+    $html .= "<tr><td colspan='2' class='has-text-centered'><input type='submit' value='" . _('Save') . "' accesskey='s' class='button is-small'> <input type='reset' tabindex='1' value='" . _('Reset') . "' accesskey='r' class='button is-small'></td></tr>";
     $html .= '</table></form>';
     html_out($html, $title);
 }
@@ -336,34 +327,34 @@ function show_form_rep(array $input)
  */
 function view_list(array $now_date, array $input, int $time_offset)
 {
-    global $lang, $site_config;
+    global $site_config;
 
-    $title = $lang['rep_ad_view_title'];
-    $html = "<h2>{$lang['rep_ad_view_view']}</h2>";
-    $html .= "<p>{$lang['rep_ad_view_page']}</p>";
+    $title = _('User Reputation Manager');
+    $html = '<h2>' . _('View Reputation Comments') . '</h2>';
+    $html .= '<p>' . _('This page allows you to search for reputation comments left by / for specific users over the specified date range.') . '</p>';
     $html .= "<form action='{$_SERVER['PHP_SELF']}?tool=reputation_ad' name='list_form' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input name='mode' value='list' type='hidden'>
                 <input name='dolist' value='1' type='hidden'>";
     $html .= '<table>';
-    $html .= "<tr><td>{$lang['rep_ad_view_for']}</td><td><input type='text' name='leftfor' value='' maxlength='250' tabindex='1'></td></tr>";
-    $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_for_txt']}</div></td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_view_by']}</td><td><input type='text' name='leftby' value='' maxlength='250' tabindex='2'></td></tr>";
-    $html .= "<tr><td colspan='2'><div>{$lang['rep_ad_view_by_txt']}</div></td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_view_start']}</td><td>
+    $html .= '<tr><td>' . _('Left For') . "</td><td><input type='text' name='leftfor' value='' maxlength='250' tabindex='1'></td></tr>";
+    $html .= "<tr><td colspan='2'><div>" . _('To limit the comments left for a specific user, enter the username here. Leave this field empty to receive comments left for every user.') . '</div></td></tr>';
+    $html .= '<tr><td>' . _('Left By') . "</td><td><input type='text' name='leftby' value='' maxlength='250' tabindex='2'></td></tr>";
+    $html .= "<tr><td colspan='2'><div>" . _('To limit the comments left by a specific user, enter the username here. Leave this field empty to receive comments left by every user.') . '</div></td></tr>';
+    $html .= '<tr><td>' . _('Start Date') . "</td><td>
         <div>
-                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='start[month]' tabindex='3'>" . get_month_dropdown($now_date) . "</select></span>
-                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' maxlength='2' tabindex='3'></span>
-                <span>{{$lang['rep_ad_view_year']}}<br><input type='text' name='start[year]' value='" . $now_date['year'] . "' maxlength='4' tabindex='3'></span>
+                <span style='padding-right:5px; float:left;'>" . _('Month') . "<br><select name='start[month]' tabindex='3'>" . get_month_dropdown($now_date) . "</select></span>
+                <span style='padding-right:5px; float:left;'>" . _('Day') . "<br><input type='text' name='start[day]' value='" . ($now_date['mday'] + 1) . "' maxlength='2' tabindex='3'></span>
+                <span>{" . _('Year') . "}<br><input type='text' name='start[year]' value='" . $now_date['year'] . "' maxlength='4' tabindex='3'></span>
             </div></td></tr>";
-    $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{{$lang['rep_ad_view_start_select']}}</div></td></tr>";
-    $html .= "<tr><td>{$lang['rep_ad_view_end']}</td><td>
+    $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{" . _('Select a start date for this report. Select a month, day, and year. The selected statistic must be no older than this date for it to be included in the report.') . '}</div></td></tr>';
+    $html .= '<tr><td>' . _('End Date') . "</td><td>
             <div>
-                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_month']}<br><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown($now_date) . "</select></span>
-                <span style='padding-right:5px; float:left;'>{$lang['rep_ad_view_day']}<br><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' maxlength='2' tabindex='4'></span>
-                <span>{$lang['rep_ad_view_year']}<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' maxlength='4' tabindex='4'></span>
+                <span style='padding-right:5px; float:left;'>" . _('Month') . "<br><select name='end[month]' class='textinput' tabindex='4'>" . get_month_dropdown($now_date) . "</select></span>
+                <span style='padding-right:5px; float:left;'>" . _('Day') . "<br><input type='text' class='textinput' name='end[day]' value='" . $now_date['mday'] . "' maxlength='2' tabindex='4'></span>
+                <span>" . _('Year') . "<br><input type='text' class='textinput' name='end[year]' value='" . $now_date['year'] . "' maxlength='4' tabindex='4'></span>
             </div></td></tr>";
-    $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>{$lang['rep_ad_view_end_select']}</div></td></tr>";
-    $html .= "<tr><td colspan='2'><input type='submit' value='{$lang['rep_ad_view_search']}' accesskey='s' class='button is-small' tabindex='5'> <input type='reset' value='{$lang['rep_ad_view_reset']}' accesskey='r' class='button is-small' tabindex='6'></td></tr>";
+    $html .= "<tr><td class='tdrow2' colspan='2'><div class='desctext'>" . _("Select an end date for this report. Select a month, day, and year. The selected statistic must not be newer than this date for it to be included in the report. You can use this setting in conjunction with the 'Start Date' setting to create a window of time for this report.") . '</div></td></tr>';
+    $html .= "<tr><td colspan='2'><input type='submit' value='" . _('Search') . "' accesskey='s' class='button is-small' tabindex='5'> <input type='reset' value='" . _('Reset') . "' accesskey='r' class='button is-small' tabindex='6'></td></tr>";
     $html .= '</table></form>';
 
     if (isset($input['dolist'])) {
@@ -381,12 +372,12 @@ function view_list(array $now_date, array $input, int $time_offset)
             $end = TIME_NOW;
         }
         if ($start >= $end) {
-            stderr($lang['rep_ad_view_err1'], $lang['rep_ad_view_err2']);
+            stderr(_('Time'), _('Start date is after the end date.'));
         }
         if (!empty($input['leftby'])) {
             $left_b = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftby'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_b)) {
-                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftby']));
+                stderr(_('DB ERROR'), _('Could not find user ') . htmlsafechars($input['leftby']));
             }
             $leftby = mysqli_fetch_assoc($left_b);
             $who = $leftby['id'];
@@ -395,7 +386,7 @@ function view_list(array $now_date, array $input, int $time_offset)
         if (!empty($input['leftfor'])) {
             $left_f = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_f)) {
-                stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err4'] . htmlsafechars($input['leftfor']));
+                stderr(_('DB ERROR'), _('Could not find user ') . htmlsafechars($input['leftfor']));
             }
             $leftfor = mysqli_fetch_assoc($left_f);
             $user = $leftfor['id'];
@@ -422,26 +413,26 @@ function view_list(array $now_date, array $input, int $time_offset)
                 $order = 'r.dateadd';
                 $orderby = 'dateadd';
         }
-        $html = "<h2>{$lang['rep_ad_view_cmts']}</h2>";
+        $html = '<h2>' . _('Reputation Comments') . '</h2>';
         $table_header = '<table><tr>';
-        $table_header .= "<td>{$lang['rep_ad_view_id']}</td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_by']}</a></td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_for']}</a></td>";
-        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>{$lang['rep_ad_view_date']}</a></td>";
-        $table_header .= "<td>{$lang['rep_ad_view_point']}</td>";
-        $table_header .= "<td>{$lang['rep_ad_view_reason']}</td>";
-        $table_header .= "<td>{$lang['rep_ad_view_controls']}</td></tr>";
+        $table_header .= '<td>' . _('ID') . '</td>';
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftbyuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>" . _('Left By') . '</a></td>';
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=leftforuser&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>" . _('Left For') . '</a></td>';
+        $table_header .= "<td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=list&amp;dolist=1&amp;who=" . $who . '&amp;user=' . $user . "&amp;orderby=date&amp;startstamp=$start&amp;endstamp=$end&amp;page=$first'>" . _('Date') . '</a></td>';
+        $table_header .= '<td>' . _('Point') . '</td>';
+        $table_header .= '<td>' . _('Reason') . '</td>';
+        $table_header .= '<td>' . _('Controls') . '</td></tr>';
         $html .= $table_header;
         // do the count for pager etc
-        $query = sql_query("SELECT COUNT(id) AS cnt FROM reputation r WHERE $cond") or sqlerr(__FILE__, __LINE__);
+        $query = sql_query("SELECT COUNT(reputationid) AS cnt FROM reputation r WHERE $cond") or sqlerr(__FILE__, __LINE__);
         //echo_r($input); exit;
         $total = mysqli_fetch_assoc($query);
         if (!$total['cnt']) {
-            $html .= "<tr><td colspan='7'>{$lang['rep_ad_view_none_found']}</td></tr>";
+            $html .= "<tr><td colspan='7'>" . _('No Matches Found!') . '</td></tr>';
         }
         // do the pager thang!
         $deflimit = 10;
-        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;{$lang['rep_ad_view_records']}</span>";
+        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;" . _('Records') . '</span>';
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'function_pager.php';
             $links = pager_rep([
@@ -461,7 +452,7 @@ function view_list(array $now_date, array $input, int $time_offset)
                                     left join users leftby ON leftby.id=r.whoadded 
                                     WHERE $cond ORDER BY $order LIMIT $first, $deflimit") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
-            stderr($lang['rep_ad_view_err3'], $lang['rep_ad_view_err5']);
+            stderr(_('DB ERROR'), _('Nothing here'));
         }
         while ($r = mysqli_fetch_assoc($query)) {
             $r['dateadd'] = date('M j, Y, g:i a', $r['dateadd']);
@@ -501,15 +492,15 @@ function view_list(array $now_date, array $input, int $time_offset)
  */
 function do_delete_rep(array $input)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     if (!is_valid_id((int) $input['reputationid'])) {
-        stderr($lang['rep_ad_delete_rep_err1'], $lang['rep_ad_delete_rep_err2']);
+        stderr(_('ERROR'), _("'Can't find ID"));
     }
     // check it's a valid ID.
     $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (($r = mysqli_fetch_assoc($query)) === false) {
-        stderr($lang['rep_ad_delete_rep_err3'], $lang['rep_ad_delete_rep_err4']);
+        stderr(_('DELETE'), _('No valid ID.'));
     }
     $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
@@ -521,7 +512,7 @@ function do_delete_rep(array $input)
     $cache->update_row('user_' . $r['userid'], [
         'reputation' => $update['rep'],
     ], $site_config['expires']['user_cache']);
-    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', $lang['rep_ad_delete_rep_success'], 5);
+    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', _('Deleted Reputation Successfully'), 5);
 }
 
 /**
@@ -534,24 +525,24 @@ function do_delete_rep(array $input)
  */
 function do_edit_rep(array $input)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $reason = '';
     if (isset($input['reason']) && !empty($input['reason'])) {
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);
         if ((strlen(trim($reason)) < 2) || ($reason == '')) {
-            stderr($lang['rep_ad_edit_txt'], $lang['rep_ad_edit_short']);
+            stderr(_('TEXT'), _('The text you entered was too short.'));
         }
         if (strlen($input['reason']) > 250) {
-            stderr($lang['rep_ad_edit_txt'], $lang['rep_ad_edit_long']);
+            stderr(_('TEXT'), _('The text entry is too long.'));
         }
     }
     $oldrep = $input['oldreputation'];
     $newrep = $input['reputation'];
     $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if ($r = mysqli_fetch_assoc($query) === false) {
-        stderr($lang['rep_ad_edit_input'], $lang['rep_ad_edit_noid']);
+        stderr(_('INPUT'), _('No ID'));
     }
     if ($oldrep != $newrep) {
         if ($r['reason'] != $reason) {
@@ -568,7 +559,7 @@ function do_edit_rep(array $input)
         ], $site_config['expires']['user_cache']);
         $cache->delete('user_' . $r['userid']);
     }
-    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', "{$lang['rep_ad_edit_saved']} {$r['reputationid']} {$lang['rep_ad_edit_success']}", 5);
+    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', '' . _('Saved Reputation #ID') . " {$r['reputationid']} " . _('Successfully.') . '', 5);
 }
 
 /**
@@ -579,48 +570,45 @@ function do_edit_rep(array $input)
  */
 function html_out($html = '', $title = '')
 {
-    global $lang;
+    global $site_config;
 
     if (empty($html)) {
-        stderr($lang['rep_ad_html_error'], $lang['rep_ad_html_nothing']);
+        stderr(_('Error'), _('Nothing to output'));
     }
-    echo stdhead($title) . wrapper($html) . stdfoot();
-    die();
+    $title = empty($title) ? _('Reputation') : $title;
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot();
 }
 
 /**
  * @param     $url
  * @param     $text
  * @param int $time
- *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws UnbegunTransaction
- * @throws AuthError
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
  */
 function redirect($url, $text, $time = 2)
 {
-    global $site_config, $lang;
+    global $site_config;
 
-    $html = doc_head($lang['rep_ad_redirect_title']) . "
+    $html = doc_head(_('Admin Rep Redirection')) . "
 <meta http-equiv='refresh' content='{$time}; url={$site_config['paths']['baseurl']}/{$url}'>
 <link rel='stylesheet' href='" . get_file_name('css') . "'>
 </head>
 <body>
     <div>
-        <div>{$lang['rep_ad_redirect_redirect']}</div>
+        <div>" . _('Redirecting...') . "</div>
             <div style='padding: 8px;'>
                 <div>$text
                 <br>
                 <br>
-                <a href='{$site_config['paths']['baseurl']}/{$url}'>{$lang['rep_ad_redirect_not']}</a>
+                <a href='{$site_config['paths']['baseurl']}/{$url}'>" . _('Click here if not redirected...') . '</a>
             </div>
         </div>
     </div>
 </body>
-</html>";
+</html>';
     echo $html;
     exit;
 }
@@ -633,23 +621,21 @@ function redirect($url, $text, $time = 2)
  */
 function get_month_dropdown(array $now_date, $i = 0)
 {
-    global $lang;
-
     $return = '';
     $month = [
         '----',
-        $lang['rep_ad_month_jan'],
-        $lang['rep_ad_month_feb'],
-        $lang['rep_ad_month_mar'],
-        $lang['rep_ad_month_apr'],
-        $lang['rep_ad_month_may'],
-        $lang['rep_ad_month_june'],
-        $lang['rep_ad_month_july'],
-        $lang['rep_ad_month_aug'],
-        $lang['rep_ad_month_sept'],
-        $lang['rep_ad_month_oct'],
-        $lang['rep_ad_month_nov'],
-        $lang['rep_ad_month_dec'],
+        _('January'),
+        _('February'),
+        _('March'),
+        _('April'),
+        _('May'),
+        _('June'),
+        _('July'),
+        _('August'),
+        _('September'),
+        _('October'),
+        _('November'),
+        _('December'),
     ];
     foreach ($month as $k => $m) {
         $return .= "\t<option value='" . $k . "' ";
@@ -665,11 +651,9 @@ function get_month_dropdown(array $now_date, $i = 0)
  */
 function rep_cache()
 {
-    global $lang;
-
     $query = sql_query('SELECT * FROM reputationlevel') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
-        stderr($lang['rep_ad_cache_cache'], $lang['rep_ad_cache_none']);
+        stderr(_('Cache'), _('No items to cache'));
     }
     $rep_out = '<' . "?php\n\n\$reputations = [\n";
     while ($row = mysqli_fetch_assoc($query)) {

@@ -7,7 +7,6 @@ use Pu239\Cache;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $container, $site_config;
 
 $Christmasday = mktime(0, 0, 0, 12, 25, (int) date('Y'));
@@ -23,11 +22,11 @@ $randgift = array_rand($gifts);
 $gift = $gifts[$randgift];
 $userid = $user['id'];
 if (!is_valid_id($userid)) {
-    stderr('Error', 'Invalid ID', 'bottom20');
+    stderr(_('Error'), 'Invalid ID', 'bottom20');
 }
 $open = isset($_GET['open']) ? (int) $_GET['open'] : 0;
 if ($open != 1) {
-    stderr('Error', 'Invalid url', 'bottom20');
+    stderr(_('Error'), 'Invalid url', 'bottom20');
 }
 $sql = sql_query('SELECT seedbonus, invites, freeslots, uploaded FROM users WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 $User = mysqli_fetch_assoc($sql);

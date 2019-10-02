@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $CURUSER, $lang, $site_config;
+global $container, $CURUSER, $site_config;
 
 require_once INCL_DIR . 'function_users.php';
 $dt = TIME_NOW - 180;
@@ -35,7 +35,7 @@ if ($users_friends === false || is_null($users_friends)) {
 }
 
 if (!empty($users_friends)) {
-    $user_friends = "<table>\n" . "<tr><td class='colhead'>{$lang['userdetails_avatar']}</td><td class='colhead'>{$lang['userdetails_username']}" . ($CURUSER['class'] >= UC_STAFF ? $lang['userdetails_fip'] : '') . "</td><td class='colhead'>{$lang['userdetails_uploaded']}</td>" . ($site_config['site']['ratio_free'] ? '' : "<td class='colhead'>{$lang['userdetails_downloaded']}</td>") . "<td class='colhead'>{$lang['userdetails_ratio']}</td><td class='colhead'>{$lang['userdetails_status']}</td></tr>\n";
+    $user_friends = "<table>\n" . "<tr><td class='colhead'>" . _('Avatar') . "</td><td class='colhead'>" . _('Username') . '' . ($CURUSER['class'] >= UC_STAFF ? _('/Ip') : '') . "</td><td class='colhead'>" . _('Uploaded') . '</td>' . ($site_config['site']['ratio_free'] ? '' : "<td class='colhead'>" . _('Downloaded') . '</td>') . "<td class='colhead'>" . _('Ratio') . "</td><td class='colhead'>" . _('Status') . "</td></tr>\n";
     if ($users_friends) {
         foreach ($users_friends as $a) {
             $avatar = get_avatar($a);
@@ -45,19 +45,19 @@ if (!empty($users_friends)) {
         $user_friends .= '</table>';
         $HTMLOUT .= "
     <tr>
-        <td class='rowhead'>{$lang['userdetails_friends']}</td>
+        <td class='rowhead'>" . _('Friends ') . "</td>
         <td>
-            <span class='flipper'><i class='icon-up-open size_2' aria-hidden='true'></i>{$lang['userdetails_friends']}</span>
+            <span class='flipper'><i class='icon-up-open size_2' aria-hidden='true'></i>" . _('Friends ') . "</span>
             <div style='display: none;'>$user_friends</div>
         </td>
     </tr>";
     }
 } else {
     if (empty($users_friends)) {
-        $HTMLOUT .= "
+        $HTMLOUT .= '
         <tr>
-            <td>{$lang['userdetails_friends']}</td>
-            <td>{$lang['userdetails_no_friends']}</td>
-        </tr>";
+            <td>' . _('Friends ') . '</td>
+            <td>' . _('No Friends yet.') . '</td>
+        </tr>';
     }
 }

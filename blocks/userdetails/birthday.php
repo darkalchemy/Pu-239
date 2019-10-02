@@ -10,11 +10,11 @@ if ($user['birthday'] != '1970-01-01') {
 
     $HTMLOUT .= "
         <tr>
-            <td class='rowhead'>{$lang['userdetails_age']}</td>
-            <td>" . htmlsafechars((string) $diff->y) . "</td>
+            <td class='rowhead'>" . _('Age') . '</td>
+            <td>' . htmlsafechars((string) $diff->y) . "</td>
         </tr>
         <tr>
-            <td class='rowhead'>{$lang['userdetails_birthday']}</td>
-            <td>" . htmlsafechars($user['birthday']) . '</td>
+            <td class='rowhead'>" . _('Birthday') . '</td>
+            <td>' . htmlsafechars($user['birthday']) . '</td>
         </tr>';
 }

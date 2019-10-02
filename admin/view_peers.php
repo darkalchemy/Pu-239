@@ -13,7 +13,6 @@ require_once CLASS_DIR . 'class_check.php';
 require_once INCL_DIR . 'function_bt_client.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_viewpeers'));
 $HTMLOUT = $count = '';
 global $container, $site_config;
 
@@ -21,8 +20,8 @@ $peer = $container->get(Peer::class);
 $count = $peer->get_count();
 $peersperpage = 25;
 $HTMLOUT .= "
-    <h1 class='has-text-centered'>{$lang['wpeers_h2']}</h1>
-    <div class='size_4 has-text-centered margin20'>{$lang['wpeers_there']}" . $count . $lang['wpeers_peer'] . ($count > 1 ? $lang['wpeers_ps'] : '') . "{$lang['wpeers_curr']}</div>";
+    <h1 class='has-text-centered'>" . _('Site Peers') . "</h1>
+    <div class='size_4 has-text-centered margin20'>" . _p('There is %1$d peer currently on the tracker', 'There are %1$d peers currently on the tracker', $count) . '</div>';
 $valid_sort = [
     'id',
     'userid',
@@ -84,21 +83,21 @@ $results = $peer->get_all_peers($pager['pdo']['limit'], $pager['pdo']['offset'],
 if (!empty($results)) {
     $heading = "
     <tr>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=1&amp;type={$link[1]}'>{$lang['wpeers_user']}</a></th>
-        <th class='has-text-centered min-150'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=2&amp;type={$link[2]}'>{$lang['wpeers_torrent']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=3&amp;type={$link[3]}'>{$lang['wpeers_ip']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=4&amp;type={$link[4]}'>{$lang['wpeers_port']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=5&amp;type={$link[5]}'>{$lang['wpeers_client']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=6&amp;type={$link[6]}'>{$lang['wpeers_up']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=7&amp;type={$link[7]}'>{$lang['wpeers_dn']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=8&amp;type={$link[8]}'>{$lang['wpeers_con']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=9&amp;type={$link[9]}'>{$lang['wpeers_seed']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=10&amp;type={$link[10]}'>{$lang['wpeers_start']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=11&amp;type={$link[11]}'>{$lang['wpeers_last']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=12&amp;type={$link[12]}'>{$lang['wpeers_upoff']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=13&amp;type={$link[13]}'>{$lang['wpeers_dnoff']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=14&amp;type={$link[14]}'>{$lang['wpeers_togo']}</a></th>
-        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=15&amp;type={$link[15]}'>{$lang['wpeers_size']}</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=1&amp;type={$link[1]}'>" . _('User') . "</a></th>
+        <th class='has-text-centered min-150'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=2&amp;type={$link[2]}'>" . _('Torrent') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=3&amp;type={$link[3]}'>" . _('IP') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=4&amp;type={$link[4]}'>" . _('Port') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=5&amp;type={$link[5]}'>" . _('Client') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=6&amp;type={$link[6]}'>" . _('Up') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=7&amp;type={$link[7]}'>" . _('Dn') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=8&amp;type={$link[8]}'>" . _('Con') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=9&amp;type={$link[9]}'>" . _('Seed') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=10&amp;type={$link[10]}'>" . _('Start') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=11&amp;type={$link[11]}'>" . _('Last') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=12&amp;type={$link[12]}'>" . _('Up/Off') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=13&amp;type={$link[13]}'>" . _('Dn/Off') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=14&amp;type={$link[14]}'>" . _('To Go') . "</a></th>
+        <th class='has-text-centered'><a href='{$_SERVER['PHP_SELF']}?tool=view_peers&amp;sort=15&amp;type={$link[15]}'>" . _('Size') . "</a></th>
         <th class='has-text-centered'>Delete</th>
     </tr>";
     $body = '';
@@ -113,8 +112,8 @@ if (!empty($results)) {
         <td class="has-text-centered">' . htmlsafechars(getagent($row['agent'], $row['peer_id'])) . '</td>
         <td class="has-text-centered">' . mksize($row['uploaded']) . '</td>
         <td class="has-text-centered">' . mksize($row['downloaded']) . '</td>
-        <td class="has-text-centered">' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
-        <td class="has-text-centered">' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='{$lang['wpeers_yes']}'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='{$lang['wpeers_no']}'></i>") . '</td>
+        <td class="has-text-centered">' . ($row['connectable'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='" . _('Yes') . "'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='" . _('No') . "'></i>") . '</td>
+        <td class="has-text-centered">' . ($row['seeder'] == 'yes' ? "<i class='icon-ok icon has-text-success tooltipper' title='" . _('Yes') . "'></i>" : "<i class='icon-cancel icon has-text-danger tooltipper' title='" . _('No') . "'></i>") . '</td>
         <td class="has-text-centered">' . get_date((int) $row['started'], 'DATE', 0, 1) . '</td>
         <td class="has-text-centered">' . get_date((int) $row['ts'], 'DATE', 0, 1) . '</td>
         <td class="has-text-centered">' . mksize($row['uploadoffset']) . '</td>
@@ -131,10 +130,14 @@ if (!empty($results)) {
 
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stderr('', $lang['wpeers_notfound'], 'bottom20');
+    $HTMLOUT .= stderr(_('Error'), _('No peers found'), 'bottom20');
 }
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['wpeers_peerover']) . wrapper($HTMLOUT) . stdfoot();
-die();
+$title = _('Peers Overview');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

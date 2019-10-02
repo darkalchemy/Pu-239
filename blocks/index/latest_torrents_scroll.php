@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Torrent;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container,  $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
 $torrents = $torrent->get_latest_scroller();

@@ -8,7 +8,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_allagents'));
 global $container;
 
 $fluent = $container->get(Database::class);
@@ -21,11 +20,11 @@ $agents = $fluent->from('peers')
                  ->fetchAll();
 
 if (!empty($agents)) {
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['allagents_client']}</th>
-            <th>{$lang['allagents_peerid']}</th>
-        </tr>";
+            <th>' . _('Client') . '</th>
+            <th>' . _('Peer ID') . '</th>
+        </tr>';
     $body = '';
     foreach ($agents as $arr) {
         $body .= '
@@ -36,6 +35,11 @@ if (!empty($agents)) {
     }
     $HTMLOUT = main_table($body, $heading);
 } else {
-    $HTMLOUT = stdmsg($lang['allagents_sorry'], $lang['allagents_empty']);
+    $HTMLOUT = stdmsg(_('Sorry'), _("There are no peers and therefore there are no client ID's"));
 }
-echo stdhead($lang['allagents_allclients']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Torrent Clients');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

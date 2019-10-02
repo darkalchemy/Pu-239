@@ -6,7 +6,7 @@ use Pu239\Image;
 use Pu239\Torrent;
 
 require_once PARTIALS_DIR . 'torrent_table.php';
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
 $staff_picks = $torrent->get_staff_picks();
@@ -15,7 +15,7 @@ $staffpicks = "
     <div id='staffpicks' class='box'>
         <div class='has-text-centered'>
             <div class='table-wrapper'>
-                <!-- <div class='badge badge-new'></div> -->" . torrent_table($lang['staff_picks']);
+                <!-- <div class='badge badge-new'></div> -->" . torrent_table(_('Staff Picks'));
 $images_class = $container->get(Image::class);
 foreach ($staff_picks as $last) {
     $last['text'] = $last['name'] . '(' . $last['year'] . ')';
@@ -37,8 +37,8 @@ foreach ($staff_picks as $last) {
 if (count($staff_picks) === 0) {
     $staffpicks .= "
                         <tr>
-                            <td colspan='7'>{$lang['staff_picks_no_torrents']}</td>
-                        </tr>";
+                            <td colspan='7'>" . _('There are no torrents.') . '</td>
+                        </tr>';
 }
 $staffpicks .= '
                     </tbody>

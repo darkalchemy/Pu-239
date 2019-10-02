@@ -6,9 +6,8 @@ use Pu239\Offer;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
 $user = check_user_status();
-global $container, $site_config, $lang;
+global $container, $site_config;
 
-$lang = array_merge($lang, load_language('offers'));
 $offer_class = $container->get(Offer::class);
 $offered = $offer_class->get_all($site_config['latest']['offers_limit'], 0, 'added', false, false, (bool) $user['hidden']);
 $offers .= "
@@ -19,9 +18,9 @@ $offers .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='w-1 min-100 has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='w-50 min-350 has-no-border-right has-no-border-left'>{$lang['offer_title']}</th>
-                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
+                        <th class='w-1 min-100 has-text-centered has-no-border-right'>" . _('Type') . "</th>
+                        <th class='w-50 min-350 has-no-border-right has-no-border-left'>" . _('Offer Title') . "</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>" . _('Status') . "</th>
                         <th class='w-1 has-text-centered has-no-border-right has-no-border-left'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
                         <th class='w-10 has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>
                     </tr>
@@ -48,7 +47,7 @@ if (!empty($offered) && is_array($offered)) {
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
             $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_plot']}:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Plot') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
@@ -56,23 +55,23 @@ if (!empty($offered) && is_array($offered)) {
         } else {
             $plot = '';
         }
-        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/offers.php?action=view_offer&amp;id=' . $offer['id'], 'offer_' . $offer['id'], $offer['name'], $background, $poster, get_date($offer['added'], 'MYSQL'), get_date($offer['added'], 'MYSQL'), $chef, $plot, $lang);
+        $hover = upcoming_hover($site_config['paths']['baseurl'] . '/offers.php?action=view_offer&amp;id=' . $offer['id'], 'offer_' . $offer['id'], $offer['name'], $background, $poster, get_date($offer['added'], 'MYSQL'), get_date($offer['added'], 'MYSQL'), $chef, $plot);
         $offers .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>
                         <td class='has-no-border-right has-no-border-left'>{$hover}</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'>
-                            <div data-id='{$offer['id']}' data-status='{$offer['status']}' class='offer_status tooltipper' title='" . ($offer['status'] === 'pending' ? $lang['offer_pending'] : ($offer['status'] === 'approved' ? $lang['offer_approved'] : $lang['offer_denied'])) . "'>
+                            <div data-id='{$offer['id']}' data-status='{$offer['status']}' class='offer_status tooltipper' title='" . ($offer['status'] === 'pending' ? _('Pending') : ($offer['status'] === 'approved' ? _('Approved') : _('Denied'))) . "'>
                                 <span id='status_{$offer['id']}'>" . ($offer['status'] === 'approved' ? "<i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>" : ($offer['status'] === 'denied' ? "<i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>" : "<i class='icon-thumbs-down icon is-marginless' aria-hidden='true'></i>")) . "</span>
                             </div>
                         </td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'>" . number_format($offer['comments']) . "</td>
                         <td class='has-text-centered has-no-border-left'>
                             <div class='level-center'>
-                                <div data-id='{$offer['id']}' data-voted='{$offer['voted']}' class='offer_vote tooltipper' title='" . ($offer['voted'] === 'yes' ? $lang['offer_voted_yes'] : ($offer['voted'] === 'no' ? $lang['offer_voted_no'] : $lang['offer_not_voted'])) . "'>
+                                <div data-id='{$offer['id']}' data-voted='{$offer['voted']}' class='offer_vote tooltipper' title='" . ($offer['voted'] === 'yes' ? _('You have voted in favor of this offer.') : ($offer['voted'] === 'no' ? _('You have voted against this offer.') : _('You have not voted.'))) . "'>
                                     <span id='vote_{$offer['id']}'>" . ($offer['voted'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>" : ($offer['voted'] === 'no' ? "<i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>" : "<i class='icon-thumbs-up icon is-marginless' aria-hidden='true'></i>")) . "</span>
                                 </div>
-                                <div data-id='{$offer['id']}' data-notified='{$offer['notify']}' class='offer_notify tooltipper' title='" . ($offer['notify'] === 1 ? $lang['offer_notified'] : $lang['offer_not_notified']) . "'>
+                                <div data-id='{$offer['id']}' data-notified='{$offer['notify']}' class='offer_notify tooltipper' title='" . ($offer['notify'] === 1 ? _('You will be notified when this has been uploaded.') : _('You will NOT be notified when this has been uploaded.')) . "'>
                                     <span id='notify_{$offer['id']}'>" . ($offer['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
                                 </div>
                             </div>
@@ -88,11 +87,11 @@ if (!empty($offered) && is_array($offered)) {
 } else {
     $offers .= "
                     <tr>
-                        <td colspan='5'>{$lang['offer_no_offers']}</td>
+                        <td colspan='5'>" . _('There are no offers.') . '</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         </div>
-    </div>";
+    </div>';
 }

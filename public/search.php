@@ -7,7 +7,6 @@ use Pu239\Session;
 use Pu239\User;
 
 require_once __DIR__ . '/../include/bittorrent.php';
-$lang = load_language('global');
 global $container, $site_config;
 
 $data = array_merge($_GET, $_POST);

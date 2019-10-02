@@ -24,7 +24,6 @@ $stdfoot = [
         get_file_name('sceditor_js'),
     ],
 ];
-$lang = array_merge($lang, load_language('ad_news'));
 global $container, $site_config, $CURUSER;
 
 $possible_modes = [
@@ -35,7 +34,7 @@ $possible_modes = [
 ];
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!in_array($mode, $possible_modes)) {
-    stderr($lang['news_error'], $lang['news_error_ruffian']);
+    stderr(_('Error'), _('Invalid Data.'));
 }
 
 $cache = $container->get(Cache::class);
@@ -44,23 +43,23 @@ $session = $container->get(Session::class);
 if ($mode === 'delete') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
-        stderr($lang['news_error'], $lang['news_del_invalid']);
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
     $sure = '';
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!$sure) {
-        stderr($lang['news_del_confirm'], $lang['news_del_click'] . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> {$lang['news_del_here']}</a> {$lang['news_del_if']}", null);
+        stderr(_('Confirm Delete'), _fe('Do you really want to delete this news entry? Click') . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> " . _('here') . '</a> ' . _('if you are sure.') . '', null);
     }
     if ($_GET['h'] != $hash) {
-        stderr($lang['news_error'], $lang['news_del_what']);
+        stderr(_('Error'), _('what are you doing?'));
     }
 
     $fluent->deleteFrom('news')
            ->where('id = ?', $newsid)
            ->execute();
     $cache->delete('latest_news_');
-    $session->set('is-success', $lang['news_del_redir']);
+    $session->set('is-success', _('News entry deleted'));
     header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
     die();
 } elseif ($mode === 'add') {
@@ -68,11 +67,11 @@ if ($mode === 'delete') {
     $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
     $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : '0';
     if (!$body) {
-        stderr($lang['news_error'], $lang['news_add_item']);
+        stderr(_('Error'), _('The news item cannot be empty!'));
     }
     $title = htmlsafechars($_POST['title']);
     if (!$title) {
-        stderr($lang['news_error'], $lang['news_add_title']);
+        stderr(_('Error'), _('The news title cannot be empty!'));
     }
     $added = isset($_POST['added']) ? $_POST['added'] : '';
     if (!$added) {
@@ -91,33 +90,33 @@ if ($mode === 'delete') {
                       ->execute();
     if (!empty($results)) {
         $cache->delete('latest_news_');
-        $session->set('is-success', $lang['news_add_success']);
+        $session->set('is-success', _('News entry was added successfully.'));
     } else {
-        $session->set('is-warning', $lang['news_add_something']);
+        $session->set('is-warning', _("Something's wrong!"));
     }
     header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
     die();
 } elseif ($mode === 'edit') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
-        stderr($lang['news_error'], $lang['news_edit_invalid']);
+        stderr(_('Error'), _('Invalid news item ID.'));
     }
     $arr = $fluent->from('news')
                   ->where('id = ?', $newsid)
                   ->fetch();
     if (empty($arr)) {
-        stderr($lang['news_error'], $lang['news_edit_nonews']);
+        stderr(_('Error'), _('No news item with that ID.'));
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
         $sticky = isset($_POST['sticky']) ? htmlsafechars($_POST['sticky']) : 'yes';
         $anonymous = isset($_POST['anonymous']) ? htmlsafechars($_POST['anonymous']) : '1';
         if ($body == '') {
-            stderr($lang['news_error'], $lang['news_edit_body']);
+            stderr(_('Error'), _('Body cannot be empty!'));
         }
         $title = htmlsafechars($_POST['title']);
         if ($title == '') {
-            stderr($lang['news_error'], $lang['news_edit_title']);
+            stderr(_('Error'), _('Title cannot be empty!'));
         }
         $update = [
             'body' => $body,
@@ -130,12 +129,12 @@ if ($mode === 'delete') {
                ->where('id = ?', $newsid)
                ->execute();
         $cache->delete('latest_news_');
-        $session->set('is-success', $lang['news_edit_success']);
+        $session->set('is-success', _('News item was edited successfully'));
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=news&mode=news");
         die();
     } else {
         $HTMLOUT .= "
-            <h1 class='has-text-centered'>{$lang['news_edit_item']}</h1>
+            <h1 class='has-text-centered'>" . _('Edit News Item') . "</h1>
             <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' enctype='multipart/form-data' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped'>
                     <tr>
@@ -151,18 +150,18 @@ if ($mode === 'delete') {
                             BBcode Editor
                         </td>
                         <td class='is-paddingless'>
-                            " . BBcode($arr['body']) . "
+                            " . BBcode($arr['body']) . '
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {$lang['news_sticky']}
+                            ' . _('Sticky') . "
                         </td>
                         <td>
                             <input type='radio' " . ($arr['sticky'] === 'yes' ? 'checked' : '') . " name='sticky' value='yes'>
-                            {$lang['news_yes']}
+                            " . _('Yes') . "
                             <input type='radio' " . ($arr['sticky'] === 'no' ? 'checked' : '') . " name='sticky' value='no'>
-                            {$lang['news_no']}
+                            " . _('No') . '
                         </td>
                     </tr>
                     <tr>
@@ -170,24 +169,28 @@ if ($mode === 'delete') {
                             Anonymous?
                         </td>
                         <td>
-                            {$lang['news_anonymous']}
+                            ' . _('Anonymous') . "
                             <input type='radio' " . ($arr['anonymous'] === '1' ? 'checked' : '') . " name='anonymous' value='1'>
-                            {$lang['news_yes']}
+                            " . _('Yes') . "
                             <input type='radio' " . ($arr['anonymous'] === '0' ? 'checked' : '') . " name='anonymous' value='0'>
-                            {$lang['news_no']}
+                            " . _('No') . "
                         </td>
                     </tr>
                     <tr>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button is-small'>
+                                <input type='submit' value='" . _('Okay') . "' class='button is-small'>
                             </div>
                         </td>
                     </tr>
                 </table>
             </form>";
-        echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-        die();
+        $title = _('New Manager');
+        $breadcrumbs = [
+            "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
     }
 } elseif ($mode === 'news') {
     $results = $fluent->from('news')
@@ -196,7 +199,7 @@ if ($mode === 'delete') {
                       ->fetchAll();
     $HTMLOUT .= "
     <div class='portlet'>
-        <h1 class='has-text-centered'>{$lang['news_submit_new']}</h1>
+        <h1 class='has-text-centered'>" . _('Submit News Item') . "</h1>
         <form method='post' name='compose' action='./staffpanel.php?tool=news&amp;mode=add' enctype='multipart/form-data' accept-charset='utf-8'>
                 <table class='table table-bordered table-striped'>
                     <tr>
@@ -211,35 +214,35 @@ if ($mode === 'delete') {
                         <td>
                             BBcode Editor
                         </td>
-                        <td class='is-paddingless'>" . BBcode() . "
+                        <td class='is-paddingless'>" . BBcode() . '
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {$lang['news_sticky']}
+                            ' . _('Sticky') . "
                         </td>
                         <td>
                             <input type='radio' checked name='sticky' value='yes'>
-                            {$lang['news_yes']}
+                            " . _('Yes') . "
                             <input name='sticky' type='radio' value='no'>
-                            {$lang['news_no']}
+                            " . _('No') . '
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            {$lang['news_anonymous']}
+                            ' . _('Anonymous') . "
                         </td>
                         <td>
                             <input type='radio' name='anonymous' value='1' checked>
-                            {$lang['news_yes']}
+                            " . _('Yes') . "
                             <input type='radio' name='anonymous' value='0'>
-                            {$lang['news_no']}
+                            " . _('No') . "
                         </td>
                     </tr>
                     <tr class='no_hover'>
                         <td colspan='2'>
                             <div class='has-text-centered'>
-                                <input type='submit' value='{$lang['news_okay']}' class='button is-small'>
+                                <input type='submit' value='" . _('Okay') . "' class='button is-small'>
                             </div>
                         </td>
                     </tr>
@@ -251,21 +254,21 @@ if ($mode === 'delete') {
         $newsid = $arr['id'];
         $body = $arr['body'];
         $title = $arr['title'];
-        $added = get_date($arr['added'], 'LONG', 0, 1);
-        $by = '<b>' . format_username($arr['userid']) . '</b>';
+        $added = get_date((int) $arr['added'], 'LONG', 0, 1);
+        $by = '<b>' . format_username((int) $arr['userid']) . '</b>';
         $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
-        $user = $arr['anonymous'] === '1' ? get_anonymous_name() : format_username($arr['userid']);
+        $user = $arr['anonymous'] === '1' ? get_anonymous_name() : format_username((int) $arr['userid']);
         $class = $i++ != 0 ? 'top20' : '';
         $HTMLOUT .= main_div("
             <div class='level bg-01 padding20 round5'>
                 <div class='has-text-left'>
-                    {$lang['news_created_by']} $user $added
+                    " . _('News entry created by') . " $user $added
                 </div>
                 <div class='has-text-right'>
-                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' title='{$lang['news_edit']}' class='tooltipper'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=edit&amp;newsid=$newsid' title='" . _('Edit') . "' class='tooltipper'>
                         <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                     </a>
-                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='{$lang['news_delete']}' class='has-text-danger tooltipper'>
+                    <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;newsid=$newsid&amp;sure=1&amp;h=$hash' title='" . _('Delete') . "' class='has-text-danger tooltipper'>
                         <i class='icon-cancel icon has-text-danger' aria-hidden='true'></i>
                     </a>
                 </div>
@@ -277,5 +280,9 @@ if ($mode === 'delete') {
     }
 }
 
-echo stdhead($lang['news_stdhead'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-die();
+$title = _('News Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

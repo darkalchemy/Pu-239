@@ -6,7 +6,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 if ($site_config['alerts']['staffmsg'] && has_access($user['class'], UC_STAFF, 'coder')) {
@@ -25,20 +25,20 @@ if ($site_config['alerts']['staffmsg'] && has_access($user['class'], UC_STAFF, '
         $htmlout .= "
         <li>
             <a href='{$site_config['paths']['baseurl']}/staffbox.php'>
-                <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#staffmessage_tooltip'>" . ($answeredby > 1 ? "{$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "{$lang['gl_staff_message']}{$lang['gl_newmess']}") . "
+                <span class='button tag is-warning dt-tooltipper-small' data-tooltip-content='#staffmessage_tooltip'>
+                    " . _p('New Staff Message', 'New Staff Messages', $answeredby) . "
                 </span>
                 <div class='tooltip_templates'>
                     <div id='staffmessage_tooltip' class='margin20'>
-                        <div class='size_6 has-text-centered has-text-warning has-text-weight-bold bottom10'>" . ($answeredby > 1 ? "
-                            {$lang['gl_staff_messages']}{$lang['gl_staff_message_news']}" : "
-                            {$lang['gl_staff_message']}{$lang['gl_staff_message_news']}") . "
+                        <div class='size_6 has-text-centered has-text-warning has-text-weight-bold bottom10'>
+                            " . _p('New Staff Message', 'New Staff Messages', $answeredby) . "
                         </div>
                         <div class='has-text-centered'>
-                            {$lang['gl_hey']} {$user['username']}!<br> " . sprintf($lang['gl_staff_message_alert'], $answeredby) . ($answeredby > 1 ? $lang['gl_staff_message_alerts'] : '') . "{$lang['gl_staff_message_for']}
+                            " . _pf('Hey %1$s!<br>There is %2$d new message for the staff.', 'Hey %1$s!<br>There are %2$d new messages for the staff.', $user['username'], $answeredby) . '
                         </div>
                     </div>
                 </div>
             </a>
-        </li>";
+        </li>';
     }
 }

@@ -9,7 +9,6 @@ use Pu239\Session;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('takerate'));
 global $container, $site_config;
 
 if (empty($_POST['id']) && empty($_GET['id'])) {
@@ -17,7 +16,7 @@ if (empty($_POST['id']) && empty($_GET['id'])) {
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (int) $_POST['id'];
 if (!is_valid_id($id)) {
-    stderr('Error', 'Bad Id', 'bottom20');
+    stderr(_('Error'), 'Invalid ID', 'bottom20');
 }
 $fluent = $container->get(Database::class);
 $torrent = $fluent->from('torrents')
@@ -29,7 +28,7 @@ $torrent = $fluent->from('torrents')
                   ->fetch();
 
 if (empty($torrent)) {
-    stderr('Error', 'Torrent not found', 'bottom20');
+    stderr(_('Error'), _('Torrent not found'), 'bottom20');
 }
 $thanks = $fluent->from('thankyou')
                  ->select(null)
@@ -39,7 +38,7 @@ $thanks = $fluent->from('thankyou')
                  ->fetch('tid');
 
 if (!empty($thanks)) {
-    stderr('Error', 'You already thanked.', 'bottom20');
+    stderr(_('Error'), 'You have already thanked.', 'bottom20');
 }
 $text = ':thankyou:';
 $values = [

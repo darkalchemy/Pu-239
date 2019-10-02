@@ -7,12 +7,11 @@ use Pu239\Cache;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('usermood'));
 global $container, $site_config;
 $HTMLOUT = '';
 
 if (!isset($user['id'])) {
-    die($lang['user_mood_log']);
+    die(_('log in to use this feature!'));
 }
 $more = $user['perms'] & UNLOCK_MORE_MOODS ? 2 : 1;
 if (isset($_GET['id'])) {
@@ -26,8 +25,8 @@ if (isset($_GET['id'])) {
             'mood' => $moodid,
         ], $site_config['expires']['user_cache']);
         $cache->delete('topmoods');
-        write_log('<b>' . $lang['user_mood_change'] . '</b> ' . $user['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
-        $HTMLOUT = doc_head($lang['user_mood_title']) . "
+        write_log('<b>' . _('Mood Change') . '</b> ' . $user['username'] . ' ' . htmlsafechars($rmood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($rmood['image']) . '" alt="">');
+        $HTMLOUT = doc_head(_('moods')) . "
         <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
         <link rel='stylesheet' href='" . get_file_name('css') . "'>
         <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
@@ -38,11 +37,11 @@ if (isset($_GET['id'])) {
       // -->
       </script>";
     } else {
-        die($lang['user_mood_hmm']);
+        die(_('Hmmm. Invalid Mood choice.'));
     }
 }
 $body_class = 'background-16 skin-2';
-$HTMLOUT .= doc_head($lang['user_mood_title']) . "
+$HTMLOUT .= doc_head(_('moods')) . "
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
@@ -58,7 +57,7 @@ $body = '
     </script>';
 
 $div = '
-    <h3 class="has-text-centered has-text-primary top20">' . $user['username'] . '\'' . $lang['user_mood_s'] . '</h3>
+    <h3 class="has-text-centered has-text-primary top20">' . $user['username'] . '\'' . _('s Mood') . '</h3>
     <div class="level-center bottom20">';
 $res = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
 $count = 0;
@@ -77,11 +76,11 @@ $div .= '
 $body .= main_div($div) . '
     <div class="w-100 has-text-centered margin20">
         <a href="javascript:self.close();">
-            <span class="button bottom20">' . $lang['user_mood_close'] . '</span>
+            <span class="button bottom20">' . _('Close window') . '</span>
         </a>
     </div>
     <noscript>
-        <a href="' . $site_config['paths']['baseurl'] . '/index.php">' . $lang['user_mood_back'] . '</a>
+        <a href="' . $site_config['paths']['baseurl'] . '/index.php">' . _('Back to site') . '</a>
     </noscript>
 </body>';
 $HTMLOUT .= wrapper($body) . '

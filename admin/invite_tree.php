@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_invite_tree'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -23,13 +22,13 @@ if ($id !== 0) {
     $HTMLOUT .= '
     <div class="bottom20">
         <ul class="level-center bg-06">' . ($arr_user['invitedby'] == 0 ? '
-            <li class="margin10"><a title="' . htmlsafechars($arr_user['username']) . ' ' . $lang['invite_open'] . '" class="is-link tooltipper">' . $lang['invite_up'] . '</a></li>' : '
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="is-link tooltipper">' . $lang['invite_up'] . '</a></li>') . '
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . $lang['invite_click'] . ' ' . (isset($_GET['deeper']) ? $lang['invite_shrink'] : $lang['invite_expand']) . ' ' . $lang['invite_this'] . ' " class="is-link tooltipper">' . $lang['invite_expand_tree'] . '</a></li>
-            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . $lang['invite_click_more'] . '" class="is-link tooltipper">' . $lang['invite_expand_more'] . '</a></li>
+            <li class="margin10"><a title="' . htmlsafechars($arr_user['username']) . ' ' . _('was registered during open doors') . '" class="is-link tooltipper">' . _('go up one level') . '</a></li>' : '
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . (int) $arr_user['invitedby'] . '" title="go up one level" class="is-link tooltipper">' . _('go up one level') . '</a></li>') . '
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;' . (isset($_GET['deeper']) ? '' : '&amp;deeper=1') . '&amp;id=' . $id . '" title=" ' . _('click to') . ' ' . (isset($_GET['deeper']) ? _(' shrink') : _(' expand')) . ' ' . _('this tree') . ' " class="is-link tooltipper">' . _('expand tree') . '</a></li>
+            <li class="margin10"><a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;really_deep=1&amp;id=' . $id . '" title="' . _('click to expand even more') . '" class="is-link tooltipper">' . _('expand even more') . '</a></li>
         </ul>
     </div>
-    <h1 class="has-text-centered">' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . $lang['invite_head'] . '</h1>
+    <h1 class="has-text-centered">' . htmlsafechars($arr_user['username']) . (substr($arr_user['username'], -1) === 's' ? '\'' : '\'s') . ' ' . _('Invite Tree') . '</h1>
     <table>
         <tr>
             <td>';
@@ -47,17 +46,17 @@ if ($id !== 0) {
                     ->orderBy('u.registered')
                     ->fetchAll();
     if (empty($query)) {
-        $HTMLOUT .= stdmsg('', $lang['invite_none']);
+        $HTMLOUT .= stdmsg('', _('No invitees yet.'));
     } else {
         $HTMLOUT .= '
                 <table class="table table-bordered table-striped">
                     <tr>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_username'] . '</span></td>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_email'] . '</span></td>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_uploaded'] . '</span></td>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_downloaded'] . '</span></td>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
-                        <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Username') . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Email') . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Uploaded') . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Downloaded') . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Ratio') . '</span></td>
+                        <td><span class="has-text-weight-bold">' . _('Status') . '</span></td>
                     </tr>';
         foreach ($query as $arr_invited) {
             $deeper = '';
@@ -79,16 +78,16 @@ if ($id !== 0) {
                 if (!empty($query2)) {
                     $deeper .= '
                     <tr>
-                        <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . '' . $lang['invite_invites'] . '</span>
+                        <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . '' . _('Invites:') . '</span>
                             <div>
                                 <table class="table table-bordered table-striped">
                                     <tr>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_username'] . '</span></td>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_email'] . '</span></td>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_uploaded'] . '</span></td>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_downloaded'] . '</span></td>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
-                                        <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Username') . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Email') . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Uploaded') . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Downloaded') . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Ratio') . '</span></td>
+                                        <td><span class="has-text-weight-bold">' . _('Status') . '</span></td>
                                     </tr>';
                     foreach ($query2 as $arr_invited_deeper) {
                         if (isset($_GET['really_deep'])) {
@@ -113,12 +112,12 @@ if ($id !== 0) {
                                             <div>
                                                 <table class="table table-bordered table-striped">
                                                     <tr>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_username'] . '</span></td>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_email'] . '</span></td>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_uploaded'] . '</span></td>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_downloaded'] . '</span></td>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_ratio'] . '</span></td>
-                                                        <td><span class="has-text-weight-bold">' . $lang['invite_status'] . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Username') . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Email') . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Uploaded') . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Downloaded') . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Ratio') . '</span></td>
+                                                        <td><span class="has-text-weight-bold">' . _('Status') . '</span></td>
                                                     </tr>';
                                 foreach ($query3 as $arr_invited_really_deep) {
                                     $deeper .= '
@@ -128,7 +127,7 @@ if ($id !== 0) {
                                                         <td>' . mksize($arr_invited_really_deep['uploaded']) . '</td>
                                                         <td>' . mksize($arr_invited_really_deep['downloaded']) . '</td>
                                                         <td>' . member_ratio($arr_invited_really_deep['uploaded'], $arr_invited_really_deep['downloaded']) . '</td>
-                                                        <td>' . ($arr_invited_really_deep['status'] === 'Confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
+                                                        <td>' . ($arr_invited_really_deep['status'] === 'Confirmed' ? '<span class="has-color-lime">' . _('Confirmed') . '</span></td></tr>' : '<span class="has-color-danger">' . _('Pending') . '</span></td>
                                                     </tr>');
                                 }
                                 $deeper .= '
@@ -145,7 +144,7 @@ if ($id !== 0) {
                                         <td>' . mksize($arr_invited_deeper['uploaded']) . '</td>
                                         <td>' . mksize($arr_invited_deeper['downloaded']) . '</td>
                                         <td>' . member_ratio($arr_invited_deeper['uploaded'], $arr_invited_deeper['downloaded']) . '</td>
-                                        <td>' . ($arr_invited_deeper['status'] === 'Confirmed' ? '<span class="has-color-lime">' . $lang['invite_confirmed'] . '</span></td></tr>' : '<span class="has-color-danger">' . $lang['invite_pending'] . '</span></td>
+                                        <td>' . ($arr_invited_deeper['status'] === 'Confirmed' ? '<span class="has-color-lime">' . _('Confirmed') . '</span></td></tr>' : '<span class="has-color-danger">' . _('Pending') . '</span></td>
                                     </tr>');
                     }
                     $deeper .= '
@@ -163,10 +162,10 @@ if ($id !== 0) {
                         <td>' . mksize($arr_invited['downloaded']) . '</td>
                         <td>' . member_ratio($arr_invited['uploaded'], $arr_invited['downloaded']) . '</td>
                         <td>' . ($arr_invited['status'] === 'Confirmed' ? '
-                            <span class="has-color-lime">' . $lang['invite_confirmed'] . '</span>
+                            <span class="has-color-lime">' . _('Confirmed') . '</span>
                         </td>
                     </tr>' : '
-                            <span class="has-color-danger">' . $lang['invite_pending'] . '</span>
+                            <span class="has-color-danger">' . _('Pending') . '</span>
                         </td>
                     </tr>');
             $HTMLOUT .= $deeper;
@@ -208,13 +207,13 @@ if ($id !== 0) {
         $q .= ($q ? '&amp;' : '') . 'class=' . $class;
     }
     $HTMLOUT .= '
-        <h1 class="has-text-centered">' . $lang['invite_search'] . '</h1>
+        <h1 class="has-text-centered">' . _('Search Users To View Invite Tree') . '</h1>
         <form method="get" action="staffpanel.php?tool=invite_tree&amp;search=1&amp;" accept-charset="utf-8">
             <div class="has-text-centered margin20">
                 <input type="hidden" name="action" value="invite_tree"/>
                 <input type="text" size="30" name="search" value="' . $search . '"/>
                 <select name="class">
-                    <option value=" - ">' . $lang['invite_any'] . '</option>';
+                    <option value=" - ">' . _('(any class)') . '</option>';
     for ($i = 0;; ++$i) {
         if ($c = get_user_class_name((int) $i)) {
             $HTMLOUT .= '
@@ -225,7 +224,7 @@ if ($id !== 0) {
     }
     $HTMLOUT .= '
                 </select>
-                <input type="submit" value="' . $lang['invite_btn'] . '" class="button is-small">
+                <input type="submit" value="' . _('Search') . '" class="button is-small">
             </div>
         </form>';
     $aa = range('0', '9');
@@ -269,12 +268,12 @@ if ($id !== 0) {
         $res = sql_query('SELECT users.*, countries.name, countries.flagpic FROM users FORCE INDEX ( username ) LEFT JOIN countries ON country = countries.id WHERE ' . $query . ' ORDER BY username ' . $LIMIT);
         $heading = '
             <tr>
-                <th>' . $lang['invite_search_user'] . '</th>
-                <th>' . $lang['invite_search_reg'] . '</th>
-                <th>' . $lang['invite_search_la'] . '</th>
-                <th>' . $lang['invite_search_class'] . '</th>
-                <th>' . $lang['invite_search_country'] . '</th>
-                <th>' . $lang['invite_search_edit'] . '</th>
+                <th>' . _('User name') . '</th>
+                <th>' . _('Registered') . '</th>
+                <th>' . _('Last access') . '</th>
+                <th>' . _('Class') . '</th>
+                <th>' . _('Country') . '</th>
+                <th>' . _('Edit') . '</th>
             </tr>';
         $body = '';
         while ($row = mysqli_fetch_assoc($res)) {
@@ -289,16 +288,21 @@ if ($id !== 0) {
                 <td>' . get_date((int) $row['registered'], '') . '</td><td>' . get_date((int) $row['last_access'], '') . '</td>
                 <td>' . get_user_class_name((int) $row['class']) . '</td>' . $country . '
                 <td>
-                    <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . $lang['invite_search_look'] . '" class="tooltipper">
-                        <span class="button is-small">' . $lang['invite_search_view'] . '</span>
+                    <a href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=invite_tree&amp;id=' . (int) $row['id'] . '" title="' . _('Look at this members invite tree') . '" class="tooltipper">
+                        <span class="button is-small">' . _('VIEW') . '</span>
                     </a>
                 </td>
             </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= stdmsg('', $lang['invite_search_none']);
+        $HTMLOUT .= stdmsg('', _('Sorry, no member was found'));
     }
     $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 }
-echo stdhead($lang['invite_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Invite Tree');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

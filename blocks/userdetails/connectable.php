@@ -28,31 +28,31 @@ if ($user['paranoia'] < 1 || $CURUSER['id'] == $id || $CURUSER['class'] >= UC_ST
         $Ident_Client = $port_data[2];
         if ($connect === 'yes') {
             $connectable = "
-    <div class='has-text-success tooltipper' title='{$lang['userdetails_conn_sort']}'>
-        <i class='icon-thumbs-up icon' aria-hidden='true'></i><b>{$lang['userdetails_yes']}</b>
-    </div>";
+    <div class='has-text-success tooltipper' title='" . _('Sorted Yer connectable') . "'>
+        <i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Yes') . '</b>
+    </div>';
         } else {
             $connectable = "
-    <div class='has-text-danger tooltipper' title='{$lang['userdetails_conn_staff']}'>
-        <i class='icon-thumbs-down icon' aria-hidden='true'></i><b>{$lang['userdetails_no']}</b>
-    </div>";
+    <div class='has-text-danger tooltipper' title='" . _('Contact Site Staff') . "'>
+        <i class='icon-thumbs-down icon' aria-hidden='true'></i><b>" . _('No') . '</b>
+    </div>';
         }
     } else {
-        $connectable = "<span style='color: orange;'><b>{$lang['userdetails_unknown']}</b></span>";
+        $connectable = "<span style='color: orange;'><b>" . _('Unknown') . '</b></span>';
     }
     $table_data .= "
         <tr>
-            <td class='rowhead'>{$lang['userdetails_connectable']}</td>
-            <td>" . $connectable . '</td>
+            <td class='rowhead'>" . _('Connectable') . '</td>
+            <td>' . $connectable . '</td>
         </tr>';
     if (!empty($port)) {
         $table_data .= "
         <tr>
-            <td class='rowhead'>{$lang['userdetails_port']}</td>
+            <td class='rowhead'>" . _('Port') . "</td>
             <td class='tablea'>$port</td>
         </tr>
         <tr>
-            <td class='rowhead'>{$lang['userdetails_client']}</td>
+            <td class='rowhead'>" . _('Client') . "</td>
             <td class='tablea'>" . htmlsafechars($Ident_Client) . '</td>
         </tr>';
     }

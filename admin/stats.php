@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_stats'));
 global $site_config;
 
 $HTMLOUT = '';
@@ -63,20 +62,20 @@ if ($count > $perpage) {
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 }
 if ($count === 0) {
-    stdmsg($lang['stats_error'], $lang['stats_error1']);
+    stdmsg(_('Sorry...'), _('No uploaders.'));
 } else {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }
     $heading = "
     <tr>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=uploader&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_uploader']}</a></th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=lastul&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_last']}</a></th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=torrents&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_torrent']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=uploader&amp;catorder=$catorder' class='colheadlink'>" . _('Uploader') . "</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=lastul&amp;catorder=$catorder' class='colheadlink'>" . _('Last upload') . "</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=torrents&amp;catorder=$catorder' class='colheadlink'>" . _('Torrents') . "</a></th>
         <th>Perc.</th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=peers&amp;catorder=$catorder' class='colheadlink'>{$lang['stats_peers']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=peers&amp;catorder=$catorder' class='colheadlink'>" . _('Peers') . '</a></th>
         <th>Perc.</th>
-    </tr>";
+    </tr>';
     $body = '';
     while ($uper = mysqli_fetch_assoc($res)) {
         $body .= '
@@ -95,7 +94,7 @@ if ($count === 0) {
     }
 }
 if ($n_tor == 0) {
-    stdmsg($lang['stats_error'], $lang['stats_error2']);
+    stdmsg(_('Sorry...'), _('No categories defined!'));
 } else {
     if ($catorder === 'lastul') {
         $orderby = 'last DESC, c.name';
@@ -111,13 +110,13 @@ if ($n_tor == 0) {
       ON t.id=p.torrent GROUP BY c.id ORDER BY $orderby") or sqlerr(__FILE__, __LINE__);
     $heading = "
     <tr>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=category' class='colheadlink'>{$lang['stats_category']}</a></th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=lastul' class='colheadlink'>{$lang['stats_last']}</a></th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=torrents' class='colheadlink'>{$lang['stats_torrent']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=category' class='colheadlink'>" . _('Category') . "</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=lastul' class='colheadlink'>" . _('Last upload') . "</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=torrents' class='colheadlink'>" . _('Torrents') . "</a></th>
         <th>Perc.</th>
-        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=peers' class='colheadlink'>{$lang['stats_peers']}</a></th>
+        <th><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=stats&amp;action=stats&amp;uporder=$uporder&amp;catorder=peers' class='colheadlink'>" . _('Peers') . '</a></th>
         <th>Perc.</th>
-    </tr>";
+    </tr>';
     $body = '';
     while ($cat = mysqli_fetch_assoc($res)) {
         $body .= '
@@ -132,6 +131,9 @@ if ($n_tor == 0) {
     }
     $HTMLOUT .= main_table($body, $heading, null, 'top20');
 }
-
-echo stdhead($lang['stats_window_title']) . wrapper($HTMLOUT) . stdfoot();
-die();
+$title = _('Stats');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

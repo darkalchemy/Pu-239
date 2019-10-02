@@ -45,7 +45,7 @@ function get_file_name($file)
         case 'scroller_js':
             return "{$site_config['paths']['baseurl']}/js/1/scroller_a736e94c.js";
         case 'glider_js':
-            return "{$site_config['paths']['baseurl']}/js/1/glider_35ad5028.js";
+            return "{$site_config['paths']['baseurl']}/js/1/glider_bec6a122.js";
         case 'userdetails_js':
             return "{$site_config['paths']['baseurl']}/js/1/userdetails_fddd0a3e.js";
         case 'cookieconsent_js':

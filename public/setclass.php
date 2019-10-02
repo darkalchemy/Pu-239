@@ -9,12 +9,11 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('setclass'));
 global $container, $site_config;
 
 $HTMLOUT = '';
 if ($user['class'] < UC_STAFF || $user['override_class'] != 255) {
-    stderr('Error', 'whats the story?');
+    stderr(_('Error'), 'whats the story?');
 }
 if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $newclass = (int) $_GET['class'];
@@ -33,7 +32,7 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
 }
 
 $HTMLOUT .= "
-<h2 class='has-text-centered'>{$lang['set_class_allow']}</h2>
+<h2 class='has-text-centered'>" . _('Allows you to change your user class on the fly.') . "</h2>
 <form method='get' action='{$site_config['paths']['baseurl']}/setclass.php' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='action' value='editclass'>
     <input type='hidden' name='returnto' value='userdetails.php?id=" . $user['id'] . "'>";
@@ -54,10 +53,14 @@ $text .= "
             </select>
         </span>
         <div class='top20'>
-            <input type='submit' class='button is-small' value='{$lang['set_class_ok']}'>
+            <input type='submit' class='button is-small' value='" . _('Ok!') . "'>
         </div>
     </div>";
 
 $HTMLOUT .= main_div($text) . '
 </form>';
-echo stdhead($lang['set_class_temp']) . $HTMLOUT . stdfoot();
+$title = _('Temporary Demotion');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

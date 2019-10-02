@@ -157,4 +157,9 @@ if (!empty($files)) {
     $HTMLOUT .= main_div('There are no log files to view', '', 'padding20');
 }
 
-echo stdhead('Log Files') . wrapper($HTMLOUT, 'is-paddingless') . stdfoot();
+$title = _('Log Files');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

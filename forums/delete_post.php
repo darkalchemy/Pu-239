@@ -5,13 +5,13 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $post_id = isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['post_id']) ? (int) $_POST['post_id'] : 0);
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 $sanity_check = isset($_GET['sanity_check']) ? (int) $_GET['sanity_check'] : 0;
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
-    stderr($lang['gl_error'], $lang['gl_bad_id']);
+    stderr(_('Error'), _('Bad ID.'));
 }
 $fluent = $container->get(Database::class);
 $arr_post = $fluent->from('posts AS p')
@@ -33,25 +33,25 @@ $arr_post = $fluent->from('posts AS p')
                    ->fetch();
 $can_delete = $arr_post['user_id'] === $CURUSER['id'] || has_access($CURUSER['class'], UC_STAFF, 'forum_mod');
 if (!has_access($CURUSER['class'], (int) $arr_post['min_class_read'], '') || !has_access($CURUSER['class'], (int) $arr_post['min_class_write'], '')) {
-    stderr($lang['gl_error'], $lang['fe_topic_not_found']);
+    stderr(_('Error'), _('Topic not found.'));
 }
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
-    stderr($lang['gl_error'], $lang['fe_your_no_post_right']);
+    stderr(_('Error'), _('Your posting rights have been suspended.'));
 }
 if (!$can_delete) {
-    stderr($lang['gl_error'], $lang['fe_no_your_post_del']);
+    stderr(_('Error'), _('This is not your post to delete.'));
 }
 if ($arr_post['locked'] === 'yes') {
-    stderr($lang['gl_error'], $lang['fe_this_topic_is_locked']);
+    stderr(_('Error'), _('This topic is locked'));
 }
 if ($arr_post['staff_lock'] === 1) {
-    stderr($lang['gl_error'], $lang['fe_this_topic_is_locked_staff']);
+    stderr(_('Error'), _('This post staff is locked my friend, deleting the evidence you wont be.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_cant_del_1st_post_staff']);
+    stderr(_('Error'), _('This is the first post in the topic, only Staff can delete topics.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr($lang['gl_error'], $lang['fe_this_is_1st_post_topic'] . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . $lang['fe_del_topic'] . '</a>.');
+    stderr(_('Error'), _('This is the first post in the topic, you must use') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . _('Delete Topic') . '</a>.');
 }
 if ($sanity_check > 0) {
     if ($site_config['forum_config']['delete_for_real']) {
@@ -93,6 +93,6 @@ if ($sanity_check > 0) {
     header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
-    stderr($lang['fe_sanity_check'], '' . $lang['fe_are_you_sure_del_post'] . ' 
+    stderr(_('Sanity Check!'), '' . _('Are you sure you want to delete this post? If so, click') . ' 
 	<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
 }

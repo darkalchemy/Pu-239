@@ -154,4 +154,10 @@ if (!empty($lottery_config)) {
         </form>';
     }
 }
-echo stdhead('Lottery configuration') . wrapper($html) . stdfoot();
+$title = _('Lottery Config');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/lottery.php'>" . _('Lottery') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot();

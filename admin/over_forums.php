@@ -6,7 +6,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_over_forums'));
 global $site_config, $CURUSER;
 
 $HTMLOUT = $over_forums = $count = $min_class_viewer = $sorted = '';
@@ -14,14 +13,14 @@ $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
                     <li class='is-link margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['ad_over_configure']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>" . _('Configure Forum') . "</a>
                     </li>
                     <li class='is-link margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>{$lang['ad_over_manager']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_manage&amp;action=forum_manage'>" . _('Forum Manager') . "</a>
                     </li>
                 </ul>
             </div>
-            <h1 class='has-text-centered'>{$lang['ad_over_forum']}</h1>";
+            <h1 class='has-text-centered'>" . _('Over Forum') . '</h1>';
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 $maxclass = $CURUSER['class'];
@@ -41,7 +40,7 @@ $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
 switch ($action) {
     case 'delete':
         if (!$id) {
-            stderr($lang['std_error'], $lang['std_error_id']);
+            stderr(_('Error'), _('Invalid ID.'));
         }
         $fluent->deleteFrom('over_forums')
                ->where('id = ?', $id)
@@ -52,7 +51,7 @@ switch ($action) {
 
     case 'edit_forum':
         if (!$name && !$desc && !$id) {
-            stderr($lang['std_error'], $lang['std_error_form']);
+            stderr(_('Error'), _('Missing Form Data.'));
         }
         $count = $fluent->from('over_forums')
                         ->select(null)
@@ -61,7 +60,7 @@ switch ($action) {
                         ->where('sort = ?', $sort)
                         ->fetch('count');
         if ($count > 0) {
-            stderr($lang['std_error'], $lang['std_error_select_another']);
+            stderr(_('Error'), _('Over Forum Sort number in use. Please select another Over Forum Sort number!'));
         }
         $set = [
             'sort' => $sort,
@@ -79,7 +78,7 @@ switch ($action) {
 
     case 'add_forum':
         if (!$name && !$desc) {
-            stderr($lang['std_error'], $lang['std_error_form']);
+            stderr(_('Error'), _('Missing Form Data.'));
         }
         $count = $fluent->from('over_forums')
                         ->select(null)
@@ -87,7 +86,7 @@ switch ($action) {
                         ->where('sort = ?', $sort)
                         ->fetch('count');
         if ($count > 0) {
-            stderr($lang['std_error'], $lang['std_error_select_another']);
+            stderr(_('Error'), _('Over Forum Sort number in use. Please select another Over Forum Sort number!'));
         }
         $values = [
             'sort' => $sort,
@@ -114,24 +113,24 @@ switch ($action) {
             <input type="hidden" name="id" value="' . $id . '">
             <table class="table table-bordered table-striped">
             <tr>
-                <td colspan="2">' . $lang['ad_over_editfor'] . '' . htmlsafechars($row['name']) . '</td>
+                <td colspan="2">' . _('edit overforum: ') . '' . htmlsafechars($row['name']) . '</td>
             </tr>
-                <td><span class="has-text-weight-bold">' . $lang['ad_over_name'] . '</span></td>
+                <td><span class="has-text-weight-bold">' . _('Overforum name:') . '</span></td>
             <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name']) . '"></td>
           </tr>
           <tr>
-            <td><span class="has-text-weight-bold">' . $lang['ad_over_description'] . '</span>  </td>
+            <td><span class="has-text-weight-bold">' . _('Overforum description:') . '</span>  </td>
             <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description']) . '"></td>
           </tr>
             <tr>
-            <td><span class="has-text-weight-bold">' . $lang['ad_over_minview'] . ' </span></td>
+            <td><span class="has-text-weight-bold">' . _('Minimun view permission:') . ' </span></td>
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $over_forums .= '<option class="body" value="' . $i . '" ' . ($row['min_class_view'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
-            <td><span class="has-text-weight-bold">' . $lang['ad_over_sort'] . '</span></td>
+            <td><span class="has-text-weight-bold">' . _('Over forum Sort:') . '</span></td>
             <td>
             <select name="sort">';
             $count = $fluent->from('over_forums')
@@ -146,7 +145,7 @@ switch ($action) {
             $HTMLOUT .= $sorted . '</select></td></tr>
             <tr>
                 <td colspan="2" class="has-text-centered">
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_editbut'] . '">
+                <input type="submit" name="button" class="button is-small margin20" value="' . _('Edit overforum') . '">
                 </td>
           </tr>
         </table></form>';
@@ -157,10 +156,10 @@ switch ($action) {
         $HTMLOUT .= $main_links;
         $heading = '
             <tr>
-                <th class="has-text-centered">' . $lang['ad_over_sort1'] . '</th>
-                <th>' . $lang['ad_over_name1'] . '</th>
-                <th class="has-text-centered">' . $lang['ad_over_minview1'] . '</th>
-                <th class="has-text-centered">' . $lang['ad_over_modify'] . '</th>
+                <th class="has-text-centered">' . _('Sort') . '</th>
+                <th>' . _('Name') . '</th>
+                <th class="has-text-centered">' . _('Minimun Class View') . '</th>
+                <th class="has-text-centered">' . _('Modify') . '</th>
             </tr>';
         $query = $fluent->from('over_forums')
                         ->orderBy('sort')
@@ -199,18 +198,18 @@ switch ($action) {
                 <input type="hidden" name="action2" value="add_forum">';
         $body = '
                 <tr>
-                    <td colspan="2">' . $lang['ad_over_makenew'] . '</td>
+                    <td colspan="2">' . _('Make new over forum') . '</td>
                 </tr>
                 <tr>
-                    <td><span>' . $lang['ad_over_name'] . '</span></td>
+                    <td><span>' . _('Overforum name:') . '</span></td>
                     <td><input name="name" type="text" class="w-100" maxlength="60"></td>
                 </tr>
                 <tr>
-                    <td><span>' . $lang['ad_over_description'] . '</span>  </td>
+                    <td><span>' . _('Overforum description:') . '</span>  </td>
                     <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
                 </tr>
                 <tr>
-                    <td><span>' . $lang['ad_over_minview'] . '</span></td>
+                    <td><span>' . _('Minimun view permission:') . '</span></td>
                     <td>
                         <select name="min_class_view">';
         for ($i = 0; $i <= $maxclass; ++$i) {
@@ -222,7 +221,7 @@ switch ($action) {
                     </td>
                 </tr>
                 <tr>
-                    <td><span>' . $lang['ad_over_sort'] . '</span></td>
+                    <td><span>' . _('Over forum Sort:') . '</span></td>
                     <td>
                         <select name="sort">';
         $count = $fluent->from('over_forums')
@@ -241,7 +240,7 @@ switch ($action) {
                 </tr>';
         $HTMLOUT .= main_table($body, '', 'top20') . '
                 <div class="has-text-centered margin20">
-                    <input type="submit" name="button" class="button is-small margin20" value="' . $lang['ad_over_makebutton'] . '">
+                    <input type="submit" name="button" class="button is-small margin20" value="' . _('Make overforum') . '">
                 </div>
            </form>';
         break;
@@ -257,4 +256,9 @@ $HTMLOUT .= '<script>
             }
         /*]]>*/
     </script>';
-echo stdhead($lang['ad_over_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Over Forum Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

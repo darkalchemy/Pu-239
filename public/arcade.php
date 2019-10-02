@@ -6,25 +6,23 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = load_language('global');
-
 global $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error!', 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play in the arcade!', 'bottom20');
+    stderr('Error', _f('Sorry, you must be a %s to play in the arcade!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
-    stderr($lang['gl_error'], $lang['casino_your_gaming_rights_have_been_disabled'], 'bottom20', 'bottom20');
+    stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20', 'bottom20');
     die();
 }
 
 $HTMLOUT = "
             <div class='has-text-centered'>
-                <h1>{$site_config['site']['name']} Old School Arcade!</h1>
-                <span>Top Scores Earn {$site_config['arcade']['top_score_points']} Karma Points</span>
+                <h1>{$site_config['site']['name']} " . _('Old School Arcade!') . '</h1>
+                <span>' . _f('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</span>
                 <div class='level-center top10'>
-                    <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>Top Scores</a>
+                    <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>" . _('Top Scores') . '</a>
                 </div>
-            </div>";
+            </div>';
 
 $body = "
             <div class='level-center'>";
@@ -48,4 +46,9 @@ $body .= '
             </div>';
 $HTMLOUT .= main_div($body, 'top20');
 
-echo stdhead('Arcade') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Arcade');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

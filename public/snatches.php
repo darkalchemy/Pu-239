@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('snatches'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -23,7 +22,7 @@ if (empty($_GET['id'])) {
 }
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
-    stderr('Error', 'It appears that you have entered an invalid id.');
+    stderr(_('Error'), _('Invalid ID.'));
 }
 
 $fluent = $container->get(Database::class);
@@ -39,7 +38,7 @@ $count = $fluent->from('snatched AS s')
 $perpage = 25;
 $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . "/snatches.php?id=$id&amp;");
 if (!$count) {
-    stderr('No snatches', "It appears that there are currently no snatches for this <a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>torrent</a>.");
+    stderr(_('No Snatches'), _fe('It appears that there are currently no snatches for this {0}torrent.{1}', "<a href='{$site_config['paths']['baseurl']}/details.php?id={$id}'>", '</a>'));
 }
 $torrent = $container->get(Torrent::class);
 $name = $torrent->get_items(['name'], $id);
@@ -52,19 +51,19 @@ if ($count > $perpage) {
 }
 $header = "
         <tr>
-            <th class='has-text-left'>{$lang['snatches_username']}</th>
-            <th class='has-text-right'>{$lang['snatches_uploaded']}</th>
-            <th class='has-text-right'>{$lang['snatches_upspeed']}</th>
-            " . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downloaded']}</th>") . '
-            ' . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>{$lang['snatches_downspeed']}</th>") . "
-            <th class='has-text-right'>{$lang['snatches_ratio']}</th>
-            <th class='has-text-right'>{$lang['snatches_completed']}</th>
-            <th class='has-text-right'>{$lang['snatches_seedtime']}</th>
-            <th class='has-text-right'>{$lang['snatches_leechtime']}</th>
-            <th class='has-text-centered'>{$lang['snatches_lastaction']}</th>
-            <th class='has-text-centered'>{$lang['snatches_completedat']}</th>
-            <th class='has-text-centered'>{$lang['snatches_announced']}</th>
-        </tr>";
+            <th class='has-text-left'>" . _('Username') . "</th>
+            <th class='has-text-right'>" . _('Uploaded') . "</th>
+            <th class='has-text-right'>" . _('Upspeed') . '</th>
+            ' . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>" . _('Downloaded') . '</th>') . '
+            ' . ($site_config['site']['ratio_free'] ? '' : "<th class='has-text-right'>" . _('Downspeed') . '</th>') . "
+            <th class='has-text-right'>" . _('Ratio') . "</th>
+            <th class='has-text-right'>" . _('Completed') . "</th>
+            <th class='has-text-right'>" . _('Seed time') . "</th>
+            <th class='has-text-right'>" . _('Leech time') . "</th>
+            <th class='has-text-centered'>" . _('Last action') . "</th>
+            <th class='has-text-centered'>" . _('Completed at') . "</th>
+            <th class='has-text-centered'>" . _('Announced') . '</th>
+        </tr>';
 
 $snatches = $fluent->from('snatched AS s')
                    ->select('u.paranoia')
@@ -86,8 +85,8 @@ foreach ($snatches as $arr) {
     $downspeed = ($arr['downspeed'] > 0 ? mksize($arr['downspeed']) : ($arr['leechtime'] > 0 ? mksize($arr['downloaded'] / $arr['leechtime']) : mksize(0)));
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
-    $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : $lang['snatches_unknown']);
-    $username = get_anonymous($arr['owner']) || $arr['anonymous'] === '1' ? ($user['class'] < UC_STAFF && $arr['userid'] != $user['id'] ? '' : $snatchuser . ' - ') . "<i>{$lang['snatches_anon']}</i>" : $snatchuser;
+    $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : _('Unknown'));
+    $username = get_anonymous($arr['owner']) || $arr['anonymous'] === '1' ? ($user['class'] < UC_STAFF && $arr['userid'] != $user['id'] ? '' : $snatchuser . ' - ') . '<i>' . _('Kezer Soze') . '</i>' : $snatchuser;
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>
@@ -109,4 +108,8 @@ $HTMLOUT .= main_table($body, $header);
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead('Snatches') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Snatches');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

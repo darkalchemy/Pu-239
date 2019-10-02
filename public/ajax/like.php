@@ -66,7 +66,7 @@ function comment_like_unlike(array $fields, array $user)
     if ($data['count'] == 0 && $current === 'Like') {
         $sql = "INSERT INTO likes ({$type}_id, user_id) VALUES (" . sqlesc($id) . ', ' . sqlesc($user['id']) . ')';
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id=" . sqlesc($id);
+        $sql = "UPDATE $table SET user_likes = user_likes + 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');
@@ -75,7 +75,7 @@ function comment_like_unlike(array $fields, array $user)
     } elseif ($data['count'] == 1 && $current === 'Unlike') {
         $sql = "DELETE FROM likes WHERE {$type}_id=" . sqlesc($id) . ' AND user_id=' . sqlesc($user['id']);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
-        $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id=" . sqlesc($id);
+        $sql = "UPDATE $table SET user_likes = user_likes - 1 WHERE id = " . sqlesc($id);
         $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
         $cache->delete("{$type}_user_likes_" . $id);
         $cache->delete('latest_comments_');

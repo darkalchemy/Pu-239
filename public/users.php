@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('users'));
 global $site_config;
 
 $search = isset($_GET['search']) ? strip_tags(trim($_GET['search'])) : '';
@@ -39,11 +38,11 @@ if (ctype_digit($class)) {
 }
 
 $HTMLOUT = "
-    <h1 class='has-text-centered'>Search {$lang['head_users']}</h1>";
+    <h1 class='has-text-centered'>Search " . _('Users') . '</h1>';
 $div = "
     <form method='get' action='users.php?' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='level-center-center'>
-            <span class='right10 top20'>{$lang['form_search']}</span>
+            <span class='right10 top20'>" . _('Search:') . "</span>
             <input type='text' name='search' class='w-25 top20'>
             <select name='class' class='left10 top20'>";
 $div .= "
@@ -58,7 +57,7 @@ for ($i = 0;; ++$i) {
 }
 $div .= "
             </select>
-            <input type='submit' value='{$lang['form_btn']}' class='button is-small left10 top20'>
+            <input type='submit' value='" . _('Okay') . "' class='button is-small left10 top20'>
         </div>
     </form>";
 
@@ -102,12 +101,12 @@ if ($arr[0] > 0) {
     $res = sql_query("SELECT users.*, countries.name, countries.flagpic FROM users LEFT JOIN countries ON country = countries.id WHERE $query1 ORDER BY username {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $heading = "
                 <tr>
-                    <th class='has-text-centered'>{$lang['users_username']}</th>
-                    <th class='has-text-centered'>{$lang['users_regd']}</th>
-                    <th class='has-text-centered'>{$lang['users_la']}</th>
-                    <th class='has-text-centered'>{$lang['users_class']}</th>
-                    <th class='has-text-centered'>{$lang['users_country']}</th>
-                </tr>";
+                    <th class='has-text-centered'>" . _('User name') . "</th>
+                    <th class='has-text-centered'>" . _('Registered') . "</th>
+                    <th class='has-text-centered'>" . _('Last access') . "</th>
+                    <th class='has-text-centered'>" . _('Class') . "</th>
+                    <th class='has-text-centered'>" . _('Country') . '</th>
+                </tr>';
     $body = '';
     while ($row = mysqli_fetch_assoc($res)) {
         $country = ($row['name'] != null) ? "<img src='{$site_config['paths']['images_baseurl']}flag/" . htmlsafechars($row['flagpic']) . "' alt='" . htmlsafechars($row['name']) . "'>" : '---';
@@ -125,5 +124,9 @@ if ($arr[0] > 0) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 }
-echo stdhead($lang['head_users']) . wrapper($HTMLOUT) . stdfoot();
-die();
+
+$title = _('Users');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

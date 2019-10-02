@@ -7,7 +7,6 @@ use Pu239\Cache;
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $container;
 
 if (empty($_POST)) {

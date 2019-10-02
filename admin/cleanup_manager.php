@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_cleanup_manager'));
 $params = array_merge($_GET, $_POST);
 $params['mode'] = isset($params['mode']) ? $params['mode'] : '';
 switch ($params['mode']) {
@@ -80,10 +79,8 @@ function resettimer()
  */
 function manualclean($params)
 {
-    global $lang;
-
     if (function_exists('docleanup')) {
-        stderr($lang['cleanup_stderr'], $lang['cleanup_stderr1']);
+        stderr(_('Error'), _('Another cleanup operation is already in progress. Refresh to try again.'));
     }
     $opts = [
         'options' => [
@@ -92,7 +89,7 @@ function manualclean($params)
     ];
     $params['cid'] = filter_var($params['cid'], FILTER_VALIDATE_INT, $opts);
     if (!is_numeric($params['cid'])) {
-        stderr($lang['cleanup_stderr'], $lang['cleanup_stderr2']);
+        stderr(_('Error'), _('Bad you!'));
     }
     $params['cid'] = sqlesc($params['cid']);
     $sql = sql_query('SELECT * FROM cleanup WHERE clean_id=' . sqlesc($params['cid'])) or sqlerr(__FILE__, __LINE__);
@@ -118,7 +115,7 @@ function manualclean($params)
  */
 function cleanup_show_main()
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $fluent = $container->get(Database::class);
     $count1 = $fluent->from('cleanup')
@@ -130,32 +127,32 @@ function cleanup_show_main()
     $pager = pager($perpage, $count1, $site_config['paths']['baseurl'] . '/staffpanel.php?tool=cleanup_manager&amp;');
     $htmlout = "
         <ul class='level-center bg-06'>
-            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>{$lang['cleanup_add_new']}</a></li>
-            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>{$lang['cleanup_reset']}</a></li>
+            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=new'>" . _('Add new') . "</a></li>
+            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=reset'>" . _('Reset Clean Time') . "</a></li>
         </ul>
-        <h1 class='has-text-centered top20'>{$lang['cleanup_head']}</h1>" . ($count1 > $perpage ? $pager['pagertop'] : '') . "
+        <h1 class='has-text-centered top20'>" . _('Current Cleanup Tasks') . '</h1>' . ($count1 > $perpage ? $pager['pagertop'] : '') . "
         <table class='table table-bordered table-striped bottom20'>
             <thead>
                 <tr>
-                    <th>{$lang['cleanup_title']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_run']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_next']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_edit']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_delete']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_on']}</th>
-                    <th class='has-text-centered'>{$lang['cleanup_run_now']}</th>
+                    <th>" . _('Cleanup Title &amp; Description') . "</th>
+                    <th class='has-text-centered'>" . _('Runs every') . "</th>
+                    <th class='has-text-centered'>" . _('Next Clean Time') . "</th>
+                    <th class='has-text-centered'>" . _('Edit') . "</th>
+                    <th class='has-text-centered'>" . _('Delete') . "</th>
+                    <th class='has-text-centered'>" . _('Off/On') . "</th>
+                    <th class='has-text-centered'>" . _('Run now') . '</th>
                 </tr>
             </thead>
-            <tbody>";
+            <tbody>';
     $sql = sql_query("SELECT * FROM cleanup ORDER BY clean_on DESC, clean_time, clean_increment {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($sql)) {
-        stderr($lang['cleanup_stderr'], $lang['cleanup_panic']);
+        stderr(_('Error'), _('Fucking panic now!'));
     }
     while ($row = mysqli_fetch_assoc($sql)) {
         $row['_clean_time'] = get_date((int) $row['clean_time'], 'LONG', 1, 0);
         $row['clean_increment'] = (int) $row['clean_increment'];
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
-        $row['_title'] = $row['clean_on'] != 1 ? " {$lang['cleanup_lock']}" : '';
+        $row['_title'] = $row['clean_on'] != 1 ? ' ' . _(' (Locked)') . '' : '';
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span class='has-text-danger'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $on_off = $row['clean_on'] != 1 ? "<i class='icon-toggle-off icon has-text-danger'></i>" : "<i class='icon-toggle-on icon has-text-success'></i>";
         $htmlout .= "
@@ -164,26 +161,31 @@ function cleanup_show_main()
             <td class='has-text-centered'>" . mkprettytime($row['clean_increment']) . "</td>
             <td class='has-text-centered'>{$row['_clean_time']}</td>
             <td class='has-text-centered'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_edit']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=edit&amp;cid={$row['clean_id']}' class='tooltipper' title='" . _('Edit') . "'>
                     <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='{$lang['cleanup_delete1']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=delete&amp;cid={$row['clean_id']}' class='tooltipper' title='" . _('Delete') . "'>
                     <i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i>
                 </a>
             </td>
             <td class='has-text-centered'>
-                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}' class='tooltipper' title='{$lang['cleanup_off_on']}'>
+                <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=unlock&amp;cid={$row['clean_id']}&amp;clean_on={$row['clean_on']}' class='tooltipper' title='" . _('on/off') . "'>
                 $on_off
             </td>
             <td class='has-text-centered'>
-                <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>{$lang['cleanup_run_now2']}</a>
+                <a class='button is-small' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager&amp;mode=run&amp;cid={$row['clean_id']}'>" . _('Run it now') . '</a>
             </td>
-         </tr>";
+         </tr>';
     }
     $htmlout .= '</tbody></table>' . ($count1 > $perpage ? $pager['pagerbottom'] : '');
-    echo stdhead($lang['cleanup_stdhead']) . wrapper($htmlout) . stdfoot();
+    $title = _('Cleanup Manager');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -192,7 +194,7 @@ function cleanup_show_main()
  */
 function cleanup_show_edit()
 {
-    global $lang, $params;
+    global $params, $site_config;
 
     if (!isset($params['cid']) || empty($params['cid']) || !is_valid_id((int) $params['cid'])) {
         cleanup_show_main();
@@ -201,7 +203,7 @@ function cleanup_show_edit()
     $cid = intval($params['cid']);
     $sql = sql_query("SELECT * FROM cleanup WHERE clean_id=$cid");
     if (!mysqli_num_rows($sql)) {
-        stderr($lang['cleanup_stderr'], $lang['cleanup_stderr3']);
+        stderr(_('Error'), _('Why me?'));
     }
     $row = mysqli_fetch_assoc($sql);
     $row['clean_title'] = htmlsafechars((string) $row['clean_title']);
@@ -214,7 +216,7 @@ function cleanup_show_edit()
     $cleanon = $row['clean_on'] ? 'checked' : '';
     $cleanoff = !$row['clean_on'] ? 'checked' : '';
     $htmlout = "
-    <h2 class='has-text-centered'>{$lang['cleanup_show_head']} {$row['clean_title']}</h2>" . main_div("
+    <h2 class='has-text-centered'>" . _('Editing cleanup: ') . " {$row['clean_title']}</h2>" . main_div("
     <div class='padding20 w-50'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takeedit'>
@@ -222,43 +224,48 @@ function cleanup_show_edit()
     <input type='hidden' name='clean_time' value='{$row['clean_time']}'>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
+    <label style='float:left;width:200px;'>" . _('Title') . "</label>
     <input type='text' value='{$row['clean_title']}' name='clean_title' style='width:250px;'></div>
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_descr']}</label>
+    <label style='float:left;width:200px;'>" . _('Description') . "</label>
     <input type='text' value='{$row['clean_desc']}' name='clean_desc' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup Function Name') . "</label>
     <input type='text' value='{$row['function_name']}' name='function_name' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup File Name') . "</label>
     <input type='text' value='{$row['clean_file']}' name='clean_file' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_interval']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup Interval') . "</label>
     <input type='text' value='{$row['clean_increment']}' name='clean_increment' style='width:380px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>{$lang['cleanup_show_yes']}<input name='clean_log' value='1' {$logyes} type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' {$logno} type='radio'>{$lang['cleanup_show_no']}</div>
+    <label style='float:left;width:200px;'>" . _('Cleanup Log') . '</label>' . _('Yes &#160; ') . "<input name='clean_log' value='1' {$logyes} type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' {$logno} type='radio'>" . _(' &#160; No') . "</div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' {$cleanon} type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' {$cleanoff} type='radio'> {$lang['cleanup_show_no']}
+    <label style='float:left;width:200px;'>" . _('Cleanup On or Off?') . '</label>
+    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' {$cleanon} type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' {$cleanoff} type='radio'> " . _(' &#160; No') . "
     </div>
 
     <div style='text-align:center;'>
-        <input type='submit' name='submit' value='{$lang['cleanup_show_edit']}' class='button is-small right1-'>
-        <input type='button' class='button is-small' value='{$lang['cleanup_show_cancel']}' onclick='history.back()'>
+        <input type='submit' name='submit' value='" . _('Edit') . "' class='button is-small right1-'>
+        <input type='button' class='button is-small' value='" . _('Cancel') . "' onclick='history.back()'>
     </div>
     </form>
     </div>", '', 'level-center');
-    echo stdhead($lang['cleanup_show_stdhead']) . wrapper($htmlout) . stdfoot();
+    $title = _('Cleanup Manager');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -271,8 +278,6 @@ function cleanup_show_edit()
  */
 function cleanup_take_edit($params)
 {
-    global $lang;
-
     foreach ([
         'cid',
         'clean_increment',
@@ -296,7 +301,7 @@ function cleanup_take_edit($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error1']} $x");
+            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
         }
     }
     unset($opts);
@@ -312,12 +317,12 @@ function cleanup_take_edit($params)
         ];
         $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
         if (empty($params[$x])) {
-            stderr($lang['cleanup_take_error'], $lang['cleanup_take_error2']);
+            stderr(_('Error'), _("Don't leave any field blank"));
         }
     }
     $params['clean_file'] = preg_replace('#\.{1,}#s', '.', $params['clean_file']);
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
-        stderr($lang['cleanup_take_error'], $lang['cleanup_take_error3']);
+        stderr(_('Error'), _('You need to upload the cleanup file first!'));
     }
     // new clean time = $params['clean_time'] = intval(TIME_NOW + $params['clean_increment']);
     //one more time around! LoL
@@ -334,57 +339,62 @@ function cleanup_take_edit($params)
  */
 function cleanup_show_new()
 {
-    global $lang;
+    global $site_config;
 
     $clean_time = strtotime('today midnight');
-    $htmlout = "<h2>{$lang['cleanup_new_head']}</h2>
+    $htmlout = '<h2>' . _('Add a new cleanup task') . "</h2>
     <div style='width: 800px; text-align: left; padding: 10px; margin: 0 auto;border-style: solid; border-color: #333333; border-width: 5px 2px;'>
     <form name='inputform' method='post' action='staffpanel.php?tool=cleanup_manager&amp;action=cleanup_manager' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='mode' value='takenew'>
     <input type='hidden' name='clean_time' value='{$clean_time}'>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_title']}</label>
+    <label style='float:left;width:200px;'>" . _('Title') . "</label>
     <input type='text' value='' name='clean_title' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_descr']}</label>
+    <label style='float:left;width:200px;'>" . _('Description') . "</label>
     <input type='text' value='' name='clean_desc' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_fname']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup Function Name') . "</label>
     <input type='text' value='' name='function_name' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_file']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup File Name') . "</label>
     <input type='text' value='' name='clean_file' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_interval']}</label>
+    <label style='float:left;width:200px;'>" . _('Cleanup Interval') . "</label>
     <input type='text' value='' name='clean_increment' style='width:350px;'>
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_log']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_log' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio'> {$lang['cleanup_show_no']}
+    <label style='float:left;width:200px;'>" . _('Cleanup Log') . '</label>
+    ' . _('Yes &#160; ') . " <input name='clean_log' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio'> " . _(' &#160; No') . "
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>{$lang['cleanup_show_on']}</label>
-    {$lang['cleanup_show_yes']} <input name='clean_on' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio'> {$lang['cleanup_show_no']}
+    <label style='float:left;width:200px;'>" . _('Cleanup On or Off?') . '</label>
+    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio'> " . _(' &#160; No') . "
     </div>
 
     <div style='text-align:center;'>
-        <input type='submit' name='submit' value='{$lang['cleanup_new_add']}' class='button is-small right10'>
-        <input type='button' class='button is-small' value='{$lang['cleanup_new_cancel']}' onclick='history.back()'>
+        <input type='submit' name='submit' value='" . _('Add') . "' class='button is-small right10'>
+        <input type='button' class='button is-small' value='" . _('Cancel') . "' onclick='history.back()'>
     </div>
     </form>
     </div>";
-    echo stdhead($lang['cleanup_new_stdhead']) . wrapper($htmlout) . stdfoot();
+    $title = _('Cleanup Manager');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -396,7 +406,7 @@ function cleanup_show_new()
  */
 function cleanup_take_new($params)
 {
-    global $container, $lang;
+    global $container;
 
     $mysqli = $container->get(mysqli::class);
     foreach ([
@@ -421,7 +431,7 @@ function cleanup_take_new($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr($lang['cleanup_take_error'], "{$lang['cleanup_take_error1']} $x");
+            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
         }
     }
     unset($opts);
@@ -437,12 +447,12 @@ function cleanup_take_new($params)
         ];
         $params[$x] = filter_var($params[$x], FILTER_SANITIZE_STRING, $opts);
         if (empty($params[$x])) {
-            stderr($lang['cleanup_take_error'], $lang['cleanup_take_error2']);
+            stderr(_('Error'), _("Don't leave any field blank"));
         }
     }
     $params['clean_file'] = preg_replace('#\.{1,}#s', '.', trim($params['clean_file']));
     if (!file_exists(CLEAN_DIR . "{$params['clean_file']}")) {
-        stderr($lang['cleanup_take_error'], $lang['cleanup_take_error3']);
+        stderr(_('Error'), _('You need to upload the cleanup file first!'));
     }
 
     foreach ($params as $k => $v) {
@@ -450,9 +460,9 @@ function cleanup_take_new($params)
     }
     sql_query("INSERT INTO cleanup (function_name, clean_title, clean_desc, clean_file, clean_time, clean_increment, clean_log, clean_on) VALUES ({$params['function_name']}, {$params['clean_title']}, {$params['clean_desc']}, {$params['clean_file']}, {$params['clean_time']}, {$params['clean_increment']}, {$params['clean_log']}, {$params['clean_on']})");
     if (((is_null($___mysqli_res = mysqli_insert_id($mysqli))) ? false : $___mysqli_res)) {
-        stderr($lang['cleanup_new_info'], $lang['cleanup_new_success']);
+        stderr(_('Info'), _('Success, new cleanup task added!'));
     } else {
-        stderr($lang['cleanup_new_error'], $lang['cleanup_new_error1']);
+        stderr(_('Error'), _('Something went horridly wrong'));
     }
     die();
 }
@@ -466,7 +476,7 @@ function cleanup_take_new($params)
  */
 function cleanup_take_delete($params)
 {
-    global $container, $lang;
+    global $container;
 
     $mysqli = $container->get(mysqli::class);
     $opts = [
@@ -476,14 +486,14 @@ function cleanup_take_delete($params)
     ];
     $params['cid'] = filter_var($params['cid'], FILTER_VALIDATE_INT, $opts);
     if (!is_numeric($params['cid'])) {
-        stderr($lang['cleanup_del_error'], $lang['cleanup_del_error1']);
+        stderr(_('Error'), _('Bad you!'));
     }
     $params['cid'] = sqlesc($params['cid']);
     sql_query("DELETE FROM cleanup WHERE clean_id={$params['cid']}");
     if (mysqli_affected_rows($mysqli) === 1) {
-        stderr($lang['cleanup_del_info'], $lang['cleanup_del_success']);
+        stderr(_('Info'), _('Success, cleanup task deleted!'));
     } else {
-        stderr($lang['cleanup_del_error'], $lang['cleanup_del_error2']);
+        stderr(_('Error'), _('Something went horridly wrong'));
     }
     die();
 }
@@ -498,7 +508,7 @@ function cleanup_take_delete($params)
  */
 function cleanup_take_unlock($params)
 {
-    global $container, $lang;
+    global $container;
 
     $mysqli = $container->get(mysqli::class);
     foreach ([
@@ -522,7 +532,7 @@ function cleanup_take_unlock($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr($lang['cleanup_unlock_error'], "{$lang['cleanup_unlock_error1']} $x");
+            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
         }
     }
     unset($opts);
@@ -530,9 +540,9 @@ function cleanup_take_unlock($params)
     $params['clean_on'] = ($params['clean_on'] === 1 ? sqlesc($params['clean_on'] - 1) : sqlesc($params['clean_on'] + 1));
     sql_query("UPDATE cleanup SET clean_on = {$params['clean_on']} WHERE clean_id={$params['cid']}");
     if (mysqli_affected_rows($mysqli) === 1) {
-        cleanup_show_main(); // this go bye bye later
+        cleanup_show_main();
     } else {
-        stderr($lang['cleanup_unlock_error'], $lang['cleanup_unlock_error']);
+        stderr(_('Error'), _('Error'));
     }
     die();
 }

@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_traceroute'));
 $HTMLOUT = '';
 if (strtoupper(substr(PHP_OS, 0, 3) === 'WIN')) {
     $windows = 1;
@@ -32,7 +31,7 @@ if ($register_globals) {
 if ($action === 'do') {
     $host = preg_replace('/[^A-Za-z0-9.]/', '', $host);
     $HTMLOUT .= '<div class="error">';
-    $HTMLOUT .= '' . $lang['trace_out'] . '<br>';
+    $HTMLOUT .= '' . _('Trace Output:') . '<br>';
     $HTMLOUT .= '<pre>';
     if ($unix) {
         system('' . 'traceroute ' . $host);
@@ -41,14 +40,19 @@ if ($action === 'do') {
         system('' . 'tracert ' . $host);
     }
     $HTMLOUT .= '</pre>';
-    $HTMLOUT .= '' . $lang['trace_done'] . '</div>';
+    $HTMLOUT .= '' . _('done...') . '</div>';
 } else {
     $HTMLOUT .= '
-    <p><span class="size_3">' . $lang['trace_ip'] . '' . $ip . '</span></p>
-    <form method="post" action="' . $_SERVER['PHP_SELF'] . '" accept-charset="utf-8">' . $lang['trace_host'] . '<input type="text" id=specialboxn name="host" value="' . $ip . '">
-    <input type="hidden" name="action" value="do"><input type="submit" value="' . $lang['trace_submit'] . '" class="button is-small">
+    <p><span class="size_3">' . _('Your IP is: ') . '' . $ip . '</span></p>
+    <form method="post" action="' . $_SERVER['PHP_SELF'] . '" accept-charset="utf-8">' . _('Enter IP or Host ') . '<input type="text" id=specialboxn name="host" value="' . $ip . '">
+    <input type="hidden" name="action" value="do"><input type="submit" value="' . _('Traceroute!') . '" class="button is-small">
    </form>';
     $HTMLOUT .= '<br><b>' . $system . '</b>';
     $HTMLOUT .= '</body></html>';
 }
-echo stdhead($lang['trace_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Traceroute');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

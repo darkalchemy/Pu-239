@@ -14,7 +14,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('catalogue'));
 global $container, $site_config;
 
 /**
@@ -31,10 +30,9 @@ global $container, $site_config;
  */
 function readMore($text, $char, $link)
 {
-    global $lang;
     $text = strip_tags(format_comment($text));
 
-    return strlen($text) > $char ? substr(format_comment($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>{$lang['catol_read_more']}</span></a>" : format_comment($text);
+    return strlen($text) > $char ? substr(format_comment($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>" . _('Read more') . '</span></a>' : format_comment($text);
 }
 
 /**
@@ -50,22 +48,20 @@ function readMore($text, $char, $link)
  */
 function peer_list(array $array, int $class)
 {
-    global $lang;
-
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['catol_user']}</th>";
+            <th>' . _('User') . '</th>';
     if (has_access($class, UC_STAFF, 'coder')) {
-        $heading .= "
-            <th>{$lang['catol_port']}&amp;{$lang['catol_ip']}</th>";
+        $heading .= '
+            <th>' . _('Port') . '&amp;' . _('Ip') . '</th>';
     }
-    $heading .= "
-            <th>{$lang['catol_ratio']}</th>
-            <th>{$lang['catol_downloaded']}</th>
-            <th>{$lang['catol_uploaded']}</th>
-            <th>{$lang['catol_started']}</th>
-            <th>{$lang['catol_finished']}</th>
-        </tr>";
+    $heading .= '
+            <th>' . _('Ratio') . '</th>
+            <th>' . _('Downloaded') . '</th>
+            <th>' . _('Uploaded') . '</th>
+            <th>' . _('Started') . '</th>
+            <th>' . _('Finished') . '</th>
+        </tr>';
     $body = '';
     foreach ($array as $p) {
         $time = max(1, (TIME_NOW - $p['started']) - (TIME_NOW - $p['last_action']));
@@ -183,9 +179,9 @@ foreach ($tids as $tid) {
 $htmlout = "
     <h1 class='has-text-centered'>Torrent Catalog</h1>";
 $div = "
-    <h2 class='has-text-centered'>{$lang['catol_search']}</h2>
+    <h2 class='has-text-centered'>" . _('Search') . "</h2>
     <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' enctype='multipart/form-data' accept-charset='utf-8'>
-        <input type='text' name='search' class='w-50' placeholder='{$lang['catol_search_for_tor']}' value='$search'><br>
+        <input type='text' name='search' class='w-50' placeholder='" . _('Search for a torrent') . "' value='$search'><br>
         <input type='submit' value='search!' class='button is-small margin20'>
     </form>
     <div class='tabs is-centered is-small'>
@@ -218,23 +214,23 @@ if (!empty($rows)) {
         $div = "
         <div class='columns'>
             <div class='column is-2 has-text-centered'>
-                <div class='bottom10'>{$lang['catol_upper']}: $uploader</div>
+                <div class='bottom10'>" . _('Upper') . ": $uploader</div>
                 <div>" . ($row['poster'] ? "
                     <img src='" . url_proxy($row['poster'], true, 250) . "' alt='Poster' class='tooltip-poster'>
                 </div>" : "
-                    <img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='{$lang['catol_no_poster']}' class='tooltip-poster'>
+                    <img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='" . _('No Poster') . "' class='tooltip-poster'>
                 </div>") . "
             </div  >
             <div class='column'>";
-        $heading = "
+        $heading = '
                     <tr>
                         <th>Name</th>
-                        <th>{$lang['catol_added']}</th>
-                        <th>{$lang['catol_size']}</th>
-                        <th>{$lang['catol_snatched']}</th>
+                        <th>' . _('Added') . '</th>
+                        <th>' . _('Size') . '</th>
+                        <th>' . _('Snatched') . '</th>
                         <th>S.</th>
                         <th>L.</th>
-                    </tr>";
+                    </tr>';
         $body = "
                     <tr>
                         <td class='w-50'><a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $row['id'] . "&amp;hit=1'><div class='torrent-name min-150'>" . format_comment($row['name']) . '</div></a></td>
@@ -245,10 +241,10 @@ if (!empty($rows)) {
                         <td>' . (int) $row['leechers'] . '</td>
                     </tr>';
         $div .= main_table($body, $heading, 'top20');
-        $heading = "
+        $heading = '
                 <tr>
-                    <th>{$lang['catol_info']}.</th>
-                </tr>";
+                    <th>' . _('Info') . '.</th>
+                </tr>';
         $body = "
                 <tr>
                     <td><div class='readmore'>" . format_comment($row['descr'], true, true, false) . '</div></td>
@@ -258,9 +254,9 @@ if (!empty($rows)) {
             </div>
         </div>
         <div class='w-100'>
-            <h2 class='has-text-centered'>{$lang['catol_seeder_info']}</h2>
-            " . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['class']) : main_div("
-            <p class='has-text-centered'>{$lang['catol_no_info_show']}</p>", '', 'padding20')) . '
+            <h2 class='has-text-centered'>" . _('Seeder Info (Top 5 Seeders)') . '</h2>
+            ' . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['class']) : main_div("
+            <p class='has-text-centered'>" . _('No information to show') . '</p>', '', 'padding20')) . '
         </div>';
         $htmlout .= main_div($div, 'top20', 'padding20');
     }
@@ -270,7 +266,12 @@ if (!empty($rows)) {
         </div>";
 } else {
     $htmlout .= main_div("
-        <p class='has-text-centered'>{$lang['catol_nothing_found']}!</p>", 'top20', 'padding20');
+        <p class='has-text-centered'>" . _('Nothing found') . '!</p>', 'top20', 'padding20');
 }
 
-echo stdhead($lang['catol_std_head']) . wrapper($htmlout) . stdfoot();
+$title = _('Catalog');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();

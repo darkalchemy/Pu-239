@@ -7,16 +7,15 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('achievement_history'));
 $HTMLOUT = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
-    stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
+    stderr(_('Error'), _('It appears that you have entered an invalid id.'));
 }
 $res = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 $arr = mysqli_fetch_assoc($res);
 if (!$arr) {
-    stderr($lang['achievement_history_err'], $lang['achievement_history_err1']);
+    stderr(_('Error'), _('It appears that you have entered an invalid id.'));
 }
 $achpoints = (int) $arr['achpoints'];
 $spentpoints = (int) $arr['spentpoints'];
@@ -32,27 +31,27 @@ if ($id === $user['id']) {
     <div class='w-100'>
         <ul class='level-center padding20 bg-06'>
             <li>
-                <a href='{$site_config['paths']['baseurl']}/achievementlist.php'>{$lang['achievement_history_al']}</a>
+                <a href='{$site_config['paths']['baseurl']}/achievementlist.php'>" . _('Achievements List') . "</a>
             </li>
             <li>
-                <a href='{$site_config['paths']['baseurl']}/postcounter.php'>{$lang['achievement_history_fpc']}</a>
+                <a href='{$site_config['paths']['baseurl']}/postcounter.php'>" . _('Update Forum Post Counter') . "</a>
             </li>
             <li>
-                <a href='{$site_config['paths']['baseurl']}/topiccounter.php'>{$lang['achievement_history_ftc']}</a>
+                <a href='{$site_config['paths']['baseurl']}/topiccounter.php'>" . _('Update Forum Topic Counter') . "</a>
             </li>
             <li>
-                <a href='{$site_config['paths']['baseurl']}/invitecounter.php'>{$lang['achievement_history_ic']}</a>
+                <a href='{$site_config['paths']['baseurl']}/invitecounter.php'>" . _('Update Invite Counter') . '</a>
             </li>
         </ul>
-    </div>";
+    </div>';
 }
 
 $HTMLOUT .= "
     <div class='has-text-centered'>
-        <h1 class='level-item'>{$lang['achievement_history_afu']}&nbsp;" . format_username((int) $arr['id']) . "</h1>
-        <h2>{$lang['achievement_history_c']}" . htmlsafechars($row['0']) . $lang['achievement_history_a'] . ($row[0] == 1 ? '' : 's') . '.';
+        <h1 class='level-item'>" . _('Achievements for:') . '&nbsp;' . format_username((int) $arr['id']) . '</h1>
+        <h2>' . _('Currently') . ' ' . htmlsafechars($row['0']) . _(' achievement') . ($row[0] == 1 ? '' : 's') . '.';
 if ($id === $user['id']) {
-    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}{$lang['achievement_history_pa']}{$spentpoints}{$lang['achievement_history_ps']}</a>";
+    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}" . _(' Points Available') . " // {$spentpoints}" . _(' Points spent.') . '</a>';
 }
 $HTMLOUT .= '</h2>
     </div>';
@@ -60,14 +59,14 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if ($count === 0) {
-    $HTMLOUT .= stdmsg($lang['achievement_history_no'], $lang['achievement_history_err2'] . ' ' . format_username((int) $arr['id']) . ' ' . $lang['achievement_history_err3']);
+    $HTMLOUT .= stdmsg(_('No Achievements'), _('It appears that') . ' ' . format_username((int) $arr['id']) . ' ' . _(' currently has no achievements.'));
 } else {
-    $heading = "
+    $heading = '
                     <tr>
-                        <th>{$lang['achievement_history_award']}</th>
-                        <th>{$lang['achievement_history_descr']}</th>
-                        <th>{$lang['achievement_history_date']}</th>
-                    </tr>";
+                        <th>' . _('Award') . '</th>
+                        <th>' . _('Description') . '</th>
+                        <th>' . _('Date Earned') . '</th>
+                    </tr>';
     $res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
@@ -84,4 +83,8 @@ if ($count === 0) {
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['achievement_history_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Achievement History');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

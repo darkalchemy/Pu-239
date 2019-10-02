@@ -9,7 +9,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('browse'));
 $valid_search = [
     'sn',
     'sys',
@@ -43,13 +42,10 @@ if ($user['hidden'] === 0) {
     $select->leftJoin('categories AS c ON t.category = c.id')
            ->where('c.hidden = 0');
 }
-$title = '';
 $addparam = [];
 foreach ($valid_search as $search) {
     if (!empty($_GET[$search])) {
         $cleaned = searchfield($_GET[$search]);
-        $title .= " $cleaned";
-
         if ($search != 'srs' && $search != 'sre') {
             $addparam[] = "{$search}=" . urlencode($cleaned);
         }
@@ -171,41 +167,46 @@ $HTMLOUT .= main_div("
                     <div class='padding10 w-100'>
                         <div class='columns'>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input id='search' name='sn' type='text' placeholder='{$lang['search_name']}' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
+                                <div class='has-text-centered bottom10'>" . _('Name') . "</div>
+                                <input id='search' name='sn' type='text' placeholder='" . _('Search by Name') . "' class='search w-100' value='" . (!empty($_GET['sn']) ? $_GET['sn'] : '') . "' onkeyup='autosearch()'>
                             </div>
                             <div class='column'>
                                 <div class='columns'>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_year_start']}</div>
-                                        <input name='sys' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_start']}' class='search w-100' value='" . (!empty($_GET['sys']) ? $_GET['sys'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Year') . "</div>
+                                        <input name='sys' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='" . _('From Year Released') . "' class='search w-100' value='" . (!empty($_GET['sys']) ? $_GET['sys'] : '') . "'>
                                     </div>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_year_end']}</div>
-                                        <input name='sye' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_end']}' class='search w-100' value='" . (!empty($_GET['sye']) ? $_GET['sye'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Year') . "</div>
+                                        <input name='sye' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='" . _('To Year Released') . "' class='search w-100' value='" . (!empty($_GET['sye']) ? $_GET['sye'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
                             <div class='column'>
                                 <div class='columns'>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_start']}</div>
-                                        <input name='srs' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_start']}' class='search w-100' value='" . (!empty($_GET['srs']) ? $_GET['srs'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Rating') . "</div>
+                                        <input name='srs' type='number' min='0' max='10' step='0.1' placeholder='" . _('From IMDb Rating') . "' class='search w-100' value='" . (!empty($_GET['srs']) ? $_GET['srs'] : '') . "'>
                                     </div>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_end']}</div>
-                                        <input name='sre' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_end']}' class='search w-100' value='" . (!empty($_GET['sre']) ? $_GET['sre'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Rating') . "</div>
+                                        <input name='sre' type='number' min='0' max='10' step='0.1' placeholder='" . _('To IMDb Rating') . "' class='search w-100' value='" . (!empty($_GET['sre']) ? $_GET['sre'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class='margin10 has-text-centered'>
-                        <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
+                        <input type='submit' value='" . _('Search!') . "' class='button is-small'>
                     </div>
                 </div>
             </form>");
 
 $HTMLOUT .= "<div class='top20'>" . ($count > $perpage ? $pager['pagertop'] : '') . main_div($body, 'top20') . ($count > $perpage ? $pager['pagertop'] : '') . '</div>';
 
-echo stdhead('TV Shows' . $title) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Search TV Shows');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

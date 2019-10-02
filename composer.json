@@ -33,7 +33,6 @@
         "delight-im/i18n": "^1.0",
         "envms/fluentpdo": "^2.1",
         "erusev/parsedown": "^1.7",
-        "google/cloud-translate": "^1.4",
         "guzzlehttp/guzzle": "^6.3",
         "hellogerard/jobby": "^3.4",
         "imdbphp/imdbphp": "^6.2",

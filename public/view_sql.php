@@ -14,7 +14,6 @@ $stdfoot = [
         get_file_name('iframe_js'),
     ],
 ];
-$lang = load_language('global');
 global $container, $site_config;
 
 if (empty($user) || !has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -27,5 +26,10 @@ if (empty($user) || !has_access($user['class'], UC_SYSOP, 'coder')) {
 } else {
     write_info($user['username'] . ' has accessed a Staff Page: Adminer');
     $html = "<iframe src='{$site_config['paths']['baseurl']}/ajax/view_sql.php?username={$user['username']}&db={$site_config['db']['database']}' id='iframe_adminer' name='iframe_adminer' onload='resizeIframe(this)' class='iframe'></iframe>";
-    echo stdhead('Adminer') . wrapper($html) . stdfoot($stdfoot);
+
+    $title = _('Adminer');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot($stdfoot);
 }

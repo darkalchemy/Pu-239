@@ -13,7 +13,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_comments.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('comment'));
 global $container, $site_config;
 
 $stdhead = [
@@ -35,15 +34,15 @@ if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userid = (int) $_POST['userid'];
         if (!is_valid_id($userid)) {
-            stderr('Error', 'Invalid ID.');
+            stderr(_('Error'), 'Invalid ID.');
         }
         $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
-            stderr('Error', 'No user with that ID.');
+            stderr(_('Error'), 'No user with that ID.');
         }
         $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : '';
         if (!$body) {
-            stderr('Error', 'Comment body cannot be empty!');
+            stderr(_('Error'), 'Comment body cannot be empty!');
         }
         $values = [
             'user' => $user['id'],
@@ -69,11 +68,11 @@ if ($action === 'add') {
     } else {
         $userid = (int) $_GET['userid'];
         if (!is_valid_id($userid)) {
-            stderr('Error', 'Invalid ID.');
+            stderr(_('Error'), 'Invalid ID.');
         }
         $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
-            stderr('Error', 'No user with that ID.');
+            stderr(_('Error'), 'No user with that ID.');
         }
     }
     $HTMLOUT .= "
@@ -96,8 +95,11 @@ if ($action === 'add') {
         $HTMLOUT .= '
             <h2>Most recent comments, in reverse order</h2>' . commenttable($allrows, 'userdetails');
     }
-    echo stdhead('Add a comment for ' . htmlsafechars($arr['username']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Add Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } elseif ($action === 'edit') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $commentid = (int) $_POST['cid'];
@@ -105,7 +107,7 @@ if ($action === 'add') {
         $commentid = (int) $_GET['cid'];
     }
     if (!is_valid_id($commentid)) {
-        stderr('Error', 'Invalid ID.');
+        stderr(_('Error'), 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments AS c')
                   ->select('u.username')
@@ -114,16 +116,16 @@ if ($action === 'add') {
                   ->where('c.id = ?', $commentid)
                   ->fetch();
     if (!$arr) {
-        stderr('Error', 'Invalid ID.');
+        stderr(_('Error'), 'Invalid ID.');
     }
     if ($arr['user'] != $user['id'] && !has_access($user['class'], UC_STAFF, '')) {
-        stderr('Error', 'Permission denied.');
+        stderr(_('Error'), 'Permission denied.');
     }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $body = htmlsafechars($_POST['body']);
         $returnto = htmlsafechars($_POST['returnto']);
         if ($body == '') {
-            stderr('Error', 'Comment body cannot be empty!');
+            stderr(_('Error'), 'Comment body cannot be empty!');
         }
         $set = [
             'text' => $body,
@@ -151,12 +153,15 @@ if ($action === 'add') {
     <div class='has-text-centered margin20'>
         <input type='submit' class='button is-small' value='Do it!'>
     </div></form>";
-    echo stdhead('Edit comment for ' . htmlsafechars($arr['username']), $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Edit Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } elseif ($action === 'delete') {
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
-        stderr('Error', 'Invalid ID.');
+        stderr(_('Error'), 'Invalid ID.');
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
@@ -171,7 +176,7 @@ if ($action === 'add') {
         $userid = (int) $arr['userid'];
     }
     if ($arr['id'] != $user['id'] && has_access($user['class'], UC_STAFF, 'coder')) {
-        stderr('Error', 'Permission denied.');
+        stderr(_('Error'), 'Permission denied.');
     }
     $deleted = $fluent->deleteFrom('usercomments')
                       ->where('id = ?', $commentid)
@@ -198,21 +203,21 @@ if ($action === 'add') {
     die();
 } elseif ($action === 'vieworiginal') {
     if (!has_access($user['class'], UC_STAFF, 'coder')) {
-        stderr('Error', 'Permission denied.');
+        stderr(_('Error'), 'Permission denied.');
     }
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
-        stderr('Error', 'Invalid ID.');
+        stderr(_('Error'), 'Invalid ID.');
     }
     $arr = $fluent->from('usercomments')
                   ->where('id = ?', $commentid)
                   ->fetch();
 
     if (!$arr) {
-        stderr('Error', 'Invalid ID');
+        stderr(_('Error'), 'Invalid ID');
     }
     $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['comment_original_content']}#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
+        <h1 class='has-text-centered'>" . _('Original contents of comment ') . "#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');
 
     $returnto = (isset($_SERVER['HTTP_REFERER']) ? htmlsafechars($_SERVER['HTTP_REFERER']) : '');
     if ($returnto) {
@@ -221,9 +226,12 @@ if ($action === 'add') {
                 <a href='$returnto#comments' class='button is-small has-text-black'>back</a>
             </div>  ";
     }
-    echo stdhead($lang['comment_original'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
-    die();
+    $title = _('Original Comment');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
 } else {
-    stderr('Error', 'Unknown action');
+    stderr(_('Error'), 'Unknown action');
 }
 die();

@@ -6,8 +6,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('achievementlist'));
-//$doUpdate = false;
 global $site_config;
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && $user['class'] >= UC_MAX) {
@@ -17,22 +15,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $user['class'] >= UC_MAX) {
     $clienticon = htmlsafechars($clienticon);
     $achievname = htmlsafechars($achievname);
     sql_query('INSERT INTO achievementist (achievname, notes, clienticon) VALUES(' . sqlesc($achievname) . ', ' . sqlesc($notes) . ', ' . sqlesc($clienticon) . ')') or sqlerr(__FILE__, __LINE__);
-    $message = "{$lang['achlst_new_ach_been_added']}. {$lang['achlst_achievement']}: [{$achievname}]";
+    $message = '' . _('A New achievment has been added') . '. ' . _('Achievement') . ": [{$achievname}]";
     //autoshout($message);
     //$doUpdate = true;
 }
 $res = sql_query('SELECT a1.*, (SELECT COUNT(a2.id) FROM achievements AS a2 WHERE a2.achievement = a1.achievname) AS count FROM achievementist AS a1 ORDER BY a1.id') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT = '';
-$HTMLOUT .= "<h1>{$lang['achlst_std_head']}</h1>\n";
+$HTMLOUT .= '<h1>' . _('Achievements List') . "</h1>\n";
 if (mysqli_num_rows($res) === 0) {
-    $HTMLOUT .= "<p><b>{$lang['achlst_there_no_ach_msg']}!<br>{$lang['achlst_staff_been_lazy']}!</b></p>\n";
+    $HTMLOUT .= '<p><b>' . _('There are currently no achievements added to the list') . '!<br>' . _('staff has been slacking') . "!</b></p>\n";
 } else {
-    $heading = "
+    $heading = '
             <tr>
-                <th>{$lang['achlst_achievname']}</th>
-                <th>{$lang['achlst_description']}</th>
-                <th>{$lang['achlst_earned']}</th>
-            </tr>";
+                <th>' . _('Achievement Name') . '</th>
+                <th>' . _('Description') . '</th>
+                <th>' . _('Earned') . '</th>
+            </tr>';
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $notes = htmlsafechars($arr['notes']);
@@ -52,26 +50,30 @@ if (mysqli_num_rows($res) === 0) {
 $HTMLOUT .= main_table($body, $heading);
 
 if ($user['class'] >= UC_MAX) {
-    $HTMLOUT .= "
-    <h2>{$lang['achlst_add_an_ach_lst']}</h2>
+    $HTMLOUT .= '
+    <h2>' . _('Add an achievement to list.') . "</h2>
     <form method='post' action='achievementlist.php' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table("
             <tr>
-                <td class='w-15'>{$lang['achlst_achievname']}</td>
+                <td class='w-15'>" . _('Achievement Name') . "</td>
                 <td><input class='w-100' type='text' name='achievname'></td>
             </tr>
             <tr>
-                <td>{$lang['achlst_achievicon']}</td>
+                <td>" . _('AchievIcon') . "</td>
                 <td><textarea class='w-100' rows='3' name='clienticon'></textarea></td>
             </tr>
             <tr>
-                <td>{$lang['achlst_description']}</td>
+                <td>" . _('Description') . "</td>
                 <td><textarea class='w-100' rows='6' name='notes'></textarea></td>
             </tr>
             <tr>
                 <td colspan='2' class='has-text-centered'>
-                    <input type='submit' name='okay' value='{$lang['achlst_add_me']}!' class='button is-small'>
+                    <input type='submit' name='okay' value='" . _('Add Me') . "!' class='button is-small'>
                 </td>
             </tr>") . '
     </form>';
 }
-echo stdhead($lang['achlst_std_head']) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();
+$title = _('Achievement List');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT, 'has-text-centered') . stdfoot();

@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config, $user, $CURUSER;
+global $container, $site_config, $user, $CURUSER;
 
 $cache = $container->get(Cache::class);
 $cache_share_ratio = $cache->get('share_ratio_' . $user['id']);
@@ -43,11 +43,11 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
     if ($user['id'] == $CURUSER['id'] || $CURUSER['class'] >= UC_STAFF) {
         $table_data .= '
         <tr>
-            <td>' . $lang['userdetails_time_ratio'] . '</td>
+            <td>' . _('Time Ratio:') . '</td>
             <td>
                 <div class="level-left">' . (($user['downloaded'] > 0 || $user['uploaded'] > 2147483648) ? '
                     <span class="right10" style="color: ' . get_ratio_color($avg_time_ratio) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine($avg_time_ratio) . '
-                    <span class="left10">[</span><span style="color: ' . get_ratio_color($avg_time_ratio) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . $lang['userdetails_time_ratio_per'] : $lang['userdetails_inf']) . '
+                    <span class="left10">[</span><span style="color: ' . get_ratio_color($avg_time_ratio) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . _(' per torrent average ]  Ratio based on the assumption that all torrents were New. ') : _('Inf.')) . '
                 </div>
             </td>
         </tr>';

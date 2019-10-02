@@ -5,7 +5,7 @@ declare(strict_types = 1);
 use Pu239\Cache;
 use Pu239\Database;
 
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $cache = $container->get(Cache::class);
 $irc = $cache->get('ircusers_');
@@ -25,7 +25,7 @@ if ($irc === false || is_null($irc)) {
     $count = count($query);
     $i = 0;
     if ($count >= 100) {
-        $irc['ircusers'] = format_comment($lang['index_blocks_too_many']);
+        $irc['ircusers'] = format_comment(_('Too many to list here.'));
     } elseif ($count > 0) {
         foreach ($query as $row) {
             if (++$i != $count) {
@@ -36,7 +36,7 @@ if ($irc === false || is_null($irc)) {
         }
         $irc['ircusers'] = implode('&nbsp;&nbsp;', $list);
     } elseif ($count === 0) {
-        $irc['ircusers'] = $lang['index_irc_nousers'];
+        $irc['ircusers'] = _('There have been no active irc users in the last 15 minutes.');
     }
 
     $irc['count'] = number_format($count);

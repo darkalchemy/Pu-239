@@ -10,13 +10,11 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('viewnfo'));
-
 global $container, $site_config;
 
 $id = (int) $_GET['id'];
 if ($user['class'] === UC_MIN) {
-    stderr('error', 'Need to rank up');
+    stderr(_('Error'), 'Need to rank up');
 } elseif (!is_valid_id($id)) {
     stderr('error', 'Invalid ID');
 }
@@ -27,11 +25,11 @@ $nfo = $torrent->get_items([
     'id',
 ], $id);
 if (empty($nfo) || empty($nfo['nfo'])) {
-    die($lang['text_puke']);
+    die(_('Puke'));
 }
 
 $HTMLOUT = "
-        <h1 class='has-text-centered'>{$lang['text_nfofor']}<a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . format_comment($nfo['name']) . '</a></h1>';
+        <h1 class='has-text-centered'>" . _('NFO for') . " <a href='{$site_config['paths']['baseurl']}/details.php?id=$id'>" . format_comment($nfo['name']) . '</a></h1>';
 
 if ($site_config['nfo']['as_image']) {
     $nfo2png = $container->get(Nfo2Png::class);
@@ -47,11 +45,15 @@ if (empty($image)) {
     $div = "
         <div class='size_5 has-text-centered w-50 min-600'>
             <div class='bottom20'>
-                {$lang['text_forbest']}<a href='" . url_proxy('https://www.fontpalace.com/font-download/MS+LineDraw/') . "' target='_blank'>{$lang['text_linedraw']}</a>{$lang['text_font']}
+                " . _('For best visual result, install the') . " <a href='" . url_proxy('https://www.fontpalace.com/font-download/MS+LineDraw/') . "' target='_blank'>" . _('MS Linedraw') . '</a> ' . _('font') . "
             </div>
             <pre class='pre round10 noselect has-text-white has-text-left bg-dark w-100 has-text-green top20 bottom20'>" . format_urls(strip_tags($nfo['nfo'])) . '</pre>
         </div';
 
     $HTMLOUT .= main_div($div);
 }
-echo stdhead($lang['text_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('View NFO');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

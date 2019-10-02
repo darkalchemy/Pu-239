@@ -235,26 +235,13 @@ class User
         return $userid;
     }
 
-    /**
-     * @param array $values
-     * @param array $lang
-     *
-     * @throws AuthError
-     * @throws DependencyException
-     * @throws Exception
-     * @throws InvalidManipulation
-     * @throws NotFoundException
-     * @throws NotLoggedInException
-     * @throws UnbegunTransaction
-     *
-     * @return bool|int
-     */
-    public function add(array $values, array $lang)
+    public function add(array $values)
     {
+        // TODO
         $userid = false;
         try {
             if ($this->site_config['signup']['email_confirm'] && !isset($values['send_email'])) {
-                $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values, $lang) {
+                $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values) {
                     $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
                         '<#SITENAME#>',
@@ -266,25 +253,25 @@ class User
                         strip_tags($values['email']),
                         getip(),
                         $url,
-                    ], $lang['takesignup_email_body']);
-                    send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} {$lang['takesignup_confirm']}", $body, strip_tags($body));
+                    ], doc_head($this->site_config['site']['name'] . _(' Registration')));
+                    send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} " . _('user registration confirmation'), $body, strip_tags($body));
                     $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
                 });
             } else {
                 $userid = $this->auth->registerWithUniqueUsername(strip_tags($values['email']), strip_tags($values['password']), strip_tags($values['username']));
             }
         } catch (DuplicateUsernameException $e) {
-            stderr('Error', 'Username already exists');
+            stderr(_('Error'), _('Username already exists'));
         } catch (InvalidEmailException $e) {
-            stderr('Error', 'Invalid email address');
+            stderr(_('Error'), _('Invalid email address'));
         } catch (InvalidPasswordException $e) {
-            stderr('Error', 'Invalid password');
+            stderr(_('Error'), _('Invalid password'));
         } catch (UserAlreadyExistsException $e) {
-            stderr('Error', 'Email already in use');
+            stderr(_('Error'), _('Email already in use'));
         } catch (TooManyRequestsException $e) {
-            stderr('Error', 'Too many requests');
+            stderr(_('Error'), _('Too many requests from your IP'));
         } catch (AuthError $e) {
-            stderr('Error', 'Unknown Error');
+            stderr(_('Error'), _('Unknown Error'));
         }
         if ($userid !== false) {
             $dt = TIME_NOW;
@@ -332,8 +319,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
      */
@@ -482,7 +469,6 @@ class User
      * @param string $email
      * @param string $password
      * @param int    $remember
-     * @param array  $lang
      *
      * @throws AttemptCancelledException
      * @throws AuthError
@@ -495,7 +481,7 @@ class User
      *
      * @return bool
      */
-    public function login(string $email, string $password, int $remember, array $lang)
+    public function login(string $email, string $password, int $remember)
     {
         $duration = null;
         if ($remember === 1) {
@@ -509,18 +495,17 @@ class User
 
             return true;
         } catch (InvalidEmailException $e) {
-            stderr('Error', $lang['login_email_pass_incorrect']);
+            stderr(_('Error'), _('Your credentials could not be validated.'));
         } catch (InvalidPasswordException $e) {
-            stderr('Error', $lang['login_email_pass_incorrect']);
+            stderr(_('Error'), _('Your credentials could not be validated.'));
         } catch (EmailNotVerifiedException $e) {
-            stderr('Error', $lang['login_not_verified']);
+            stderr(_('Error'), _('You have not verified you email address. Please check your email and click the link to verify it.'));
         } catch (TooManyRequestsException $e) {
-            stderr('Error', $lang['login_too_many']);
+            stderr(_('Error'), _('Too many requests from your IP'));
         }
     }
 
     /**
-     * @param array $lang
      * @param array $post
      * @param bool  $return
      *
@@ -534,32 +519,31 @@ class User
      *
      * @return bool
      */
-    public function reset_password(array $lang, array $post, bool $return)
+    public function reset_password(array $post, bool $return)
     {
         try {
             $this->auth->resetPassword($post['selector'], $post['token'], $post['password']);
         } catch (InvalidSelectorTokenPairException $e) {
-            stderr('Error', 'Invalid token');
+            stderr(_('Error'), _('Invalid token'));
         } catch (TokenExpiredException $e) {
-            stderr('Error', 'Token expired');
+            stderr(_('Error'), _('Token expired'));
         } catch (ResetDisabledException $e) {
-            stderr('Error', 'Password reset is disabled');
+            stderr(_('Error'), _('Password reset is disabled'));
         } catch (InvalidPasswordException $e) {
-            stderr('Error', 'Invalid password');
+            stderr(_('Error'), _('Invalid password'));
         } catch (TooManyRequestsException $e) {
-            stderr('Error', 'Too many requests');
+            stderr(_('Error'), _('Too many requests from your IP'));
         }
         if ($return) {
             return true;
         }
-        $this->session->set('is-success', 'Password has been reset');
+        $this->session->set('is-success', _('Password has been reset'));
         header('Location: ' . $this->site_config['paths']['baseurl']);
         die();
     }
 
     /**
      * @param string $email
-     * @param array  $lang
      *
      * @throws AuthError
      * @throws DependencyException
@@ -569,22 +553,22 @@ class User
      * @throws NotLoggedInException
      * @throws UnbegunTransaction
      */
-    public function create_reset(string $email, array $lang)
+    public function create_reset(string $email)
     {
         try {
-            $this->auth->forgotPassword($email, function ($selector, $token) use ($email, $lang) {
-                $body = sprintf($lang['email_request'], $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
-                send_mail($email, "{$this->site_config['site']['name']} {$lang['email_subjreset']}", $body, strip_tags($body));
+            $this->auth->forgotPassword($email, function ($selector, $token) use ($email) {
+                $body = sprintf(doc_head($this->site_config['site']['name'] . _(' Reset Password Request')), $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
+                send_mail($email, "{$this->site_config['site']['name']} " . _('password reset confirmation'), $body, strip_tags($body));
             });
-            stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
+            stderr(_('Error'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
         } catch (InvalidEmailException $e) {
-            stderr($lang['stderr_successhead'], $lang['stderr_confmailsent']);
+            stderr(_('Error'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
         } catch (EmailNotVerifiedException $e) {
-            stderr($lang['stderr_errorhead'], $lang['recover_email_not_verified']);
+            stderr(_('Error'), _('Email has not been verified.'));
         } catch (ResetDisabledException $e) {
-            stderr($lang['stderr_errorhead'], $lang['recover_not_enabled']);
+            stderr(_('Error'), _('Password reset is disabled.'));
         } catch (TooManyRequestsException $e) {
-            stderr($lang['stderr_errorhead'], $lang['recover_throttle']);
+            stderr(_('Error'), _('Too many requests from your IP'));
         }
     }
 

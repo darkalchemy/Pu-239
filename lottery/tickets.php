@@ -156,4 +156,10 @@ if ($lottery['current_user']['can_buy'] > 0) {
         </form>";
 }
 
-echo stdhead('Buy tickets for lottery') . wrapper($html) . stdfoot();
+$title = _('Buy tickets for lottery');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/games.php'>" . _('Games') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/lottery.php'>" . _('Lottery') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($html) . stdfoot();

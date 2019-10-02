@@ -21,7 +21,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_comments.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('requests'), load_language('upload'), load_language('bitbucket'));
 global $container, $site_config;
 
 $stdhead = [];
@@ -72,12 +71,12 @@ if (isset($data['action'])) {
                         'comments' => new Literal('comments - 1'),
                     ];
                     $request_class->update($update, $tid);
-                    $session->set('is-success', $lang['request_comment_deleted']);
+                    $session->set('is-success', _('Comment Deleted'));
                 } else {
-                    $session->set('is-warning', $lang['request_comment_not_deleted']);
+                    $session->set('is-warning', _('Comment Not Deleted'));
                 }
             } else {
-                $session->set('is-danger', $lang['request_comment_no_access_del']);
+                $session->set('is-danger', _('You do not have access to delete this comment'));
             }
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $tid);
             die();
@@ -87,16 +86,16 @@ if (isset($data['action'])) {
             $comment = $comment_class->get_comment_by_id($cid);
             $request = $request_class->get($comment['request'], false, $user['id']);
             $edit_form = "
-                <h2 class='has-text-centered'>{$lang['request_edit_comment']}" . htmlsafechars($request['name']) . "</h2>
+                <h2 class='has-text-centered'>" . _('Editing a comment for :') . '' . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=edit_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$comment['request']}'>
                     <input type='hidden' name='cid' value='{$comment['id']}'>
                     <div class='columns is-marginless is-paddingless'>
-                        <div class='column is-one-quarter has-text-left'>{$lang['request_comment']}</div>
+                        <div class='column is-one-quarter has-text-left'>" . _('Comment') . "</div>
                         <div class='column'>" . BBcode($comment['text']) . "</div>
                     </div>
                     <div class='has-text-centered padding20'>
-                        <input type='submit' value='{$lang['request_update']}' class='button is-small'>
+                        <input type='submit' value='" . _('Update') . "' class='button is-small'>
                     </div>
                 </form>";
             break;
@@ -112,15 +111,15 @@ if (isset($data['action'])) {
             $id = isset($data['id']) ? (int) $data['id'] : 0;
             $request = $request_class->get($id, false, $user['id']);
             $edit_form = "
-                <h2 class='has-text-centered'>{$lang['request_add_comment']}" . htmlsafechars($request['name']) . "</h2>
+                <h2 class='has-text-centered'>" . _('Add Comment') . '' . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=post_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$id}'>
                     <div class='columns is-marginless is-paddingless'>
-                        <div class='column is-one-quarter has-text-left'>{$lang['request_comment']}</div>
+                        <div class='column is-one-quarter has-text-left'>" . _('Comment') . "</div>
                         <div class='column'>" . BBcode() . "</div>
                     </div>
                     <div class='has-text-centered padding20'>
-                        <input type='submit' value='{$lang['request_add_comment']}' class='button is-small'>
+                        <input type='submit' value='" . _('Add Comment') . "' class='button is-small'>
                     </div>
                 </form>";
             break;
@@ -172,7 +171,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         if ($validation->fails()) {
             $errors = $validation->errors();
-            stderr('Error', $errors->firstOfAll()['name']);
+            stderr(_('Error'), $errors->firstOfAll()['name']);
             die();
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
@@ -198,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         if ($validation->fails()) {
             $errors = $validation->errors();
-            stderr('Error', $errors->firstOfAll()['name']);
+            stderr(_('Error'), $errors->firstOfAll()['name']);
             die();
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
@@ -220,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         if ($validation->fails()) {
             $errors = $validation->errors();
-            stderr('Error', $errors->firstOfAll()['name']);
+            stderr(_('Error'), $errors->firstOfAll()['name']);
             die();
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
@@ -235,9 +234,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'comments' => new Literal('comments + 1'),
             ];
             $request_class->update($update, $id);
-            $session->set('is-success', $lang['request_comment_added']);
+            $session->set('is-success', _('Comment Added'));
         } else {
-            $session->set('is-warning', $lang['request_comment_not_added']);
+            $session->set('is-warning', _('Comment Not Added'));
         }
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
         die();
@@ -249,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         if ($validation->fails()) {
             $errors = $validation->errors();
-            stderr('Error', $errors->firstOfAll()['name']);
+            stderr(_('Error'), $errors->firstOfAll()['name']);
             die();
         }
         $cid = isset($_POST['cid']) ? (int) $_POST['cid'] : 0;
@@ -259,12 +258,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
         if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'formum_mod') || $user['id'] === $comment['user'])) {
             if ($comment_class->update($values, $cid)) {
-                $session->set('is-success', $lang['request_comment_updated']);
+                $session->set('is-success', _('Comment Updated'));
             } else {
-                $session->set('is-warning', $lang['request_comment_not_updated']);
+                $session->set('is-warning', _('Comment Not Updated'));
             }
         } else {
-            $session->set('is-danger', $lang['request_comment_no_access_update']);
+            $session->set('is-danger', _('You do not have access to update this comment'));
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_request&id=' . $id);
@@ -280,7 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
         if ($validation->fails()) {
             $errors = $validation->errors();
-            stderr('Error', $errors->firstOfAll()['name']);
+            stderr(_('Error'), $errors->firstOfAll()['name']);
             die();
         }
         $values = [
@@ -295,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($add) {
             if ($request_class->insert($values)) {
                 $session->unset('post_request_data');
-                $session->set('is-success', sprintf($lang['request_added'], format_comment($_POST['name'])));
+                $session->set('is-success', _f('Request: %s Added', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -303,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['updated'] = $dt;
             unset($values['added']);
             if ($request_class->update($values, (int) $_POST['id'])) {
-                $session->set('is-success', sprintf($lang['request_updated'], format_comment($_POST['name'])));
+                $session->set('is-success', _f('Request: %s Updated', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -313,25 +312,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $HTMLOUT = $add_new = $update = '';
 $form = "
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['request_cat']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Category') . "</div>
                     <div class='column'>
-                        " . category_dropdown($lang, $site_config['categories']['movie']) . "
+                        " . category_dropdown($site_config['categories']['movie']) . "
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['upcoming_name']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Request') . "</div>
                     <div class='column'>
                         <input type='text' class='w-100' name='name' autocomplete='on' value='" . (!empty($post_data['name']) ? htmlsafechars($post_data['name']) : '') . "' required>
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['request_poster']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Poster') . "</div>
                     <div class='column'>
-                        <input type='url' id='image_url' placeholder='{$lang['request_external']}' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
+                        <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
                         <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' " . (!empty($post_data['poster']) ? "value='" . htmlsafechars($post_data['poster']) . "'" : '') . ">
                         <div class='poster_container has-text-centered'></div>
                         <div id='droppable' class='droppable bg-03 top20'>
-                            <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
+                            <span id='comment'>" . _('Drop images or click here to select images.') . "</span>
                             <div id='loader' class='is-hidden'>
                                 <img src='{$site_config['paths']['images_baseurl']}/forums/updating.svg' alt='Loading...'>
                             </div>
@@ -340,20 +339,20 @@ $form = "
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['request_imdb']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('IMDb Link') . "</div>
                     <div class='column'>
                         <input type='url' class='w-100' id='url' name='url' autocomplete='on' value='" . (!empty($post_data['url']) ? htmlsafechars($post_data['url']) : '') . "' required>
                         <div id='imdb_outer'></div>
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Description') . "</div>
                     <div class='column'>" . BBcode(!empty($post_data['description']) ? htmlsafechars($post_data['description']) : '') . '</div>
                 </div>';
 if ($has_access) {
     if ($add) {
         $add_new = "
-            <h2 class='has-text-centered'>{$lang['request_add']}</h2>
+            <h2 class='has-text-centered'>" . _('Add Request') . "</h2>
             <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=add_request' enctype='multipart/form-data' accept-charset='utf-8'>$form
                 <div class='has-text-centered'>
                     <input type='submit' value='Add' class='button is-small'>
@@ -362,19 +361,19 @@ if ($has_access) {
         $add_new = main_div($add_new, 'has-text-centered w-75 min-350', 'padding20');
     } elseif ($edit && is_valid_id($id)) {
         $update = "
-            <h2 class='has-text-centered'>{$lang['request_edit']}</h2>
+            <h2 class='has-text-centered'>" . _('Edit Request') . "</h2>
             <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=edit_request' enctype='multipart/form-data' accept-charset='utf-8'>$form
                 <div class='has-text-centered padding20'>
                     <input type='hidden' name='id' value='{$id}'>
-                    <input type='submit' value='{$lang['request_update']}' class='button is-small'>
+                    <input type='submit' value='" . _('Update') . "' class='button is-small'>
                 </div>
             </form>";
         $update = main_div($update, 'has-text-centered w-75 min-350', 'padding20');
     } elseif ($delete && is_valid_id($id)) {
         if ($request_class->delete($id, $user['class'] >= UC_STAFF, $user['id']) === 1) {
-            $session->set('is-success', $lang['request_deleted']);
+            $session->set('is-success', _('Request Deleted'));
         } else {
-            $session->set('is-warning', $lang['request_not_deleted']);
+            $session->set('is-warning', _('Request was NOT Deleted'));
         }
     }
 }
@@ -382,11 +381,12 @@ $view_request = $has_votes = '';
 if ($view && is_valid_id($id)) {
     preg_match('/(tt[\d]{7,8})/i', $post_data['url'], $match);
     if (!empty($match[1])) {
+        $imdb_id = $match[1];
         $imdb_info = get_imdb_info($match[1], true, false, null, $post_data['poster']);
         if (isset($imdb_info[0])) {
             $imdb_info = "
                 <div class='columns has-text-left bg-03 top20 round10'>
-                    <div class='column is-one-quarter'>{$lang['request_imdb_info']}</div>
+                    <div class='column is-one-quarter'>" . _('IMDb Info') . "</div>
                     <div class='column'>{$imdb_info[0]}</div>
                 </div>";
         }
@@ -394,18 +394,18 @@ if ($view && is_valid_id($id)) {
     if (isset($post_data['vote_yes']) || isset($post_data['vote_no'])) {
         $has_votes = "
                 <div class='columns has-text-left bg-03 top20 round10'>
-                    <div class='column is-one-quarter'>{$lang['request_vote']}</div>
-                    <div class='column is-1 tooltipper' title='{$post_data['vote_yes']} {$lang['request_vote_yes']}'><i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>{$post_data['vote_yes']}</div>
-                    <div class='column is-1 tooltipper' title='{$post_data['vote_no']} {$lang['request_vote_no']}'><i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>{$post_data['vote_no']}</div>
+                    <div class='column is-one-quarter'>" . _('User Votes') . "</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_yes']} " . _('Users voting for this Request.') . "'><i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>{$post_data['vote_yes']}</div>
+                    <div class='column is-1 tooltipper' title='{$post_data['vote_no']} " . _('Users voting against this Request.') . "'><i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>{$post_data['vote_no']}</div>
                 </div>";
     }
     $view_request .= "
                 <div class='columns has-text-left bg-03 round10'>
-                    <div class='column is-one-quarter'>{$lang['request_cat']}</div>
+                    <div class='column is-one-quarter'>" . _('Category') . "</div>
                     <div class='column'>{$post_data['fullcat']}</div>
                 </div>
                 <div class='columns bg-03 top20 round10'>
-                    <div class='column is-one-quarter has-text-left'>{$lang['request_desc']}</div>
+                    <div class='column is-one-quarter has-text-left'>" . _('Description') . "</div>
                     <div class='column'>" . (!empty($post_data['description']) ? format_comment($post_data['description']) : '') . "</div>
                 </div>{$imdb_info}{$has_votes}";
     $bounties = $bounty_class->get_bounties($post_data['id']);
@@ -427,38 +427,38 @@ if ($view && is_valid_id($id)) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>{$lang['request_accept_torrent']}</h2>
+                        <h2 class='has-text-centered'>" . _('Accept the torrent and pay the bounty') . "</h2>
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=pay_bounty&amp;id={$id}' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$id}'>
                             <div class='level-center-center'>
                                 <input type='submit' value='" . sprintf($lang['request_pay_bounty'], number_format($post_data['bounties'])) . "' class='button is-small'>
                             </div>
                         </form>
-                        <div class='bg-03 padding20 top20 round10'>{$lang['request_bounty_info']}</div>
+                        <div class='bg-03 padding20 top20 round10'>" . _('Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded.') . '</div>
                     </div>
-                </div>";
+                </div>';
     } elseif ($post_data['torrentid'] === 0) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>{$lang['request_add_bounty']}" . htmlsafechars($post_data['name']) . "</h2>
+                        <h2 class='has-text-centered'>" . _('Add a Bounty to: ') . '' . htmlsafechars($post_data['name']) . "</h2>
                         <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . sprintf($lang['request_bounty_user'], $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
                         {$show_bounties}
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_bounty' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$id}'>
                             <div class='level-center-center'>
                                 <input type='number' name='bounty' min='100' max='" . ($user['seedbonus'] > 100000 ? 100000 : $user['seedbonus']) . "' step='100' class='left10 right10' required>
-                                <input type='submit' value='{$lang['request_add_bounty']}' class='button is-small left10 right10'>
+                                <input type='submit' value='" . _('Add a Bounty to: ') . "' class='button is-small left10 right10'>
                             </div>
                         </form>
-                        <div class='bg-03 padding20 top20 round10'>{$lang['request_bounty_info']}</div>
+                        <div class='bg-03 padding20 top20 round10'>" . _('Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded.') . '</div>
                     </div>
-                </div>";
+                </div>';
     }
     $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>{$lang['request_adding_comment']}" . htmlsafechars($post_data['name']) . "</h2>
+                        <h2 class='has-text-centered'>" . _('Add a comment to: ') . '' . htmlsafechars($post_data['name']) . "</h2>
                         <a class='button is-small' href='{$site_config['paths']['baseurl']}/requests.php?action=add_comment&amp;id={$id}'>Add a comment</a>
                     </div>
                 </div>";
@@ -469,11 +469,11 @@ if ($view && is_valid_id($id)) {
 
 $HTMLOUT .= "
     <ul class='level-center bg-06 padding10'>
-        <li><a href='{$_SERVER['PHP_SELF']}?action=add_request'>{$lang['request_add']}</a></li>" . ($view_all ? "
-        <li><a href='{$_SERVER['PHP_SELF']}'>{$lang['request_view']}</a></li>" : "
-        <li><a href='{$_SERVER['PHP_SELF']}?action=view_all'>{$lang['request_view_all']}</a></li>") . "
+        <li><a href='{$_SERVER['PHP_SELF']}?action=add_request'>" . _('Add Request') . '</a></li>' . ($view_all ? "
+        <li><a href='{$_SERVER['PHP_SELF']}'>" . _('View Incomplete Requests') . '</a></li>' : "
+        <li><a href='{$_SERVER['PHP_SELF']}?action=view_all'>" . _('View All Requests') . '</a></li>') . "
     </ul>
-    <h1 class='has-text-centered'>{$site_config['site']['name']}'s {$lang['request_title']}</h1>";
+    <h1 class='has-text-centered'>{$site_config['site']['name']}'s " . _('Requests') . '</h1>';
 
 if (!empty($edit_form)) {
     $HTMLOUT .= $edit_form;
@@ -492,9 +492,9 @@ if (!empty($edit_form)) {
     $requests = $request_class->get_all($pager['pdo']['limit'], $pager['pdo']['offset'], 'added', true, $view_all, (bool) $user['hidden'], $user['id']);
     $heading = "
                     <tr>
-                        <th class='has-text-centered'>{$lang['request_cat']}</th>
-                        <th class='has-text-centered min-250'>{$lang['upcoming_name']}</th>
-                        <th class='has-text-centered'>{$lang['upcoming_chef']}</th>
+                        <th class='has-text-centered'>" . _('Category') . "</th>
+                        <th class='has-text-centered min-250'>" . _('Request') . "</th>
+                        <th class='has-text-centered'>" . _('Requested By') . "</th>
                         <th class='has-text-centered'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
                         <th class='has-text-centered'><i class='icon-dollar icon has-text-success' aria-hidden='true'></i></th>
                         <th class='has-text-centered'><i class='icon-user-plus icon' aria-hidden='true'></i></th>" . ($has_access ? "
@@ -522,7 +522,7 @@ if (!empty($edit_form)) {
                 $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
                 $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['request_plot']}:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Plot') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
@@ -536,14 +536,14 @@ if (!empty($edit_form)) {
                         <td class='has-text-centered'>{$caticon}</td>
                         <td>$hover</td>
                         <td class='has-text-centered'>{$chef}</td>
-                        <td class='has-text-centered'><span class='tooltipper' title='{$lang['request_comments']}'>" . number_format($request['comments']) . "</span></td>
-                        <td class='has-text-centered'><span class='tooltipper' title='{$lang['request_bounty']}'>" . number_format($request['bounty']) . ' / ' . number_format($request['bounties']) . "</span></td>
+                        <td class='has-text-centered'><span class='tooltipper' title='" . _('Comments') . "'>" . number_format($request['comments']) . "</span></td>
+                        <td class='has-text-centered'><span class='tooltipper' title='" . _('Bounties') . "'>" . number_format($request['bounty']) . ' / ' . number_format($request['bounties']) . "</span></td>
                         <td class='has-text-centered w-10'>
                             <div class='level-center'>
-                                <div data-id='{$request['id']}' data-voted='{$request['voted']}' class='request_vote tooltipper' title='" . ($request['voted'] === 'yes' ? $lang['request_voted_yes'] : ($request['voted'] === 'no' ? $lang['request_voted_no'] : $lang['request_not_voted'])) . "'>
+                                <div data-id='{$request['id']}' data-voted='{$request['voted']}' class='request_vote tooltipper' title='" . ($request['voted'] === 'yes' ? _('You support this request.') : ($request['voted'] === 'no' ? _('You oppose this request.') : _('You have not voted for or against this request.'))) . "'>
                                     <span id='vote_{$request['id']}'>" . ($request['voted'] === 'yes' ? "<i class='icon-thumbs-up icon has-text-success is-marginless' aria-hidden='true'></i>" : ($request['voted'] === 'no' ? "<i class='icon-thumbs-down icon has-text-danger is-marginless' aria-hidden='true'></i>" : "<i class='icon-thumbs-up icon is-marginless' aria-hidden='true'></i>")) . "</span>
                                 </div>
-                                <div data-id='{$request['id']}' data-notified='{$request['notify']}' class='request_notify tooltipper' title='" . ($request['notify'] === 1 ? $lang['request_notified'] : $lang['request_not_notified']) . "'>
+                                <div data-id='{$request['id']}' data-notified='{$request['notify']}' class='request_notify tooltipper' title='" . ($request['notify'] === 1 ? _('You will be notified when this has been uploaded.') : _('You will NOT be notified when this has been uploaded.')) . "'>
                                     <span id='notify_{$request['id']}'>" . ($request['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
                                 </div>
                             </div>
@@ -558,10 +558,15 @@ if (!empty($edit_form)) {
         $cols = $has_access ? 7 : 6;
         $body = "
                     <tr>
-                        <td colspan='{$cols}' class='has-text-centered'>{$lang['request_no_requests']}</td>
-                    </tr>";
+                        <td colspan='{$cols}' class='has-text-centered'>" . _('No Requests') . '</td>
+                    </tr>';
     }
     $HTMLOUT .= $menu_top . main_table($body, $heading) . $menu_bottom;
 }
 
-echo stdhead($lang['request_title'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Requests');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -116,8 +116,6 @@ function trivia_table()
  */
 function trivia_clocks()
 {
-    global $lang;
-
     return "
     <ul class='level-center top20'>
         <div id='clock_round'>

@@ -10,10 +10,9 @@ use Pu239\PollVoter;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
-$lang = load_language('global');
 $poll_id = isset($_GET['pollid']) ? (int) $_GET['pollid'] : 0;
 if (!is_valid_id($poll_id)) {
-    stderr('ERROR', 'No poll with that ID');
+    stderr(_('Error'), 'No poll with that ID');
 }
 $vote_cast = [];
 $_POST['choice'] = isset($_POST['choice']) ? $_POST['choice'] : [];
@@ -26,11 +25,11 @@ $poll_data = $fluent->from('polls')
                     ->fetch();
 
 if (empty($poll_data)) {
-    stderr('ERROR', 'No poll with that ID');
+    stderr(_('Error'), 'No poll with that ID');
 }
 
 if (!empty($poll_data['user_id'])) {
-    stderr('ERROR', 'You have already voted!');
+    stderr(_('Error'), 'You have already voted!');
 }
 $_POST['nullvote'] = isset($_POST['nullvote']) ? $_POST['nullvote'] : 0;
 $pollvoter_class = $container->get(PollVoter::class);
@@ -53,7 +52,7 @@ if (!$_POST['nullvote']) {
     $poll_answers = json_decode($poll_data['choices'], true);
     reset($poll_answers);
     if (!empty($vote_cast) && count($vote_cast) < count($poll_answers)) {
-        stderr('ERROR', 'No vote');
+        stderr(_('Error'), 'No vote');
     }
     $values = [
         'user_id' => $user['id'],
@@ -62,7 +61,7 @@ if (!$_POST['nullvote']) {
     ];
     $vid = $pollvoter_class->add($values);
     if (!$vid) {
-        stderr('ERROR', 'Could not update records');
+        stderr(_('Error'), 'Could not update records');
     }
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
@@ -94,7 +93,7 @@ if (!$_POST['nullvote']) {
                      ->execute();
 
     if (!$result) {
-        stderr('ERROR', 'Could not update records');
+        stderr(_('Error'), 'Could not update records');
     }
 } else {
     $values = [
@@ -111,7 +110,7 @@ if (!$_POST['nullvote']) {
     ], $site_config['expires']['poll_data']);
 
     if (!$vid) {
-        stderr('ERROR', 'Could not update records');
+        stderr(_('Error'), 'Could not update records');
     }
 }
 header("location: {$site_config['paths']['baseurl']}/#poll");

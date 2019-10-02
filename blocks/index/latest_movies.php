@@ -7,7 +7,7 @@ use Pu239\Torrent;
 
 require_once PARTIALS_DIR . 'torrent_table.php';
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $torrent = $container->get(Torrent::class);
 $last5movietorrents = $torrent->get_latest($site_config['categories']['movie']);
@@ -17,7 +17,7 @@ $latest_movies .= "
     <div id='latesttorrents' class='box'>
         <div class='has-text-centered'>
             <div class='module table-wrapper'>
-                <!-- <div class='badge badge-new'></div> -->" . torrent_table($lang['last5torrents_movie_title']);
+                <!-- <div class='badge badge-new'></div> -->" . torrent_table(_('Newest Movies'));
 
 $images_class = $container->get(Image::class);
 foreach ($last5movietorrents as $last) {
@@ -39,8 +39,8 @@ foreach ($last5movietorrents as $last) {
 if (count($last5movietorrents) === 0) {
     $latest_movies .= "
                         <tr>
-                            <td colspan='7'>{$lang['last5torrents_no_torrents']}</td>
-                        </tr>";
+                            <td colspan='7'>" . _('There are no torrents.') . '</td>
+                        </tr>';
 }
 $latest_movies .= '
                     </tbody>

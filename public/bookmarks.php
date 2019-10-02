@@ -13,7 +13,6 @@ require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_categories.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('torrenttable_functions'), load_language('bookmark'));
 global $container, $site_config;
 
 $stdfoot = [
@@ -22,7 +21,7 @@ $stdfoot = [
     ],
 ];
 
-$htmlout = '';
+$HTMLOUT = '';
 
 /**
  * @param        $res
@@ -37,41 +36,41 @@ $htmlout = '';
  */
 function bookmarktable($res, $userid, $variant = 'index')
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
-    $htmlout = "
+    $HTMLOUT = "
     <div class='has-text-centered bottom20'>
-        {$lang['bookmarks_icon']}
-        <i class='icon-bookmark-empty icon has-text-danger'></i>{$lang['bookmarks_del1']}
-        <i class='icon-download icon'></i>{$lang['bookmarks_down1']}
-        <i class='icon-key icon has-text-success'></i>{$lang['bookmarks_private1']}
-        <i class='icon-users icon has-text-danger'></i>{$lang['bookmarks_public1']}
-    </div>";
+        " . _('Icon Legend :') . "
+        <i class='icon-bookmark-empty icon has-text-danger'></i>" . _(' = Delete Bookmark |') . "
+        <i class='icon-download icon'></i>" . _(' = Download Torrent |') . "
+        <i class='icon-key icon has-text-success'></i>" . _(' = Bookmark is Private |') . "
+        <i class='icon-users icon has-text-danger'></i>" . _(' = Bookmark is Public') . '
+    </div>';
 
-    $heading = "
+    $heading = '
                     <tr>
-                        <th>{$lang['torrenttable_type']}</th>
-                        <th class='has-text-left'>{$lang['torrenttable_name']}</th>";
+                        <th>' . _('Type') . "</th>
+                        <th class='has-text-left'>" . _('Name') . '</th>';
     $heading .= ($variant === 'index' ? '
-                        <th>' . $lang['bookmarks_del2'] . '</th>
-                        <th>' : '') . '' . $lang['bookmarks_down2'] . '</th>
-                        <th>' . $lang['bookmarks_share'] . '</th>';
+                        <th>' . _('Delete') . '</th>
+                        <th>' : '') . '' . _('Download') . '</th>
+                        <th>' . _('Share') . '</th>';
     if ($variant === 'mytorrents') {
-        $heading .= "
-                        <th>{$lang['torrenttable_edit']}</th>
-                        <th>{$lang['torrenttable_visible']}</th>";
+        $heading .= '
+                        <th>' . _('Edit') . '</th>
+                        <th>' . _('Yes') . '</th>';
     }
-    $heading .= "
-                        <th>{$lang['torrenttable_files']}</th>
-                        <th>{$lang['torrenttable_comments']}</th>
-                        <th>{$lang['torrenttable_added']}</th>
-                        <th>{$lang['torrenttable_size']}</th>
-                        <th>{$lang['torrenttable_snatched']}</th>
-                        <th>{$lang['torrenttable_seeders']}</th>
-                        <th>{$lang['torrenttable_leechers']}</th>";
+    $heading .= '
+                        <th>' . _('Files') . '</th>
+                        <th>' . _('Comments') . '</th>
+                        <th>' . _('Added') . '</th>
+                        <th>' . _('Torrent Size') . '</th>
+                        <th>' . _('Times Completed') . '</th>
+                        <th>' . _('Seeders') . '</th>
+                        <th>' . _('Leechers') . '</th>';
     if ($variant === 'index') {
-        $heading .= "
-                        <th>{$lang['torrenttable_uppedby']}</th>";
+        $heading .= '
+                        <th>' . _('Upped by') . '</th>';
     }
     $heading .= '
                     </tr>';
@@ -121,13 +120,13 @@ function bookmarktable($res, $userid, $variant = 'index')
                         </td>";
         $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-remove='true' data-private='false' class='bookmarks tooltipper' title='{$lang['bookmarks_del3']}'>
+                            <span data-tid='{$id}' data-remove='true' data-private='false' class='bookmarks tooltipper' title='" . _('Delete Bookmark!') . "'>
                                 <i class='icon-bookmark-empty icon has-text-danger'></i>
                             </span>
                         </td>" : '');
         $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='{$lang['bookmarks_down3']}'>
+                            <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$id}' class='tooltipper' title='" . _('Download Bookmark!') . "'>
                                 <i class='icon-download icon'></i>
                             </a>
                         </td>" : '');
@@ -138,14 +137,14 @@ function bookmarktable($res, $userid, $variant = 'index')
         if ($bms['private'] === 'yes') {
             $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_public2']}'>
+                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='" . _('Mark Bookmark Public!') . "'>
                                 <i class='icon-key icon has-text-success'></i>
                             </span>
                         </td>" : '');
         } elseif ($bms['private'] === 'no') {
             $body .= ($variant === 'index' ? "
                         <td class='has-text-centered'>
-                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='{$lang['bookmarks_private2']}'>
+                            <span data-tid='{$id}' data-remove='false' data-private='true' class='bookmarks tooltipper' title='" . _('Mark Bookmark Private!') . "'>
                                 <i class='icon-users icon has-text-danger'></i>
                             </span>
                         </td>" : '');
@@ -154,15 +153,15 @@ function bookmarktable($res, $userid, $variant = 'index')
             $body .= "
                         </td>
                         <td class='has-text-centered'>
-                            <a href='{$site_config['paths']['baseurl']}/edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int) $row['id'] . "'>{$lang['torrenttable_edit']}</a>";
+                            <a href='{$site_config['paths']['baseurl']}/edit.php?returnto=" . urlencode($_SERVER['REQUEST_URI']) . '&amp;id=' . (int) $row['id'] . "'>" . _('Edit') . '</a>';
         }
         if ($variant === 'mytorrents') {
             $body .= "
                         <td class='has-text-right'>";
             if ($row['visible'] === 'no') {
-                $body .= '<b>' . $lang['torrenttable_not_visible'] . '</b>';
+                $body .= '<b>' . _('No') . '</b>';
             } else {
-                $body .= '' . $lang['torrenttable_visible'] . '';
+                $body .= '' . _('Yes') . '';
             }
             $body .= '
                         </td>';
@@ -190,9 +189,9 @@ function bookmarktable($res, $userid, $variant = 'index')
                         <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>
                         <td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . '</td>';
         if ($row['times_completed'] != 1) {
-            $_s = '' . $lang['torrenttable_time_plural'] . '';
+            $_s = '' . _('times') . '';
         } else {
-            $_s = '' . $lang['torrenttable_time_singular'] . '';
+            $_s = '' . _('time') . '';
         }
         $body .= "
                         <td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
@@ -227,29 +226,29 @@ function bookmarktable($res, $userid, $variant = 'index')
         }
         if ($variant === 'index') {
             $body .= "
-                        <td class='has-text-centered'>" . (isset($row['owner']) ? format_username((int) $row['owner']) : '<i>(' . $lang['torrenttable_unknown_uploader'] . ')</i>') . '</td>';
+                        <td class='has-text-centered'>" . (isset($row['owner']) ? format_username((int) $row['owner']) : '<i>(' . _('Unknown') . ')</i>') . '</td>';
         }
         $body .= '
                     </tr>';
     }
-    $htmlout .= main_table($body, $heading);
+    $HTMLOUT .= main_table($body, $heading);
 
-    return $htmlout;
+    return $HTMLOUT;
 }
 
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $user['id'];
 if (!is_valid_id($userid)) {
-    stderr($lang['bookmarks_err'], $lang['bookmark_invalidid']);
+    stderr(_('Error'), _('Invalid ID.'));
 }
 if ($userid != $user['id']) {
-    stderr($lang['bookmarks_err'], "{$lang['bookmarks_denied']}<a href='{$site_config['paths']['baseurl']}/sharemarks.php?id={$userid}'>{$lang['bookmarks_here']}</a>");
+    stderr(_('Error'), '' . _('Access denied. Try ') . "<a href='{$site_config['paths']['baseurl']}/sharemarks.php?id={$userid}'>" . _('Here') . '</a>');
 }
-$htmlout .= '
+$HTMLOUT .= '
     <div class="has-text-centered bottom20">
-        <h1>' . $lang['bookmarks_my'] . '</h1>
+        <h1>' . _('My Bookmarks') . '</h1>
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/sharemarks.php?id=' . $userid . '" class="is-link">' . $lang['bookmarks_my_share'] . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/sharemarks.php?id=' . $userid . '" class="is-link">' . _('My Sharemarks') . '</a></li>
             </ul>
         </div>
     </div>';
@@ -293,8 +292,12 @@ if ($count) {
                         ->offset($pager['pdo']['offset'])
                         ->fetchAll();
 
-    $htmlout .= $count > $torrentsperpage ? $pager['pagertop'] : '';
-    $htmlout .= bookmarktable($bookmarks, $userid, 'index');
-    $htmlout .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
+    $HTMLOUT .= $count > $torrentsperpage ? $pager['pagertop'] : '';
+    $HTMLOUT .= bookmarktable($bookmarks, $userid, 'index');
+    $HTMLOUT .= $count > $torrentsperpage ? $pager['pagerbottom'] : '';
 }
-echo stdhead($lang['bookmarks_stdhead']) . wrapper($htmlout) . stdfoot($stdfoot);
+$title = _('Bookmarks');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -12,16 +12,15 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('delete'));
 global $container, $site_config;
 
 $data = array_merge($_GET, $_POST);
 if (empty($data['id'])) {
-    stderr($lang['delete_failed'], $lang['delete_missing_data']);
+    stderr(_('Delete failed!'), _('missing form data'));
 }
 $id = !empty($data['id']) ? (int) $data['id'] : 0;
 if (!is_valid_id($id)) {
-    stderr($lang['delete_failed'], $lang['delete_missing_data']);
+    stderr(_('Delete failed!'), _('missing form data'));
 }
 $dt = TIME_NOW;
 $fluent = $container->get(Database::class);
@@ -39,30 +38,30 @@ $row = $fluent->from('torrents AS t')
               ->fetch();
 
 if (!$row) {
-    stderr($lang['delete_failed'], $lang['delete_not_exist']);
+    stderr(_('Delete failed!'), _('Torrent does not exist'));
 }
 if ($user['id'] != $row['owner'] && $user['class'] < UC_STAFF) {
-    stderr($lang['delete_failed'], $lang['delete_not_owner']);
+    stderr(_('Delete failed!'), _("You're not the owner! How did that happen?"));
 }
 $rt = (int) $data['reasontype'];
 if (!is_int($rt) || $rt < 1 || $rt > 5) {
-    stderr($lang['delete_failed'], $lang['delete_invalid']);
+    stderr(_('Delete failed!'), _('Invalid reason'));
 }
 $reason = $data['reason'];
 if ($rt === 1) {
-    $reasonstr = $lang['delete_dead'];
+    $reasonstr = _('Dead: 0 seeders, 0 leechers = 0 peers total');
 } elseif ($rt === 2) {
-    $reasonstr = $lang['delete_dupe'] . ($reason[0] ? (': ' . trim($reason[0])) : '!');
+    $reasonstr = _('Dupe') . ($reason[0] ? (': ' . trim($reason[0])) : '!');
 } elseif ($rt === 3) {
-    $reasonstr = $lang['delete_nuked'] . ($reason[1] ? (': ' . trim($reason[1])) : '!');
+    $reasonstr = _('Nuked') . ($reason[1] ? (': ' . trim($reason[1])) : '!');
 } elseif ($rt === 4) {
     if (!$reason[2]) {
-        stderr($lang['delete_failed'], $lang['delete_violated']);
+        stderr(_('Delete failed!'), _('Please describe the violated rule.'));
     }
-    $reasonstr = $site_config['site']['name'] . $lang['delete_rules'] . trim($reason[2]);
+    $reasonstr = $site_config['site']['name'] . _(' rules broken: ') . trim($reason[2]);
 } else {
     if (!$reason[3]) {
-        stderr($lang['delete_failed'], $lang['delete_reason']);
+        stderr(_('Delete failed!'), _('Please enter the reason for deleting this torrent.'));
     }
     $reasonstr = trim($reason[3]);
 }
@@ -70,7 +69,7 @@ $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($row['id']);
 $torrents_class->remove_torrent($row['info_hash']);
 
-write_log("{$lang['delete_torrent']} $id ({$row['name']}){$lang['delete_deleted_by']}{$user['username']} ($reasonstr)\n");
+write_log('' . _('Torrent ') . " $id ({$row['name']})" . _(' was deleted by ') . "{$user['username']} ($reasonstr)\n");
 if ($site_config['bonus']['on']) {
     $user_class = $container->get(User::class);
     $dt = sqlesc($dt - (14 * 86400));

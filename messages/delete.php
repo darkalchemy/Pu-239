@@ -11,7 +11,7 @@ $messages_class = $container->get(Message::class);
 $message = $messages_class->get_by_id($pm_id);
 $cache = $container->get(Cache::class);
 if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
-    stderr($lang['pm_error'], '' . $lang['pm_delete_err'] . '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . $lang['pm_delete_msg'] . '</a> to message.');
+    stderr(_('Error'), _fe('You MUST read {0}this message{1} before you delete it!', '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">', '</a>'));
 }
 if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == $site_config['pm']['deleted']) {
     $messages_class->delete($pm_id, $CURUSER['id']);

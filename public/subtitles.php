@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
 $user = check_user_status();
-$lang = load_language('global');
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -86,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'edit') {
             $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
             if ($id == 0) {
-                stderr('Err', 'Not a valid id');
+                stderr('Error', 'Invalid ID');
             } else {
                 $arr = $fluent->from('subtitles')
                               ->where('id = ?', $id)
@@ -135,7 +134,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($mode === 'edit') {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         if ($id == 0) {
-            stderr('Err', 'Not a valid id');
+            stderr('Error', 'Invalid ID');
         } else {
             $arr = $fluent->from('subtitles')
                           ->where('id = ?', $id)
@@ -250,11 +249,16 @@ if ($mode === 'upload' || $mode === 'edit') {
         </tr>';
     $HTMLOUT .= main_table($body) . '
     </form>';
-    echo stdhead('' . ($mode === 'upload' ? 'Upload new Subtitle' : 'Edit subtitle ' . htmlsafechars($arr['name']) . '') . '') . wrapper($HTMLOUT) . stdfoot();
+    $title = $mode === 'upload' ? _('Upload New Subtitle') : _('Edit Subtitle');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($mode === 'delete') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Err', 'Not a valid id');
+        stderr('Error', 'Invalid ID');
     } else {
         $arr = $fluent->from('subtitles')
                       ->where('id = ?', $id)
@@ -277,7 +281,7 @@ if ($mode === 'upload' || $mode === 'edit') {
 } elseif ($mode === 'details') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Err', 'Not a valid id');
+        stderr('Error', 'Invalid ID');
     } else {
         $arr = $fluent->from('subtitles AS s')
                       ->where('s.id = ?', $id)
@@ -335,12 +339,17 @@ if ($mode === 'upload' || $mode === 'edit') {
             </form>
             <a href='subtitles.php?mode=preview&id={$arr['id']}' class='button is-small margin20'>Preview</a>
         </div>";
-        echo stdhead('Details for ' . htmlsafechars($arr['name']) . '') . wrapper($HTMLOUT) . stdfoot();
+        $title = _('Subtitle Details');
+        $breadcrumbs = [
+            "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
 } elseif ($mode === 'preview') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Err', 'Not a valid id');
+        stderr('Error', 'Invalid ID');
     } else {
         $arr = $fluent->from('subtitles')
                       ->where('id = ?', $id)
@@ -351,14 +360,18 @@ if ($mode === 'upload' || $mode === 'edit') {
         $file = UPLOADSUB_DIR . $arr['filename'];
         $content = file_get_contents($file);
         $fileContent = substr(strip_tags($content), 0, 1000);
-        $title = htmlsafechars($arr['name']);
         $HTMLOUT = "
     <ul class='bg-06 level-center'>
         <li class='margin10'><a href='subtitles.php?mode=details&amp;id={$id}'>Return to Details</a></li>
     </ul>
     <h1 class='has-text-centered'>Subtitle Preview</h1>" . main_div("
     <div class='pre padding20'>" . $fileContent . '</div>');
-        echo stdhead('Preview: ' . $title) . wrapper($HTMLOUT) . stdfoot();
+        $title = ('Subtitle Preview');
+        $breadcrumbs = [
+            "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+        echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
 } else {
     $s = isset($_GET['s']) ? htmlsafechars($_GET['s']) : '';
@@ -455,7 +468,7 @@ if ($mode === 'upload' || $mode === 'edit') {
                 <img src='{$site_config['paths']['images_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
             </a>
         </td>
-        <td class='has-text-centered'>" . get_date($arr['added'], 'LONG', 0, 1) . "</td>
+        <td class='has-text-centered'>" . get_date((int) $arr['added'], 'LONG', 0, 1) . "</td>
         <td class='has-text-centered'>" . $arr['hits'] . "</td>
         <td class='has-text-centered'>" . ($arr['fps'] === 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
         <td class='has-text-centered'>" . ($arr['cds'] === 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</td>';
@@ -474,7 +487,7 @@ if ($mode === 'upload' || $mode === 'edit') {
         <td></td>';
             }
             $body .= "
-        <td class='has-text-centered'>" . format_username($arr['owner']) . '</td>
+        <td class='has-text-centered'>" . format_username((int) $arr['owner']) . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);
@@ -482,5 +495,10 @@ if ($mode === 'upload' || $mode === 'edit') {
             $HTMLOUT .= $pager['pagerbottom'];
         }
     }
-    echo stdhead('Subtitles') . wrapper($HTMLOUT) . stdfoot();
+    $title = _('Subtitles');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }

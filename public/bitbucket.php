@@ -10,12 +10,11 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('bitbucket'));
 global $container, $site_config;
 
 $session = $container->get(Session::class);
 if (!$site_config['bucket']['allowed']) {
-    $session->set('is-warning', 'BitBucket has been disabled');
+    $session->set('is-warning', _('BitBucket has been disabled'));
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -45,14 +44,14 @@ if (isset($_GET['delete'])) {
     $delfile = urldecode(decrypt($getfile, $PICSALT));
     $delhash = md5($delfile . $USERSALT . $SaLt);
     if ($delhash != $_GET['delhash']) {
-        stderr($lang['bitbucket_umm'], $lang['bitbucket_wayd']);
+        stderr(_('Umm'), _('what are you doing?'));
     }
     $myfile = BITBUCKET_DIR . $delfile;
     if ((($pi = pathinfo($myfile)) && preg_match('#^(' . $str . ')$#i', $pi['extension'])) && is_file($myfile)) {
         unlink($myfile);
-        $session->set('is-success', $lang['bitbucket_deleting'] . $delfile);
+        $session->set('is-success', _('Deleted Image ') . $delfile);
     } else {
-        $session->set('is-danger', $lang['bitbucket_imagenf']);
+        $session->set('is-danger', _('Image not found!'));
     }
 }
 
@@ -67,10 +66,10 @@ if (!empty($_GET['avatar']) && $_GET['avatar'] != $user['avatar']) {
 }
 
 if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
-    $session->set('is-info', "
+    $session->set('is-info', '
         [class=has-text-centered]
-            [h3]{$lang['bitbucket_updated']}[/h3]
-            [img width=150]" . url_proxy($user['avatar'], true, 150) . '[/img]
+            [h3]' . _('Updated avatar to:') . '[/h3]
+            [img width=150]' . url_proxy($user['avatar'], true, 150) . '[/img]
         [/class]');
 }
 
@@ -78,27 +77,27 @@ $htmlout = "
     <div>
         <ul class='level-center bg-06 padding10'>
             <li>" . (empty($_GET['images']) ? "
-                <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1'>{$lang['bitbucket_viewmonths']}</a>" : "
-                <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>{$lang['bitbucket_hideimgs']}</a>") . '
+                <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1'>" . _('View My Images') . '</a>' : "
+                <a href='{$site_config['paths']['baseurl']}/bitbucket.php'>" . _('Hide My Images') . '</a>') . '
             </li>
         </ul>
     </div>';
 
-$htmlout .= "
-    <h1>BitBucket Image Uploader</h1>
-    <p class='has-text-centered margin20'>{$lang['bitbucket_disclaimer']}</p>";
+$htmlout .= '
+    <h1>' . _('BitBucket Image Host') . "</h1>
+    <p class='has-text-centered margin20'>" . _("<b>Disclaimer:</b> Do not upload unauthorized or illegal pictures. Uploaded pictures should be considered 'Public Domain'. Do not upload pictures you wouldn't want a stranger to have access to.") . '</p>';
 $htmlout .= main_div("
         <div class='padding20'>
-            <h2>Upload from URL</h2>
+            <h2>" . _('Upload from URL') . "</h2>
             <input type='url' id='image_url' placeholder='External Image URL' class='w-100 top20 bottom20'>
-            <span class='button is-small' onclick=\"return grab_url(event)\">Upload</span>
-        </div>", 'bottom20');
+            <span class='button is-small' onclick=\"return grab_url(event)\">" . _('Upload') . '</span>
+        </div>', 'bottom20');
 
 $htmlout .= main_div("
     <div id='droppable' class='droppable bg-03'>
-        <span id='comment'>{$lang['bitbucket_dragndrop']}</span>
+        <span id='comment'>" . _('Drop images here or click here to select images.') . "</span>
         <div id='loader' class='is-hidden'>
-            <img src='{$site_config['paths']['images_baseurl']}forums/updating.svg' alt='Loading...'>
+            <img src='{$site_config['paths']['images_baseurl']}forums/updating.svg' alt='" . _('Loading...') . "'>
         </div>
     </div>");
 
@@ -111,49 +110,49 @@ if (isset($_GET['images']) && $_GET['images'] == 1) {
     $year = !isset($_GET['year']) ? '&amp;year=' . date('Y') : '&amp;year=' . (int) $_GET['year'];
     $htmlout .= "
             <div class='top20'>
-                <h2>{$lang['bitbucket_previosimg']}</h2>
+                <h2>" . _('Previous Months Images') . "</h2>
                 <ul class='level-center bg-06 padding10'>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month={$folder_month}&amp;year=" . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . "'>This" : (date('Y') - 1) . "'>" . $lang['bitbucket_last'] . '') . ' ' . $lang['bitbucket_year'] . "</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month={$folder_month}&amp;year=" . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . "'>This" : (date('Y') - 1) . "'>" . _('Last') . '') . ' ' . _('Year') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=01{$year}'>{$lang['bitbucket_jan']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=01{$year}'>" . _('January') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=02{$year}'>{$lang['bitbucket_feb']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=02{$year}'>" . _('February') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=03{$year}'>{$lang['bitbucket_mar']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=03{$year}'>" . _('March') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=04{$year}'>{$lang['bitbucket_apr']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=04{$year}'>" . _('April') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=05{$year}'>{$lang['bitbucket_may']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=05{$year}'>" . _('May') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=06{$year}'>{$lang['bitbucket_jun']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=06{$year}'>" . _('June') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=07{$year}'>{$lang['bitbucket_jul']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=07{$year}'>" . _('July') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=08{$year}'>{$lang['bitbucket_aug']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=08{$year}'>" . _('August') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=09{$year}'>{$lang['bitbucket_sep']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=09{$year}'>" . _('September') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=10{$year}'>{$lang['bitbucket_oct']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=10{$year}'>" . _('October') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=11{$year}'>{$lang['bitbucket_nov']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=11{$year}'>" . _('November') . "</a>
                     </li>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=12{$year}'>{$lang['bitbucket_dec']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=12{$year}'>" . _('December') . '</a>
                     </li>
                 </ul>
-            </div>";
+            </div>';
 }
 
 if (isset($_GET['images'])) {
@@ -174,30 +173,34 @@ if (isset($_GET['images'])) {
                     </a>
                 </div>
                 <h2 class='has-text-centered padding20'>You can use width and/or height as shown in the second link. You can use auto for one or the other.</h2>
-                <h3>{$lang['bitbucket_directlink']}</h3>
+                <h3>" . _('Direct link to image') . "</h3>
                 <div class='bottom10'>
                     <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' class='w-75' value='{$site_config['paths']['baseurl']}/img.php?{$filename}' readonly>
                 </div>
-                <h3 class='top20'>{$lang['bitbucket_tags']}</h3>
+                <h3 class='top20'>" . _('Tag for forums or comments') . "</h3>
                 <div class='bottom10'>
                     <input id='t{$eid}t' onclick=\"SelectAll('t{$eid}t');\" type='text' class='w-75' value='[img width=250 height=auto]{$site_config['paths']['baseurl']}/img.php?{$filename}[/img]' readonly>
                 </div>
                 <div>
                     <ul class='level-center margin10'>
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['paths']['baseurl']}/img.php?{$filename}' class='button is-small'>{$lang['bitbucket_maketma']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . "&amp;avatar={$site_config['paths']['baseurl']}/img.php?{$filename}' class='button is-small'>" . _('Make this my Avatar!') . "</a>
                         </li>
                         <li>
-                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? 0 : '') . (int) $_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int) $_GET['year']) . "' class='button is-small'>{$lang['bitbucket_delete']}</a>
+                            <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&type=" . ((isset($_GET['images']) && $_GET['images'] == 2) ? '2' : '1') . '&amp;delete=' . $encryptedfilename . '&amp;delhash=' . md5($filename . $USERSALT . $SaLt) . '&amp;month=' . (!isset($_GET['month']) ? date('m') : ($_GET['month'] < 10 ? 0 : '') . (int) $_GET['month']) . '&amp;year=' . (!isset($_GET['year']) ? date('Y') : (int) $_GET['year']) . "' class='button is-small'>" . _('Delete this image') . '</a>
                         </li>
                     </ul>
                 </div>
-            </div>", 'top20');
+            </div>', 'top20');
         }
     } else {
         $htmlout .= main_div("
-                <div class='padding20'>{$lang['bitbucket_noimages']}</div>", 'top20');
+                <div class='padding20'>" . _('No Images Found') . '</div>', 'top20');
     }
 }
 
-echo stdhead('Bitbucket Image Uploader') . wrapper($htmlout, 'has-text-centered') . stdfoot($stdfoot);
+$title = _('Bitbucket Image Host');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout, 'has-text-centered') . stdfoot($stdfoot);

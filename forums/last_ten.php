@@ -6,7 +6,7 @@ global $site_config, $CURUSER;
 
 $limit = preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? '1, 10' : '10';
 $res_posts = sql_query('SELECT p.id AS post_id, p.user_id, p.added, p.body, p.icon, p.post_title, p.bbcode, p.anonymous, u.id, u.username, u.class, u.donor, u.warned, u.status, u.avatar, u.chatpost, u.leechwarn, u.pirate, u.king, u.offensive_avatar FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id WHERE ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND' : '')) . '  topic_id=' . sqlesc($topic_id) . ' ORDER BY p.id DESC LIMIT ' . $limit) or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= '<h2 class="has-text-centered">' . $lang['fe_last_ten_posts_in_reverse_order'] . '</h2>';
+$HTMLOUT .= '<h2 class="has-text-centered">' . _('last ten posts in reverse order') . '</h2>';
 
 while ($arr = mysqli_fetch_assoc($res_posts)) {
     $HTMLOUT .= '
@@ -19,7 +19,7 @@ while ($arr = mysqli_fetch_assoc($res_posts)) {
                 </span>
             </td>
             <td>
-                <span style="white-space:nowrap;"> ' . $lang['fe_posted_on'] . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
+                <span style="white-space:nowrap;"> ' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
             </td>
         </tr>';
     if ($arr['anonymous'] === '1') {

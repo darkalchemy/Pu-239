@@ -9,13 +9,12 @@ use Pu239\Message;
 use Pu239\User;
 
 $subject = $msg = '';
-global $container, $CURUSER, $site_config, $lang;
+global $container, $CURUSER, $site_config;
 
-$lang = array_merge($lang, load_language('messages'));
 $messages_class = $container->get(Message::class);
 $users_class = $container->get(User::class);
 
-if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) {
+if (isset($_POST['buttonval']) && $_POST['buttonval'] === _('Send')) {
     flood_limit('messages');
     $receiver = isset($_POST['receiver']) ? (int) $_POST['receiver'] : 0;
     $subject = htmlsafechars($_POST['subject']);
@@ -27,35 +26,35 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) 
     $arr_receiver = $users_class->getUserFromId($receiver);
 
     if (!is_valid_id((int) $_POST['receiver']) || !is_valid_id($arr_receiver['id'])) {
-        stderr($lang['pm_error'], $lang['pm_send_not_found']);
+        stderr(_('Error'), _('Member not found!!!'));
     }
     if (!isset($_POST['body'])) {
-        stderr($lang['pm_error'], $lang['pm_send_nobody']);
+        stderr(_('Error'), _('No body text... Please enter something to send!'));
     }
     if ($CURUSER['status'] === 5) {
         $row = $users_class->getUserFromId($receiver);
         if ($row['class'] < UC_STAFF) {
-            stderr($lang['pm_error'], $lang['pm_send_your_acc']);
+            stderr(_('Error'), _('Your account is suspended, you may only contact staff members!'));
         }
     }
     $count = $messages_class->get_count($receiver, 1, true);
     if ($count > ($maxbox * 6) && $CURUSER['class'] < UC_STAFF) {
-        stderr($lang['pm_forwardpm_srry'], $lang['pm_forwardpm_full']);
+        stderr(_('Sorry'), _('Members mailbox is full.'));
     }
 
     if ($CURUSER['class'] < UC_STAFF) {
         $should_i_send_this = $arr_receiver['acceptpms'] === 'yes' ? 'yes' : ($arr_receiver['acceptpms'] === 'no' ? 'no' : ($arr_receiver['acceptpms'] === 'friends' ? 'friends' : ''));
         switch ($should_i_send_this) {
             case 'yes':
-                $r = sql_query('SELECT id FROM blocks WHERE userid=' . sqlesc($receiver) . ' AND blockid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $block = mysqli_fetch_row($r);
                 if ($block[0] > 0) {
-                    stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_blocked']);
+                    stderr(_('Refused'), htmlsafechars($arr_receiver['username']) . _(' has blocked PMs from you.'));
                 }
                 break;
 
             case 'friends':
-                $r = sql_query('SELECT id FROM friends WHERE userid=' . sqlesc($receiver) . ' AND friendid=' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
+                $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $friend = mysqli_fetch_row($r);
                 if ($friend[0] == 0) {
                     stderr('Refused', htmlsafechars($arr_receiver['username']) . ' only accepts PMs from members in their friends list.');
@@ -63,7 +62,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) 
                 break;
 
             case 'no':
-                stderr($lang['pm_forwardpm_refused'], htmlsafechars($arr_receiver['username']) . $lang['pm_send_doesnt']);
+                stderr(_('Refused'), htmlsafechars($arr_receiver['username']) . _(' does not accept PMs.'));
                 break;
         }
     }
@@ -91,17 +90,17 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) 
     if (!empty($messageg_id) && !empty($arr_receiver['notifs']) && strpos($arr_receiver['notifs'], '[pm]') !== false) {
         $username = htmlsafechars($CURUSER['username']);
         $title = $site_config['site']['name'];
-        $msg = doc_head("{$title} PM Received") . "
+        $msg = doc_head("{$title} PM Received") . '
 </head>
 <body>
-<p>{$lang['pm_forwardpm_pmfrom']} $username!</p>
-<p>{$lang['pm_forwardpm_url']}</p>
+<p>' . _('You have received a PM from ') . " $username!</p>
+<p>" . _('You can use the URL below to view the message (you may have to login).') . "</p>
 <p>{$site_config['paths']['baseurl']}/messages.php?action=view_message&id={$messageg_id}</p>
 <p>--{$site_config['site']['name']}</p>
 </body>
 </html>";
 
-        send_mail($arr_receiver['email'], "{$lang['pm_forwardpm_pmfrom']} $username!", $msg, strip_tags($msg));
+        send_mail($arr_receiver['email'], '' . _('You have received a PM from ') . " $username!", $msg, strip_tags($msg));
     }
     if ($delete != 0) {
         $set = [
@@ -110,7 +109,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === $lang['pm_send_btn']) 
         $message = $messages_class->get_by_id($delete);
         if (!empty($message)) {
             if ($message['receiver'] != $CURUSER['id']) {
-                stderr($lang['pm_send_quote'], $lang['pm_send_thou']);
+                stderr(_('Quote!'), _('Thou spongy prick-eared bag of guts!'));
             }
             if ($save != 'yes') {
                 $messages_class->delete($delete, $message['receiver']);
@@ -135,7 +134,7 @@ $receiver = isset($_GET['receiver']) ? (int) $_GET['receiver'] : (isset($_POST['
 $replyto = isset($_GET['replyto']) ? (int) $_GET['replyto'] : (isset($_POST['replyto']) ? (int) $_POST['replyto'] : 0);
 $returnto = htmlsafechars(isset($_POST['returnto']) ? $_POST['returnto'] : '');
 if ($receiver && !is_valid_id($receiver)) {
-    stderr($lang['pm_error'], $lang['pm_send_mid']);
+    stderr(_('Error'), _('No member with that ID!'));
 }
 $arr_member = [];
 if ($receiver) {
@@ -144,15 +143,15 @@ if ($receiver) {
 
 if ($replyto != 0) {
     if (!valid_username($arr_member['username'])) {
-        stderr($lang['pm_error'], $lang['pm_send_mid']);
+        stderr(_('Error'), _('No member with that ID!'));
     }
     $message = $messages_class->get_by_id($replyto);
     if ($message['sender'] == $CURUSER['id']) {
-        stderr($lang['pm_error'], $lang['pm_send_slander']);
+        stderr(_('Error'), _('Slander, whose edge is sharper than the sword, whose tongue out venoms all the worms of Nile'));
     }
     if ($message['receiver'] == $CURUSER['id']) {
-        $msg .= "\n\n\n{$lang['pm_send_wrote0']}{$arr_member['username']}{$lang['pm_send_wrote']}\n{$message['msg']}\n";
-        $subject = (!preg_match('#' . $lang['pm_send_re'] . '#i', $message['subject']) ? $lang['pm_send_re'] : '') . htmlsafechars($message['subject']);
+        $msg .= "\n\n\n" . _('-------- ') . "{$arr_member['username']}" . _(' wrote: --------') . "\n{$message['msg']}\n";
+        $subject = (!preg_match('#' . _('Re: ') . '#i', $message['subject']) ? _('Re: ') : '') . htmlsafechars($message['subject']);
     }
 }
 
@@ -170,14 +169,14 @@ if ($receiver) {
         <input type="hidden" name="returnto" value="' . $returnto . '">
         <input type="hidden" name="replyto" value="' . $replyto . '">
         <input type="hidden" name="receiver" value="' . $receiver . '">
-        <h1>Send ' . $lang['pm_send_msgto'] . format_username((int) $receiver) . '</h1>';
+        <h1>Send ' . _('Message to ') . format_username((int) $receiver) . '</h1>';
 } else {
     $HTMLOUT .= "
         <input type='hidden' name='returnto' value='$returnto'>
         <input type='hidden' name='replyto' value='$replyto'>
         <input type='hidden' name='receiver' id='receiver' value=''>
         <h1>
-            Send {$lang['pm_send_msgto']}
+            Send " . _('Message to ') . "
             <input type='text' id='user_search' maxlength='64' class='w-50' placeholder='Begin typing username' onkeyup='usersearch()'>
         </h1>";
 }
@@ -192,11 +191,11 @@ $HTMLOUT .= "
 $HTMLOUT .= '
         <table class="table table-bordered">
             <tr class="no_hover">
-                <td><span style="font-weight: bold;">' . $lang['pm_send_subject'] . '</span></td>
+                <td><span style="font-weight: bold;">' . _('Subject:') . '</span></td>
                 <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
             </tr>
             <tr class="no_hover">
-                <td><span style="font-weight: bold;">' . $lang['pm_send_body'] . '</span></td>
+                <td><span style="font-weight: bold;">' . _('Body:') . '</span></td>
                 <td class="is-paddingless">' . BBcode($msg) . '</td>
             </tr>
             <tr class="no_hover">
@@ -204,22 +203,22 @@ $HTMLOUT .= '
                     <div class="has-text-centered">
                         ' . ($CURUSER['class'] >= UC_STAFF ? '
                         <input type="checkbox" name="urgent" value="yes" ' . ((isset($_POST['urgent']) && $_POST['urgent'] === 'yes') ? 'checked' : '') . '> 
-                        <span class="right10">' . $lang['pm_send_mark'] . '</span>' : '');
+                        <span class="right10">' . _('Mark as URGENT!') . '</span>' : '');
 if ($replyto) {
     $HTMLOUT .= '
-                        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . '>' . $lang['pm_send_delete'];
+                        <input type="checkbox" name="delete" value="' . $replyto . '" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . '>' . _('Delete PM');
 }
 $disabled = empty($receiver) && empty($returnto) ? ' disabled' : '';
 $accepted_file_types = str_replace('|', ', ', $site_config['forum_config']['accepted_file_types']);
 $HTMLOUT .= '
-                        <input type="checkbox" name="save" value="1" checked>' . $lang['pm_send_savepm'] . '
+                        <input type="checkbox" name="save" value="1" checked>' . _('Save PM ') . '
                     </div>
                     <div class="level-center-center padding20">
-                        <span class="size_6 right10">' . $lang['messages_attachments'] . '</span>
+                        <span class="size_6 right10">' . _('Add Attachments') . '</span>
                         <input type="file" size="30" name="attachment[]" accept="' . $accepted_file_types . '" multiple>
                     </div>
                     <div class="has-text-centered">
-                        <input type="submit" class="button is-small" id="button" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? $lang['pm_send_save'] : $lang['pm_send_btn']) . '"' . $disabled . '>
+                        <input type="submit" class="button is-small" id="button" name="buttonval" value="' . ((isset($_POST['draft']) && $_POST['draft'] == 1) ? _('Save') : _('Send')) . '"' . $disabled . '>
                     </div>
                 </td>
             </tr>

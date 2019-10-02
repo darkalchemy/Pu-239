@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Database;
 
-global $container, $CURUSER, $lang, $user;
+global $container, $CURUSER, $user;
 
 $fluent = $container->get(Database::class);
 if ($CURUSER['id'] != $user['id']) {
@@ -34,7 +34,7 @@ if (isset($showpmbutton)) {
                 <input type='hidden' name='action' value='send_message'>
                 <input type='hidden' name='receiver' value='" . (int) $user['id'] . "'>
                 <input type='hidden' name='returnto' value='" . urlencode($_SERVER['REQUEST_URI']) . "'>
-                <input type='submit' value='{$lang['userdetails_msg_btn']}' class='button is-small'>
+                <input type='submit' value='" . _('Send Message') . "' class='button is-small'>
           </form>
         </td>
     </tr>";

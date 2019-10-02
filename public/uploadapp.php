@@ -14,7 +14,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('uploadapp'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -27,15 +26,15 @@ if (isset($_POST['form']) != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     /*if ($auth->hasRole(Roles::UPLOADER)) {
-        stderr($lang['uploadapp_user_error'], $lang['uploadapp_alreadyup']);
+        stderr(_('Access Denied'), _('It appears you are already part of our uploading team.'));
     } else*/
     if ($arr['status'] === 'pending') {
-        stderr($lang['uploadapp_user_error'], $lang['uploadapp_pending']);
+        stderr(_('Access Denied'), _('It appears you are currently pending confirmation of your uploader application.'));
     } elseif ($arr['status'] === 'rejected') {
-        stderr($lang['uploadapp_user_error'], $lang['uploadapp_rejected']);
+        stderr(_('Access Denied'), _('It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.'));
     } else {
-        $HTMLOUT .= "
-        <h1>{$lang['uploadapp_application']}</h1>
+        $HTMLOUT .= '
+        <h1>' . _('Uploader application') . "</h1>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($user['uploaded'], $user['downloaded']);
@@ -56,23 +55,23 @@ if (isset($_POST['form']) != 1) {
         }
         $HTMLOUT .= "
                 <tr>
-                    <td class='rowhead'>{$lang['uploadapp_username']}</td>
+                    <td class='rowhead'>" . _('My username is') . "</td>
                     <td>
                         <input name='userid' type='hidden' value='" . (int) $user['id'] . "'>
                         {$user['username']}
                      </td>
                 </tr>
                 <tr>
-                    <td class='rowhead'>{$lang['uploadapp_joined']}</td>
-                    <td>" . get_date((int) $user['registered'], '', 0, 1) . "</td>
+                    <td class='rowhead'>" . _('I joined') . '</td>
+                    <td>' . get_date((int) $user['registered'], '', 0, 1) . "</td>
                 </tr>
                 <tr>
-                    <td class='rowhead'>{$lang['uploadapp_ratio']}</td>
-                    <td>" . ($ratio >= 1 ? 'No' : 'Yes') . "</td>
+                    <td class='rowhead'>" . _('I have a positive ratio') . '</td>
+                    <td>' . ($ratio >= 1 ? 'No' : 'Yes') . "</td>
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_connectable']}
+                        " . _('I am connectable') . "
                     </td>
                     <td>
                         <input name='connectable' type='hidden' value='$connectable'>$connectable
@@ -80,7 +79,7 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_upspeed']}
+                        " . _('My upload speed is') . "
                     </td>
                     <td>
                         <input type='text' name='speed' class='w-100' maxlength='20'>
@@ -88,7 +87,7 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_offer']}
+                        " . _('What I have to offer') . "
                     </td>
                     <td>
                         <textarea class='w-100' name='offer' rows='2'></textarea>
@@ -96,7 +95,7 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_why']}
+                        " . _('Why I should be promoted') . "
                     </td>
                     <td>
                         <textarea class='w-100' name='reason' rows='2'></textarea>
@@ -104,72 +103,72 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_uploader']}</td><td><input type='radio' name='sites' value='yes'>{$lang['uploadapp_yes']}
-                        <input name='sites' type='radio' value='no' checked>{$lang['uploadapp_no']}
+                        " . _('I am an uploader at other sites') . "</td><td><input type='radio' name='sites' value='yes'>" . _('Yes') . "
+                        <input name='sites' type='radio' value='no' checked>" . _('No') . "
                     </td>
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_sites']}</td>
+                        " . _('Those sites are') . "</td>
                     <td>
                         <input type='text' class='w-100' name='sitenames' maxlength='150'>
                     </td>
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        {$lang['uploadapp_scene']}
+                        " . _('I have scene access') . "
                     </td>
                     <td>
-                        <input type='radio' name='scene' value='yes'>{$lang['uploadapp_yes']}
-                        <input name='scene' type='radio' value='no' checked>{$lang['uploadapp_no']}
+                        <input type='radio' name='scene' value='yes'>" . _('Yes') . "
+                        <input name='scene' type='radio' value='no' checked>" . _('No') . "
                     </td>
                 </tr>
                 <tr>
                     <td colspan='2'>
                         <p>
                             <span class='right10'>
-                                {$lang['uploadapp_create']}
+                                " . _('I know how to create, upload and seed torrents') . "
                             </span>
-                            <input type='radio' name='creating' value='yes'>{$lang['uploadapp_yes']}
-                            <input type='radio' name='creating' value='no' checked>{$lang['uploadapp_no']}
+                            <input type='radio' name='creating' value='yes'>" . _('Yes') . "
+                            <input type='radio' name='creating' value='no' checked>" . _('No') . "
                         </p>
                         <p>
                             <span class='right10'>
-                                {$lang['uploadapp_seeding']}
+                                " . _('I understand that I have to keep seeding my torrents until there are at least two other seeders') . "
                             </span>
-                            <input type='radio' name='seeding' value='yes'>{$lang['uploadapp_yes']}
-                            <input name='seeding' type='radio' value='no' checked>{$lang['uploadapp_no']}
+                            <input type='radio' name='seeding' value='yes'>" . _('Yes') . "
+                            <input name='seeding' type='radio' value='no' checked>" . _('No') . "
                         </p>
                         <input name='form' type='hidden' value='1'>
                     </td>
                 </tr>
             </table>
             <div class='has-text-centered margin20'>
-                <input type='submit' name='Submit' value='{$lang['uploadapp_send']}' class='button is-small'>
+                <input type='submit' name='Submit' value='" . _('Send') . "' class='button is-small'>
             </div>
         </form>";
     }
 } else {
     if (!is_valid_id((int) $_POST['userid'])) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
+        stderr(_('Error'), _f('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
     }
     if (!$_POST['speed']) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_speedblank']);
+        stderr(_('Error'), _('It appears you have left the field with your upload speed blank.'));
     }
     if (!$_POST['offer']) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_offerblank']);
+        stderr(_('Error'), _('It appears you have left the field with the things you have to offer blank.'));
     }
     if (!$_POST['reason']) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_reasonblank']);
+        stderr(_('Error'), _('It appears you have left the field with the reason why we should promote you blank.'));
     }
     if ($_POST['sites'] === 'yes' && !$_POST['sitenames']) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_sitesblank']);
+        stderr(_('Error'), _('It appears you have left the field with the sites you are uploader at blank.'));
     }
     $dupe = $fluent->from('uploadapp')
         ->where('userid = ?', $_POST['userid'])
         ->fetch();
     if (!empty($dupe)) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_twice']);
+        stderr(_('Error'), _('It appears you tried to send your application twice.'));
     }
     $validator = $container->get(Validator::class);
     $validation = $validator->validate($_POST, [
@@ -185,7 +184,7 @@ if (isset($_POST['form']) != 1) {
         'seeding' => 'required|in:yes,no',
     ]);
     if ($validation->fails()) {
-        stderr($lang['uploadapp_error'], 'Invalid data supplied');
+        stderr(_('Error'), 'Invalid data supplied');
     }
     $values = [
         'userid' => (int) $_POST['userid'],
@@ -206,7 +205,7 @@ if (isset($_POST['form']) != 1) {
         ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
-        stderr($lang['uploadapp_error'], $lang['uploadapp_tryagain']);
+        stderr(_('Error'), _f('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
     } else {
         $subject = 'Uploader application';
         $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "][b]{$user['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";
@@ -228,7 +227,11 @@ if (isset($_POST['form']) != 1) {
         if (!empty($msgs_buffer)) {
             $messages_class->insert($msgs_buffer);
         }
-        stderr($lang['uploadapp_appsent'], $lang['uploadapp_success']);
+        stderr(_('Application sent'), _('Your application has successfully been sent to the staff.'));
     }
 }
-echo stdhead('Uploader application page') . wrapper($HTMLOUT) . stdfoot();
+$title = _('Uploader Application');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

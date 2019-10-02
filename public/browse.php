@@ -71,8 +71,6 @@ $stdfoot = [
         get_file_name('categories_js'),
     ],
 ];
-
-$lang = array_merge(load_language('global'), load_language('browse'), load_language('torrenttable_functions'), load_language('bookmark'));
 $valid_search = [
     'sns',
     'sna',
@@ -333,7 +331,9 @@ foreach ($valid_search as $search) {
 }
 
 if (!empty($title)) {
-    $title = $lang['browse_search'] . $title;
+    $title = _fe('Search results for {0}', $title);
+} else {
+    $title = _('Browse Torrents');
 }
 $count = $count->fetch('count');
 $torrentsperpage = !empty($user['torrentsperpage']) ? $user['torrentsperpage'] : 25;
@@ -382,119 +382,119 @@ if ($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
 $vip = ((isset($_GET['vip'])) ? (int) $_GET['vip'] : '');
 $vip_box = "
                     <select name='vip' class='w-100'>
-                        <option value='0'>{$lang['browse_include_vip']}</option>
-                        <option value='1' " . ($vip == 1 ? 'selected' : '') . ">{$lang['browse_no_vip']}</option>
-                        <option value='2' " . ($vip == 2 ? 'selected' : '') . ">{$lang['browse_only_vip']}</option>
-                    </select>";
+                        <option value='0'>" . _('VIP Torrents Included') . "</option>
+                        <option value='1' " . ($vip == 1 ? 'selected' : '') . '>' . _('VIP Torrents Not Included') . "</option>
+                        <option value='2' " . ($vip == 2 ? 'selected' : '') . '>' . _('VIP Torrents Only') . '</option>
+                    </select>';
 
 $deadcheck = "
                     <select name='incldead' class='w-100'>
-                        <option value='0'>{$lang['browse_active']}</option>
-                        <option value='1' " . ($queryed == 1 ? 'selected' : '') . ">{$lang['browse_inc_dead']}</option>
-                        <option value='2' " . ($queryed == 2 ? 'selected' : '') . ">{$lang['browse_dead']}</option>
-                    </select>";
+                        <option value='0'>" . _('Active') . "</option>
+                        <option value='1' " . ($queryed == 1 ? 'selected' : '') . '>' . _('Including Dead') . "</option>
+                        <option value='2' " . ($queryed == 2 ? 'selected' : '') . '>' . _('Only Dead') . '</option>
+                    </select>';
 
 $only_free = ((isset($_GET['only_free'])) ? (int) $_GET['only_free'] : '');
 $only_free_box = "
                     <select name='only_free' class='w-100'>
-                        <option value='0'>{$lang['browse_all_free']}</option>
-                        <option value='1' " . ($only_free == 1 ? 'selected' : '') . ">{$lang['browse_only_free']}</option>
-                    </select>";
+                        <option value='0'>" . _('Include Non Free Torrents') . "</option>
+                        <option value='1' " . ($only_free == 1 ? 'selected' : '') . '>' . _('Include Only Free Torrents') . '</option>
+                    </select>';
 
 $unsnatched = ((isset($_GET['unsnatched'])) ? (int) $_GET['unsnatched'] : '');
 $unsnatched_box = "
                     <select name='unsnatched' class='w-100'>
-                        <option value='0'>{$lang['browse_all']}</option>
-                        <option value='1' " . ($unsnatched == 1 ? 'selected' : '') . ">{$lang['browse_all_unsnatched']}</option>
-                    </select>";
+                        <option value='0'>" . _('Include Snatched and Unsnatched Torrents') . "</option>
+                        <option value='1' " . ($unsnatched == 1 ? 'selected' : '') . '>' . _('Include Only Unsnatched Torrents') . '</option>
+                    </select>';
 
 $HTMLOUT .= main_div("
                 <div id='simple' class='has-text-centered w-50 $hide_simple'>
                     <div class='has-text-centered padding20 level-center-center is-wrapped'>
-                        <span class='right10'>{$lang['browse_name']}</span>
-                        <input id='search_sim' name='sns' type='text' placeholder='{$lang['search_name']}' class='search w-100 margin20' value='" . (!empty($_GET['sns']) ? $_GET['sns'] : '') . "' onkeyup='autosearch(event)'>
+                        <span class='right10'>" . _('Name') . "</span>
+                        <input id='search_sim' name='sns' type='text' placeholder='" . _('Search by Name') . "' class='search w-100 margin20' value='" . (!empty($_GET['sns']) ? $_GET['sns'] : '') . "' onkeyup='autosearch(event)'>
                         <span class='left10'>
-                            <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
+                            <input type='submit' value='" . _('Search!') . "' class='button is-small'>
                         </span>
-                        <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_simple_btn']}</span>
+                        <span id='simple_btn' class='left10 button is-small' onclick='toggle_search()'>" . _('Advanced Search') . "</span>
                     </div>
                 </div>
                 <div id='advanced' {$hide_advanced}>
                     <div class='padding20 w-100'>
                         <div class='columns'>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_name']}</div>
-                                <input name='sna' type='text' placeholder='{$lang['search_name_fuzzy']}' class='search w-100' value='" . (!empty($_GET['sna']) ? $_GET['sna'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Name') . "</div>
+                                <input name='sna' type='text' placeholder='" . _('Search by Name (fuzzy)') . "' class='search w-100' value='" . (!empty($_GET['sna']) ? $_GET['sna'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_description']}</div>
-                                <input name='sd' type='text' placeholder='{$lang['search_desc']}' class='search w-100' value='" . (!empty($_GET['sd']) ? $_GET['sd'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Description') . "</div>
+                                <input name='sd' type='text' placeholder='" . _('Search by Description (fuzzy)') . "' class='search w-100' value='" . (!empty($_GET['sd']) ? $_GET['sd'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_uploader']}</div>
-                                <input name='so' type='text' placeholder='{$lang['search_uploader']}' class='search w-100' value='" . (!empty($_GET['so']) ? $_GET['so'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Uploader') . "</div>
+                                <input name='so' type='text' placeholder='" . _('Search by Uploader') . "' class='search w-100' value='" . (!empty($_GET['so']) ? $_GET['so'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_subs']}</div>
-                                <input name='st' type='text' placeholder='{$lang['search_subs']}' class='search w-100' value='" . (!empty($_GET['st']) ? $_GET['st'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Subtitles') . "</div>
+                                <input name='st' type='text' placeholder='" . _('Search by Subtitle') . "' class='search w-100' value='" . (!empty($_GET['st']) ? $_GET['st'] : '') . "'>
                             </div>
                         </div>
                         <div class='columns'>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_person']}</div>
-                                <input name='sp' type='text' placeholder='{$lang['search_person']}' class='search w-100' value='" . (!empty($_GET['sp']) ? $_GET['sp'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Person') . "</div>
+                                <input name='sp' type='text' placeholder='" . _('Search by Cast Member') . "' class='search w-100' value='" . (!empty($_GET['sp']) ? $_GET['sp'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_person_fuzzy']}</div>
-                                <input name='spf' type='text' placeholder='{$lang['search_person_fuzzy']}' class='search w-100' value='" . (!empty($_GET['spf']) ? $_GET['spf'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Person') . "</div>
+                                <input name='spf' type='text' placeholder='" . _('Search by Cast Member (fuzzy)') . "' class='search w-100' value='" . (!empty($_GET['spf']) ? $_GET['spf'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_role']}</div>
-                                <input name='sr' type='text' placeholder='{$lang['search_role']}' class='search w-100' value='" . (!empty($_GET['sr']) ? $_GET['sr'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Character') . "</div>
+                                <input name='sr' type='text' placeholder='" . _('Search by Character Name (fuzzy)') . "' class='search w-100' value='" . (!empty($_GET['sr']) ? $_GET['sr'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_genre']}</div>
-                                <input name='sg' type='text' placeholder='{$lang['search_genre']}' class='search w-100' value='" . (!empty($_GET['sg']) ? $_GET['sg'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Genre') . "</div>
+                                <input name='sg' type='text' placeholder='" . _('Search by Genre') . "' class='search w-100' value='" . (!empty($_GET['sg']) ? $_GET['sg'] : '') . "'>
                             </div>
                             <div class='column'>
-                                <div class='has-text-centered bottom10'>{$lang['browse_audio']}</div>
-                                <input name='sa' type='text' placeholder='{$lang['search_audio']}' class='search w-100' value='" . (!empty($_GET['sa']) ? $_GET['sa'] : '') . "'>
+                                <div class='has-text-centered bottom10'>" . _('Audio') . "</div>
+                                <input name='sa' type='text' placeholder='" . _('Search by Audio') . "' class='search w-100' value='" . (!empty($_GET['sa']) ? $_GET['sa'] : '') . "'>
                             </div>
                         </div>
                         <div class='columns'>
                             <div class='column'>
                                 <div class='columns'>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_year_start']}</div>
-                                        <input name='sys' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_start']}' class='search w-100' value='" . (!empty($_GET['sys']) ? $_GET['sys'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Year') . "</div>
+                                        <input name='sys' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='" . _('From Year Released') . "' class='search w-100' value='" . (!empty($_GET['sys']) ? $_GET['sys'] : '') . "'>
                                     </div>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_year_end']}</div>
-                                        <input name='sye' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='{$lang['search_year_end']}' class='search w-100' value='" . (!empty($_GET['sye']) ? $_GET['sye'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Year') . "</div>
+                                        <input name='sye' type='number' min='1900' max='" . (date('Y') + 1) . "' placeholder='" . _('To Year Released') . "' class='search w-100' value='" . (!empty($_GET['sye']) ? $_GET['sye'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
                             <div class='column'>
                                 <div class='columns'>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_start']}</div>
-                                        <input name='srs' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_start']}' class='search w-100' value='" . (!empty($_GET['srs']) ? $_GET['srs'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Rating') . "</div>
+                                        <input name='srs' type='number' min='0' max='10' step='0.1' placeholder='" . _('From IMDb Rating') . "' class='search w-100' value='" . (!empty($_GET['srs']) ? $_GET['srs'] : '') . "'>
                                     </div>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_rating_end']}</div>
-                                        <input name='sre' type='number' min='0' max='10' step='0.1' placeholder='{$lang['search_rating_end']}' class='search w-100' value='" . (!empty($_GET['sre']) ? $_GET['sre'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('Rating') . "</div>
+                                        <input name='sre' type='number' min='0' max='10' step='0.1' placeholder='" . _('To IMDb Rating') . "' class='search w-100' value='" . (!empty($_GET['sre']) ? $_GET['sre'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
                             <div class='column'>
                                 <div class='columns'>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_imdb']}</div>
-                                        <input name='si' type='text' placeholder='{$lang['search_imdb']}' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('IMDb ID') . "</div>
+                                        <input name='si' type='text' placeholder='" . _('tt2401097') . "' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
                                     </div>
                                     <div class='column'>
-                                        <div class='has-text-centered bottom10'>{$lang['browse_isbn']}</div>
-                                        <input name='ss' type='text' placeholder='{$lang['search_isbn']}' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
+                                        <div class='has-text-centered bottom10'>" . _('ISBN') . "</div>
+                                        <input name='ss' type='text' placeholder='" . _('978-0399501487') . "' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
@@ -514,8 +514,8 @@ $HTMLOUT .= main_div("
                             </div>
                         </div>
                         <div class='margin10 level-center-center'>
-                            <input type='submit' value='{$lang['search_search_btn']}' class='button is-small'>
-                            <span id='advanced_btn' class='left10 button is-small' onclick='toggle_search()'>{$lang['search_toggle_advanced_btn']}</span>
+                            <input type='submit' value='" . _('Search!') . "' class='button is-small'>
+                            <span id='advanced_btn' class='left10 button is-small' onclick='toggle_search()'>" . _('Simple Search') . "</span>
                         </div>
                     </div>
                 </div>
@@ -537,17 +537,20 @@ if ($count) {
     if (isset($cleansearchstr)) {
         $text = "
                 <div class='padding20'>
-                    <h2>{$lang['browse_not_found']}</h2>
-                    <p>{$lang['browse_tryagain']}</p>
-                </div>";
+                    <h2>" . _('Nothing found!') . '</h2>
+                    <p>' . _('Try again with a refined search string.') . '</p>
+                </div>';
     } else {
         $text = "
                 <div class='padding20'>
-                    <h2>{$lang['browse_nothing']}</h2>
-                    <p>{$lang['browse_sorry']}</p>
-                </div>";
+                    <h2>" . _('Nothing here!') . '</h2>
+                    <p>' . _('Sorry pal') . '</p>
+                </div>';
     }
     $HTMLOUT .= main_div($text, 'top20 has-text-centered');
 }
 
-echo stdhead($title) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

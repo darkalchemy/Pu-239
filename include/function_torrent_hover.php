@@ -39,7 +39,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  */
 function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $added, $size, $seeders, $leechers, $imdb_id, $rating, $year, $subtitles, $audios, $genre, $icons = false, $is_comment = null, $sticky = '')
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $is_year = $released = $rated = $plot = $show_subs = $show_audios = $show_icons = '';
     if (!empty($imdb_id)) {
@@ -156,31 +156,31 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
                                                         <div class='padding20 is-8 bg-09 round10'>
                                                             <div class='columns is-multiline'>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_name']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Name') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8 torrent-name'>" . htmlsafechars($name) . "{$is_year}</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_uploader']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Uploader') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     $uploader
                                                                 </div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_added']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Added') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . get_date((int) $added, 'DATE', 0, 1) . "</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_size']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Size') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . mksize($size) . "</div>{$genre}{$show_subs}{$show_audios}{$show_icons}
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_seeder']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Seeders') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$seeders}
                                                                 </div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['index_ltst_leecher']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Leechers') . ":</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     {$leechers}
@@ -210,7 +210,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
  */
 function torrent_tooltip_wrapper(array $data)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $cache = $container->get(Cache::class);
     $torrent_wrapper = $cache->get('torrent_wrapper_' . $data['id']);
@@ -230,7 +230,7 @@ function torrent_tooltip_wrapper(array $data)
                             <div class='level-center'>
                                 <div class='flex-inrow'>
                                     <a href='{$site_config['paths']['baseurl']}/download.php?torrent={$data['id']}" . $scheme . "' class='flex-item'>
-                                        <i class='icon-download icon tooltipper' aria-hidden='true' title='{$lang['index_download']}'></i>
+                                        <i class='icon-download icon tooltipper' aria-hidden='true' title='" . _('Download') . "'></i>
                                     </a>
                                 </div>
                             </div>                       
@@ -265,7 +265,6 @@ function torrent_tooltip_wrapper(array $data)
  * @param string $expected
  * @param string $chef
  * @param string $plot
- * @param array  $lang
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -274,7 +273,7 @@ function torrent_tooltip_wrapper(array $data)
  *
  * @return string
  */
-function upcoming_hover(string $url, string $block_id, string $text, string $background, string $poster, string $added, string $expected, string $chef, string $plot, array $lang)
+function upcoming_hover(string $url, string $block_id, string $text, string $background, string $poster, string $added, string $expected, string $chef, string $plot)
 {
     $target = stripos($url, 'imdb.com') !== false ? "target='_blank'" : '';
     $hover = "
@@ -294,21 +293,21 @@ function upcoming_hover(string $url, string $block_id, string $text, string $bac
                                                         <div class='padding20 is-8 bg-09 round10'>
                                                             <div class='columns is-multiline'>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_name']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Name') . "</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8 torrent-name'>" . format_comment($text) . "</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_chef']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Chef') . "</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>
                                                                     $chef
                                                                 </div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_added_time']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Added') . "</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . get_date(strtotime($added), 'LONG', 0, 1) . "</div>
                                                                 <div class='column padding5 is-4'>
-                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_expected']}</span>
+                                                                    <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Expected') . "</span>
                                                                 </div>
                                                                 <div class='column padding5 is-8'>" . get_date(strtotime($expected), 'LONG', 1, 0) . "</div>$plot
                                                             </div>

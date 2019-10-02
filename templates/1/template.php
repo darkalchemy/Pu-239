@@ -13,21 +13,22 @@ use Pu239\Session;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @param string|null $title
- * @param array       $stdhead
- * @param string      $class
+ * @param string $title
+ * @param array  $stdhead
+ * @param string $class
+ * @param array  $breadcrumbs
  *
  * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
-function stdhead(?string $title = null, array $stdhead = [], string $class = 'page-wrapper')
+function stdhead(string $title, array $stdhead, string $class, array $breadcrumbs)
 {
     global $container, $site_config;
 
@@ -160,7 +161,7 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
             <div class='inner-wrapper bg-04'>";
 
     if (!empty($curuser['id'])) {
-        $htmlout .= breadcrumbs();
+        $htmlout .= breadcrumbs($breadcrumbs);
     } else {
         //dd($curuser);
     }
@@ -187,17 +188,17 @@ function stdhead(?string $title = null, array $stdhead = [], string $class = 'pa
 /**
  * @param array $stdfoot
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
 function stdfoot(array $stdfoot = [])
 {
     require_once INCL_DIR . 'function_bbcode.php';
-    global $site_config, $starttime, $querytime, $lang, $container, $CURUSER;
+    global $site_config, $starttime, $querytime, $container, $CURUSER;
 
     $cache = $container->get(Cache::class);
     $session_id = session_id();
@@ -214,7 +215,8 @@ function stdfoot(array $stdfoot = [])
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header = "{$lang['gl_stdfoot_querys_apcu1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['num_entries']) . "{$lang['gl_stdfoot_querys_mstat6']}" . mksize($stats['mem_size']);
+                $header = _f('APC(u) Hits: %1$s', $stats['Hits']);
+                $header = '' . _('APC(u) Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . '' . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . '' . _(' Memory: ') . '' . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = $container->get(Redis::class);
@@ -223,7 +225,7 @@ function stdfoot(array $stdfoot = [])
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
                 $db = 'db' . $site_config['redis']['database'];
                 preg_match('/keys=(\d+)/', $stats[$db], $keys);
-                $header = "{$lang['gl_stdfoot_querys_redis1']}{$stats['Hits']}{$lang['gl_stdfoot_querys_mstat4']}" . number_format((100 - (float) $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format((float) $keys[1]) . "{$lang['gl_stdfoot_querys_mstat6']}{$stats['used_memory_human']}";
+                $header = '' . _('Redis Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . '' . number_format((100 - (float) $stats['Hits']), 3) . _('% Items: ') . number_format((float) $keys[1]) . '' . _(' Memory: ') . "{$stats['used_memory_human']}";
             }
         } elseif ($site_config['cache']['driver'] === 'memcached' && extension_loaded('memcached')) {
             $client = $container->get(Memcached::class);
@@ -235,15 +237,15 @@ function stdfoot(array $stdfoot = [])
             }
             if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
-                $header = $lang['gl_stdfoot_querys_mstat3'] . $stats['Hits'] . $lang['gl_stdfoot_querys_mstat4'] . number_format((100 - $stats['Hits']), 3) . $lang['gl_stdfoot_querys_mstat5'] . number_format($stats['curr_items']) . $lang['gl_stdfoot_querys_mstat6'] . mksize($stats['bytes']);
+                $header = _('Memcached Hits: ') . $stats['Hits'] . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['curr_items']) . _(' Memory: ') . mksize($stats['bytes']);
             }
         } elseif ($site_config['cache']['driver'] === 'file') {
             $files_info = GetDirectorySize($site_config['files']['path'], true, true);
-            $header = "{$lang['gl_stdfoot_querys_fly1']}{$site_config['files']['path']} Count: {$files_info[1]} {$lang['gl_stdfoot_querys_fly2']} {$files_info[0]}";
+            $header = '' . _('Flysystem Cache: ') . "{$site_config['files']['path']} Count: {$files_info[1]} " . _('File size: ') . " {$files_info[0]}";
         } elseif ($site_config['cache']['driver'] === 'memory') {
-            $header = $lang['gl_stdfoot_querys_memory'];
+            $header = _('Memory Cache: Nothing cached beyond the current request');
         } elseif ($site_config['cache']['driver'] === 'couchbase') {
-            $header = $lang['gl_stdfoot_querys_cbase'];
+            $header = _('Using Couchbase Cache');
         }
         if (!empty($query_stats)) {
             $htmlfoot .= "
@@ -252,11 +254,11 @@ function stdfoot(array $stdfoot = [])
                     <div id='queries' class='box'>";
             $heading = "
                             <tr>
-                                <th class='w-10'>{$lang['gl_stdfoot_id']}</th>
-                                <th class='w-10'>{$lang['gl_stdfoot_qt']}</th>
-                                <th class='min-350'>{$lang['gl_stdfoot_qs']}</th>
-                                <th class='min-150'>Parameters</th>
-                            </tr>";
+                                <th class='w-10'>" . _('ID') . "</th>
+                                <th class='w-10'>" . _('Query Time') . "</th>
+                                <th class='min-350'>" . _('Query String') . "</th>
+                                <th class='min-150'>" . _('Parameters') . '</th>
+                            </tr>';
             $body = '';
             foreach ($query_stats as $key => $value) {
                 $params = implode("\n", $value['params']);
@@ -264,7 +266,7 @@ function stdfoot(array $stdfoot = [])
                 $body .= '
                             <tr>
                                 <td>' . ($key + 1) . '</td>
-                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='{$lang['gl_stdfoot_ysoq']}'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='{$lang['gl_stdfoot_qg']}'>" . $value['seconds'] . '</span>') . "</td>
+                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='" . _('You should optimize this query.') . "'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='" . _('Query does not appear to need optimizing.') . "'>" . $value['seconds'] . '</span>') . "</td>
                                 <td>
                                     <div class='text-justify'>" . format_comment($value['query'], false, false, false) . '</div>
                                 </td>
@@ -282,11 +284,10 @@ function stdfoot(array $stdfoot = [])
         $uptime = explode('up', `uptime`);
         $cache->set('uptime_', $uptime, 10);
     }
+    $uptime = _f('Uptime: %s', str_replace('  ', ' ', $uptime[1]));
     if ($use_12_hour) {
-        $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
         $now = time24to12(TIME_NOW, true);
     } else {
-        $uptime = $lang['gl_stdfoot_uptime'] . ' ' . str_replace('  ', ' ', $uptime[1]);
         $now = get_date((int) TIME_NOW, 'WITH_SEC', 1, 0);
     }
     $htmlfoot .= '
@@ -294,7 +295,7 @@ function stdfoot(array $stdfoot = [])
             </div>';
 
     if ($CURUSER) {
-        $sql_version = $lang['gl_database'];
+        $sql_version = _('Database');
         $php_version = '';
         if ($CURUSER['class'] >= UC_STAFF) {
             $sql_version = $cache->get('sql_version_');
@@ -303,7 +304,7 @@ function stdfoot(array $stdfoot = [])
                 $query = $pdo->query('SELECT VERSION() AS ver');
                 $sql_version = $query->fetch(PDO::FETCH_COLUMN);
                 if (!preg_match('/MariaDB/i', $sql_version)) {
-                    $sql_version = 'MySQL ' . $sql_version;
+                    $sql_version = _f('MySQL %s', $sql_version);
                 }
                 $cache->set('sql_version_', $sql_version, 3600);
             }
@@ -313,14 +314,24 @@ function stdfoot(array $stdfoot = [])
             <div class='site-debug bg-05 round10 top20 bottom20'>
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_querys_page']} " . mksize(memory_get_peak_usage()) . " in $r_seconds {$lang['gl_stdfoot_querys_seconds']}</p>
-                        <p class='is-marginless'>{$sql_version} {$lang['gl_stdfoot_querys_server']} $queries {$lang['gl_stdfoot_querys_time']}" . plural($queries) . '</p>
-                        ' . ($debug ? "<p class='is-marginless'>$header</p><p class='is-marginless'>$uptime</p>" : '') . "
+                        <p class='is-marginless'>
+                            " . _f('PHP Peak Memory %1$s in %2$s seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
+                        </p>
+                        <p class='is-marginless'>
+                            " . _pf('%2$s was hit %1$d time in %3$s seconds', '%2$s was hit %1$d times in %3$s seconds', $queries, $sql_version, $querytime) . '
+                        </p>
+                        ' . ($debug ? "
+                        <p class='is-marginless'>
+                            $header
+                        </p>
+                        <p class='is-marginless'>
+                            $uptime
+                        </p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>{$lang['gl_server_time']} {$now}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_powered']}{$site_config['sourcecode']['name']}</p>
-                        <p class='is-marginless'>{$lang['gl_stdfoot_using']}{$lang['gl_stdfoot_using1']} {$php_version}</p>
+                        <p class='is-marginless'>" . _f('Server Time: %s', $now) . "</p>
+                        <p class='is-marginless'>" . _f('Powered By: %s', "<a href='" . url_proxy('https://github.com/darkalchemy/Pu-239', false) . "' target='_blank'>{$site_config['sourcecode']['name']}</a>") . "</p>
+                        <p class='is-marginless'>" . _f('Using Valid CSS3, HTML5 & PHP %s', $php_version) . "</p>
                     </div>
                 </div>
             </div>
@@ -329,7 +340,12 @@ function stdfoot(array $stdfoot = [])
             </div>
         </div>";
     }
-    $details = basename($_SERVER['PHP_SELF']) === 'details.php';
+    $pages = [
+        'details.php',
+        'requests.php',
+        'offers.php',
+    ];
+    $details = in_array(basename($_SERVER['PHP_SELF']), $pages);
     $bg_image = '';
     if ($CURUSER && ($site_config['site']['backgrounds_on_all_pages'] || $details)) {
         $background = get_body_image($details);
@@ -426,15 +442,16 @@ function StatusBar()
 }
 
 /**
- * @return string
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
+ *
+ * @return string
  */
 function platform_menu()
 {
-    global $container, $CURUSER, $site_config, $lang;
+    global $container, $CURUSER, $site_config;
 
     $cache = $container->get(Cache::class);
 
@@ -479,27 +496,27 @@ function platform_menu()
             </div>';
     }
     $buttons = "
-                            <li class='tooltipper has-text-info' title='{$lang['gl_movies']}'>
+                            <li class='tooltipper has-text-info' title='" . _('Movies') . "'>
                                 <a href='{$site_config['paths']['baseurl']}/tmovies.php'>
                                     <i class='icon-video icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li class='tooltipper has-text-info' title='{$lang['gl_tvshows']}'>
+                            <li class='tooltipper has-text-info' title='" . _('TV Shows') . "'>
                                 <a href='{$site_config['paths']['baseurl']}/tvshows.php'>
                                     <i class='icon-television icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li class='tooltipper has-text-info' title='{$lang['gl_forums']}'>
+                            <li class='tooltipper has-text-info' title='" . _('Forums') . "'>
                                 <a href='{$site_config['paths']['baseurl']}/forums.php'>
                                     <i class='icon-chat-empty icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li class='tooltipper has-text-info' title='{$lang['gl_messages']}'>
+                            <li class='tooltipper has-text-info' title='" . _('Messages') . "'>
                                 <a href='{$site_config['paths']['baseurl']}/messages.php'>
                                     <i class='icon-comment-empty icon' aria-hidden='true'></i>
                                 </a>
                             </li>
-                            <li class='tooltipper has-text-info' title='{$lang['gl_myblocks']}'>
+                            <li class='tooltipper has-text-info' title='" . _('My Blocks') . "'>
                                 <a href='{$site_config['paths']['baseurl']}/user_blocks.php'>
                                     <i class='icon-cubes icon' aria-hidden='true'></i>
                                 </a>
@@ -522,7 +539,7 @@ function platform_menu()
                             <li>
                                 <form action='{$site_config['paths']['baseurl']}/browse.php'>
                                     <div class='search round5 middle bg-light has-text-centered'>
-                                        <input type='text' name='sn' placeholder='{$lang['gl_search']}' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
+                                        <input type='text' name='sn' placeholder='" . _('Search') . "' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
                                     </div>
                                 </form>
                             </li>

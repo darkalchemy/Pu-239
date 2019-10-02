@@ -2,13 +2,17 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;
 use Pu239\User;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -17,7 +21,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $curuser = check_user_status();
 $HTMLOUT = '';
-$lang = array_merge(load_language('global'), load_language('bugs'));
 global $container, $site_config;
 
 $possible_actions = [
@@ -27,7 +30,7 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'bugs');
 if (!in_array($action, $possible_actions)) {
-    stderr('Error', $lang['bugs_how']);
+    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
 }
 $dt = TIME_NOW;
 $fluent = $container->get(Database::class);
@@ -38,22 +41,22 @@ $session = $container->get(Session::class);
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!has_access($curuser['class'], UC_MAX, 'coder')) {
-            stderr($lang['stderr_error'], $lang['stderr_only_coder']);
+            stderr(_('Error'), _('Only site-coders can do this! And you know it!'));
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
         $comment = !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
         if (!$id || !is_valid_id($id)) {
-            stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
+            stderr(_('Error'), _('Invalid ID'));
         }
         $bug = $fluent->from('bugs')
-            ->where('id = ?', $id)
-            ->fetch();
+                      ->where('id = ?', $id)
+                      ->fetch();
         $user = $user_class->getUserFromId($bug['sender']);
         $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = sprintf($lang['is_fixed'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
+                $msg = _f("Hello %s\nYour bug: [b]%s[/b][code]%s[/code]has been fixed by one of our coders.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, %s's coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -61,18 +64,18 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = sprintf($lang['is_ignored'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
+                $msg = _f("Hello %s.\nYour bug: [b]%s[/b][code]%s[/code]has been ignored by one of our coders.\n\nPossibly it was not a bug or has already been fixed.\n\nBest regards, %ss coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
                 break;
 
             case 'na':
-                $msg = sprintf($lang['is_na'], htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name'] . "'s") . "\n\n$precomment";
+                $msg = _f("Hello %s.\nYour bug: [b]%s[/b][code]%s[/code]needs more information. Best regards, %ss coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
         }
         $msgs_buffer[] = [
             'sender' => $curuser['id'],
             'receiver' => $user['id'],
             'added' => $dt,
             'msg' => $msg,
-            'subject' => 'Response to your Bug Report',
+            'subject' => _('Response to your Bug Report'),
         ];
         $messages_class->insert($msgs_buffer);
         $update = [
@@ -81,28 +84,28 @@ if ($action === 'viewbug') {
             'comment' => !empty($_POST['comment']) ? htmlsafechars($_POST['comment']) : '',
         ];
         $fluent->update('bugs')
-            ->set($update)
-            ->where('id = ?', $id)
-            ->execute();
+               ->set($update)
+               ->where('id = ?', $id)
+               ->execute();
         $cache->delete('bug_mess_');
         header("location: {$_SERVER['PHP_SELF']}?action=bugs");
     }
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if (!$id || !is_valid_id($id)) {
-        stderr($lang['stderr_error'], $lang['stderr_invalid_id']);
+        stderr(_('Error'), _('Invalid ID'));
     }
     if (!has_access($curuser['class'], UC_STAFF, 'coder')) {
-        stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
+        stderr(_('Error'), _('Only staff can view bugs'));
     }
     $bug = $fluent->from('bugs AS b')
-        ->select('u.username')
-        ->select('u.class')
-        ->select('s.username AS st')
-        ->select('s.class AS stclass')
-        ->leftJoin('users AS u ON b.sender = u.id')
-        ->leftJoin('users AS s ON b.staff = u.id')
-        ->where('b.id = ?', $id)
-        ->fetch();
+                  ->select('u.username')
+                  ->select('u.class')
+                  ->select('s.username AS st')
+                  ->select('s.class AS stclass')
+                  ->leftJoin('users AS u ON b.sender = u.id')
+                  ->leftJoin('users AS s ON b.staff = u.id')
+                  ->where('b.id = ?', $id)
+                  ->fetch();
 
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
@@ -111,33 +114,33 @@ if ($action === 'viewbug') {
     $problem = !empty($bug['problem']) ? format_comment($bug['problem']) : '';
     switch ($bug['priority']) {
         case 'low':
-            $priority = "<span class='has-text-green'>{$lang['low']}</span>";
+            $priority = "<span class='has-text-green'>" . _('Low') . '</span>';
             break;
 
         case 'high':
-            $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
+            $priority = "<span class='has-text-danger'>" . _('High') . '</span>';
             break;
 
         case 'veryhigh':
-            $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
+            $priority = "<span class='has-text-danger'><b><u>" . _('Very High') . '</u></b></span>';
             break;
     }
     switch ($bug['status']) {
         case 'fixed':
-            $status = "<span class='has-text-green'><b>{$lang['fixed']}</b></span>";
+            $status = "<span class='has-text-green'><b>" . _('Fixed') . '</b></span>';
             break;
 
         case 'ignored':
-            $status = "<span class='has-text-orange'><b>{$lang['ignored']}</b></span>";
+            $status = "<span class='has-text-orange'><b>" . _('Ignored') . '</b></span>';
             break;
 
         default:
             $status = "
             <select name='status'>
-                <option value='na'>{$lang['select_one']}</option>
-                <option value='fixed'>{$lang['fix_problem']}</option>
-                <option value='ignored'>{$lang['ignore_problem']}</option>
-            </select>";
+                <option value='na'>" . _('Select one') . "</option>
+                <option value='fixed'>" . _('Fix this problem') . "</option>
+                <option value='ignored'>" . _('Ignore this problem') . '</option>
+            </select>';
     }
     switch (!empty($bug['staff']) && !empty($bug['stclass'])) {
         case 0:
@@ -153,115 +156,115 @@ if ($action === 'viewbug') {
             <input type='hidden' name='problem' value='" . urlencode($bug['problem']) . "'>";
     $body = "
             <tr>
-                <td class='rowhead'>{$lang['title']}:</td>
+                <td class='rowhead'>" . _('Title') . ":</td>
                 <td>{$title}</td>
             </tr>
             <tr>
-                <td class='rowhead'>{$lang['added']} / {$lang['by']}</td>
+                <td class='rowhead'>" . _('Added') . ' / ' . _('By') . "</td>
                 <td>{$added} / {$addedby}</td>
             </tr>
             <tr>
-                <td class='rowhead'>{$lang['priority']}</td>
-                <td>" . $priority . "</td>
+                <td class='rowhead'>" . _('Priority') . '</td>
+                <td>' . $priority . "</td>
             </tr>
             <tr class='no_hover'>
-                <td class='rowhead'>{$lang['problem_bug']}</td>
+                <td class='rowhead'>" . _('Problem (Bug)') . "</td>
                 <td><div class='margin20 code'>{$problem}</div></td>
             </tr>
             <tr>
-                <td class='rowhead'>{$lang['status']} / {$lang['by']}</td>
+                <td class='rowhead'>" . _('Status') . ' / ' . _('By') . "</td>
                 <td>{$status} - {$by}</td>
             </tr>
             <tr class='no_hover'>
-                <td class='rowhead'>{$lang['problem_comment']}</td>
+                <td class='rowhead'>" . _('Staff Comment') . "</td>
                 <td><textarea name='comment' class='w-100' rows='6'>$comment</textarea></td>
             </tr>";
     if ($bug['status'] === 'na') {
         $body .= "
             <tr>
                 <td colspan='2' class='has-text-centered'>
-                    <input type='submit' value='{$lang['submit_btn_fix']}' class='button is-small'>
+                    <input type='submit' value='" . _('Fix!') . "' class='button is-small'>
                 </td>
             </tr>";
     }
     $HTMLOUT .= main_table($body) . "
         </form>
         <div class='has-text-centered margin20'>
-            <a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>{$lang['go_back']}</a>
-        </div>";
+            <a href='{$_SERVER['PHP_SELF']}?action=bugs' class='button is-small'>" . _('Go back') . '</a>
+        </div>';
 } elseif ($action === 'bugs') {
     if (!has_access($curuser['class'], UC_STAFF, 'coder')) {
-        stderr($lang['stderr_error'], $lang['stderr_only_staff_can_view']);
+        stderr(_('Error'), _('Only staff can view bugs'));
     }
     $count = $fluent->from('bugs')
-        ->select(null)
-        ->select('COUNT(id) AS count')
-        ->fetch('count');
+                    ->select(null)
+                    ->select('COUNT(id) AS count')
+                    ->fetch('count');
     $perpage = 25;
     $pager = pager($perpage, $count, $site_config['paths']['baseurl'] . '/bugs.php?action=bugs&amp;');
     $bugs = $fluent->from('bugs AS b')
-        ->select(null)
-        ->select('b.id')
-        ->select('b.sender')
-        ->select('b.added')
-        ->select('b.priority')
-        ->select('b.problem')
-        ->select('b.comment')
-        ->select('b.status')
-        ->select('b.staff')
-        ->select('b.title')
-        ->select('u.username')
-        ->select('u.class')
-        ->select('s.username AS st')
-        ->select('s.class AS stclass')
-        ->leftJoin('users AS u ON b.sender = u.id')
-        ->leftJoin('users AS s ON b.staff = s.id')
-        ->orderBy('b.added DESC')
-        ->limit($pager['pdo']['limit'])
-        ->offset($pager['pdo']['offset']);
+                   ->select(null)
+                   ->select('b.id')
+                   ->select('b.sender')
+                   ->select('b.added')
+                   ->select('b.priority')
+                   ->select('b.problem')
+                   ->select('b.comment')
+                   ->select('b.status')
+                   ->select('b.staff')
+                   ->select('b.title')
+                   ->select('u.username')
+                   ->select('u.class')
+                   ->select('s.username AS st')
+                   ->select('s.class AS stclass')
+                   ->leftJoin('users AS u ON b.sender = u.id')
+                   ->leftJoin('users AS s ON b.staff = s.id')
+                   ->orderBy('b.added DESC')
+                   ->limit($pager['pdo']['limit'])
+                   ->offset($pager['pdo']['offset']);
 
     $na_count = $fluent->from('bugs')
-        ->select(null)
-        ->select('COUNT(id) AS count')
-        ->where('status = "na"')
-        ->fetch('count');
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('status = "na"')
+                       ->fetch('count');
 
     if ($count > 0) {
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . sprintf($lang['h1_count_bugs'], $na_count, ($na_count > 1 ? 's' : '')) . "</h1>
-        <div class='has-text-centered size_3'>{$lang['delete_when']}</div>";
-        $heading = "        
+        <h1 class='has-text-centered'>" . _p('There is %s new bug. Please check it', 'There is %s new bugs. Please check them', $na_count) . "</h1>
+        <div class='has-text-centered size_3'>" . _('All solved bugs will be deleted after 30 days (from added date).') . '</div>';
+        $heading = '        
     <tr>
-        <th>{$lang['title']}</th>
-        <th>{$lang['added']} / {$lang['by']}</th>
-        <th>{$lang['priority']}</th>
-        <th>{$lang['status']}</th>
-        <th>{$lang['coder']}</th>
-        <th>{$lang['comment']}</th>
-    </tr>";
+        <th>' . _('Title') . '</th>
+        <th>' . _('Added') . ' / ' . _('By') . '</th>
+        <th>' . _('Priority') . '</th>
+        <th>' . _('Status') . '</th>
+        <th>' . _('Coder') . '</th>
+        <th>' . _('Staff Comment') . '</th>
+    </tr>';
         $body = '';
         foreach ($bugs as $q1) {
             switch ($q1['priority']) {
                 case 'low':
-                    $priority = "<span class='has-text-green'>{$lang['low']}</span>";
+                    $priority = "<span class='has-text-green'>" . _('Low') . '</span>';
                     break;
 
                 case 'high':
-                    $priority = "<span class='has-text-danger'>{$lang['high']}</span>";
+                    $priority = "<span class='has-text-danger'>" . _('High') . '</span>';
                     break;
 
                 case 'veryhigh':
-                    $priority = "<span class='has-text-danger'><b><u>{$lang['veryhigh']}</u></b></span>";
+                    $priority = "<span class='has-text-danger'><b><u>" . _('Very High') . '</u></b></span>';
                     break;
             }
             switch ($q1['status']) {
                 case 'fixed':
-                    $status = "<span class='has-text-green'><b>{$lang['fixed']}</b></span>";
+                    $status = "<span class='has-text-green'><b>" . _('Fixed') . '</b></span>';
                     break;
 
                 case 'ignored':
-                    $status = "<span class='has-text-orange'><b>{$lang['ignored']}</b></span>";
+                    $status = "<span class='has-text-orange'><b>" . _('Ignored') . '</b></span>';
                     break;
 
                 default:
@@ -281,7 +284,7 @@ if ($action === 'viewbug') {
         $HTMLOUT .= main_table($body, $heading);
         $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
     } else {
-        $session->set('is-warning', $lang['no_bugs']);
+        $session->set('is-warning', _('There are no reported bugs :).'));
         header('Location: ' . $site_config['paths']['baseurl']);
         die();
     }
@@ -291,13 +294,13 @@ if ($action === 'viewbug') {
         $priority = htmlsafechars($_POST['priority']);
         $problem = htmlsafechars($_POST['problem']);
         if (empty($title) || empty($priority) || empty($problem)) {
-            stderr($lang['stderr_error'], $lang['stderr_missing']);
+            stderr(_('Error'), _('You missing something?<br>Please try again.'));
         }
         if (strlen($problem) < 20) {
-            stderr($lang['stderr_error'], $lang['stderr_problem_min']);
+            stderr(_('Error'), _("We can't use a problem text there is less then 20 chars."));
         }
         if (strlen($title) < 5) {
-            stderr($lang['stderr_error'], $lang['stderr_title_min']);
+            stderr(_('Error'), _("We can't use a title there is less then 5 chars."));
         }
         $values = [
             'title' => $title,
@@ -307,42 +310,42 @@ if ($action === 'viewbug') {
             'added' => $dt,
         ];
         $result = $fluent->insertInto('bugs')
-            ->values($values)
-            ->execute();
+                         ->values($values)
+                         ->execute();
         $cache->delete('bug_mess_');
 
         if ($result) {
-            send_staff_message($values, (int) $result, $lang);
-            stderr($lang['stderr_sucess'], sprintf($lang['stderr_sucess_2'], $priority));
+            send_staff_message($values, (int) $result);
+            stderr(_('Success'), _f('Your bug has been sent to our coder.<br>You have choosen priority: %s', $priority));
         } else {
-            stderr($lang['stderr_error'], $lang['stderr_something_is_wrong']);
+            stderr(_('Error'), _('Please try again.'));
         }
     }
     $HTMLOUT .= "
     <form method='post' action='{$_SERVER['PHP_SELF']}?action=add' enctype='multipart/form-data' accept-charset='utf-8'>";
     $body = "
         <tr>
-            <td class='rowhead'>{$lang['title']}:</td>
-            <td><input type='text' name='title' class='w-100'><br>{$lang['proper_title']}</td>
+            <td class='rowhead'>" . _('Title') . ":</td>
+            <td><input type='text' name='title' class='w-100'><br>" . _('Please choose a proper title.') . "</td>
         </tr>
         <tr>
-            <td class='rowhead'>{$lang['problem_bug']}:</td>
-            <td><textarea class='w-100' rows='10' name='problem'></textarea><br>{$lang['describe_problem']}</td>
+            <td class='rowhead'>" . _('Problem (Bug)') . ":</td>
+            <td><textarea class='w-100' rows='10' name='problem'></textarea><br>" . _('Describe the problem as completely as possible. Please include the entire error stack, not just part of it.') . "</td>
         </tr>
         <tr>
-            <td class='rowhead'>{$lang['priority']}:</td>
+            <td class='rowhead'>" . _('Priority') . ":</td>
             <td>
                 <select name='priority'>
-                    <option value='0'>{$lang['select_one']}</option>
-                    <option value='low'>{$lang['low']}</option>
-                    <option value='high'>{$lang['high']}</option>
-                    <option value='veryhigh'>{$lang['veryhigh']}</option>
+                    <option value='0'>" . _('Select one') . "</option>
+                    <option value='low'>" . _('Low') . "</option>
+                    <option value='high'>" . _('High') . "</option>
+                    <option value='veryhigh'>" . _('Very High') . '</option>
                 </select>
-                <br>{$lang['only_veryhigh_when']}
+                <br>' . _('Choose only very high if the bug really is a problem for using the site.') . "
             </td>
         </tr>
         <tr>
-            <td colspan='2' class='has-text-centered'><input type='submit' value='{$lang['submit_btn_send']}' class='button is-small'></td>
+            <td colspan='2' class='has-text-centered'><input type='submit' value='" . _('Send this bug!') . "' class='button is-small'></td>
         </tr>";
     $HTMLOUT .= main_table($body) . '
     </form>';
@@ -351,13 +354,17 @@ if ($action === 'viewbug') {
 /**
  * @param array $values
  * @param int   $bug_id
- * @param array $lang
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws InvalidManipulation
  */
-function send_staff_message(array $values, int $bug_id, array $lang)
+function send_staff_message(array $values, int $bug_id)
 {
     global $container, $site_config;
 
@@ -365,8 +372,8 @@ function send_staff_message(array $values, int $bug_id, array $lang)
     $messages_class = $container->get(Message::class);
     $user_class = $container->get(User::class);
     $user = $user_class->getUserFromId($values['sender']);
-    $link = "{$lang['posted_by']}: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$values['sender']}]{$user['username']}[/url]";
-    $subject = $lang['new_report'];
+    $link = '' . _('Posted By') . ": [url={$site_config['paths']['baseurl']}/userdetails.php?id={$values['sender']}]{$user['username']}[/url]";
+    $subject = _('New Bug Report');
     $msg = "[url={$site_config['paths']['baseurl']}/bugs.php?action=viewbug&id={$bug_id}][h1]{$values['title']}[/h1][/url][code]{$values['problem']}[/code]\n{$link}";
     foreach ($site_config['is_staff'] as $key => $userid) {
         $msgs_buffer[] = [
@@ -380,5 +387,8 @@ function send_staff_message(array $values, int $bug_id, array $lang)
         $messages_class->insert($msgs_buffer);
     }
 }
-
-echo stdhead($lang['header']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Bugs');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

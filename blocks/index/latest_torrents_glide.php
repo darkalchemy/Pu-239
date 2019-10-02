@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Torrent;
 
-global $container, $lang, $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
 $torrent = $container->get(Torrent::class);
 $sliding_torrents = $torrent->get_latest_slider();
@@ -28,20 +28,7 @@ if (!empty($sliding_torrents)) {
     }
 
     $glide .= '
-                        </ul>
-                    </div>
-                    <div class="glide__arrows" data-glide-el="controls">
-                        <button class="glide__arrow glide__arrow--left" data-glide-dir="<">prev</button>
-                        <button class="glide__arrow glide__arrow--right" data-glide-dir=">">next</button>
-                    </div>
-                    <div class="glide__bullets" data-glide-el="controls[nav]">';
-    $i = 0;
-    foreach ($sliding_torrents as $slider_torrent) {
-        $glide .= "    
-                        <button class='glide__bullet' data-glide-dir='=$i'></button>";
-        ++$i;
-    }
-    $glide .= '
+                        </ul>      
                     </div>
                 </div>
             </div>

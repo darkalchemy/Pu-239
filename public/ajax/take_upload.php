@@ -10,12 +10,11 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_password.php';
 require_once INCL_DIR . 'function_bitbucket.php';
 $user = check_user_status();
-$lang = load_language('bitbucket');
 global $container, $site_config;
 
 header('content-type: application/json');
 if (empty($user['id'])) {
-    echo json_encode(['msg' => $lang['bitbucket_invalid_userid']]);
+    echo json_encode(['msg' => _('Invalid UserId')]);
     die();
 }
 $username = $user['username'];
@@ -38,7 +37,7 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $file = preg_replace('`[^a-z0-9\-\_\.]`i', '', $_FILES['file_' . $i]['name']);
     $it1 = exif_imagetype($_FILES['file_' . $i]['tmp_name']);
     if (!in_array($it1, $site_config['images']['exif'])) {
-        echo json_encode(['msg' => $lang['bitbucket_invalid']]);
+        echo json_encode(['msg' => _('Invalid file extension. jpg, gif, png and webp only.')]);
         die();
     }
 
@@ -47,12 +46,12 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $path = $bucketdir . $USERSALT . '_' . $randb . $file;
     $pathlink = $bucketlink . $USERSALT . '_' . $randb . $file;
     if (!move_uploaded_file($_FILES['file_' . $i]['tmp_name'], $path)) {
-        echo json_encode(['msg' => $bucketdir . '<br>' . $USERSALT . '<br>' . $randb . '<br>' . $path . '<br>file move ' . $lang['bitbucket_upfail']]);
+        echo json_encode(['msg' => $bucketdir . '<br>' . $USERSALT . '<br>' . $randb . '<br>' . $path . '<br>file move ' . _('Upload failed!')]);
         die();
     }
 
     if (!file_exists($path)) {
-        echo json_encode(['msg' => 'path not exists ' . $lang['bitbucket_upfail']]);
+        echo json_encode(['msg' => 'path not exists ' . _('Upload failed!')]);
         die();
     }
     $image_proxy->optimize_image($path, null, null, false);
@@ -61,12 +60,12 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
 
 if (!empty($images)) {
     $output = [
-        'msg' => $lang['bitbucket_success'],
+        'msg' => _('Success! Paste the following url to Poster.'),
         'urls' => $images,
     ];
     echo json_encode($output);
     die();
 } else {
-    echo json_encode(['msg' => $lang['bitbucket_unknown']]);
+    echo json_encode(['msg' => _('Unknown failure occurred')]);
     die();
 }

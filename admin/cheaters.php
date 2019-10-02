@@ -8,7 +8,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('cheaters'));
 global $site_config;
 
 $stdfoot = [
@@ -19,7 +18,7 @@ $stdfoot = [
 
 if (isset($_POST['nowarned']) && $_POST['nowarned'] === 'nowarned') {
     if (empty($_POST['desact']) && empty($_POST['remove'])) {
-        stderr($lang['cheaters_err'], $lang['cheaters_seluser']);
+        stderr(_('Error'), _('You must select a user.'));
     }
     if (!empty($_POST['remove'])) {
         sql_query('DELETE FROM cheaters WHERE id IN (' . implode(', ', array_map('sqlesc', $_POST['remove'])) . ')') or sqlerr(__FILE__, __LINE__);
@@ -44,23 +43,23 @@ if ($count > 0) {
     $heading = "
         <tr>
             <th class='w-1 has-text-centered'>#</th>
-            <th>{$lang['cheaters_uname']}</th>
-            <th class='w-1 has-text-centered'>{$lang['cheaters_d']}</th>
-            <th class='w-1 has-text-centered'>{$lang['cheaters_r']}</th>
-        </tr>";
+            <th>" . _('Username') . "</th>
+            <th class='w-1 has-text-centered'>" . _('Disable') . "</th>
+            <th class='w-1 has-text-centered'>" . _('Remove') . '</th>
+        </tr>';
     $res = sql_query('SELECT c.id AS cid, c.added, c.userid, c.torrentid, c.client, c.rate, c.beforeup, c.upthis, c.timediff, c.userip, t.id AS tid, t.name AS tname FROM cheaters AS c LEFT JOIN torrents AS t ON t.id=c.torrentid ORDER BY added DESC ' . $pager['limit']) or sqlerr(__FILE__, __LINE__);
     $body = '';
     while ($arr = mysqli_fetch_assoc($res)) {
         $id = $arr['cid'];
         $userid = $arr['userid'];
         $torrname = htmlsafechars(CutName($arr['tname'], 80));
-        $cheater = format_username((int) $userid) . " {$lang['cheaters_hbcc']}<br>
-        {$lang['cheaters_torrent']} <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['tid'] . "' title='{$torrname}'>{$torrname}</a><br>
-        {$lang['cheaters_upped']} " . mksize((int) $arr['upthis']) . "<br>
-        {$lang['cheaters_speed']} " . mksize((int) $arr['rate']) . "/s<br>
-        {$lang['cheaters_within']} " . (int) $arr['timediff'] . " {$lang['cheaters_sec']}<br>
-        {$lang['cheaters_uc']} " . htmlsafechars($arr['client']) . "<br>
-        {$lang['cheaters_ipa']} " . htmlsafechars($arr['userip']);
+        $cheater = format_username((int) $userid) . ' ' . _(' has been flagged with an abnormally high upload speed!') . '<br>
+        ' . _('On torrent') . " <a href='{$site_config['paths']['baseurl']}/details.php?id=" . (int) $arr['tid'] . "' title='{$torrname}'>{$torrname}</a><br>
+        " . _('Uploaded') . ' ' . mksize((int) $arr['upthis']) . '<br>
+        ' . _('Speed') . ' ' . mksize((int) $arr['rate']) . '/s<br>
+        ' . _('Within') . ' ' . (int) $arr['timediff'] . ' ' . _('Seconds') . '<br>
+        ' . _('Using Client:') . ' ' . htmlsafechars($arr['client']) . '<br>
+        ' . _('Ip Address') . ' ' . htmlsafechars($arr['userip']);
 
         $cheaters = "
         <div class='dt-tooltipper-large' data-tooltip-content='#cheater_{$id}_tooltip'>" . format_username((int) $userid, true, false) . "
@@ -80,16 +79,21 @@ if ($count > 0) {
     $HTMLOUT .= main_table($body, $heading);
     $HTMLOUT .= "
         <div class='has-text-centered margin20'>
-            <input type='button' value='{$lang['cheaters_cad']}' onclick=\"this.value=check1(this.form.elements['desact[]'])\" class='button is-small'>
-            <input type='button' value='{$lang['cheaters_car']}' onclick=\"this.value=check2(this.form.elements['remove[]'])\" class='button is-small'>
+            <input type='button' value='" . _('Check All Disable') . "' onclick=\"this.value=check1(this.form.elements['desact[]'])\" class='button is-small'>
+            <input type='button' value='" . _('Check All Remove') . "' onclick=\"this.value=check2(this.form.elements['remove[]'])\" class='button is-small'>
             <input type='hidden' name='nowarned' value='nowarned'>
-            <input type='submit' name='submit' value='{$lang['cheaters_ac']}' class='button is-small'>
+            <input type='submit' name='submit' value='" . _('Apply Changes') . "' class='button is-small'>
         </div>
     </form>";
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagerbottom'];
     }
 } else {
-    stderr('', 'There are not any cheaters', 'bottom20');
+    stderr(_('Error'), _('There are not any cheaters'), 'bottom20');
 }
-echo stdhead($lang['cheaters_stdhead']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Ratio Cheats');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

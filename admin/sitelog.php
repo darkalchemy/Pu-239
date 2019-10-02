@@ -8,7 +8,6 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_log'));
 $txt = $where = '';
 $search = isset($_POST['search']) ? strip_tags($_POST['search']) : '';
 if (isset($_GET['search'])) {
@@ -28,25 +27,25 @@ $pager = pager($perpage, $count, 'staffpanel.php?tool=sitelog&amp;action=sitelog
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM sitelog $where ORDER BY added DESC {$pager['limit']} ") or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>{$lang['text_sitelog']}</h1>
+        <h1 class='has-text-centered'>" . _('Site log') . "</h1>
         <div class='has-text-centered margin20'>
-            <h2>{$lang['log_search']}</h2>
+            <h2>" . _('Search Log') . "</h2>
             <form method='post' action='./staffpanel.php?tool=sitelog&amp;action=sitelog' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='search' class='w-50' value=''>
-                <input type='submit' class='button is-small' value='{$lang['log_search_btn']}'>
+                <input type='submit' class='button is-small' value='" . _('Search') . "'>
             </form>
         </div>";
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if (mysqli_num_rows($res) == 0) {
-    $HTMLOUT .= main_div($lang['text_logempty'], '', 'has-text-centered padding20');
+    $HTMLOUT .= main_div(_('Log is empty'), '', 'has-text-centered padding20');
 } else {
-    $heading = "
+    $heading = '
                 <tr>
-                    <th>{$lang['header_date']}</th>
-                    <th>{$lang['header_event']}</th>
-                </tr>";
+                    <th>' . _('Date') . '</th>
+                    <th>' . _('Event') . '</th>
+                </tr>';
     $log_events = [];
     $colors = [];
     $body = '';
@@ -80,4 +79,9 @@ if (mysqli_num_rows($res) == 0) {
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['stdhead_log']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Site Log');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

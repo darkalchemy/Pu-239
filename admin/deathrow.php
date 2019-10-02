@@ -2,12 +2,16 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Envms\FluentPDO\Literal;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Database;
 use Pu239\Message;
 use Pu239\Session;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
@@ -15,7 +19,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_deathrow'));
 global $container, $site_config, $CURUSER;
 
 $HTMLOUT = '';
@@ -27,8 +30,6 @@ $HTMLOUT = '';
  */
 function calctime($val)
 {
-    global $lang;
-
     $days = intval($val / 86400);
     $val -= $days * 86400;
     $hours = intval($val / 3600);
@@ -36,21 +37,26 @@ function calctime($val)
     $mins = intval($val / 60);
     //$secs = $val - ($mins * 60);
 
-    return "$days {$lang['deathrow_days']}, $hours {$lang['deathrow_hrs']}, $mins {$lang['deathrow_minutes']}";
+    return "$days " . _('days') . ", $hours " . _('hrs') . ", $mins " . _('minutes') . '';
 }
 
 /**
  * @param array $tids
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws InvalidManipulation
  *
  * @return bool|int
  */
 function notify_owner(array $tids)
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     if (empty($tids)) {
         return false;
@@ -65,10 +71,10 @@ function notify_owner(array $tids)
                        ->fetchAll();
 
     $dt = TIME_NOW;
-    $subject = $lang['deathrow_dead'];
+    $subject = _('Dead Torrent Notice');
     $values = [];
     foreach ($torrents as $torrent) {
-        $msg = "{$lang['deathrow_torrent']} [url={$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}]\"{$torrent['name']}\"[/url] {$lang['deathrow_warn']}";
+        $msg = '' . _('Torrent') . " [url={$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}]\"{$torrent['name']}\"[/url] " . _('will soon be deleted. Please re-seed this torrent to avoid deletion') . '';
         $values[] = [
             'receiver' => $torrent['owner'],
             'added' => $dt,
@@ -97,9 +103,9 @@ if (!empty($_POST['remove'])) {
     $deleted = notify_owner($_POST['remove']);
     $session = $container->get(Session::class);
     if ($deleted) {
-        $session->set('is-success', $lang['deathrow_owner'] . plural($deleted) . $lang['deathrow_notified']);
+        $session->set('is-success', _('Torrent Owner') . plural($deleted) . _(' Notified'));
     } else {
-        $session->set('is-success', $lang['deathrow_failed']);
+        $session->set('is-success', _('Torrent Notification Failed'));
     }
 }
 // Give 'em 7 days to seed back their torrent (no peers, not seeded with in x days)
@@ -226,45 +232,55 @@ if ($count) {
                        ->fetchAll();
 
     $HTMLOUT .= "
-        <h1 class='has-text-centered'>$count {$lang['deathrow_title']}</h1>" . ($count > $perpage ? $pager['pagertop'] : '') . "
+        <h1 class='has-text-centered'>$count " . _(' Torrents On Deathrow') . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
-    $heading = "
+    $heading = '
         <tr>
-            <th>{$lang['deathrow_uname']}</th>
-            <th>{$lang['deathrow_tname']}</th>
-            <th>{$lang['deathrow_del_resn']}</th>
-            <th>{$lang['deathrow_notified']}</th>
+            <th>' . _('Username') . '</th>
+            <th>' . _('Torrent name') . '</th>
+            <th>' . _('Delete Reason') . '</th>
+            <th>' . _(' Notified') . "</th>
             <th class='has-text-centered w-1'><input type='checkbox' id='checkThemAll' class='tooltipper' title='Select All'></th>
         </tr>";
     $body = '';
     foreach ($torrents as $queued) {
         if ($queued['reason'] == 1) {
-            $reason = $lang['deathrow_nopeer'] . calctime($x_time);
+            $reason = _('no peers, not seeded within ') . calctime($x_time);
         } elseif ($queued['reason'] == 2) {
-            $reason = $lang['deathrow_no_peers'] . calctime($y_time);
+            $reason = _('no peers, not snatched in ') . calctime($y_time);
         } else {
-            $reason = $lang['deathrow_no_seed'] . calctime($z_time) . $lang['deathrow_new_torr'];
+            $reason = _('no seeder activity within ') . calctime($z_time) . _(' on new torrent');
         }
         $id = (int) $queued['tid'];
         $body .= '
         <tr>' . ($CURUSER['class'] >= UC_STAFF ? '
-            <td>' . format_username((int) $queued['uid']) . '</td>' : "
-            <td>{$lang['deathrow_hidden']}</td>") . "
+            <td>' . format_username((int) $queued['uid']) . '</td>' : '
+            <td>' . _('Hidden') . '</td>') . "
             <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td>
             <td>{$reason}</td>
             <td>" . get_date((int) $queued['notified'], 'LONG', 0, 1) . "</td>
-            <td><input type='checkbox' name='remove[]' value='{$id}' class='tooltipper' title='{$lang['deathrow_delete']}'></td>
+            <td><input type='checkbox' name='remove[]' value='{$id}' class='tooltipper' title='" . _('Delete') . "'></td>
         </tr>";
     }
     $HTMLOUT .= main_table($body, $heading) . ($count > $perpage ? $pager['pagerbottom'] : '');
     $HTMLOUT .= "
         <div class='has-text-centered margin20'>
-            <input type='submit' name='submit' class='button is-small' value='{$lang['deathrow_notify']}'>
+            <input type='submit' name='submit' class='button is-small' value='" . _(' Notify') . "'>
         </div>
         </form>";
-    echo stdhead($lang['deathrow_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+    $title = _('Deatchrow');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } else {
-    $HTMLOUT = "<h1 class='has-text-centered'>{$lang['deathrow_title']}</h1>";
+    $HTMLOUT = "<h1 class='has-text-centered'>" . _(' Torrents On Deathrow') . '</h1>';
     $HTMLOUT .= stdmsg('Awesome', 'There are not torrents on deathrow');
-    echo stdhead($lang['deathrow_stdhead0']) . wrapper($HTMLOUT) . stdfoot();
+    $title = _('Deathrow');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }

@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use DI\DependencyException;
+use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
 
@@ -29,8 +31,8 @@ function redirect()
 /**
  * @param array $user
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function mark_as_read(array $user)
@@ -60,8 +62,8 @@ function mark_as_read(array $user)
 /**
  * @param array $user
  *
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
 function mark_as_unread(array $user)
@@ -90,8 +92,8 @@ function mark_as_unread(array $user)
 }
 
 /**
- * @throws \DI\DependencyException
- * @throws \DI\NotFoundException
+ * @throws DependencyException
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed

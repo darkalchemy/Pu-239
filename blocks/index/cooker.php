@@ -6,9 +6,8 @@ use Pu239\Upcoming;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
 $user = check_user_status();
-global $container, $site_config, $lang;
+global $container, $site_config;
 
-$lang = array_merge($lang, load_language('upcoming'));
 $cooker_class = $container->get(Upcoming::class);
 $recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, (bool) $user['hidden']);
 $cooker .= "
@@ -19,9 +18,9 @@ $cooker .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='w-1 min-100 has-text-centered has-no-border-right'>{$lang['upcoming_type']}</th>
-                        <th class='w-50 min-350 has-no-border-right has-no-border-left'>{$lang['upcoming_name']}</th>
-                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>{$lang['upcoming_status']}</th>
+                        <th class='w-1 min-100 has-text-centered has-no-border-right'>" . _('Type') . "</th>
+                        <th class='w-50 min-350 has-no-border-right has-no-border-left'>" . _('Recipe Title') . "</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>" . _('Status') . "</th>
                         <th class='w-1 has-text-centered has-no-border-right has-no-border-left'><i class='icon-hourglass-3 icon' aria-hidden='true'></i></th>
                         <th class='w-1 has-text-centered has-no-border-left'><i class='icon-user-plus icon' aria-hidden='true'></i></th>
                     </tr>
@@ -48,7 +47,7 @@ if (!empty($recipes) && is_array($recipes)) {
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
             $plot = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary has-text-weight-bold'>{$lang['upcoming_plot']}:</span>
+                                                            <span class='size_4 has-text-primary has-text-weight-bold'>" . _('Plot') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$plot}</span>
@@ -56,7 +55,7 @@ if (!empty($recipes) && is_array($recipes)) {
         } else {
             $plot = '';
         }
-        $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot, $lang);
+        $hover = upcoming_hover($recipe['url'], 'upcoming_' . $recipe['id'], $recipe['name'], $background, $poster, $recipe['added'], $recipe['expected'], $chef, $plot);
         $cooker .= "
                     <tr>
                         <td class='has-text-centered has-no-border-right'>{$caticon}</td>
@@ -64,7 +63,7 @@ if (!empty($recipes) && is_array($recipes)) {
                         <td class='has-text-centered has-no-border-right has-no-border-left'>" . ucfirst($recipe['status']) . "</td>
                         <td class='has-text-centered has-no-border-right has-no-border-left'><span class='tooltipper' title='" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, true) . "'>" . calc_time_difference(strtotime($recipe['expected']) - TIME_NOW, false) . "</span></td>
                         <td class='has-text-centered has-no-border-left'>
-                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notify']}' class='cooker_notify tooltipper' title='" . ($recipe['notify'] === 1 ? $lang['upcoming_notified'] : $lang['upcoming_not_notified']) . "'>
+                            <div data-id='{$recipe['id']}' data-notified='{$recipe['notify']}' class='cooker_notify tooltipper' title='" . ($recipe['notify'] === 1 ? _('You will be notified when this has been uploaded.') : _('You will NOT be notified when this has been uploaded.')) . "'>
                                 <span id='notify_{$recipe['id']}'>" . ($recipe['notify'] === 1 ? "<i class='icon-mail icon has-text-success is-marginless' aria-hidden='true'></i>" : "<i class='icon-envelope-open-o icon has-text-info is-marginless' aria-hidden='true'></i>") . '</span>
                             </div>
                         </td>
@@ -79,11 +78,11 @@ if (!empty($recipes) && is_array($recipes)) {
 } else {
     $cooker .= "
                     <tr>
-                        <td colspan='5'>{$lang['upcoming_none']}</td>
+                        <td colspan='5'>" . _("There is nothing cookin'") . '</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         </div>
-    </div>";
+    </div>';
 }

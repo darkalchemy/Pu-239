@@ -13,7 +13,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 $curuser = check_user_status();
-$lang = load_language('global');
 global $container, $site_config;
 
 $auth = $container->get(Auth::class);
@@ -1249,4 +1248,8 @@ $form .= '
     </form>';
 
 $HTMLOUT = wrapper($form);
-echo stdhead('User Blocks Config') . $HTMLOUT . stdfoot();
+$title = _('User Blocks');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

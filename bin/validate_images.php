@@ -9,7 +9,7 @@ require_once __DIR__ . '/../include/bittorrent.php';
 global $container, $site_config;
 
 if (!isset($argv[1]) || ($argv[1] !== 'validate' && $argv[1] !== 'optimize' && $argv[1] !== 'purge')) {
-    die("This script can validate, optimize and delete all images found in public/images/proxy\n\nTo run:\n{$argv[0]} [purge|validate|optimze]\n\n");
+    die("This script can validate, optimize and delete all images found in public/images/proxy\n\nTo run:\n{$argv[0]} [purge|validate|optimize]\n\n");
 }
 foreach ($argv as $arg) {
     $optimize = $arg === 'optimize' ? true : false;

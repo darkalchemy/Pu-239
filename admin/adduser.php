@@ -13,7 +13,6 @@ require_once INCL_DIR . 'function_password.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_adduser'));
 global $container, $site_config;
 
 $cache = $container->get(Cache::class);
@@ -45,40 +44,44 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'send_email' => false,
         ];
         $user = $container->get(User::class);
-        $userid = $user->add($data, $lang);
+        $userid = $user->add($data);
         $session = $container->get(Session::class);
         if (empty($userid)) {
-            $session->set('is-warning', $lang['err_already_exists']);
+            $session->set('is-warning', _('User or email already exists.'));
         } else {
-            stderr('Success', format_username($userid) . ' account created successfully. The password has been set to ' . $post['password']);
+            stderr(_('Success'), _fe('{0} account created successfully. The password has been set to {1}', format_username($userid), $post['password']));
         }
     }
 }
 
 $HTMLOUT = '
-    <h1 class="has-text-centered">' . $lang['std_adduser'] . '</h1>
+    <h1 class="has-text-centered">' . _('Add User') . '</h1>
     <form method="post" action="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=adduser&amp;action=adduser" accept-charset="utf-8">';
 $body = "
         <div class='columns'>                    
-            <div class='column is-one-quarter'>{$lang['text_username']}</div>
+            <div class='column is-one-quarter'>" . _('Username') . "</div>
             <div class='column'>
                 <input type='text' name='username' id='username' class='w-100' onblur='check_name();' value='' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                 <div id='namecheck'></div>
             </div>
         </div>
         <div class='columns'>                    
-            <div class='column is-one-quarter'>{$lang['text_email']}</div>
+            <div class='column is-one-quarter'>" . _('Email') . "</div>
             <div class='column'>
                 <input type='email' name='email' id='email' class='w-100' onblur='check_email();' autocomplete='on' required>
                 <div id='emailcheck'></div>" . ($site_config['signup']['email_confirm'] ? "
-                <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '') . "
+                <div class='alt_bordered top10 padding10'>" . _("The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere.") . '</div>' : '') . "
             </div>
         </div>
         <div class='has-text-centered margin20'>
-            <input type='submit' id='submit' value='{$lang['btn_okay']}' class='button is-small'>
+            <input type='submit' id='submit' value='" . _('Okay') . "' class='button is-small'>
         </div>
     </form>";
 
 $HTMLOUT .= main_div($body, '', 'padding20');
-
-echo stdhead($lang['std_adduser']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Add User');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

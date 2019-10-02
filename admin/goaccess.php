@@ -10,7 +10,12 @@ if (file_exists(CACHE_DIR . 'goaccess.html')) {
     require_once CACHE_DIR . 'goaccess.html';
     die();
 } else {
-    stderr('Error', 'Is goaccess installed?');
+    stderr(_('Error'), 'Is goaccess installed?');
 }
 
-echo stdhead('GoAccess') . $HTMLOUT . stdfoot();
+$title = _('GoAccess');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

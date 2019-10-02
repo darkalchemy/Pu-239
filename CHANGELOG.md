@@ -1,4 +1,9 @@
 ### 26 Sept, 2019
+remove: slider buttons and bullets  
+remove: unused lang key => value pairs  
+add: script to create lang files create_lang_set.php  
+update: rename lang dirs from int to lang code  
+update: remove formatting and extraneous spaces from lang files  
 update: platform-wrapper buttons style  
 
 ### 25 Sept, 2019

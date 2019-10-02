@@ -8,7 +8,6 @@ use Pu239\Database;
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_trivia.php';
-$lang = array_merge(load_language('global'), load_language('trivia'));
 $user = check_user_status();
 global $container;
 
@@ -33,9 +32,9 @@ $cleanup = trivia_time();
 
 if (!empty($user)) {
     if ($user['correct'] == 1) {
-        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>" . _('Awesome, that was the correct answer') . '</h3>';
     } else {
-        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>" . _('Sorry, that was not the correct answer') . '</h3>';
     }
 } else {
     $values = [
@@ -45,10 +44,10 @@ if (!empty($user)) {
         'date' => date('Y-m-d H:i:s'),
     ];
     if ($correct_answer === $answer) {
-        $answered = "<h3 class='has-text-success top20'>{$lang['trivia_correct']}</h3>";
+        $answered = "<h3 class='has-text-success top20'>" . _('Awesome, that was the correct answer') . '</h3>';
         $values['correct'] = 1;
     } else {
-        $answered = "<h3 class='has-text-danger top20'>{$lang['trivia_incorrect']}</h3>";
+        $answered = "<h3 class='has-text-danger top20'>" . _('Sorry, that was not the correct answer') . '</h3>';
         $values['correct'] = 0;
     }
     $fluent->insertInto('triviausers')

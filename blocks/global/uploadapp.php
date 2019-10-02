@@ -6,7 +6,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 if ($site_config['alerts']['uploadapp'] && has_access($user['class'], UC_STAFF, 'coder')) {
     $cache = $container->get(Cache::class);
@@ -26,19 +26,19 @@ if ($site_config['alerts']['uploadapp'] && has_access($user['class'], UC_STAFF, 
     <li>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&amp;action=app'>
             <span class='button tag is-info dt-tooltipper-small has-text-black' data-tooltip-content='#uploadapp_tooltip'>
-                {$lang['gl_uploadapp_new']}
+                " . _p('New Uploader App', 'New Uploader Apps', $newapp) . "
             </span>
             <div class='tooltip_templates'>
                 <div id='uploadapp_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        {$lang['gl_hey']} {$user['username']}!
+                        " . _f('Hey %s!', $user['username']) . "
                     </div>
                     <div class='has-text-centered'>
-                        $newapp {$lang['gl_uploadapp_ua']}" . ($newapp > 1 ? 's' : '') . " {$lang['gl_uploadapp_dealt']}
+                        " . _pf('%2$d uploader application to be dealt with.', '%2$d uploader applications to be dealt with.', $newapp) . '
                     </div>
                 </div>
             </div>
         </a>
-    </li>";
+    </li>';
     }
 }

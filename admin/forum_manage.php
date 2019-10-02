@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_forum_manage'));
 global $container, $site_config, $CURUSER;
 
 $HTMLOUT = $options = $options_2 = $options_3 = $options_4 = $options_5 = $options_6 = $option_7 = $option_8 = $option_9 = $option_10 = $option_11 = $option_12 = $count = $forums_stuff = '';
@@ -28,14 +27,14 @@ $main_links = "
             <div class='bottom20'>
                 <ul class='level-center bg-06'>
                     <li class='is-link margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>{$lang['fm_overforum']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=over_forums&amp;action=over_forums'>" . _('Over Forums') . "</a>
                     </li>
                     <li class='is-link margin10'>
-                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>{$lang['fm_configure']}</a>
+                        <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=forum_config&amp;action=forum_config'>" . _('Configure Forums') . "</a>
                     </li>
                 </ul>
             </div>
-            <h1 class='has-text-centered'>{$lang['fm_forummanager']}</h1>";
+            <h1 class='has-text-centered'>" . _('Forum Manager') . '</h1>';
 
 $posted_action = (isset($_GET['action2']) ? htmlsafechars($_GET['action2']) : (isset($_POST['action2']) ? htmlsafechars($_POST['action2']) : ''));
 $valid_actions = [
@@ -105,18 +104,18 @@ switch ($action) {
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
             $body = "
                     <tr>
-                        <td colspan='2'>{$lang['fm_efp_edit']} " . htmlsafechars($forum['name']) . "</td>
+                        <td colspan='2'>" . _('Edit forum:') . ' ' . htmlsafechars($forum['name']) . '</td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_name']}</td>
+                        <td>' . _('Forum name:') . "</td>
                         <td><input name='name' type='text' class='w-100' maxlength='60' value='" . htmlsafechars($forum['name']) . "'></td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_description']}</td>
+                        <td>" . _('Forum description:') . "</td>
                         <td><input name='desc' type='text' class='w-100' maxlength='200' value='" . htmlsafechars($forum['description']) . "'></td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_over']}</td>
+                        <td>" . _('OverForum:') . "</td>
                         <td>
                             <select name='over_forums'>";
             $query = $fluent->from('over_forums');
@@ -124,68 +123,69 @@ switch ($action) {
                 $body .= "
                                 <option class='body' value='{$arr['id']}' " . ($forum['forum_id'] === $arr['id'] ? 'selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
             }
-            $body .= "
+            $body .= '
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_sub']}</td>
+                        <td>' . _('Sub-Forum of?') . "</td>
                         <td>
                             <select name='parent_forum'>
-                                <option class='body' value='0' " . ($parent_forum === 0 ? 'selected' : '') . '>' . $lang['fm_efp_select'] . '</option>';
+                                <option class='body' value='0' " . ($parent_forum === 0 ? 'selected' : '') . '>' . _('select parent forum if sub-forum') . '</option>';
             $query = $fluent->from('forums')
                             ->select(null)
                             ->select('id')
                             ->select('name');
 
             foreach ($query as $arr) {
+                $arr['id'] = (int) $arr['id'];
                 if (is_valid_id($arr['id'])) {
                     $body .= "
                                 <option class='body' value='{$arr['id']}' " . ($parent_forum === $arr['id'] ? 'selected' : '') . '>' . htmlsafechars($arr['name']) . '</option>';
                 }
             }
-            $body .= "
+            $body .= '
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_min_r']}</td>
+                        <td>' . _('Minimun read permission:') . "</td>
                         <td>
                             <select name='min_class_read'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
                                 <option class='body' value='{$i}' " . ($forum['min_class_read'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
-            $body .= "
+            $body .= '
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_min_w']}</td>
+                        <td>' . _('Minimun write permission:') . "</td>
                         <td>
                             <select name='min_class_write'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
                                 <option class='body' value='{$i}' " . ($forum['min_class_write'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
-            $body .= "
+            $body .= '
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_min_c']}</td>
+                        <td>' . _('Minimun create topic permission:') . "</td>
                         <td>
                             <select name='min_class_create'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $body .= "
                                 <option class='body' value='{$i}' " . ($forum['min_class_create'] === $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
-            $body .= "
+            $body .= '
                             </select>
                         </td>
                     </tr>
                     <tr>
-                        <td>{$lang['fm_efp_rank']}</td>
+                        <td>' . _('Forum rank:') . "</td>
                         <td>
                             <select name='sort'>";
             $count = $forum_class->get_count();
@@ -202,7 +202,7 @@ switch ($action) {
             <div class="has-text-centered margin20">
                 <input type="hidden" name="action2" value="edit_forum">
                 <input type="hidden" name="id" value="' . $id . '">
-                <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_efp_btn'] . '">
+                <input type="submit" name="button" class="button is-small margin20" value="' . _('Edit forum') . '">
             </div>
         </form>';
             $HTMLOUT .= main_table($body);
@@ -213,13 +213,13 @@ switch ($action) {
 $HTMLOUT .= $main_links;
 $heading = ' 
         <tr>
-            <th>' . $lang['fm_mp_name'] . '</th>
-            <th>' . $lang['fm_mp_sub'] . '</th>
-            <th>' . $lang['fm_mp_over'] . '</th>
-            <th>' . $lang['fm_mp_read'] . '</th>
-            <th>' . $lang['fm_mp_write'] . '</th>
-            <th>' . $lang['fm_mp_create'] . '</th>
-            <th>' . $lang['fm_mp_modify'] . '</th>
+            <th>' . _('Name') . '</th>
+            <th>' . _('Sub-Forum of') . '</th>
+            <th>' . _('OverForum') . '</th>
+            <th>' . _('Read') . '</th>
+            <th>' . _('Write') . '</th>
+            <th>' . _('Create topic') . '</th>
+            <th>' . _('Modify') . '</th>
         </tr>';
 $forums = $fluent->from('forums AS f')
                  ->select('o.name AS parent_name')
@@ -267,18 +267,18 @@ $HTMLOUT .= main_table($body, $heading) . '<br><br>
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=forum_manage&amp;action=forum_manage" accept-charset="utf-8">';
 $body = '
             <tr>
-                <td colspan="2">' . $lang['fm_mp_make'] . '</td>
+                <td colspan="2">' . _('Make new forum') . '</td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_fname'] . '</td>
+                <td>' . _('Forum name') . '</td>
                 <td><input name="name" type="text" class="w-100" maxlength="60"></td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_description'] . '</td>
+                <td>' . _('Forum description:') . '</td>
                 <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_over2'] . '</td>
+                <td>' . _('OverForum:') . '</td>
                 <td>
                     <select name="over_forums">';
 
@@ -292,10 +292,10 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_sub2'] . '</td>
+                <td>' . _('Sub-Forum of?:') . '</td>
                 <td>
                     <select name="parent_forum">
-                        <option class="body" value="0">' . $lang['fm_mp_none'] . '</option>';
+                        <option class="body" value="0">' . _('none') . '</option>';
 $query = $fluent->from('forums');
 foreach ($query as $arr) {
     $body .= '
@@ -306,7 +306,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_min_r'] . '</td>
+                <td>' . _('Minimun read permission:') . '</td>
                 <td>
                     <select name="min_class_read">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -318,7 +318,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_min_w'] . '</td>
+                <td>' . _('Minimun write permission:') . '</td>
                 <td>
                     <select name="min_class_write">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -330,7 +330,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_min_c'] . '</td>
+                <td>' . _('Minimun create topic permission:') . '</td>
                 <td>
                     <select name="min_class_create">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -342,7 +342,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . $lang['fm_mp_rank'] . '</td>
+                <td>' . _('Forum rank:') . '</td>
                 <td>
                     <select name="sort">';
 $count = $fluent->from('forums')
@@ -361,18 +361,23 @@ $body .= '
 $HTMLOUT .= main_table($body) . '
     <div class="has-text-centered margin20">
         <input type="hidden" name="action2" value="add_forum">
-        <input type="submit" name="button" class="button is-small margin20" value="' . $lang['fm_mp_btn'] . '">
+        <input type="submit" name="button" class="button is-small margin20" value="' . _('Make forum') . '">
     </div>
     </form>
           <script>
             /*<![CDATA[*/
             function confirm_delete(id)
             {
-               if (confirm(\'' . $lang['fm_mp_remove'] . '\'))
+               if (confirm(\'' . _('Delete forum?') . '\'))
                {
                   self.location.href=\'staffpanel.php?tool=forum_manage&amp;action=forum_manage&action2=delete&id=\'+id;
                }
             }
         /*]]>*/
     </script>';
-echo stdhead($lang['fm_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Forum Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

@@ -22,7 +22,7 @@ if (isset($_POST['remove'])) {
     if ($delete_count > 0) {
         sql_query('DELETE FROM subscriptions WHERE id IN (' . implode(', ', $post_delete) . ') AND user_id = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
     } else {
-        stderr($lang['gl_error'], $lang['fe_nothing_deleted']);
+        stderr(_('Error'), _('Nothing deleted!'));
     }
 }
 header('Location: ' . $_SERVER['PHP_SELF'] . '?action=subscriptions');

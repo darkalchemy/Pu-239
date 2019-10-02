@@ -7,12 +7,11 @@ require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_flush'));
 global $site_config, $CURUSER;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
-    stderr($lang['flush_stderror'], $lang['flush_invalid']);
+    stderr(_('Error'), _('Invalid ID.'));
 }
 if ($CURUSER['class'] >= UC_STAFF) {
     $dt = TIME_NOW;
@@ -21,9 +20,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
     $username = htmlsafechars($arr['username']);
     sql_query('DELETE FROM peers WHERE userid = ' . sqlesc($id));
     $effected = mysqli_affected_rows($mysqli);
-    write_log($lang['flush_log1'] . $username . $lang['flush_log2'] . get_date((int) $dt, 'LONG', 0, 1) . $lang['flush_log3'] . (int) $effected . $lang['flush_log4']);
+    write_log(_f('Staff flushed %ss ghost torrents at %s. %s torrents where sucessfully cleaned.', $username, get_date((int) $dt, 'LONG', 0, 1), $effected));
     header('Refresh: 3; url=index.php');
-    stderr($lang['flush_success'], "$effected {$lang['flush_success2']}" . ($effected ? 's' : '') . $lang['flush_success3']);
+    stderr(_('Success'), _p('%s ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated.', '%s ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated.', $effected));
 } else {
-    stderr($lang['flush_fail'], $lang['flush_fail2']);
+    stderr(_('Error'), _('You are not a member of the staff.'));
 }

@@ -14,8 +14,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
-
-$lang = array_merge(load_language('global'), load_language('wiki'));
 $HTMLOUT = '';
 $stdhead = [
     'css' => [
@@ -33,7 +31,7 @@ $stdfoot = [
  */
 function navmenu()
 {
-    global $site_config, $lang;
+    global $site_config;
 
     $url = $_SERVER['REQUEST_URI'];
     $parsed_url = parse_url($url);
@@ -47,8 +45,8 @@ function navmenu()
     <div id="wiki-navigation">
         <div class="tabs is-centered">
             <ul>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php" class="' . ($action === 'index' ? 'active ' : '') . 'is-link margin10">' . $lang['wiki_index'] . '</a></li>
-                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=add" class="' . ($action === 'add' ? 'active ' : '') . 'is-link margin10">' . $lang['wiki_add'] . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php" class="' . ($action === 'index' ? 'active ' : '') . 'is-link margin10">' . _('Index') . '</a></li>
+                <li><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=add" class="' . ($action === 'add' ? 'active ' : '') . 'is-link margin10">' . _('Add') . '</a></li>
             </ul>
         </div>';
     $div = '
@@ -65,7 +63,7 @@ function navmenu()
             </div>
             <div class='has-text-centered padding20'>
                 <input type='text' name='article' value='$value'>
-                <input type='submit' class='button is-small' value='{$lang['wiki_search']}' name='wiki'>
+                <input type='submit' class='button is-small' value='" . _('Search') . "' name='wiki'>
             </div>
         </form>";
     $ret .= main_div($div, 'bottom20') . '
@@ -75,16 +73,16 @@ function navmenu()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|void
  */
 function wikimenu()
 {
-    global $container, $site_config, $lang;
+    global $container, $site_config;
 
     $wiki = $container->get(Wiki::class);
     $name = $wiki->get_last();
@@ -92,11 +90,11 @@ function wikimenu()
     return main_div("
         <div class='padding20'>
             <ul>
-            <span class='size_6'>{$lang['wiki_permissions']}:</span>
-            <li>{$lang['wiki_read_user']}</li>
-            <li>{$lang['wiki_write_user']}</li>
-            <li>{$lang['wiki_edit_staff']}/Author</li><br>
-            <span class='size_6'>{$lang['wiki_latest_article']}</span>
+            <span class='size_6'>" . _('Permissions') . ':</span>
+            <li>' . _('Read: User') . '</li>
+            <li>' . _('Write: User') . '</li>
+            <li>' . _('Edit: Staff') . "/Author</li><br>
+            <span class='size_6'>" . _('Latest Article:') . "</span>
             <li><a href='{$site_config['paths']['baseurl']}/wiki.php?action=article&amp;name=" . urlencode($name) . "'> " . format_comment($name) . '</a></li>
             </ul>
         </div>');
@@ -145,8 +143,8 @@ $HTMLOUT .= "
         <div class='level-center'>
             <h1>
             <span class='level-left'>
-                <img src='{$site_config['paths']['images_baseurl']}wiki.png' alt='' title='{$lang['wiki_title']}' class='tooltipper' width='25'>
-                <span class='left10'>{$lang['wiki_title']}</span>
+                <img src='{$site_config['paths']['images_baseurl']}wiki.png' alt='' title='" . _('Wiki') . "' class='tooltipper' width='25'>
+                <span class='left10'>" . _('Wiki') . "</span>
             </span>
             </h1>
         </div>
@@ -194,13 +192,13 @@ if ($action === 'article') {
                     <h1 class="has-text-centered">
                         <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . '</a>
                     </h1>
-                    <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>{$lang['wiki_added_by_art']}: " . format_username((int) $result['userid']) . '</div>' : '') . '
+                    <div class="bg-02 padding10 round10">' . ($result['userid'] > 0 ? " <div class='left10 bottom20'>" . _('Article added by ') . ': ' . format_username((int) $result['userid']) . '</div>' : '') . '
                         <div class="w-100 padding20 round10 bg-02">' . format_comment($result['body']) . '</div>
                     </div>' . $edit;
             $div .= (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'] ? '
                     <div class="has-text-centered">
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_edit'] . '</a>
-                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=delete&amp;id=' . $result['id'] . '" class="button is-small margin20">' . $lang['wiki_delete'] . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=edit&amp;id=' . $result['id'] . '" class="button is-small margin20">' . _('Edit') . '</a>
+                        <a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=delete&amp;id=' . $result['id'] . '" class="button is-small margin20">' . _('Delete') . '</a>
                     </div>' : '');
             $HTMLOUT .= main_div($div, 'bottom20');
         }
@@ -216,14 +214,14 @@ if ($action === 'article') {
             foreach ($results as $result) {
                 $HTMLOUT .= main_div('
                     <div class="padding20">
-                        <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . " </a></h2>
-                        <div>{$lang['wiki_added_by']}: " . format_username((int) $result['userid']) . '</div>
+                        <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . ' </a></h2>
+                        <div>' . _('Added by') . ': ' . format_username((int) $result['userid']) . '</div>
                         <div>Added on: ' . get_date((int) $result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
                         <div>Last Edited on: ' . get_date((int) $result['lastedit'], 'LONG') . '</div>
                     </div>' : '</div>'), 'top20');
             }
         } else {
-            $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_no_art_found']);
+            $HTMLOUT .= navmenu() . stdmsg(_('Error'), _('No article found.'));
         }
     }
 }
@@ -233,21 +231,21 @@ if ($action === 'add') {
             <form method='post' action='wiki.php' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' placeholder='Article Title' minlength='3' maxlength='100' pattern='[A-Za-z][A-Za-z0-9 _-]*'> " . BBcode() . "
                 <div class='has-text-centered margin20'>
-                    <input type='submit' class='button is-small' name='article-add' value='{$lang['wiki_ok']}'>
+                    <input type='submit' class='button is-small' name='article-add' value='" . _('OK') . "'>
                 </div>
             </form>";
 } elseif ($action === 'delete') {
     $result = $wiki->get_by_id($id);
     if (!empty($result) && (has_access($user['class'], UC_STAFF, 'coder') || $user['id'] === $result['userid'])) {
         if ($wiki->delete($id)) {
-            $session->set('is-success', $lang['wiki_deleted']);
+            $session->set('is-success', _('Wiki Item Has Been Deleted'));
         } else {
-            $session->set('is-warning', $lang['wiki_not_deleted']);
+            $session->set('is-warning', _('Wiki Item Has [b]NOT[/b] Been Deleted'));
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } else {
-        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_access_denied']);
+        $HTMLOUT .= navmenu() . stdmsg(_('Error'), _('Access Denied'));
     }
 } elseif ($action === 'edit') {
     $result = $wiki->get_by_id($id);
@@ -257,23 +255,23 @@ if ($action === 'add') {
                 <input type='text' name='article-name' id='name' class='w-100 top10 bottom10 has-text-centered' value='" . format_comment($result['name']) . "'>
                 <input type='hidden' name='article-id' value='$id'> " . BBcode($result['body']) . "
                 <div class='has-text-centered margin20'>
-                    <input type='submit' class='button is-small' name='article-edit' value='{$lang['wiki_ok']}'>
+                    <input type='submit' class='button is-small' name='article-edit' value='" . _('OK') . "'>
                 </div>
             </form> ";
     } else {
-        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], $lang['wiki_access_denied']);
+        $HTMLOUT .= navmenu() . stdmsg(_('Error'), _('Access Denied'));
     }
 } elseif ($action === 'sort') {
     $results = $wiki->get_by_name($letter);
     if (!empty($results)) {
         $HTMLOUT .= navmenu();
-        $div = " <h2 class='has-text-centered'>{$lang['wiki_art_found_starting']}: <b> " . format_comment($letter) . "</b></h2>
+        $div = " <h2 class='has-text-centered'>" . _('Articles starting with the letter') . ': <b> ' . format_comment($letter) . "</b></h2>
         <div class='w-100 padding20 round10 bg-02'> ";
         foreach ($results as $result) {
             $div .= '
             <div class="padding20 bottom10 round10 bg-02">
-                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . "</a></h2>
-                <div>{$lang['wiki_added_by']}: " . format_username((int) $result['userid']) . '</div>
+                <h2><a href="' . $site_config['paths']['baseurl'] . '/wiki.php?action=article&amp;name=' . urlencode($result['name']) . '">' . format_comment($result['name']) . '</a></h2>
+                <div>' . _('Added by') . ': ' . format_username((int) $result['userid']) . '</div>
                 <div>Added on: ' . get_date((int) $result['time'], 'LONG') . '</div>' . (!empty($result['lastedit']) ? '
                 <div>Last Edited on: ' . get_date((int) $result['lastedit'], 'LONG') . '</div>' : '') . '
             </div>';
@@ -282,9 +280,13 @@ if ($action === 'add') {
         </div>';
         $HTMLOUT .= main_div($div);
     } else {
-        $HTMLOUT .= navmenu() . stdmsg($lang['wiki_error'], "{$lang['wiki_no_art_found_starting']}<b> " . format_comment($letter) . ' </b> found.');
+        $HTMLOUT .= navmenu() . stdmsg(_('Error'), '' . _('No articles starting with letter ') . '<b> ' . format_comment($letter) . ' </b> found.');
     }
 }
 $HTMLOUT .= '</div>';
 
-echo stdhead($lang['wiki_title'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Wiki');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

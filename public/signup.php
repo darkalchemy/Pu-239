@@ -12,7 +12,6 @@ use Rakit\Validation\Validator;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
-$lang = array_merge(load_language('global'), load_language('signup'), load_language('takesignup'));
 global $container, $site_config;
 
 $title = 'Join ' . $site_config['site']['name'];
@@ -56,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'username' => $post['username'],
         ];
         $user = $container->get(User::class);
-        $userid = $user->add($data, $lang);
+        $userid = $user->add($data);
     }
 
     if (!empty($userid)) {
@@ -141,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $promo = "
                 <input type='hidden' name='promo' value='{$valid}'>";
         } else {
-            stderr($lang['signup_promo'], $lang['signup_promo_error']);
+            stderr(_('Error'), _('The Promotion you have attempted to use does not exist or has expired!'));
         }
     }
     $invite_id = !empty($_GET['id']) ? (int) $_GET['id'] : null;
@@ -155,10 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 if (!$site_config['openreg']['open'] && !$site_config['openreg']['invites_only']) {
-    stderr($lang['stderr_errorhead'], $lang['signup_closed']);
+    stderr(_('Error'), _('Signups are presently closed'));
 }
 if ((!$site_config['openreg']['open'] || $site_config['openreg']['invites_only']) && empty($email) && empty($promo)) {
-    stderr($lang['stderr_errorhead'], $lang['signup_invite']);
+    stderr(_('Error'), _('Signups are Invite Only'));
 }
 
 $stdfoot = [
@@ -186,39 +185,44 @@ if (!empty($email)) {
 } else {
     $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' value='{$signup_vars['email']}' autocomplete='on' required>
                    <div id='emailcheck'></div>" . ($site_config['signup']['email_confirm'] ? "
-                    <div class='alt_bordered top10 padding10'>{$lang['signup_valemail']}</div>" : '');
+                    <div class='alt_bordered top10 padding10'>" . _('Username') . '</div>' : '');
 }
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
 $body = "          
             <h1 class='has-text-centered'>$title</h1>
-            <div class='columns'>                    
-                <div class='column is-one-quarter has-text-left'>{$lang['signup_uname']}</div>
+            <div class='columns level'>                    
+                <div class='column is-one-quarter has-text-left'>" . _('Desired Username') . "</div>
                 <div class='column'>
                     <input type='text' name='username' id='username' class='w-100' onblur='check_name();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
                     <div id='namecheck'></div>
                 </div>
             </div>
-            <div class='columns'>                    
-                <div class='column is-one-quarter has-text-left'>{$lang['signup_pass']}</div>
+            <div class='columns level'>                    
+                <div class='column is-one-quarter has-text-left'>" . _('Pick a Password') . "</div>
                 <div class='column'>
                     <input type='password' id='password' name='password' class='w-100' autocomplete='on' required minlength='8'>
                 </div>
             </div>
-            <div class='columns'>                    
-                <div class='column is-one-quarter has-text-left'>{$lang['signup_passa']}</div>
+            <div class='columns level'>                    
+                <div class='column is-one-quarter has-text-left'>" . _('Enter password again') . "</div>
                 <div class='column'>
                     <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' required minlength='8'>
                 </div>
             </div>
-            <div class='columns'>                    
-                <div class='column is-one-quarter has-text-left'>{$lang['signup_email']}</div>
+            <div class='columns level'>                    
+                <div class='column is-one-quarter has-text-left'>" . _('Email Address') . "</div>
                 <div class='column'>
                     $email_form
                 </div>
             </div>
             <div class='has-text-centered'>{$invite}{$promo}
-                <input id='submit' type='submit' value='Signup' class='button is-small' disabled>
+                <input id='submit' type='submit' value='" . _('Signup') . "' class='button is-small' disabled>
             </div>";
 $HTMLOUT .= main_div($body, '', 'padding20') . '
     </form>';
-echo stdhead($lang['head_signup'], [], 'w-50 min-350 has-text-centered') . wrapper($HTMLOUT) . stdfoot($stdfoot);
+
+$title = _('Signup');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'w-50 min-350 has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

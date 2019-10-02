@@ -5,6 +5,6 @@ declare(strict_types = 1);
 if ($user['browser'] != '') {
     $browser = htmlsafechars($user['browser']);
 } else {
-    $browser = $lang['userdetails_nobrowser'];
+    $browser = _('No browser recorded yet');
 }
-$HTMLOUT .= "<tr><td class='rowhead'>{$lang['userdetails_user_browser']}</td><td>{$browser}</td></tr>";
+$HTMLOUT .= "<tr><td class='rowhead'>" . _('User Browser') . "</td><td>{$browser}</td></tr>";

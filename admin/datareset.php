@@ -12,7 +12,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_datareset'));
 global $container, $CURUSER, $site_config;
 
 $HTMLOUT = '';
@@ -20,7 +19,7 @@ $HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tid = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
     if ($tid === 0) {
-        stderr($lang['datareset_stderr'], $lang['datareset_stderr1']);
+        stderr(_(':w00t:'), _('wtf are your trying to do!?'));
     }
     $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        ->fetch('count');
 
     if (empty($torrents)) {
-        stderr($lang['datareset_stderr'], $lang['datareset_stderr2']);
+        stderr(_(':w00t:'), _('That is not a torrent!!!!'));
     }
     $row = $fluent->from('torrents AS t')
                   ->select(null)
@@ -55,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newd = $a['ud'] > 0 && $a['ud'] > $a['sd'] ? $a['ud'] - $a['sd'] : 0;
         $tname = htmlsafechars($a['name']);
         if (!empty($a['uid'])) {
-            $msg = $lang['datareset_hey'] . htmlsafechars($a['username']) . "\n";
-            $msg .= $lang['datareset_looks'] . htmlsafechars($a['name']) . $lang['datareset_nuked'];
-            $msg .= $lang['datareset_down'] . mksize($a['sd']) . $lang['datareset_downbe'] . mksize($newd) . "\n";
+            $msg = '' . _('Hey,') . ' ' . htmlsafechars($a['username']) . "\n";
+            $msg .= '' . _('Looks like torrent') . ' ' . htmlsafechars($a['name']) . ' ' . _('is nuked and we want to take back the data you downloaded') . '';
+            $msg .= '' . _('So you downloaded') . ' ' . mksize($a['sd']) . ' ' . _('your new download will be') . ' ' . mksize($newd) . "\n";
             if ($a['owner'] === $a['uid']) {
                 $update = [
                     'seedbonus' => $a['seedbonus'] - $site_config['bonus']['per_delete'],
@@ -86,27 +85,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $torrents_class->delete_by_id($tid);
     $torrents_class->remove_torrent($hash);
 
-    write_log($lang['datareset_torr'] . $tname . $lang['datareset_wdel'] . htmlsafechars($CURUSER['username']) . $lang['datareset_allusr']);
+    write_log('' . _('Torrent') . " $tname  " . _('was deleted by') . ' ' . htmlsafechars($CURUSER['username']) . ' ' . _('and all users were Re-Paid Download credit') . '');
     header('Refresh: 3; url=staffpanel.php?tool=datareset');
-    stderr($lang['datareset_stderr'], $lang['datareset_pls']);
+    stderr(_(':w00t:'), _('it worked! long live Pu-239 - Please wait while you are re-directed!'));
 } else {
     $form = "
     <form action='{$_SERVER['PHP_SELF']}?tool=datareset&amp;action=datareset' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
     <div class='has-text-centered'>
-        <h1>{$lang['datareset_reset']}</h1>
-        <label for='tid'>{$lang['datareset_tid']}</label>
+        <h1>" . _('Reset Ratio for nuked torrents') . "</h1>
+        <label for='tid'>" . _('Torrent id') . "</label>
         <input type='number' name='tid' id='tid' class='left10'>
         <div style='background:#990033;' class='has-text-left padding10 top20 bottom20 round5'>
             <ul>
-                <li>{$lang['datareset_tid_info']}</li>
-                <li>{$lang['datareset_info']}</li>
-                <li>{$lang['datareset_info1']}</b></li>
+                <li>" . _('Torrent id must be a number and only a number!!!') . '</li>
+                <li>' . _("If the torrent is not nuked or there is not problem with it , don't use this as it will delete the torrent and any other entries associated with it!") . '</li>
+                <li>' . _("If you don't know what this will do, go play somewhere else") . "</b></li>
             </ul>
         </div>
-        <input type='submit' value='{$lang['datareset_repay']}' class='button is-small margin20'>
+        <input type='submit' value='" . _('Re-pay!') . "' class='button is-small margin20'>
     </div>
     </form>";
 
     $HTMLOUT .= main_div($form);
-    echo stdhead($lang['datareset_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+    $title = _('Data Reset Manager');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }

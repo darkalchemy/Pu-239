@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_modded_torrents'));
 $modes = [
     'today',
     'yesterday',
@@ -20,13 +19,13 @@ $HTMLOUT = '';
 $links = "
     <ul class='level-center bg-06'>
         <li class='is-link margin10'>
-            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . $lang['mtor_modded_today'] . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=today' data-toggle='tooltip' data-placement='top' title='Tooltip on top'>" . _('Modded Today') . "</a>
         </li>
         <li class='is-link margin10'>
-            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday'>" . $lang['mtor_modded_yesterday'] . "</a>
+            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=yesterday'>" . _('Modded Yesterday') . "</a>
         </li>
         <li class='is-link margin10'>
-            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded'>" . $lang['mtor_all_unmodded_torrents'] . '</a>
+            <a href='{$_SERVER['PHP_SELF']}?tool={$_GET['tool']}&amp;type=unmodded'>" . _('All Unmodded Torrents') . '</a>
         </li>
     </ul>';
 
@@ -42,7 +41,7 @@ $links = "
  */
 function do_sort($arr, $empty = false)
 {
-    global $site_config, $lang;
+    global $site_config;
 
     $returnto = !empty($_SERVER['REQUEST_URI']) ? '&amp;returnto=' . urlencode($_SERVER['REQUEST_URI']) : '';
     $ret_html = '';
@@ -65,7 +64,7 @@ function do_sort($arr, $empty = false)
                     </td>
                     <td>' . get_date((int) $res['added'], 'LONG') . "</td>
                     <td>
-                        <a href='{$site_config['paths']['baseurl']}/edit.php?id={$res['id']}{$returnto}' class='tooltipper' title='{$lang['mtor_edit']}'>
+                        <a href='{$site_config['paths']['baseurl']}/edit.php?id={$res['id']}{$returnto}' class='tooltipper' title='" . _('Edit') . "'>
                             <i class='icon-edit icon has-text-info' aria-hidden='true'></i>
                         </a>
                     </td>
@@ -83,7 +82,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
     if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
         $mode = $_GET['type'];
     } else {
-        stderr($lang['mtor_error'], $lang['mtor_please_try_that_previous_request_again']);
+        stderr(_('Error'), _('Please Try That Previous request again.'));
     }
     if ($mode === 'yesterday') {
         $count = $fluent->from('torrents')
@@ -94,8 +93,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                         ->fetch('count');
 
         if (!$count) {
-            $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_torrents_have_been_modded'], 'top20');
-            $title = $lang['mtor_modded_today'];
+            $HTMLOUT = $links . stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
+            $title = _('Modded Today');
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
@@ -116,18 +115,18 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 $data = do_sort($data);
                 $HTMLOUT .= $links . "
                 <div class='has-text-centered'>
-                    <h2>" . $lang['mtor_summary'] . '</h2>
+                    <h2>" . _('Summary') . '</h2>
                 </div>' . ($count > $perpage ? $pager['pagertop'] : '');
                 $heading = '
                     <tr>
-                       <th>' . $lang['mtor_torrent'] . '</th>
-                       <th>' . $lang['mtor_modded_by'] . '</th>
-                       <th>' . $lang['mtor_time'] . '</th>
+                       <th>' . _('Torrent') . '</th>
+                       <th>' . _('Modded by') . '</th>
+                       <th>' . _('Time') . '</th>
                     </tr>';
                 $HTMLOUT .= main_table($data, $heading);
                 $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
             }
-            $title = "$count " . $lang['mtor_modded_torrents'] . " $mode";
+            $title = "$count " . _('Modded Torrents') . " $mode";
         }
     } elseif ($mode === 'today') {
         $count = $fluent->from('torrents')
@@ -138,8 +137,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                         ->fetch('count');
 
         if (!$count) {
-            $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_torrents_have_been_modded'], 'top20');
-            $title = $lang['mtor_modded_yesterday'];
+            $HTMLOUT = $links . stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
+            $title = _('Modded Yesterday');
         } else {
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
@@ -160,18 +159,18 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 $data = do_sort($data);
                 $HTMLOUT .= $links . "
                 <div class='has-text-centered'>
-                    <h2>" . $lang['mtor_summary'] . '</h2>
+                    <h2>" . _('Summary') . '</h2>
                 </div>' . ($count > $perpage ? $pager['pagertop'] : '');
                 $heading = '
                     <tr>
-                       <th>' . $lang['mtor_torrent'] . '</th>
-                       <th>' . $lang['mtor_modded_by'] . '</th>
-                       <th>' . $lang['mtor_time'] . '</th>
+                       <th>' . _('Torrent') . '</th>
+                       <th>' . _('Modded by') . '</th>
+                       <th>' . _('Time') . '</th>
                     </tr>';
                 $HTMLOUT .= main_table($data, $heading);
                 $HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
             }
-            $title = "$count " . $lang['mtor_modded_torrents'] . " $mode";
+            $title = "$count " . _('Modded Torrents') . " $mode";
         }
     } elseif ($mode === 'unmodded') {
         $count = $fluent->from('torrents')
@@ -181,23 +180,23 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                         ->fetch('count');
 
         if (!$count) {
-            $HTMLOUT = $links . stdmsg($lang['mtor_sorry'], $lang['mtor_no_un-modded_torrents_detected'], 'top20');
-            $title = $lang['mtor_add_done'];
+            $HTMLOUT = $links . stdmsg(_('Sorry'), _('No Un-modded Torrents Detected. Good Staff We Have'), 'top20');
+            $title = _('Add Done');
         } else {
-            $put = $lang['mtor_unmodded_torrent'] . plural($count);
+            $put = _('Unmodded Torrent') . plural($count);
             $perpage = 15;
             $pager = pager($perpage, $count, "{$_SERVER['PHP_SELF']}?tool=modded_torrents&type={$mode}&");
             $HTMLOUT .= $links;
             $HTMLOUT .= "
                 <div class='has-text-centered'>
-                    <h1>{$lang['mtor_summary']}</h1>
+                    <h1>" . _('Summary') . "</h1>
                     <p class='has-text-centered bottom10'>$put</p>" . ($count > $perpage ? $pager['pagertop'] : '') . '
                 </div>';
             $heading = '
                 <tr>
-                   <th>' . $lang['mtor_torrent'] . '</th>
-                   <th>' . $lang['mtor_added'] . '</th>
-                   <th>' . $lang['mtor_edit'] . ' ' . $lang['mtor_torrent'] . '</th>
+                   <th>' . _('Torrent') . '</th>
+                   <th>' . _('Added') . '</th>
+                   <th>' . _('Edit') . ' ' . _('Torrent') . '</th>
                 </tr>';
             $data = $fluent->from('torrents')
                            ->select(null)
@@ -214,11 +213,14 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
             $title = $put;
         }
     } else {
-        $HTMLOUT .= $links . main_div('<h3>' . $lang['mtor_no_torrents_have_been_modded'] . ' ' . $mode . '.</h3>', 'top20');
-        $title = $lang['mtor_no_torrents_modded'] . " $mode";
+        $HTMLOUT .= $links . main_div('<h3>' . _('No Torrents have been modded') . ' ' . $mode . '.</h3>', 'top20');
+        $title = _('No Torrents Modded') . " $mode";
     }
-    echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $where = false;
     $ts = strtotime(date('F', time()) . ' ' . date('Y', time()));
@@ -249,7 +251,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = "by <u>$_POST[username]</u> on $date";
-            $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . " on $date";
+            $title = "$_POST[username] : " . _('Modded Torrents') . " on $date";
         } elseif ($date) {
             $beginOfDay = strtotime('midnight', strtotime($date));
             $endOfDay = strtotime('midnight', strtotime($date) + 86400);
@@ -265,7 +267,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = "on $date";
-            $title = $lang['mtor_modded_torrents'] . " on $date";
+            $title = _('Modded Torrents') . " on $date";
         } elseif ($whom && $when) {
             $data = $fluent->from('torrents AS t')
                            ->select(null)
@@ -280,7 +282,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = "by <u>$_POST[username]</u> within the last " . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
-            $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
+            $title = "$_POST[username] : " . _('Modded Torrents') . ' ' . _('From') . " $_POST[time] days ago";
         } elseif ($when) {
             $data = $fluent->from('torrents')
                            ->select(null)
@@ -293,7 +295,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = 'from the past ' . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
-            $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . ' ' . $lang['mtor_from'] . " $_POST[time] days ago";
+            $title = "$_POST[username] : " . _('Modded Torrents') . ' ' . _('From') . " $_POST[time] days ago";
         } elseif ($whom) {
             $data = $fluent->from('torrents AS t')
                            ->select(null)
@@ -307,11 +309,11 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = "by <u>$_POST[username]</u>";
-            $title = "$_POST[username] : " . $lang['mtor_modded_torrents'] . '';
+            $title = "$_POST[username] : " . _('Modded Torrents') . '';
         }
         $count = count($data);
         if (!$count) {
-            $HTMLOUT .= stdmsg($lang['mtor_sorry'], $lang['mtor_no_torrents_have_been_modded'], 'top20');
+            $HTMLOUT .= stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
         } else {
             $HTMLOUT = $trim = '';
             if (isset($data)) {
@@ -319,56 +321,64 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 $HTMLOUT .= $links;
                 $HTMLOUT .= "
                 <div class='has-text-centered'>
-                    <h2>" . $lang['mtor_summary'] . '</h2>
+                    <h2>" . _('Summary') . '</h2>
                 </div>';
                 $heading = '
                     <tr>
-                        <th>' . $lang['mtor_torrent'] . '</th>
-                        <th>' . $lang['mtor_modded_by'] . '</th>
-                        <th>' . $lang['mtor_time'] . '</th>
+                        <th>' . _('Torrent') . '</th>
+                        <th>' . _('Modded by') . '</th>
+                        <th>' . _('Time') . '</th>
                     </tr>';
                 $HTMLOUT .= main_table($data, $heading);
             }
         }
     } else {
-        stderr($lang['mtor_error'], '' . $lang['mtor_empty_data_supplied'] . ' ! ' . $lang['mtor_please_try_again'] . '');
+        stderr(_('Error'), _('Empty Data Supplied! Please Try Again'));
     }
-    echo stdhead($title) . wrapper($HTMLOUT) . stdfoot();
-    die();
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }
 $HTMLOUT = '';
 $HTMLOUT .= $links . "
-    <h1 class='has-text-centered'>" . $lang['mtor_modded_torrents_complete_panel'] . '</h1>';
+    <h1 class='has-text-centered'>" . _('Modded Torrents Complete Panel') . '</h1>';
 
 $HTMLOUT .= main_div("
     <div class='has-text-centered padding20'>
         <form method='post' action='{$_SERVER['PHP_SELF']}?tool=modded_torrents&amp;type=search_modded' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='columns is-gapless level'>
                 <div class='column has-text-right'>
-                    <label for='username' class='right10'>" . $lang['mtor_username'] . "</label>
+                    <label for='username' class='right10'>" . _('Username') . "</label>
                 </div>
                 <div class='column has-text-left'>
-                    <input type='text' placeholder='" . $lang['mtor_username'] . "' name='username' id='username'>
+                    <input type='text' placeholder='" . _('Username') . "' name='username' id='username'>
                 </div>
             </div>
             <div class='columns is-gapless level'>
                 <div class='column has-text-right'>
-                    <label for='time' class='right10'>" . $lang['mtor_from'] . ' ' . $lang['mtor_numbers_of_days_ago'] . "</label>
+                    <label for='time' class='right10'>" . _('From') . ' ' . _('Numbers of Days Ago') . "</label>
                 </div>
                 <div class='column has-text-left'>
-                    <input type='text' placeholder='" . $lang['mtor_day'] . "' name='time' id='time'>
+                    <input type='text' placeholder='" . _('Day') . "' name='time' id='time'>
                 </div>
             </div>
             <div class='columns is-gapless level'>
                 <div class='column has-text-right'>
-                    <label for='date' class='right10'>" . $lang['mtor_on_which_day'] . "</label>
+                    <label for='date' class='right10'>" . _('On Which Day') . "</label>
                 </div>
                 <div class='column has-text-left'>
                     <input type='date' id='date' name='date'>
                 </div>
             </div>
-            <button type='submit' class='button is-small'>" . $lang['mtor_search'] . '</button>
+            <button type='submit' class='button is-small'>" . _('Search') . '</button>
         </form>
   </div>');
 
-echo stdhead($lang['mtor_modded_torrents_panel']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Modded Torrents');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

@@ -7,7 +7,6 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('bonusmanager'));
 global $site_config;
 
 $HTMLOUT = $count = '';
@@ -42,29 +41,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: {$_SERVER['PHP_SELF']}?tool=bonusmanage");
             die();
         } else {
-            stderr($lang['bonusmanager_oops'], $lang['bonusmanager_sql']);
+            stderr(_('Oops'), _('Something went wrong with the sql query'));
         }
     }
 }
 
-$heading = "
+$heading = '
         <tr>
-            <th>{$lang['bonusmanager_id']}</th>
-            <th>{$lang['bonusmanager_order_id']}</th>
-            <th class='tooltipper' title='{$lang['bonusmanager_enabled']}'>E</th>
-            <th>{$lang['bonusmanager_bonus']}</th>
-            <th>{$lang['bonusmanager_points']}</th>
-            <th>{$lang['bonusmanager_pointspool']}</th>
-            <th>{$lang['bonusmanager_minpoints']}</th>
-            <th>{$lang['bonusmanager_minclass']}</th>
-            <th class='w-20'>{$lang['bonusmanager_description']}</th>
-            <th>{$lang['bonusmanager_type']}</th>
-            <th>{$lang['bonusmanager_quantity']}</th>
-            <th>{$lang['bonusmanager_action']}</th>
-        </tr>";
+            <th>' . _('Id') . '</th>
+            <th>' . _('Order Id') . "</th>
+            <th class='tooltipper' title='" . _('Enabled') . "'>E</th>
+            <th>" . _('Bonus') . '</th>
+            <th>' . _('Points') . '</th>
+            <th>' . _('Points Pool') . '</th>
+            <th>' . _('Min Points') . '</th>
+            <th>' . _('Min Class') . "</th>
+            <th class='w-20'>" . _('Description') . '</th>
+            <th>' . _('Type') . '</th>
+            <th>' . _('Quantity') . '</th>
+            <th>' . _('Action') . '</th>
+        </tr>';
 
 $HTMLOUT = "
-    <h1 class='has-text-centered'>{$lang['bonusmanager_bm']}</h1>";
+    <h1 class='has-text-centered'>" . _('Bonus Management') . '</h1>';
 
 $body = '';
 while ($arr = mysqli_fetch_assoc($res)) {
@@ -82,10 +81,15 @@ while ($arr = mysqli_fetch_assoc($res)) {
                 <td><textarea name='description' rows='4' class='w-100'>" . format_comment($arr['description']) . '</textarea></td>
                 <td>' . format_comment($arr['art']) . '</td>
                 <td>' . (($arr['art'] === 'traffic' || $arr['art'] === 'traffic2' || $arr['art'] === 'gift_1' || $arr['art'] === 'gift_2') ? (htmlsafechars($arr['menge']) / 1024 / 1024 / 1024) . ' GB' : htmlsafechars($arr['menge'])) . "</td>
-                <td><input class='button is-small' type='submit' value='{$lang['bonusmanager_submit']}'></td>
+                <td><input class='button is-small' type='submit' value='" . _('Submit') . "'></td>
             </form>
         </tr>";
 }
 
 $HTMLOUT .= main_table($body, $heading);
-echo stdhead($lang['bonusmanager_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Bonus Manager');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

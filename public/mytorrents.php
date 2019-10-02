@@ -10,7 +10,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_torrenttable.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('mytorrents'), load_language('torrenttable_functions'), load_language('bookmark'));
 global $container, $site_config;
 
 $HTMLOUT = '';
@@ -72,8 +71,8 @@ $select = $select->where('owner = ?', $user['id'])
 
 if (!$count) {
     $HTMLOUT .= "
-        <h1 class='has-text-centered'>{$lang['mytorrents_no_torrents']}</h1>" . main_div("
-        <div class='has-text-centered'>{$lang['mytorrents_no_uploads']}</div>", null, 'padding20');
+        <h1 class='has-text-centered'>" . _('No torrents') . '</h1>' . main_div("
+        <div class='has-text-centered'>" . _("You haven't uploaded any torrents yet, so there's nothing in this page.") . '</div>', null, 'padding20');
 } else {
     $pager = pager(20, $count, "{$site_config['paths']['baseurl']}/mytorrents.php?{$pagerlink}");
     $select = $select->limit($pager['pdo']['limit'])
@@ -83,4 +82,8 @@ if (!$count) {
     $HTMLOUT .= torrenttable($select, $user, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($user['username'] . "'s torrents") . wrapper($HTMLOUT) . stdfoot();
+$title = _f('Torrents for %s', format_comment($user['username']));
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

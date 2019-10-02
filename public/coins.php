@@ -9,7 +9,6 @@ use Pu239\Session;
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('coins'));
 global $container, $site_config;
 
 $id = (int) $_GET['id'];
@@ -30,27 +29,27 @@ $pointscangive = [
 $returnto = "details.php?id=$id";
 $session = $container->get(Session::class);
 if (!in_array($points, $pointscangive)) {
-    $session->set('is-warning', $lang['coins_you_cant_give_that_amount_of_points']);
+    $session->set('is-warning', _("You can't give that amount of points!"));
     header("Location: $returnto");
     die();
 }
 $sdsa = sql_query('SELECT 1 FROM coins WHERE torrentid = ' . sqlesc($id) . ' AND userid =' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
 $asdd = mysqli_fetch_assoc($sdsa);
 if ($asdd) {
-    $session->set('is-warning', $lang['coins_you_already_gave_points_to_this_torrent']);
+    $session->set('is-warning', _('You already gave points to this torrent.'));
     header("Location: $returnto");
     die();
 }
 $res = sql_query('SELECT owner,name,points FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_assoc($res) or stderr($lang['gl_error'], $lang['coins_torrent_was_not_found']);
+$row = mysqli_fetch_assoc($res) or stderr(_('Error'), _('Torrent was not found'));
 $userid = (int) $row['owner'];
 if ($userid == $user['id']) {
-    $session->set('is-warning', $lang['coins_you_cant_give_your_self_points']);
+    $session->set('is-warning', _("You can't give your self points!"));
     header("Location: $returnto");
     die();
 }
 if ($user['seedbonus'] < $points) {
-    $session->set('is-warning', $lang['coins_you_dont_have_enough_points']);
+    $session->set('is-warning', _("You don't have enough points for that!"));
     header("Location: $returnto");
     die();
 }
@@ -60,8 +59,8 @@ sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($use
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = "{$lang['coins_you_have_been_given']} $points {$lang['coins_points_by']} " . $user['username'] . " {$lang['coins_for_torrent']} [url=" . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
-$subject = $lang['coins_you_have_been_given_a_gift'];
+$msg = '' . _('You have been given') . " $points " . _('points by') . ' ' . $user['username'] . ' ' . _('for torrent') . ' [url=' . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
+$subject = _('You have been given.gift');
 $msgs_buffer[] = [
     'receiver' => $userid,
     'added' => $dt,
@@ -89,6 +88,6 @@ $cache->update_row('user_' . $user['id'], [
 //== delete the pm keys
 $cache->delete('coin_points_' . $id);
 
-$session->set('is-success', $lang['coins_successfully_gave_points_to_this_torrent']);
+$session->set('is-success', _('Successfully gave points to this torrent.'));
 header("Location: $returnto");
 die();

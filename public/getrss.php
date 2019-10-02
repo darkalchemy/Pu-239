@@ -12,7 +12,6 @@ $stdfoot = [
         get_file_name('categories_js'),
     ],
 ];
-$lang = array_merge(load_language('global'), load_language('getrss'));
 global $site_config;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -30,11 +29,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rsslink = "{$site_config['paths']['baseurl']}/rss.php?cats=" . implode(',', $cats) . "&amp;type={$feed}&amp;torrent_pass={$user['torrent_pass']}&amp;count=$count&amp;bm=$bm";
     $HTMLOUT = "
         <div class='portlet has-text-centered w-100'>
-            <h1>{$lang['getrss_result']}</h1>
+            <h1>" . _('This is your link set up according to your selected categories') . "</h1>
             <input type='text' class='w-75 margin20' readonly='readonly' value='{$rsslink}' onclick='select()'>
         </div>";
-    echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot();
-    die();
+
+    $title = _('Generated RSS Feed');
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 }
 
 $HTMLOUT = "
@@ -44,23 +47,23 @@ $HTMLOUT .= main_div("
         <div class='padding20'>
             <ul class='level-center'>
                 <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
-                    <label for='bm'>Bookmarked Torrents<br>
+                    <label for='bm'>" . _('Bookmarked Torrents') . "<br>
                         <select id='bm' name='bm' class='top10 w-100'>
-                            <option value='0'>No</option>
-                            <option value='1'>Yes - Only bookmarked torrents</option>
+                            <option value='0'>" . _('No') . "</option>
+                            <option value='1'>" . _('Yes - Only bookmarked torrents') . "</option>
                         </select>
                     </label>
                 </li>
-                <li class='has-text-centered w-25 tooltipper' title='Generate Links to download torrents or to view torrent details.'>
-                    <label for='feed'>RSS Link Type<br>
+                <li class='has-text-centered w-25 tooltipper' title='" . _('Generate Links to download torrents or to view torrent details.') . "'>
+                    <label for='feed'>" . _('RSS Link Type') . "<br>
                         <select id='feed' name='feed' class='top10 w-100'>
-                            <option value='dl'>{$lang['getrss_dl']}</option>
-                            <option value='web'>{$lang['getrss_web']}</option>
+                            <option value='dl'>" . _('Download link') . "</option>
+                            <option value='web'>" . _('Web link') . "</option>
                         </select>
                     </label>
                 </li>
-                <li class='has-text-centered w-25 tooltipper' title='How many results should be returned in the RSS feed?'>
-                    <label for='count'>Results in Feed<br>
+                <li class='has-text-centered w-25 tooltipper' title='" . _('How many results should be returned in the RSS feed?') . ">
+                    <label for='count'>" . _('Results in Feed') . "<br>
                         <select id='count' name='count' class='top10 w-100'>
                             <option value='15'>15</option>
                             <option value='30'>30</option>
@@ -71,9 +74,14 @@ $HTMLOUT .= main_div("
                 </li>
             </ul>
             <div class='level-center top20'>
-                <input type='submit' class='button is-small' value='{$lang['getrss_btn']}'>
+                <input type='submit' class='button is-small' value='" . _('Create') . "'>
             </div>
         </div>");
 $HTMLOUT .= '
         </form>';
-echo stdhead($lang['getrss_head2']) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+
+$title = _('Create RSS Feed');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

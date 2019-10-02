@@ -10,7 +10,6 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('takeedit'), load_language('details'));
 global $container, $site_config;
 
 $torrent_cache = $torrent_txt_cache = '';
@@ -21,7 +20,7 @@ $possible_extensions = [
 $session = $container->get(Session::class);
 $id = (int) $_POST['id'];
 if (!is_valid_id($id)) {
-    $session->set('is-warning', $lang['takedit_no_data']);
+    $session->set('is-warning', _('missing form data'));
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
@@ -45,7 +44,7 @@ function valid_torrent_name($torrent_name)
 
 $nfoaction = '';
 $select_torrent = sql_query('SELECT name, title, descr, isbn, category, visible, vip, release_group, poster, url, newgenre, description, anonymous, sticky, owner, allow_comments, nuked, nukereason, filename, save_as, youtube, tags, info_hash, freetorrent FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr('Error', 'No torrent with this ID!');
+$fetch_assoc = mysqli_fetch_assoc($select_torrent) or stderr(_('Error'), 'No torrent with this ID!');
 $infohash = $fetch_assoc['info_hash'];
 if ($user['id'] != $fetch_assoc['owner'] && !has_access($user['class'], UC_STAFF, 'torrent_mod')) {
     $session->set('is-danger', "You're not the owner of this torrent.");
@@ -97,7 +96,7 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
     $torrent_cache['nfo'] = '';
 }
 if (empty($_POST['type']) || empty($_POST['body']) || empty($_POST['name'])) {
-    $session->set('is-warning', $lang['takedit_no_data']);
+    $session->set('is-warning', _('missing form data'));
     header("Location: {$_SERVER['HTTP_REFERER']}");
     die();
 }
@@ -339,6 +338,6 @@ $torrents_class->remove_torrent($infohash);
 write_log('torrent edited - ' . htmlsafechars($name) . ' was edited by ' . (($fetch_assoc['anonymous'] === '1') ? 'Anonymous' : htmlsafechars($user['username'])) . '');
 $cache->delete('editedby_' . $id);
 
-$session->set('is-success', $lang['details_success_edit']);
+$session->set('is-success', _('Successfully edited!'));
 header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id");
 die();

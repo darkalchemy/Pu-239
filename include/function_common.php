@@ -186,5 +186,5 @@ function calc_time_difference(int $diff, bool $full)
         return implode(($full ? ', ' : ':'), $text);
     }
 
-    return null;
+    return _('The time has passed.');
 }

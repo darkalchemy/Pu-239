@@ -9,7 +9,6 @@ require_once INCL_DIR . 'function_pager.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-$lang = array_merge($lang, load_language('ad_upinfo'));
 $HTMLOUT = $count = '';
 global $container, $site_config;
 
@@ -40,27 +39,27 @@ if ($count1 > $perpage) {
 }
 $heading = '
     <tr>
-        <th>' . $lang['upinfo_rank'] . '</th>
-        <th>' . $lang['upinfo_torrent'] . '</th>
-        <th>' . $lang['upinfo_member'] . '</th>
-        <th>' . $lang['upinfo_class'] . '</th>
-        <th>' . $lang['upinfo_ratio'] . '</th>
-        <th>' . $lang['upinfo_sendpm'] . '</th>
+        <th>' . _('Rank') . '</th>
+        <th>' . _('Torrents') . '</th>
+        <th>' . _('Member') . '</th>
+        <th>' . _('Class') . '</th>
+        <th>' . _('Ratio') . '</th>
+        <th>' . _('Send PM') . '</th>
     </tr>';
 $i = 0;
 $body = '';
 foreach ($counted as $arr) {
     ++$i;
-    $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
+    $ratio = member_ratio((float) $arr['uploaded'], (float) $arr['downloaded']);
     $body .= '
     <tr>
         <td>' . $i . '</td>
         <td>' . (int) $arr['how_many_torrents'] . '</td>
-        <td>' . format_username($arr['owner']) . '</td>
+        <td>' . format_username((int) $arr['owner']) . '</td>
         <td>' . get_user_class_name((int) $arr['class']) . '</td>
         <td>' . $ratio . '</td>
         <td>
-            <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['owner'] . '" class="button is-small tooltipper" title="' . $lang['upinfo_sendpm'] . '">' . $lang['upinfo_sendpm'] . '</a>
+            <a href="messages.php?action=send_message&amp;receiver=' . (int) $arr['owner'] . '" class="button is-small tooltipper" title="' . _('Send PM') . '">' . _('Send PM') . '</a>
         </td>
     </tr>';
 }
@@ -68,4 +67,9 @@ $HTMLOUT .= main_table($body, $heading);
 if ($count1 > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];
 }
-echo stdhead($lang['upinfo_stdhead']) . wrapper($HTMLOUT) . stdfoot();
+$title = _('Uploader Stats');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

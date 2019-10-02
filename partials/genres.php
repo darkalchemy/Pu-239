@@ -3,19 +3,19 @@
 declare(strict_types = 1);
 
 $genres = [
-    $lang['upload_movie'],
-    $lang['upload_tv'],
-    $lang['upload_music'],
-    $lang['upload_game'],
-    $lang['upload_apps'],
-    $lang['upload_none'],
+    _('Movie'),
+    _('TV'),
+    _('Music'),
+    _('Games'),
+    _('Apps'),
+    _('None'),
 ];
 
 $body = "
                     <div class='columns is-gapless'>" . (!empty($row['newgenre']) ? "
                         <div class='column'>
                             <div class='level-center-center top20 bottom20'>
-                                <label for='keep_it' class='right5'>{$lang['upload_no_changes']}</label>
+                                <label for='keep_it' class='right5'>" . _('No Changes') . "</label>
                                 <input type='radio' name='genre' value='keep' id='keep_it' checked>
                             </div>
                         </div>" : '');
@@ -35,73 +35,73 @@ $genres_text = main_div($body);
 $genres = [
     'keep' => [(!empty($row['newgenre']) ? htmlsafechars($row['newgenre']) : '')],
     'movie' => [
-        $lang['upload_action'],
-        $lang['upload_adult'],
-        $lang['upload_adventure'],
-        $lang['upload_comedy'],
-        $lang['upload_crime'],
-        $lang['upload_documentary'],
-        $lang['upload_drama'],
-        $lang['upload_family'],
-        $lang['upload_fantasy'],
-        $lang['upload_historical'],
-        $lang['upload_horror'],
-        $lang['upload_mystery'],
-        $lang['upload_political'],
-        $lang['upload_reality'],
-        $lang['upload_scifi'],
-        $lang['upload_slasher'],
-        $lang['upload_suspense'],
-        $lang['upload_thriller'],
-        $lang['upload_western'],
+        _('Action'),
+        _('Adult'),
+        _('Adventure'),
+        _('Comedy'),
+        _('Crime'),
+        _('Documentary'),
+        _('Drama'),
+        _('Family'),
+        _('Fantasy'),
+        _('Historical'),
+        _('Horror'),
+        _('Mystery'),
+        _('Political'),
+        _('Reality'),
+        _('Sci-fi'),
+        _('Slasher'),
+        _('Suspense'),
+        _('Thriller'),
+        _('Western'),
     ],
     'tv' => [
-        $lang['upload_action'],
-        $lang['upload_adult'],
-        $lang['upload_adventure'],
-        $lang['upload_comedy'],
-        $lang['upload_crime'],
-        $lang['upload_documentary'],
-        $lang['upload_drama'],
-        $lang['upload_family'],
-        $lang['upload_fantasy'],
-        $lang['upload_historical'],
-        $lang['upload_horror'],
-        $lang['upload_mystery'],
-        $lang['upload_political'],
-        $lang['upload_reality'],
-        $lang['upload_scifi'],
-        $lang['upload_slasher'],
-        $lang['upload_suspense'],
-        $lang['upload_thriller'],
-        $lang['upload_western'],
+        _('Action'),
+        _('Adult'),
+        _('Adventure'),
+        _('Comedy'),
+        _('Crime'),
+        _('Documentary'),
+        _('Drama'),
+        _('Family'),
+        _('Fantasy'),
+        _('Historical'),
+        _('Horror'),
+        _('Mystery'),
+        _('Political'),
+        _('Reality'),
+        _('Sci-fi'),
+        _('Slasher'),
+        _('Suspense'),
+        _('Thriller'),
+        _('Western'),
     ],
     'music' => [
-        $lang['upload_hiphop'],
-        $lang['upload_rock'],
-        $lang['upload_pop'],
-        $lang['upload_house'],
-        $lang['upload_techno'],
-        $lang['upload_commercial'],
+        _('Hip Hop'),
+        _('Rock'),
+        _('Pop'),
+        _('House'),
+        _('Techno'),
+        _('Commercial'),
     ],
     'game' => [
-        $lang['upload_fps'],
-        $lang['upload_strategy'],
-        $lang['upload_adventure'],
-        $lang['upload_3rd'],
-        $lang['upload_action'],
+        _('FPS'),
+        _('Strategy'),
+        _('Adventure'),
+        _('3rd Person'),
+        _('Action'),
     ],
     'apps' => [
-        $lang['upload_burning'],
-        $lang['upload_encoding'],
-        $lang['upload_virus'],
-        $lang['upload_office'],
-        $lang['upload_os'],
-        $lang['upload_misc'],
-        $lang['upload_image'],
+        _('Burning'),
+        _('Encoding'),
+        _('Anti-Virus'),
+        _('Office'),
+        _('OS'),
+        _('Misc'),
+        _('Image'),
     ],
     'none' => [
-        $lang['upload_none'],
+        _('None'),
     ],
 ];
 
@@ -125,8 +125,8 @@ foreach ($genres as $key => $value) {
 }
 
 $genres_text .= main_div($body, 'top20');
-$HTMLOUT .= "
+$HTMLOUT .= '
             <tr>
-                <td>{$lang['upload_genre']}</td>
+                <td>' . _('Genre') . "</td>
                 <td>$genres_text</td>
             </tr>";

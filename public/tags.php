@@ -11,7 +11,6 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
 require_once INCL_DIR . 'function_html.php';
 check_user_status();
-$lang = array_merge(load_language('global'), load_language('tags'));
 
 $stdhead = [
     'css' => [
@@ -40,13 +39,11 @@ $stdfoot = [
  */
 function insert_tag(string $name, string $description, string $syntax, string $example, string $remarks)
 {
-    global $lang;
-
     $result = format_comment($example);
     if ($remarks != '') {
-        $remarks = "
+        $remarks = '
         <tr>
-            <td>{$lang['tags_remarks']}</td>
+            <td>' . _('Remarks:') . "</td>
             <td>$remarks</td>
         </tr>";
     }
@@ -55,19 +52,19 @@ function insert_tag(string $name, string $description, string $syntax, string $e
      <h2 class='top20 has-text-centered'>{$name}</h2>";
     $body = "
         <tr>
-            <td class='w-25'>{$lang['tags_description']}</td>
+            <td class='w-25'>" . _('Description:') . "</td>
             <td>{$description}</td>
         </tr>
         <tr>
-            <td class='w-25'>{$lang['tags_systax']}</td>
+            <td class='w-25'>" . _('Syntax:') . "</td>
             <td>{$syntax}</td>
         </tr>
         <tr>
-            <td class='w-25'>{$lang['tags_example']}</td>
+            <td class='w-25'>" . _('Example:') . "</td>
             <td>{$example}</td>
         </tr>
         <tr>
-            <td class='w-25'>{$lang['tags_result']}</td>
+            <td class='w-25'>" . _('Result:') . "</td>
             <td>{$result}</td>
         </tr>{$remarks}";
 
@@ -80,35 +77,40 @@ $test = isset($_POST['test']) ? $_POST['test'] : '';
 $HTMLOUT = "<h1 class='has-text-centered'>BBcode Tags</h1>";
 $HTMLOUT .= main_div("
     <div class='has-text-centered'>
-        <div class='padding20'>{$lang['tags_title']}</div>
+        <div class='padding20'>" . _('The Crafty forums supports a number of <i>BBcode tags</i> which you can embed to modify how your posts are displayed. The last button, from the left, will display your content.') . "</div>
         <div class='is-paddingless'>" . BBcode() . '</div>
     </div>', '', 'padding20');
 
-$HTMLOUT .= insert_tag($lang['tags_bold1'], $lang['tags_bold2'], $lang['tags_bold3'], $lang['tags_bold4'], '');
-$HTMLOUT .= insert_tag($lang['tags_italic1'], $lang['tags_italic2'], $lang['tags_italic3'], $lang['tags_italic4'], '');
-$HTMLOUT .= insert_tag($lang['tags_underline1'], $lang['tags_underline2'], $lang['tags_underline3'], $lang['tags_underline4'], '');
-$HTMLOUT .= insert_tag($lang['tags_strike1'], $lang['tags_strike2'], $lang['tags_strike3'], $lang['tags_strike4'], '');
-$HTMLOUT .= insert_tag($lang['tags_sub1'], $lang['tags_sub2'], $lang['tags_sub3'], $lang['tags_sub4'], '');
-$HTMLOUT .= insert_tag($lang['tags_sup1'], $lang['tags_sup2'], $lang['tags_sup3'], $lang['tags_sup4'], '');
-$HTMLOUT .= insert_tag($lang['tags_right1'], $lang['tags_right2'], $lang['tags_right3'], $lang['tags_right4'], '');
-$HTMLOUT .= insert_tag($lang['tags_left1'], $lang['tags_left2'], $lang['tags_left3'], $lang['tags_left4'], '');
-$HTMLOUT .= insert_tag($lang['tags_center1'], $lang['tags_center2'], $lang['tags_center3'], $lang['tags_center4'], '');
-$HTMLOUT .= insert_tag($lang['tags_justify1'], $lang['tags_justify2'], $lang['tags_justify3'], $lang['tags_justify4'], '');
-$HTMLOUT .= insert_tag($lang['tags_color1'], $lang['tags_color2'], $lang['tags_color3'], $lang['tags_color4'], $lang['tags_color5']);
-$HTMLOUT .= insert_tag($lang['tags_color6'], $lang['tags_color7'], $lang['tags_color8'], $lang['tags_color9'], $lang['tags_color10']);
-$HTMLOUT .= insert_tag($lang['tags_size1'], $lang['tags_size2'], $lang['tags_size3'], $lang['tags_size4'], $lang['tags_size5']);
-$HTMLOUT .= insert_tag($lang['tags_fonts1'], $lang['tags_fonts2'], $lang['tags_fonts3'], $lang['tags_fonts4'], $lang['tags_fonts5']);
-$HTMLOUT .= insert_tag($lang['tags_hyper1'], $lang['tags_hyper2'], $lang['tags_hyper3'], $lang['tags_hyper4'], $lang['tags_hyper5']);
-$HTMLOUT .= insert_tag($lang['tags_hyper6'], $lang['tags_hyper7'], $lang['tags_hyper8'], $lang['tags_hyper9'], $lang['tags_hyper10']);
-$HTMLOUT .= insert_tag($lang['tags_image1'], $lang['tags_image2'], $lang['tags_image3'], $lang['tags_image4'], $lang['tags_image5']);
-$HTMLOUT .= insert_tag($lang['tags_image6'], $lang['tags_image7'], $lang['tags_image8'], $lang['tags_image9'], $lang['tags_image10']);
-$HTMLOUT .= insert_tag($lang['tags_quote1'], $lang['tags_quote2'], $lang['tags_quote3'], $lang['tags_quote4'], '');
-$HTMLOUT .= insert_tag($lang['tags_quote5'], $lang['tags_quote6'], $lang['tags_quote7'], $lang['tags_quote8'], '');
-$HTMLOUT .= insert_tag($lang['tags_list1'], $lang['tags_list2'], $lang['tags_list3'], $lang['tags_list4'], '');
-$HTMLOUT .= insert_tag($lang['tags_table1'], $lang['tags_table2'], $lang['tags_table3'], $lang['tags_table4'], '');
-$HTMLOUT .= insert_tag($lang['tags_preformat1'], $lang['tags_preformat2'], $lang['tags_preformat3'], $lang['tags_preformat4'], '');
-$HTMLOUT .= insert_tag($lang['tags_code1'], $lang['tags_code2'], $lang['tags_code3'], $lang['tags_code4'], '');
-$HTMLOUT .= insert_tag($lang['tags_youtube1'], $lang['tags_youtube2'], $lang['tags_youtube3'], $lang['tags_youtube4'], $lang['tags_youtube5']);
-$HTMLOUT .= insert_tag($lang['tags_youtube6'], $lang['tags_youtube7'], $lang['tags_youtube8'], $lang['tags_youtube9'], $lang['tags_youtube10']);
+$HTMLOUT .= insert_tag(_('Bold'), _('Makes the enclosed text bold.'), _('[b]<i>Text</i>[/b]'), _('[b]This is bold text.[/b]'), '');
+$HTMLOUT .= insert_tag(_('Italic'), _('Makes the enclosed text italic.'), _('[i]<i>Text</i>[/i]'), _('[i]This is italic text.[/i]'), '');
+$HTMLOUT .= insert_tag(_('Underline'), _('Makes the enclosed text underlined.'), _('[u]<i>Text</i>[/u]'), _('[u]This is underlined text.[/u]'), '');
+$HTMLOUT .= insert_tag(_('Strikethrough'), _('Makes the enclosed text strikethrough.'), _('[s]<i>Text</i>[/s]'), _('[s]This is text is strikethrough.[/s]'), '');
+$HTMLOUT .= insert_tag(_('Subscript'), _('Makes the enclosed text subscript.'), _('[sub]<i>Text</i>[/sub]'), _('This is text is [sub]subscript.[/sub]'), '');
+$HTMLOUT .= insert_tag(_('Superscript'), _('Makes the enclosed text superscript.'), _('[sup]<i>Text</i>[/sup]'), _('This is text is [sup]superscript.[/sup]'), '');
+$HTMLOUT .= insert_tag(_('Align Right'), _('Makes the enclosed text align to the right.'), _('[right]<i>Text</i>[/right]'), _('[right]This is text is right aligned.[/right]'), '');
+$HTMLOUT .= insert_tag(_('Align Left'), _('Makes the enclosed text align to the left.'), _('[left]<i>Text</i>[/left]'), _('[left]This is text is left aligned.[/left]'), '');
+$HTMLOUT .= insert_tag(_('Centered'), _('Makes the enclosed text centered.'), _('[center]<i>Text</i>[/center]'), _('[center]This is text is centered.[/center]'), '');
+$HTMLOUT .= insert_tag(_('Justified'), _('Makes the enclosed text justified.'), _('[justify]<i>Text</i>[/justify]'), _('[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]'), '');
+$HTMLOUT .= insert_tag(_('Color (alt. 1)'), _('Changes the color of the enclosed text.'), _('[color=<i>Color</i>]<i>Text</i>[/color]'), _('[color=blue]This is blue text.[/color]'), _('What colors are valid depends on the browser. If you use the basic colors (red, green, blue, yellow, pink etc) you should be safe.'));
+$HTMLOUT .= insert_tag(_('Color (alt. 2)'), _('Changes the color of the enclosed text.'), _('[color=#<i>RGB</i>]<i>Text</i>[/color]'), _('[color=#0000ff]This is blue text.[/color]'), _('<i>RGB</i> must be a six digit hexadecimal number.'));
+$HTMLOUT .= insert_tag(_('Size'), _('Sets the size of the enclosed text.'), _('[size=<i>n</i>]<i>text</i>[/size]'), _('[size=4]This is size 4.[/size]'), _('<i>n</i> must be an integer in the range 1 (smallest) to 7 (biggest). The default size is 2.'));
+$HTMLOUT .= insert_tag(_('Font'), _('Sets the type-face (font) for the enclosed text.'), _('[font=<i>Font</i>]<i>Text</i>[/font]'), _('[font=Impact]Hello world![/font]'), _('You specify alternative fonts by separating them with a comma.'));
+$HTMLOUT .= insert_tag(_('Hyperlink (alt. 1)'), _('Inserts a hyperlink.'), _('[url]<i>URL</i>[/url]'), _('[url]http://Pu239.silly/[/url]'), _('This tag is superfluous; all URLs are automatically hyperlinked.'));
+$HTMLOUT .= insert_tag(_('Hyperlink (alt. 2)'), _('Inserts a hyperlink.'), _('[url=<i>URL</i>]<i>Link text</i>[/url]'), _('[url=http://Pu239.silly/]Crafty[/url]'), _('You do not have to use this tag unless you want to set the link text; all URLs are automatically hyperlinked.'));
+$HTMLOUT .= insert_tag(_('Image (alt. 1)'), _('Inserts a picture.'), _('[img=<i>URL</i>]'), _('[img=http://Pu239.silly/images/logo.png]'), _('The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>.'));
+$HTMLOUT .= insert_tag(_('Image (alt. 2)'), _('Inserts a picture.'), _('[img]<i>URL</i>[/img]'), _('[img]http://Pu239.silly/images/logo.png[/img]'), _('The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>.'));
+$HTMLOUT .= insert_tag(_('Quote (alt. 1)'), _('Inserts a quote.'), _('[quote]<i>Quoted text</i>[/quote]'), _('[quote]The quick brown fox jumps over the lazy dog.[/quote]'), '');
+$HTMLOUT .= insert_tag(_('Quote (alt. 2)'), _('Inserts a quote.'), _('[quote=<i>Author</i>]<i>Quoted text</i>[/quote]'), _('[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]'), '');
+$HTMLOUT .= insert_tag(_('List'), _('Inserts a list item.'), _('[*]<i>Text</i>'), _('[*] This is item 1
+[*] This is item 2'), '');
+$HTMLOUT .= insert_tag(_('Table'), _('Inserts a formatted table.'), _('[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]'), _('[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]'), '');
+$HTMLOUT .= insert_tag(_('Preformat'), _('Preformatted (monospace) text. Does not wrap automatically.'), _('[pre]<i>Text</i>[/pre]'), _('[pre]This is preformatted text.[/pre]'), '');
+$HTMLOUT .= insert_tag(_('Format Code'), _('Formatted text. Does wrap automatically.'), _('[code]<i>Text</i>[/code]'), _('[code]This is code formatted text.[/code]'), '');
+$HTMLOUT .= insert_tag(_('Youtube (alt. 1)'), _('Display youtube video.'), _('[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]'), _('[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]'), _('This format only works when using the bbcode editor as it strips all but the video id.'));
+$HTMLOUT .= insert_tag(_('Youtube (alt. 2)'), _('Display youtube video.'), _('[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]'), _('[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]'), _('This format works everywhere, but does not display correctly in BBcode editor.'));
 
-echo stdhead($lang['tags_tags'], $stdhead) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+$title = _('Tags');
+$breadcrumbs = [
+    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+];
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

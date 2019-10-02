@@ -2,12 +2,16 @@
 
 declare(strict_types = 1);
 
+use Delight\Auth\AuthError;
+use Delight\Auth\NotLoggedInException;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Envms\FluentPDO\Literal;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
+use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  * @param string $subject
@@ -15,7 +19,12 @@ use Pu239\Message;
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws AuthError
+ * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws UnbegunTransaction
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws InvalidManipulation
  *
  * @return array|null
  */

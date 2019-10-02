@@ -8,7 +8,7 @@ use Pu239\Image;
 use Pu239\User;
 
 $user = check_user_status();
-global $container, $lang, $site_config;
+global $container, $site_config;
 
 $comment = $container->get(Comment::class);
 $comments = $comment->get_comments();
@@ -20,7 +20,7 @@ $posted_comments .= "
                     <thead>
                         <tr>
                             <th class='w-1 has-text-centered w-10'>Type</th>
-                            <th class='w-50 min-150'>Last 5 Comments</th>
+                            <th class='w-50 min-150'>Latest Comments</th>
                             <th class='w-1 has-text-centered'>User</th>
                             <th class='w-1 has-text-centered'>When</th>
                             <th class='w-1 has-text-centered'>Likes</th>
@@ -63,8 +63,8 @@ foreach ($comments as $comment) {
 if (count($comments) === 0) {
     $posted_comments .= "
                         <tr>
-                            <td colspan='5'>No Comments Found</td>
-                        </tr>";
+                            <td colspan='5'>" . _('There are no comments.') . '</td>
+                        </tr>';
 }
 
 $posted_comments .= '

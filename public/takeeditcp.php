@@ -9,15 +9,8 @@ require_once CLASS_DIR . 'class_user_options.php';
 require_once CLASS_DIR . 'class_user_options_2.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$lang = array_merge(load_language('global'), load_language('takeeditcp'));
 
 use Delight\Auth\Auth;
-use Delight\Auth\EmailNotVerifiedException;
-use Delight\Auth\InvalidEmailException;
-use Delight\Auth\InvalidPasswordException;
-use Delight\Auth\NotLoggedInException;
-use Delight\Auth\TooManyRequestsException;
-use Delight\Auth\UserAlreadyExistsException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
@@ -44,10 +37,10 @@ if ($action === 'avatar') {
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
         if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-            stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_image_error']);
+            stderr(_('USER ERROR'), _('Not an image or unsupported image!'));
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
-            stderr($lang['takeeditcp_user_error'], $lang['takeeditcp_small_image']);
+            stderr(_('USER ERROR'), _('Image is too small'));
         }
         sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($user['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
@@ -77,10 +70,10 @@ if ($action === 'avatar') {
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
         if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-            stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_unsupported']);
+            stderr(_('USER ERROR'), _('Not an image or unsupported image!'));
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
-            stderr($lang['takeeditcp_uerr'], $lang['takeeditcp_img_to_small']);
+            stderr(_('USER ERROR'), _('Image is too small'));
         }
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid=' . sqlesc($user['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
@@ -94,42 +87,42 @@ if ($action === 'avatar') {
 } elseif ($action === 'security') {
     if (!empty($_POST['password'])) {
         if ($_POST['password'] !== $_POST['confirm_password']) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
+            stderr(_('Error'), _("The passwords didn't match. Try again."));
         }
         if (empty($_POST['current_pass'])) {
-            stderr($lang['takeeditcp_err'], 'Current Password can not be empty!');
+            stderr(_('Error'), 'Current Password can not be empty!');
         }
         if ($_POST['password'] === $_POST['current_pass']) {
-            stderr($lang['takeeditcp_err'], 'New password can not be the same as the old password!');
+            stderr(_('Error'), 'New password can not be the same as the old password!');
         }
         try {
             $auth->changePassword($_POST['current_pass'], $_POST['password']);
 
             $cache->set('forced_logout_' . $user['id'], TIME_NOW);
-            stderr('Success', 'Password has been changed. You will now be able to login with your new password.');
+            stderr('Success', 'Password has been changed . You will now be able to login with your new password . ');
         } catch (NotLoggedInException $e) {
-            stderr('Error', 'Not logged in');
+            stderr(_('Error'), 'Not logged in');
         } catch (InvalidPasswordException $e) {
-            stderr('Error', 'Invalid password');
+            stderr(_('Error'), 'Invalid password');
         } catch (TooManyRequestsException $e) {
-            stderr('Error', 'Too many requests');
+            stderr(_('Error'), 'Too many requests');
         }
     }
 
     if (!empty($_POST['chmailpass'])) {
         if (strlen($_POST['chmailpass']) > 72) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_long']);
+            stderr(_('Error'), _('Sorry, password is too long(max is 40 chars)'));
         }
     }
 
     if ($_POST['email'] != $user['email']) {
         $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_not_valid_email']);
+            stderr(_('Error'), _("That doesn't look like a valid email address."));
         }
         $r = sql_query('SELECT id FROM users WHERE email = ' . sqlesc($email)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($r) > 0) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_address_taken']);
+            stderr(_('Error'), _('Could not change email, address already taken or password mismatch.'));
         }
         $cur_passhash = $fluent->from('users')
                                ->select(null)
@@ -138,7 +131,7 @@ if ($action === 'avatar') {
                                ->fetch('password');
 
         if (!password_verify($_POST['chmailpass'], $cur_passhash)) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_pass_not_match']);
+            stderr(_('Error'), _("The passwords didn't match. Try again."));
         }
         $changedemail = 1;
     }
@@ -166,12 +159,12 @@ if ($action === 'avatar') {
         $user_cache['hidecur'] = $hidecur;
     }
     if (isset($_POST['show_email']) && ($show_email = $_POST['show_email']) != $user['show_email']) {
-        $updateset[] = 'show_email= ' . sqlesc($show_email);
+        $updateset[] = 'show_email = ' . sqlesc($show_email);
         $curuser_cache['show_email'] = $show_email;
         $user_cache['show_email'] = $show_email;
     }
     if (isset($_POST['paranoia']) && ($paranoia = $_POST['paranoia']) != $user['paranoia']) {
-        $updateset[] = 'paranoia= ' . sqlesc($paranoia);
+        $updateset[] = 'paranoia = ' . sqlesc($paranoia);
         $curuser_cache['paranoia'] = $paranoia;
         $user_cache['paranoia'] = $paranoia;
     }
@@ -184,11 +177,11 @@ if ($action === 'avatar') {
         try {
             if ($auth->reconfirmPassword($_POST['chmailpass'])) {
                 $auth->changeEmail($_POST['email'], function ($selector, $token) {
-                    global $site_config, $lang, $user, $email;
+                    global $site_config, $user, $email;
 
-                    $url = $site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
+                    $url = $site_config['paths']['baseurl'] . ' / verify_email . php ? selector = ' . urlencode($selector) . ' & token = ' . urlencode($token);
                     $body = str_replace([
-                        '<#USERNAME#>',
+                        ' <#USERNAME#>',
                         '<#SITENAME#>',
                         '<#USEREMAIL#>',
                         '<#IP_ADDRESS#>',
@@ -199,27 +192,49 @@ if ($action === 'avatar') {
                         $email,
                         getip(),
                         $url,
-                    ], $lang['takeeditcp_email_body']);
-                    send_mail($email, "{$site_config['site']['name']} {$lang['takeeditcp_confirm']}", $body, strip_tags($body));
+                    ], _("<!doctype html>
+<html lang='en-US'>
+<head>
+    <style>html{visibility: hidden;opacity:0;}</style>
+    <meta property='og:title' content='Crafty Email Change'>
+    <title>Crafty Email Change</title>
+    <meta charset='utf - 8'>
+    <meta http-equiv='X - UA - Compatible' content='IE = edge'>
+    <meta name='viewport' content='width = device - width, initial - scale = 1'>
+    <meta property='og:url' content='http://Pu239.silly'>
+    <meta property = 'og:type' content = 'website' >
+    <meta property = 'og:description' content = 'Pu239.silly - Crafty' >
+</head>
+<body>
+<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
+<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>
+<br>
+<p> To complete the update of your user profile, please follow this link:</p >
+<p><#CHANGE_LINK#></p>
+<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >
+<p> --<#SITENAME#></p>
+</body>
+</html>"));
+                    send_mail($email, "{$site_config['site']['name']} " . _('profile change confirmation') . '', $body, strip_tags($body));
                 });
-                $session->set('is-info', 'The change will take effect as soon as the new email address has been confirmed');
+                $session->set('is - info', 'The change will take effect as soon as the new email address has been confirmed');
             } else {
-                stderr('Error', 'We can\'t say if the user is who they claim to be');
+                stderr(_('Error'), 'We can\'t say if the user is who they claim to be');
             }
         } catch (InvalidEmailException $e) {
-            stderr('Error', 'Invalid email address');
+            stderr(_('Error'), 'Invalid email address');
         } catch (UserAlreadyExistsException $e) {
-            stderr('Error', 'Email address already exists');
+            stderr(_('Error'), 'Email address already exists');
         } catch (EmailNotVerifiedException $e) {
-            stderr('Error', 'Account not verified');
+            stderr(_('Error'), 'Account not verified');
         } catch (NotLoggedInException $e) {
-            stderr('Error', 'Not logged in');
+            stderr(_('Error'), 'Not logged in');
         } catch (TooManyRequestsException $e) {
-            stderr('Error', 'Too many requests');
+            stderr(_('Error'), 'Too many requests');
         }
         $dt = TIME_NOW;
-        $subject = $lang['takeeditcp_email_alert'];
-        $msg = "{$lang['takeeditcp_email_user']}[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . "[/b][/url]{$lang['takeeditcp_email_changed']}{$lang['takeeditcp_email_old']}" . htmlsafechars($user['email']) . "{$lang['takeeditcp_email_new']}$email{$lang['takeeditcp_email_check']}";
+        $subject = _('Email Alert');
+        $msg = '' . _('User ') . "[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . '[/b][/url]' . _(' changed email address :') . '' . _(' Old email was ') . '' . htmlsafechars($user['email']) . '' . _(' new email is ') . "$email" . _(', please check this was for a legitimate reason') . '';
         $pmstaff = $fluent->from('users')
                           ->select(null)
                           ->select('id')
@@ -305,7 +320,7 @@ if ($action === 'avatar') {
             'motherfucker',
         ];
         if (in_array(strtolower($title), ($notallow))) {
-            stderr($lang['takeeditcp_err'], $lang['takeeditcp_invalid_custom']);
+            stderr(_('Error'), _('Invalid custom title!'));
         }
         $updateset[] = 'title = ' . sqlesc($title);
         $curuser_cache['title'] = $title;
@@ -388,7 +403,7 @@ if ($action === 'avatar') {
         $curuser_cache['country'] = $country;
         $user_cache['country'] = $country;
     }
-    if (isset($_POST['language']) && (($language = (int) $_POST['language']) != $user['language'])) {
+    if (isset($_POST['language']) && (($language = $_POST['language']) != $user['language'])) {
         $updateset[] = 'language = ' . sqlesc($language);
         $curuser_cache['language'] = $language;
         $user_cache['language'] = $language;
