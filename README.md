@@ -199,7 +199,7 @@ If sudo is necessary to run uglify.php without errors, then you have the permiss
 
 #### Translations:
 This project uses gettext to manage text strings. Currently there is only english text and, unfortunately, it is not 100%. There are still quite a few hard coded strings left here and there.  
-If you would like to see a specific translation or assist with a currect translation, you can join one or both of these projects [Transifex](https://www.transifex.com/pu-239/) or [POEditor](https://poeditor.com/join/project/4Otrz5rwYB).
+If you would like to see a specific translation or assist with a currect translation, you can join [POEditor](https://poeditor.com/join/project/4Otrz5rwYB).
 
 #### Credits:  
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
