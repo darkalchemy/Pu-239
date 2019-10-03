@@ -56,47 +56,47 @@ function achievement_seedtime_update($data)
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'7 Day Seeder\', \'7dayseed.png\' , \'Seeded a snatched torrent for a total of at least 7 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',7, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 7 && $timeseeded >= $seedtime2) {
+            } elseif ($dayseed === 7 && $timeseeded >= $seedtime2 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]14 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/14dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'14 Day Seeder\', \'14dayseed.png\' , \'Seeded a snatched torrent for a total of at least 14 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',14, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 14 && $timeseeded >= $seedtime3) {
+            } elseif ($dayseed === 14 && $timeseeded >= $seedtime3 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]21 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/21dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'21 Day Seeder\', \'21dayseed.png\' , \'Seeded a snatched torrent for a total of at least 21 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',21, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 21 && $timeseeded >= $seedtime4) {
+            } elseif ($dayseed === 21 && $timeseeded >= $seedtime4 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]28 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/28dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'28 Day Seeder\', \'28dayseed.png\' , \'Seeded a snatched torrent for a total of at least 28 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',28, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 28 && $timeseeded >= $seedtime5) {
+            } elseif ($dayseed === 28 && $timeseeded >= $seedtime5 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]45 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/45dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'45 Day Seeder\', \'45dayseed.png\' , \'Seeded a snatched torrent for a total of at least 45 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',45, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 45 && $timeseeded >= $seedtime6) {
+            } elseif ($dayseed === 45 && $timeseeded >= $seedtime6 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]60 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/60dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'60 Day Seeder\', \'60dayseed.png\' , \'Seeded a snatched torrent for a total of at least 60 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',60, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 60 && $timeseeded >= $seedtime7) {
+            } elseif ($dayseed === 60 && $timeseeded >= $seedtime7 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]90 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/90dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'90 Day Seeder\', \'90dayseed.png\' , \'Seeded a snatched torrent for a total of at least 90 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',90, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 90 && $timeseeded >= $seedtime8) {
+            } elseif ($dayseed === 90 && $timeseeded >= $seedtime8 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]120 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/120dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'120 Day Seeder\', \'120dayseed.png\' , \'Seeded a snatched torrent for a total of at least 120 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',120, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 120 && $timeseeded >= $seedtime9) {
+            } elseif ($dayseed === 120 && $timeseeded >= $seedtime9 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]200 Day Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/200dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'200 Day Seeder\', \'200dayseed.png\' , \'Seeded a snatched torrent for a total of at least 200 days.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',200, ' . $points . ')';
                 $userids[] = $arr['userid'];
-            } elseif ($dayseed === 200 && $timeseeded >= $seedtime10) {
+            } elseif ($dayseed === 200 && $timeseeded >= $seedtime10 && !in_array($arr['userid'], $userids)) {
                 $msg = 'Congratulations, you have just earned the [b]1 Year Seeder[/b] achievement. :) [img]' . $site_config['paths']['images_baseurl'] . 'achievements/365dayseed.png[/img]';
                 $achievements_buffer[] = '(' . $arr['userid'] . ', ' . $dt . ', \'365 Day Seeder\', \'365dayseed.png\' , \'Seeded a snatched torrent for a total of at least 1 Year.\')';
                 $usersachiev_buffer[] = '(' . $arr['userid'] . ',365, ' . $points . ')';
