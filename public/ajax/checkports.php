@@ -32,10 +32,10 @@ foreach ($ips as $curip) {
     $used_ips[] = $uip . $uport;
     $connection = fsockopen($uip, $uport, $errno, $errstr, 10);
     if (is_resource($connection)) {
-        $msg = "<span class='has-text-success'> OPEN</span>";
+        $msg = "<span class='has-text-success'>" . _('OPEN') . '</span>';
         fclose($connection);
     } else {
-        $msg = "<span class='has-text-danger'> CLOSED => $errstr </span>";
+        $msg = "<span class='has-text-danger'>" . _fe('CLOSED => {0}', $errstr) . '</span>';
     }
     $out .= "
     <div class='columns is-multiline is-gapless padding10'>

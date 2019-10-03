@@ -80,11 +80,11 @@ function trivia_table()
 
         $heading = "
         <tr>
-            <th class='has-text-left w-5'>Username</th>
-            <th class='has-text-centered w-5'>Ratio</th>
-            <th class='has-text-centered w-5'>Correct</th>
-            <th class='has-text-centered w-5'>Incorrect</th>
-        </tr>";
+            <th class='has-text-left w-5'>" . _('Username') . "</th>
+            <th class='has-text-centered w-5'>" . _('Ratio') . "</th>
+            <th class='has-text-centered w-5'>" . _('Correct') . "</th>
+            <th class='has-text-centered w-5'>" . _('Incorrect') . '</th>
+        </tr>';
         $body = '';
         foreach ($users as $user) {
             $percentage = $user['correct'] / ($user['correct'] + $user['incorrect']) * 100;
@@ -119,12 +119,12 @@ function trivia_clocks()
     return "
     <ul class='level-center top20'>
         <div id='clock_round'>
-            <span class='right10'>{$lang['trivia_next_question']}: </span><span class='has-text-success'><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span></span>
+            <span class='right10'>" . _fe('Next Question in: {0}', "</span><span class='has-text-success'><span class='days'></span><span class='hours'></span><span class='minutes'></span>:<span class='seconds'></span></span>") . "
         </div>
         <div id='clock_game'>
-            <span class='right10'>{$lang['trivia_next_game']}: </span><span class='has-text-success'><span class='days'></span> <span class='hours'></span>:<span class='minutes'></span>:<span class='seconds'></span></span>
+            <span class='right10'>" . _fe('Game Ends in: {0}', "</span><span class='has-text-success'><span class='days'></span> <span class='hours'></span>:<span class='minutes'></span>:<span class='seconds'></span></span>") . '
         </div>
-    </ul>";
+    </ul>';
 }
 
 /**

@@ -48,7 +48,7 @@ $HTMLOUT .= "
         <div class='level-center-center'>
             <span class='size_2'>{$total_count} / {$maxbox}</span>
             <span class='size_7 left20 right20 has-text-weight-bold'>{$mailbox_name}</span>
-            <span class='size_2'>" . _('[ ') . "{$num_messages}" . _('% full ]') . "</span>
+            <span class='size_2'>" . _pf('[ {0}% full ]', $num_messages) . "</span>
          </div>
         <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox, $user['id']) . $other_box_info . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>

@@ -42,11 +42,11 @@ function comment_like_unlike(array $fields, array $user)
     $current = $_POST['current'];
     header('content-type: application/json');
     if (!array_key_exists($type, $fields)) {
-        echo json_encode(['label' => 'Invalid Data Type']);
+        echo json_encode(['label' => _('Invalid Data Type')]);
         die();
     }
     if (!is_int($id)) {
-        echo json_encode(['label' => 'Invalid ID ' . $id]);
+        echo json_encode(['label' => _('Invalid ID')]);
         die();
     }
 
@@ -82,10 +82,10 @@ function comment_like_unlike(array $fields, array $user)
         $data['label'] = 'Like';
         $data['list'] = '';
     } elseif ($data['count'] == 1 && $current === 'Like') {
-        $data['label'] = 'Unlike';
-        $data['list'] = 'you like this';
+        $data['label'] = _('Unlike');
+        $data['list'] = _('you like this');
     } else {
-        $data['label'] = 'you lost me';
+        $data['label'] = _('you lost me');
     }
     $sql = $fluent->from('likes')
                   ->select(null)

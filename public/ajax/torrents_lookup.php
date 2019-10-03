@@ -363,10 +363,10 @@ function maketable(array $torrents)
             <th>' . _('Type') . '</th>
             <th>' . _('Name') . '</th>
             <th>' . _('Size') . '</th>
-            <th>' . _('Se.') . '</th>
-            <th>' . _('Le.') . '</th>
-            <th>' . _('Upl.') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
-            <th>' . _('Downl.') . '</th>') . '
+            <th>' . _('Seeders') . '</th>
+            <th>' . _('Leechers') . '</th>
+            <th>' . _('Uploaded') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Downloaded') . '</th>') . '
             <th>' . _('Ratio') . '</th>
         </tr>';
     $body = '';
@@ -381,9 +381,9 @@ function maketable(array $torrents)
         }
 
         $cat_info = cat_image($torrent);
-        $size = str_replace(' ', '<br>', mksize($torrent['size']));
-        $uploaded = str_replace(' ', '<br>', mksize($torrent['uploaded']));
-        $downloaded = str_replace(' ', '<br>', mksize($torrent['downloaded']));
+        $size = mksize($torrent['size']);
+        $uploaded = mksize($torrent['uploaded']);
+        $downloaded = mksize($torrent['downloaded']);
         $seeders = number_format($torrent['seeders']);
         $leechers = number_format($torrent['leechers']);
         $body .= "
@@ -419,9 +419,9 @@ function snatchtable(array $torrents)
         <tr>
             <th>' . _('Category') . '</th>
             <th>' . _('Torrent') . '</th>
-            <th>' . _('Up') . '</th>
+            <th>' . _('Uploaded') . '</th>
             <th>' . _('Rate') . '</th>' . ($site_config['site']['ratio_free'] ? '' : '
-            <th>' . _('Downl.') . '</th>') . ($site_config['site']['ratio_free'] ? '' : '
+            <th>' . _('Downloaded') . '</th>') . ($site_config['site']['ratio_free'] ? '' : '
             <th>' . _('Rate') . '</th>') . '
             <th>' . _('Ratio') . '</th>
             <th>' . _('Activity') . '</th>
@@ -477,8 +477,8 @@ function staff_snatchtable(array $torrents, int $userid)
                         <th>' . _('Category') . '</th>
                         <th>' . _('Torrent') . '</th>
                         <th>' . _('S / L') . '</th>
-                        <th>' . _('Up') . '' . ($site_config['site']['ratio_free'] ? '' : _('/ Down')) . '</th>
-                        <th>' . _('Torrent Size') . '</th>
+                        <th>' . _('Uploaded') . '' . ($site_config['site']['ratio_free'] ? '' : _('/ Down')) . '</th>
+                        <th>' . _('Size') . '</th>
                         <th>' . _('Ratio') . '</th>
                         <th>' . _('Client') . '</th>
                     </tr>';
@@ -527,35 +527,35 @@ function staff_snatchtable(array $torrents, int $userid)
         $body .= '
             <tr>
                 <td>' . ($arr['owner'] === $userid ? "
-                    <b><span class='is-orange'>" . _('Torrent owner') . '</span></b><br>' : '' . ($arr['complete_date'] != '0' ? "
+                    <b><span class='is-orange'>" . _('Owner') . '</span></b><br>' : '' . ($arr['complete_date'] != '0' ? "
                     <b><span class='is-lightgreen'>" . _('Finished') . '</span></b><br>' : "
                     <b><span class='has-text-danger'>" . _('Not Finished') . '</span></b><br>') . '') . $cat_info . "
                 </td>
                 <td>
                     <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id={$arr['torrentid']}'><b>" . htmlsafechars($arr['torrent_name']) . '</b></a>' . ($arr['complete_date'] != '0' ? "<br>
-                    <span class='is-warning'>" . _('started: ') . '' . get_date($arr['start_date'], 'LONG', 0, 1) . "</span><br>
-                    <span class='is-orange'>" . _('Last Action:') . ' ' . get_date($arr['last_action'], 'LONG', 0, 1) . '</span>' . ($arr['complete_date'] === 0 ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . '' . _(' still to go ') . ']') : '') : '') . '<br>' . _(' Finished: ') . get_date($arr['complete_date'], 'LONG', 0, 1) . '' . ($arr['complete_date'] != 0 ? "<br>
-                    <span style='color: silver;'>" . _('Time to download: ') . '' . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
-                    <span style='color: $dlc'>[ " . _(' DLed at: ') . " $dl_speed ]</span><br>" : '<br>') . "
-                    <span class='is-lightblue'>" . ($arr['seedtime'] != '0' ? _('Total seeding time: ') . mkprettytime($arr['seedtime']) . " </span>
-                    <span style='color: $dlc;'> " : _('Total seeding time: N/A')) . "</span>
-                    <span class='is-lightgreen'> [ " . _(' up speed: ') . ' ' . $ul_speed . ' ] </span>' . ($arr['complete_date'] == '0' ? "<br>
-                    <span style='color: $dlc;'>" . _('Download speed: ') . "$dl_speed</span>" : '') . '
+                    <span class='is-warning'>" . _('Started') . ': ' . get_date($arr['start_date'], 'LONG', 0, 1) . "</span><br>
+                    <span class='is-orange'>" . _('Last Action') . ': ' . get_date($arr['last_action'], 'LONG', 0, 1) . '</span>' . ($arr['complete_date'] === 0 ? ($arr['owner'] == $userid ? '' : '[ ' . mksize($arr['size'] - $arr['downloaded']) . '' . _(' still to go ') . ']') : '') : '') . '<br>' . _(' Finished: ') . get_date($arr['complete_date'], 'LONG', 0, 1) . '' . ($arr['complete_date'] != 0 ? "<br>
+                    <span style='color: silver;'>" . _('Time to download') . ': ' . ($arr['leechtime'] != '0' ? mkprettytime($arr['leechtime']) : mkprettytime($arr['complete_date'] - $arr['start_date']) . '') . "</span>
+                    <span style='color: $dlc'>[ " . _(' DLed at') . ": $dl_speed ]</span><br>" : '<br>') . "
+                    <span class='is-lightblue'>" . ($arr['seedtime'] != '0' ? _('Total seeding time') . ': ' . mkprettytime($arr['seedtime']) . " </span>
+                    <span style='color: $dlc;'> " : _('Total seeding time') . ': ' . _('N/A')) . "</span>
+                    <span class='is-lightgreen'>[ " . _('up speed') . ': ' . $ul_speed . ' ]</span>' . ($arr['complete_date'] == '0' ? "<br>
+                    <span style='color: $dlc;'>" . _('Download speed') . ": $dl_speed</span>" : '') . '
                 </td>
-                <td>' . _('Seeds: ') . '' . $arr['seeders'] . '<br>' . _('Leechers: ') . '' . $arr['leechers'] . "</td>
+                <td>' . _('Seeders') . ': ' . $arr['seeders'] . '<br>' . _('Leechers') . ': ' . $arr['leechers'] . "</td>
                 <td>
-                    <span class='is-lightgreen'>" . _('Uploaded: ') . '<br><b>' . mksize($arr['uploaded']) . '</b></span>' . ($site_config['site']['ratio_free'] ? '' : "<br>
-                    <span class='is-orange'>" . _('Downloaded: ') . '<br><b>' . mksize($arr['downloaded']) . '</b></span>') . '
+                    <span class='is-lightgreen'>" . _('Uploaded') . ': <br><b>' . mksize($arr['uploaded']) . '</b></span>' . ($site_config['site']['ratio_free'] ? '' : "<br>
+                    <span class='is-orange'>" . _('Downloaded') . ': <br><b>' . mksize($arr['downloaded']) . '</b></span>') . '
                 </td>
-                <td>' . mksize($arr['size']) . ($site_config['site']['ratio_free'] ? '' : '<br>' . _('Difference of:') . "<br>
+                <td>' . mksize($arr['size']) . ($site_config['site']['ratio_free'] ? '' : '<br>' . _('Difference of') . ": <br>
                     <span class='is-orange'><b>" . mksize($arr['size'] - $arr['downloaded']) . '</b></span>') . '
                 </td>
                 <td>' . $ratio . '<br>' . ($arr['seeder'] === 'yes' ? "
-                    <span class='is-lightgreen'><b>" . _('seeding') . '</b></span>' : "
+                    <span class='is-lightgreen'><b>" . _('Seeding') . '</b></span>' : "
                     <span class='has-text-danger'><b>" . _('Not seeding') . '</b></span>') . '
                 </td>
-                <td>' . (!empty($arr['agent']) ? htmlsafechars($arr['agent']) : '') . '<br>IP: ' . $arr['ip'] . '<br>' . _('port: ') . '' . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? '<b>' . _('Connectable:') . "</b> 
-                    <span class='is-lightgreen'>" . _('Yes') . '</span>' : '<b>' . _('Connectable:') . "</b>
+                <td>' . (!empty($arr['agent']) ? htmlsafechars($arr['agent']) : '') . '<br>IP: ' . $arr['ip'] . '<br>' . _('port') . ': ' . $arr['port'] . '<br>' . ($arr['connectable'] === 'yes' ? '<b>' . _('Connectable') . ": </b> 
+                    <span class='is-lightgreen'>" . _('Yes') . '</span>' : '<b>' . _('Connectable') . ": </b>
                     <span class='has-text-danger'><b>" . _('No') . '</b></span>') . '
                 </td>
             </tr>';
@@ -576,7 +576,7 @@ function cat_image($torrent)
 
     $cat = '';
     if (!empty($torrent['parent_name'])) {
-        $cat = $torrent['parent_name'] . '::' . $torrent['catname'];
+        $cat = $torrent['parent_name'] . ' :: ' . $torrent['catname'];
     }
 
     $image = !empty($catimage) && file_exists(IMAGES_DIR . 'caticons/' . get_category_icons() . "/$catimage") ? "{$site_config['paths']['images_baseurl']}caticons/" . get_category_icons() . "/$catimage" : '';

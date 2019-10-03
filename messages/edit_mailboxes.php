@@ -123,8 +123,8 @@ if (isset($_POST['action2'])) {
             $deletepms = isset($_POST['deletepms']) && $_POST['deletepms'] === 'yes' ? 'yes' : 'no';
             $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';
             $emailnotif = isset($_POST['emailnotif']) ? $_POST['emailnotif'] : '';
-            $notifs = $pmnotif == 'yes' ? _('[pm]') : '';
-            $notifs .= $emailnotif == 'yes' ? _('[email]') : '';
+            $notifs = $pmnotif == 'yes' ? '[pm]' : '';
+            $notifs .= $emailnotif == 'yes' ? '[email]' : '';
             $category_ids = $fluent->from('categories')
                                    ->select(null)
                                    ->select('id')
@@ -173,20 +173,20 @@ if (!empty($boxes)) {
                     <tr>
                         <td colspan="2">
                             ' . _('Box #') . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
-                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">' . _('[ contains ') . $messages . _(' messages ]') . '
+                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">[ ' . _p('contains %s message', 'contains %s messages', $messages) . ' ]
                         </td>
                     </tr>';
     }
     $all_my_boxes .= '
                     <tr>
                         <td colspan="2">' . _('You may edit the names of your PM boxes here.') . '<br>
-                        ' . _(' If you wish to delete 1 or more PM boxes, remove the name from the text field leaving it blank.') . '</td>
+                        ' . _('If you wish to delete 1 or more PM boxes, remove the name from the text field leaving it blank.') . '</td>
                     </tr>
                     <tr>
-                        <td colspan="2"><span>' . _('Please note!!!') . '</span>
+                        <td colspan="2"><span>' . _('Please note!') . '</span>
                         <ul>
-                            <li>' . _('If you delete the name of one or more boxes,  all messages in that directory will be sent to your inbox!!!') . '</li>
-                            <li>' . _('If you wish to delete the messages as well, you can do that from the ') . '<a class="is-link" href="messages.php?action=view_mailbox">' . _('main page') . '</a>.</li>
+                            <li>' . _('If you delete the name of one or more boxes, all messages in that directory will be sent to your inbox!') . '</li>
+                            <li>' . _fe('If you wish to delete the messages as well, you can do that from the {0}main page{1}.', '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">', '</a>') . '</li>
                         </ul></td>
                     </tr>
                     <tr>
@@ -204,7 +204,7 @@ if (!empty($boxes)) {
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . _(' PMs per page') . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . _('%d PMs per page', $i) . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -218,7 +218,7 @@ if (!empty($category_set)) {
             $image = !empty($a['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
                     <span class='left10'>
                         <a href='{$site_config['paths']['baseurl']}/browse.php?c{$a['id']}'>
-                            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "'alt='" . htmlsafechars($a['name']) . "'>
+                            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "'>
                         </a>
                     </span>" : "
                     <span class='left10'>" . htmlsafechars($a['name']) . '</span>';
@@ -237,17 +237,17 @@ if (!empty($category_set)) {
         }
     }
 }
-$HTMLOUT .= $top_links . '<h1>' . _('Mailbox Manager / Message settings') . '</h1>
+$HTMLOUT .= $top_links . '<h1>' . _('Mailbox Manager') . ' / ' . _('Message Settings') . '</h1>
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="add">
-        <h2 class="has-text-centered">' . _('Add mail boxes') . '</h2>';
+        <h2 class="has-text-centered">' . _('Add Mail Boxes') . '</h2>';
 $body = '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . _('As a ') . '' . get_user_class_name((int) $CURUSER['class']) . _(' you may have up to ') . $maxboxes . _('PM box') . ($maxboxes !== 1 ? _('es') : '') . '' . _(' other then your in, sent and draft boxes.') . '<br>' . _('Currently you have ') . $count_boxes . _(' custom box') . ($count_boxes !== 1 ? _('es') : '') . _('. You may add up to ') . ($maxboxes - $count_boxes) . '' . _(' additional mailboxes.') . '
+                    ' . _pfe('As a {0}, you may have up to {1, number} PM Box, other than your in, sent and draft boxes.', 'As a {0}, you may have up to {1, number} PM Boxes, other than your in, sent and draft boxes.', get_user_class_name((int) $CURUSER['class']), $maxboxes) . '<br>' . _pfe('Currently you have {0, number} custom box. You may add up to {1} additional mailboxes.', 'Currently you have {0, number} custom boxes. You may add up to {1}additional mailboxes.', $count_boxes, $maxboxes - $count_boxes) . '
                     <p class="top10">
-                        <span>' . _('The following characters can be used: ') . '</span>' . _(' a-z, A-Z, 1-9, - and _ [ all other characters will be ignored ]') . '
+                        <span>' . _fe('The following characters can be used: {0}. All other characters will be ignored.', 'a-z, A-Z, 1-9, - and _') . '
                     </p>
                 </td>
             </tr>';
@@ -271,7 +271,7 @@ $body .= '
         </form>';
 
 $HTMLOUT .= main_table($body);
-$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Edit / Delete mail boxes') . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Edit / Delete Mail Boxes') . '</h2>';
 $HTMLOUT .= '
         <form action="' . $site_config['paths']['baseurl'] . '/messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
@@ -281,7 +281,7 @@ $HTMLOUT .= '
         </form>';
 $cache->delete('user_' . $CURUSER['id']);
 $show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
-$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Message settings') . '</h2>';
+$HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Message Settings') . '</h2>';
 $HTMLOUT .= main_table('
     <tr>
         <td class="w-25"><span>' . _('PMs per page:') . '</span></td>
@@ -289,7 +289,7 @@ $HTMLOUT .= main_table('
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="action" value="edit_mailboxes">
         <input type="hidden" name="action2" value="message_settings">
-        ' . $per_page_drop_down . '' . _(' [ Select how many PMs you would like to see per page. ]') . '</td>
+        ' . $per_page_drop_down . ' [ ' . _('Select how many PMs you would like to see per page.') . ' ]</td>
     </tr>
     <tr>
         <td><span>' . _('Avatars:') . '</span></td>
@@ -312,19 +312,19 @@ $HTMLOUT .= main_table('
     </tr>
     <tr>
         <td><span>' . _('Delete PMs:') . '</span></td>
-        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . _(' [ Default for "Delete PM on reply"') . '</td>
+        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">[ ' . _('Default for "Delete PM on reply"') . ' ]</td>
     </tr>
     <tr>
         <td><span>' . _('Email notification:') . '</span></td>
-        <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], _('[pm]')) !== false ? 'checked' : '') . '  value="yes">' . _(' Notify me when I have received a PM') . '</td>
+        <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pm]') !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when I have received a PM') . '</td>
     </tr>
     <tr>
         <td></td>
-        <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], _('[email]')) !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . '</td>
+        <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . '</td>
     </tr>
     <tr>
         <td><span>' . _('Categories:') . '</span></td>
-        <td><a class="is-link"  title="' . _('Click for more info') . '" id="cat_open">' . _('show / hide categories') . '</a>' . _(' [ for torrent notifications ]') . '
+        <td><a class="is-link"  title="' . _('Click for more info') . '" id="cat_open">' . _('show / hide categories') . '</a>[ ' . _('for torrent notifications') . ']
         <div id="defcat" class="is_hidden">' . _('Your default categories can be changed here as well.') . '<br>' . $categories . '</div></td>
     </tr>
     <tr>

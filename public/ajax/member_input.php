@@ -24,13 +24,13 @@ $referer = $_SERVER['HTTP_REFERER'] . '#general';
 $action = in_array($posted_action, $valid_actions) ? $posted_action : '';
 $session = $container->get(Session::class);
 if (!isset($action)) {
-    $session->set('is-danger', 'Access Not Allowed');
+    $session->set('is-danger', _('Access Not Allowed'));
     header('Location: ' . $referer);
     die();
 }
 $id = $curuser['class'] < UC_STAFF ? $curuser['id'] : (int) $_POST['id'];
 if ($id === 0) {
-    $session->set('is-danger', 'Invalid User ID');
+    $session->set('is-danger', _('Invalid ID'));
     header('Location: ' . $referer);
     die();
 }
@@ -45,12 +45,12 @@ switch ($action) {
         if ($id === $curuser['id']) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url] flushed {$count} torrents.",
+                'txt' => _pfe('{0} flushed {1, number} torrent.', '{0} flushed {1, number} torrents.', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count),
             ];
         } elseif ($id !== $curuser['id'] && $curuser['class'] >= UC_STAFF) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => "Staff Flush: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url] flushed {$count} torrents for [url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]",
+                'txt' => _pfe('Staff Flush: {0} flushed {1, number} torrent for {2}', 'Staff Flush: {0} flushed {1, number} torrents for {2}', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count, "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]"),
             ];
         }
         $fluent = $container->get(Database::class);
@@ -61,7 +61,7 @@ switch ($action) {
 
     case 'staff_notes':
         if ($curuser['class'] < UC_STAFF) {
-            stderr('Error', 'How did you get here?');
+            stderr(_('Error'), _('How did you get here?'));
         }
         $posted_notes = isset($_POST['new_staff_note']) ? htmlsafechars($_POST['new_staff_note']) : '';
         if ($id !== $curuser['id'] && $curuser['class'] > $user['class']) {
@@ -76,7 +76,7 @@ switch ($action) {
 
     case 'watched_user':
         if ($curuser['class'] < UC_STAFF) {
-            stderr('Error', 'How did you get here?');
+            stderr(_('Error'), _('How did you get here?'));
         }
 
         $posted = isset($_POST['watched_reason']) ? htmlsafechars($_POST['watched_reason']) : '';

@@ -185,7 +185,7 @@ if (empty($credits)) {
     <tr>
         <td><a target='_blank' class='is-link' href='" . $link . "'>" . htmlsafechars(CutName($name, 60)) . '</a>';
         if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
-            $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>" . _('[Edit]') . "</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ');">' . _('[Delete]') . '</a>';
+            $body .= "&#160;<a class='is-link_blue' href='?action=edit&amp;id=" . $id . "'>[" . _('Edit') . "]</a>&#160;<a class='is-link_blue' href=\"javascript:confirm_delete(" . $id . ');">[' . _('Delete') . ']</a>';
         }
 
         $body .= "<br><span class='small'>" . htmlsafechars($descr) . '</span></td>

@@ -19,7 +19,7 @@ $uid = $user['id'];
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 $what = isset($_POST['what']) && $_POST['what'] === 'torrent' ? 'torrent' : 'topic';
 $ref = isset($_POST['ref']) ? $_POST['ref'] : ($what === 'torrent' ? 'details.php' : 'forums/view_topic.php');
-$completeres = sql_query('SELECT * FROM snatched WHERE complete_date !=0 AND userid=' . $user['id'] . ' AND torrentid=' . $id) or sqlerr(__FILE__, __LINE__);
+$completeres = sql_query('SELECT * FROM snatched WHERE complete_date != 0 AND userid = ' . $user['id'] . ' AND torrentid = ' . $id) or sqlerr(__FILE__, __LINE__);
 $completecount = mysqli_num_rows($completeres);
 if ($what === 'torrent' && $completecount == 0) {
     return false;
@@ -32,7 +32,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         sql_query('UPDATE ' . $table . ' SET num_ratings = num_ratings + 1, rating_sum = rating_sum+' . sqlesc($rate) . ' WHERE id=' . sqlesc($id));
         $cache->delete('rating_' . $what . '_' . $id . '_' . $user['id']);
         if ($what === 'torrent') {
-            $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+            $f_r = sql_query('SELECT num_ratings, rating_sum FROM torrents WHERE id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
             $r_f = mysqli_fetch_assoc($f_r);
             $update['num_ratings'] = ($r_f['num_ratings'] + 1);
             $update['rating_sum'] = ($r_f['rating_sum'] + $rate);
@@ -43,7 +43,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
         }
         if ($site_config['bonus']['on']) {
             $amount = ($what === 'torrent' ? $site_config['bonus']['per_rating'] : $site_config['bonus']['per_topic']);
-            sql_query("UPDATE users SET seedbonus = seedbonus + $amount WHERE id=" . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+            sql_query("UPDATE users SET seedbonus = seedbonus + $amount WHERE id = " . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
             $update['seedbonus'] = ($user['seedbonus'] + $amount);
             $cache->update_row('user_' . $user['id'], [
                 'seedbonus' => $update['seedbonus'],
@@ -76,7 +76,7 @@ if ($id > 0 && $rate >= 1 && $rate <= 5) {
 
         $rated = number_format($rating_cache['sum'] / $rating_cache['count'] / 5 * 100, 0) . '%';
         echo "
-                <div class='star-ratings-css-top tooltipper' title='Rating: $rated. You rated this $what {$rating_cache['rating']} star" . plural($rating_cache['rating']) . "' style='width: $rated;'>
+                <div class='star-ratings-css-top tooltipper' title='" . _pfe('Rating: {0}. You rate this {1} {2, number} star', 'Rating: {0}. You rate this {1} {2, number} stars', $rated, $what, $rating_cache['rating']) . "' style='width: $rated;'>
                     <span>&#9733;</span>
                     <span>&#9733;</span>
                     <span>&#9733;</span>

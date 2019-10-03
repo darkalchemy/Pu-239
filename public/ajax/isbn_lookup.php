@@ -15,7 +15,7 @@ $validation = $validator->validate($_POST, [
     'isbn' => 'regex:/[0-9Xx]*/',
 ]);
 if ($validation->fails()) {
-    echo json_encode(['content' => 'Invalid or missing parameters']);
+    echo json_encode(['content' => 'invalid']);
     die();
 }
 $book_info = get_book_info($_POST['isbn'], '', 0, '');

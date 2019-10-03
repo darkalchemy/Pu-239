@@ -18,7 +18,7 @@ $validation = $validator->validate($_POST, [
     'name' => 'required',
 ]);
 if ($validation->fails()) {
-    echo json_encode(['content' => 'Invalid or missing parameters']);
+    echo json_encode(['content' => 'invalid']);
     die();
 }
 $tid = (int) $_POST['tid'];

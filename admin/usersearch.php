@@ -468,7 +468,7 @@ if (!empty($search)) {
                     die();
                 }
                 if (!is_numeric($ratio2) || $ratio2 < $ratio) {
-                    stdmsg(_('Error'), $lang['usersearch_badratio3']);
+                    stdmsg(_('Error'), _('Bad Ratio'));
                     stdfoot();
                     die();
                 }

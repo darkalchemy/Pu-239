@@ -1,3 +1,9 @@
+### 02 Oct, 2019
+replace: remaining $lang variables  
+fix: multiple messages per achievement achievement_seedtime_update.php  
+replace: language files with gettext strings  
+remove: unused files  
+
 ### 26 Sept, 2019
 remove: slider buttons and bullets  
 remove: unused lang key => value pairs  

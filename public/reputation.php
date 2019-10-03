@@ -2,11 +2,6 @@
 
 declare(strict_types = 1);
 
-use Delight\Auth\AuthError;
-use Delight\Auth\NotLoggedInException;
-use DI\DependencyException;
-use DI\NotFoundException;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Pu239\Cache;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -317,17 +312,10 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
 /**
  * @param string $msg
  * @param string $html
- *
- * @throws DependencyException
- * @throws NotFoundException
- * @throws AuthError
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  */
 function rep_output($msg = '', $html = '')
 {
-    global $lang, $closewindow;
+    global $closewindow;
     $body_class = 'background-16 skin-2';
     if ($msg && empty($html)) {
         $html = "

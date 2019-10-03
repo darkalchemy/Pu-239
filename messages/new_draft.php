@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Message;
 
-global $container, $lang, $CURUSER;
+global $container, $CURUSER;
 
 $subject = $draft = '';
 if (!empty($_POST['buttonval']) && $_POST['buttonval'] === 'Save draft') {

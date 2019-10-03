@@ -19,6 +19,6 @@ if (!empty($term)) {
         die();
     }
 }
-$status = ['data' => 'Invalid Request'];
+$status = ['data' => _('Invalid Request')];
 echo json_encode($status);
 die();

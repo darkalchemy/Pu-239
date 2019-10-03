@@ -36,16 +36,16 @@ if (!empty($user) && is_array($user)) {
     }
 
     if ($user['override_class'] != 255) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='Restore to Your User Class'><b>" . get_user_class_name($user['override_class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/restoreclass.php' class='tooltipper' title='" . _('Restore Your User Class') . "'><b>" . get_user_class_name($user['override_class']) . '</b></a>';
     } elseif ($user['class'] >= UC_STAFF) {
-        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='Temporarily Change User Class'><b>" . get_user_class_name($user['class']) . '</b></a>';
+        $usrclass = " <a href='{$site_config['paths']['baseurl']}/setclass.php' class='tooltipper' title='" . _('Temporarily Change User Class') . "'><b>" . get_user_class_name($user['class']) . '</b></a>';
     } else {
         $usrclass = get_user_class_name($user['class']);
     }
     $member_reputation = get_reputation($user);
 
     $StatusBar = "
-    <span class='navbar-start'>" . _(':: Personal Stats') . "</span>
+    <span class='navbar-start'>:: " . _('Personal Stats') . "</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>" . _('User Class') . "</span>
         <span>{$usrclass}</span>
@@ -68,7 +68,7 @@ if (!empty($user) && is_array($user)) {
         <span><a href='{$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}'>" . $user['achpoints'] . "</a></span>
     </span>
     <br>
-    <span class='navbar-start' id='hide_html'>" . _(':: Torrent Stats') . "</span>
+    <span class='navbar-start' id='hide_html'>:: " . _('Torrent Stats') . "</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>" . _('Share Ratio') . '</span>
         <span>' . member_ratio($user['uploaded'], $user['downloaded']) . '</span>
@@ -108,7 +108,7 @@ if (!empty($user) && is_array($user)) {
     </span>
     " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' ? "
     <br>
-    <span class='navbar-start'>" . _('User Blocks') . "</span>
+    <span class='navbar-start'>:: " . _('User Blocks') . "</span>
     <span class='level is-marginless'>
         <span class='navbar-start'>" . _('My Blocks') . "</span>
         <span><a href='{$site_config['paths']['baseurl']}/user_blocks.php'>" . _('Click here') . '</a></span>' : '') . '
