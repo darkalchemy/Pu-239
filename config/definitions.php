@@ -221,9 +221,12 @@ return [
     }),
     I18n::class => DI\factory(function () {
         $i18n = new I18n([
-            Codes::EN_US,
-            Codes::FR_FR,
-            Codes::NB_NO,
+            Codes::EN,
+            Codes::FI,
+            Codes::FR,
+            Codes::NB,
+            Codes::RO,
+            Codes::SE,
         ]);
 
         return $i18n;

@@ -1,4 +1,5 @@
 ### 02 Oct, 2019
+change: default language from en-US to en  
 replace: remaining $lang variables  
 fix: multiple messages per achievement achievement_seedtime_update.php  
 replace: language files with gettext strings  
