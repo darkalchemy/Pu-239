@@ -226,7 +226,7 @@ return [
             Codes::FR,
             Codes::NB,
             Codes::RO,
-            Codes::SE,
+            Codes::SV,
         ]);
 
         return $i18n;
