@@ -5,22 +5,20 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
-use Pu239\Session;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
 global $container;
 
-$session = $container->get(Session::class);
 if (empty($_POST)) {
-    $session->set('is-danger', 'Access Not Allowed');
+    stderr(_('Error'), _('Access Not Allowed'));
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
 if (!isset($user)) {
-    $session->set('is-warning', "You can't add a thank you on your own torrent");
+    stderr(_('Error'), _("You can't add a thank you on your own torrent"));
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }

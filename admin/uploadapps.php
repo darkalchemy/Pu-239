@@ -69,9 +69,9 @@ if ($action === 'takeappdelete') {
 
     $note = htmlsafechars($_POST['note']);
     $subject = _('Uploader Promotion');
-    $msg = sprintf($lang['uploadapps_msg'], "[url={$site_config['paths']['baseurl']}/rules.php]" . _('guidelines on uploading') . '[/url]') . "\n\n" . _('Note: ') . " $note";
+    $msg = _fe('Congratulations, your uploader application has been accepted! You have been given  to Uploader Role and you are now able to upload torrents. Please make sure you have read the {0}guidelines on uploading{1} before you do.', "[url={$site_config['paths']['baseurl']}/rules.php]", '[/url]') . "\n\n" . _('Note: ') . " $note";
     $msg1 = '' . _('User') . " [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] " . _('has been promoted to Uploader by') . " {$CURUSER['username']}.";
-    $modcomment = get_date((int) $dt, 'DATE', 1) . _(" - Promoted to 'Uploader' by ") . $CURUSER['username'] . '.' . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
+    $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . _f("Promoted to 'Uploader' by %s.", $CURUSER['username']) . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
     $update = [
         'status' => 'accepted',
         'comment' => $note,
@@ -126,7 +126,7 @@ if ($action === 'rejectapp') {
 
     $reason = htmlsafechars($_POST['reason']);
     $subject = _('Uploader Promotion');
-    $msg = '' . _('Sorry, your uploader application has been rejected. It appears that you are not qualified enough to become uploader.') . "\n\n" . _('Reason:') . " $reason";
+    $msg = '' . _('Sorry, your uploader application has been rejected. It appears that you are not qualified enough to become uploader.') . "\n\n" . _('Reason') . ": $reason";
     $msgs_buffer[] = [
         'poster' => $CURUSER['id'],
         'receiver' => $arr['uid'],

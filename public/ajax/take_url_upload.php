@@ -14,7 +14,7 @@ global $container, $site_config;
 
 header('content-type: application/json');
 if (empty($user['id'])) {
-    echo json_encode(['msg' => _('Invalid UserId')]);
+    echo json_encode(['msg' => _('Invalid ID')]);
     die();
 }
 

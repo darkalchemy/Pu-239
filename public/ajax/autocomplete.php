@@ -46,22 +46,22 @@ if ($results === false || is_null($results)) {
 
 $temp = "
         <ul>
-            <li class='has-text-centered'>No results. Try refining your search for '$keyword'.</li>
-        </ul>";
+            <li class='has-text-centered'>" . _fe("No results. Try refining your search for '{0}.'", $keyword) . '</li>
+        </ul>';
 
 if (!empty($results)) {
     $temp = "
         <ul class='columns has-text-wight-bold'>
             <li class='column is-three-fifth'>
-                <span class='size_5 is-bold'>Name</span>
+                <span class='size_5 is-bold'>" . _('Name') . "</span>
             </li>
             <li class='column is-one-fifth has-text-centered'>
-                <span class='size_5 is-bold'>Seeders</span>
+                <span class='size_5 is-bold'>" . _('Seeders') . "</span>
             </li>
             <li class='column is-one-fifth has-text-centered'>
-                <span class='size_5 is-bold'>Leechers</span>
+                <span class='size_5 is-bold'>" . _('Leechers') . '</span>
             </li>
-        </ul>";
+        </ul>';
     $i = 1;
     foreach ($results as $result) {
         $color = $result['visible'] === 'yes' ? 'is-success' : 'has-text-danger';

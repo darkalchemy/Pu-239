@@ -436,7 +436,7 @@ if ($game) {
                 if ($a['ddown'] === 'yes') {
                     $blackjack['mb'] = $blackjack['mb'] * 2;
                     $blackjack['modifier'] = $blackjack['modifier'] * 2;
-                    $dbl_text = _('[Doubled Down] ');
+                    $dbl_text = '[' . _('Doubled Down') . ']';
                     $doubleddown = true;
                 } elseif ($card_count === 2 && $a['points'] == 21 && $playerarr['points'] != 21) {
                     $blackjack['mb'] = $blackjack['mb'] * 1.5;

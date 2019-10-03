@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td colspan='2'>$body</td>
             </tr>
             <tr>
-                <td class='w-10'>" . ($mailbox === $site_config['pm']['sent'] ? $lang['pm_search_send_to'] : _('Sender')) . "</td>
+                <td class='w-10'>" . ($mailbox === $site_config['pm']['sent'] ? _('Search') : _('Sender')) . "</td>
                 <td colspan='2'>$sender</td>
             </tr>
             <tr>

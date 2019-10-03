@@ -46,7 +46,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', _('There was an error with the query please contact the staff!'));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -85,7 +85,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', _('There was an error with the query please contact the staff!'));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -153,7 +153,7 @@ switch ($do) {
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             } else {
-                $session->set('is-warning', sprintf($lang['staffbox_sql_err'], ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false))));
+                $session->set('is-warning', _('There was an error with the query please contact the staff!'));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }

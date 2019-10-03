@@ -232,7 +232,7 @@ $body = "
             </tr>
             <tr>
                 <td>
-                    <input name='reasontype' type='radio' value='4' class='right5'>" . _('Crafty Rules') . "
+                    <input name='reasontype' type='radio' value='4' class='right5'>" . _fe('{0} Rules', $site_config['site']['name']) . "
                 </td>
                 <td><input type='text' size='40' name='reason[]' class='w-100' placeholder='" . _('required') . "'></td>
             </tr>

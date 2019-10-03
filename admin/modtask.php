@@ -213,16 +213,16 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             } else {
                 $donoruntil = $dt + ($donorlength * 604800);
                 $dur = $donorlength . _(' week') . ($donorlength > 1 ? _('s') : '');
-                $msg = _('Dear') . $user['username'] . '' . _('
-       :wave:
-       Thanks for your support to Crafty!
+                $msg = _('Dear') . $user['username'] . '' . _fe('
+       {0}
+       Thanks for your support to {1}!
        Your donation helps us in the costs of running the site!
-       As a donor, you are given some bonus gigs added to your uploaded amount, the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love :smile: so, thanks again, and enjoy!
+       As a donor, you are given some bonus gigs added to your uploaded amount, the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy!
        cheers,
-       Crafty Staff
-       PS. Your donator status will last for ') . " $dur " . _('and can be found on your user details page and can only be seen by you :smile: It was set by ') . '' . $username;
+       {3} Staff
+       PS. Your donator status will last for {4} and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
                 $subject = _('Thank You for Your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . _(' - Donor status set by ') . $CURUSER['username'] . ".\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Donor status set by %s', $CURUSER['username']) . ".\n" . $modcomment;
             }
             $update['donoruntil'] = $donoruntil;
             $msgs[] = [
@@ -244,15 +244,15 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $donoruntil = $user['donoruntil'];
         $donorlengthadd = $post['donorlengthadd'] === 255 ? 2607 : $post['donorlengthadd'];
         $dur = $donorlengthadd . _(' week') . ($donorlengthadd > 1 ? _('s') : '');
-        $msg = _('Dear') . htmlsafechars($user['username']) . '' . _('
-       :wave:
-       Thanks for your continued support to Crafty!
+        $msg = _('Dear') . htmlsafechars($user['username']) . '' . _fe('
+       {0}
+       Thanks for your continued support to {1}!
        Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!
-       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love :smile: so, thanks again, and enjoy! cheers,
-       Crafty Staff
-        PS. Your donator status will last for an extra ') . " $dur " . _(' on top of your current donation status, and can be found on your user details page and can only be seen by you :smile: It was set by ') . '' . $username;
+       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2}} so, thanks again, and enjoy! cheers,
+       {3} Staff
+       PS. Your donator status will last for an extra {4} on top of your current donation status, and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
         $subject = _('Thank You for Your Donation... Again!');
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Donator status set for another ') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donator status set for another {0} by {1}.', $dur, $CURUSER['username']) . "\n" . $modcomment;
         $msgs[] = [
             'poster' => $CURUSER['id'],
             'receiver' => $userid,
@@ -265,10 +265,10 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     if (isset($post['donor']) && (($donor = $post['donor']) !== $user['donor'])) {
         $update['donor'] = $donor;
         $update['class'] = $user['vipclass_before'];
-        $useredit[] = _('Donor = No');
+        $useredit[] = 'Donor = No';
         if ($donor === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Donor status removed by ') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = sprintf(_(' - Donor status removed by ')) . $username;
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Donor status removed by %s.', $CURUSER['username']) . "\n" . $modcomment;
+            $msg = _f('Donor status removed by %s', $username);
             $subject = _('Donator status expired.');
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -287,21 +287,21 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $subject = _('Notification!');
         if ($downloadpos === 255) {
             $modcomment = get_date($dt, 'DATE', 1) . _(' - Download disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $disable_pm\n" . $modcomment;
-            $msg = _('Your Downloading rights have been disabled by ') . $username . (!empty($disable_pm) ? "\n\n" . _('Reason:') . " $disable_pm" : '');
+            $msg = _f('Your Downloading rights have been disabled by %s', $username) . (!empty($disable_pm) ? "\n\n" . _('Reason') . ": $disable_pm" : '');
             $update['downloadpos'] = 0;
             $useredit[] = _('Download possible = No');
         } elseif ($downloadpos === 42) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Download disablement status removed by ') . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = _('Your Downloading rights have been restored by ') . $username;
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Download disablement status removed by %s.', $CURUSER['username']) . ".\n" . $modcomment;
+            $msg = _f('Your Downloading rights have been restored by %s', $username);
             $update['downloadpos'] = 1;
-            $useredit[] = _('Download possible = Yes');
+            $useredit[] = 'Download possible = Yes';
         } else {
             $downloadpos_until = $dt + ($downloadpos * 604800);
             $dur = $downloadpos . _(' week') . ($downloadpos > 1 ? _('s') : '');
             $msg = '' . _('You have received') . " $dur " . _('Download disablement from ') . ' ' . $username . ($disable_pm ? "\n\n" . _('Reason:') . " $disable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Download disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $disable_pm\n" . $modcomment;
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Download disablement for {0} by {1}.', $dur, $CURUSER['username']) . "\n" . _('Reason') . ": $disable_pm\n" . $modcomment;
             $update['downloadpos'] = $downloadpos_until;
-            $useredit[] = _('Downloads disabled = ') . $downloadpos_until;
+            $useredit[] = 'Downloads disabled = ' . $downloadpos_until;
         }
         $msgs[] = [
             'poster' => $CURUSER['id'],

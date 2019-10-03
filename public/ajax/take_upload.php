@@ -14,7 +14,7 @@ global $container, $site_config;
 
 header('content-type: application/json');
 if (empty($user['id'])) {
-    echo json_encode(['msg' => _('Invalid UserId')]);
+    echo json_encode(['msg' => _('Invalid ID')]);
     die();
 }
 $username = $user['username'];
@@ -46,12 +46,12 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
     $path = $bucketdir . $USERSALT . '_' . $randb . $file;
     $pathlink = $bucketlink . $USERSALT . '_' . $randb . $file;
     if (!move_uploaded_file($_FILES['file_' . $i]['tmp_name'], $path)) {
-        echo json_encode(['msg' => $bucketdir . '<br>' . $USERSALT . '<br>' . $randb . '<br>' . $path . '<br>file move ' . _('Upload failed!')]);
+        echo json_encode(['msg' => _('Upload failed to save image.')]);
         die();
     }
 
     if (!file_exists($path)) {
-        echo json_encode(['msg' => 'path not exists ' . _('Upload failed!')]);
+        echo json_encode(['msg' => _('Upload failed to save image.')]);
         die();
     }
     $image_proxy->optimize_image($path, null, null, false);

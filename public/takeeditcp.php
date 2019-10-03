@@ -198,12 +198,12 @@ if ($action === 'avatar') {
     <style>html{visibility: hidden;opacity:0;}</style>
     <meta property='og:title' content='Crafty Email Change'>
     <title>Crafty Email Change</title>
-    <meta charset='utf - 8'>
-    <meta http-equiv='X - UA - Compatible' content='IE = edge'>
-    <meta name='viewport' content='width = device - width, initial - scale = 1'>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
     <meta property='og:url' content='http://Pu239.silly'>
-    <meta property = 'og:type' content = 'website' >
-    <meta property = 'og:description' content = 'Pu239.silly - Crafty' >
+    <meta property='og:type' content='website'>
+    <meta property='og:description' content='Pu239.silly - Crafty'>
 </head>
 <body>
 <p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
@@ -222,19 +222,19 @@ if ($action === 'avatar') {
                 stderr(_('Error'), 'We can\'t say if the user is who they claim to be');
             }
         } catch (InvalidEmailException $e) {
-            stderr(_('Error'), 'Invalid email address');
+            stderr(_('Error'), _('Invalid email address'));
         } catch (UserAlreadyExistsException $e) {
-            stderr(_('Error'), 'Email address already exists');
+            stderr(_('Error'), _('Email address already exists'));
         } catch (EmailNotVerifiedException $e) {
-            stderr(_('Error'), 'Account not verified');
+            stderr(_('Error'), _('Account not verified'));
         } catch (NotLoggedInException $e) {
-            stderr(_('Error'), 'Not logged in');
+            stderr(_('Error'), _('Not logged in'));
         } catch (TooManyRequestsException $e) {
-            stderr(_('Error'), 'Too many requests');
+            stderr(_('Error'), _('Too many requests from your IP'));
         }
         $dt = TIME_NOW;
         $subject = _('Email Alert');
-        $msg = '' . _('User ') . "[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . '[/b][/url]' . _(' changed email address :') . '' . _(' Old email was ') . '' . htmlsafechars($user['email']) . '' . _(' new email is ') . "$email" . _(', please check this was for a legitimate reason') . '';
+        $msg = _('User ') . "[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . '[/b][/url]' . _(' changed email address :') . '' . _(' Old email was ') . '' . htmlsafechars($user['email']) . '' . _(' new email is ') . "$email" . _(', please check this was for a legitimate reason') . '';
         $pmstaff = $fluent->from('users')
                           ->select(null)
                           ->select('id')

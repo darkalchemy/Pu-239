@@ -15,13 +15,13 @@ $connection = fsockopen($ip, $port, $errno, $errstr);
 if (is_resource($connection)) {
     $msg = [
         'class' => 'has-text-success',
-        'text' => 'OPEN',
+        'text' => _('OPEN'),
     ];
     fclose($connection);
 } else {
     $msg = [
         'class' => 'has-text-danger',
-        'text' => "CLOSED => $errstr",
+        'text' => _fe('CLOSED => {0}', $errstr),
     ];
 }
 $status = ['data' => $msg];

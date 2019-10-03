@@ -108,7 +108,7 @@ if (isset($_GET['act'])) {
                 <tr>
                     <td>' . _('ID') . "</td>
                     <td>
-                        <input type='text' value='' name='id' placeholder='" . _('Must be a positive integer') . "'> " . _("Taken ID's: ") . '<b>' . implode(', ', $taken) . '</b>
+                        <input type='text' value='' name='id' placeholder='" . _('Must be a positive integer') . "'> " . _("Taken ID's") . ': <b>' . implode(', ', $taken) . '</b>
                     </td>
                 </tr>
                 <tr>
@@ -145,7 +145,7 @@ if (isset($_GET['act'])) {
                                 <li class='bullet'>StatusBar</li>
                             </ul>
                         </li><br>
-                        <li class='bullet'>" . sprintf($lang['themes_guide_3'], AJAX_CHAT_PATH . 'css/', AJAX_CHAT_PATH . 'css/1/') . "
+                        <li class='bullet'>" . _fe('Make a folder in the AJAX Chat dir: {0} and copy these files from {1}', AJAX_CHAT_PATH . 'css/', AJAX_CHAT_PATH . 'css/1/') . "
                             <ul>
                                 <li class='bullet'>global.css</li>
                                 <li class='bullet'>fonts.css</li>
