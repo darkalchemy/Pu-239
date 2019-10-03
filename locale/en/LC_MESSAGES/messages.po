@@ -13,7 +13,7 @@ msgid ""
 "       {0}\n"
 "       Thanks for your continued support to {1}!\n"
 "       Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!\n"
-"       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2}} so, thanks again, and enjoy! cheers,\n"
+"       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy! cheers,\n"
 "       {3} Staff\n"
 "       PS. Your donator status will last for an extra {4} on top of your current donation status, and can be found on your user details page and can only be seen by you {5} It was set by {6}"
 msgstr ""
@@ -21,7 +21,7 @@ msgstr ""
 "       {0}\n"
 "       Thanks for your continued support to {1}!\n"
 "       Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!\n"
-"       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2}} so, thanks again, and enjoy! cheers,\n"
+"       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy! cheers,\n"
 "       {3} Staff\n"
 "       PS. Your donator status will last for an extra {4} on top of your current donation status, and can be found on your user details page and can only be seen by you {5} It was set by {6}"
 
@@ -7880,8 +7880,8 @@ msgid "Ratio below {0}0.80{1} and/or upload below 8.0GB then a delay of 12h."
 msgstr "Ratio below {0}0.80{1} and/or upload below 8.0GB then a delay of 12h."
 
 #, no-php-format
-msgid "Ratio below {0}0.95{1}} and/or upload below 9.5GB then a delay of 6h."
-msgstr "Ratio below {0}0.95{1}} and/or upload below 9.5GB then a delay of 6h."
+msgid "Ratio below {0}0.95{1} and/or upload below 9.5GB then a delay of 6h."
+msgstr "Ratio below {0}0.95{1} and/or upload below 9.5GB then a delay of 6h."
 
 msgid "Ratio free tracker in effect"
 msgstr "Ratio free tracker in effect"
@@ -13529,5 +13529,5 @@ msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo cho
 msgstr "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
 
 #, no-php-format
-msgid "{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}} .{5}sudo php bin/set_perms.php"
-msgstr "{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}} .{5}sudo php bin/set_perms.php"
+msgid "{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
+msgstr "{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"

@@ -248,7 +248,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
        {0}
        Thanks for your continued support to {1}!
        Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!
-       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2}} so, thanks again, and enjoy! cheers,
+       As a donor, you are given some bonus gigs added to your uploaded amount, and, you have the the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy! cheers,
        {3} Staff
        PS. Your donator status will last for an extra {4} on top of your current donation status, and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
         $subject = _('Thank You for Your Donation... Again!');

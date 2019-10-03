@@ -526,7 +526,7 @@ $next_para = "
                                             " . _fe('Ratio below {0}0.80{1} and/or upload below 8.0GB then a delay of 12h.', "<span style='color:#880000;'>", '</span>') . "
                                         </div>
                                         <div class='padding10'>
-                                            " . _fe('Ratio below {0}0.95{1}} and/or upload below 9.5GB then a delay of 6h.', "<span style='color:#6e0000;'>", '</span>') . "
+                                            " . _fe('Ratio below {0}0.95{1} and/or upload below 9.5GB then a delay of 6h.', "<span style='color:#6e0000;'>", '</span>') . "
                                         </div>
                                     </div>
                                 </div>
