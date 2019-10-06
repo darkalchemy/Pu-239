@@ -1588,6 +1588,29 @@ msgstr "Alle umoderede Torrenter"
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "Alle filer skal være i originalt format (normalt 14,3 MB RAR)."
 
+msgid ""
+"All info about torrents are hidden from other members except your share "
+"ratio, join date, last seen and PM button if you accept PMs. Your comments "
+"are not hidden, and though your actual stats (up and down) are hidden on the"
+" forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgstr ""
+"Al information om torrents er skjult for andre medlemmer undtagen dit "
+"aktieforhold, tilmeldingsdato, sidst set og PM-knap, hvis du accepterer "
+"PM'er. Dine kommentarer er ikke skjult, og selvom din faktiske statistik (op"
+" og ned) er skjult på foraene, er dit faktiske forhold ikke også, du vil "
+"vises på snavsede lister."
+
+msgid ""
+"All of the above will not apply to staff... staff see all and know all... "
+"<br>Even at the highest level of paranoia, you can still be reported (though"
+" they won't know who they are reporting) and you are not immune to our auto "
+"scripts..."
+msgstr ""
+"Alt det ovenstående gælder ikke for personale ... personale ser alle og ved "
+"alt ... <br> Selv på det højeste niveau af paranoia kan du stadig "
+"rapporteres (selvom de ikke ved, hvem de rapporterer), og du er ikke immun "
+"mod vores auto-scripts ..."
+
 msgid "All postings older than that will be set as read."
 msgstr "Alle indlæg, der er ældre end det, indstilles som læst."
 
@@ -1972,6 +1995,13 @@ msgstr ""
 "Tildelt af mods efter eget skøn til brugere, de føler bidrager med noget "
 "specielt til webstedet."
 
+msgid "At Bottom"
+msgstr "Nederst"
+
+msgid "At Top<br>What order you want the posts to be listed in."
+msgstr ""
+"Øverst <br> Hvilken rækkefølge ønsker du, at indlægene skal være opført i."
+
 #, no-php-format
 msgid ""
 "At present there is no way of making this setup always work properly with "
@@ -2054,6 +2084,9 @@ msgstr "Avatar"
 
 msgid "Avatar Guidelines -"
 msgstr "Avatar retningslinjer -"
+
+msgid "Avatar Options"
+msgstr "Avatarindstillinger"
 
 msgid "Avatar Possible"
 msgstr "Avatar mulig"
@@ -2841,6 +2874,9 @@ msgstr "Klik her hvis ikke omdirigeret ..."
 msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Klik på din {0} profil {1} og derefter på dit brugernavn (øverst)."
 
+msgid "Click to show the background image"
+msgstr "Klik for at vise baggrundsbilledet"
+
 msgid "Click to view members invite tree"
 msgstr "Klik for at se medlemmernes invitationstræ"
 
@@ -3233,6 +3269,9 @@ msgstr "Nuværende humør"
 msgid "Current Moods"
 msgstr "Nuværende humør"
 
+msgid "Current Password"
+msgstr "Nuværende kodeord"
+
 msgid "Current Password can not be empty!"
 msgstr "Nuværende kodeord kan ikke være tomt!"
 
@@ -3362,6 +3401,9 @@ msgstr "Dato optjent"
 msgid "Date From"
 msgstr "Dato fra"
 
+msgid "Date Started"
+msgstr "Dato startet"
+
 msgid "Date added"
 msgstr "Dato tilføjet"
 
@@ -3392,6 +3434,9 @@ msgstr "Døde: 0 seeders og leechers = 0 peers total"
 msgid "Deal With It"
 msgstr "Handle med det"
 
+msgid "Dealer"
+msgstr "forhandler"
+
 msgid "Dealt With"
 msgstr "Behandlet"
 
@@ -3414,6 +3459,9 @@ msgstr "Fejlsøgningsinfo"
 msgid "December"
 msgstr "december"
 
+msgid "Default"
+msgstr "Standard"
+
 msgid "Default Reputation"
 msgstr "Standard omdømme"
 
@@ -3431,6 +3479,13 @@ msgstr "Standard for 'Gem PM til Sentbox'"
 
 msgid "Default is"
 msgstr "Standard er"
+
+msgid ""
+"Default setting, nothing is hidden except your IP, passkey, email. the same "
+"as any tracker."
+msgstr ""
+"Standardindstilling, intet er skjult undtagen din IP, adgangskode, e-mail. "
+"det samme som enhver tracker."
 
 msgid ""
 "Defaults are: zip and rar. Add more at your own risk! Each entry must be "
@@ -3647,6 +3702,10 @@ msgid "Display/Style"
 msgstr "Skærm / Style"
 
 #, no-php-format
+msgid "Displayed on your public page. May contain {0}BBcode{1}."
+msgstr "Vises på din offentlige side. Kan indeholde {0} BBcode {1}."
+
+#, no-php-format
 msgid ""
 "Disruptive behaviour in the forums or on the site will result in a warning "
 "({0}).<br>You will only get <b>one</b> warning! After that it's bye bye "
@@ -3723,6 +3782,9 @@ msgid ""
 msgstr ""
 "Vil du virkelig slette {0} fra din Shit List? Klik på {1} her {2}, hvis du "
 "er sikker."
+
+msgid "Do you wish to have your email address visible on the forums?"
+msgstr "Ønsker du at have din e-mail-adresse synlig på fora?"
 
 msgid "Documentary"
 msgstr "Dokumentar"
@@ -4453,6 +4515,9 @@ msgstr "Erm, den er ikke der!"
 
 msgid "Error"
 msgstr "Fejl"
+
+msgid "Error! Change a few things up and try submitting again."
+msgstr "Fejl! Skift et par ting op, og prøv at indsende igen."
 
 msgid "Eternity"
 msgstr "Evighed"
@@ -5499,6 +5564,9 @@ msgstr "Jeg kan tilsluttes"
 msgid "I applied"
 msgstr "jeg ansøgte"
 
+msgid "I feel sort of relaxed"
+msgstr "Jeg føler mig lidt afslappet"
+
 msgid "I have a positive ratio"
 msgstr "Jeg har et positivt forhold"
 
@@ -5535,6 +5603,12 @@ msgstr "Jeg bærer en tinfoliehue"
 
 msgid "I wear a tin-foil hat!"
 msgstr "Jeg har en tinfolie-hat!"
+
+msgid "I'm paranoid"
+msgstr "Jeg er paranoid"
+
+msgid "I'm totally relaxed"
+msgstr "Jeg er helt afslappet"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr ""
@@ -6246,6 +6320,9 @@ msgstr "Irc Idle Time"
 msgid "Is daylight saving time in effect?"
 msgstr "Er sommertid i kraft?"
 
+msgid "Is taken, please try again."
+msgstr "Er taget, prøv venligst igen."
+
 msgid ""
 "Isn't this the same as above? No. Connections limit the number of peers your"
 " client is talking to and/or downloading from. Uploads limit the number of "
@@ -6602,6 +6679,9 @@ msgstr "Niveau"
 msgid "Level Description"
 msgstr "Niveau beskrivelse"
 
+msgid "Lifesaver"
+msgstr "Livredder"
+
 msgid "Likes"
 msgstr "Kan lide"
 
@@ -6660,6 +6740,10 @@ msgstr "Indlæser..."
 
 msgid "Location"
 msgstr "Beliggenhed"
+
+#, no-php-format
+msgid "Location Options => Is this the correct time? {0}"
+msgstr "Placeringsindstillinger => Er dette det rigtige tidspunkt? {0}"
 
 msgid "Lock"
 msgstr "Låse"
@@ -7337,6 +7421,9 @@ msgstr "Flere valg spørgsmål? (Tillader brugere at vælge mere end et valg)"
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Flere tags skal adskilles af et komma som tag1, tag2"
 
+msgid "Multiplier"
+msgstr "Multiplikator"
+
 msgid "Music"
 msgstr "musik"
 
@@ -7363,6 +7450,9 @@ msgid ""
 msgstr ""
 "Skal matche ovennævnte accepterede fil ext. Tilføj mere på din egen risiko! "
 "Hver post skal adskilles med et enkelt mellemrum"
+
+msgid "Must ne an image url."
+msgstr "Skal ne et billed-url."
 
 msgid "My Blocks"
 msgstr "Mine blokke"
@@ -7800,6 +7890,17 @@ msgstr "Ingen indstilling af immunitet"
 
 msgid "No information to show"
 msgstr "Ingen oplysninger at vise"
+
+msgid ""
+"No information will be available to other members on your details page. Your"
+" comments and thank you(s) on torrents will be anonymous, your userdetails "
+"page will not be accessible, your stats will not appear at all, including "
+"your share ratio."
+msgstr ""
+"Ingen oplysninger vil være tilgængelige for andre medlemmer på din "
+"detailside. Dine kommentarer og tak (er) for torrents vil være anonyme, din "
+"userdetails side er ikke tilgængelig, din statistik vises slet ikke, "
+"inklusive dit andel."
 
 msgid "No invitees yet."
 msgstr "Der er endnu ingen inviterede."
@@ -8601,6 +8702,9 @@ msgstr "PM sendt til alle ikke-tilslutningsmæssige peers"
 msgid "PM comment"
 msgstr "PM kommentar"
 
+msgid "PM options"
+msgstr "PM-indstillinger"
+
 msgid "PM's"
 msgstr "PM"
 
@@ -8628,6 +8732,9 @@ msgstr "Parametre"
 
 msgid "Paranoia"
 msgstr "paranoia"
+
+msgid "Paranoia Levels explained"
+msgstr "Paranoia Levels forklarede"
 
 msgid "Paranoia level changed"
 msgstr "Paranoia niveau ændret sig"
@@ -8751,6 +8858,9 @@ msgstr "Personlig"
 msgid "Personal Message"
 msgstr "Personlig besked"
 
+msgid "Personal Options"
+msgstr "Personlige indstillinger"
+
 msgid "Personal Statistics"
 msgstr "Personlig statistik"
 
@@ -8845,6 +8955,9 @@ msgid ""
 msgstr ""
 "Bemærk, at personalet kan give eller fjerne point for at bryde reglerne "
 "eller gøre godt for samfundet."
+
+msgid "Please remember!"
+msgstr "Husk venligst!"
 
 msgid "Please select a backup to delete."
 msgstr "Vælg en sikkerhedskopi, der skal slettes."
@@ -9708,6 +9821,19 @@ msgstr "STV"
 msgid "Safe Mode"
 msgstr "Sikker tilstand"
 
+msgid ""
+"Same as 'a little paranoid' except your name will not appear on snatched "
+"lists, your ratio and stats as well as anything to do with actual "
+"filesharing will not be visible to other members. You will appear as "
+"'anonymous' on torrent comments, snatched lists et al. The member ratings "
+"and comments on your details page will also be disabled."
+msgstr ""
+"Det samme som 'lidt paranoid', bortset fra at dit navn ikke vises på lister,"
+" dine forhold og statistikker samt noget at gøre med faktisk fildeling vil "
+"ikke være synlige for andre medlemmer. Du vises som 'anonym' på "
+"torrentkommentarer, snatchlister et al. Medlemsvurderinger og kommentarer på"
+" din detaljside vil også blive deaktiveret."
+
 msgid "Same as PU, but has been around longer."
 msgstr "Samme som PU, men har eksisteret længere."
 
@@ -9926,6 +10052,9 @@ msgstr "Sikkerhed"
 msgid "Security Check"
 msgstr "Sikkerhedskontrol"
 
+msgid "Security Options"
+msgstr "Sikkerhedsindstillinger"
+
 msgid "Sedders"
 msgstr "Sedders"
 
@@ -10029,6 +10158,9 @@ msgstr "Frø {0} torrents"
 
 msgid "Seedtime"
 msgstr "Sæd"
+
+msgid "Select"
+msgstr "Vælg"
 
 msgid "Select All"
 msgstr "Vælg alle"
@@ -10349,6 +10481,9 @@ msgstr ""
 "Hvis du sætter dette til Nej, får du muligheden for valgt klasse og derover "
 "for at se slettede indlæg og tråde og beslutte, om de skal slettes."
 
+msgid "Settings"
+msgstr "Indstillinger"
+
 msgid "Settings Check"
 msgstr "Indstillinger Kontroller"
 
@@ -10455,6 +10590,9 @@ msgstr "Syg"
 
 msgid "Signature"
 msgstr "Underskrift"
+
+msgid "Signature Options"
+msgstr "Signaturindstillinger"
 
 msgid "Signature Rights"
 msgstr "Signaturrettigheder"
@@ -11086,6 +11224,9 @@ msgstr "Emne:"
 
 msgid "Submit"
 msgstr "Indsend"
+
+msgid "Submit Changes"
+msgstr "Indsend ændringer"
 
 msgid "Submit News Item"
 msgstr "Indsend nyhedsartikel"
@@ -12260,6 +12401,18 @@ msgstr "Dette er ikke dit indlæg, der skal slettes."
 msgid "This is not your post to edit."
 msgstr "Dette er ikke dit indlæg du skal redigere."
 
+msgid ""
+"This is only used by an upload script, msg any staff member for the details."
+msgstr ""
+"Dette bruges kun af et uploadscript, msg enhver medarbejder for detaljerne."
+
+msgid ""
+"This is only used by auto downloaders, such as CouchPotato, SickRage and "
+"others. (API not implemented, yet)."
+msgstr ""
+"Dette bruges kun af auto-downloadere, såsom CouchPotato, SickRage og andre. "
+"(API endnu ikke implementeret)."
+
 msgid "This is only users that are active on the torrents right now."
 msgstr "Dette er kun brugere, der er aktive på torrenterne lige nu."
 
@@ -12284,6 +12437,13 @@ msgid ""
 msgstr ""
 "Dette bruges til automatisk download-scripts, såsom CouchPotota, SickRage og"
 " andre"
+
+msgid ""
+"This is used for downloading and seeding torrents, in your torrent client "
+"and your rss reader."
+msgstr ""
+"Dette bruges til download og podning af torrents, i din torrent-klient og "
+"din RSS-læser."
 
 msgid ""
 "This is what is displayed for the user when their reputation points are "
@@ -12680,6 +12840,9 @@ msgstr "Top 10"
 msgid "Top 100"
 msgstr "Top 100"
 
+msgid "Top Member Mood's"
+msgstr "Topmedlemstemning"
+
 msgid "Top Moods"
 msgstr "Top stemninger"
 
@@ -12751,6 +12914,9 @@ msgstr "Torrent Moderator"
 
 msgid "Torrent Notification Failed"
 msgstr "Torrentmeddelelse mislykkedes"
+
+msgid "Torrent Options"
+msgstr "Torrentindstillinger"
 
 msgid "Torrent Owner Notified"
 msgstr "Torrent ejer underrettet"
@@ -13257,6 +13423,10 @@ msgstr "Upload tilføjet"
 msgid "Upload credit"
 msgstr "Upload kredit"
 
+#, no-php-format
+msgid "Upload disablement for {0} by {1}."
+msgstr "Upload deaktivering for {0} af {1}."
+
 msgid "Upload disablement from "
 msgstr "Upload deaktivering fra"
 
@@ -13535,6 +13705,9 @@ msgstr "Brugernavn ændret"
 msgid "Username is Available"
 msgstr "Brugernavn er tilgængeligt"
 
+msgid "Username is not Available"
+msgstr "Brugernavn er ikke tilgængeligt"
+
 msgid "Username not allowed."
 msgstr "Brugernavn er ikke tilladt."
 
@@ -13679,6 +13852,9 @@ msgstr "Se medarbejdermeddelelser"
 
 msgid "View application"
 msgstr "Se applikation"
+
+msgid "View bought tickets"
+msgstr "Se købte billetter"
 
 msgid "View comments"
 msgstr "Se kommentarer"
@@ -13949,6 +14125,17 @@ msgstr ""
 "tilknyttet dig). Bemærk, at nu torrenter, der er anført i din profil, altid "
 "tæller med i din samlede statistik."
 
+msgid "When any of your uploaded torrents are commented on, you will be PMed."
+msgstr ""
+"Når en af dine uploadede torrenter kommenteres, bliver du sendt til PM."
+
+msgid "When any of your uploaded torrents are deleted, you will be PMed."
+msgstr ""
+"Når nogen af dine uploadede torrenter slettes, bliver du sendt til PM."
+
+msgid "When someone posts in a subscribed thread, you will be PMed."
+msgstr "Når nogen poster i en abonneret tråd, bliver du sendt til PM."
+
 msgid ""
 "When the account has been parked limits are put on the account, you cannot "
 "use the tracker or browse any of the pages."
@@ -14122,6 +14309,9 @@ msgstr "Ja"
 
 msgid "Yes &#160; "
 msgstr "Ja & # 160;"
+
+msgid "Yes (Low bandwidth user may want to disable this)"
+msgstr "Ja (Bruger med lav båndbredde vil måske deaktivere dette)"
 
 msgid ""
 "Yes, the tracker is now capable of following sessions from different IPs for"
@@ -14717,6 +14907,9 @@ msgstr "Du skal indtaste en e-mail-adresse!"
 
 msgid "You must enter both a subject and message."
 msgstr "Du skal indtaste både et emne og en meddelelse."
+
+msgid "You must enter your current password."
+msgstr "Du skal indtaste din nuværende adgangskode."
 
 msgid "You must finish your old game first."
 msgstr "Du skal afslutte dit gamle spil først."
@@ -16358,6 +16551,10 @@ msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
 #, no-php-format
+msgid "{0} - Added by {1}"
+msgstr "{0} - Tilføjet af {1}"
+
+#, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
 msgstr "{0} - CODER-rolle tilføjet af {1}\n"
 
@@ -16594,6 +16791,14 @@ msgstr "{0} uger"
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} med id: {1} rapport sendt."
+
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr "{0} 's underholdning"
+
+#, no-php-format
+msgid "{0}'s Menu"
+msgstr "{0} 's menu"
 
 #, no-php-format
 msgid "{0}'s Mood"
