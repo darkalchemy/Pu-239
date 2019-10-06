@@ -65,7 +65,7 @@ $HTMLOUT = '<h1 class="has-text-centered">Duplicate IP Check</h1>';
 if (!empty($body)) {
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stdmsg(_('Sorry'), _("There are no duplicate IP's in use."));
+    $HTMLOUT .= stdmsg(_('Error'), _("There are no duplicate IP's in use."));
 }
 $title = _('IP Check');
 $breadcrumbs = [

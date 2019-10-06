@@ -39,7 +39,7 @@ switch ($action2) {
         $arr_name = mysqli_fetch_assoc($res_name);
         $check_if_there = sql_query('SELECT suspect FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_num_rows($check_if_there) == 1) {
-            stderr(_('Error'), _('The member ') . htmlsafechars($arr_name['username']) . _(' is already on your shit list!'));
+            stderr(_('Error'), _fe('The member {0} is already on your shit list!', htmlsafechars($arr_name['username'])));
         }
         $level_of_shittyness = '';
         $level_of_shittyness .= '<select name="shittyness"><option value="0">' . _('level of shittyness') . '</option>';
@@ -49,7 +49,7 @@ switch ($action2) {
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . _(' Add ') . '' . htmlsafechars($arr_name['username']) . '' . _(' to your Shit List ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . _fe(' Add {0} to your Shit List {1}', htmlsafechars($arr_name['username']), '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">') . '</h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add" accept-charset="utf-8">
    <table>
    <tr>
@@ -58,11 +58,11 @@ switch ($action2) {
       <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _('out of 10, 1 being not so shitty, 10 being really shitty... Please select one.') . '</td>
    </tr>
    <tr>
-      <td><b>' . _('Shittyness:') . '</b></td>
+      <td><b>' . _('Shittyness') . ':</b></td>
       <td>' . $level_of_shittyness . '</td>
    </tr>
    <tr>
-      <td><b>' . _('Reason:') . '</b></td>
+      <td><b>' . _('Reason') . ':</b></td>
       <td><textarea cols="60" rows="5" name="text"></textarea></td>
    </tr>
    <tr>
@@ -102,15 +102,14 @@ switch ($action2) {
         $res_name = sql_query('SELECT username FROM users WHERE id=' . sqlesc($shit_list_id));
         $arr_name = mysqli_fetch_assoc($res_name);
         if (!$sure) {
-            stderr(_('Delete ') . htmlsafechars($arr_name['username']) . _(' from shit list'), '' . _('Do you really want to delete ') . '<b>' . htmlsafechars($arr_name['username']) . '</b>' . _(' from your shit list?') . '  
-         <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1"><span class="button is-small" style="padding:1px;">' . _('Click  here ') . '</span></a>' . _(' if you are sure.') . '');
+            stderr(_('Warning'), _fe('Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure.', format_comment($arr_name['username']), '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=delete&amp;shit_list_id=' . $shit_list_id . '&amp;sure=1">', '</a>'));
         }
         sql_query('DELETE FROM shit_list WHERE userid=' . sqlesc($CURUSER['id']) . ' AND suspect=' . sqlesc($shit_list_id));
         if (mysqli_affected_rows($mysqli) == 0) {
             stderr(_('Error'), _('No member found to delete!'));
         }
         $cache->delete('shit_list_' . $shit_list_id);
-        $message = '<legend>' . _('Success! ') . ' <b>' . htmlsafechars($arr_name['username']) . '</b>' . _(' deleted from your shit list!') . ' </legend>';
+        $message = '<legend>' . _fe('Success, {0} deleted from your shit list!', format_comment($arr_name['username'])) . ' </legend>';
         break;
 } //=== end switch
 //=== get stuff ready for page
@@ -122,7 +121,7 @@ $res = sql_query('SELECT s.suspect AS suspect_id, s.text, s.shittyness, s.added 
                   ORDER BY shittyness DESC');
 //=== default page
 $HTMLOUT .= $message . '
-   <legend>' . _('Shit List for ') . '' . htmlsafechars($CURUSER['username']) . '</legend>
+   <legend>' . _fe('Shit List for {0}', format_comment($CURUSER['username'])) . '</legend>
    <table class="table table-bordered">
    <tr>
      <td class="colhead" colspan="4">
@@ -139,7 +138,7 @@ if (mysqli_num_rows($res) == 0) {
     while ($shit_list = mysqli_fetch_array($res)) {
         $shit = '';
         for ($poop = 1; $poop <= $shit_list['shittyness']; ++$poop) {
-            $shit .= ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" title="' . (int) $shit_list['shittyness'] . '' . _(' out of 10 on the shittyness scale') . '" alt=" * ">';
+            $shit .= ' <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" title="' . _fe('{0} out of 10 on the shittyness scale', $shit_list['shittyness']) . '" alt=" * ">';
         }
         $HTMLOUT .= (($i % 2 == 1) ? '<tr>' : '') . '
       <td class="has-text-centered w-15 mw-150 ' . (($i % 2 == 0) ? 'one' : 'two') . '">' . get_avatar($shit_list) . '<br>

@@ -59,7 +59,7 @@ sql_query('INSERT INTO coins (userid, torrentid, points) VALUES (' . sqlesc($use
 sql_query('UPDATE users SET seedbonus=seedbonus+' . sqlesc($points) . ' WHERE id=' . sqlesc($userid)) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE users SET seedbonus=seedbonus-' . sqlesc($points) . ' WHERE id=' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
 sql_query('UPDATE torrents SET points=points+' . sqlesc($points) . ' WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$msg = '' . _('You have been given') . " $points " . _('points by') . ' ' . $user['username'] . ' ' . _('for torrent') . ' [url=' . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
+$msg = _('You have been given') . " $points " . _('points by') . ' ' . $user['username'] . ' ' . _('for torrent') . ' [url=' . $site_config['paths']['baseurl'] . '/details.php?id=' . $id . ']' . htmlsafechars($row['name']) . '[/url].';
 $subject = _('You have been given.gift');
 $msgs_buffer[] = [
     'receiver' => $userid,

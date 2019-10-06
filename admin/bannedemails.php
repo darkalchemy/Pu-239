@@ -16,7 +16,7 @@ $HTMLOUT = '';
 $remove = isset($_GET['remove']) ? (int) $_GET['remove'] : 0;
 if (is_valid_id($remove)) {
     sql_query('DELETE FROM bannedemails WHERE id=' . sqlesc($remove)) or sqlerr(__FILE__, __LINE__);
-    write_log('' . _('Email ban') . " $remove " . _('was removed by') . " {$CURUSER['username']}");
+    write_log(_fe('Email ban {0} was removed by {1}', $remove, $CURUSER['username']));
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = htmlsafechars(trim($_POST['email']));

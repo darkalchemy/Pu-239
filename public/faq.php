@@ -20,7 +20,7 @@ $site_name = "<span class='has-text-weight-bold'>{$site_config['site']['name']}<
 $HTMLOUT = "
             <div class='bordered'>
                 <div class='alt_bordered bg-00 padding20'>
-                    <h1 class='has-text-centered'>" . _f('Welcome to %s!', $site_name) . '</h1>
+                    <h1 class='has-text-centered'>" . _fe('Welcome to {0}!', $site_name) . '</h1>
                     <p>' . _fe('Our goal is not to become another IPTorrents or Suprnova (not dissing either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to {0}contact{1} us!', "<a href='{$site_config['paths']['baseurl']}/staff.php'>", '</a>') . '</p>
                     <p>' . _fe('This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at <b>{0}</b> we suggest you read the {1}rules{2}! There are only a few rules to abide by, but we do enforce them!', $site_config['site']['name'], "<a href='{$site_config['paths']['baseurl']}/rules.php'>", '</a>') . '</p>
                     <p>' . _fe('Before you go any further you should read the {0} {1}user agreement{2}.', $site_name, " <a href='{$site_config['paths']['baseurl']}/useragreement.php'>", '</a>') . "</p>
@@ -37,7 +37,7 @@ $HTMLOUT = "
                                 " . _('Site information') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#site1'>" . _('What is this bittorrent all about anyway? How do I get the files?') . "</a></li>
                                     <li><a href='#site2'>" . _('Where does the donated money go?') . "</a></li>
                                     <li><a href='#site4'>" . _('Where can I get a copy of the source code?') . "</a></li>
@@ -47,7 +47,7 @@ $HTMLOUT = "
                                 " . _('User information') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#user1'>" . _('I registered an account but did not receive the confirmation e-mail!') . "</a></li>
                                     <li><a href='#user2'>" . _("I've lost my user name or password! Can you send it to me?") . "</a></li>
                                     <li><a href='#user3'>" . _('Can you rename my account?') . "</a></li>
@@ -68,7 +68,7 @@ $HTMLOUT = "
                                 " . _('Stats') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#stats1'>" . _('Most common reasons for stats not updating') . "</a></li>
                                     <li><a href='#stats2'>" . _('Best practices') . "</a></li>
                                     <li><a href='#stats3'>" . _('May I use any bittorrent client?') . "</a></li>
@@ -84,7 +84,7 @@ $HTMLOUT = "
                                 " . _('Uploading') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#up1'" . _(">Why can't I upload torrents?") . "</a> </li>
                                     <li><a href='#up2'>" . _('What criteria must I meet before I can join the Uploader team?') . "</a></li>
                                     <li><a href='#up3'>" . _('Can I upload your torrents to other trackers?') . "</a></li>
@@ -94,7 +94,7 @@ $HTMLOUT = "
                                 " . _('Downloading') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#dl1'>" . _("How do I use the files I've downloaded?") . "</a></li>
                                     <li><a href='#dl2'>" . _("Downloaded a movie and don't know what CAM/TS/TC/SCR means?") . "</a></li>
                                     <li><a href='#dl3'>" . _('Why did an active torrent suddenly disappear?') . "</a></li>
@@ -112,7 +112,7 @@ $HTMLOUT = "
                                 " . _('How can I improve my download speed?') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#dlsp1'>" . _('Do not immediately jump on new torrents') . "</a></li>
                                     <li><a href='#dlsp2'>" . _('Make yourself connectable') . "</a></li>
                                     <li><a href='#dlsp3'>" . _('Limit your upload speed') . "</a></li>
@@ -126,7 +126,7 @@ $HTMLOUT = "
                                 " . _('My ISP uses a transparent proxy. What should I do?') . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#prox1'>" . _('What is a proxy?') . "</a></li>
                                     <li><a href='#prox2'>" . _("How do I find out if I'm behind a (transparent/anonymous) proxy?") . "</a></li>
                                     <li><a href='#prox3'>" . _("Why am I listed as not connectable even though I'm not NAT/Firewalled?") . "</a></li>
@@ -140,7 +140,7 @@ $HTMLOUT = "
                                 " . _("Why can't I connect? Is the site blocking me?") . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#conn1'>" . _('Name resolution problems') . "</a></li>
                                     <li><a href='#conn2'>" . _('Maybe my address is blacklisted?') . "</a></li>
                                     <li><a href='#conn3'>" . _("Your ISP blocks the site's address") . "</a></li>
@@ -151,7 +151,7 @@ $HTMLOUT = "
                                 " . _("What if I can't find the answer to my problem here?") . "
                             </p>
                             <div class='accordion-content bg-02 round5 padding10'>
-                                <ul>
+                                <ul class='left20 disc'>
                                     <li><a href='#answer_9'>" . _('Some useful tips.') . '</a></li>
                                 </ul>
                             </div>
@@ -300,7 +300,7 @@ $HTMLOUT .= main_div("
                                             </tr>
                                             <tr>
                                                 <td class='rowhead'><img src='./images/star.png' alt='" . _('Star') . "'></td>
-                                                <td class='rowhead'>" . _f('Just donate, and send the {0}Staff{1} the details.', "<a href='{$site_config['paths']['baseurl']}/contactstaff.php'>", '</a>') . "</td>
+                                                <td class='rowhead'>" . _fe('Just donate, and send the {0}Staff{1} the details.', "<a href='{$site_config['paths']['baseurl']}/contactstaff.php'>", '</a>') . "</td>
                                             </tr>
                                             <tr>
                                                 <td class='rowhead'><span class='vip'>" . _('VIP') . "</span></td>
@@ -328,13 +328,13 @@ $HTMLOUT .= main_div("
                                 <div class='top20 bg-02 padding20 round10'>
                                     <a id='userc'></a>
                                     <p>" . _("Why can't my friend become a member?") . '</p>
-                                    <p>' . _("There is a 10000 users limit. When that number is reached we stop accepting new members. Accounts inactive for more than 42 days are automatically deleted, so keep trying. (There is no reservation or queuing system, don't ask for that.)") . "</p>
+                                    <p>' . _fe("There is a {0} users limit. When that number is reached we stop accepting new members. Accounts inactive for more than 42 days are automatically deleted, so keep trying. (There is no reservation or queuing system, don't ask for that.)", $site_config['site']['maxusers']) . "</p>
                                 </div>
                                 <div class='top20 bg-02 padding20 round10'>
                                     <a id='userd'></a>
                                     <p>" . _('How do I add an avatar to my profile?') . '</p>
                                     <p>' . _fe('First, find an image that you like, and that is within the {0}Rules{1}. Then you will have to find a place to host it, such as our own {2}BitBucket{3}. (Other popular choices are {4}Photobucket{5}, {6}Upload-It!{7} or {8}ImageShack{9}). All that is left to do is copy the URL you were given when uploading it to the avatar field in your {10}profile{11}', "<a href='{$site_config['paths']['baseurl']}/rules.php'>", '</a>', "<a href='{$site_config['paths']['baseurl']}/bitbucket.php'>", '</a>', "<a href='" . url_proxy('https://photobucket.com/', false) . "'>", '</a>', "<a href='" . url_proxy('https://uploadit.org/', false) . "'>", '</a>', "<a href='" . url_proxy('https://www.imageshack.us/', false) . "'>", '</a>', "<a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>", '</a>') . '</a>.</p>
-                                    <p>' . _("Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile <a class='is-link' href='userdetails.php?id={$user['id']}'>details page</a>.") . '</p>
+                                    <p>' . _fe("Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile {0}details page{1}.", "<a class='is-link' href='userdetails.php?id={$user['id']}'>", '</a>') . '</p>
                                 </div>
                             </div>
                         </div>', 'top20');
@@ -418,7 +418,7 @@ $HTMLOUT .= main_div("
                             <div class='top20 bg-02 padding20 round10'>
                                 <a id='stats9'></a>
                                 <p>" . _('For those of you who are interested...') . '</p>
-                                <p>' . _f("Some {a_start}info{a_end} about the 'Anatomy of a torrent session'.", "<a href='<a href='{$site_config['paths']['baseurl']}/anatomy.php'>", '</a>') . '</p>
+                                <p>' . _fe("Some {0}info{1} about the 'Anatomy of a torrent session'.", "<a href='<a href='{$site_config['paths']['baseurl']}/anatomy.php'>", '</a>') . '</p>
                             </div>
                         </div>', 'top20');
 
@@ -460,7 +460,7 @@ $HTMLOUT .= main_div("
                                 <a id='up3'></a>
                                 <p>" . _('Can I upload your torrents to other trackers?') . '</p>
                                 <p>' . _fe('No, not the torrent file. We are a closed, limited-membership community. Only registered users can use the {0} tracker. Posting our torrents on other trackers is useless, since most people who attempt to download them will be unable to connect with us. This generates a lot of frustration and bad-will against us at {1}, and will therefore not be tolerated.', $site_name, $site_name) . '</p>
-                                <p>' . _("Complaints from other sites' administrative staff about our torrents being posted on their sites will result in the banning of the users responsible.") . '</p>
+                                <p>' . _("Complaints from other sites' staff about our torrents being posted on their sites will result in the banning of the users responsible.") . '</p>
                                 <p>' . _('(However, the files you download from us are yours to do as you please. You can always create another torrent, pointing to some other tracker, and upload it to the site of your choice.)') . '</p>
                             </div>
                         </div>', 'top20');
@@ -631,7 +631,7 @@ $HTMLOUT .= main_div("
                             <div class='top20 bg-02 padding20 round10'>
                                 <a id='dlsp2'></a>
                                 <p>" . _('Make yourself connectable') . '</p>
-                                <p>' . _("See the <i><a href='#user8'>Why am I listed as not connectable?</a></i> section.") . "</p>
+                                <p>' . _fe('See the <i>{0}Why am I listed as not connectable?{1}</i> section.', "<a href='#user8'>", '</a>') . "</p>
                             </div>
                             <div class='top20 bg-02 padding20 round10'>
                                 <a id='dlsp3'></a>
@@ -645,7 +645,7 @@ $HTMLOUT .= main_div("
                                         " . _("Due to the way TCP works, when A is downloading something from B it has to keep telling B that it received the data sent to him. (These are called acknowledgements - ACKs -, a sort of 'got it!' messages). If A fails to do this then B will stop sending data and wait. If A is uploading at full speed there may be no bandwidth left for the ACKs and they will be delayed. So due to this effect excessively high upload speeds lead to low download speeds.") . '
                                     </li>
                                 </ul>
-                                <p>' . _('The full effect is a combination of the two. The upload should be kept as high as possible while allowing the ACKs to get through without delay. A good thumb rule is keeping the upload at about 80% of the theoretical upload speed. You will have to fine tune yours to find out what works best for you. (Remember that keeping the upload high has the additional benefit of helping with your ratio.)') . '</p>
+                                <p>' . _('The full effect is a combination of the two. The upload should be kept as high as possible while allowing the ACKs to get through without delay. A good thumb rule is keeping the upload at about 80 percent of the theoretical upload speed. You will have to fine tune yours to find out what works best for you. (Remember that keeping the upload high has the additional benefit of helping with your ratio.)') . '</p>
                                 <p>' . _("If you are running more than one instance of a client it is the overall upload speed that you must take into account. Some clients (e.g. Azureus) limit global upload speed, others (e.g. Shad0w's) do it on a per torrent basis. Know your client. The same applies if you are using your connection for anything else (e.g. browsing or ftp), always think of the overall upload speed.") . "</p>
                             </div>
                             <div class='top20 bg-02 padding20 round10'>
@@ -813,4 +813,4 @@ $title = _('FAQ');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

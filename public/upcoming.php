@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
     if ($validation->fails()) {
         $errors = $validation->errors();
-        stderr('Error', $errors->firstOfAll()['name']);
+        stderr(_('Error'), $errors->firstOfAll()['name']);
         die();
     }
     $values = [
@@ -85,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($add) {
         if ($cooker_class->insert($values)) {
             $session->unset('post_data');
-            $session->set('is-success', _f('Recipe: %s Added', format_comment($_POST['name'])));
+            $session->set('is-success', _('Recipe: %s Added', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }
     } elseif ($edit) {
         if ($cooker_class->update($values, (int) $_POST['id'])) {
-            $session->set('is-success', _f('Recipe: %s Updated', format_comment($_POST['name'])));
+            $session->set('is-success', _('Recipe: %s Updated', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }

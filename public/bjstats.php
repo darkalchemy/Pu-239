@@ -9,8 +9,9 @@ $user = check_user_status();
 global $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Sorry...'), 'Sorry, you must be a ' . $site_config['class_names'][$site_config['allowed']['play']] . ' to play blackjack!');
-    exit;
+    stderr(_('Error'), _('Sorry, you must be a %s to play blackjack!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
 }
 /**
  * @param $res
@@ -47,7 +48,16 @@ function bjtable($res, $frame_caption)
             $plus_minus = '-';
             $plus_minus .= mksize(($a['losses'] - $a['wins']) * 100 * 1024 * 1024);
         }
-        $htmlout .= "<tr><td>$num</td><td>" . format_username((int) $a['id']) . '</td>' . "<td class='has-text-right'>" . number_format($a['wins'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['losses'], 0) . '</td>' . "<td class='has-text-right'>" . number_format($a['games'], 0) . '</td>' . "<td class='has-text-right'>$win_perc</td>" . "<td class='has-text-right'>$plus_minus</td>" . "</tr>\n";
+        $htmlout .= "
+            <tr>
+                <td>$num</td>
+                <td>" . format_username((int) $a['id']) . "</td>
+                <td class='has-text-right'>" . number_format($a['wins'], 0) . "</td>
+                <td class='has-text-right'>" . number_format($a['losses'], 0) . "</td>
+                <td class='has-text-right'>" . number_format($a['games'], 0) . "</td>
+                <td class='has-text-right'>$win_perc</td>
+                <td class='has-text-right'>$plus_minus</td>
+            </tr>";
     }
     $htmlout .= end_table();
     $htmlout .= end_frame();
@@ -58,18 +68,18 @@ function bjtable($res, $frame_caption)
 $HTMLOUT = '';
 $mingames = 10;
 $HTMLOUT .= '<br>';
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY games DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, '' . _('Most') . ' ' . _('Games Played') . '');
+$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY games DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+$HTMLOUT .= bjtable($res, _('Most Games Played'));
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins / (bjwins + bjlosses) AS winperc FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winperc DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins / (bjwins + bjlosses) AS winperc FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY winperc DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= bjtable($res, _('Highest Win Percentage'));
 $HTMLOUT .= '<br><br>';
 //==Highest Win %
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins - bjlosses AS winnings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY winnings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins - bjlosses AS winnings FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY winnings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= bjtable($res, _('Most Credit Won'));
 $HTMLOUT .= '<br><br>';
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjlosses - bjwins AS losings FROM users WHERE bjwins + bjlosses>' . sqlesc($mingames) . ' ORDER BY losings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjlosses - bjwins AS losings FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY losings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
 $HTMLOUT .= bjtable($res, _('Most Credit Lost'));
 $HTMLOUT .= '<br><br>';
 $title = _('Blackjack Stats');

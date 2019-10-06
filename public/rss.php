@@ -25,28 +25,28 @@ $validation = $validator->validate($_GET, [
 
 if ($validation->fails()) {
     if (!isset($_GET['torrent_pass'])) {
-        format_rss("Your link doesn't have a torrent pass", null);
+        format_rss(_("Your link doesn't have a torrent pass"), null);
     } elseif (strlen($_GET['torrent_pass']) != 64) {
-        format_rss('Your torrent pass is not long enough! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
+        format_rss(_('Your torrent pass is not long enough! Go to %s and reset your passkey', $site_config['site']['name']), null);
     } else {
-        format_rss("Your link isn't a valid rss link.", null);
+        format_rss(_("Your link isn't a valid rss link."), null);
     }
 } else {
     $users_class = $container->get(User::class);
     $torrent_pass = $_GET['torrent_pass'];
     $user = $users_class->get_user_from_torrent_pass($torrent_pass);
     if (!$user) {
-        format_rss('Your torrent pass is invalid! Go to ' . $site_config['site']['name'] . ' and reset your passkey', null);
+        format_rss(_('Your torrent pass is invlaid! Go to %s and reset your passkey', $site_config['site']['name']), null);
     } elseif ($user['status'] === 2) {
-        format_rss("Permission denied, you're account is disabled", null);
+        format_rss(_("Permission denied, you're account is disabled"), null);
     } elseif ($user['status'] === 1) {
-        format_rss("Permission denied, you're account is parked", null);
+        format_rss(_("Permission denied, you're account is parked"), null);
     } elseif ($user['downloadpos'] != 1) {
-        format_rss('Your download privileges have been removed.', null);
+        format_rss(_('Your download privileges have been removed.'), null);
     } elseif ($user['status'] === 5) {
-        format_rss("Permission denied, you're account is suspended", null);
+        format_rss(_("Permission denied, you're account is suspended"), null);
     } elseif ($user['status'] != 0) {
-        format_rss("Permission denied, you're account is disabled for other reasons", null);
+        format_rss(_("Permission denied, you're account is disabled for other reasons"), null);
     }
 }
 
@@ -85,8 +85,8 @@ if ($data === false || is_null($data)) {
                    ->select('t.seeders')
                    ->select('t.leechers')
                    ->select('t.added')
-                   ->select('c.name AS catname')
-                   ->where('t.visible = "yes"');
+                   ->select('c.name AS catname');
+    //->where('t.visible = "yes"');
 
     if (!empty($cats)) {
         $data = $data->where('t.category', $cats);
@@ -96,7 +96,7 @@ if ($data === false || is_null($data)) {
     }
     if (isset($_GET['bm']) && (int) $_GET['bm'] === 1) {
         $data = $data->where('b.userid = ?', $user['id'])
-                     ->innerJoin('bookmarks AS b ON t.id=b.torrentid');
+                     ->innerJoin('bookmarks AS b ON t.id = b.torrentid');
     }
 
     $data = $data->leftJoin('categories AS c ON t.category = c.id')
@@ -107,7 +107,7 @@ if ($data === false || is_null($data)) {
     if (!empty($data)) {
         $cache->set('rss_query_' . $hash, $data, 300);
     } else {
-        $data = 'No results in your request';
+        $data = _('No results in your request');
     }
 }
 
@@ -129,9 +129,7 @@ function format_rss($data, ?string $torrent_pass)
     $rssdescr = $site_config['site']['name'] . ' RSS Feed - Please Donate';
     $feed = isset($_GET['type']) && $_GET['type'] === 'dl' ? 'dl' : 'web';
     $url = urlencode($site_config['paths']['baseurl'] . $_SERVER['REQUEST_URI']);
-    $br = ''; // '<br />'; TODO
     $date = date(DATE_RSS, TIME_NOW);
-
     $rss = '<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/css" href="' . $site_config['paths']['baseurl'] . '/css/rss.css"?>
 <rss version="2.0"
@@ -169,7 +167,7 @@ function format_rss($data, ?string $torrent_pass)
             $name = htmlsafechars($a['name']);
             $cat = htmlsafechars($a['catname']);
             $added = get_date((int) $a['added'], 'DATE');
-            $descr = htmlsafechars(substr(format_comment_no_bbcode(strip_tags($a['descr'])), 0, 450));
+            $descr = htmlsafechars(substr(format_comment_no_bbcode($a['descr'], true), 0, 450));
             $date = date(DATE_RSS, $a['added']);
             $link = $site_config['paths']['baseurl'] . ($feed === 'dl' ? '/download.php?torrent=' . $id . '&amp;torrent_pass=' . $torrent_pass : '/details.php?id=' . $id . '&amp;hit=1');
             $guidlink = $site_config['paths']['baseurl'] . '/details.php?id=' . $id;
@@ -177,7 +175,14 @@ function format_rss($data, ?string $torrent_pass)
         <item>
             <title>' . $name . '</title>
             <link>' . $link . '</link>
-            <description>' . $br . 'Category: ' . $cat . $br . 'Size: ' . $size . $br . 'Leechers: ' . $leechers . $br . 'Seeders: ' . $seeders . $br . 'Added: ' . $added . $br . 'Description: ' . $descr . $br . '</description>
+            <description>
+                <p>' . _('Category') . ': ' . $cat . '</p>
+                <p>' . _('Size') . ': ' . $size . '</p>
+                <p>' . _('Leechers') . ': ' . $leechers . '</p>
+                <p>' . _('Seeders') . ': ' . $seeders . '</p>
+                <p>' . _('Added') . ': ' . $added . '</p>
+                <p>' . _('Description') . ': ' . $descr . '</p>
+            </description>
             <guid>' . $guidlink . '</guid>
             <pubDate>' . $date . '</pubDate>
         </item>';
@@ -185,7 +190,7 @@ function format_rss($data, ?string $torrent_pass)
     } else {
         $rss .= '
         <item>
-            <title>Empty Results</title>
+            <title>' . _('Empty Results') . '</title>
             <link>' . $site_config['paths']['baseurl'] . '/getrss.php</link>
             <description>' . $data . '</description>
             <guid>' . $site_config['paths']['baseurl'] . '/getrss.php</guid>

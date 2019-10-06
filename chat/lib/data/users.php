@@ -22,9 +22,9 @@ if ($users === false || is_null($users)) {
 
     foreach ($all_users as $user) {
         $users[$user['id']]['userRole'] = $user['class'];
-        if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
+        if (has_access((int) $user['class'], UC_ADMINISTRATOR, 'coder')) {
             $users[$user['id']]['channels'] = $this->_siteConfig['ajaxchat']['admin_access'];
-        } elseif (has_access($user['class'], UC_STAFF, '')) {
+        } elseif (has_access((int) $user['class'], UC_STAFF, '')) {
             $users[$user['id']]['channels'] = $this->_siteConfig['ajaxchat']['staff_access'];
         } else {
             $users[$user['id']]['channels'] = $this->_siteConfig['ajaxchat']['user_access'];

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($act === 'disable') {
-        if (sql_query('UPDATE users SET status = 2, modcomment = CONCAT(' . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . _(' - Disabled by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query('UPDATE users SET status = 2, modcomment = CONCAT(' . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' - Disabled by ' . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user_' . $uid, [
                     'status' => 2,
@@ -59,8 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($act === 'unwarn') {
         $sub = _('Leech Warn removed');
-        $body = _('Hey, your Leech warning was removed by ') . $CURUSER['username'] . _('
-Please keep in your best behaviour from now on.');
+        $body = _('Hey, your Leech warning was removed by ') . $CURUSER['username'] . _('Please keep in your best behaviour from now on.');
         $pms = [];
         foreach ($_uids as $uid) {
             $cache->update_row('user_' . $uid, [
@@ -70,7 +69,7 @@ Please keep in your best behaviour from now on.');
         }
         if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or ($q_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
-            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . _(' - Leech Warning removed by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET leechwarn='0', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' - Leech Warning removed by ' . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr(_('Success'), count($pms) . _(' user') . (count($pms) > 1 ? _('s') : '') . _(' Leech warning removed'));

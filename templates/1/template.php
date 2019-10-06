@@ -45,14 +45,13 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
     } else {
         $title = $site_config['site']['name'] . ' :: ' . format_comment($title);
     }
-    $css_incl = '';
     $tmp = [
         'css' => [
             get_file_name('cookieconsent_css'),
         ],
     ];
     $stdhead = array_merge_recursive($stdhead, $tmp);
-
+    $css_incl = '';
     if (!empty($stdhead['css'])) {
         foreach ($stdhead['css'] as $CSS) {
             $css_incl .= "
@@ -188,10 +187,10 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
 /**
  * @param array $stdfoot
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -215,8 +214,8 @@ function stdfoot(array $stdfoot = [])
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header = _f('APC(u) Hits: %1$s', $stats['Hits']);
-                $header = '' . _('APC(u) Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . '' . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . '' . _(' Memory: ') . '' . mksize($stats['mem_size']);
+                $header = _fe('APC(u) Hits: {0}', $stats['Hits']);
+                $header = _('APC(u) Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . _(' Memory: ') . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = $container->get(Redis::class);
@@ -225,7 +224,7 @@ function stdfoot(array $stdfoot = [])
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
                 $db = 'db' . $site_config['redis']['database'];
                 preg_match('/keys=(\d+)/', $stats[$db], $keys);
-                $header = '' . _('Redis Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . '' . number_format((100 - (float) $stats['Hits']), 3) . _('% Items: ') . number_format((float) $keys[1]) . '' . _(' Memory: ') . "{$stats['used_memory_human']}";
+                $header = _('Redis Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . number_format((100 - (float) $stats['Hits']), 3) . _('% Items: ') . number_format((float) $keys[1]) . _(' Memory: ') . "{$stats['used_memory_human']}";
             }
         } elseif ($site_config['cache']['driver'] === 'memcached' && extension_loaded('memcached')) {
             $client = $container->get(Memcached::class);
@@ -241,7 +240,7 @@ function stdfoot(array $stdfoot = [])
             }
         } elseif ($site_config['cache']['driver'] === 'file') {
             $files_info = GetDirectorySize($site_config['files']['path'], true, true);
-            $header = '' . _('Flysystem Cache: ') . "{$site_config['files']['path']} Count: {$files_info[1]} " . _('File size: ') . " {$files_info[0]}";
+            $header = _('Flysystem Cache: ') . "{$site_config['files']['path']} Count: {$files_info[1]} " . _('File size: ') . " {$files_info[0]}";
         } elseif ($site_config['cache']['driver'] === 'memory') {
             $header = _('Memory Cache: Nothing cached beyond the current request');
         } elseif ($site_config['cache']['driver'] === 'couchbase') {
@@ -284,7 +283,7 @@ function stdfoot(array $stdfoot = [])
         $uptime = explode('up', `uptime`);
         $cache->set('uptime_', $uptime, 10);
     }
-    $uptime = _f('Uptime: %s', str_replace('  ', ' ', $uptime[1]));
+    $uptime = _fe('Uptime: {0}', str_replace('  ', ' ', $uptime[1]));
     if ($use_12_hour) {
         $now = time24to12(TIME_NOW, true);
     } else {
@@ -304,7 +303,7 @@ function stdfoot(array $stdfoot = [])
                 $query = $pdo->query('SELECT VERSION() AS ver');
                 $sql_version = $query->fetch(PDO::FETCH_COLUMN);
                 if (!preg_match('/MariaDB/i', $sql_version)) {
-                    $sql_version = _f('MySQL %s', $sql_version);
+                    $sql_version = _fe('MySQL {0}', $sql_version);
                 }
                 $cache->set('sql_version_', $sql_version, 3600);
             }
@@ -315,7 +314,7 @@ function stdfoot(array $stdfoot = [])
                 <div class='level bordered bg-04'>
                     <div class='size_4 top10 bottom10'>
                         <p class='is-marginless'>
-                            " . _f('PHP Peak Memory %1$s in %2$s seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
+                            " . _fe('PHP Peak Memory {0} in {1} seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
                         </p>
                         <p class='is-marginless'>
                             " . _pf('%2$s was hit %1$d time in %3$s seconds', '%2$s was hit %1$d times in %3$s seconds', $queries, $sql_version, $querytime) . '
@@ -329,9 +328,9 @@ function stdfoot(array $stdfoot = [])
                         </p>" : '') . "
                     </div>
                     <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>" . _f('Server Time: %s', $now) . "</p>
-                        <p class='is-marginless'>" . _f('Powered By: %s', "<a href='" . url_proxy('https://github.com/darkalchemy/Pu-239', false) . "' target='_blank'>{$site_config['sourcecode']['name']}</a>") . "</p>
-                        <p class='is-marginless'>" . _f('Using Valid CSS3, HTML5 & PHP %s', $php_version) . "</p>
+                        <p class='is-marginless'>" . _fe('Server Time: {0}', $now) . "</p>
+                        <p class='is-marginless'>" . _fe('Powered By: {0}', "<a href='" . url_proxy('https://github.com/darkalchemy/Pu-239', false) . "' target='_blank'>{$site_config['sourcecode']['name']}</a>") . "</p>
+                        <p class='is-marginless'>" . _fe('Using Valid CSS3, HTML5 & PHP {0}', $php_version) . "</p>
                     </div>
                 </div>
             </div>
@@ -385,9 +384,9 @@ function stdfoot(array $stdfoot = [])
     $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
 
     $htmlfoot .= "
-        <script>document.body.style.fontSize = '{$font_size}%';</script>
-        <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
-    </div>
+    <script>document.body.style.fontSize = '{$font_size}%';</script>
+    <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
+</div>
 </body>
 </html>";
 
@@ -435,17 +434,17 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='left10 level-item'>
                         <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='Click to show the background image'>{$clock}</div>
+                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='" . ('Click to show the background image') . "'>{$clock}</div>
                     </div>";
 
     return $StatusBar;
 }
 
 /**
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */

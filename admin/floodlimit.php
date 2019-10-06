@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (file_put_contents($file, json_encode($limits))) {
         $session->set('is-success', _('Flood Limits saved!'));
     } else {
-        $session->set('is-error', '' . _('Something went wrong make sure ') . " $file " . _('exists and it is chmoded 0774') . '');
+        $session->set('is-error', _fe('Something went wrong make sure {0} exists and it is chmoded 0774', $file));
     }
 }
 

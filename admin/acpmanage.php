@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
     foreach ($ids as $id) {
         $id = (int) $id;
         if (!is_valid_id($id)) {
-            stderr(_('Error'), _('Invalid UserID/Username Combination'));
+            stderr(_('Error'), _('Invalid Credentials.'));
         }
     }
     $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';

@@ -57,7 +57,7 @@ $body = '
     </script>';
 
 $div = '
-    <h3 class="has-text-centered has-text-primary top20">' . $user['username'] . '\'' . _('s Mood') . '</h3>
+    <h3 class="has-text-centered has-text-primary top20">' . _fe("{0}'s Mood", $user['username']) . '</h3>
     <div class="level-center bottom20">';
 $res = sql_query('SELECT * FROM moods WHERE bonus < ' . sqlesc($more) . ' ORDER BY id') or sqlerr(__FILE__, __LINE__);
 $count = 0;

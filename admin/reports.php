@@ -59,7 +59,7 @@ function round_time($ts)
 if (isset($_GET['id'])) {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
     if (!is_valid_id($id)) {
-        stderr(_('Error'), _('Bad ID!'));
+        stderr(_('Error'), _('Invalid ID!'));
     }
 }
 if (isset($_GET['type'])) {
@@ -76,13 +76,13 @@ if (isset($_GET['type'])) {
         'Post',
     ];
     if (!in_array($type, $typesallowed)) {
-        stderr(_('Error'), _('Bad report type!'));
+        stderr(_('Error'), _('Invalid report type!'));
     }
 }
 $cache = $container->get(Cache::class);
 if ((isset($_GET['deal_with_report'])) || (isset($_POST['deal_with_report']))) {
     if (!is_valid_id((int) $_POST['id'])) {
-        stderr(_('Error'), _('I smell a rat!'));
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $how_delt_with = 'how_delt_with = ' . sqlesc($_POST['body']);
     $when_delt_with = 'when_delt_with = ' . sqlesc(TIME_NOW);
@@ -146,7 +146,7 @@ if ($count === 0) {
         if ($arr_info['delt_with']) {
             $res_who = sql_query('SELECT username FROM users WHERE id = ' . sqlesc($arr_info['who_delt_with_it']));
             $arr_who = mysqli_fetch_assoc($res_who);
-            $dealtwith = "<span style='color: {$solved_color};'><b>" . _('Yes -') . '</b> </span> ' . _('by:') . ' ' . format_username((int) $arr_info['who_delt_with_it']) . '<br>' . _('in:') . " <span style='color: {$solved_color};'>{$solved_in}</span>";
+            $dealtwith = "<span style='color: {$solved_color};'><b>" . _('Yes') . ' - </b> </span> ' . _('by') . ': ' . format_username((int) $arr_info['who_delt_with_it']) . '<br>' . _('in') . ": <span style='color: {$solved_color};'>{$solved_in}</span>";
             $checkbox = "<input type='radio' name='id' value='" . $arr_info['id'] . "' disabled>";
         } else {
             $dealtwith = "<span class='has-text-danger'><b>" . _('No') . '</b></span>';
@@ -197,17 +197,17 @@ if ($count === 0) {
                     break;
 
                 case 'Hit_And_Run':
-                    $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id=' . sqlesc($arr_info['reporting_what']));
+                    $res_who2 = sql_query('SELECT users.username, torrents.name, r.2nd_value FROM users, torrents LEFT JOIN reports AS r ON r.2nd_value = torrents.id WHERE users.id = ' . sqlesc($arr_info['reporting_what']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $name = !empty($arr_who2['name']) ? format_comment($arr_who2['name']) : '';
-                    $link_to_thing = '<b>' . _('user:') . '</b> ' . format_username((int) $arr_info['reporting_what']) . '<br>' . _('hit and run on:') . "<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
+                    $link_to_thing = '<b>' . _('user') . ':</b> ' . format_username((int) $arr_info['reporting_what']) . '<br>' . _('hit and run on') . ":<br> <a class='is-link' href='{$site_config['paths']['baseurl']}/details.php?id=" . $arr_info['2nd_value'] . "&amp;page=0#snatched'><b>" . $name . '</b></a>';
                     break;
 
                 case 'Post':
                     $res_who2 = sql_query('SELECT topic_name FROM topics WHERE id =' . sqlesc($arr_info['2nd_value']));
                     $arr_who2 = mysqli_fetch_assoc($res_who2);
                     $name = !empty($arr_who2['topic_name']) ? format_comment($arr_who2['topic_name']) : '';
-                    $link_to_thing = '<b>' . _('post:') . "</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . $arr_info['2nd_value'] . '&amp;page=last#' . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
+                    $link_to_thing = '<b>' . _('post') . ":</b> <a class='is-link' href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=" . $arr_info['2nd_value'] . '&amp;page=last#' . $arr_info['reporting_what'] . "'><b>" . $name . '</b></a>';
                     break;
             }
         }
@@ -228,7 +228,7 @@ if ($count === 0) {
         if ($arr_info['how_delt_with']) {
             $body .= "
         <tr>
-            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'><b>" . _('Dealt with by') . ' ' . format_comment($arr_who['username']) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
+            <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'><b>" . _fe('Dealt with by {0}', format_comment($arr_who['username'])) . ':</b> ' . get_date((int) $arr_info['when_delt_with'], 'LONG', 0, 1) . "</td>
         </tr>
         <tr>
             <td colspan='" . ($CURUSER['class'] >= UC_MAX ? 8 : 7) . "'>" . format_comment($arr_info['how_delt_with']) . '<br><br></td>
@@ -240,7 +240,7 @@ if ($count === 0) {
 }
 
 if ($count > 0) {
-    $HTMLOUT .= main_div('' . _('How') . " {$CURUSER['username']} " . _('Dealt with this report:') . '<br>' . _('Please explain below how this Report has been dealt with.') . '' . BBcode('', 'top20', 200) . "
+    $HTMLOUT .= main_div(_fe('How {0} dealt with this report:<br>Please explain below how this Report has been dealt with.', $CURUSER['username']) . BBcode('', 'top20', 200) . "
     <input type='submit' class='button is-small margin20' value='" . _('Confirm') . "'>
     </form>", 'top20 has-text-centered', 'padding20');
 }

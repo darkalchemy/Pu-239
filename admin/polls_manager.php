@@ -69,7 +69,7 @@ function delete_poll($stdfoot)
     $poll_stuffs = $container->get(Poll::class);
     $pollvoter_class = $container->get(PollVoter::class);
     if (!isset($_GET['pid']) || !is_valid_id((int) $_GET['pid'])) {
-        stderr(_('USER ERROR'), _('There is no poll with that ID!'));
+        stderr(_('Error'), _('There is no poll with that ID!'));
     }
     $pid = intval($_GET['pid']);
     if (!isset($_GET['sure'])) {
@@ -102,18 +102,18 @@ function update_poll()
     $pollvoter_class = $container->get(PollVoter::class);
     $session = $container->get(Session::class);
     if (!isset($_POST['pid']) || !is_valid_id((int) $_POST['pid'])) {
-        stderr(_('USER ERROR'), _('There is no poll with that ID!'));
+        stderr(_('Error'), _('There is no poll with that ID!'));
     }
     $pid = intval($_POST['pid']);
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
-        stderr(_('USER ERROR'), _('There is no title defined!'));
+        stderr(_('Error'), _('There is no title defined!'));
     }
     $poll_title = htmlsafechars(strip_tags($_POST['poll_question']));
     $poll_data = makepoll();
     $total_votes = isset($poll_data['total_votes']) ? (int) $poll_data['total_votes'] : 0;
     unset($poll_data['total_votes']);
     if (!is_array($poll_data) || !count($poll_data)) {
-        stderr(_('SYSTEM ERROR'), _('There was no data sent'));
+        stderr(_('Error'), _('There was no data sent'));
     }
     $set = [
         'choices' => json_encode($poll_data),
@@ -144,12 +144,12 @@ function insert_new_poll()
     $pollvoter_class = $container->get(PollVoter::class);
     $session = $container->get(Session::class);
     if (!isset($_POST['poll_question']) || empty($_POST['poll_question'])) {
-        stderr(_('USER ERROR'), _('There is no title defined!'));
+        stderr(_('Error'), _('There is no title defined!'));
     }
     $poll_title = htmlsafechars(strip_tags($_POST['poll_question']));
     $poll_data = makepoll();
     if (!is_array($poll_data) || !count($poll_data)) {
-        stderr(_('SYSTEM ERROR'), _('There was no data sent'));
+        stderr(_('Error'), _('There was no data sent'));
     }
 
     $values = [
@@ -195,11 +195,11 @@ function show_poll_form($stdfoot)
 /**
  * @param $stdfoot
  *
- * @throws InvalidManipulation
  * @throws Exception
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return mixed
  */

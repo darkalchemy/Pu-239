@@ -26,15 +26,15 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
     $user = $users_class->getUserFromId($userid);
     if (!$user) {
-        show_error(_('USER ERROR'), _('Your download link has an invalid or missing torrent_pass'));
+        show_error(_('Error'), _('Your download link has an invalid or missing torrent_pass'));
     } elseif ($user['status'] === 5) {
-        show_error(_('USER ERROR'), _("Permission denied, you're account is suspended"));
+        show_error(_('Error'), _("Permission denied, you're account is suspended"));
     } elseif ($user['status'] === 2) {
-        show_error(_('USER ERROR'), _("Permission denied, you're account is disabled"));
+        show_error(_('Error'), _("Permission denied, you're account is disabled"));
     } elseif ($user['status'] === 1) {
-        show_error(_('USER ERROR'), _("Permission denied, you're account is parked"));
+        show_error(_('Error'), _("Permission denied, you're account is parked"));
     } elseif (($user['downloadpos'] !== 1 || $user['can_leech'] !== 1) && $user['id'] !== $row['owner']) {
-        show_error(_('USER ERROR'), _('Your download privileges have been removed.'));
+        show_error(_('Error'), _('Your download privileges have been removed.'));
     }
     if (!empty($_GET['owner'])) {
         $torrents = $torrents_class->get_all_by_owner($userid);
@@ -67,5 +67,5 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     $zip->force_download($zipfile);
     unlink($zipfile);
 } else {
-    stderr('Wutt!', 'You do not have the authority to do that.');
+    stderr(_('Error'), _('You do not have the permission to do that.'));
 }

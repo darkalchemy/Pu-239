@@ -163,7 +163,7 @@ $html[] = [
 ];
 $html[] = [
     _('Safe Mode'),
-    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>" . _('ON') . '</span>' : "<span style='color:green;font-weight:bold;'>" . _('OFF') . '</span>',
+    @ini_get('safe_mode') == 1 ? "<span style='color:red;font-weight:bold;'>" . _('On') . '</span>' : "<span style='color:green;font-weight:bold;'>" . _('Off') . '</span>',
 ];
 $html[] = [
     _('Disabled PHP Functions'),
@@ -200,7 +200,7 @@ foreach ($html as $key => $value) {
 $htmlout = "
     <ul class='level-center bg-06 bottom10'>
         <li class='is-link margin10'>
-            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>" . _('PHP INFO') . "</a>
+            <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=system_view&amp;phpinfo=1'>" . _('PHP Info') . "</a>
         </li>
         <li class='is-link margin10'>
             <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=memcache'>Memcache</a>

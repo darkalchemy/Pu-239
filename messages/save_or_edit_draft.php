@@ -51,7 +51,7 @@ $subject = htmlsafechars($message['subject']);
 $draft = $message['msg'];
 
 $HTMLOUT .= '
-<legend>' . _('Save / Edit Draft:') . '' . $subject . '</legend>' . $top_links . '
+<legend>' . _('Save / Edit Draft:') . $subject . '</legend>' . $top_links . '
 <form name="compose" action="messages.php" method="post" accept-charset="utf-8">
     <input type="hidden" name="id" value="' . $pm_id . '">
     <input type="hidden" name="' . $save_or_edit . '" value="1">

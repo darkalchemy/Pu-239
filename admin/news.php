@@ -43,13 +43,13 @@ $session = $container->get(Session::class);
 if ($mode === 'delete') {
     $newsid = (int) $_GET['newsid'];
     if (!is_valid_id($newsid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $hash = hash('sha256', $site_config['salt']['one'] . $newsid . 'add');
     $sure = '';
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : '';
     if (!$sure) {
-        stderr(_('Confirm Delete'), _fe('Do you really want to delete this news entry? Click') . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> " . _('here') . '</a> ' . _('if you are sure.') . '', null);
+        stderr(_('Confirm Delete'), _('Do you really want to delete this news entry? Click') . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=news&amp;mode=delete&amp;sure=1&amp;h=$hash&amp;newsid=$newsid'> " . _('here') . '</a> ' . _('if you are sure.') . '', null);
     }
     if ($_GET['h'] != $hash) {
         stderr(_('Error'), _('what are you doing?'));

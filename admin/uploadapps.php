@@ -31,7 +31,7 @@ $possible_actions = [
 ];
 $action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
 if (!in_array($action, $possible_actions)) {
-    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
+    stderr(_('Error'), _('Invalid action'));
 }
 $dt = TIME_NOW;
 $HTMLOUT = $where = $where1 = '';
@@ -71,7 +71,7 @@ if ($action === 'takeappdelete') {
     $subject = _('Uploader Promotion');
     $msg = _fe('Congratulations, your uploader application has been accepted! You have been given  to Uploader Role and you are now able to upload torrents. Please make sure you have read the {0}guidelines on uploading{1} before you do.', "[url={$site_config['paths']['baseurl']}/rules.php]", '[/url]') . "\n\n" . _('Note: ') . " $note";
     $msg1 = '' . _('User') . " [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $arr['uid'] . "][b]{$arr['username']}[/b][/url] " . _('has been promoted to Uploader by') . " {$CURUSER['username']}.";
-    $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . _f("Promoted to 'Uploader' by %s.", $CURUSER['username']) . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
+    $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . _fe("Promoted to 'Uploader' by {0}.", $CURUSER['username']) . ($arr['modcomment'] != '' ? "\n" : '') . "{$arr['modcomment']}";
     $update = [
         'status' => 'accepted',
         'comment' => $note,

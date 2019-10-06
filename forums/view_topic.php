@@ -18,7 +18,7 @@ $status = $topic_poll = $stafflocked = $child = $parent_forum_name = $math_image
 $members_votes = [];
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
-    stderr(_('Error'), _('Bad ID.'));
+    stderr(_('Error'), _('Invalid ID.'));
 }
 
 $upload_errors_size = isset($_GET['se']) ? (int) $_GET['se'] : 0;
@@ -58,7 +58,7 @@ if (!has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view
 }
 $arr = $arr->fetch();
 if (empty($arr) || !has_access($CURUSER['class'], $arr['min_class_read'], '') || !is_valid_id($arr['topic_id']) || !has_access($CURUSER['class'], $site_config['forum_config']['min_delete_view_class'], '') && $status === 'deleted' || !has_access($CURUSER['class'], UC_STAFF, '') && $status === 'recycled') {
-    stderr(_('Error'), _('Bad ID.'));
+    stderr(_('Error'), _('Invalid ID.'));
 }
 
 $status = htmlsafechars($arr['status']);
@@ -132,7 +132,7 @@ if ($arr['poll_id'] > 0) {
                                 ->where('poll_id = ?', $arr['poll_id'])
                                 ->fetch('count');
 
-        $total_non_votes = $num_non_votes > 0 ? ' [ ' . number_format($num_non_votes) . ' member' . plural($num_non_votes) . ' just wanted to see the results ]' : '';
+        $total_non_votes = $num_non_votes > 0 ? ' [ ' . _pfe('{0} member just wanted to see the results', '{0} members just wanted to see the results', number_format($num_non_votes)) . ' ]' : '';
         $topic_poll .= ($voted || $poll_open === 0 ? '' : '
     <form action="' . $site_config['paths']['baseurl'] . '/forums.php?action=poll" method="post" name="poll" accept-charset="utf-8">
         <input type="hidden" name="topic_id" value="' . $topic_id . '">

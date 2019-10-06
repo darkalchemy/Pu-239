@@ -143,7 +143,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
             $mark_of_cain = ($a['mark_of_cain'] == 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}moc.gif' width='40px' alt='" . _('Mark Of Cain') . "' title='" . _('The mark of Cain!') . "'>" . $checkbox_for_delete : '');
             $hit_n_run = ($a['hit_and_run'] > 0 ? "<img src='{$site_config['paths']['images_baseurl']}hnr.gif' width='40px' alt='" . _('Hit and run') . "' title='" . _('Hit and run!') . "'>" : '');
             $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
-            $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
+            $caticon = !empty($a['image']) ? "<img height='42px' class='round5 tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
 
             $body .= "
             <tr>
@@ -159,7 +159,7 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color($a['uploaded'] / $a['downloaded']) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
                 <td>' . get_date((int) $a['complete_date'], 'DATE') . '</td>
                 <td>' . get_date((int) $a['last_action'], 'DATE') . "</td>
-                <td><span style='color: $dlc;'>[" . _(' DLed at: ') . "$dl_speed ]</span></td>
+                <td><span style='color: $dlc;'>[ " . _fe('Downloaded at: {0}', $dl_speed) . " ]</span></td>
             </tr>";
         }
         $completed = main_table($body, $heading);

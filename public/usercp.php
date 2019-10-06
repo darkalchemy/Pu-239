@@ -81,10 +81,10 @@ $possible_actions = [
 $session = $container->get(Session::class);
 $action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : 'default';
 if (!in_array($action, $possible_actions)) {
-    $session->set('is-warning', '[h2]Error! Change a few things up and try submitting again.[/h2]');
+    $session->set('is-warning', 'Error! Change a few things up and try submitting again.');
 }
 if (isset($_GET['edited'])) {
-    $session->set('is-success', '[h2]' . _('Profile updated') . '![/h2]');
+    $session->set('is-success', _('Profile updated!'));
 }
 if ($action === 'reset_torrent_pass') {
     $update['torrent_pass'] = make_password(32);
@@ -114,19 +114,19 @@ $HTMLOUT .= "
                 <form method='post' action='{$site_config['paths']['baseurl']}/takeeditcp.php' enctype='multipart/form-data' accept-charset='utf-8'>
                     <div class='bottom20'>
                         <ul class='level-center bg-06'>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>Avatar</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=signature'>Signature</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>PM's</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=security'>Security</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=torrents'>Torrents</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=api'>API</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=personal'>Personal</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=social'>Social</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=location'>Location</a></li>
-                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=links'>Links</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=avatar'>" . _('Avatar') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=signature'>" . _('Signature') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=default'>" . _("PM's") . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=security'>" . _('Security') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=torrents'>" . _('Torrents') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=api'>" . _('API') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=personal'>" . _('Personal') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=social'>" . _('Social') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=location'>" . _('Location') . "</a></li>
+                            <li class='is-link margin10'><a href='{$site_config['paths']['baseurl']}/usercp.php?action=links'>" . _('Links') . "</a></li>
                         </ul>
                     </div>
-                    <h1 class='has-text-centered'>Welcome " . format_username((int) $user['id']) . "!</h1>
+                    <h1 class='has-text-centered'>" . _fe('Welcome {0}!', format_username((int) $user['id'])) . "</h1>
                     <div class='level has-text-centered'>";
 if (!empty($avatar)) {
     $HTMLOUT .= "
@@ -219,7 +219,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr('Signature', '
                                             <textarea name="signature" class="w-100" rows="4">' . format_comment((string) $user['signature']) . '</textarea><br>Must be an image url.', 1);
     $HTMLOUT .= tr(_('Info'), "
-                                            <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . '</textarea><br>' . _f('Displayed on your public page. May contain %s.', "<a href='{$site_config['paths']['baseurl']}/tags.php' target='_new'>BB codes</a>"), 1);
+                                            <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . '</textarea><br>' . _('Displayed on your public page. May contain %s.', "<a href='{$site_config['paths']['baseurl']}/tags.php' target='_new'>BB codes</a>"), 1);
     $HTMLOUT .= "
                                     <tr>
                                         <td colspan='2'>
@@ -322,11 +322,15 @@ if ($action === 'avatar') {
                                             </select>", 1);
     $current_lang = get_language();
     $options = '';
+    $supported_locales = $i18n->getSupportedLocales();
+    $available_languages = [];
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(LOCALES_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
         $basename = basename($name);
         if (is_dir($name) && $basename !== 'LC_MESSAGES') {
-            $available_languages[$basename] = $i18n->getLanguageName($basename);
+            if (in_array(str_replace('_', '-', $basename), $supported_locales)) {
+                $available_languages[$basename] = $i18n->getLocaleName($basename);
+            }
         }
     }
     natsort($available_languages);
@@ -666,7 +670,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr(_('AJAX Chat height'), "
                                             <input type='text' class='w-100' name='ajaxchat_height' value='{$user['ajaxchat_height']}'> " . _('(0 = use default setting)') . '', 1);
     $HTMLOUT .= tr(_('Site Wide Font Scale'), "
-                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> " . _('100 = 100% font scaling<br>50 = 50% font scaling<br>This overides the default font size.') . '', 1);
+                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> " . _fe('100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size.', '100%', '50%'), 1);
     $HTMLOUT .= tr(_('Gender'), "
                                             <div class='level'>
                                                 <span>

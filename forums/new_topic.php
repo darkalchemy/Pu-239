@@ -9,7 +9,7 @@ use Pu239\Database;
 flood_limit('forums');
 $forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
 if (!is_valid_id($forum_id)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 global $container, $CURUSER, $site_config;
 

@@ -33,9 +33,9 @@ $links = "
  * @param      $arr
  * @param bool $empty
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -93,7 +93,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                         ->fetch('count');
 
         if (!$count) {
-            $HTMLOUT = $links . stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
+            $HTMLOUT = $links . stdmsg(_('Error'), _('No Torrents have been modded'), 'top20');
             $title = _('Modded Today');
         } else {
             $perpage = 15;
@@ -137,7 +137,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                         ->fetch('count');
 
         if (!$count) {
-            $HTMLOUT = $links . stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
+            $HTMLOUT = $links . stdmsg(_('Error'), _('No Torrents have been modded'), 'top20');
             $title = _('Modded Yesterday');
         } else {
             $perpage = 15;
@@ -196,7 +196,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                 <tr>
                    <th>' . _('Torrent') . '</th>
                    <th>' . _('Added') . '</th>
-                   <th>' . _('Edit') . ' ' . _('Torrent') . '</th>
+                   <th>' . _('Edit Torrent') . '</th>
                 </tr>';
             $data = $fluent->from('torrents')
                            ->select(null)
@@ -250,8 +250,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = "by <u>$_POST[username]</u> on $date";
-            $title = "$_POST[username] : " . _('Modded Torrents') . " on $date";
+            $text = _fe('by {0} on {1}', $_POST['username'], $date);
+            $title = _fe('{0}: Modded Torrents on {1}', $_POST['username'], $date);
         } elseif ($date) {
             $beginOfDay = strtotime('midnight', strtotime($date));
             $endOfDay = strtotime('midnight', strtotime($date) + 86400);
@@ -266,8 +266,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = "on $date";
-            $title = _('Modded Torrents') . " on $date";
+            $text = _fe('on {0}', $date);
+            $title = _fe('Modded Torrents on {0}', $date);
         } elseif ($whom && $when) {
             $data = $fluent->from('torrents AS t')
                            ->select(null)
@@ -281,8 +281,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = "by <u>$_POST[username]</u> within the last " . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
-            $title = "$_POST[username] : " . _('Modded Torrents') . ' ' . _('From') . " $_POST[time] days ago";
+            $text = _pfe('by {1} within the last {0, number} day', 'by {1} within the last {0, number} days', $_POST['time'], $_POST['username']);
+            $title = _pfe('{1}: Modded Torrents from {0, number} day ago', '{1}: Modded Torrents from {0, number} days ago', $_POST['time'], $_POST['username']);
         } elseif ($when) {
             $data = $fluent->from('torrents')
                            ->select(null)
@@ -294,8 +294,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = 'from the past ' . ($_POST['time'] == 1 ? '<u>1 day.</u>' : '<u>' . $_POST['time'] . ' days.</u>');
-            $title = "$_POST[username] : " . _('Modded Torrents') . ' ' . _('From') . " $_POST[time] days ago";
+            $text = _pf('from the past {0, number} day.', 'from the past {0, number} days.', $_POST['time']);
+            $title = pfe('{1}: Modded Torrents from {0, number day ago', '{1}: Modded Torrents from {0, number days ago', $_POST['time'], $_POST['username']);
         } elseif ($whom) {
             $data = $fluent->from('torrents AS t')
                            ->select(null)
@@ -308,12 +308,12 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = "by <u>$_POST[username]</u>";
-            $title = "$_POST[username] : " . _('Modded Torrents') . '';
+            $text = _fe('by {0}', $_POST['username']);
+            $title = _fe('{0}: Modded Torrents', $_POST['username']);
         }
         $count = count($data);
         if (!$count) {
-            $HTMLOUT .= stdmsg(_('Sorry'), _('No Torrents have been modded'), 'top20');
+            $HTMLOUT .= stdmsg(_('Error'), _('No Torrents have been modded'), 'top20');
         } else {
             $HTMLOUT = $trim = '';
             if (isset($data)) {

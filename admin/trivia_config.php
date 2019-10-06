@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fluent->deleteFrom('triviaq')
                        ->where('qid = ?', $_POST['id'])
                        ->execute();
-                $session->set('is-success', _f('Trivia Question #%s was deleted.', $_POST['id']));
+                $session->set('is-success', _fe('Trivia Question #{0} was deleted.', $_POST['id']));
             } elseif ($type === 'insert') {
                 $values = $_POST;
                 unset($values['Add'], $values['insert']);
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     ->values($values)
                                     ->execute();
                     if (!empty($newid)) {
-                        $session->set('is-success', _f('Trivia Questions #%s inserted correctly.', $newid));
+                        $session->set('is-success', _fe('Trivia Questions #{0} inserted correctly.', $newid));
                     }
                 }
             } elseif ($type === 'search') {
@@ -122,11 +122,11 @@ $body = "
             <input type='hidden' name='Add' value='New'>
             <h2 class='has-text-centered'>" . _('Add New Trivia Question') . "</h2>
             <p class='level-center-center'><input name='question' class='left20 w-75' type='text' value='' placeholder='" . _('Text of Trivia Question.') . "'></p>
-            <p class='level-center-center'><input name='canswer1' type='checkbox' class='right5'><input name='answer1' type='text' value='' class='w-75' placeholder='" . _('Text of answer 1.') . "'></p>
-            <p class='level-center-center'><input name='canswer2' type='checkbox' class='right5'><input name='answer2' type='text' value='' class='w-75' placeholder='" . _('Text of answer 2.') . "'></p>
-            <p class='level-center-center'><input name='canswer3' type='checkbox' class='right5'><input name='answer3' type='text' value='' class='w-75' placeholder='" . _('Text of answer 3.') . "'></p>
-            <p class='level-center-center'><input name='canswer4' type='checkbox' class='right5'><input name='answer4' type='text' value='' class='w-75' placeholder='" . _('Text of answer 4.') . "'></p>
-            <p class='level-center-center'><input name='canswer5' type='checkbox' class='right5'><input name='answer5' type='text' value='' class='w-75' placeholder='" . _('Text of answer 5.') . "'></p>
+            <p class='level-center-center'><input name='canswer1' type='checkbox' class='right5'><input name='answer1' type='text' value='' class='w-75' placeholder='" . _fe('Text of answer {0}.', 1) . "'></p>
+            <p class='level-center-center'><input name='canswer2' type='checkbox' class='right5'><input name='answer2' type='text' value='' class='w-75' placeholder='" . _fe('Text of answer {0}.', 2) . "'></p>
+            <p class='level-center-center'><input name='canswer3' type='checkbox' class='right5'><input name='answer3' type='text' value='' class='w-75' placeholder='" . _fe('Text of answer {0}.', 3) . "'></p>
+            <p class='level-center-center'><input name='canswer4' type='checkbox' class='right5'><input name='answer4' type='text' value='' class='w-75' placeholder='" . _fe('Text of answer {0}.', 4) . "'></p>
+            <p class='level-center-center'><input name='canswer5' type='checkbox' class='right5'><input name='answer5' type='text' value='' class='w-75' placeholder='" . _fe('Text of answer {0}.', 5) . "'></p>
             <div class='margin20 has-text-centered'>
                 <input type='submit' name='insert' class='button is-small' value='" . _('Insert') . "'>
             </div>

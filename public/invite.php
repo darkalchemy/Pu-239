@@ -30,7 +30,7 @@ $valid_actions = [
 ];
 $do = (($do && in_array($do, $valid_actions, true)) ? $do : '') or header('Location: ?do=view_page');
 if ($user['status'] === 5) {
-    stderr('Sorry', 'Your account is suspended');
+    stderr(_('Error'), _('Your account is suspended'));
 }
 
 $fluent = $container->get(Database::class);
@@ -91,15 +91,15 @@ if ($do === 'view_page') {
     if (!$num_row) {
         $body .= "
                     <tr>
-                        <td><div class='padding20'>" . _('You have not created any invite codes at the moment!') . '</div></td>
+                        <td><div class='padding20'>" . _('You have not created any invite codes!') . '</div></td>
                     </tr>';
     } else {
         $body .= "
                     <tr>
                         <td class='level-item'>" . _('Send Invite Code') . "</td>
-                        <td class='has-text-centered'>Sent To</td>
+                        <td class='has-text-centered'>" . _('Sent To') . "</td>
                         <td class='has-text-centered'>" . _('Created Date') . "</td>
-                        <td class='has-text-centered'>" . _('Delete / Resend') . "</td>
+                        <td class='has-text-centered'>" . _('Tools') . "</td>
                         <td class='has-text-centered'>" . _('Status') . '</td>
                     </tr>';
         for ($i = 0; $i < $num_row; ++$i) {
@@ -107,10 +107,10 @@ if ($do === 'view_page') {
             $secret = (int) $fetch_assoc['id'];
             $invite = $fetch_assoc['code'];
             $can_send_it = empty($fetch_assoc['email']) ? "
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=send_email&amp;id={$secret}' class='tooltipper' title='Send Email'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=send_email&amp;id={$secret}' class='tooltipper' title='" . _('Send Email') . "'>
                                 <i class='icon-mail-alt' aria-hidden='true'></i>" . htmlsafechars($fetch_assoc['code']) . '
                             </a>' : "
-                            <span class='tooltipper' title='Email Sent'>
+                            <span class='tooltipper' title='" . _('Email Sent') . "'>
                                 " . htmlsafechars($fetch_assoc['code']) . '
                             </span>';
             $url = !empty($fetch_assoc['email']) ? "{$site_config['paths']['baseurl']}/signup.php?id={$secret}&amp;code={$invite}" : '';
@@ -122,10 +122,10 @@ if ($do === 'view_page') {
                         </td>
                         <td class='has-text-centered'>" . get_date((int) $fetch_assoc['added'], '', 0, 1) . "</td>
                         <td class='has-text-centered'>
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='Delete'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=delete_invite&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='" . _('Delete Invite') . "'>
                                 <i class='icon-trash-empty icon has-text-danger'></i>
                             </a>" . (!empty($fetch_assoc['email']) ? "
-                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=resend&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='Resend'>
+                            <a href='{$site_config['paths']['baseurl']}/invite.php?do=resend&amp;id={$secret}&amp;sender={$user['id']}' class='tooltipper' title='" . _('Resend Invite') . "'>
                                 <i class='icon-mail icon has-text-success'></i>
                             </a>" : '') . "
                         </td>
@@ -133,7 +133,7 @@ if ($do === 'view_page') {
                     </tr>
                     <tr>
                         <td colspan='5'>
-                            <input type='type' id='invite_url' class='w-100 bg-none has-no-border has-text-link tooltipper' readonly title='If sending email failed, you can share this link' value='$url'>
+                            <input type='type' id='invite_url' class='w-100 bg-none has-no-border has-text-link tooltipper' readonly title='" . _('If sending email failed, you can share this link') . "' value='$url'>
                         </td>
                     </tr>";
         }
@@ -155,7 +155,7 @@ if ($do === 'view_page') {
         stderr(_('Error'), _('No invites!'));
     }
     if ($user['invite_rights'] === 'no' || $user['status'] === 5) {
-        stderr(_('Denied'), _('Your invite sending privileges has been disabled by the Staff!'));
+        stderr(_('Error'), _('Your invite sending privileges has been disabled by the Staff!'));
     }
     $count = $fluent->from('invite_codes')
                     ->select(null)
@@ -199,7 +199,7 @@ if ($do === 'view_page') {
         $invite = htmlsafechars($code['code']);
         $secret = $code['id'];
         $body = get_body($site_config['site']['name'], htmlspecialchars($user['username']), $email, $secret, $invite);
-        if (send_mail($code['email'], "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
+        if (send_mail($code['email'], _fe('You have been invited to {0}', $site_config['site']['name']), $body, strip_tags($body))) {
             $session = $container->get(Session::class);
             $session->set('is-success', _('A confirmation email has been sent to the address you specified.'));
             header("Location: {$site_config['paths']['baseurl']}/invite.php?do=view_page");
@@ -220,7 +220,7 @@ if ($do === 'view_page') {
                         ->where('email = ?', $email)
                         ->fetch('count');
         if ($check != 0) {
-            stderr('Error', 'This email address is already in use!');
+            stderr(_('Error'), _('This email address is already in use!'));
         }
         if (!validemail($email)) {
             stderr(_('Error'), _("That doesn't look like a valid email address."));
@@ -233,7 +233,7 @@ if ($do === 'view_page') {
         $inviter = htmlsafechars($user['username']);
         $title = $site_config['site']['name'];
         $body = get_body($title, $inviter, $email, $secret, $invite);
-        if (send_mail($email, "You have been invited to {$site_config['site']['name']}", $body, strip_tags($body))) {
+        if (send_mail($email, _fe('You have been invited to {0}', $site_config['site']['name']), $body, strip_tags($body))) {
             $session = $container->get(Session::class);
             $session->set('is-success', _('A confirmation email has been sent to the address you specified.'));
             header("Location: {$site_config['paths']['baseurl']}/invite.php?do=view_page");
@@ -260,7 +260,7 @@ if ($do === 'view_page') {
                 <table class='table table-bordered bottom20'>
                     <thead>
                         <tr>
-                            <th>E-Mail</th>
+                            <th>" . _('Email') . "</th>
                             <th>
                                 <input type='text' class='w-100' name='email'>
                             </th>
@@ -271,7 +271,7 @@ if ($do === 'view_page') {
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "'>
                     <input type='hidden' name='secret' value='{$fetch['id']}'>
                     <input type='hidden' name='id' value='{$id}'>
-                    <input type='submit' value='Send e-mail' class='button is-small'>
+                    <input type='submit' value='" . _('Send email') . " class='button is-small'>
                 </div>
             </form>
         </div>";
@@ -289,7 +289,7 @@ if ($do === 'view_page') {
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr(_('Delete Invite'), _('Are you sure you want to delete this invite code?') . ' Click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete_invite&amp;id=' . $id . '&amp;sender=' . $user['id'] . '&amp;sure=yes"><span class="has-text-danger">here</span></a> to delete it or <a href="' . $_SERVER['PHP_SELF'] . '?do=view_page"><span class="has-text-success"> here</span></a> to go back.');
+        stderr(_('Delete Invite'), _fe('Are you sure you want to delete this invite code? Click {0}here{1} to delete it or {2}here{3} to go back.', "<a href='{$_SERVER['PHP_SELF']}?do=delete_invite&amp;id={$id}&amp;sender={$user['id']}&amp;sure=yes'><span class='has-text-danger'>", '</span></a>', "<a href='{$_SERVER['PHP_SELF']}?do=view_page'><span class='has-text-success'>", '</span></a>'));
     }
     $fluent->deleteFrom('invite_codes')
            ->where('id = ?', $id)
@@ -324,7 +324,7 @@ if ($do === 'view_page') {
     }
     isset($_GET['sure']) && $sure = htmlsafechars($_GET['sure']);
     if (!$sure) {
-        stderr(_('Confirmed'), _('Are you sure you want to confirm') . ' ' . htmlsafechars($assoc['username']) . '\'s account? Click <a href="?do=confirm_account&amp;userid=' . $userid . '&amp;sender=' . (int) $user['id'] . '&amp;sure=yes">here</a> to confirm it or <a href="?do=view_page">here</a> to go back.');
+        stderr(_('Confirmed'), _fe("Are you sure you want to confirm {0}'s account? Click {1}here{2} to confirm it or {3}here{4} to go back", format_comment($assoc['username']), "<a href='{$_SERVER['PHP_SELF']}?do=confirm_account&amp;userid={$userid}&amp;sender={$user['id']}&amp;sure=yes'>", '</a>', "<a href='{$_SERVER['PHP_SELF']}?do=view_page'>", '</a>'));
     }
     sql_query('UPDATE users SET status = "confirmed" WHERE id =' . sqlesc($userid) . ' AND invitedby = ' . sqlesc($user['id']) . ' AND status = "Pending"') or sqlerr(__FILE__, __LINE__);
 
@@ -332,19 +332,19 @@ if ($do === 'view_page') {
         'status' => 'confirmed',
     ], $site_config['expires']['user_cache']);
 
-    $msg = sqlesc("Hey there :wave:
-Welcome to {$site_config['site']['name']}!\n
-We have made many changes to the site, and we hope you enjoy them!\n 
-We have been working hard to make {$site_config['site']['name']} somethin' special!\n
-{$site_config['site']['name']} has a strong community (just check out forums), and is a feature rich site. We hope you'll join in on all the fun!\n
-Be sure to read the [url={$site_config['paths']['baseurl']}/rules.php]Rules[/url] and [url={$site_config['paths']['baseurl']}/faq.php]FAQ[/url] before you start using the site.\n
-We are a strong friendly community here :D {$site_config['site']['name']} is so much more then just torrents.\n
-Just for kicks, we've started you out with 200.0 Karma Bonus Points, and a couple of bonus GB to get ya started!\n 
-so, enjoy\n  
-cheers,\n 
-{$site_config['site']['name']} Staff.\n");
+    $msg = sqlesc(_fe("Hey there {0}
+Welcome to {1}!
+We have made many changes to the site, and we hope you enjoy them! 
+We have been working hard to make {1} somethin' special!
+{2} has a strong community (just check out forums), and is a feature rich site. We hope you'll join in on all the fun!
+Be sure to read the {3}Rules{4}[/url] and {5}FAQ{6} before you start using the site.
+We are a strong friendly community here :D {7} is so much more then just torrents.
+Just for kicks, we've started you out with 200.0 Karma Bonus Points, and a couple of bonus GB to get ya started! 
+so, enjoy
+cheers,
+{8} Staff.", ':wave:', $site_config['site']['name'], $site_config['site']['name'], $site_config['site']['name'], "[url={$site_config['paths']['baseurl']}/rules.php]", '[/url]', "[url={$site_config['paths']['baseurl']}/faq.php]", '[/url]', $site_config['site']['name'], $site_config['site']['name']));
     $id = (int) $assoc['id'];
-    $subject = sqlesc("Welcome to {$site_config['site']['name']} !");
+    $subject = sqlesc(_fe('Welcome to {0}!', $site_config['site']['name']));
     $added = TIME_NOW;
     sql_query("INSERT INTO messages (sender, subject, receiver, msg, added) VALUES (2, $subject, " . sqlesc($id) . ", $msg, $added)") or sqlerr(__FILE__, __LINE__);
     ///////////////////end////////////
@@ -364,26 +364,25 @@ function get_body(string $title, string $inviter, string $email, int $secret, st
 {
     global $site_config;
 
-    return doc_head("{$title} Invitation") . "
+    return doc_head(_fe('{0} Invitation', $title)) . '
 </head>
 <body>
     <p>
-        You have been invited to {$site_config['site']['name']} by $inviter.<br>
-        $inviter has specified this address ($email) as your email.<br>
+        ' . _fe('You have been invited to {0} by {1}.<br>
+        {2} has specified this address ({3}) as your email.<br>
         If you do not know this person, please ignore this email. Please do not reply.<br>
-        This is a private site and you must agree to the rules before you can enter:
+        This is a private site and you must agree to the rules before you can enter:', $site_config['site']['name'], $inviter, $inviter, $email) . '
     </p>
-    <p>{$site_config['paths']['baseurl']}/useragreement.php</p>
-    <p>{$site_config['paths']['baseurl']}/rules.php</p>
-    <p>{$site_config['paths']['baseurl']}/faq.php</p>
+    <p>' . _fe('{0}User Agreement{1}', "<a href='{$site_config['paths']['baseurl']}/useragreement.php'>", '</a>') . '</p>
+    <p>' . _fe('{0}Rules{1}', "<a href='{$site_config['paths']['baseurl']}/rules.php'>", '</a>') . '</p>
+    <p>' . _fe('{0}FAQ{1}', "<a href='{$site_config['paths']['baseurl']}/faq.php'>", '</a>') . '</p>
     <hr>
-    <p>To confirm your invitation, you have to follow this link:</p>
-    {$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite
+    <p>' . _fe('{0}Confirm your invitation{1}', "<a href='{$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite'>", '</a>') . '</p>
     <hr>
     <p>
-        After you do this, $inviter may need to confirm your account.<br>
-        We urge you to read the RULES and FAQ before you start using {$site_config['site']['name']}.
+        ' . _fe('After you do this, {0} may need to confirm your account.<br>
+        We urge you to read the RULES and FAQ before you start using {1}.', $inviter, $site_config['site']['name']) . '
     </p>
 </body>
-</html>";
+</html>';
 }

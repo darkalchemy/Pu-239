@@ -90,9 +90,12 @@ if ($message['location'] > 1) {
         stderr(_('Error'), _('Invalid mailbox'));
     }
     $mailbox_name = htmlsafechars($name);
-    $other_box_info = '<p><span style="color: red;">' . _('***') . '</span><span style="font-weight: bold;">' . _('please note:') . '</span>
-                                           ' . _('you have a max of ') . '<span style="font-weight: bold;">' . $maxbox . '</span>' . _(' PMs for all mail boxes that are not ') . '
-                                            <span style="font-weight: bold;">' . _('inbox') . '</span>' . _(' or ') . '<span style="font-weight: bold;">' . _('sentbox') . '</span>.</p>';
+    $other_box_info = '
+        <div class="has-text-centered top20">
+            <span class="has-text-danger">***</span>
+            <span class="right10 left10">' . _fe("please note: you have a maximum of {0} PM's for all mail boxes that are not sentbox.", $maxbox) . '</span>
+            <span class="has-text-danger">***</span>
+        </div>';
 }
 
 $HTMLOUT .= "
@@ -110,7 +113,7 @@ $body = "
             <tr class='no_hover'>
                 <td colspan='2'>
                     <span>" . ($message['sender'] === $user['id'] ? _('To') : _('From')) . ': </span>' . ($arr_user_stuff['id'] == 0 ? _('System') : format_username((int) $arr_user_stuff['id'])) . "{$friends}
-                    <br><span>" . _('Sent') . ': </span>' . get_date((int) $message['added'], '') . (((int) $message['sender'] === $user['id'] && $message['unread'] === 'yes') ? _(' [ ') . "<span class='has-text-danger'>" . _('Unread') . '</span>' . _(' ] ') . '' : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>" . _('URGENT!') . '</span>' : '') . "
+                    <br><span>" . _('Sent') . ': </span>' . get_date((int) $message['added'], '') . (((int) $message['sender'] === $user['id'] && $message['unread'] === 'yes') ? "[ <span class='has-text-danger'>" . _('Unread') . '</span> ]' : '') . ($message['urgent'] === 'yes' ? "<span class='has-text-danger'>" . _('URGENT!') . '</span>' : '') . "
                 </td>
             </tr>
             <tr class='no_hover'>

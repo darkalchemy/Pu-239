@@ -149,7 +149,7 @@ switch ($action) {
                         </td>
                     </tr>
                     <tr>
-                        <td>' . _('Minimun read permission:') . "</td>
+                        <td>' . _('Minimun read permission') . ":</td>
                         <td>
                             <select name='min_class_read'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
@@ -161,7 +161,7 @@ switch ($action) {
                         </td>
                     </tr>
                     <tr>
-                        <td>' . _('Minimun write permission:') . "</td>
+                        <td>' . _('Minimun write permission') . ":</td>
                         <td>
                             <select name='min_class_write'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
@@ -173,7 +173,7 @@ switch ($action) {
                         </td>
                     </tr>
                     <tr>
-                        <td>' . _('Minimun create topic permission:') . "</td>
+                        <td>' . _('Minimun create topic permission') . ":</td>
                         <td>
                             <select name='min_class_create'>";
             for ($i = 0; $i <= $maxclass; ++$i) {
@@ -185,7 +185,7 @@ switch ($action) {
                         </td>
                     </tr>
                     <tr>
-                        <td>' . _('Forum rank:') . "</td>
+                        <td>' . _('Forum rank') . ":</td>
                         <td>
                             <select name='sort'>";
             $count = $forum_class->get_count();
@@ -270,15 +270,15 @@ $body = '
                 <td colspan="2">' . _('Make new forum') . '</td>
             </tr>
             <tr>
-                <td>' . _('Forum name') . '</td>
+                <td>' . _('Forum name') . ':</td>
                 <td><input name="name" type="text" class="w-100" maxlength="60"></td>
             </tr>
             <tr>
-                <td>' . _('Forum description:') . '</td>
+                <td>' . _('Forum description') . ':</td>
                 <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
             </tr>
             <tr>
-                <td>' . _('OverForum:') . '</td>
+                <td>' . _('OverForum') . ':</td>
                 <td>
                     <select name="over_forums">';
 
@@ -292,7 +292,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . _('Sub-Forum of?:') . '</td>
+                <td>' . _('Sub-Forum of?') . ':</td>
                 <td>
                     <select name="parent_forum">
                         <option class="body" value="0">' . _('none') . '</option>';
@@ -306,7 +306,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . _('Minimun read permission:') . '</td>
+                <td>' . _('Minimun read permission') . ':</td>
                 <td>
                     <select name="min_class_read">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -318,7 +318,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . _('Minimun write permission:') . '</td>
+                <td>' . _('Minimun write permission') . ':</td>
                 <td>
                     <select name="min_class_write">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -330,7 +330,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . _('Minimun create topic permission:') . '</td>
+                <td>' . _('Minimun create topic permission') . ':</td>
                 <td>
                     <select name="min_class_create">';
 for ($i = 0; $i <= $maxclass; ++$i) {
@@ -342,7 +342,7 @@ $body .= '
                 </td>
             </tr>
             <tr>
-                <td>' . _('Forum rank:') . '</td>
+                <td>' . _('Forum rank') . ':</td>
                 <td>
                     <select name="sort">';
 $count = $fluent->from('forums')

@@ -58,7 +58,7 @@ function uptime()
             }
         }
         if (!$shown) {
-            $res .= 'less than one minute';
+            $res .= _('less than one minute');
         }
     }
 
@@ -115,32 +115,32 @@ $body .= "
             <img id='load_image' style='height: 15px; width: 1px;' src='{$site_config['paths']['images_baseurl']}{$pic}' alt='$percent&#37;' class='round5'>
         </div>
         <div class='padding20'>
-            <span class='columns'>
-            <span class='column'>" . _('Currently ') . " </span><span class='has-text-success column has-text-right is-one-third'>{$percent}" . _('&#37; CPU usage.') . "</span>
+            <span class='columns bg-02 round10'>
+                <span class='column'>" . _('Currently') . ": </span><span class='has-text-success column has-text-right is-one-third'>{$percent}&#37; " . _('CPU usage.') . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>" . _('Uptime: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . uptime() . '</span>
+                <span class='column'>" . _('Uptime') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . uptime() . '</span>
             </span>';
 
 $loadinfo = loadavg(true);
 $body .= "
-            <span class='columns'>
-                <span class='column'>" . _('Load average for processes running for the past minute: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
+            <span class='columns bg-02 round10'>
+                <span class='column'>" . _('Load average for processes running for the past minute') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last1'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>" . _('Load average for processes running for the past 5 minutes: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
+                <span class='column'>" . _('Load average for processes running for the past 5 minutes') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last5'] . "</span>
+            </span>
+            <span class='columns bg-02 round10'>
+                <span class='column'>" . _('Load average for processes running for the past 15 minutes') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>" . _('Load average for processes running for the past 15 minutes: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['last15'] . "</span>
+                <span class='column'>" . _('Number of tasks currently running') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
+            </span>
+            <span class='columns bg-02 round10'>
+                <span class='column'>" . _('Number of processes currently running') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
             </span>
             <span class='columns'>
-                <span class='column'>" . _('Number of tasks currently running: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['tasks'] . "</span>
-            </span>
-            <span class='columns'>
-                <span class='column'>" . _('Number of processes currently running: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['processes'] . "</span>
-            </span>
-            <span class='columns'>
-                <span class='column'>" . _('PID of last process executed: ') . " </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
+                <span class='column'>" . _('PID of last process executed') . ": </span><span class='has-text-success column has-text-right is-one-third'>" . $loadinfo['lastpid'] . '</span>
             </span>
         </div>
     </div>';
@@ -159,4 +159,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

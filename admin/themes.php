@@ -37,7 +37,7 @@ if (isset($_GET['act'])) {
         stderr(_('Error'), _('Invalid ID'));
     }
     if (!is_valid_id((int) $_GET['act'])) {
-        stderr(_('Error'), _('Invalid Action'));
+        stderr(_('Error'), _('Invalid action'));
     }
     $act = (int) $_GET['act'];
 
@@ -130,7 +130,7 @@ if (isset($_GET['act'])) {
                 <tr>
                     <td colspan='2'>
                     <ul class='left20'>
-                        <li class='bullet'>" . _f('Make a folder in the Templates dir: %s and create files', TEMPLATE_DIR) . "
+                        <li class='bullet'>" . _fe('Make a folder in the Templates dir: {0} and create files', TEMPLATE_DIR) . "
                             <ul>
                                 <li class='bullet'>default.css</li>
                                 <li class='bullet'>custom.css</li>
@@ -255,7 +255,7 @@ if (isset($_GET['act'])) {
             stderr(_('Error'), _('Invalid Name'));
         }
         if (!file_exists(TEMPLATE_DIR . $_POST['id'] . '/template.php')) {
-            stderr(_('Error'), _f('Template file does not exist. Continue? {0}Yes{1} {2}No{3}', "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'><span class='has-text-success left5'>", '</span></a>', "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes'><span class='has-text-danger left5'>", '</span></a>'));
+            stderr(_('Error'), _fe('Template file does not exist. Continue? {0}Yes{1} {2}No{3}', "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&amp;action=themes&amp;act=7&amp;id=" . (int) $_POST['id'] . '&amp;uri=' . $_POST['uri'] . '&amp;name=' . htmlsafechars($_POST['name']) . "'><span class='has-text-success left5'>", '</span></a>', "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=themes'><span class='has-text-danger left5'>", '</span></a>'));
         }
         if (!isset($_POST['class'])) {
             stderr(_('Error'), _('Invalid Class'));

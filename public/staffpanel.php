@@ -111,7 +111,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $cache->delete('staff_panels_4');
         if ($result >= 1) {
             if ($user['class'] <= UC_MAX) {
-                $page = '' . _('Page') . " '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
+                $page = _('Page') . " '[color=#" . get_user_class_color((int) $arr['av_class']) . "]{$arr['page_name']}[/color]'";
                 $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
                 write_log("$page " . _('in the staff panel was') . " $action by $user_bbcode");
             }
@@ -267,7 +267,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 }
                 if (empty($errors)) {
                     if ($user['class'] <= UC_MAX) {
-                        $page = '' . _('Page') . " '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
+                        $page = _('Page') . " '[color=#" . get_user_class_color((int) $_POST['av_class']) . "]{$page_name}[/color]'";
                         $what = $action === 'add' ? 'added' : 'edited';
                         $user_bbcode = "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=#" . get_user_class_color($user['class']) . "]{$user['username']}[/color][/url]";
                         write_log("$page " . _('in the staff panel was') . " $what by $user_bbcode");
@@ -290,7 +290,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $header = "
                 <tr>
                     <th colspan='2'>
-                        <h2 class='has-text-centered'>" . ($action === 'edit' ? _f('Editing: %s', $page_name) : _('Add A New Staff Page')) . '</h2>
+                        <h2 class='has-text-centered'>" . ($action === 'edit' ? _('Editing: %s', $page_name) : _('Add A New Staff Page')) . '</h2>
                     </th>
                 </tr>';
         $body = "

@@ -46,7 +46,7 @@ if ($id !== 0) {
                     ->orderBy('u.registered')
                     ->fetchAll();
     if (empty($query)) {
-        $HTMLOUT .= stdmsg('', _('No invitees yet.'));
+        $HTMLOUT .= stdmsg(_('Error'), _('No invitees yet.'));
     } else {
         $HTMLOUT .= '
                 <table class="table table-bordered table-striped">
@@ -78,7 +78,7 @@ if ($id !== 0) {
                 if (!empty($query2)) {
                     $deeper .= '
                     <tr>
-                        <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . '' . _('Invites:') . '</span>
+                        <td colspan="6"><span class="has-text-weight-bold">' . htmlsafechars($arr_invited['username']) . (substr($arr_invited['username'], -1) === 's' ? '\'' : '\'s') . _('Invites') . ': </span>
                             <div>
                                 <table class="table table-bordered table-striped">
                                     <tr>
@@ -296,7 +296,7 @@ if ($id !== 0) {
         }
         $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= stdmsg('', _('Sorry, no member was found'));
+        $HTMLOUT .= stdmsg(_('Error'), _('Sorry, no member was found'));
     }
     $HTMLOUT .= $count > $perpage ? $menu_bottom : '';
 }

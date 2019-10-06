@@ -62,7 +62,7 @@ if ($ip) {
         }
         $where1 = "INET_ATON(u.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
         $where2 = "INET_ATON(ips.ip) & INET_ATON('$mask') = INET_ATON('$ip') & INET_ATON('$mask')";
-        $addr = '' . _('Mask:') . " $mask";
+        $addr = _('Mask') . ": $mask";
     }
     $queryc = "SELECT COUNT(id) FROM
            (
@@ -113,7 +113,7 @@ if ($ip) {
           ORDER BY $orderby
           " . $pager['limit'] . '';
     $res = sql_query($query1) or sqlerr(__FILE__, __LINE__);
-    $HTMLOUT .= begin_frame("$count " . _('users have used the IP:') . ' ' . format_comment($ip) . ' (' . format_comment($addr) . ')', true);
+    $HTMLOUT .= begin_frame("$count " . _('users have used the IP') . ': ' . format_comment($ip) . ' (' . format_comment($addr) . ')', true);
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
     }

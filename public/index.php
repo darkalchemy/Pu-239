@@ -39,7 +39,7 @@ $unread = $messages_class->get_count($user['id'], $site_config['pm']['inbox'], t
 if ($unread >= 1) {
     $session = $container->get(Session::class);
     $session->set('is-link', [
-        'message' => "You have $unread unread message" . plural($unread) . ' in your Inbox',
+        'message' => _pfe('You have {0} unread message in your inbox', 'You have {0} unread messages in your inbox', $unread),
         'link' => "{$site_config['paths']['baseurl']}/messages.php",
     ]);
 }

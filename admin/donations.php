@@ -105,7 +105,7 @@ foreach ($sql as $arr) {
     if ($donoruntil == 0) {
         $body .= 'n/a';
     } else {
-        $body .= '<span class="size_3">' . get_date((int) $arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . ' ]' . _(' To go...') . '</span>';
+        $body .= '<span class="size_3">' . get_date((int) $arr['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . ' ] ' . _('To go') . '...</span>';
     }
     setlocale(LC_MONETARY, 'en_US.UTF-8');
     $body .= '

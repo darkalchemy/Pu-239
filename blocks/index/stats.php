@@ -50,8 +50,8 @@ $torrents = [
     '<tr><td>' . _('Seeders') . "</td><td class='w-15 has-text-centered'>{$stats_cache['seeders']}</td></tr>",
     '<tr><td>' . _('Leechers') . "</td><td class='w-15 has-text-centered'>{$stats_cache['leechers']}</td></tr>",
     '<tr><td>' . _('Unconnectables Peers') . "</td><td class='w-15 has-text-centered'>{$stats_cache['unconnectables']}</td></tr>",
-    '<tr><td>' . _('Unconnectables Ratio (%%)') . "</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratiounconn'] * 100) . '</td></tr>',
-    '<tr><td>' . _('Seeder/Leecher Rratio (%%)') . "</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . '</td></tr>',
+    '<tr><td>' . _('Unconnectables Ratio (%)') . "</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratiounconn'] * 100) . '</td></tr>',
+    '<tr><td>' . _('Seeder/Leecher Ratio (%)') . "</td><td class='w-15 has-text-centered'>" . round($stats_cache['ratio'] * 100) . '</td></tr>',
 ];
 
 $site_stats .= "

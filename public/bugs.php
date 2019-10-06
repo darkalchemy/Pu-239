@@ -30,7 +30,7 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'bugs');
 if (!in_array($action, $possible_actions)) {
-    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
+    stderr(_('Error'), _('Invalid action.'));
 }
 $dt = TIME_NOW;
 $fluent = $container->get(Database::class);
@@ -41,7 +41,7 @@ $session = $container->get(Session::class);
 if ($action === 'viewbug') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!has_access($curuser['class'], UC_MAX, 'coder')) {
-            stderr(_('Error'), _('Only site-coders can do this! And you know it!'));
+            stderr(_('Error'), _('Only site-coders can do this!'));
         }
         $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
         $status = isset($_POST['status']) ? htmlsafechars($_POST['status']) : '';
@@ -56,7 +56,7 @@ if ($action === 'viewbug') {
         $precomment = "\n[precode]{$comment}[/precode]";
         switch ($status) {
             case 'fixed':
-                $msg = _f("Hello %s\nYour bug: [b]%s[/b][code]%s[/code]has been fixed by one of our coders.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, %s's coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
+                $msg = _fe("Hello {0}\nYour bug: [b]{1}[/b][code]{2}[/code]has been fixed by one of our coders.\n\nWe would like to thank you and therefore we have added [b]2 GB[/b] to your upload total :].\n\nBest regards, {3}'s coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
                 $update = [
                     'uploaded' => $user['uploaded'] + (1024 * 1024 * 1024 * 2),
                 ];
@@ -64,11 +64,11 @@ if ($action === 'viewbug') {
                 break;
 
             case 'ignored':
-                $msg = _f("Hello %s.\nYour bug: [b]%s[/b][code]%s[/code]has been ignored by one of our coders.\n\nPossibly it was not a bug or has already been fixed.\n\nBest regards, %ss coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
+                $msg = _fe("Hello {0}.\nYour bug: [b]{1}[/b][code]{2}[/code]has been ignored by one of our coders.\n\nPossibly it was not a bug or has already been fixed.\n\nBest regards, {3}'s coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
                 break;
 
             case 'na':
-                $msg = _f("Hello %s.\nYour bug: [b]%s[/b][code]%s[/code]needs more information. Best regards, %ss coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
+                $msg = _fe("Hello {0}.\nYour bug: [b]{1}[/b][code]{2}[/code]needs more information. Best regards, {3}'s coders.", htmlsafechars($user['username']), htmlsafechars($bug['title']), htmlsafechars($bug['problem']), $site_config['site']['name']) . "\n\n$precomment";
         }
         $msgs_buffer[] = [
             'sender' => $curuser['id'],
@@ -106,7 +106,12 @@ if ($action === 'viewbug') {
                   ->leftJoin('users AS s ON b.staff = u.id')
                   ->where('b.id = ?', $id)
                   ->fetch();
-
+    if (empty($bug)) {
+        stderr(_('Error'), _('Invalid ID'));
+    }
+    if (empty($bug['added'])) {
+        dd($id, $_POST, $_GET);
+    }
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';
@@ -160,7 +165,7 @@ if ($action === 'viewbug') {
                 <td>{$title}</td>
             </tr>
             <tr>
-                <td class='rowhead'>" . _('Added') . ' / ' . _('By') . "</td>
+                <td class='rowhead'>" . _('Added / By') . "</td>
                 <td>{$added} / {$addedby}</td>
             </tr>
             <tr>
@@ -172,7 +177,7 @@ if ($action === 'viewbug') {
                 <td><div class='margin20 code'>{$problem}</div></td>
             </tr>
             <tr>
-                <td class='rowhead'>" . _('Status') . ' / ' . _('By') . "</td>
+                <td class='rowhead'>" . _('Status / By') . "</td>
                 <td>{$status} - {$by}</td>
             </tr>
             <tr class='no_hover'>
@@ -183,7 +188,7 @@ if ($action === 'viewbug') {
         $body .= "
             <tr>
                 <td colspan='2' class='has-text-centered'>
-                    <input type='submit' value='" . _('Fix!') . "' class='button is-small'>
+                    <input type='submit' value='" . _('Close Bug Report') . "' class='button is-small'>
                 </td>
             </tr>";
     }
@@ -232,12 +237,12 @@ if ($action === 'viewbug') {
     if ($count > 0) {
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _p('There is %s new bug. Please check it', 'There is %s new bugs. Please check them', $na_count) . "</h1>
+        <h1 class='has-text-centered'>" . _pfe('There is {0, number} new bug. Please check it.', 'There is {0, number} new bugs. Please check them.', $na_count) . "</h1>
         <div class='has-text-centered size_3'>" . _('All solved bugs will be deleted after 30 days (from added date).') . '</div>';
         $heading = '        
     <tr>
         <th>' . _('Title') . '</th>
-        <th>' . _('Added') . ' / ' . _('By') . '</th>
+        <th>' . _('Added / By') . '</th>
         <th>' . _('Priority') . '</th>
         <th>' . _('Status') . '</th>
         <th>' . _('Coder') . '</th>
@@ -316,7 +321,7 @@ if ($action === 'viewbug') {
 
         if ($result) {
             send_staff_message($values, (int) $result);
-            stderr(_('Success'), _f('Your bug has been sent to our coder.<br>You have choosen priority: %s', $priority));
+            stderr(_('Success'), _fe('Your bug has been sent to our coders.<br>You have choosen priority: {0}', $priority));
         } else {
             stderr(_('Error'), _('Please try again.'));
         }
@@ -335,7 +340,7 @@ if ($action === 'viewbug') {
         <tr>
             <td class='rowhead'>" . _('Priority') . ":</td>
             <td>
-                <select name='priority'>
+                <select name='priority' required>
                     <option value='0'>" . _('Select one') . "</option>
                     <option value='low'>" . _('Low') . "</option>
                     <option value='high'>" . _('High') . "</option>
@@ -368,11 +373,10 @@ function send_staff_message(array $values, int $bug_id)
 {
     global $container, $site_config;
 
-    $fluent = $container->get(Database::class);
     $messages_class = $container->get(Message::class);
     $user_class = $container->get(User::class);
     $user = $user_class->getUserFromId($values['sender']);
-    $link = '' . _('Posted By') . ": [url={$site_config['paths']['baseurl']}/userdetails.php?id={$values['sender']}]{$user['username']}[/url]";
+    $link = _('Posted By') . ": [url={$site_config['paths']['baseurl']}/userdetails.php?id={$values['sender']}]{$user['username']}[/url]";
     $subject = _('New Bug Report');
     $msg = "[url={$site_config['paths']['baseurl']}/bugs.php?action=viewbug&id={$bug_id}][h1]{$values['title']}[/h1][/url][code]{$values['problem']}[/code]\n{$link}";
     foreach ($site_config['is_staff'] as $key => $userid) {
@@ -387,6 +391,7 @@ function send_staff_message(array $values, int $bug_id)
         $messages_class->insert($msgs_buffer);
     }
 }
+
 $title = _('Bugs');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",

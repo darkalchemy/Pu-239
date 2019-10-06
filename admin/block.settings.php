@@ -135,7 +135,7 @@ $contents[] = "
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Enable Cooker?') . "</div>
                             <div class='slideThree'><#cooker_on#></div>
-                            <div class='w-100 has-text-centered'>" . _("et this option to 'On' if you want to enable the Cooker.") . '</div>';
+                            <div class='w-100 has-text-centered'>" . _("Set this option to 'On' if you want to enable the Cooker.") . '</div>';
 
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Enable Requests?') . "</div>
@@ -330,7 +330,7 @@ $contents[] = "
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Upload App Alert?') . "</div>
                             <div class='slideThree'><#global_staff_uploadapp_on#></div>
-                            <div class='w-100 has-text-centered'>" . _("'Enable upload application alerts in stdhead") . '</div>';
+                            <div class='w-100 has-text-centered'>" . _('Enable upload application alerts in stdhead') . '</div>';
 
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Happyhour?') . "</div>

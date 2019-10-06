@@ -97,7 +97,7 @@ if (!empty($query)) {
 $body .= '
         <tr>
             <td><b>' . _('Tables') . " {$count}</b></td>
-            <td colspan='12'>" . _('If it is') . " <span class='has-text-danger has-text-weight-bold'>" . _('RED') . '</span>' . _(' it probably needs optimizing!!') . '<p>' . _('Optimizing InnoDB tables is usually not needed.') . '</p></td>
+            <td colspan='12'>" . _('If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>') . '</td>
         </tr>';
 
 $HTMLOUT .= main_table($body, $heading);

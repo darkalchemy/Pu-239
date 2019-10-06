@@ -4,9 +4,17 @@ declare(strict_types = 1);
 
 use Delight\I18n\I18n;
 
-global $container;
+global $container, $site_config;
 
 $i18n = $container->get(I18n::class);
+$lang = get_language();
+try {
+    $i18n->setLocaleManually($lang);
+} catch (Exception $e) {
+    $session = $container->get(Session::class);
+    $session->set('is-danger', _fe('{0} is not currently a supported locale.', $lang));
+    $i18n->setLocaleManually('en_US');
+}
 
 /**
  * @param       $text

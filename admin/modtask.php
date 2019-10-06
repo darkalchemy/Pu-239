@@ -31,14 +31,14 @@ class_check(UC_STAFF);
 $session->unset('post_data');
 $dt = TIME_NOW;
 if ($CURUSER['class'] < UC_STAFF) {
-    stderr(_('USER ERROR'), _('Please try again'));
+    stderr(_('Error'), _('Please try again'));
 }
 if (!empty($_POST) && $_POST['action'] === 'edituser') {
     $post = $_POST;
     unset($_POST);
     $userid = !empty($post['userid']) ? (int) $post['userid'] : 0;
     if (!is_valid_id($userid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $users_class = $container->get(User::class);
     $user = $users_class->getUserFromId($userid);
@@ -65,20 +65,20 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'CODER' Role has been added to your profile by %s", $username),
+                'msg' => _fe("'CODER' Role has been added to your profile by {0}", $username),
                 'subject' => _('Role Added'),
             ];
-            $modcomment = _f("%1$s - CODER Role Added by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - CODER Role Added by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         } elseif (!isset($post['role_coder']) && $user['roles_mask'] & Roles::CODER) {
             $clrbits |= Roles::CODER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'CODER' Role has been removed from your profile by %s", $username),
+                'msg' => _fe("'CODER' Role has been removed from your profile by {0}", $username),
                 'subject' => _('Role Removed'),
             ];
-            $modcomment = _f("%1$s - CODER Role Removed by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - CODER Role Removed by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         }
         if (isset($post['role_uploader']) && $post['role_uploader'] == 1 && !($user['roles_mask'] & Roles::UPLOADER)) {
             $setbits |= Roles::UPLOADER;
@@ -86,20 +86,20 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'UPLOADER' Role has been added to your profile by %s", $username),
+                'msg' => _fe("'UPLOADER' Role has been added to your profile by {0}", $username),
                 'subject' => _('Role Added'),
             ];
-            $modcomment = _f("%1$s - UPLOADER Role Added by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - UPLOADER Role Added by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         } elseif (!isset($post['role_uploader']) && $user['roles_mask'] & Roles::UPLOADER) {
             $clrbits |= Roles::UPLOADER;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'UPLOADER' Role has been removed from your profile by %s", $username),
+                'msg' => _fe("'UPLOADER' Role has been removed from your profile by {0}", $username),
                 'subject' => _('Role Removed'),
             ];
-            $modcomment = _f("%1$s - UPLOADER Role Removed by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - UPLOADER Role Removed by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         }
 
         if (isset($post['role_forum_mod']) && $post['role_forum_mod'] == 1 && !($user['roles_mask'] & Roles::FORUM_MOD)) {
@@ -108,20 +108,20 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'FORUM_MOD' Role has been added to your profile by %s", $username),
+                'msg' => _fe("'FORUM_MOD' Role has been added to your profile by {0}", $username),
                 'subject' => _('Role Added'),
             ];
-            $modcomment = _f("%1$s - FORUM_MOD Role Added by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - FORUM_MOD Role Added by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         } elseif (!isset($post['role_forum_mod']) && $user['roles_mask'] & Roles::FORUM_MOD) {
             $clrbits |= Roles::FORUM_MOD;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'FORUM_MOD' Role has been removed from your profile by %s", $username),
+                'msg' => _fe("'FORUM_MOD' Role has been removed from your profile by {0}", $username),
                 'subject' => _('Role Removed'),
             ];
-            $modcomment = _f("%1$s - FORUM_MOD Role Removed by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - FORUM_MOD Role Removed by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         }
         if (isset($post['role_torrent_mod']) && $post['role_torrent_mod'] == 1 && !($user['roles_mask'] & Roles::TORRENT_MOD)) {
             $setbits |= Roles::TORRENT_MOD;
@@ -129,20 +129,20 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'TORRENT_MOD' Role has been added to your profile by %s", $username),
+                'msg' => _fe("'TORRENT_MOD' Role has been added to your profile by {0}", $username),
                 'subject' => _('Role Added'),
             ];
-            $modcomment = _f("%1$s - TORRENT_MOD Role Added by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - TORRENT_MOD Role Added by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         } elseif (!isset($post['role_torrent_mod']) && $user['roles_mask'] & Roles::TORRENT_MOD) {
             $clrbits |= Roles::TORRENT_MOD;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'TORRENT_MOD' Role has been removed from your profile by %s", $username),
+                'msg' => _fe("'TORRENT_MOD' Role has been removed from your profile by {0}", $username),
                 'subject' => _('Role Removed'),
             ];
-            $modcomment = _f("%1$s - TORRENT_MOD Role Removed by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - TORRENT_MOD Role Removed by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         }
         if (isset($post['role_internal']) && $post['role_internal'] == 1 && !($user['roles_mask'] & Roles::INTERNAL)) {
             $setbits |= Roles::INTERNAL;
@@ -150,20 +150,20 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'INTERNAL' Role has been added to your profile by %s", $username),
+                'msg' => _fe("'INTERNAL' Role has been added to your profile by {0}", $username),
                 'subject' => _('Role Added'),
             ];
-            $modcomment = _f("%1$s - INTERNAL Role Added by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - INTERNAL Role Added by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         } elseif (!isset($post['role_internal']) && $user['roles_mask'] & Roles::INTERNAL) {
             $clrbits |= Roles::INTERNAL;
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("'INTERNAL' Role has been removed from your profile by %s", $username),
+                'msg' => _fe("'INTERNAL' Role has been removed from your profile by {0}", $username),
                 'subject' => _('Role Removed'),
             ];
-            $modcomment = _f("%1$s - INTERNAL Role Removed by %2$s\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
+            $modcomment = _fe("{0} - INTERNAL Role Removed by {1}\n", get_date($dt, 'DATE', 1), $CURUSER['username']) . $modcomment;
         }
         if ($setbits > 0 || $clrbits > 0) {
             $update['roles_mask'] = new Literal('((roles_mask | ' . $setbits . ') & ~' . $clrbits . ')');
@@ -173,14 +173,14 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 stderr(_('Error'), _('Please try again'));
             }
             if (!valid_class($class)) {
-                stderr(_('Error'), _('Bad class'));
+                stderr(_('Error'), _('Invalid class'));
             }
             $what = $class > $user['class'] ? _('Promoted') : _('Demoted');
             $msgs[] = [
                 'poster' => $CURUSER['id'],
                 'receiver' => $userid,
                 'added' => $dt,
-                'msg' => _f("You have been %1$s to %2$s by %3$s", $what, get_user_class_name($class), $username),
+                'msg' => _fe('You have been {0} to {1} by {2}', $what, get_user_class_name($class), $username),
                 'subject' => _('Member Class Change'),
             ];
             $update['class'] = $class;
@@ -206,14 +206,14 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     if (isset($post['donorlength']) && (($donorlength = (int) $post['donorlength']))) {
         if ($donorlength > 0) {
             if ($donorlength === 255) {
-                $msg = _f('You have received donor status from %s', $username);
+                $msg = _fe('You have received donor status from {0}', $username);
                 $subject = _('Thank you for your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Donor status set by ') . " {$CURUSER['username']}\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . (' - Donor status set by ') . " {$CURUSER['username']}\n" . $modcomment;
                 $donoruntil = $dt + (2607 * 604800);
             } else {
                 $donoruntil = $dt + ($donorlength * 604800);
                 $dur = $donorlength . _(' week') . ($donorlength > 1 ? _('s') : '');
-                $msg = _('Dear') . $user['username'] . '' . _fe('
+                $msg = _('Dear') . $user['username'] . _fe('
        {0}
        Thanks for your support to {1}!
        Your donation helps us in the costs of running the site!
@@ -222,7 +222,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
        {3} Staff
        PS. Your donator status will last for {4} and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
                 $subject = _('Thank You for Your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Donor status set by %s', $CURUSER['username']) . ".\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . ".\n" . $modcomment;
             }
             $update['donoruntil'] = $donoruntil;
             $msgs[] = [
@@ -244,7 +244,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $donoruntil = $user['donoruntil'];
         $donorlengthadd = $post['donorlengthadd'] === 255 ? 2607 : $post['donorlengthadd'];
         $dur = $donorlengthadd . _(' week') . ($donorlengthadd > 1 ? _('s') : '');
-        $msg = _('Dear') . htmlsafechars($user['username']) . '' . _fe('
+        $msg = _('Dear') . htmlsafechars($user['username']) . _fe('
        {0}
        Thanks for your continued support to {1}!
        Your donation helps us in the costs of running the site. Everything above the current running costs will go towards next months costs!
@@ -267,8 +267,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $update['class'] = $user['vipclass_before'];
         $useredit[] = 'Donor = No';
         if ($donor === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Donor status removed by %s.', $CURUSER['username']) . "\n" . $modcomment;
-            $msg = _f('Donor status removed by %s', $username);
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status removed by {0}.', $CURUSER['username']) . "\n" . $modcomment;
+            $msg = _fe('Donor status removed by {0}', $username);
             $subject = _('Donator status expired.');
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -286,19 +286,19 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($downloadpos === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Download disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $disable_pm\n" . $modcomment;
-            $msg = _f('Your Downloading rights have been disabled by %s', $username) . (!empty($disable_pm) ? "\n\n" . _('Reason') . ": $disable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Download disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $disable_pm\n" . $modcomment;
+            $msg = _fe('Your Downloading rights have been disabled by {0}', $username) . (!empty($disable_pm) ? "\n\n" . _('Reason') . ": $disable_pm" : '');
             $update['downloadpos'] = 0;
             $useredit[] = _('Download possible = No');
         } elseif ($downloadpos === 42) {
-            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _f('Download disablement status removed by %s.', $CURUSER['username']) . ".\n" . $modcomment;
-            $msg = _f('Your Downloading rights have been restored by %s', $username);
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Download disablement status removed by {0}.', $CURUSER['username']) . ".\n" . $modcomment;
+            $msg = _fe('Your Downloading rights have been restored by {0}', $username);
             $update['downloadpos'] = 1;
             $useredit[] = 'Download possible = Yes';
         } else {
             $downloadpos_until = $dt + ($downloadpos * 604800);
             $dur = $downloadpos . _(' week') . ($downloadpos > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Download disablement from ') . ' ' . $username . ($disable_pm ? "\n\n" . _('Reason:') . " $disable_pm" : '');
+            $msg = ('You have received') . " $dur " . _('Download disablement from ') . ' ' . $username . ($disable_pm ? "\n\n" . _('Reason') . ": $disable_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Download disablement for {0} by {1}.', $dur, $CURUSER['username']) . "\n" . _('Reason') . ": $disable_pm\n" . $modcomment;
             $update['downloadpos'] = $downloadpos_until;
             $useredit[] = 'Downloads disabled = ' . $downloadpos_until;
@@ -318,8 +318,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($uploadpos === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Upload disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $updisable_pm\n" . $modcomment;
-            $msg = _('Your Uploading rights have been disabled by ') . $username . (!empty($updisable_pm) ? "\n\n" . _('Reason:') . " $updisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Upload disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $updisable_pm\n" . $modcomment;
+            $msg = _('Your Uploading rights have been disabled by ') . $username . (!empty($updisable_pm) ? "\n\n" . _('Reason') . ": $updisable_pm" : '');
             $update['uploadpos'] = 0;
             $useredit[] = _('Uploads enabled = No');
         } elseif ($uploadpos === 42) {
@@ -330,8 +330,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $uploadpos_until = $dt + ($uploadpos * 604800);
             $dur = $uploadpos . _(' week') . ($uploadpos > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Upload disablement from ') . '' . $username . ($updisable_pm ? "\n\n" . _('Reason:') . " $updisable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Upload disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $updisable_pm\n" . $modcomment;
+            $msg = _('You have received') . " $dur " . _('Upload disablement from ') . $username . ($updisable_pm ? "\n\n" . _('Reason') . ": $updisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . (' - Upload disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $updisable_pm\n" . $modcomment;
             $update['uploadpos'] = $uploadpos_until;
             $useredit[] = _('Uploads disabled = ') . $uploadpos_until . '';
         }
@@ -350,8 +350,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($sendpmpos === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Pm disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $pmdisable_pm\n" . $modcomment;
-            $msg = _('Your Pm rights have been disabled by ') . $username . (!empty($pmdisable_pm) ? "\n\n" . _('Reason:') . " $pmdisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Pm disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $pmdisable_pm\n" . $modcomment;
+            $msg = _('Your Pm rights have been disabled by ') . $username . (!empty($pmdisable_pm) ? "\n\n" . _('Reason') . ": $pmdisable_pm" : '');
             $update['sendpmpos'] = 0;
             $useredit[] = _('Private messages enabled = No');
         } elseif ($sendpmpos === 42) {
@@ -362,8 +362,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $sendpmpos_until = $dt + ($sendpmpos * 604800);
             $dur = $sendpmpos . _(' week') . ($sendpmpos > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Pm disablement from ') . '' . $username . ($pmdisable_pm ? "\n\n" . _('Reason:') . " $pmdisable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Pm disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $pmdisable_pm\n" . $modcomment;
+            $msg = ('You have received') . " $dur " . _('Pm disablement from ') . $username . ($pmdisable_pm ? "\n\n" . _('Reason') . ": $pmdisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Pm disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $pmdisable_pm\n" . $modcomment;
             $update['sendpmpos'] = $sendpmpos_until;
             $useredit[] = _('Private messages disabled = ') . $sendpmpos_until . '';
         }
@@ -382,8 +382,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($chatpost === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - AJAX Chat disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $chatdisable_pm\n" . $modcomment;
-            $msg = _('Your AJAX Chat rights have been disabled by ') . $username . (!empty($chatdisable_pm) ? "\n\n" . _('Reason:') . " $chatdisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - AJAX Chat disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $chatdisable_pm\n" . $modcomment;
+            $msg = _('Your AJAX Chat rights have been disabled by ') . $username . (!empty($chatdisable_pm) ? "\n\n" . _('Reason') . ": $chatdisable_pm" : '');
             $update['chatpost'] = 0;
             $useredit[] = _('AJAX Chat enabled = No');
         } elseif ($chatpost === 42) {
@@ -394,8 +394,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $chatpost_until = $dt + ($chatpost * 604800);
             $dur = $chatpost . _(' week') . ($chatpost > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('AJAX Chat disablement from ') . '' . $username . ($chatdisable_pm ? "\n\n" . _('Reason:') . " $chatdisable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - AJAX Chat disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $chatdisable_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('AJAX Chat disablement from ') . $username . ($chatdisable_pm ? "\n\n" . _('Reason') . ": $chatdisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - AJAX Chat disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $chatdisable_pm\n" . $modcomment;
             $update['chatpost'] = $chatpost_until;
             $useredit[] = _('AJAX Chat disabled = ') . $chatpost_until;
         }
@@ -414,8 +414,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($immunity === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Immune Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $immunity_pm\n" . $modcomment;
-            $msg = _('You have received immunity Status from ') . $username . (!empty($immunity_pm) ? "\n\n" . _('Reason:') . " $immunity_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Immune Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $immunity_pm\n" . $modcomment;
+            $msg = _('You have received immunity Status from ') . $username . (!empty($immunity_pm) ? "\n\n" . _('Reason') . ": $immunity_pm" : '');
             $update['immunity'] = 1;
         } elseif ($immunity === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . _(' - Immunity Status removed by ') . $CURUSER['username'] . ".\n" . $modcomment;
@@ -424,8 +424,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $immunity_until = $dt + ($immunity * 604800);
             $dur = $immunity . _(' week') . ($immunity > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Immunity Status from ') . '' . $username . ($immunity_pm ? "\n\n" . _('Reason:') . " $immunity_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Immunity Status for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $immunity_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('Immunity Status from ') . $username . ($immunity_pm ? "\n\n" . _('Reason') . ": $immunity_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Immunity Status for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $immunity_pm\n" . $modcomment;
             $update['immunity'] = $immunity_until;
         }
         $msgs[] = [
@@ -443,8 +443,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($leechwarn === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - leechwarn Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $leechwarn_pm\n" . $modcomment;
-            $msg = _('You have received leechwarn Status from ') . $username . (!empty($leechwarn_pm) ? "\n\n" . _('Reason:') . " $leechwarn_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - leechwarn Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $leechwarn_pm\n" . $modcomment;
+            $msg = _('You have received leechwarn Status from ') . $username . (!empty($leechwarn_pm) ? "\n\n" . _('Reason') . ": $leechwarn_pm" : '');
             $update['leechwarn'] = 1;
         } elseif ($leechwarn === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . _(' - leechwarn Status removed by ') . $CURUSER['username'] . ".\n" . $modcomment;
@@ -453,8 +453,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $leechwarn_until = $dt + ($leechwarn * 604800);
             $dur = $leechwarn . _(' week') . ($leechwarn > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('leechwarn Status from ') . '' . $username . ($leechwarn_pm ? "\n\n" . _('Reason:') . " $leechwarn_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - leechwarn Status for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $leechwarn_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('leechwarn Status from ') . $username . ($leechwarn_pm ? "\n\n" . _('Reason') . ": $leechwarn_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - leechwarn Status for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $leechwarn_pm\n" . $modcomment;
             $update['leechwarn'] = $leechwarn_until;
         }
         $msgs[] = [
@@ -472,8 +472,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($warned === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - warned Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $warned_pm\n" . $modcomment;
-            $msg = _('You have received warned Status from ') . $username . (!empty($warned_pm) ? "\n\n" . _('Reason:') . " $warned_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - warned Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $warned_pm\n" . $modcomment;
+            $msg = _('You have received warned Status from ') . $username . (!empty($warned_pm) ? "\n\n" . _('Reason') . ": $warned_pm" : '');
             $update['warned'] = 1;
         } elseif ($warned === 42) {
             $modcomment = get_date($dt, 'DATE', 1) . _(' - warned Status removed by ') . $CURUSER['username'] . ".\n" . $modcomment;
@@ -482,8 +482,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $warned_until = $dt + ($warned * 604800);
             $dur = $warned . _(' week') . ($warned > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('warned Status from ') . '' . $username . ($warned_pm ? "\n\n" . _('Reason:') . " $warned_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - warned Status for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $warned_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('warned Status from ') . $username . ($warned_pm ? "\n\n" . _('Reason') . ": $warned_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - warned Status for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $warned_pm\n" . $modcomment;
             $update['warned'] = $warned_until;
         }
         $msgs[] = [
@@ -534,7 +534,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $curtitle = !empty($user['title']) ? $user['title'] : '';
         $title = $post['title'];
         if ($title != $curtitle) {
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Custom Title changed to ') . "'" . $title . "'" . _(' from ') . "'" . $curtitle . "' " . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Custom Title changed to ') . "'" . $title . "'" . _(' from ') . "'" . $curtitle . "' " . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
             $update['title'] = $title;
             $useredit[] = _('Custom title altered');
         }
@@ -581,7 +581,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 stderr(_('Error'), _('Image is too small'));
             }
         }
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Avatar changed from ') . '' . htmlsafechars((string) $user['avatar']) . '' . _(' to ') . '' . htmlsafechars((string) $avatar) . ' ' . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Avatar changed from ') . htmlsafechars((string) $user['avatar']) . _(' to ') . htmlsafechars((string) $avatar) . ' ' . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
         $update['avatar'] = !empty($avatar) ? $avatar : '';
         $useredit[] = _('Avatar changed');
     }
@@ -596,12 +596,12 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 stderr(_('Error'), _('Image is too small'));
             }
         }
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Signature changed from ') . '' . htmlsafechars((string) $user['signature']) . '' . _(' to ') . '' . htmlsafechars((string) $signature) . ' ' . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Signature changed from ') . htmlsafechars((string) $user['signature']) . _(' to ') . htmlsafechars((string) $signature) . ' ' . _('by') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
         $update['signature'] = !empty($signature) ? $signature : '';
         $useredit[] = _('Signature changed');
     }
     if ((isset($post['invite_on'])) && (($invite_on = $post['invite_on']) != $user['invite_on'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . _(' - Invites allowed changed from ') . htmlsafechars((string) $user['invite_on']) . ' ' . _(' to ') . " $invite_on" . _(' by ') . '' . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Invites allowed changed from ') . htmlsafechars((string) $user['invite_on']) . ' ' . _(' to ') . " $invite_on" . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
         $update['invite_on'] = $invite_on;
         $useredit[] = _('Invites enabled = ') . $invite_on;
     }
@@ -636,8 +636,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($free_switch === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Freeleech Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $free_pm\n" . $modcomment;
-            $msg = _('You have received Freeleech Status from ') . $username . (!empty($free_pm) ? "\n\n" . _('Reason:') . " $free_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Freeleech Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $free_pm\n" . $modcomment;
+            $msg = _('You have received Freeleech Status from ') . $username . (!empty($free_pm) ? "\n\n" . _('Reason') . ": $free_pm" : '');
             $update['free_switch'] = 1;
             $useredit[] = _('Freeleech enabled = Yes');
         } elseif ($free_switch === 42) {
@@ -648,8 +648,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $free_until = $dt + ($free_switch * 604800);
             $dur = $free_switch . _(' week') . ($free_switch > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Freeleech Status from ') . 'Freeleech Status from ' . $username . ($free_pm ? "\n\n" . _('Reason:') . " $free_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Freeleech Status for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $free_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('Freeleech Status from ') . 'Freeleech Status from ' . $username . ($free_pm ? "\n\n" . _('Reason') . ": $free_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Freeleech Status for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $free_pm\n" . $modcomment;
             $update['free_switch'] = $free_until;
             $useredit[] = _('Freeleech enabled = ') . get_date((int) $free_until, 'DATE', 0, 1);
         }
@@ -668,7 +668,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($game_access === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Gaming disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . "\n" . $modcomment;
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Gaming disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ":\n" . $modcomment;
             $msg = _('Your gaming rights have been disabled by ') . $username . "\n\n" . _('Reason:') . '';
             $update['game_access'] = 0;
             $useredit[] = _('Games possible = No');
@@ -680,8 +680,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $game_access_until = $dt + ($game_access * 604800);
             $dur = $game_access . _(' week') . ($game_access > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('games disablement from ') . '' . $username . "\n\n" . _('Reason:') . '';
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Games disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . "\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('games disablement from ') . $username . "\n\n" . _('Reason:') . '';
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Games disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ":\n" . $modcomment;
             $update['game_access'] = $game_access_until;
             $useredit[] = _('Games disabled = ') . get_date((int) $game_access_until, 'DATE', 0, 1);
         }
@@ -700,8 +700,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
         $subject = _('Notification!');
         if ($avatarpos === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . _(' - Avatar disablement by ') . $CURUSER['username'] . ".\n" . _('Reason:') . " $avatardisable_pm\n" . $modcomment;
-            $msg = _('Your Avatar rights have been disabled by ') . $username . (!empty($avatardisable_pm) ? "\n\n" . _('Reason:') . " $avatardisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Avatar disablement by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $avatardisable_pm\n" . $modcomment;
+            $msg = _('Your Avatar rights have been disabled by ') . $username . (!empty($avatardisable_pm) ? "\n\n" . _('Reason') . ": $avatardisable_pm" : '');
             $update['avatarpos'] = 0;
             $useredit[] = _('Avatars possible = No');
         } elseif ($avatarpos === 42) {
@@ -712,8 +712,8 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         } else {
             $avatarpos_until = $dt + ($avatarpos * 604800);
             $dur = $avatarpos . _(' week') . ($avatarpos > 1 ? _('s') : '');
-            $msg = '' . _('You have received') . " $dur " . _('Avatar disablement from ') . '' . $username . ($avatardisable_pm ? "\n\n" . _('Reason:') . " $avatardisable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Avatar disablement for') . " $dur " . _(' by ') . '' . $CURUSER['username'] . ".\n" . _('Reason:') . " $avatardisable_pm\n" . $modcomment;
+            $msg = '' . _('You have received') . " $dur " . _('Avatar disablement from ') . $username . ($avatardisable_pm ? "\n\n" . _('Reason') . ": $avatardisable_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . _(' - Avatar disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $avatardisable_pm\n" . $modcomment;
             $update['avatarpos'] = $avatarpos_until;
             $useredit[] = _('Avatar selection disabled = ') . get_date((int) $avatarpos_until, 'DATE', 0, 1);
         }
@@ -770,17 +770,17 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         ];
     }
     if ((isset($post['wait_time'])) && (($wait_time = $post['wait_time']) !== $user['wait_time'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Wait time set to') . " $wait_time" . _('. was ') . '' . (int) $user['wait_time'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Wait time set to') . " $wait_time" . _('. was ') . (int) $user['wait_time'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
         $update['wait_time'] = $wait_time;
         $useredit[] = _('Wait time adjusted = Yes');
     }
     if ((isset($post['peers_limit'])) && (($peers_limit = $post['peers_limit']) !== $user['peers_limit'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Peers limit set to') . " $peers_limit" . _('. was ') . '' . (int) $user['peers_limit'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Peers limit set to') . " $peers_limit" . _('. was ') . (int) $user['peers_limit'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
         $update['peers_limit'] = $peers_limit;
         $useredit[] = _('Peers limit adjusted = Yes');
     }
     if ((isset($post['torrents_limit'])) && (($torrents_limit = $post['torrents_limit']) !== $user['torrents_limit'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Torrents limit set to') . " $torrents_limit" . _('. was ') . '' . (int) $user['torrents_limit'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Torrents limit set to') . " $torrents_limit" . _('. was ') . (int) $user['torrents_limit'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
         $update['torrents_limit'] = $torrents_limit;
         $useredit[] = _('Torrents limit adjusted = Yes');
     }
@@ -827,7 +827,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             $useredit[] = _('Account suspended = Yes');
             $subject = _('Account Suspended!');
             $msg = _('Your account has been suspended by ') . $username . ".\n[b]" . _('The Reason:') . "[/b]\n{$suspended_reason}.\n\n" . _('While your account is suspended, your posting - uploading - downloading - commenting - invites will not work, and the only people that you can PM are staff members.') . "\n\n" . _('If you feel this suspension is in error, please feel free to contact a staff member. ') . "\n\n" . _('cheers,') . "\n" . $site_config['site']['name'] . _(' Staff');
-            $body = '' . _('Account for ') . '[b][url=' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . '[/url][/b]' . _(' has been suspended by ') . '' . $CURUSER['username'] . "\n\n [b]" . _(' reason: ') . "[/b]\n " . $suspended_reason;
+            $body = '' . _('Account for ') . '[b][url=' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $user['id'] . ']' . htmlsafechars($user['username']) . '[/url][/b]' . _(' has been suspended by ') . $CURUSER['username'] . "\n\n [b]" . _(' reason: ') . "[/b]\n " . $suspended_reason;
             auto_post(_('Account Suspended!'), $body);
             $msgs[] = [
                 'poster' => $CURUSER['id'],
@@ -847,7 +847,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 $modcomment = get_date($dt, 'DATE', 1) . _(' - This account has been Un-suspended by ') . $CURUSER['username'] . ".\n" . $modcomment;
                 $useredit[] = _('Account suspended = No');
                 $subject = _('Account Un-Suspended!');
-                $msg = _("Your account has had it's suspension lifted by ") . $username . ".\n\n" . _('cheers,') . "\n" . $site_config['site']['name'] . _(' Staff');
+                $msg = _fe("Your account has had it's suspension lifted by {0}\n\ncheers,\n{1} Staff", $username, $site_config['site']['name']);
                 $msgs[] = [
                     'poster' => $CURUSER['id'],
                     'receiver' => $userid,
@@ -859,7 +859,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         }
     }
     if ((isset($post['hit_and_run_total'])) && (($hit_and_run_total = (int) $post['hit_and_run_total']) !== $user['hit_and_run_total'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . '' . _(' - Hit and runs set to ') . " $hit_and_run_total" . _('. was ') . '' . (int) $user['hit_and_run_total'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _(' - Hit and runs set to ') . " $hit_and_run_total" . _('. was ') . (int) $user['hit_and_run_total'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
         $update['hit_and_run_total'] = $hit_and_run_total;
         $useredit[] = _('Hit and run total adjusted = Yes');
     }
@@ -928,25 +928,25 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
     }
     if ((isset($post['view_offensive_avatar'])) && (($view_offensive_avatar = $post['view_offensive_avatar']) !== $user['view_offensive_avatar'])) {
         if ($view_offensive_avatar === 'no') {
-            $modcomment = get_date($dt, 'DATE', 1) . _f("%1$s view offensive avatar by %2$s, %3$s\n", 'Set', $CURUSER['username'], $modcomment);
+            $modcomment = get_date($dt, 'DATE', 1) . _fe("{0} view offensive avatar by {1}, {2}\n", _('Set'), $CURUSER['username'], $modcomment);
         } else {
-            $modcomment = get_date($dt, 'DATE', 1) . _f("%1$s view offensive avatar by %2$s, %3$s\n", 'Unset', $CURUSER['username'], $modcomment);
+            $modcomment = get_date($dt, 'DATE', 1) . _fe("{0} view offensive avatar by {1}, {2}\n", _('Unset'), $CURUSER['username'], $modcomment);
         }
         $update['view_offensive_avatar'] = $view_offensive_avatar;
-        $useredit[] = _f('View offensive avatars = %s', $view_offensive_avatar);
+        $useredit[] = _('View offensive avatars = %s', $view_offensive_avatar);
     }
     if ((isset($post['paranoia'])) && (($paranoia = (int) $post['paranoia']) !== $user['paranoia'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . _(' - Paranoia changed to ') . (int) $post['paranoia'] . _(' from ') . (int) $user['paranoia'] . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _fe(' - Paranoia changed to {0} from {1} by {2}', $post['paranoia'], $user['paranoia'], $CURUSER['username']) . ".\n" . $modcomment;
         $update['paranoia'] = $paranoia;
         $useredit[] = _('Paranoia level changed');
     }
     if ((isset($post['website'])) && (($website = $post['website']) !== $user['website'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . _(' - website changed to ') . strip_tags($post['website']) . _(' from ') . htmlsafechars((string) $user['website']) . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _fe(' - website changed to {0} from {1} by {2}', strip_tags($post['website']), htmlsafechars((string) $user['website']), $CURUSER['username']) . ".\n" . $modcomment;
         $update['website'] = $website;
         $useredit[] = _('Website changed');
     }
     if ((isset($post['skype'])) && (($skype = $post['skype']) !== $user['skype'])) {
-        $modcomment = get_date($dt, 'DATE', 1) . _(' - skype changed to ') . strip_tags($post['skype']) . _(' from ') . htmlsafechars((string) $user['skype']) . _(' by ') . $CURUSER['username'] . ".\n" . $modcomment;
+        $modcomment = get_date($dt, 'DATE', 1) . _fe(' - skype changed to {0} from {1} by {2}', strip_tags($post['skype']), htmlsafechars((string) $user['skype']), $CURUSER['username']) . ".\n" . $modcomment;
         $update['skype'] = $skype;
         $useredit[] = _('Skype address changed');
     }
@@ -969,7 +969,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $messages->insert($msgs);
     }
     if (!empty($useredit)) {
-        write_info('' . _('User account') . " $userid (" . format_username((int) $userid) . ")\n" . _('Things edited: ') . '' . implode(', ', $useredit) . '' . _(' by ') . '' . format_username((int) $CURUSER['id']));
+        write_info('' . _('User account') . " $userid (" . format_username((int) $userid) . ")\n" . _('Things edited: ') . implode(', ', $useredit) . _(' by ') . format_username((int) $CURUSER['id']));
     }
     $returnto = htmlsafechars($post['returnto']) . '#edit';
     header("Location: {$site_config['paths']['baseurl']}/$returnto");

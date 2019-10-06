@@ -26,8 +26,8 @@ $maxsize = $site_config['bucket']['maxsize'];
 $folders = date('Y/m');
 $formats = $site_config['images']['formats'];
 $str = implode('|', $formats);
-$bucketdir = BITBUCKET_DIR . $folders . '/';
-$bucketlink = $folders . '/';
+$bucketdir = BITBUCKET_DIR . $folders . DIRECTORY_SEPARATOR;
+$bucketlink = $folders . DIRECTORY_SEPARATOR;
 $PICSALT = $SaLt . $user['username'];
 $USERSALT = substr(md5($SaLty . $user['id']), 0, 6);
 make_year(BITBUCKET_DIR);
@@ -62,13 +62,13 @@ if (!empty($_GET['avatar']) && $_GET['avatar'] != $user['avatar']) {
     $users_class->update($update, $user['id']);
     header("Location: {$site_config['paths']['baseurl']}/bitbucket.php?images=$type&updated=avatar");
 } elseif (!empty($_GET['avatar']) && $_GET['avatar'] === $user['avatar']) {
-    $session->set('is-warning', 'This is already your avatar!');
+    $session->set('is-warning', _('This is already your avatar!'));
 }
 
 if (!empty($_GET['updated']) && $_GET['updated'] === 'avatar') {
     $session->set('is-info', '
         [class=has-text-centered]
-            [h3]' . _('Updated avatar to:') . '[/h3]
+            [h3]' . _('Updated avatar to') . '[/h3]
             [img width=150]' . url_proxy($user['avatar'], true, 150) . '[/img]
         [/class]');
 }
@@ -89,7 +89,7 @@ $htmlout .= '
 $htmlout .= main_div("
         <div class='padding20'>
             <h2>" . _('Upload from URL') . "</h2>
-            <input type='url' id='image_url' placeholder='External Image URL' class='w-100 top20 bottom20'>
+            <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100 top20 bottom20'>
             <span class='button is-small' onclick=\"return grab_url(event)\">" . _('Upload') . '</span>
         </div>', 'bottom20');
 
@@ -113,7 +113,7 @@ if (isset($_GET['images']) && $_GET['images'] == 1) {
                 <h2>" . _('Previous Months Images') . "</h2>
                 <ul class='level-center bg-06 padding10'>
                     <li>
-                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month={$folder_month}&amp;year=" . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . "'>This" : (date('Y') - 1) . "'>" . _('Last') . '') . ' ' . _('Year') . "</a>
+                        <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month={$folder_month}&amp;year=" . (isset($_GET['year']) && $_GET['year'] != date('Y') ? date('Y') . "'>" . _('This Year') : (date('Y') - 1) . "'>" . _('Last Year')) . "</a>
                     </li>
                     <li>
                         <a href='{$site_config['paths']['baseurl']}/bitbucket.php?images=1&amp;month=01{$year}'>" . _('January') . "</a>
@@ -156,9 +156,9 @@ if (isset($_GET['images']) && $_GET['images'] == 1) {
 }
 
 if (isset($_GET['images'])) {
-    $folder_name = (!isset($_GET['year']) ? date('Y') . '/' : (int) $_GET['year'] . '/') . $folder_month;
-    $bucketlink2 = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folder_name . '/');
-    $files = glob(BITBUCKET_DIR . $folder_name . '/' . $USERSALT . '_*');
+    $folder_name = (!isset($_GET['year']) ? date('Y') . DIRECTORY_SEPARATOR : (int) $_GET['year'] . DIRECTORY_SEPARATOR) . $folder_month;
+    $bucketlink2 = ((isset($_POST['avy']) || (isset($_GET['images']) && $_GET['images'] == 2)) ? 'avatar/' : $folder_name . DIRECTORY_SEPARATOR);
+    $files = glob(BITBUCKET_DIR . $folder_name . DIRECTORY_SEPARATOR . $USERSALT . '_*');
     if (!empty($files)) {
         foreach ($files as $filename) {
             $filename = basename($filename);
@@ -172,8 +172,8 @@ if (isset($_GET['images'])) {
                         <img src='{$site_config['paths']['baseurl']}/img.php?{$filename}' class='w-50 img-responsive' alt=''>
                     </a>
                 </div>
-                <h2 class='has-text-centered padding20'>You can use width and/or height as shown in the second link. You can use auto for one or the other.</h2>
-                <h3>" . _('Direct link to image') . "</h3>
+                <h2 class='has-text-centered padding20'>" . _('You can use width and/or height as shown in the second link. You can use auto for one or the other.') . '</h2>
+                <h3>' . _('Direct link to image') . "</h3>
                 <div class='bottom10'>
                     <input id='d{$eid}d' onclick=\"SelectAll('d{$eid}d');\" type='text' class='w-75' value='{$site_config['paths']['baseurl']}/img.php?{$filename}' readonly>
                 </div>

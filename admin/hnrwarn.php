@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     if ($act === 'disable') {
-        if (sql_query('UPDATE users SET status = 2, modcomment=CONCAT(' . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . _(' - Disabled by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
+        if (sql_query('UPDATE users SET status = 2, modcomment=CONCAT(' . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' - Disabled by ' . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')')) {
             foreach ($_uids as $uid) {
                 $cache->update_row('user_' . $uid, [
                     'status' => 2,
@@ -55,14 +55,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
-            stderr(_('Success'), _pf("%1$s user disabled", "%1$d users disable", $d));
+            stderr(_('Success'), _pf('{0, number} user disabled', '{0} users disabled', $d));
         } else {
             stderr(_('Error'), _('Something went wrong!'));
         }
     } elseif ($act === 'unwarn') {
         $sub = _('Hit and Run Warn removed');
-        $body = _('Hey, your Hit and Run warning was removed by ') . $CURUSER['username'] . _('
-Please keep in your best behaviour from now on.');
+        $body = _fe('Hey, your Hit and Run warning was removed by {0}. Please keep in your best behaviour from now on.', $CURUSER['username']);
         $pms = [];
         foreach ($_uids as $id) {
             $pms[] = '(2,' . $id . ',' . sqlesc($sub) . ',' . sqlesc($body) . ',' . sqlesc(TIME_NOW) . ')';
@@ -72,7 +71,7 @@ Please keep in your best behaviour from now on.');
         ], $site_config['expires']['user_cache']);
         if (!empty($pms) && count($pms)) {
             $g = sql_query('INSERT INTO messages(sender,receiver,subject,msg,added) VALUE ' . implode(', ', $pms)) or sqlerr(__FILE__, __LINE__);
-            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . _(' - Hit and Run Warning removed by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
+            $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' - Hit and Run Warning removed by ' . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr(_('Success'), _pf("%1$s user HnR's warning removed", "%1$s users HnR's warning removed", count($pms)));

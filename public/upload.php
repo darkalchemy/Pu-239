@@ -30,7 +30,7 @@ $stdfoot = [
 ];
 $auth = $container->get(Auth::class);
 if (!$auth->hasRole(Roles::UPLOADER) || $user['uploadpos'] != 1 || $user['status'] === 5) {
-    stderr(_('Error'), _f("You are not authorized to upload torrents.  (See %1$s in the FAQ.)", "<a href='{$site_config['paths']['baseurl']}/faq.php#up'>" . _('Uploading') . '</a>'));
+    stderr(_('Error'), _fe('You are not authorized to upload torrents.  (See {0}Uploading{1} in the FAQ.)', "<a href='{$site_config['paths']['baseurl']}/faq.php#up'>", '</a>'));
 }
 $cache = $container->get(Cache::class);
 $upload_vars = $cache->get('user_upload_variables_' . $user['id']);
@@ -191,7 +191,7 @@ $HTMLOUT .= "
                 <td class='rowhead'><a href='" . url_proxy('https://www.imdb.com') . "' target='_blank'>" . _('IMDb Url') . "</a></td>
                 <td>
                     <input type='url' id='url' name='url' maxlength='80' class='w-100' value='{$url}'><br>
-                    " . _('(Taken from Imdb - ') . '' . _('Add the Imdb url to display Imdb data on details.)') . "
+                    " . _('(Taken from Imdb - ') . _('Add the Imdb url to display Imdb data on details.)') . "
                     <div id='imdb_outer'></div>
                 </td>
             </tr>
@@ -370,4 +370,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

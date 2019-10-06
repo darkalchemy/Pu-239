@@ -87,7 +87,10 @@ foreach ($paths as $path) {
                 chmod($name, 0774);
                 ++$i;
             } elseif (!is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
-                if (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
+                if (basename($name) === 'i18n.sh') {
+                    chown($name, $group);
+                    chmod($name, 0774);
+                } elseif (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
                     chmod($name, 0774);
                 } else {

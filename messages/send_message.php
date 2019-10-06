@@ -100,7 +100,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === _('Send')) {
 </body>
 </html>";
 
-        send_mail($arr_receiver['email'], '' . _('You have received a PM from ') . " $username!", $msg, strip_tags($msg));
+        send_mail($arr_receiver['email'], _('You have received a PM from ') . " $username!", $msg, strip_tags($msg));
     }
     if ($delete != 0) {
         $set = [
@@ -147,10 +147,10 @@ if ($replyto != 0) {
     }
     $message = $messages_class->get_by_id($replyto);
     if ($message['sender'] == $CURUSER['id']) {
-        stderr(_('Error'), _('Slander, whose edge is sharper than the sword, whose tongue out venoms all the worms of Nile'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     if ($message['receiver'] == $CURUSER['id']) {
-        $msg .= "\n\n\n" . _('-------- ') . "{$arr_member['username']}" . _(' wrote: --------') . "\n{$message['msg']}\n";
+        $msg .= "\n\n\n-------- {$arr_member['username']} " . _('wrote') . ": --------\n{$message['msg']}\n";
         $subject = (!preg_match('#' . _('Re: ') . '#i', $message['subject']) ? _('Re: ') : '') . htmlsafechars($message['subject']);
     }
 }
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $HTMLOUT .= $top_links . "
-    <form name='compose' method='post' action='messages.php' enctype='multipart/form-data' accept-charset='utf-8'>
+    <form name='compose' method='post' action='{$site_config['paths']['baseurl']}/messages.php' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='action' value='send_message'>";
 
 if ($receiver) {
@@ -177,7 +177,7 @@ if ($receiver) {
         <input type='hidden' name='receiver' id='receiver' value=''>
         <h1>
             Send " . _('Message to ') . "
-            <input type='text' id='user_search' maxlength='64' class='w-50' placeholder='Begin typing username' onkeyup='usersearch()'>
+            <input type='text' id='user_search' maxlength='64' class='w-50' placeholder='" . _('Begin typing username') . "' onkeyup='usersearch()'>
         </h1>";
 }
 $HTMLOUT .= "
@@ -191,11 +191,11 @@ $HTMLOUT .= "
 $HTMLOUT .= '
         <table class="table table-bordered">
             <tr class="no_hover">
-                <td><span style="font-weight: bold;">' . _('Subject:') . '</span></td>
+                <td><span style="font-weight: bold;">' . _('Subject') . ':</span></td>
                 <td><input name="subject" type="text" class="w-100" value="' . $subject . '"></td>
             </tr>
             <tr class="no_hover">
-                <td><span style="font-weight: bold;">' . _('Body:') . '</span></td>
+                <td><span style="font-weight: bold;">' . _('Body') . ':</span></td>
                 <td class="is-paddingless">' . BBcode($msg) . '</td>
             </tr>
             <tr class="no_hover">

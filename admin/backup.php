@@ -36,7 +36,7 @@ if (empty($mode)) {
         $HTMLOUT .= "
             <form method='post' action='{$_SERVER['PHP_SELF']}?tool=backup&amp;mode=delete' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='action' value='delete'>
-                <h1 class='has-text-centered'>" . _f('Welcome %s, to the Database Backup Manager.', $CURUSER['username']) . "</h1>
+                <h1 class='has-text-centered'>" . _fe('Welcome {0}, to the Database Backup Manager.', $CURUSER['username']) . "</h1>
                 <table id='checkbox_container' class='table table-bordered table-striped top20 bottom20'>
                     <thead>
                         <tr>

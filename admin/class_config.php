@@ -36,7 +36,7 @@ $possible_modes = [
 ];
 $mode = isset($_POST['mode']) ? htmlsafechars($_POST['mode']) : '';
 if (!in_array($mode, $possible_modes)) {
-    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
+    stderr(_('Error'), _('Invalid action.'));
 }
 
 /**
@@ -142,9 +142,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if ($edited) {
-            $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
+            $session->set('is-success', _('Success! User Class Configuration was updated!'));
         } else {
-            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 1.'));
+            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated.'));
         }
         unset($_POST);
     } elseif ($mode === 'add') {
@@ -231,9 +231,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_class_files($stylesheet['id']);
             }
             if ($class_id) {
-                $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
+                $session->set('is-success', _('Success! User Class Configuration was updated!'));
             } else {
-                $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 2.'));
+                $session->set('is-warning', _('There was an error while executing the update query or nothing was updated.'));
             }
             update_forum_classes($value, 'increment');
             unset($_POST);
@@ -295,9 +295,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 write_class_files($stylesheet['id']);
             }
             update_forum_classes($value, 'decrement');
-            $session->set('is-success', '' . _('Success! User Class Configuration was updated!') . '');
+            $session->set('is-success', _('Success! User Class Configuration was updated!'));
         } else {
-            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated 2.'));
+            $session->set('is-warning', _('There was an error while executing the update query or nothing was updated.'));
         }
         unset($_POST);
     }
@@ -307,7 +307,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     die();
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered top20'>" . _('User Class Settings') . " for Template $style</h1>
+        <h1 class='has-text-centered top20'>" . _fe('User Class Settings for Template {0}', $style) . "</h1>
         <br>
         <h2 class='has-text-centered top20'>" . _('Edit Class Settings') . "</h2>
         <form name='edit' action='staffpanel.php?tool=class_config' method='post' enctype='multipart/form-data' accept-charset='utf-8'>

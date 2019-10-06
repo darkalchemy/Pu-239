@@ -16,7 +16,7 @@ if (empty($_POST['id']) && empty($_GET['id'])) {
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (int) $_POST['id'];
 if (!is_valid_id($id)) {
-    stderr(_('Error'), 'Invalid ID', 'bottom20');
+    stderr(_('Error'), _('Invalid ID'), 'bottom20');
 }
 $fluent = $container->get(Database::class);
 $torrent = $fluent->from('torrents')

@@ -110,12 +110,12 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
             <td>' . _('Finished DL at:') . ' ' . get_date($C_Date, 'LONG') . '<br>
             ' . _('Stopped seeding at:') . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
             ' . _('Seeded for:') . ' ' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
-            **' . _('**Should still seed for:') . ' ' . mkprettytime($minus_ratio) . '</td>
-            <td>' . _('Uploaded:') . ' ' . mksize($hit_and_run_arr['uload']) . '<br>
+            **' . _('Should still seed for') . ': ' . mkprettytime($minus_ratio) . '</td>
+            <td>' . _('Uploaded') . ': ' . mksize($hit_and_run_arr['uload']) . '<br>
             ' . ($site_config['site']['ratio_free'] ? ' ' : _('Downloaded') . mksize($hit_and_run_arr['dload']) . '<br>') . '
-            ' . _('Torrent ratio:') . '<span style="color: " ' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
-            ' . _('Site ratio:') . ' <span style="color: "' . get_ratio_color($site_ratio) . '" title="' . _('includes all bonus and karma stuff') . '">' . $ratio_site . '</font></td>
-            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . _('send this mofo a PM and give them a piece of your mind...') . '"></a><br>
+            ' . _('Torrent ratio') . ': <span style="color: " ' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
+            ' . _('Site ratio') . ': <span style="color: "' . get_ratio_color($site_ratio) . '" title="' . _('includes all bonus and karma stuff') . '">' . $ratio_site . '</font></td>
+            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . _('Send this user a PM') . '"></a><br>
             <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . _('Shit') . '"></a></td></tr>';
         }
     }

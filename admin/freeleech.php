@@ -27,8 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fl['setby'] = isset($_POST['setby']) ? htmlsafechars($_POST['setby']) : false;
     $fl['title'] = isset($_POST['title']) ? htmlsafechars($_POST['title']) : false;
     if ($fl['modifier'] === false || $fl['expires'] === false || $fl['setby'] === false || $fl['title'] === false) {
-        echo _('Error Complete the Form.');
-        die();
+        stderr(_('Error'), _('Incomplete form.'));
     }
     $i = 0;
     foreach ($free as $temp) {
@@ -86,7 +85,7 @@ if (isset($free) && (count($free) < 1)) {
             <tr>
                 <td>$mode</td>
                 <td>" . get_date((int) $fl['begin'], 'LONG') . '</td>
-                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? _('Until ') . get_date((int) $fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . '' . _(' to go') . ')' : '' . _('Unlimited') . '') . " </td>
+                <td>' . ($fl['expires'] != 'Inf.' && $fl['expires'] != 1 ? _('Until ') . get_date((int) $fl['expires'], 'LONG') . ' (' . mkprettytime($fl['expires'] - TIME_NOW) . _(' to go') . ')' : _('Unlimited') . '') . " </td>
                 <td>{$username}</td>
                 <td>{$fl['title']}</td>
                 <td class='has-text-centered'>
@@ -127,11 +126,11 @@ $HTMLOUT .= "
     <tr><td class='rowhead'>" . _('Expires in ') . "
     </td><td>
     <select name='expires'>
-    <option value='1'>" . _('1 day') . "</option>
-    <option value='2'>" . _('2 days') . "</option>
-    <option value='3'>" . _('3 days') . "</option>
-    <option value='5'>" . _('5 days') . "</option>
-    <option value='7'>" . _('7 days') . "</option>
+    <option value='1'>" . _pf('%d day', '%d days', 1) . "</option>
+    <option value='2'>" . _pf('%d day', '%d days', 2) . "</option>
+    <option value='3'>" . _pf('%d day', '%d days', 3) . "</option>
+    <option value='5'>" . _pf('%d day', '%d days', 5) . "</option>
+    <option value='7'>" . _pf('%d day', '%d days', 6) . "</option>
     <option value='255'>" . _('Unlimited') . "</option>
     </select></td></tr>
     <tr><td class='rowhead'>" . _('Title') . "</td>

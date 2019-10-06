@@ -56,7 +56,7 @@ function class_check(int $class = UC_STAFF)
             $users_class = $container->get(User::class);
             $users_class->update($update, $userid);
             write_log('Class Check System Initialized [url=' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $post_info['topicid'] . '&amp;page=last#' . $post_info['postid'] . ']VIEW[/url]');
-            stderr('Error', 'Incorrect access<br>Silly Rabbit - Trix are for kids.. You dont have the correct credentials to be here!');
+            stderr(_('Error'), _('You dont have the correct credentials to be here!'));
         }
     }
 }

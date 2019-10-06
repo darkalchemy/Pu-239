@@ -43,7 +43,7 @@ if ($action === 'do') {
     $HTMLOUT .= '' . _('done...') . '</div>';
 } else {
     $HTMLOUT .= '
-    <p><span class="size_3">' . _('Your IP is: ') . '' . $ip . '</span></p>
+    <p><span class="size_3">' . _fe('Your IP is: {0}', $ip) . '</span></p>
     <form method="post" action="' . $_SERVER['PHP_SELF'] . '" accept-charset="utf-8">' . _('Enter IP or Host ') . '<input type="text" id=specialboxn name="host" value="' . $ip . '">
     <input type="hidden" name="action" value="do"><input type="submit" value="' . _('Traceroute!') . '" class="button is-small">
    </form>';

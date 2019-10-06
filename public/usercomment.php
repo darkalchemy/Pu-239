@@ -34,7 +34,7 @@ if ($action === 'add') {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $userid = (int) $_POST['userid'];
         if (!is_valid_id($userid)) {
-            stderr(_('Error'), 'Invalid ID.');
+            stderr(_('Error'), _('Invalid ID'));
         }
         $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
@@ -68,7 +68,7 @@ if ($action === 'add') {
     } else {
         $userid = (int) $_GET['userid'];
         if (!is_valid_id($userid)) {
-            stderr(_('Error'), 'Invalid ID.');
+            stderr(_('Error'), _('Invalid ID'));
         }
         $arr = $users_class->getUserFromId($userid);
         if (!$arr) {
@@ -107,7 +107,7 @@ if ($action === 'add') {
         $commentid = (int) $_GET['cid'];
     }
     if (!is_valid_id($commentid)) {
-        stderr(_('Error'), 'Invalid ID.');
+        stderr(_('Error'), _('Invalid ID'));
     }
     $arr = $fluent->from('usercomments AS c')
                   ->select('u.username')
@@ -116,7 +116,7 @@ if ($action === 'add') {
                   ->where('c.id = ?', $commentid)
                   ->fetch();
     if (!$arr) {
-        stderr(_('Error'), 'Invalid ID.');
+        stderr(_('Error'), _('Invalid ID'));
     }
     if ($arr['user'] != $user['id'] && !has_access($user['class'], UC_STAFF, '')) {
         stderr(_('Error'), 'Permission denied.');
@@ -161,7 +161,7 @@ if ($action === 'add') {
 } elseif ($action === 'delete') {
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
-        stderr(_('Error'), 'Invalid ID.');
+        stderr(_('Error'), _('Invalid ID'));
     }
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     if (!$sure) {
@@ -207,14 +207,14 @@ if ($action === 'add') {
     }
     $commentid = (int) $_GET['cid'];
     if (!is_valid_id($commentid)) {
-        stderr(_('Error'), 'Invalid ID.');
+        stderr(_('Error'), _('Invalid ID'));
     }
     $arr = $fluent->from('usercomments')
                   ->where('id = ?', $commentid)
                   ->fetch();
 
     if (!$arr) {
-        stderr(_('Error'), 'Invalid ID');
+        stderr(_('Error'), _('Invalid ID'));
     }
     $HTMLOUT = "
         <h1 class='has-text-centered'>" . _('Original contents of comment ') . "#$commentid</h1>" . main_div("<div class='margin10 bg-02 round10 column'>" . format_comment(htmlsafechars($arr['ori_text'])) . '</div>');

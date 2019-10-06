@@ -9,24 +9,24 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 if (!$lottery_config['enable']) {
-    stderr('Sorry', 'Lottery is closed');
+    stderr(_('Error'), _('Lottery is closed'));
 }
 global $site_config;
 
 $html .= '
-    <div class="margin20 has-text-centered">
-        <h1>' . $site_config['site']['name'] . ' Lottery</h1>
+    <div class="has-text-centered padding20">
+        <h1>' . _fe('{0} Lottery', $site_config['site']['name']) . '</h1>
         <span class="size_4">
-            Started: <b>' . get_date((int) $lottery_config['start_date'], 'LONG') . '</b><br>
-            Ends: <b>' . get_date((int) $lottery_config['end_date'], 'LONG') . "</b><br>
+            Started: ' . get_date((int) $lottery_config['start_date'], 'LONG') . '<br>
+            Ends: ' . get_date((int) $lottery_config['end_date'], 'LONG') . "<br>
             Time Remaining: <span class='has-text-danger'>" . mkprettytime($lottery_config['end_date'] - TIME_NOW) . '</span>
         </span>
     </div>';
-$qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets AS t LEFT JOIN users AS u ON u.id=t.user GROUP BY u.id ORDER BY tickets DESC, username') or sqlerr(__FILE__, __LINE__);
+$qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets AS t LEFT JOIN users AS u ON u.id = t.user GROUP BY u.id ORDER BY tickets DESC, username') or sqlerr(__FILE__, __LINE__);
 $header = $body = '';
 
 if (!mysqli_num_rows($qs)) {
-    $html .= '<h2 class="has-text-centered">No tickets have been purchased!</h2>';
+    $html .= '<div class="has-text-centered size_5 padding20">' . _('No tickets have been purchased!') . '</div>';
     $html = main_div($html);
 } else {
     $header = '

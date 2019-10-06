@@ -72,7 +72,7 @@ $select = $select->where('owner = ?', $user['id'])
 if (!$count) {
     $HTMLOUT .= "
         <h1 class='has-text-centered'>" . _('No torrents') . '</h1>' . main_div("
-        <div class='has-text-centered'>" . _("You haven't uploaded any torrents yet, so there's nothing in this page.") . '</div>', null, 'padding20');
+        <div class='has-text-centered'>" . _("You haven't uploaded any torrents yet.") . '</div>', null, 'padding20');
 } else {
     $pager = pager(20, $count, "{$site_config['paths']['baseurl']}/mytorrents.php?{$pagerlink}");
     $select = $select->limit($pager['pdo']['limit'])
@@ -82,8 +82,9 @@ if (!$count) {
     $HTMLOUT .= torrenttable($select, $user, 'mytorrents');
     $HTMLOUT .= $pager['pagerbottom'];
 }
-$title = _f('Torrents for %s', format_comment($user['username']));
+$title = _('My Torrents');
 $breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
 echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

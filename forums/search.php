@@ -261,10 +261,10 @@ if ($search || $author_id) {
                     $table_body = '
         <tr>
             <td colspan="3">in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _f('Link to %s', 'Forum') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('Link to %s', 'Forum') . '">
                     <span>' . htmlsafechars($arr['forum_name']) . '</span>
                 </a> in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _f('Link to %s', 'Ttopic') . '">
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('Link to %s', 'Ttopic') . '">
                     <span>' . $topic_title . '</span>
                 </a>
             </td>

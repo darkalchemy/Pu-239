@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
     $act = isset($_POST['action']) && in_array($_POST['action'], $valid) ? $_POST['action'] : false;
     if (!$act) {
-        stderr('Error', _('Something went wrong!'));
+        stderr(_('Error'), _('Something went wrong!'));
     }
     global $CURUSER;
 
@@ -66,8 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($act === 'unwarn') {
         $subject = _('Warn removed');
-        $msg = _('Hey, your warning was removed by ') . $CURUSER['username'] . _('
-Please keep in your best behaviour from now on.');
+        $msg = _fe('Hey, your warning was removed by {0}. Please keep in your best behaviour from now on.', $CURUSER['username']);
         global $container;
 
         $cache = $container->get(Cache::class);
@@ -87,7 +86,7 @@ Please keep in your best behaviour from now on.');
 
             $messages_class = $container->get(Message::class);
             $messages_class->insert($msgs_buffer);
-            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . _('Hey, your warning was removed by ') . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . _fe('Hey, your warning was removed by {0}', $CURUSER['username']) . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);
                 stderr(_('Success'), _pf('%1$s user unwarned.', '%1$s users unwarned.', count($msgs_buffer)));
@@ -119,9 +118,9 @@ $HTMLOUT .= "
                 $link
             </li>
         </ul>
-        <h1 class='has-text-centered'>" . _(' total - ') . " $count " . _(' user') . '' . plural($count) . '</h1>';
+        <h1 class='has-text-centered'>" . _pf('total - {0, number} user', 'total - {0, number} users', $count) . '</h1>';
 if ($count == 0) {
-    $HTMLOUT .= stdmsg('', _('There is no ') . strtolower($title));
+    $HTMLOUT .= stdmsg(_('Error'), _fe('There is no {0}', strtolower($title)));
 } else {
     global $site_config;
 
@@ -137,11 +136,11 @@ if ($count == 0) {
         </tr>";
     $body = '';
     while ($a = mysqli_fetch_assoc($g)) {
-        $tip = ($do === 'warned' ? _('Warned for : ') . $a['warn_reason'] . '<br>' . _(' Warned till ') . get_date((int) $a['warned'], 'DATE', 1) . ' - ' . mkprettytime($a['warned'] - $dt) : _('Disabled for ') . $a['disable_reason']);
+        $tip = ($do === 'warned' ? _fe('Warned for: {0}', $a['warn_reason']) . '<br>' . _fe('Warned utill {0} - {1}', get_date((int) $a['warned'], 'DATE', 1), mkprettytime($a['warned'] - $dt)) : _fe('Disabled for {0}', $a['disable_reason']));
         $body .= "
         <tr>
             <td><a href='userdetails.php?id=" . (int) $a['id'] . "' class='tooltipper' title='$tip'>" . htmlsafechars($a['username']) . '</a></td>
-            <td>' . (float) $a['ratio'] . "<br><span class='small'><b>" . _('D:') . '</b>' . mksize($a['downloaded']) . '&#160;<b>' . _('U:') . '</b> ' . mksize($a['uploaded']) . '</span></td>
+            <td>' . (float) $a['ratio'] . "<br><span class='small'><b>" . _('Downloaded') . '</b>' . mksize($a['downloaded']) . '&#160;<b>' . _('Uploaded') . '</b> ' . mksize($a['uploaded']) . '</span></td>
             <td>' . get_user_class_name((int) $a['class']) . '</td>
             <td>' . get_date((int) $a['last_access'], 'LONG', 0, 1) . '</td>
             <td>' . get_date((int) $a['registered'], 'DATE', 1) . "</td>

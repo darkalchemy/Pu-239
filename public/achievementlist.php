@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $user['class'] >= UC_MAX) {
     $clienticon = htmlsafechars($clienticon);
     $achievname = htmlsafechars($achievname);
     sql_query('INSERT INTO achievementist (achievname, notes, clienticon) VALUES(' . sqlesc($achievname) . ', ' . sqlesc($notes) . ', ' . sqlesc($clienticon) . ')') or sqlerr(__FILE__, __LINE__);
-    $message = '' . _('A New achievment has been added') . '. ' . _('Achievement') . ": [{$achievname}]";
+    $message = _('A New achievment has been added') . '. ' . _('Achievement') . ": [{$achievname}]";
     //autoshout($message);
     //$doUpdate = true;
 }
@@ -58,7 +58,7 @@ if ($user['class'] >= UC_MAX) {
                 <td><input class='w-100' type='text' name='achievname'></td>
             </tr>
             <tr>
-                <td>" . _('AchievIcon') . "</td>
+                <td>" . _('Achievement Icon') . "</td>
                 <td><textarea class='w-100' rows='3' name='clienticon'></textarea></td>
             </tr>
             <tr>

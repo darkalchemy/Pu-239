@@ -33,7 +33,7 @@ $HTMLOUT .= main_div('
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20 ">
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
-                ' . bubble('<b>' . _('Invite Code:') . '</b>', _('To search for an invite code, use this box. It will show you who make the code, and who used it!')) . '
+                ' . bubble('<b>' . _('Invite Code') . ':</b>', _('To search for an invite code, use this box. It will show you who make the code, and who used it!')) . '
                 <input type="text" name="invite_code" class="w-100" value="' . $invite_code . '">
                 <div class="has-text-centered top20">
                     <input type="submit" class="button is-small" value="' . _('Search!') . '">
@@ -43,7 +43,7 @@ $HTMLOUT .= main_div('
 $HTMLOUT .= main_div('
         <div class="bg-00 round10 padding20">
             <form method="post" action="' . $_SERVER['PHP_SELF'] . '?tool=mega_search&action=mega_search" accept-charset="utf-8">
-                ' . bubble('<b>' . _('User Names:') . '</b>', _('Use this section to search for multiple usernames. The search is not case sensitive, but you must seperate all usernames with a space! Line breaks are ignored as are any non alpha numeric charecters except - and _')) . '
+                ' . bubble('<b>' . _('User Names') . ':</b>', _('Use this section to search for multiple usernames. The search is not case sensitive, but you must seperate all usernames with a space! Line breaks are ignored as are any non alpha numeric charecters except - and _')) . '
                 <textarea name="user_names" rows="4" class="w-100">' . $user_names . '</textarea>
                 <div class="has-text-centered top20">
                     <input type="submit" class="button is-small" value="' . _('Search!') . '">
@@ -237,7 +237,7 @@ if (isset($_POST['msg_to_analyze'])) {
         }
         if (count($users) > 0) {
             $email = $tested_email_like;
-            $similar_emails .= '<tr><td><h1>' . _f('Emails found using: %s', $tested_email_like) . '</h1>';
+            $similar_emails .= '<tr><td><h1>' . _fe('Emails found using: {0}', $tested_email_like) . '</h1>';
             $number = 1;
             foreach ($users as $arr) {
                 $similar_emails .= "<div class='level-left'>" . str_ireplace($email, '<span class="has-color-lime has-text-weight-bold">' . $email . '</span>', $arr['email']) . ' ' . _('used by') . '<span class="level-left">&nbsp;' . format_username((int) $arr['id']) . '</span></div></td></tr>';
@@ -248,7 +248,7 @@ if (isset($_POST['msg_to_analyze'])) {
     $heading = '    
         <tr>
             <th>
-                <h1>' . _('Search for similar emails:') . '</h1>
+                <h1>' . _('Search for similar emails') . ':</h1>
             </th>
         </tr>';
     $body = $similar_emails;
@@ -286,7 +286,7 @@ if (isset($_POST['msg_to_analyze'])) {
         } else {
             $heading = '
                 <div class="has-text-centered"> 
-                    <h1>' . _('Members who used IP:') . ' ' . $tested_ip . '</h1>
+                    <h1>' . _('Members who used IP') . ': ' . $tested_ip . '</h1>
                 </div>
                 <tr>
                     <th>' . _('Member') . '</th>
@@ -414,7 +414,7 @@ if (isset($_POST['invite_code'])) {
         $heading = '
                 <h1 class="top10 left10">Invite Code Used By:</h1>
                 <tr>
-                    <th>' . _('Invited:') . '</th>
+                    <th>' . _('Invited') . '</th>
                     <th>' . _('Email') . '</th>
                     <th>' . _('IP') . '</th>
                     <th>' . _('Last access') . '</th>

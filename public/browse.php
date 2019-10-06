@@ -370,7 +370,7 @@ require_once PARTIALS_DIR . 'categories.php';
 if ($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
         <div class='has-text-centered margin20'>
-            <a href='{$site_config['paths']['baseurl']}/browse.php?clear_new=1'><input type='submit' value='clear new tag' class='button is-small'></a>
+            <a href='{$site_config['paths']['baseurl']}/browse.php?clear_new=1'><input type='submit' value='" . _('clear new tag') . "' class='button is-small'></a>
         </div>";
 } else {
     $set = [
@@ -490,11 +490,11 @@ $HTMLOUT .= main_div("
                                 <div class='columns'>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>" . _('IMDb ID') . "</div>
-                                        <input name='si' type='text' placeholder='" . _('tt2401097') . "' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
+                                        <input name='si' type='text' placeholder='tt2401097' class='search w-100' value='" . (!empty($_GET['si']) ? $_GET['si'] : '') . "'>
                                     </div>
                                     <div class='column'>
                                         <div class='has-text-centered bottom10'>" . _('ISBN') . "</div>
-                                        <input name='ss' type='text' placeholder='" . _('978-0399501487') . "' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
+                                        <input name='ss' type='text' placeholder='978-0399501487' class='search w-100' value='" . (!empty($_GET['ss']) ? $_GET['ss'] : '') . "'>
                                     </div>
                                 </div>
                             </div>
@@ -536,15 +536,15 @@ if ($count) {
 } else {
     if (isset($cleansearchstr)) {
         $text = "
-                <div class='padding20'>
+                <div class='padding20 has-text-centered'>
                     <h2>" . _('Nothing found!') . '</h2>
-                    <p>' . _('Try again with a refined search string.') . '</p>
+                    <span>' . _('Try again with a refined search string.') . '</span>
                 </div>';
     } else {
         $text = "
-                <div class='padding20'>
+                <div class='padding20 has-text-centered'>
                     <h2>" . _('Nothing here!') . '</h2>
-                    <p>' . _('Sorry pal') . '</p>
+                    <span>' . _('Sorry pal') . '</span>
                 </div>';
     }
     $HTMLOUT .= main_div($text, 'top20 has-text-centered');
@@ -553,4 +553,4 @@ if ($count) {
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

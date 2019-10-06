@@ -108,7 +108,7 @@ switch ($list) {
             }
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'" . _('TVMaze TV Today') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TVMaze may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>" . _('TVMaze TV Today') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TVMaze may be down, check back later') . '</p>', '', 'padding20');
         }
 
         break;

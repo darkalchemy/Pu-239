@@ -37,10 +37,10 @@ if ($action === 'avatar') {
     if (!empty($avatar)) {
         $img_size = @getimagesize($avatar);
         if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-            stderr(_('USER ERROR'), _('Not an image or unsupported image!'));
+            stderr(_('Error'), _('Not an image or unsupported image!'));
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
-            stderr(_('USER ERROR'), _('Image is too small'));
+            stderr(_('Error'), _('Image is too small'));
         }
         sql_query('UPDATE usersachiev SET avatarset = avatarset + 1 WHERE userid = ' . sqlesc($user['id']) . ' AND avatarset = 0') or sqlerr(__FILE__, __LINE__);
     }
@@ -70,10 +70,10 @@ if ($action === 'avatar') {
     if (!empty($signature)) {
         $img_size = @getimagesize($signature);
         if ($img_size == false || !in_array($img_size['mime'], $site_config['images']['extensions'])) {
-            stderr(_('USER ERROR'), _('Not an image or unsupported image!'));
+            stderr(_('Error'), _('Not an image or unsupported image!'));
         }
         if ($img_size[0] < 5 || $img_size[1] < 5) {
-            stderr(_('USER ERROR'), _('Image is too small'));
+            stderr(_('Error'), _('Image is too small'));
         }
         sql_query('UPDATE usersachiev SET sigset = sigset+1 WHERE userid=' . sqlesc($user['id']) . ' AND sigset = 0') or sqlerr(__FILE__, __LINE__);
         $updateset[] = 'signature = ' . sqlesc('[img]' . $signature . "[/img]\n");
@@ -90,22 +90,22 @@ if ($action === 'avatar') {
             stderr(_('Error'), _("The passwords didn't match. Try again."));
         }
         if (empty($_POST['current_pass'])) {
-            stderr(_('Error'), 'Current Password can not be empty!');
+            stderr(_('Error'), _('Current Password can not be empty!'));
         }
         if ($_POST['password'] === $_POST['current_pass']) {
-            stderr(_('Error'), 'New password can not be the same as the old password!');
+            stderr(_('Error'), _('New password can not be the same as the old password!'));
         }
         try {
             $auth->changePassword($_POST['current_pass'], $_POST['password']);
 
             $cache->set('forced_logout_' . $user['id'], TIME_NOW);
-            stderr('Success', 'Password has been changed . You will now be able to login with your new password . ');
+            stderr(_('Success'), _('Password has been changed. You will now be able to login with your new password.'));
         } catch (NotLoggedInException $e) {
-            stderr(_('Error'), 'Not logged in');
+            stderr(_('Error'), _('Not logged in'));
         } catch (InvalidPasswordException $e) {
-            stderr(_('Error'), 'Invalid password');
+            stderr(_('Error'), _('Invalid password'));
         } catch (TooManyRequestsException $e) {
-            stderr(_('Error'), 'Too many requests');
+            stderr(_('Error'), _('Too many requests from your IP'));
         }
     }
 
@@ -192,7 +192,7 @@ if ($action === 'avatar') {
                         $email,
                         getip(),
                         $url,
-                    ], _("<!doctype html>
+                    ], _fe("<!doctype html>
 <html lang='en-US'>
 <head>
     <style>html{visibility: hidden;opacity:0;}</style>
@@ -201,9 +201,9 @@ if ($action === 'avatar') {
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
-    <meta property='og:url' content='http://Pu239.silly'>
+    <meta property='og:url' content='{0}'>
     <meta property='og:type' content='website'>
-    <meta property='og:description' content='Pu239.silly - Crafty'>
+    <meta property='og:description' content='{1}'>
 </head>
 <body>
 <p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
@@ -214,7 +214,7 @@ if ($action === 'avatar') {
 <p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >
 <p> --<#SITENAME#></p>
 </body>
-</html>"));
+</html>", $site_config['paths']['baseurl'], $site_config['site']['name']));
                     send_mail($email, "{$site_config['site']['name']} " . _('profile change confirmation') . '', $body, strip_tags($body));
                 });
                 $session->set('is - info', 'The change will take effect as soon as the new email address has been confirmed');
@@ -234,7 +234,7 @@ if ($action === 'avatar') {
         }
         $dt = TIME_NOW;
         $subject = _('Email Alert');
-        $msg = _('User ') . "[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . '[/b][/url]' . _(' changed email address :') . '' . _(' Old email was ') . '' . htmlsafechars($user['email']) . '' . _(' new email is ') . "$email" . _(', please check this was for a legitimate reason') . '';
+        $msg = _('User ') . "[url={$site_config['paths']['baseurl']}/userdetails.php?id=" . $user['id'] . '][b]' . htmlsafechars($user['username']) . '[/b][/url]' . _(' changed email address :') . _(' Old email was ') . htmlsafechars($user['email']) . _(' new email is ') . "$email" . _(', please check this was for a legitimate reason') . '';
         $pmstaff = $fluent->from('users')
                           ->select(null)
                           ->select('id')

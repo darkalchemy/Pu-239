@@ -20,7 +20,7 @@ $fluent = $container->get(Database::class);
 $id = $color = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 $ips_class = $container->get(IP::class);
 if (isset($_GET['remove'])) {
@@ -53,7 +53,7 @@ $username = htmlsafechars($user['username']);
 $resip = $ips_class->get($id);
 $ipcount = count($resip);
 $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('IP addresses used by ') . '' . format_username((int) $id) . "</h1>
+        <h1 class='has-text-centered'>" . _('IP addresses used by ') . format_username((int) $id) . "</h1>
         <p class='has-text-centered'>" . _('Total Unique IP Addresses') . " <b>$username</b> " . _('Has Logged In With') . " <b><u>$ipcount</u></b>.</p>
         <p class='has-text-centered'>
             <span class='is-blue'>" . _('Single') . "</span> - <span class='has-text-danger'>" . _('Banned') . "</span> - <span class='has-text-success'>" . _('Dupe Used') . '</span>
@@ -142,7 +142,7 @@ foreach ($resip as $iphistory) {
         $seedbox = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>" . _('No') . '</b></span></a>';
         $body .= '
         <tr>
-            <td>' . _('Browse: ') . '' . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . '' . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . '' . get_date((int) $lastannounce, '') . "</td>
+            <td>' . _('Browse: ') . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . get_date((int) $lastannounce, '') . "</td>
             <td>$ipshow</td>
             <td>$host</td>
             <td>$listcity, $listregion<br>$listcountry</td>
@@ -152,10 +152,10 @@ foreach ($resip as $iphistory) {
             <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>" . _('Ban') . '</b></a></td>
         </tr>';
     } else {
-        $seedbox = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='is-success'><b>" . _('yes') . '</b></span></a>';
+        $seedbox = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='is-success'><b>" . _('Yes') . '</b></span></a>';
         $body .= '
         <tr>
-            <td>' . _('Browse: ') . '' . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . '' . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . '' . get_date((int) $lastannounce, '') . "</td>
+            <td>' . _('Browse: ') . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . get_date((int) $lastannounce, '') . "</td>
             <td>$ipshow</td>
             <td>$host</td>
             <td>$listcity, $listregion<br>$listcountry</td>

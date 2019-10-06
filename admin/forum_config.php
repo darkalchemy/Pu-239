@@ -74,34 +74,34 @@ $HTMLOUT .= $main_links . '<form method="post" action="staffpanel.php?tool=forum
             ' . _('Set this to the lowest member class you wish to be able to view deleted posts and threads.') . '<br>' . _('[Implicit - Admin]') . '</td>
         </tr>
         <tr>
-            <td><span class="has-text-weight-bold">' . _('Read post expiration:') . '</span></td>
+            <td><span class="has-text-weight-bold">' . _('Read post expiration') . ':</span></td>
             <td>
             <select name="readpost_expiry"> ' . $time_drop_down . '</select><br>
             ' . _('All postings older than that will be set as read.') . '</td>
         </tr>
         <tr>
-            <td><span class="has-text-weight-bold">' . _('Minimum class load:') . '</span></td>
+            <td><span class="has-text-weight-bold">' . _('Minimum class load') . ':</span></td>
             <td>
             <select name="min_upload_class"> ' . member_class_drop_down($arr['min_upload_class']) . '</select><br>
             ' . _('Set this to the lowest member class you wish to give the right to add attachments to a post.') . '</td>
         </tr>
           <tr>
-            <td><span class="has-text-weight-bold">' . _('Files acceptable extensions:') . '</span>  </td>
+            <td><span class="has-text-weight-bold">' . _('Files acceptable extensions') . ':</span>  </td>
             <td>
             <input name="accepted_file_extension" type="text" class="w-100" maxlength="80" value="' . htmlsafechars((string) $accepted_file_extension) . '"><br>
             ' . _('Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space.') . '</td>
          </tr>
           <tr>
-            <td><span class="has-text-weight-bold">' . _('File types supported:') . '</span>  </td>
+            <td><span class="has-text-weight-bold">' . _('File types supported') . ':</span>  </td>
             <td>
             <input name="accepted_file_types" type="text" class="w-100" value="' . htmlsafechars((string) $accepted_file_types) . '"><br>
             ' . _("Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space") . '</td>
          </tr>
           <tr>
-            <td><span class="has-text-weight-bold">' . _('Maximum File Size:') . '</span>  </td>
+            <td><span class="has-text-weight-bold">' . _('Maximum File Size') . ':</span>  </td>
             <td>
             <input name="max_file_size" type="number" class="w-100" value="' . (int) $arr['max_file_size'] . '"><br>
-            ' . _('The default setting-2 MBs, is currently set to: ') . '' . mksize($arr['max_file_size']) . '.</td>
+            ' . _('The default setting-2 MBs, is currently set to: ') . mksize($arr['max_file_size']) . '.</td>
          </tr>
         <tr>
             <td colspan="2" class="has-text-centered">

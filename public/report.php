@@ -26,7 +26,7 @@ $stdfoot = [
 $HTMLOUT = $id_2 = '';
 
 if (!$site_config['staff']['reports']) {
-    stderr(_('Error'), 'The report system is offline');
+    stderr(_('Error'), _('The report system is offline'));
 }
 $id = !empty($_GET['id']) ? (int) $_GET['id'] : (!empty($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
@@ -45,14 +45,14 @@ $typesallowed = [
     'Post',
 ];
 if (!in_array($type, $typesallowed)) {
-    stderr(_('Error'), _("What you are trying to report doesn't exist!"));
+    stderr(_('Error'), _('Invalid action'));
 }
 if (isset($_POST['do_it'])) {
     $id = !empty($_POST['id']) ? (int) $_POST['id'] : 0;
     $id_2 = !empty($_POST['id_2']) ? (int) $_POST['id_2'] : 0;
     $do_it = !empty($_POST['do_it']) ? (int) $_POST['do_it'] : 0;
     if (!is_valid_id($do_it)) {
-        stderr(_('Error'), _('I smell a rat!'));
+        stderr(_('Error'), _('Invalid data'));
     }
 
     $reason = !empty($_POST['body']) ? htmlsafechars($_POST['body']) : '';
@@ -69,7 +69,7 @@ if (isset($_POST['do_it'])) {
                        ->fetch('id');
 
     if (!empty($previous)) {
-        stderr(_('Report Failure!'), '' . _('You have already reported') . ' <b>' . str_replace('_', ' ', $type) . '</b> ' . _('with id:') . " <b>$id</b>!");
+        stderr(_('Report Failure!'), _fe('You have already reported: {0} with id: {1}!', str_replace('_', ' ', $type), $id));
     }
 
     $values = [
@@ -87,16 +87,16 @@ if (isset($_POST['do_it'])) {
     $cache = $container->get(Cache::class);
     $cache->delete('new_report_');
     $session = $container->get(Session::class);
-    $session->set('is-success', str_replace('_', ' ', $type) . ' ' . _('with id:') . " {$id} report sent.");
+    $session->set('is-success', _fe('{0} with id: {1} report sent.', str_replace('_', ' ', $type), $id));
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
 
 $HTMLOUT .= main_div("
     <form method='post' action='{$site_config['paths']['baseurl']}/report.php' enctype='multipart/form-data' accept-charset='utf-8'>
-    <h1>Report: " . str_replace('_', ' ', $type) . '</h1>
-        ' . _('Are you sure you would like to report') . ' <b>' . str_replace('_', ' ', $type) . '</b> ' . _('with id:') . " <b>$id</b> " . _('to the Staff for violation of the') . " <a class='is-link' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>" . _('rules') . "</a>?</td></tr>
-        <p class='top10'><b>" . _('Reason:') . '</b></p>' . BBcode('', 'w-100', 200) . "
+    <h1>" . _('Report') . ': ' . str_replace('_', ' ', $type) . '</h1>
+        ' . _fe('Are you sure you would like to report {0} with id {1} to the Staff for violation of the {2}rules{3}?', str_replace('_', ' ', $type), $id, "<a class='is-link' href='{$site_config['paths']['baseurl']}/rules.php' target='_blank'>", '</a>') . "</td></tr>
+        <p class='top10'><b>" . _('Reason') . ': </b></p>' . BBcode('', 'w-100', 200) . "
         <input type='hidden' name='id' value='$id'>
         <input type='hidden' name='type' value='$type'>
         <input type='hidden' name='do_it' value='1'>

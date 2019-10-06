@@ -30,20 +30,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'password' => $password,
         ];
         if ($user_class->reset_password($details, true)) {
-            write_log(_('Password reset for ') . $username . _(' by ') . htmlsafechars($CURUSER['username']));
-            stderr(_('Success'), _('The password for account ') . ' <b>' . $username . '</b>' . _(' is now ') . '<b>' . format_comment($password) . '</b>.');
+            write_log(_fe('Password reset for {0} by {1}', $username, htmlsafechars($CURUSER['username'])));
+            stderr(_('Success'), _fe('The password for account {0} is now {1}', $username, format_comment($password)) . '</b>.');
         } else {
-            stderr(_('Error'), 'Password reset failed.');
+            stderr(_('Error'), _('Password reset failed.'));
         }
     });
 }
 $body = '
     <tr>
-        <td>' . _('ID: ') . "</td>
+        <td>' . _('ID') . ": </td>
         <td><input type='number' name='uid' size='10' value='$userid' class='w-100'></td>
     </tr>
     <tr>
-        <td>" . _('Username') . "</td>
+        <td>" . _('Username') . ": </td>
         <td><input name='username' value='$username' class='w-100'></td>
     </tr>
     <tr>

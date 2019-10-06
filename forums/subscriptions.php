@@ -17,9 +17,8 @@ $count = $fluent->from('subscriptions')
 if ($count === 0) {
     $HTMLOUT .= main_div("
         <h1 class='has-text-centered'>" . _('No Subscriptions Found') . '!</h1>
-        <p>' . _('You are not yet subscribed to any forums... To subscribe to a forum, click the') . ' ' . _('Subscribe to this Forum') . ' ' . _('link on the thread page') . '.</p>
-		<p>' . _('To be notified via PM when there is a new post, go to your') . " <a class='is-link has-text-success' href='usercp.php?action=default'>" . _('profile') . '</a>
-		' . _('page and set') . ' ' . _('PM on Subscriptions') . ' ' . _('to yes') . '.</p>', '', 'padding20');
+        <p>' . _("You are not yet subscribed to any forums... To subscribe to a forum, click the 'Subscribe to this Forum' link on the thread page") . '.</p>
+		<p>' . _fe("To be notified via PM when there is a new post, go to your {0}profile{1} page and set 'PM on Subscriptions' to yes.", "<a class='is-link has-text-success' href='usercp.php?action=default'>", '</a>') . '</p>', '', 'padding20');
 
     return;
 }
@@ -43,15 +42,15 @@ while ($topic_arr = mysqli_fetch_assoc($res)) {
     $first_post_arr = mysqli_fetch_assoc($first_post_res);
     if ($topic_arr['tan'] === '1') {
         if ($CURUSER['class'] < UC_STAFF && $first_post_arr['user_id'] != $CURUSER['id']) {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i>' : _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         } else {
-            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username((int) $first_post_arr['id']) . ']' : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+            $thread_starter = (!empty($first_post_arr['username']) ? '<i>' . get_anonymous_name() . '</i> [' . format_username((int) $first_post_arr['id']) . ']' : _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
         }
     } else {
-        $thread_starter = (!empty($first_post_arr['username']) ? format_username((int) $first_post_arr['id']) : '' . _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
+        $thread_starter = (!empty($first_post_arr['username']) ? format_username((int) $first_post_arr['id']) : _('Lost') . ' [' . (int) $first_post_arr['id'] . ']') . '<br>' . get_date((int) $first_post_arr['added'], '');
     }
     $icon = (empty($first_post_arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" class="icon tooltipper" alt="' . _('Topic') . '" title="' . _('Topic') . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($first_post_arr['icon']) . '.gif" class="icon tooltipper" alt="' . htmlsafechars($first_post_arr['icon']) . '" title="' . htmlsafechars($first_post_arr['icon']) . '">');
-    $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($first_post_arr['body'], true, true, false), '' . _('First Post') . ' ' . _('Preview') . '');
+    $first_post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", format_comment($first_post_arr['body'], true, true, false), _('First Post') . ' ' . _('Preview') . '');
     $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
     $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
     $did_i_post_here = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);

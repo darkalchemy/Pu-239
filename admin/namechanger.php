@@ -32,7 +32,7 @@ if (isset($mode) && $mode == 'change') {
             'username' => $uname,
         ], $site_config['expires']['user_cache']);
         $added = TIME_NOW;
-        $changed = sqlesc('' . _('Your Username Has Been Changed To') . " $uname");
+        $changed = sqlesc(_('Your Username Has Been Changed To') . " $uname");
         $subject = sqlesc(_('Username changed'));
         if (!$change) {
             if (((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {

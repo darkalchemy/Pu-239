@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fail = false;
     $tickets = isset($_POST['tickets']) ? (int) $_POST['tickets'] : '';
     if (!$tickets) {
-        $session->set('is-warning', "How many tickets you wanna buy? [{$_POST['tickets']}]");
+        $session->set('is-warning', _fe('How many tickets you wanna buy? [{0}]', $_POST['tickets']));
         $fail = true;
     } elseif ($tickets <= 0) {
-        $session->set('is-warning', "You can't buy a negative quantity? [{$_POST['tickets']}]");
+        $session->set('is-warning', _fe("You can't buy a negative quantity? [{0}]", $_POST['tickets']));
         $fail = true;
     }
     $fluent = $container->get(Database::class);
@@ -33,10 +33,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                            ->fetch('count');
 
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
-        $session->set('is-warning', 'You reached your limit max is ' . $lottery_config['user_tickets'] . ' ticket(s)');
+        $session->set('is-warning', _pfe('You reached your limit. The max is {0, number} ticket.', 'You reached your limit. The max is {0, number} tickets.', $lottery_config['user_tickets']));
         $fail = true;
     } elseif ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
-        $session->set('is-warning', 'You need more points to buy the amount of tickets you want');
+        $session->set('is-warning', _('You need more points to buy the amount of tickets you want'));
         $fail = true;
     }
     $t = [];
@@ -51,22 +51,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
-            $session->set('is-success', 'You bought [b]' . number_format($tickets) . '[/b]. You now have [b]' . number_format($tickets + $user_tickets) . '[/b] tickets!');
+            $session->set('is-success', _pfe('You bought {0} ticket.', 'You bought {0} tickets.', number_format($tickets)) . ' ' . _pfe('You now have {0, number} ticket!', 'You now have {0, number} tickets!', number_format($tickets + $user_tickets)));
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($CURUSER['class']);
-                $link = "[url={$site_config['paths']['baseurl']}/lottery.php]Lottery[/url]";
-                $end = random_int(0, 5) == 1 ? 'Sucker!' : 'Excellent!';
-                $msg = "[color=#$classColor][b]" . format_comment($CURUSER['username']) . "[/b][/color] has just bought $tickets $link Ticket" . plural($tickets) . "!! $end";
+                $msg = _pfe('{1} has just bought {2}{0, number} Lottery Ticket!{3} GOOD LUCK!', '{1} has just bought {2}{0, number} Lottery Tickets!{3} GOOD LUCK!', $tickets, "[color=#$classColor]" . format_comment($CURUSER['username']) . '[/color]', "[url={$site_config['paths']['baseurl']}/lottery.php]", '[/url]');
                 autoshout($msg);
             }
         } else {
-            $session->set('is-warning', 'There was an error with the update query, mysql error: ' . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $session->set('is-warning', _('There was an error with the update query.'));
         }
     }
 }
 $classes_allowed = (strpos($lottery_config['class_allowed'], '|') ? explode('|', $lottery_config['class_allowed']) : $lottery_config['class_allowed']);
 if (!(is_array($classes_allowed) ? in_array($CURUSER['class'], $classes_allowed) : $CURUSER['class'] == $classes_allowed)) {
-    $session->set('is-danger', 'Your class is not allowed to play in this lottery');
+    $session->set('is-danger', _('Your class is not allowed to play in this lottery'));
     header('Location: ' . $site_config['paths']['baseurl']);
     die();
 }
@@ -104,54 +102,54 @@ if ($CURUSER['seedbonus'] < ($lottery['current_user']['could_buy'] * $lottery_co
 if (time() > $lottery_config['end_date'] || $lottery_config['user_tickets'] <= $lottery['current_user']['total_tickets']) {
     $lottery['current_user']['can_buy'] = 0;
 }
-$html .= "
-        <h1 class='has-text-centered'>{$site_config['site']['name']} Lottery</h1>";
+$html = "
+        <h1 class='has-text-centered'>" . _fe('{0} Lottery', $site_config['site']['name']) . '</h1>';
 $body = "
-                <ul class='padding20'>
-                    <li>Tickets are non-refundable</li>
-                    <li>Each ticket costs <b>" . number_format((int) $lottery_config['ticket_amount']) . '</b> Karma Bonus Points, which is taken from your seedbonus amount</li>
-                    <li>Purchaseable shows how many tickets you can afford to purchase.</li>
-                    <li>You can only buy up to your purchaseable amount.</li>
-                    <li>The competiton will end: <b>' . get_date((int) $lottery_config['end_date'], 'LONG') . '</b></li>
-                    <li>There will be <b>' . $lottery_config['total_winners'] . '</b> winner(s) who will be picked at random.</li>
-                    <li>Winner(s) will get <b>' . number_format($lottery['per_user']) . '</b> added to their seedbonus amount</li>
-                    <li>The Winners will be announced once the lottery has closed and posted on the home page.</li>';
+                <ul class='padding20 disc left20'>
+                    <li>" . _('Tickets are non-refundable') . '</li>
+                    <li>' . _fe('Each ticket costs {0} Karma Bonus Points, which is taken from your seedbonus amount.', number_format((int) $lottery_config['ticket_amount'])) . '</li>
+                    <li>' . _('Purchaseable shows how many tickets you can afford to purchase.') . '</li>
+                    <li>' . _('You can only buy up to your purchaseable amount.') . '</li>
+                    <li>' . _fe('The competiton will end: {0}', get_date((int) $lottery_config['end_date'], 'LONG')) . '</li>
+                    <li>' . _pfe('There will be {0, number} winner, picked at random.', 'There will be {0, number} winners, picked at random.', $lottery_config['total_winners']) . '</li>
+                    <li>' . _pfe('The winner will get {0} will get {1} added to their seedbonus amount', 'The winners will get {0} added to their seedbonus amount', number_format($lottery['per_user'])) . '</li>
+                    <li>' . _('The Winners will be announced once the lottery has closed and posted on the home page.') . '</li>';
 if (!$lottery_config['use_prize_fund']) {
     $body .= '
-                    <li>The more tickets that are sold the bigger the pot will be !</li>';
+                    <li>' . _('The more tickets that are sold the bigger the pot will be!') . '</li>';
 }
 if (!empty($lottery['current_user']['tickets']) && count($lottery['current_user']['tickets'])) {
     $body .= '
-                    <li>You own ticket numbers : <b>' . implode('</b>, <b>', $lottery['current_user']['tickets']) . '</b></li>';
+                    <li>' . _fe('You own ticket numbers: {0}', implode(', ', $lottery['current_user']['tickets'])) . '</li>';
 }
 $body .= '
                 </ul>';
 $table = '
             <tr>
-                <td>Total Pot</td>
+                <td>' . _('Total Pot') . '</td>
                 <td>' . number_format((int) $lottery['total_pot']) . '</td>
             </tr>
             <tr>
-                <td>Total Tickets Purchased</td>
-                <td>' . number_format((int) $lottery['total_tickets']) . ' Tickets</td>
+                <td>' . _('Total Tickets Purchased') . '</td>
+                <td>' . _pf('%d Ticket', '%d Tickets', number_format((int) $lottery['total_tickets'])) . '</td>
             </tr>
             <tr>
-                <td>Tickets Purchased by You</td>
-                <td>' . number_format((int) $lottery['current_user']['total_tickets']) . ' Tickets</td>
+                <td>' . _('Tickets Purchased by You') . '</td>
+                <td>' . _pf('%d Ticket', '%d Tickets', number_format((int) $lottery['current_user']['total_tickets'])) . '</td>
             </tr>
             <tr>
-                <td>Purchaseable</td>
-                <td>' . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? 'you have points for <b>' . number_format((int) $lottery['current_user']['can_buy']) . '</b> ticket(s) but you can buy another <b>' . ($lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) . '</b> ticket(s) if you get more bonus points' : number_format($lottery['current_user']['can_buy'])) . '</td>
+                <td>' . _('Purchaseable') . '</td>
+                <td>' . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? _pf('You have enough points for %d ticket.', 'You have enough points for %d tickets.', number_format((int) $lottery['current_user']['can_buy'])) . ' ' . _pf('You can buy another %d ticket if you get get more bonus points.', 'You can buy another %d tickets if you get get more bonus points.', $lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) : number_format($lottery['current_user']['can_buy'])) . '</td>
             </tr>';
 
-$html .= main_div($body) . main_table($table, '', 'top20');
+$html = main_div($body) . main_table($table, '', 'top20');
 if ($lottery['current_user']['can_buy'] > 0) {
     $available = $lottery['current_user']['could_buy'] < $lottery['current_user']['can_buy'] ? $lottery['current_user']['could_buy'] : $lottery['current_user']['can_buy'];
     $html .= "
         <form action='lottery.php?action=tickets' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered margin20'>
-                <input type='number' min='0' max='$available' name='tickets'>
-                <input type='submit' value='Buy tickets' class='button is-small'>
+                <input type='number' min='0' max='$available' name='tickets' value='1' required>
+                <input type='submit' value='Buy tickets' class='button is-small left10'>
             </div>
         </form>";
 }

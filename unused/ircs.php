@@ -34,7 +34,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         $res = sql_query("SELECT * FROM users WHERE $query ORDER BY username") or sqlerr(__FILE__, __LINE__);
         $num = mysqli_num_rows($res);
         if ($num < 1) {
-            echo $search . ' - No such user, please try again.';
+            echo $search . ' - ' . _('No such user, please try again.');
         }
         if ($num > 0) {
             $arr = mysqli_fetch_assoc($res);
@@ -91,10 +91,10 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         $nnewname = mysqli_fetch_assoc($res2);
         $who = isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '';
         if ($nsetusername < 1) {
-            echo $who . ' - No such user or is staff, please try again.';
+            echo $who . ' - ' . _('No such user or is staff, please try again.');
         } else {
             if ($nnewname) {
-                echo $newname . ' - Is taken, please try again.';
+                echo $newname . ' - ' . ('Is taken, please try again.');
             } else {
                 $modd = isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '';
                 $newusername = isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '';
@@ -149,7 +149,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $nbonus = mysqli_fetch_assoc($res);
             $who = isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '';
             if ($nbonus < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = isset($_GET['amount']) ? (int) ($_GET['amount']) : '';
@@ -168,7 +168,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res3 = sql_query("SELECT id, invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $ninvites = mysqli_fetch_assoc($res3);
             if ($ninvites < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldinvites = (int) $ninvites['invites'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : '';
@@ -187,7 +187,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res5 = sql_query("SELECT id, freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $nfreeslots = mysqli_fetch_assoc($res5);
             if ($nfreeslots < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldfreeslots = (int) $nfreeslots['freeslots'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : 0;
@@ -206,7 +206,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res3 = sql_query("SELECT id, reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $nreputation = mysqli_fetch_assoc($res3);
             if ($nreputation < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldreputation = (int) $nreputation['reputation'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : 0;
@@ -227,7 +227,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $nbonus = mysqli_fetch_assoc($res);
             $who = isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '';
             if ($nbonus < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldbonus = $nbonus['seedbonus'];
                 $amount = isset($_GET['amount']) ? number_format((int) $_GET['amount']) : 0;
@@ -246,7 +246,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res3 = sql_query("SELECT id, invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $ninvites = mysqli_fetch_assoc($res3);
             if ($ninvites < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldinvites = (int) $ninvites['invites'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : 0;
@@ -265,7 +265,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res5 = sql_query("SELECT id, freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $nfreeslots = mysqli_fetch_assoc($res5);
             if ($nfreeslots < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldfreeslots = (int) $nfreeslots['freeslots'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : 0;
@@ -284,7 +284,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res5 = sql_query("SELECT id, reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $nreputation = mysqli_fetch_assoc($res5);
             if ($nreputation < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $oldreputation = (int) $nreputation['reputation'];
                 $amount = isset($_GET['amount']) && $_GET['amount'] > 0 ? (int) $_GET['amount'] : 0;
@@ -311,7 +311,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res99 = sql_query("SELECT id, seedbonus FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $whombonus = mysqli_fetch_assoc($res99);
             if ($whombonus < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $meoldbonus = $mebonus['seedbonus'];
                 $whomoldbonus = $whombonus['seedbonus'];
@@ -346,7 +346,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res99 = sql_query("SELECT id, freeslots FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $whomfreeslots = mysqli_fetch_assoc($res99);
             if ($whomfreeslots < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $meoldfreeslots = $mefreeslots['freeslots'];
                 $whomoldfreeslots = $whomfreeslots['freeslots'];
@@ -381,7 +381,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res99 = sql_query("SELECT id, reputation FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $whomreputation = mysqli_fetch_assoc($res99);
             if ($whomreputation < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $meoldreputation = $mereputation['reputation'];
                 $whomoldreputation = $whomreputation['reputation'];
@@ -416,7 +416,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             $res99 = sql_query("SELECT id, invites FROM users WHERE username = $whom LIMIT 1") or sqlerr(__FILE__, __LINE__);
             $whominvites = mysqli_fetch_assoc($res99);
             if ($whominvites < 1) {
-                echo $who . ' - No such user, please try again.';
+                echo $who . ' - ' . _('No such user, please try again.');
             } else {
                 $meoldinvites = $meinvites['invites'];
                 $whomoldinvites = $whominvites['invites'];

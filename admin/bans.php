@@ -34,8 +34,8 @@ if ($remove > 0) {
         $fluent->deleteFrom('bans')
                ->where('id = ?', $remove)
                ->execute();
-        write_log(_f('Ban %1$s was removed by %2$s', $remove, $CURUSER['username']));
-        $session->set('is-success', "IPS: {$res['first']} to {$res['last']} removed");
+        write_log(_fe('Ban {0} was removed by {1}', $remove, $CURUSER['username']));
+        $session->set('is-success', _fe('IPS: {0} to {1} were removed', $res['first'], $res['last']));
         unset($_GET);
     }
 }
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
         stderr(_('Error'), _('Missing form data.'));
     }
     if (!validip($first) || !validip($last)) {
-        stderr(_('Error'), _('Bad IP address.'));
+        stderr(_('Error'), _('Invalid IP address.'));
     }
     $added = TIME_NOW;
     for ($i = $first; $i <= $last; ++$i) {

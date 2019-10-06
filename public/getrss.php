@@ -46,11 +46,11 @@ require_once PARTIALS_DIR . 'categories.php';
 $HTMLOUT .= main_div("
         <div class='padding20'>
             <ul class='level-center'>
-                <li class='has-text-centered w-25 tooltipper' title='Returns only Bookmarked Torrents'>
+                <li class='has-text-centered w-25 tooltipper' title='" . _('Returns only Bookmarked Torrents') . ">
                     <label for='bm'>" . _('Bookmarked Torrents') . "<br>
                         <select id='bm' name='bm' class='top10 w-100'>
                             <option value='0'>" . _('No') . "</option>
-                            <option value='1'>" . _('Yes - Only bookmarked torrents') . "</option>
+                            <option value='1'>" . _('Yes') . "</option>
                         </select>
                     </label>
                 </li>
@@ -62,7 +62,7 @@ $HTMLOUT .= main_div("
                         </select>
                     </label>
                 </li>
-                <li class='has-text-centered w-25 tooltipper' title='" . _('How many results should be returned in the RSS feed?') . ">
+                <li class='has-text-centered w-25 tooltipper' title='" . _('How many results should be returned in the RSS feed?') . "'>
                     <label for='count'>" . _('Results in Feed') . "<br>
                         <select id='count' name='count' class='top10 w-100'>
                             <option value='15'>15</option>

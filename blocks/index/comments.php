@@ -19,14 +19,14 @@ $posted_comments .= "
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='w-1 has-text-centered w-10'>Type</th>
-                            <th class='w-50 min-150'>Latest Comments</th>
-                            <th class='w-1 has-text-centered'>User</th>
-                            <th class='w-1 has-text-centered'>When</th>
-                            <th class='w-1 has-text-centered'>Likes</th>
+                            <th class='w-1 has-text-centered w-10'>" . _('Type') . "</th>
+                            <th class='w-50 min-150'>" . _('Latest Comments') . "</th>
+                            <th class='w-1 has-text-centered'>" . _('User') . "</th>
+                            <th class='w-1 has-text-centered'>" . _('When') . "</th>
+                            <th class='w-1 has-text-centered'>" . _('Likes') . '</th>
                         </tr>
                     </thead>
-                    <tbody>";
+                    <tbody>';
 
 $images_class = $container->get(Image::class);
 $users_class = $container->get(User::class);

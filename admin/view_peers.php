@@ -21,7 +21,7 @@ $count = $peer->get_count();
 $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>" . _('Site Peers') . "</h1>
-    <div class='size_4 has-text-centered margin20'>" . _p('There is %1$d peer currently on the tracker', 'There are %1$d peers currently on the tracker', $count) . '</div>';
+    <div class='size_4 has-text-centered margin20'>" . _pfe('There is {0, number} peer currently on the tracker', 'There are {0, number} peers currently on the tracker', $count) . '</div>';
 $valid_sort = [
     'id',
     'userid',
@@ -45,8 +45,8 @@ $column = isset($_GET['sort'], $valid_sort[$_GET['sort']]) ? $valid_sort[$_GET['
 if (isset($_GET['delete']) && is_valid_id((int) $_GET['delete'])) {
     $fluent = $container->get(Database::class);
     $fluent->deleteFrom('peers')
-        ->where('id = ?', (int) $_GET['delete'])
-        ->execute();
+           ->where('id = ?', (int) $_GET['delete'])
+           ->execute();
     $session = $container->get(Session::class);
     $session->set('is-success', 'Peer ' . $_GET['delete'] . ' has been deleted.');
 }
@@ -130,7 +130,7 @@ if (!empty($results)) {
 
     $HTMLOUT .= main_table($body, $heading);
 } else {
-    $HTMLOUT .= stderr(_('Error'), _('No peers found'), 'bottom20');
+    stderr(_('Error'), _('No peers found'), 'bottom20');
 }
 if ($count > $peersperpage) {
     $HTMLOUT .= $pager['pagerbottom'];

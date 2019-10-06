@@ -21,15 +21,15 @@ global $container, $site_config;
 $fluent = $container->get(Database::class);
 $poll_data = $fluent->from('polls')
                     ->where('polls.pid = ?', $poll_id)
-                    ->leftJoin('poll_voters ON polls.pid=poll_voters.poll_id AND poll_voters.user_id = ?', $user['id'])
+                    ->leftJoin('poll_voters ON polls.pid = poll_voters.poll_id AND poll_voters.user_id = ?', $user['id'])
                     ->fetch();
 
 if (empty($poll_data)) {
-    stderr(_('Error'), 'No poll with that ID');
+    stderr(_('Error'), _('Invalid ID'));
 }
 
 if (!empty($poll_data['user_id'])) {
-    stderr(_('Error'), 'You have already voted!');
+    stderr(_('Error'), _('You have already voted!'));
 }
 $_POST['nullvote'] = isset($_POST['nullvote']) ? $_POST['nullvote'] : 0;
 $pollvoter_class = $container->get(PollVoter::class);
@@ -61,7 +61,7 @@ if (!$_POST['nullvote']) {
     ];
     $vid = $pollvoter_class->add($values);
     if (!$vid) {
-        stderr(_('Error'), 'Could not update records');
+        stderr(_('Error'), _('Could not update records'));
     }
     foreach ($vote_cast as $question_id => $choice_array) {
         foreach ($choice_array as $choice_id) {
@@ -93,7 +93,7 @@ if (!$_POST['nullvote']) {
                      ->execute();
 
     if (!$result) {
-        stderr(_('Error'), 'Could not update records');
+        stderr(_('Error'), _('Could not update records'));
     }
 } else {
     $values = [
@@ -110,7 +110,7 @@ if (!$_POST['nullvote']) {
     ], $site_config['expires']['poll_data']);
 
     if (!$vid) {
-        stderr(_('Error'), 'Could not update records');
+        stderr(_('Error'), _('Could not update records'));
     }
 }
 header("location: {$site_config['paths']['baseurl']}/#poll");

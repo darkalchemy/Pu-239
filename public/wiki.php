@@ -280,7 +280,7 @@ if ($action === 'add') {
         </div>';
         $HTMLOUT .= main_div($div);
     } else {
-        $HTMLOUT .= navmenu() . stdmsg(_('Error'), '' . _('No articles starting with letter ') . '<b> ' . format_comment($letter) . ' </b> found.');
+        $HTMLOUT .= navmenu() . stdmsg(_('Error'), _('No articles starting with letter ') . '<b> ' . format_comment($letter) . ' </b> found.');
     }
 }
 $HTMLOUT .= '</div>';

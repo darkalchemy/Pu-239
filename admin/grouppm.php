@@ -71,12 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     case 'fls':
                         $where[] = "u.support='yes'";
-                        $sent2classes[] = '' . _('First line support') . '';
+                        $sent2classes[] = _('First line support');
                         break;
 
                     case 'donor':
                         $where[] = "u.donor = 'yes'";
-                        $sent2classes[] = '' . _('Donors') . '';
+                        $sent2classes[] = _('Donors');
                         break;
 
                     case 'all_friends':
@@ -107,8 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $ids = array_unique($ids);
         if (count($ids) > 0) {
-            $msg .= '[class=top20][p]' . _('
-This message was set to the following class(es)') . ' ' . implode(', ', $sent2classes) . '[/p][/class]';
+            $msg .= '[class=top20][p]' . _pfe('This message was set to the following class: {1}', 'This message was set to the following classes: {1}', count($sent2classes), implode(', ', $sent2classes)) . '[/p][/class]';
             foreach ($ids as $rid) {
                 $msgs_buffer[] = [
                     'sender' => $sender,
@@ -121,7 +120,7 @@ This message was set to the following class(es)') . ' ' . implode(', ', $sent2cl
             }
             $messages_class = $container->get(Message::class);
             $r = $messages_class->insert($msgs_buffer);
-            $err[] = $r ? _('Message sent') . ' to ' . count($msgs_buffer) . ' users' : _('Unable to send the message try again!');
+            $err[] = $r ? _pfe('Message sent to {0, number} user', 'Message sent to {0, number} users', count($msgs_buffer)) : _('Unable to send the message try again!');
         } else {
             $err[] = _('There are not any users in the groups you selected!');
         }

@@ -9,10 +9,19 @@ require_once INCL_DIR . 'function_users.php';
 $user = check_user_status();
 global $container, $site_config;
 
-$res = sql_query('SELECT COUNT(id) FROM users WHERE status = 0 AND invitedby = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_row($res);
-$invitedcount = $arr['0'];
-sql_query('UPDATE usersachiev SET invited = ' . sqlesc($invitedcount) . ' WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
+$fluent = $container->get(\Pu239\Database::class);
+$invitedcount = $fluent->from('users')
+                       ->select(null)
+                       ->select('COUNT(id) AS count')
+                       ->where('status = 0')
+                       ->where('invitedby = ?', $user['id'])
+                       ->fetch('count');
+
+$usersachiev = $container->get(\Pu239\Usersachiev::class);
+$update = [
+    'invited' => $invitedcount,
+];
+$usersachiev->update($update, $user['id']);
 $session = $container->get(Session::class);
-$session->set('is-success', "Your invited count has been updated! [{$invitedcount}]");
+$session->set('is-success', _fe('Your invited count has been updated! [{0}]', $invitedcount));
 header("Location: {$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}");

@@ -25,11 +25,9 @@ if ($mailbox > 1) {
     $mailbox_name = format_comment($arr_box_name);
     $other_box_info = '
         <div class="has-text-centered top20">
-            <span class="has-text-danger">' . _('***') . '</span>
-            <span class="has-text-weight-bold right10">' . _('please note:') . '</span>' . _('you have a max of ') . '
-            <span class="has-text-weight-bold">' . $maxbox . '</span>' . _(' PMs for all mail boxes that are not ') . '
-            <span class="has-text-weight-bold">' . _('sentbox') . '.</span>
-            <span class="has-text-danger">' . _('***') . '</span>
+            <span class="has-text-danger">***</span>
+            <span class="right10 left10">' . _fe("please note: you have a maximum of {0} PM's for all mail boxes that are not sentbox.", $maxbox) . '</span>
+            <span class="has-text-danger">***</span>
         </div>';
 }
 
@@ -48,7 +46,7 @@ $HTMLOUT .= "
         <div class='level-center-center'>
             <span class='size_2'>{$total_count} / {$maxbox}</span>
             <span class='size_7 left20 right20 has-text-weight-bold'>{$mailbox_name}</span>
-            <span class='size_2'>" . _pf('[ {0}% full ]', $num_messages) . "</span>
+            <span class='size_2'>" . _fe('[ {0}% full ]', $num_messages) . "</span>
          </div>
         <div class='margin20'>$mailbox_pic</div>" . insertJumpTo($mailbox, $user['id']) . $other_box_info . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='{$site_config['paths']['baseurl']}/messages.php' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>
@@ -111,7 +109,7 @@ if (empty($messages)) {
         $subject = !empty($row['subject']) ? format_comment($row['subject']) : _('No Subject');
         $who_sent_it = $row['id'] === 0 || $row['id'] === 2 ? '<span style="font-weight: bold;">' . _('System') . '</span>' : format_username((int) $row['id']) . $friends;
         $read_unread = $row['unread'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'pn_inboxnew.gif" title="' . _('Unread Message') . '" alt="' . _('Unread') . '">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'pn_inbox.gif" title="' . _('Read Message') . '" alt="' . _('Read') . '">';
-        $extra = ($row['unread'] === 'yes' ? _(' [ ') . '<span style="color: red;">' . _('Unread') . '</span>' . _(' ] ') : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . _('URGENT!') . '</span>' : '');
+        $extra = ($row['unread'] === 'yes' ? '[ <span style="color: red;">' . _('Unread') . '</span> ]' : '') . ($row['urgent'] === 'yes' ? '<span style="color: red;">' . _('URGENT!') . '</span>' : '');
         $avatar = $show_pm_avatar ? get_avatar($row) : '';
         $HTMLOUT .= '
                 <tr>

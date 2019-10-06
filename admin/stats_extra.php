@@ -216,7 +216,7 @@ function show_views(array $inbound, array $month_names)
         "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
         "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
     ];
-    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
+    echo stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -396,7 +396,7 @@ function result_screen(string $mode, array $inbound, array $month_names)
         "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
         "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
     ];
-    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
+    echo stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**
@@ -516,7 +516,7 @@ function main_screen($mode)
         "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
         "<a href='{$_SERVER['PHP_SELF']}'>$page_title</a>",
     ];
-    stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
+    echo stdhead($page_title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
 }
 
 /**

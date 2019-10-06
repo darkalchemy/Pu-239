@@ -76,7 +76,7 @@ if (isset($data['action'])) {
             $comment = $comment_class->get_comment_by_id($cid);
             $offer = $offer_class->get($comment['offer'], false);
             $edit_form = "
-                <h2 class='has-text-centered'>" . _('Editing a comment for :') . '' . htmlsafechars($offer['name']) . "</h2>
+                <h2 class='has-text-centered'>" . _('Editing a comment for') . ': ' . format_comment($offer['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/offers.php?action=edit_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$comment['offer']}'>
                     <input type='hidden' name='cid' value='{$comment['id']}'>
@@ -101,7 +101,7 @@ if (isset($data['action'])) {
             $id = isset($data['id']) ? (int) $data['id'] : 0;
             $offer = $offer_class->get($id, false);
             $edit_form = "
-                <h2 class='has-text-centered'>" . _('Add Comment') . '' . htmlsafechars($offer['name']) . "</h2>
+                <h2 class='has-text-centered'>" . _('Add Comment to') . ': ' . format_comment($offer['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/offers.php?action=post_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$id}'>
                     <div class='columns is-marginless is-paddingless'>
@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($add) {
             if ($offer_class->insert($values)) {
                 $session->unset('post_offer_data');
-                $session->set('is-success', _f('Offer: %s Added', format_comment($_POST['name'])));
+                $session->set('is-success', _('Offer: %s Added', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['updated'] = $dt;
             unset($values['added']);
             if ($offer_class->update($values, (int) $_POST['id'])) {
-                $session->set('is-success', _f('Offer: %s Updated', format_comment($_POST['name'])));
+                $session->set('is-success', _('Offer: %s Updated', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -387,7 +387,7 @@ if (!empty($edit_form)) {
                         <th class='has-text-centered min-250'>" . _('Offer') . "</th>
                         <th class='has-text-centered'>" . _('Offered By') . "</th>
                         <th class='has-text-centered'><i class='icon-commenting-o icon' aria-hidden='true'></i></th>
-                        <th class='has-text-centered'>Status</th>
+                        <th class='has-text-centered'>" . _('Status') . "</th>
                         <th class='has-text-centered'><i class='icon-user-plus icon' aria-hidden='true'></i></th>" . ($has_access ? "
                         <th class='has-text-centered'><i class='icon-tools icon' aria-hidden='true'></i></th>" : '') . '
                     </tr>';
@@ -404,7 +404,7 @@ if (!empty($edit_form)) {
                 $background = $images_class->find_images($imdb_id, $type = 'background');
                 $background = !empty($background) ? "style='background-image: url({$background});'" : '';
                 $poster = !empty($offer['poster']) ? $offer['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
-                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$offer['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$offer['name']}' class='tooltip-poster'>";
+                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='" . _('Poster') . "' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='" . _('Poster') . "' class='tooltip-poster'>";
             }
             $chef = "<span class='" . get_user_class_name($offer['class'], true) . "'>" . $offer['username'] . '</span>';
             $plot = $torrent->get_plot($imdb_id);
@@ -464,4 +464,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

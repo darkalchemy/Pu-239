@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'remember' => 'in:1',
     ]);
     if ($validation->fails()) {
-        write_log(getip() . ' has tried to login using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_fe('{0} has tried to login using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -47,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $count = $ips_class->get_ip_count($userid, 3, 'login');
             if ($count > $site_config['site']['limit_ips_count']) {
                 $user_class->logout($userid, false);
-                $session->set('is-danger', 'You have exceeded the maximum number of IPs allowed');
-                stderr(_('Error'), "You are allowed {$site_config['site']['limit_ips_count']} in the previous 3 days. You have used $count different IPs");
+                $session->set('is-danger', _('You have exceeded the maximum number of IPs allowed'));
+                stderr(_('Error'), _fe('You are allowed {0} in the previous 3 days. You have used {1} different IPs', $site_config['site']['limit_ips_count'], $count));
             }
         }
         if (!empty($post['returnto'])) {

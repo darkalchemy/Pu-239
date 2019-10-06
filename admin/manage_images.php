@@ -124,7 +124,7 @@ if (!empty($images)) {
             </div>
         <form>" . ($count > $perpage ? $pager['pagerbottom'] : '');
 } else {
-    $HTMLOUT .= main_div('There are no images to view', '', 'padding20');
+    $HTMLOUT .= main_div(_('There are no images to view'), '', 'padding20');
 }
 $title = _('Images Manager');
 $breadcrumbs = [

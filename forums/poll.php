@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
-    stderr(_('Error'), _('Bad ID.'));
+    stderr(_('Error'), _('Invalid ID.'));
 }
 
 /**
@@ -34,7 +34,7 @@ $valid_actions = [
 //=== check posted action, and if no match, kill it
 $action = in_array($posted_action, $valid_actions) ? $posted_action : 1;
 if ($action == 1) {
-    stderr(_('Error'), _("Thy sin's not accidental, but a trade!"));
+    stderr(_('Error'), _('Invalid action'));
 }
 //=== casting a vote(s) ===========================================================================================//
 global $CURUSER, $site_config;
@@ -52,15 +52,15 @@ switch ($action) {
         //=== let's do all the possible errors
         switch (true) {
             case !is_valid_id((int) $arr_poll['poll_id']) || count($post_vote) > $arr_poll['multi_options']: //=== no poll or trying to vote with too many options
-                stderr(_('Error'), '' . _('Bad ID.') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+                stderr(_('Error'), _('Invalid ID.') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
                 break;
 
             case $arr_poll['poll_closed'] === 'yes': //=== poll closed
-                stderr(_('Error'), '' . _('Poll is closed, you cannot vote') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+                stderr(_('Error'), _('Poll is closed, you cannot vote') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
                 break;
 
             case $arr_poll['poll_starts'] > TIME_NOW: //=== poll hasn't started yet
-                stderr(_('Error'), '' . _("Poll hasn't started yet. The Poll starts") . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+                stderr(_('Error'), _("Poll hasn't started yet. The Poll starts") . ': ' . get_date((int) $arr_poll['poll_starts'], '') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
                 break;
 
             case $vote_count > 0 && $arr_poll['change_vote'] === 'no': //=== already voted and change vote set to no
@@ -103,7 +103,7 @@ switch ($action) {
             }
             //=== did it work?
             if ($success != 1) {
-                stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'counted') . '<a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+                stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'counted') . '<a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
             }
             //=== all went well, send them back!
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
@@ -200,7 +200,7 @@ switch ($action) {
             if (is_valid_id((int) $poll_id)) {
                 sql_query('UPDATE `topics` SET poll_id=' . sqlesc($poll_id) . ' WHERE id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
             } else {
-                stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'added'));
+                stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'added'));
             }
             //=== all went well, send them back!
             header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
@@ -312,7 +312,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'deleted') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . ' </a>.');
+            stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'deleted') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . ' </a>.');
         }
         //=== all went well, send them back!
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic & topic_id=' . $topic_id);
@@ -337,7 +337,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'reset') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . ' </a>.');
+            stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'reset') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . ' </a>.');
         }
         //=== all went well, send them back!
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic & topic_id=' . $topic_id);
@@ -362,7 +362,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'cloases') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+            stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'cloases') . '. <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
         }
         //=== all went well, send them back!
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
@@ -388,7 +388,7 @@ switch ($action) {
         }
         //=== did it work?
         if ($success != 1) {
-            stderr(_('Error'), _f('Something went wrong, the poll was not %s!', 'opened') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
+            stderr(_('Error'), _('Something went wrong, the poll was not %s!', 'opened') . ' <a href="forums.php?action=view_topic&amp;topic_id=' . $topic_id . '" class="is-link">' . _('Back To Topic') . '</a>.');
         }
         //=== all went well, send them back!
         header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);

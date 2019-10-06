@@ -540,7 +540,7 @@ function format_comment_no_bbcode($text, $strip_html = true)
     $pattern = '~\[[^]]+]~';
     $replace = '';
     $s = preg_replace($pattern, $replace, $text);
-    $s = format_comment($s, $strip_html);
+    $s = format_comment($s, $strip_html, false, false);
 
     return $s;
 }

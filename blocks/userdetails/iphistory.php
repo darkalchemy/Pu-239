@@ -28,7 +28,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             $iphistory['use'] = "
         <span class='has-text-danger'>" . _('Warning :') . "</span>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=usersearch&amp;action=usersearch&amp;ip=$ipcheck'>
-            " . _('Used by ') . '' . _(' users!') . '
+            " . _('Used by users!') . '
         </a>';
         }
         $iphistory['ips'] = $fluent->from('ips')
@@ -58,7 +58,7 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] == $id) {
             <tr>
                 <td class='rowhead'>" . _('IP History') . '</td>
                 <td>
-                    ' . _('This user has earlier used ') . "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>{$ipsinuse} " . _(' different IP addresses') . '</a>
+                    ' . _pfe('This user has earlier used {1}{0}{2} different IP address', 'This user has earlier used {1}{0}{2} different IP addresses', $ipsinuse, "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$user['id']}'>", '</a>') . '
                 </td>
             </tr>';
     }

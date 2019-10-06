@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'edit') {
             $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
             if ($id == 0) {
-                stderr('Error', 'Invalid ID');
+                stderr(_('Error'), _('Invalid ID'));
             } else {
                 $arr = $fluent->from('subtitles')
                               ->where('id = ?', $id)
@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     stderr('Sorry', 'There is no subtitle with that id');
                 }
                 if ($user['id'] != $arr['owner'] && $user['class'] < UC_STAFF) {
-                    stderr('Error', "You're not the owner! How did that happen?\n");
+                    stderr(_('Error'), _("You're not the owner!"));
                 }
                 $updateset = [];
                 if ($arr['name'] != $releasename) {
@@ -134,7 +134,7 @@ if ($mode === 'upload' || $mode === 'edit') {
     if ($mode === 'edit') {
         $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
         if ($id == 0) {
-            stderr('Error', 'Invalid ID');
+            stderr(_('Error'), _('Invalid ID'));
         } else {
             $arr = $fluent->from('subtitles')
                           ->where('id = ?', $id)
@@ -258,7 +258,7 @@ if ($mode === 'upload' || $mode === 'edit') {
 } elseif ($mode === 'delete') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Error', 'Invalid ID');
+        stderr(_('Error'), _('Invalid ID'));
     } else {
         $arr = $fluent->from('subtitles')
                       ->where('id = ?', $id)
@@ -281,7 +281,7 @@ if ($mode === 'upload' || $mode === 'edit') {
 } elseif ($mode === 'details') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Error', 'Invalid ID');
+        stderr(_('Error'), _('Invalid ID'));
     } else {
         $arr = $fluent->from('subtitles AS s')
                       ->where('s.id = ?', $id)
@@ -349,7 +349,7 @@ if ($mode === 'upload' || $mode === 'edit') {
 } elseif ($mode === 'preview') {
     $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
     if ($id == 0) {
-        stderr('Error', 'Invalid ID');
+        stderr(_('Error'), _('Invalid ID'));
     } else {
         $arr = $fluent->from('subtitles')
                       ->where('id = ?', $id)

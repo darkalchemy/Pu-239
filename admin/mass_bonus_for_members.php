@@ -56,11 +56,10 @@ switch ($action) {
             while ($arr_GB = mysqli_fetch_assoc($res_GB)) {
                 $GB_new = $arr_GB['uploaded'] + $GB;
                 $modcomment = $arr_GB['modcomment'];
-                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $bonus_added . _('GB Mass Bonus added - AutoSystem.
-') . $modcomment;
-                $msg = '' . _('Hey,
- we have decided to add') . " $bonus_added " . _('GB upload credit to all classes.
- Cheers') . " {$site_config['site']['name']} " . _('Staff') . '';
+                $modcomment = get_date((int) $dt, 'DATE', 1) . ' - ' . $bonus_added . _('GB Mass Bonus added - AutoSystem.') . $modcomment;
+                $msg = _fe('Hey,
+ we have decided to add {0} GB upload credit to all classes.
+ Cheers {1} Staff', $bonus_added, $site_config['site']['name']);
                 $pm_values[] = [
                     'receiver' => (int) $arr_GB['id'],
                     'added' => $dt,
@@ -76,7 +75,7 @@ switch ($action) {
             $count = count($pm_values);
             if ($count > 0) {
                 $messages_class->insert($pm_values);
-                write_log('' . _('Staff mass bonus - added upload credit to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
+                write_log(_fe('Staff mass bonus - added upload credit to {0} members in all classes by {1}', $count, $CURUSER['username']));
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
@@ -92,7 +91,7 @@ switch ($action) {
         $res_karma = sql_query('SELECT id, seedbonus, modcomment FROM users WHERE status = 0 AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_karma) > 0) {
-            $msg = '' . _('Hey,
+            $msg = _('Hey,
  we have decided to add') . " $karma  " . _('Karma bonus points to all classes.
  Cheers') . " {$site_config['site']['name']} " . _('staff') . '';
             while ($arr_karma = mysqli_fetch_assoc($res_karma)) {
@@ -115,7 +114,7 @@ switch ($action) {
             $count = count($pm_values);
             if ($count > 0) {
                 $messages_class->insert($pm_values);
-                write_log('' . _('Staff mass bonus - added karma points to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
+                write_log(_('Staff mass bonus - added karma points to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
@@ -131,7 +130,7 @@ switch ($action) {
         $res_freeslots = sql_query('SELECT id, freeslots, modcomment FROM users WHERE status = 0 AND class IN ' . $free_for) or sqlerr(__FILE__, __LINE__);
         $pm_values = $user_values = [];
         if (mysqli_num_rows($res_freeslots) > 0) {
-            $msg = '' . _('Hey,
+            $msg = _('Hey,
  we have decided to add') . " $freeslots " . _('free slots to all classes.
  Cheers') . " {$site_config['site']['name']} " . _('staff') . '';
             while ($arr_freeslots = mysqli_fetch_assoc($res_freeslots)) {
@@ -154,7 +153,7 @@ switch ($action) {
             $count = count($pm_values);
             if ($count > 0) {
                 $messages_class->insert($pm_values);
-                write_log('' . _('Staff mass bonus - added freeslots to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
+                write_log(_('Staff mass bonus - added freeslots to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
@@ -170,7 +169,7 @@ switch ($action) {
         $res_invites = sql_query("SELECT id, invites, modcomment FROM users WHERE status = 0 AND invite_on = 'yes' AND class IN " . $free_for);
         $pm_buffer = $users_buffer = [];
         if (mysqli_num_rows($res_invites) > 0) {
-            $msg = '' . _('Hey,
+            $msg = _('Hey,
  we have decided to add') . " $invites " . _('invites to all classes.
  Cheers') . " {$site_config['site']['name']} " . _('staff') . '';
             while ($arr_invites = mysqli_fetch_assoc($res_invites)) {
@@ -193,7 +192,7 @@ switch ($action) {
             $count = count($pm_values);
             if ($count > 0) {
                 $messages_class->insert($pm_values);
-                write_log('' . _('Staff mass bonus - added invites to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
+                write_log(_('Staff mass bonus - added invites to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
             }
             unset($pm_values, $user_values, $user_updates, $count);
         }
@@ -222,7 +221,7 @@ switch ($action) {
             $count = count($pm_values);
             if ($count > 0) {
                 $messages_class->insert($pm_values);
-                write_log('' . _('Mass pm sent to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
+                write_log(_('Mass pm sent to') . " $count " . _('members in all classes by') . " {$CURUSER['username']}");
             }
             unset($pm_values, $count);
         }
@@ -245,21 +244,21 @@ $all_classes_check_boxes .= '
 
 $bonus_GB = '<select name="GB">
         <option class="head" value="">' . _('Add Upload Credit') . '</option>
-        <option class="body" value="1073741824">' . _('1 GB') . '</option>
-        <option class="body" value="2147483648">' . _('2 GB') . '</option>
-        <option class="body" value="3221225472">' . _('3 GB') . '</option>
-        <option class="body" value="4294967296">' . _('4 GB') . '</option>
-        <option class="body" value="5368709120">' . _('5 GB') . '</option>
-        <option class="body" value="6442450944">' . _('6 GB') . '</option>
-        <option class="body" value="7516192768">' . _('7 GB') . '</option>
-        <option class="body" value="8589934592">' . _('8 GB') . '</option>
-        <option class="body" value="9663676416">' . _('9 GB') . '</option>
-        <option class="body" value="10737418240">' . _('10 GB') . '</option>
-        <option class="body" value="16106127360">' . _('15 GB') . '</option>
-        <option class="body" value="21474836480">' . _('20 GB') . '</option>
-        <option class="body" value="26843545600">' . _('25 GB') . '</option>
-        <option class="body" value="32212254720">' . _('30GB') . '</option>
-        <option class="body" value="53687091200">' . _('50 GB') . '</option>
+        <option class="body" value="1073741824">' . _fe('{0} GB', 1) . '</option>
+        <option class="body" value="2147483648">' . _fe('{0} GB', 2) . '</option>
+        <option class="body" value="3221225472">' . _fe('{0} GB', 3) . '</option>
+        <option class="body" value="4294967296">' . _fe('{0} GB', 4) . '</option>
+        <option class="body" value="5368709120">' . _fe('{0} GB', 5) . '</option>
+        <option class="body" value="6442450944">' . _fe('{0} GB', 6) . '</option>
+        <option class="body" value="7516192768">' . _fe('{0} GB', 7) . '</option>
+        <option class="body" value="8589934592">' . _fe('{0} GB', 8) . '</option>
+        <option class="body" value="9663676416">' . _fe('{0} GB', 9) . '</option>
+        <option class="body" value="10737418240">' . _fe('{0} GB', 10) . '</option>
+        <option class="body" value="16106127360">' . _fe('{0} GB', 15) . '</option>
+        <option class="body" value="21474836480">' . _fe('{0} GB', 20) . '</option>
+        <option class="body" value="26843545600">' . _fe('{0} GB', 25) . '</option>
+        <option class="body" value="32212254720">' . _fe('{0} GB', 30) . '</option>
+        <option class="body" value="53687091200">' . _fe('{0} GB', 50) . '</option>
         </select>' . _('select amount of bonus GB to add to members upload credit.') . ' ';
 $karma_drop_down = '
         <select name="karma">

@@ -1,5 +1,6 @@
 In no particular order  
 
+add: cleanup scrip to add reputation points based on active time on site  
 report comments not working correctly  
 fix: iphistory.php  
 update: blocks to include cooker  

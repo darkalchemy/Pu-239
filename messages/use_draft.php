@@ -50,7 +50,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
                     $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     $block = mysqli_fetch_row($r);
                     if ($block[0] > 0) {
-                        stderr(_('Error'), _f('%s has blocked PMs from you.', format_comment($arr_receiver['username'])));
+                        stderr(_('Error'), _('%s has blocked PMs from you.', format_comment($arr_receiver['username'])));
                     }
                     break;
 
@@ -58,12 +58,12 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
                     $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                     $friend = mysqli_fetch_row($r);
                     if ($friend[0] > 0) {
-                        stderr(_('Error'), _f('%s only accepts PMs from members in their friends list.', format_comment($arr_receiver['username'])));
+                        stderr(_('Error'), _('%s only accepts PMs from members in their friends list.', format_comment($arr_receiver['username'])));
                     }
                     break;
 
                 case 'no':
-                    stderr(_('Error'), _f('%s does not accept PMs.', format_comment($arr_receiver['username'])));
+                    stderr(_('Error'), _('%s does not accept PMs.', format_comment($arr_receiver['username'])));
                     break;
             }
         }
@@ -81,14 +81,14 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] == $save_or_edit) {
             $body = doc_head("{$title} PM received") . '
 </head>
 <body>
-<p>' . _f('You have received a PM from %s!', $username) . '</p>
+<p>' . _('You have received a PM from %s!', $username) . '</p>
 <p>' . _('You can use the URL below to view the message (you may have to login).') . "</p>
 <p>{$site_config['paths']['baseurl']}/messages.php</p>
 <p>--{$site_config['site']['name']}</p>
 </body>
 </html>";
 
-            send_mail($arr_receiver['email'], _f('You have received a PM from %s!', $username), $body, strip_tags($body));
+            send_mail($arr_receiver['email'], _('You have received a PM from %s!', $username), $body, strip_tags($body));
         }
         if ($returnto) {
             header('Location: ' . $returnto);

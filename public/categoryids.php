@@ -50,7 +50,7 @@ foreach ($parents as $parent) {
 }
 
 $HTMLOUT = "
-    <h1 class='has-text-centered'>Category ID's</h1>";
+    <h1 class='has-text-centered'>" . _("Category ID's") . '</h1>';
 $HTMLOUT .= main_table($body, $heading, 'w-50 has-text-centered');
 $title = _("Category ID's");
 $breadcrumbs = [

@@ -21,10 +21,10 @@ function validip($ip)
 }
 
 /**
- * @param int $date
- * @param     $method
- * @param int $norelative
- * @param int $full_relative
+ * @param int    $date
+ * @param string $method
+ * @param int    $norelative
+ * @param int    $full_relative
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -32,7 +32,7 @@ function validip($ip)
  *
  * @return false|mixed|string
  */
-function get_date(int $date, $method, $norelative = 1, $full_relative = 0)
+function get_date(int $date, string $method, int $norelative = 1, int $full_relative = 0)
 {
     global $container, $site_config;
 

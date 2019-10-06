@@ -47,17 +47,17 @@ switch (true) {
 
     default:
         $HTMLOUT = "
-                    <h1 class='has-text-centered'>{$site_config['site']['name']} Lottery</h1>";
+                    <h1 class='has-text-centered'>" . _fe('{0} Lottery', $site_config['site']['name']) . '</h1>';
 
         $lconf = sql_query('SELECT * FROM lottery_config') or sqlerr(__FILE__, __LINE__);
         while ($ac = mysqli_fetch_assoc($lconf)) {
             $lottery_config[$ac['name']] = $ac['value'];
         }
         if (!$lottery_config['enable']) {
-            $HTMLOUT .= stdmsg('Sorry', 'Lottery is closed at the moment', 'bottom20');
+            $HTMLOUT .= stdmsg(_('Error'), _('Lottery is closed'), 'bottom20');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
-            $HTMLOUT .= stdmsg('Lottery in progress', '<div>Lottery started on <b>' . get_date((int) $lottery_config['start_date'], 'LONG') . '</b> and ends on <b>' . get_date((int) $lottery_config['end_date'], 'LONG') . '</b> remaining <span>' . mkprettytime($lottery_config['end_date'] - TIME_NOW) . "</span></div>
-       <div class='top10'>" . ($user['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>View bought tickets</a>" : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>Buy tickets</a></div>", 'bottom20 has-text-centered');
+            $HTMLOUT .= stdmsg(_('Lottery in progress'), '<div>' . _fe('Lottery started on {0} and ends on {1} remaining {2}', get_date((int) $lottery_config['start_date'], 'LONG'), get_date((int) $lottery_config['end_date'], 'LONG'), mkprettytime($lottery_config['end_date'] - TIME_NOW)) . "</div>
+       <div class='top10'>" . ($user['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>" . ('View bought tickets') . '</a>' : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>" . _('Buy tickets') . '</a></div>', 'bottom20 has-text-centered');
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {
@@ -68,16 +68,16 @@ switch (true) {
             while ($aus = mysqli_fetch_assoc($qus)) {
                 $last_winners[] = format_username((int) $aus['id']);
             }
-            $HTMLOUT .= stdmsg('Lottery Winners Info', '<ul><li>Last winners: ' . implode(', ', $last_winners) . '</li><li>Amount won    (each): ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
-        <p>' . ($user['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small margin10'>Lottery configuration</a>" : 'Nothing Configured Atm Sorry') . '</p>', 'top20');
+            $HTMLOUT .= stdmsg(_('Lottery Winners Info'), '<ul><li>' . _('Last winners') . ': ' . implode(', ', $last_winners) . '</li><li>' . _('Amount won (each)') . ': ' . $lottery_config['lottery_winners_amount'] . '</li></ul><br>
+        <p>' . ($user['class'] >= $valid['config']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small margin10'>" . _('Lottery Configuration') . '</a>' : _('Nothing Configured Atm Sorry')) . '</p>', 'top20');
         } else {
             $HTMLOUT .= main_div("
                         <div class='padding20 has-text-centered'>
                             <div class='bottom20'>
-                                Nobody has won, because nobody has played yet :)
-                            </div>" . ($user['class'] >= $valid['config']['minclass'] ? "
-                            <a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small'>Lottery configuration</a>" : '
-                            <span>Nothing Configured ATM Sorry.</span>') . '
+                                " . _('Nobody has won, because nobody has played yet :)') . '
+                            </div>' . ($user['class'] >= $valid['config']['minclass'] ? "
+                            <a href='{$site_config['paths']['baseurl']}/lottery.php?action=config' class='button is-small'>" . _('Lottery Configuration') . '</a>' : '
+                            <span>' . _('Nothing Configured at the moment. Sorry.') . '</span>') . '
                         </div>');
         }
         $title = _('Lottery');

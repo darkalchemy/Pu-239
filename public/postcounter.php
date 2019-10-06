@@ -23,5 +23,5 @@ $update = [
 ];
 $achieve->update($update, $user['id']);
 $session = $container->get(Session::class);
-$session->set('is-success', "Your forum posts count has been updated! [{$count}]");
+$session->set('is-success', _('Your forum posts count has been updated! [%d]', $count));
 header("Location: {$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}");
