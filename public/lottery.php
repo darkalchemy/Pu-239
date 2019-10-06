@@ -57,7 +57,7 @@ switch (true) {
             $HTMLOUT .= stdmsg(_('Error'), _('Lottery is closed'), 'bottom20');
         } elseif ($lottery_config['end_date'] > TIME_NOW) {
             $HTMLOUT .= stdmsg(_('Lottery in progress'), '<div>' . _fe('Lottery started on {0} and ends on {1} remaining {2}', get_date((int) $lottery_config['start_date'], 'LONG'), get_date((int) $lottery_config['end_date'], 'LONG'), mkprettytime($lottery_config['end_date'] - TIME_NOW)) . "</div>
-       <div class='top10'>" . ($user['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>" . ('View bought tickets') . '</a>' : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>" . _('Buy tickets') . '</a></div>', 'bottom20 has-text-centered');
+       <div class='top10'>" . ($user['class'] >= $valid['viewtickets']['minclass'] ? "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=viewtickets' class='button is-small margin10'>" . _('View bought tickets') . '</a>' : '') . "<a href='{$site_config['paths']['baseurl']}/lottery.php?action=tickets' class='button is-small margin10'>" . _('Buy tickets') . '</a></div>', 'bottom20 has-text-centered');
         }
         //get last lottery data
         if (!empty($lottery_config['lottery_winners'])) {

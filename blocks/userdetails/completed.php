@@ -159,8 +159,8 @@ if ($site_config['hnr_config']['hnr_online'] == 1 && $user['paranoia'] < 2 || $C
                 <td>' . ($a['downloaded'] > 0 ? "<span style='color: " . get_ratio_color($a['uploaded'] / $a['downloaded']) . ";'>" . number_format($a['uploaded'] / $a['downloaded'], 3) . '</span>' : ($a['uploaded'] > 0 ? 'Inf.' : '---')) . '<br></td>
                 <td>' . get_date((int) $a['complete_date'], 'DATE') . '</td>
                 <td>' . get_date((int) $a['last_action'], 'DATE') . "</td>
-                <td><span style='color: $dlc;'>[ " . _fe('Downloaded at: {0}', $dl_speed) . " ]</span></td>
-            </tr>";
+                <td><span style='color: $dlc;'>[ " . _fe('Downloaded at: {0}', $dl_speed) . ' ]</span></td>
+            </tr>';
         }
         $completed = main_table($body, $heading);
     }

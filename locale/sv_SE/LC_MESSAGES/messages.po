@@ -1353,6 +1353,12 @@ msgstr "Alla omodrade Torrenter"
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "Alla filer måste vara i originalformat (vanligtvis 14,3 MB RAR)."
 
+msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgstr ""
+
+msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
+msgstr ""
+
 msgid "All postings older than that will be set as read."
 msgstr "Alla inlägg som är äldre än det kommer att ställas in som lästa."
 
@@ -1648,6 +1654,14 @@ msgstr "Begär om ett frö"
 msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr "Tilldelas av mods efter eget gottfinnande till användare som de känner att de bidrar med något speciellt på webbplatsen."
 
+#, fuzzy
+#| msgid "Bottom"
+msgid "At Bottom"
+msgstr "Botten"
+
+msgid "At Top<br>What order you want the posts to be listed in."
+msgstr ""
+
 #, no-php-format
 msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
 msgstr "För närvarande finns det inget sätt att göra att denna inställning alltid fungerar korrekt med {0}. Varje torrent kommer att associeras med användaren som senast besökte webbplatsen från LAN innan torrenten startades. Om det inte finns samarbete mellan användarna är det möjligt att blanda statistik. (Användare A öppnar webbplatsen, laddar ner en .torrent-fil, men startar inte torrenten omedelbart. Under tiden har användare B åtkomst till webbplatsen. Användare A startar sedan torrenten. Strömmen räknas till användare B: s statistik, inte användare A: s.)"
@@ -1699,6 +1713,11 @@ msgstr "Avatar"
 
 msgid "Avatar Guidelines -"
 msgstr "Avatar riktlinjer -"
+
+#, fuzzy
+#| msgid "Additional Options"
+msgid "Avatar Options"
+msgstr "Ytterligare alternativ"
 
 msgid "Avatar Possible"
 msgstr "Avatar möjligt"
@@ -2409,6 +2428,9 @@ msgstr "Klicka här om inte omdirigeras ..."
 msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Klicka på din {0} -profil {1} och sedan på ditt användarnamn (högst upp)."
 
+msgid "Click to show the background image"
+msgstr ""
+
 msgid "Click to view members invite tree"
 msgstr "Klicka för att se medlemmarnas inbjudna träd"
 
@@ -2759,6 +2781,11 @@ msgstr "Nuvarande humör"
 msgid "Current Moods"
 msgstr "Nuvarande humör"
 
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Current Password"
+msgstr "Återställ lösenord"
+
 msgid "Current Password can not be empty!"
 msgstr "Nuvarande lösenord kan inte vara tomt!"
 
@@ -2876,6 +2903,11 @@ msgstr "Datum förtjänat"
 msgid "Date From"
 msgstr "Datum från"
 
+#, fuzzy
+#| msgid "Date Earned"
+msgid "Date Started"
+msgstr "Datum förtjänat"
+
 msgid "Date added"
 msgstr "Datum tillagt"
 
@@ -2906,6 +2938,9 @@ msgstr "Död: 0 seeders och leechers = 0 peers totalt"
 msgid "Deal With It"
 msgstr "Hantera det"
 
+msgid "Dealer"
+msgstr ""
+
 msgid "Dealt With"
 msgstr "Handskats med"
 
@@ -2928,6 +2963,11 @@ msgstr "Felsöknings information"
 msgid "December"
 msgstr "december"
 
+#, fuzzy
+#| msgid "Default is"
+msgid "Default"
+msgstr "Standard är"
+
 msgid "Default Reputation"
 msgstr "Standardreputation"
 
@@ -2945,6 +2985,9 @@ msgstr "Standard för \"Spara PM i Sentbox\""
 
 msgid "Default is"
 msgstr "Standard är"
+
+msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
+msgstr ""
 
 msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr "Standardvärden är: zip och rar. Lägg till mer på din egen risk! Varje post måste separeras med ett enda utrymme."
@@ -3136,6 +3179,10 @@ msgid "Display/Style"
 msgstr "Display / Style"
 
 #, no-php-format
+msgid "Displayed on your public page. May contain {0}BBcode{1}."
+msgstr ""
+
+#, no-php-format
 msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
 msgstr "Störande beteende i forumen eller på webbplatsen kommer att leda till en varning ({0}). <br> Du får bara <b> en </b> varning! Efter det är det farvel Kansas!"
 
@@ -3184,6 +3231,9 @@ msgstr "Vill du verkligen ta bort det här nyhetsposten? Klick"
 #, no-php-format
 msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 msgstr "Vill du verkligen ta bort {0} från din skitlista? Klicka på {1} här {2} om du är säker."
+
+msgid "Do you wish to have your email address visible on the forums?"
+msgstr ""
 
 msgid "Documentary"
 msgstr "Dokumentär"
@@ -3855,6 +3905,9 @@ msgstr "Erm, den är inte där!"
 
 msgid "Error"
 msgstr "Fel"
+
+msgid "Error! Change a few things up and try submitting again."
+msgstr ""
 
 msgid "Eternity"
 msgstr "Evighet"
@@ -4806,6 +4859,11 @@ msgstr "Jag är anslutningsbar"
 msgid "I applied"
 msgstr "jag ansökte"
 
+#, fuzzy
+#| msgid "Sort of relaxed"
+msgid "I feel sort of relaxed"
+msgstr "Typ av avslappnad"
+
 msgid "I have a positive ratio"
 msgstr "Jag har ett positivt förhållande"
 
@@ -4838,6 +4896,16 @@ msgstr "Jag bär en tennfoliehatt"
 
 msgid "I wear a tin-foil hat!"
 msgstr "Jag bär en tennfoliehatt!"
+
+#, fuzzy
+#| msgid "Paranoid"
+msgid "I'm paranoid"
+msgstr "Paranoid"
+
+#, fuzzy
+#| msgid "Totally relaxed"
+msgid "I'm totally relaxed"
+msgstr "Helt avslappnad"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr "Jag har laddat ner en film och jag vet inte vad CAM / TS / TC / SCR betyder?"
@@ -5400,6 +5468,11 @@ msgstr "Irc Idle Time"
 msgid "Is daylight saving time in effect?"
 msgstr "Är sommartid i kraft?"
 
+#, fuzzy
+#| msgid "No such user, please try again."
+msgid "Is taken, please try again."
+msgstr "Ingen sådan användare, försök igen."
+
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Är det inte detsamma som ovan? Nej. Anslutningar begränsar antalet kamrater som din klient pratar med och / eller laddar ner från. Uppladdningar begränsar antalet kamrater som din klient faktiskt laddar upp till. Det ideala antalet är vanligtvis mycket lägre än antalet anslutningar, och beror mycket på din (fysiska) anslutning."
 
@@ -5687,6 +5760,9 @@ msgstr "Nivå"
 msgid "Level Description"
 msgstr "Nivåbeskrivning"
 
+msgid "Lifesaver"
+msgstr ""
+
 msgid "Likes"
 msgstr "Gillar"
 
@@ -5743,6 +5819,10 @@ msgstr "Läser in..."
 
 msgid "Location"
 msgstr "Plats"
+
+#, no-php-format
+msgid "Location Options => Is this the correct time? {0}"
+msgstr ""
 
 msgid "Lock"
 msgstr "Låsa"
@@ -6384,6 +6464,11 @@ msgstr "Flervalsfråga? (Tillåter användare att välja mer än ett val)"
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Flera taggar måste separeras av ett komma som tag1, tag2"
 
+#, fuzzy
+#| msgid "Multi"
+msgid "Multiplier"
+msgstr "Mång"
+
 msgid "Music"
 msgstr "musik"
 
@@ -6398,6 +6483,9 @@ msgstr "Måste ha varit medlem i minst 90 dagar, har laddat upp minst 250 GB och
 
 msgid "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 msgstr "Måste matcha ovan accepterade filändelser. Lägg till mer på din egen risk! Varje post måste separeras med ett enda utrymme"
+
+msgid "Must ne an image url."
+msgstr ""
 
 msgid "My Blocks"
 msgstr "Mina block"
@@ -6825,6 +6913,9 @@ msgstr "Ingen immunitet Statusuppsättning"
 
 msgid "No information to show"
 msgstr "Ingen information att visa"
+
+msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
+msgstr ""
 
 msgid "No invitees yet."
 msgstr "Inga inbjudna än."
@@ -7468,6 +7559,11 @@ msgstr "PM skickas till alla icke anslutningsbara kamrater"
 msgid "PM comment"
 msgstr "PM kommentar"
 
+#, fuzzy
+#| msgid "Multi options"
+msgid "PM options"
+msgstr "Flera alternativ"
+
 msgid "PM's"
 msgstr "PM"
 
@@ -7495,6 +7591,11 @@ msgstr "parametrar"
 
 msgid "Paranoia"
 msgstr "Paranoia"
+
+#, fuzzy
+#| msgid "Paranoia level changed"
+msgid "Paranoia Levels explained"
+msgstr "Paranoia nivå förändrats"
 
 msgid "Paranoia level changed"
 msgstr "Paranoia nivå förändrats"
@@ -7616,6 +7717,11 @@ msgstr "Personlig"
 msgid "Personal Message"
 msgstr "Personligt meddelande"
 
+#, fuzzy
+#| msgid "Personal Stats"
+msgid "Personal Options"
+msgstr "Personliga statistik"
+
 msgid "Personal Statistics"
 msgstr "Personlig statistik"
 
@@ -7694,6 +7800,11 @@ msgstr "Vänligen notera!"
 
 msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr "Observera att personalen kan ge eller ta bort poäng för att bryta reglerna eller göra gott för samhället."
+
+#, fuzzy
+#| msgid "Please note!"
+msgid "Please remember!"
+msgstr "Vänligen notera!"
 
 msgid "Please select a backup to delete."
 msgstr "Välj en säkerhetskopia som du vill ta bort."
@@ -8531,6 +8642,9 @@ msgstr "STV"
 msgid "Safe Mode"
 msgstr "Säkert läge"
 
+msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
+msgstr ""
+
 msgid "Same as PU, but has been around longer."
 msgstr "Samma som PU, men har funnits längre."
 
@@ -8735,6 +8849,11 @@ msgstr "säkerhet"
 msgid "Security Check"
 msgstr "Säkerhetskontroll"
 
+#, fuzzy
+#| msgid "Security"
+msgid "Security Options"
+msgstr "säkerhet"
+
 msgid "Sedders"
 msgstr "Sedders"
 
@@ -8830,6 +8949,11 @@ msgstr "Sådd {0} torrenter"
 
 msgid "Seedtime"
 msgstr "seedtime"
+
+#, fuzzy
+#| msgid "Select All"
+msgid "Select"
+msgstr "Välj alla"
 
 msgid "Select All"
 msgstr "Välj alla"
@@ -9076,6 +9200,11 @@ msgstr "Ställer in typsidan (typsnitt) för den bifogade texten."
 msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr "Om du ställer in detta till Nej kommer du att välja valet klass och högre för att se borttagna inlägg och trådar och bestämma om de ska tas bort."
 
+#, fuzzy
+#| msgid "HnR Settings"
+msgid "Settings"
+msgstr "HnR-inställningar"
+
 msgid "Settings Check"
 msgstr "Inställningskontroll"
 
@@ -9178,6 +9307,11 @@ msgstr "Sjuk"
 
 msgid "Signature"
 msgstr "Signatur"
+
+#, fuzzy
+#| msgid "Signature Rights"
+msgid "Signature Options"
+msgstr "Signaturrättigheter"
 
 msgid "Signature Rights"
 msgstr "Signaturrättigheter"
@@ -9706,6 +9840,11 @@ msgstr "Ämne:"
 
 msgid "Submit"
 msgstr "Lämna"
+
+#, fuzzy
+#| msgid "No Changes"
+msgid "Submit Changes"
+msgstr "Inga förändringar"
 
 msgid "Submit News Item"
 msgstr "Skicka nyhetsartikel"
@@ -10566,6 +10705,14 @@ msgstr "Det här är inte ditt inlägg att radera."
 msgid "This is not your post to edit."
 msgstr "Detta är inte ditt inlägg att redigera."
 
+msgid "This is only used by an upload script, msg any staff member for the details."
+msgstr ""
+
+#, fuzzy
+#| msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
+msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
+msgstr "Detta används för automatisk nedladdning av skript, till exempel CouchPotota, SickRage och andra"
+
 msgid "This is only users that are active on the torrents right now."
 msgstr "Det här är bara användare som är aktiva på torrenterna just nu."
 
@@ -10586,6 +10733,9 @@ msgstr "Detta används för Scars Upload Script och eventuellt andra"
 
 msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgstr "Detta används för automatisk nedladdning av skript, till exempel CouchPotota, SickRage och andra"
+
+msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
+msgstr ""
 
 msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr "Det här är vad som visas för användaren när deras ryktepoäng ligger över det angivna beloppet som minimum."
@@ -10883,6 +11033,11 @@ msgstr "Topp 10"
 msgid "Top 100"
 msgstr "Topp 100"
 
+#, fuzzy
+#| msgid "Top Moods"
+msgid "Top Member Mood's"
+msgstr "Topp humör"
+
 msgid "Top Moods"
 msgstr "Topp humör"
 
@@ -10951,6 +11106,11 @@ msgstr "Torrent Moderator"
 
 msgid "Torrent Notification Failed"
 msgstr "Torrentmeddelande misslyckades"
+
+#, fuzzy
+#| msgid "Torrent ratio"
+msgid "Torrent Options"
+msgstr "Torrförhållande"
 
 msgid "Torrent Owner Notified"
 msgstr "Torrentägare meddelad"
@@ -11430,6 +11590,11 @@ msgstr "Uppladdning tillagd"
 msgid "Upload credit"
 msgstr "Ladda upp kredit"
 
+#, fuzzy, no-php-format
+#| msgid "Download disablement for {0} by {1}."
+msgid "Upload disablement for {0} by {1}."
+msgstr "Ladda ned avaktivering för {0} av {1}."
+
 msgid "Upload disablement from "
 msgstr "Överföring avaktivering från"
 
@@ -11694,6 +11859,11 @@ msgstr "Användarnamn har ändrats"
 msgid "Username is Available"
 msgstr "Användarnamn är tillgängligt"
 
+#, fuzzy
+#| msgid "Username is Available"
+msgid "Username is not Available"
+msgstr "Användarnamn är tillgängligt"
+
 msgid "Username not allowed."
 msgstr "Användarnamn inte tillåtet."
 
@@ -11838,6 +12008,12 @@ msgstr "Visa personalmeddelanden"
 
 msgid "View application"
 msgstr "Visa applikation"
+
+#, fuzzy
+#| msgid "You bought {0} ticket."
+#| msgid_plural "You bought {0} tickets."
+msgid "View bought tickets"
+msgstr "Du köpte {0} biljett."
 
 msgid "View comments"
 msgstr "Visa kommentarer"
@@ -12066,6 +12242,17 @@ msgstr "När du är klar"
 msgid "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 msgstr "När en torrent först startas använder tracker IP: n för att identifiera användaren. Därför kommer torrenten att associeras med användaren <i> som senast besökte webbplatsen </i> från den IP. Om du delar din IP på något sätt (du står bakom NAT / ICS, eller använder en proxy), och några av de personer du delar den med också är användare, kan du ibland se deras torrenter i din profil. (Om de startar en torrentsession från denna IP och du var den sista som besökte webbplatsen kommer torrenten att kopplas till dig). Observera att nu torrenter som listas i din profil alltid kommer att räkna med din totala statistik."
 
+msgid "When any of your uploaded torrents are commented on, you will be PMed."
+msgstr ""
+
+msgid "When any of your uploaded torrents are deleted, you will be PMed."
+msgstr ""
+
+#, fuzzy
+#| msgid "New post in subscribed thread"
+msgid "When someone posts in a subscribed thread, you will be PMed."
+msgstr "Nytt inlägg i prenumererad tråd"
+
 msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr "När kontot har parkerats gränser sätts på kontot kan du inte använda tracker eller bläddra på någon av sidorna."
 
@@ -12203,6 +12390,9 @@ msgstr "Ja"
 
 msgid "Yes &#160; "
 msgstr "Ja & # 160;"
+
+msgid "Yes (Low bandwidth user may want to disable this)"
+msgstr ""
 
 msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr "Ja, trackaren kan nu följa sessioner från olika IP-adresser för samma användare. En torrent är associerad med användaren när den startar, och bara i det ögonblicket är IP-adressen relevant. Så om du vill frö / leech från dator A och dator B med samma konto bör du komma åt webbplatsen från dator A, starta torrent där och upprepa sedan båda stegen från dator B (inte begränsat till två datorer eller till en enda torrent på varje, detta är bara det enklaste exemplet). Du behöver inte logga in igen när du stänger torrent."
@@ -12683,6 +12873,11 @@ msgid "You must enter an email address!"
 msgstr "Du måste ange en e-postadress!"
 
 msgid "You must enter both a subject and message."
+msgstr "Du måste ange både ett ämne och ett meddelande."
+
+#, fuzzy
+#| msgid "You must enter both a subject and message."
+msgid "You must enter your current password."
 msgstr "Du måste ange både ett ämne och ett meddelande."
 
 msgid "You must finish your old game first."
@@ -14212,6 +14407,11 @@ msgstr[1] "{0, nummer} <br> gånger"
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
+#, fuzzy, no-php-format
+#| msgid "{0} - CODER Role Added by {1}\n"
+msgid "{0} - Added by {1}"
+msgstr "{0} - CODER-roll tillagd av {1}\n"
+
 #, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
 msgstr "{0} - CODER-roll tillagd av {1}\n"
@@ -14435,6 +14635,15 @@ msgstr "{0} veckor"
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} med id: {1} rapport skickad."
+
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr ""
+
+#, fuzzy, no-php-format
+#| msgid "{0}'s Mood"
+msgid "{0}'s Menu"
+msgstr "{0} 's humör"
 
 #, no-php-format
 msgid "{0}'s Mood"

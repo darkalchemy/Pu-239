@@ -1066,14 +1066,14 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
         $user = $container->get(User::class);
         if ($user->get_count_by_username(htmlsafechars($username))) {
             if ($ajax) {
-                echo "<div class='has-text-danger tooltipper margin10' title='" . ('Username is not Available') . "'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _fe('Sorry... Username - {0} is already in use.', format_comment($_GET['wantusername'])) . '</div>';
+                echo "<div class='has-text-danger tooltipper margin10' title='" . _('Username is not Available') . "'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _fe('Sorry... Username - {0} is already in use.', format_comment($_GET['wantusername'])) . '</div>';
                 die();
             }
 
             return false;
         } else {
             if ($ajax) {
-                echo "<div class='has-text-success tooltipper margin10' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . "</b></div>";
+                echo "<div class='has-text-success tooltipper margin10' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . '</b></div>';
                 die();
             }
         }

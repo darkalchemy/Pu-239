@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Delight\I18n\I18n;
+use Pu239\Session;
 
 global $container, $site_config;
 

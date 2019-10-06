@@ -208,7 +208,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             if ($donorlength === 255) {
                 $msg = _fe('You have received donor status from {0}', $username);
                 $subject = _('Thank you for your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . (' - Donor status set by ') . " {$CURUSER['username']}\n" . $modcomment;
+                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . "\n" . $modcomment;
                 $donoruntil = $dt + (2607 * 604800);
             } else {
                 $donoruntil = $dt + ($donorlength * 604800);
@@ -331,7 +331,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             $uploadpos_until = $dt + ($uploadpos * 604800);
             $dur = $uploadpos . _(' week') . ($uploadpos > 1 ? _('s') : '');
             $msg = _('You have received') . " $dur " . _('Upload disablement from ') . $username . ($updisable_pm ? "\n\n" . _('Reason') . ": $updisable_pm" : '');
-            $modcomment = get_date($dt, 'DATE', 1) . (' - Upload disablement for') . " $dur " . _(' by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $updisable_pm\n" . $modcomment;
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Upload disablement for {0} by {1}.', $dur, $CURUSER['username']) . "\n" . _('Reason') . ": $updisable_pm\n" . $modcomment;
             $update['uploadpos'] = $uploadpos_until;
             $useredit[] = _('Uploads disabled = ') . $uploadpos_until . '';
         }

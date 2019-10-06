@@ -61,7 +61,7 @@ if ($news) {
             <div class='bordered{$padding}'>
                 <div id='{$array['id']}' class='header alt_bordered bg-00'>
                     <div class='has-text-primary size_5 padding10 has-text-centered'>" . htmlsafechars($array['title']) . "</div>
-                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . _('%1$s - Added by %2$s', get_date((int) $array['added'], 'DATE'), $username) . "{$button}</div>
+                    <div class='bottom20 size_2 left20 right20 padding10 bg-00 round5'>" . _fe('{0} - Added by {1}', get_date((int) $array['added'], 'DATE'), $username) . "{$button}</div>
                     <div class='is-primary padding20'>
                         " . format_comment($array['body']) . '
                     </div>

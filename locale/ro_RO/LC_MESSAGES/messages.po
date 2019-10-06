@@ -1368,6 +1368,12 @@ msgstr "Toate torentele nemodificate"
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "Toate fișierele trebuie să fie în format original (de obicei 14,3 MB RAR)."
 
+msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgstr ""
+
+msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
+msgstr ""
+
 msgid "All postings older than that will be set as read."
 msgstr "Toate postările mai vechi de asta vor fi setate ca citite."
 
@@ -1664,6 +1670,14 @@ msgstr "Solicitând o reședință"
 msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr "Alocați de mods la discreția lor pentru utilizatori, se simt că contribuie cu ceva special la site."
 
+#, fuzzy
+#| msgid "Bottom"
+msgid "At Bottom"
+msgstr "Fund"
+
+msgid "At Top<br>What order you want the posts to be listed in."
+msgstr ""
+
 #, no-php-format
 msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
 msgstr "În prezent, nu există nici o modalitate de a face această configurație să funcționeze întotdeauna corect cu {0}. Fiecare torrent va fi asociat cu utilizatorul care a accesat ultima dată site-ul din LAN înainte de începerea torrentului. Dacă nu există cooperare între utilizatori, este posibilă amestecarea statisticilor. (Utilizatorul A accesează site-ul, descarcă un fișier .torrent, dar nu pornește imediat torrentul. Între timp, utilizatorul B accesează site-ul. Utilizatorul A începe torrentul. Torrentul va conta către statisticile utilizatorului B, nu ale utilizatorului A.)"
@@ -1715,6 +1729,11 @@ msgstr "avatar"
 
 msgid "Avatar Guidelines -"
 msgstr "Ghid Avatar -"
+
+#, fuzzy
+#| msgid "Additional Options"
+msgid "Avatar Options"
+msgstr "Opțiuni suplimentare"
 
 msgid "Avatar Possible"
 msgstr "Avatar posibil"
@@ -2425,6 +2444,9 @@ msgstr "Faceți clic aici dacă nu este redirecționat ..."
 msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Faceți clic pe {0} profilul dvs. {1}, apoi pe numele de utilizator (în partea de sus)."
 
+msgid "Click to show the background image"
+msgstr ""
+
 msgid "Click to view members invite tree"
 msgstr "Faceți clic pentru a vizualiza arborele invită membri"
 
@@ -2775,6 +2797,11 @@ msgstr "Starea de spirit actuală"
 msgid "Current Moods"
 msgstr "Stare de spirit actuale"
 
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Current Password"
+msgstr "Reseteaza parola"
+
 msgid "Current Password can not be empty!"
 msgstr "Parola curentă nu poate fi goală!"
 
@@ -2894,6 +2921,11 @@ msgstr "Data câștigării"
 msgid "Date From"
 msgstr "Data din"
 
+#, fuzzy
+#| msgid "Date Earned"
+msgid "Date Started"
+msgstr "Data câștigării"
+
 msgid "Date added"
 msgstr "Data adaugata"
 
@@ -2924,6 +2956,9 @@ msgstr "Morți: 0 semănători și praznici = 0 colegi în total"
 msgid "Deal With It"
 msgstr "Descurcă-te"
 
+msgid "Dealer"
+msgstr ""
+
 msgid "Dealt With"
 msgstr "Tratat"
 
@@ -2946,6 +2981,11 @@ msgstr "Informații despre depanare"
 msgid "December"
 msgstr "decembrie"
 
+#, fuzzy
+#| msgid "Default is"
+msgid "Default"
+msgstr "Implicit este"
+
 msgid "Default Reputation"
 msgstr "Reputație implicită"
 
@@ -2963,6 +3003,9 @@ msgstr "Standard pentru „Salvați PM în Sentbox”"
 
 msgid "Default is"
 msgstr "Implicit este"
+
+msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
+msgstr ""
 
 msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr "Valorile implicite sunt: fermoar și rar. Adăugați mai multe pe propriul dvs. risc! Fiecare intrare trebuie separată de un singur spațiu."
@@ -3154,6 +3197,10 @@ msgid "Display/Style"
 msgstr "Afișare / Stil"
 
 #, no-php-format
+msgid "Displayed on your public page. May contain {0}BBcode{1}."
+msgstr ""
+
+#, no-php-format
 msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
 msgstr "Un comportament perturbator pe forumuri sau pe site va duce la un avertisment ({0}). <br> Veți primi doar o avertizare <b> una </b>! După aceea, este adio Kansas!"
 
@@ -3202,6 +3249,9 @@ msgstr "Doriți cu adevărat să ștergeți această înregistrare? Clic"
 #, no-php-format
 msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 msgstr "Doriți cu adevărat să ștergeți {0} din lista de rahaturi? Faceți clic pe {1} aici {2} dacă sunteți sigur."
+
+msgid "Do you wish to have your email address visible on the forums?"
+msgstr ""
 
 msgid "Documentary"
 msgstr "Film documentar"
@@ -3873,6 +3923,9 @@ msgstr "Erm, nu este acolo!"
 
 msgid "Error"
 msgstr "Eroare"
+
+msgid "Error! Change a few things up and try submitting again."
+msgstr ""
 
 msgid "Eternity"
 msgstr "Eternitate"
@@ -4826,6 +4879,11 @@ msgstr "Sunt conectabil"
 msgid "I applied"
 msgstr "am aplicat"
 
+#, fuzzy
+#| msgid "Sort of relaxed"
+msgid "I feel sort of relaxed"
+msgstr "Un fel de relaxat"
+
 msgid "I have a positive ratio"
 msgstr "Am un raport pozitiv"
 
@@ -4858,6 +4916,16 @@ msgstr "Port o pălărie cu folie de staniu"
 
 msgid "I wear a tin-foil hat!"
 msgstr "Eu port o pălărie cu folie de staniu!"
+
+#, fuzzy
+#| msgid "Paranoid"
+msgid "I'm paranoid"
+msgstr "Paranoid"
+
+#, fuzzy
+#| msgid "Totally relaxed"
+msgid "I'm totally relaxed"
+msgstr "Total relaxat"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr "Am descărcat un film și nu știu ce înseamnă CAM / TS / TC / SCR?"
@@ -5420,6 +5488,11 @@ msgstr "Irc Timpul inactiv"
 msgid "Is daylight saving time in effect?"
 msgstr "Este efectiv ora de vară?"
 
+#, fuzzy
+#| msgid "No such user, please try again."
+msgid "Is taken, please try again."
+msgstr "Nu există un astfel de utilizator, vă rugăm să încercați din nou."
+
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Nu este același lucru ca mai sus? Nu. Conexiunile limitează numărul de colegi cu care vorbește și / sau se descarcă clientul dvs. Încărcările limitează numărul de colegi la care se încarcă clientul dvs. Numărul ideal este de obicei mult mai mic decât numărul de conexiuni și depinde foarte mult de conexiunea dvs. fizică."
 
@@ -5708,6 +5781,9 @@ msgstr "Nivel"
 msgid "Level Description"
 msgstr "Descrierea nivelului"
 
+msgid "Lifesaver"
+msgstr ""
+
 msgid "Likes"
 msgstr "Îi place"
 
@@ -5764,6 +5840,10 @@ msgstr "Se incarca..."
 
 msgid "Location"
 msgstr "Locație"
+
+#, no-php-format
+msgid "Location Options => Is this the correct time? {0}"
+msgstr ""
 
 msgid "Lock"
 msgstr "Blocare"
@@ -6407,6 +6487,11 @@ msgstr "Întrebare cu alegere multiplă? (Permite utilizatorilor să selecteze m
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Mai multe etichete trebuie separate printr-o virgulă ca tag1, tag2"
 
+#, fuzzy
+#| msgid "Multi"
+msgid "Multiplier"
+msgstr "Multi"
+
 msgid "Music"
 msgstr "Muzică"
 
@@ -6421,6 +6506,9 @@ msgstr "Trebuie să fi fost membru timp de cel puțin 90 de zile, să fi încăr
 
 msgid "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 msgstr "Trebuie să corespundă cu fișierele acceptate mai sus. Adăugați mai multe pe propriul dvs. risc! Fiecare intrare trebuie separată de un singur spațiu"
+
+msgid "Must ne an image url."
+msgstr ""
 
 msgid "My Blocks"
 msgstr "Blocurile mele"
@@ -6850,6 +6938,9 @@ msgstr "Fără starea de imunitate setată"
 
 msgid "No information to show"
 msgstr "Nu există informații de arătat"
+
+msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
+msgstr ""
 
 msgid "No invitees yet."
 msgstr "Nu există încă invitați."
@@ -7494,6 +7585,11 @@ msgstr "PM trimis tuturor colegilor neconectabili"
 msgid "PM comment"
 msgstr "Comentariul premierului"
 
+#, fuzzy
+#| msgid "Multi options"
+msgid "PM options"
+msgstr "Opțiuni multiple"
+
 msgid "PM's"
 msgstr "PM"
 
@@ -7521,6 +7617,11 @@ msgstr "Parametrii"
 
 msgid "Paranoia"
 msgstr "Paranoia"
+
+#, fuzzy
+#| msgid "Paranoia level changed"
+msgid "Paranoia Levels explained"
+msgstr "Nivelul paranoiei s-a schimbat"
 
 msgid "Paranoia level changed"
 msgstr "Nivelul paranoiei s-a schimbat"
@@ -7642,6 +7743,11 @@ msgstr "Personal"
 msgid "Personal Message"
 msgstr "Mesaj personal"
 
+#, fuzzy
+#| msgid "Personal Stats"
+msgid "Personal Options"
+msgstr "Statistici personale"
+
 msgid "Personal Statistics"
 msgstr "Statistici personale"
 
@@ -7720,6 +7826,11 @@ msgstr "Vă rugăm să rețineți!"
 
 msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr "Vă rugăm să rețineți, personalul poate oferi sau scoate puncte pentru încălcarea regulilor sau pentru a face bine comunității."
+
+#, fuzzy
+#| msgid "Please note!"
+msgid "Please remember!"
+msgstr "Vă rugăm să rețineți!"
 
 msgid "Please select a backup to delete."
 msgstr "Vă rugăm să selectați o copie de rezervă pentru a o șterge."
@@ -8558,6 +8669,9 @@ msgstr "STV"
 msgid "Safe Mode"
 msgstr "Mod sigur"
 
+msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
+msgstr ""
+
 msgid "Same as PU, but has been around longer."
 msgstr "La fel ca PU, dar a fost mai mult timp."
 
@@ -8762,6 +8876,11 @@ msgstr "Securitate"
 msgid "Security Check"
 msgstr "Verificare de securitate"
 
+#, fuzzy
+#| msgid "Security"
+msgid "Security Options"
+msgstr "Securitate"
+
 msgid "Sedders"
 msgstr "Sedders"
 
@@ -8857,6 +8976,11 @@ msgstr "Seeding {0} torenți"
 
 msgid "Seedtime"
 msgstr "semănatul"
+
+#, fuzzy
+#| msgid "Select All"
+msgid "Select"
+msgstr "Selectează tot"
 
 msgid "Select All"
 msgstr "Selectează tot"
@@ -9103,6 +9227,11 @@ msgstr "Setează tipul (font) pentru textul închis."
 msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr "Setarea acestei opțiuni pe No va oferi opțiunea pentru clasa selectată și de mai sus pentru a vedea postările șterse și a fi șterse și va decide dacă acestea trebuie șterse."
 
+#, fuzzy
+#| msgid "HnR Settings"
+msgid "Settings"
+msgstr "Setări HnR"
+
 msgid "Settings Check"
 msgstr "Verificare setări"
 
@@ -9205,6 +9334,11 @@ msgstr "Bolnav"
 
 msgid "Signature"
 msgstr "Semnătură"
+
+#, fuzzy
+#| msgid "Signature Rights"
+msgid "Signature Options"
+msgstr "Drepturi de semnătură"
 
 msgid "Signature Rights"
 msgstr "Drepturi de semnătură"
@@ -9734,6 +9868,11 @@ msgstr "Subiect:"
 
 msgid "Submit"
 msgstr "Trimite"
+
+#, fuzzy
+#| msgid "No Changes"
+msgid "Submit Changes"
+msgstr "Nici o schimbare"
 
 msgid "Submit News Item"
 msgstr "Trimiteți știrile"
@@ -10600,6 +10739,14 @@ msgstr "Aceasta nu este mesajul dvs. pentru a șterge."
 msgid "This is not your post to edit."
 msgstr "Aceasta nu este postarea dvs. de editat."
 
+msgid "This is only used by an upload script, msg any staff member for the details."
+msgstr ""
+
+#, fuzzy
+#| msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
+msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
+msgstr "Acesta este utilizat pentru scripturi de descărcare automată, cum ar fi CouchPotota, SickRage și altele"
+
 msgid "This is only users that are active on the torrents right now."
 msgstr "Este vorba doar de utilizatorii care sunt activi pe torrente chiar acum."
 
@@ -10620,6 +10767,9 @@ msgstr "Aceasta este folosită pentru Scars Upload Script și eventual pentru al
 
 msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgstr "Acesta este utilizat pentru scripturi de descărcare automată, cum ar fi CouchPotota, SickRage și altele"
+
+msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
+msgstr ""
 
 msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr "Acest lucru este afișat pentru utilizator atunci când punctele sale de reputație sunt peste suma introdusă ca minim."
@@ -10919,6 +11069,11 @@ msgstr "Top 10"
 msgid "Top 100"
 msgstr "Top 100"
 
+#, fuzzy
+#| msgid "Top Moods"
+msgid "Top Member Mood's"
+msgstr "Top Moods"
+
 msgid "Top Moods"
 msgstr "Top Moods"
 
@@ -10987,6 +11142,11 @@ msgstr "Moderator Torrent"
 
 msgid "Torrent Notification Failed"
 msgstr "Notificarea de torrent a eșuat"
+
+#, fuzzy
+#| msgid "Torrent ratio"
+msgid "Torrent Options"
+msgstr "Raportul torrent"
 
 msgid "Torrent Owner Notified"
 msgstr "Proprietarul Torrent a fost notificat"
@@ -11466,6 +11626,11 @@ msgstr "Încărcarea a fost adăugată"
 msgid "Upload credit"
 msgstr "Încărcați credit"
 
+#, fuzzy, no-php-format
+#| msgid "Download disablement for {0} by {1}."
+msgid "Upload disablement for {0} by {1}."
+msgstr "Descărcați dezactivarea pentru {0} de {1}."
+
 msgid "Upload disablement from "
 msgstr "Încărcați dezactivarea din"
 
@@ -11730,6 +11895,11 @@ msgstr "Numele de utilizator a fost schimbat"
 msgid "Username is Available"
 msgstr "Numele de utilizator este disponibil"
 
+#, fuzzy
+#| msgid "Username is Available"
+msgid "Username is not Available"
+msgstr "Numele de utilizator este disponibil"
+
 msgid "Username not allowed."
 msgstr "Numele de utilizator nu este permis."
 
@@ -11874,6 +12044,12 @@ msgstr "Vizualizați mesajele personalului"
 
 msgid "View application"
 msgstr "Vizualizați aplicația"
+
+#, fuzzy
+#| msgid "You bought {0} ticket."
+#| msgid_plural "You bought {0} tickets."
+msgid "View bought tickets"
+msgstr "Ai cumpărat {0} bilet."
 
 msgid "View comments"
 msgstr "Vezi comentarii"
@@ -12103,6 +12279,17 @@ msgstr "Când a fost finalizat"
 msgid "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 msgstr "Când un torrent este pornit pentru prima dată, trackerul utilizează IP-ul pentru a identifica utilizatorul. Prin urmare, torrentul va deveni asociat cu utilizatorul <i> care a accesat ultima dată site-ul </i> de la acel IP. Dacă vă împărtășiți IP-ul într-un fel (vă aflați în spatele NAT / ICS sau utilizând un proxy), iar unele dintre persoanele cu care îl împărtășiți sunt, de asemenea, utilizatori, puteți vedea ocazional torrenturile lor listate în profilul dvs. (Dacă pornesc o sesiune de torrent din acel IP și ați fost ultimul care a vizitat site-ul, torrentul va fi asociat cu dvs.). Rețineți că acum torentele enumerate în profilul dvs. vor conta întotdeauna către statisticile totale."
 
+msgid "When any of your uploaded torrents are commented on, you will be PMed."
+msgstr ""
+
+msgid "When any of your uploaded torrents are deleted, you will be PMed."
+msgstr ""
+
+#, fuzzy
+#| msgid "New post in subscribed thread"
+msgid "When someone posts in a subscribed thread, you will be PMed."
+msgstr "Postare nouă în firul abonat"
+
 msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr "Când contul a fost parcat, limitele sunt introduse în cont, nu puteți utiliza trackerul sau răsfoiți oricare dintre pagini."
 
@@ -12240,6 +12427,9 @@ msgstr "da"
 
 msgid "Yes &#160; "
 msgstr "Da & # 160;"
+
+msgid "Yes (Low bandwidth user may want to disable this)"
+msgstr ""
 
 msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr "Da, trackerul este acum capabil să urmeze sesiuni de la IP-uri diferite pentru același utilizator. Un torrent este asociat cu utilizatorul atunci când începe și numai în acel moment este relevant IP. Așadar, dacă doriți să semen / leech de la computerul A și computerul B cu același cont, ar trebui să accesați site-ul de la computerul A, începeți torrentul acolo, apoi repetați ambii pași de la computerul B (nu se limitează la două computere sau la un singur computer torrent pentru fiecare, acesta este doar cel mai simplu exemplu). Nu trebuie să vă autentificați din nou la închiderea torrentului."
@@ -12726,6 +12916,11 @@ msgid "You must enter an email address!"
 msgstr "Trebuie să introduceți o adresă de e-mail!"
 
 msgid "You must enter both a subject and message."
+msgstr "Trebuie să introduceți atât un subiect, cât și un mesaj."
+
+#, fuzzy
+#| msgid "You must enter both a subject and message."
+msgid "You must enter your current password."
 msgstr "Trebuie să introduceți atât un subiect, cât și un mesaj."
 
 msgid "You must finish your old game first."
@@ -14272,6 +14467,11 @@ msgstr[2] "{0, număr} <br> ori"
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
+#, fuzzy, no-php-format
+#| msgid "{0} - CODER Role Added by {1}\n"
+msgid "{0} - Added by {1}"
+msgstr "{0} - Rolul CODER adăugat de {1}\n"
+
 #, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
 msgstr "{0} - Rolul CODER adăugat de {1}\n"
@@ -14499,6 +14699,15 @@ msgstr "{0} săptămâni"
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} cu id: {1} raport trimis."
+
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr ""
+
+#, fuzzy, no-php-format
+#| msgid "{0}'s Mood"
+msgid "{0}'s Menu"
+msgstr "Starea de spirit a {0}"
 
 #, no-php-format
 msgid "{0}'s Mood"
