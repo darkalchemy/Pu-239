@@ -1353,6 +1353,12 @@ msgstr "Kaikki muuttomat torrentit"
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "Kaikkien tiedostojen on oltava alkuperäisessä muodossa (yleensä 14,3 Mt RAR)."
 
+msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgstr ""
+
+msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
+msgstr ""
+
 msgid "All postings older than that will be set as read."
 msgstr "Kaikki sitä vanhemmat ilmoitukset asetetaan luketuiksi."
 
@@ -1648,6 +1654,14 @@ msgstr "Pyydetään uudelleen siemeniä"
 msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr "Moodien osoittama harkintansa mukaan käyttäjille, heidän mielestään on jotain erityistä sivustolle."
 
+#, fuzzy
+#| msgid "Bottom"
+msgid "At Bottom"
+msgstr "pohja"
+
+msgid "At Top<br>What order you want the posts to be listed in."
+msgstr ""
+
 #, no-php-format
 msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
 msgstr "Tällä hetkellä ei ole mitään tapaa asettaa tätä asennusta toimimaan aina oikein {0} -sovelluksen kanssa. Jokainen torrentti yhdistetään käyttäjän kanssa, joka viimeksi käytti sivustoa lähiverkon sisällä ennen torrentin käynnistämistä. Tilastojen sekoittaminen on mahdollista, ellei käyttäjien välillä ole yhteistyötä. (Käyttäjä A käyttää sivustoa, lataa .torrent-tiedoston, mutta ei käynnistä torrenttia heti. Samalla käyttäjä B käyttää sivustoa. Käyttäjä A käynnistää sitten torrentin. Torrentti otetaan huomioon käyttäjän B tilastoihin, ei käyttäjän A.)"
@@ -1699,6 +1713,11 @@ msgstr "hahmo"
 
 msgid "Avatar Guidelines -"
 msgstr "Avatar-ohjeet -"
+
+#, fuzzy
+#| msgid "Additional Options"
+msgid "Avatar Options"
+msgstr "Lisävaihtoehtoja"
 
 msgid "Avatar Possible"
 msgstr "Avatar mahdollista"
@@ -2409,6 +2428,9 @@ msgstr "Napsauta tätä, jos et ohjata uudelleen ..."
 msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Napsauta {0} -profiilisi {1} ja sitten käyttäjänimesi (ylhäällä)."
 
+msgid "Click to show the background image"
+msgstr ""
+
 msgid "Click to view members invite tree"
 msgstr "Napsauta nähdäksesi jäsenten kutsupuun"
 
@@ -2759,6 +2781,11 @@ msgstr "Tämänhetkinen mieliala"
 msgid "Current Moods"
 msgstr "Nykyiset mielialat"
 
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Current Password"
+msgstr "Nollaa salasana"
+
 msgid "Current Password can not be empty!"
 msgstr "Nykyinen salasana ei voi olla tyhjä!"
 
@@ -2876,6 +2903,11 @@ msgstr "Ansaintapäivämäärä"
 msgid "Date From"
 msgstr "Johtua; juontaa juurensa jstk; olla lähtöisin jstk"
 
+#, fuzzy
+#| msgid "Date Earned"
+msgid "Date Started"
+msgstr "Ansaintapäivämäärä"
+
 msgid "Date added"
 msgstr "Lisäyspäivämäärä"
 
@@ -2906,6 +2938,9 @@ msgstr "Kuolleet: 0 kylvökoneistoa ja tarkkailijaa = 0 ikäisensä yhteensä"
 msgid "Deal With It"
 msgstr "Tule toimeen sen kanssa"
 
+msgid "Dealer"
+msgstr ""
+
 msgid "Dealt With"
 msgstr "Käsitelty"
 
@@ -2928,6 +2963,11 @@ msgstr "Virheenkorjaustiedot"
 msgid "December"
 msgstr "joulukuu"
 
+#, fuzzy
+#| msgid "Default is"
+msgid "Default"
+msgstr "Oletus on"
+
 msgid "Default Reputation"
 msgstr "Oletusmaine"
 
@@ -2945,6 +2985,9 @@ msgstr "Oletusarvo kohdasta Tallenna PM postilaatikkoon"
 
 msgid "Default is"
 msgstr "Oletus on"
+
+msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
+msgstr ""
 
 msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr "Oletusarvot ovat: zip ja rar. Lisää lisää omalla vastuulla! Jokainen merkintä on erotettava yhdellä välilyönnillä."
@@ -3136,6 +3179,10 @@ msgid "Display/Style"
 msgstr "Näyttö / tyyli"
 
 #, no-php-format
+msgid "Displayed on your public page. May contain {0}BBcode{1}."
+msgstr ""
+
+#, no-php-format
 msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
 msgstr "Häiriöllinen käyttäytyminen foorumeilla tai sivustolla johtaa varoitukseen ({0}). <br> Saat vain <b> yhden </b> varoituksen! Sen jälkeen se bye by Kansas!"
 
@@ -3184,6 +3231,9 @@ msgstr "Haluatko todella poistaa tämän uutisen? Klikkaus"
 #, no-php-format
 msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 msgstr "Haluatko todella poistaa {0} paskalistatasi? Napsauta {1} täällä {2}, jos olet varma."
+
+msgid "Do you wish to have your email address visible on the forums?"
+msgstr ""
 
 msgid "Documentary"
 msgstr "dokumenttielokuva"
@@ -3855,6 +3905,9 @@ msgstr "Emm, sitä ei ole siellä!"
 
 msgid "Error"
 msgstr "Virhe"
+
+msgid "Error! Change a few things up and try submitting again."
+msgstr ""
 
 msgid "Eternity"
 msgstr "ikuisuus"
@@ -4806,6 +4859,11 @@ msgstr "Olen liitettävissä"
 msgid "I applied"
 msgstr "hain"
 
+#, fuzzy
+#| msgid "Sort of relaxed"
+msgid "I feel sort of relaxed"
+msgstr "Tavallaan rento"
+
 msgid "I have a positive ratio"
 msgstr "Minulla on positiivinen suhde"
 
@@ -4838,6 +4896,16 @@ msgstr "Käytän tina-foliohattua"
 
 msgid "I wear a tin-foil hat!"
 msgstr "Käytän tina-foliohattua!"
+
+#, fuzzy
+#| msgid "Paranoid"
+msgid "I'm paranoid"
+msgstr "Vainoharhainen"
+
+#, fuzzy
+#| msgid "Totally relaxed"
+msgid "I'm totally relaxed"
+msgstr "Täysin rento"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr "Olen ladannut elokuvan, enkä tiedä mitä CAM / TS / TC / SCR tarkoittaa?"
@@ -5400,6 +5468,11 @@ msgstr "Irc-joutoaika"
 msgid "Is daylight saving time in effect?"
 msgstr "Onko kesäaika todella voimassa?"
 
+#, fuzzy
+#| msgid "No such user, please try again."
+msgid "Is taken, please try again."
+msgstr "Ei tällaista käyttäjää, yritä uudelleen."
+
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Eikö tämä ole sama kuin yllä? Ei. Yhteydet rajoittavat vertaiskäyttäjien lukumäärää, jonka kanssa asiakkaasi puhuvat ja / tai lataavat. Lähetykset rajoittavat vertaiskäyttäjien lukumäärää, johon asiakas todella lataa. Ihanteellinen luku on tyypillisesti paljon pienempi kuin yhteyksien lukumäärä, ja riippuu suuresti (fyysisestä) yhteydestäsi."
 
@@ -5687,6 +5760,9 @@ msgstr "Taso"
 msgid "Level Description"
 msgstr "Tason kuvaus"
 
+msgid "Lifesaver"
+msgstr ""
+
 msgid "Likes"
 msgstr "tykkää"
 
@@ -5743,6 +5819,10 @@ msgstr "Ladataan..."
 
 msgid "Location"
 msgstr "Sijainti"
+
+#, no-php-format
+msgid "Location Options => Is this the correct time? {0}"
+msgstr ""
 
 msgid "Lock"
 msgstr "Lukko"
@@ -6384,6 +6464,11 @@ msgstr "Monivalintakysymys? (Antaa käyttäjien valita useamman kuin yhden vaiht
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Useita tunnisteita on erotettava pilkulla, kuten tag1, tag2"
 
+#, fuzzy
+#| msgid "Multi"
+msgid "Multiplier"
+msgstr "Multi"
+
 msgid "Music"
 msgstr "musiikki"
 
@@ -6398,6 +6483,9 @@ msgstr "Pitänyt olla jäsen vähintään 90 päivää, ladannut vähintään 25
 
 msgid "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 msgstr "Täytyy vastata yllä hyväksyttyjä tiedoston lisäosia. Lisää lisää omalla vastuulla! Jokainen merkintä on erotettava yhdellä välilyönnillä"
+
+msgid "Must ne an image url."
+msgstr ""
 
 msgid "My Blocks"
 msgstr "Omat lohkot"
@@ -6825,6 +6913,9 @@ msgstr "Ei immuniteettitilaa asetettu"
 
 msgid "No information to show"
 msgstr "Ei näytettäviä tietoja"
+
+msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
+msgstr ""
 
 msgid "No invitees yet."
 msgstr "Ei vielä kutsujia."
@@ -7468,6 +7559,11 @@ msgstr "PM Lähetetty kaikille vertaisyhteydelle"
 msgid "PM comment"
 msgstr "PM-kommentti"
 
+#, fuzzy
+#| msgid "Multi options"
+msgid "PM options"
+msgstr "Useita vaihtoehtoja"
+
 msgid "PM's"
 msgstr "PM: n"
 
@@ -7495,6 +7591,11 @@ msgstr "parametrit"
 
 msgid "Paranoia"
 msgstr "Vainoharhaisuus"
+
+#, fuzzy
+#| msgid "Paranoia level changed"
+msgid "Paranoia Levels explained"
+msgstr "Paranoian taso muuttui"
 
 msgid "Paranoia level changed"
 msgstr "Paranoian taso muuttui"
@@ -7616,6 +7717,11 @@ msgstr "henkilökohtainen"
 msgid "Personal Message"
 msgstr "Henkilökohtainen viesti"
 
+#, fuzzy
+#| msgid "Personal Stats"
+msgid "Personal Options"
+msgstr "Henkilökohtaiset tilastot"
+
 msgid "Personal Statistics"
 msgstr "Henkilökohtaiset tilastot"
 
@@ -7694,6 +7800,11 @@ msgstr "Huomaa!"
 
 msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr "Huomaa, että henkilökunta voi antaa tai ottaa pisteitä sääntöjen rikkomisesta tai yhteisön hyväksi tekemisestä."
+
+#, fuzzy
+#| msgid "Please note!"
+msgid "Please remember!"
+msgstr "Huomaa!"
 
 msgid "Please select a backup to delete."
 msgstr "Valitse poistettava varmuuskopio."
@@ -8531,6 +8642,9 @@ msgstr "STV"
 msgid "Safe Mode"
 msgstr "Turva tila"
 
+msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
+msgstr ""
+
 msgid "Same as PU, but has been around longer."
 msgstr "Sama kuin PU, mutta on ollut pidempään."
 
@@ -8735,6 +8849,11 @@ msgstr "turvallisuus"
 msgid "Security Check"
 msgstr "Turvatarkastus"
 
+#, fuzzy
+#| msgid "Security"
+msgid "Security Options"
+msgstr "turvallisuus"
+
 msgid "Sedders"
 msgstr "Sedders"
 
@@ -8830,6 +8949,11 @@ msgstr "Siementetään {0} torrenttia"
 
 msgid "Seedtime"
 msgstr "Seedtime"
+
+#, fuzzy
+#| msgid "Select All"
+msgid "Select"
+msgstr "Valitse kaikki"
 
 msgid "Select All"
 msgstr "Valitse kaikki"
@@ -9076,6 +9200,11 @@ msgstr "Asettaa liitteenä olevan tekstin tyypin (fontti)."
 msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr "Jos asetat tämän arvoksi Ei, valitulle luokalle tai uudemmalle annetaan mahdollisuus nähdä poistettuja viestejä ja ketjuja ja päättää, poistetaanko ne."
 
+#, fuzzy
+#| msgid "HnR Settings"
+msgid "Settings"
+msgstr "HnR-asetukset"
+
 msgid "Settings Check"
 msgstr "Asetukset Tarkista"
 
@@ -9178,6 +9307,11 @@ msgstr "Sairas"
 
 msgid "Signature"
 msgstr "Allekirjoitus"
+
+#, fuzzy
+#| msgid "Signature Rights"
+msgid "Signature Options"
+msgstr "Allekirjoitusoikeudet"
 
 msgid "Signature Rights"
 msgstr "Allekirjoitusoikeudet"
@@ -9706,6 +9840,11 @@ msgstr "Aihe:"
 
 msgid "Submit"
 msgstr "Lähetä"
+
+#, fuzzy
+#| msgid "No Changes"
+msgid "Submit Changes"
+msgstr "Ei muutoksia"
 
 msgid "Submit News Item"
 msgstr "Lähetä uutinen"
@@ -10566,6 +10705,14 @@ msgstr "Tämä ei ole poistettava viestisi."
 msgid "This is not your post to edit."
 msgstr "Tämä ei ole muokattava viestisi."
 
+msgid "This is only used by an upload script, msg any staff member for the details."
+msgstr ""
+
+#, fuzzy
+#| msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
+msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
+msgstr "Tätä käytetään automaattiseen lataukseen, kuten CouchPotota, SickRage ja muut"
+
 msgid "This is only users that are active on the torrents right now."
 msgstr "Tämä on vain käyttäjille, jotka ovat aktiivisia torrentit tällä hetkellä."
 
@@ -10586,6 +10733,9 @@ msgstr "Tätä käytetään Scars Upload Script ja mahdollisesti muutkin"
 
 msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgstr "Tätä käytetään automaattiseen lataukseen, kuten CouchPotota, SickRage ja muut"
+
+msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
+msgstr ""
 
 msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr "Tämä näytetään käyttäjälle, kun hänen mainepisteensä ovat vähimmäismäärän yläpuolella."
@@ -10883,6 +11033,11 @@ msgstr "10 parasta"
 msgid "Top 100"
 msgstr "100 parasta"
 
+#, fuzzy
+#| msgid "Top Moods"
+msgid "Top Member Mood's"
+msgstr "Huippumielialat"
+
 msgid "Top Moods"
 msgstr "Huippumielialat"
 
@@ -10951,6 +11106,11 @@ msgstr "Torrentin moderaattori"
 
 msgid "Torrent Notification Failed"
 msgstr "Torrentin ilmoitus epäonnistui"
+
+#, fuzzy
+#| msgid "Torrent ratio"
+msgid "Torrent Options"
+msgstr "Torrent-suhde"
 
 msgid "Torrent Owner Notified"
 msgstr "Torrentin omistaja ilmoitettu"
@@ -11430,6 +11590,11 @@ msgstr "Lataa lisätty"
 msgid "Upload credit"
 msgstr "Lataa luotto"
 
+#, fuzzy, no-php-format
+#| msgid "Download disablement for {0} by {1}."
+msgid "Upload disablement for {0} by {1}."
+msgstr "Lataa {0} käytöstä poisto {1}."
+
 msgid "Upload disablement from "
 msgstr "Lataa poisto käytöstä"
 
@@ -11694,6 +11859,11 @@ msgstr "Käyttäjätunnus muutettu"
 msgid "Username is Available"
 msgstr "Käyttäjätunnus on käytettävissä"
 
+#, fuzzy
+#| msgid "Username is Available"
+msgid "Username is not Available"
+msgstr "Käyttäjätunnus on käytettävissä"
+
 msgid "Username not allowed."
 msgstr "Käyttäjätunnusta ei sallita."
 
@@ -11838,6 +12008,12 @@ msgstr "Näytä henkilökunnan viestit"
 
 msgid "View application"
 msgstr "Näytä sovellus"
+
+#, fuzzy
+#| msgid "You bought {0} ticket."
+#| msgid_plural "You bought {0} tickets."
+msgid "View bought tickets"
+msgstr "Olet ostanut {0} lipun."
 
 msgid "View comments"
 msgstr "Näytä kommentit"
@@ -12066,6 +12242,17 @@ msgstr "Kun valmistuminen"
 msgid "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 msgstr "Kun torrentti käynnistetään ensimmäistä kertaa, jäljittäjä käyttää IP: tä käyttäjän tunnistamiseen. Siksi torrent liittyy käyttäjän <i>, joka viimeksi vieraili sivustolle </i> kyseiseltä IP: ltä. Jos jaat IP-osoitettasi jollain tavalla (olet NAT / ICS: n takana tai käytät välityspalvelinta), ja jotkut henkilöistä, joiden kanssa jaat sen, ovat myös käyttäjiä, saatat joskus nähdä heidän torrenttinsa listattuna profiilissasi. (Jos he aloittavat torrent-istunnon kyseiseltä IP: ltä ja olet viimeksi käynyt sivustolla, torrent liitetään sinuun.) Huomaa, että nyt profiilissasi luetellut torrentit otetaan aina huomioon kokonaistilastossa."
 
+msgid "When any of your uploaded torrents are commented on, you will be PMed."
+msgstr ""
+
+msgid "When any of your uploaded torrents are deleted, you will be PMed."
+msgstr ""
+
+#, fuzzy
+#| msgid "New post in subscribed thread"
+msgid "When someone posts in a subscribed thread, you will be PMed."
+msgstr "Uusi viesti tilatuissa säikeissä"
+
 msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr "Kun tili on pysäköity, tilille asetetaan rajoituksia, et voi käyttää seurantaa tai selata mitään sivuja."
 
@@ -12203,6 +12390,9 @@ msgstr "Joo"
 
 msgid "Yes &#160; "
 msgstr "Kyllä & # 160;"
+
+msgid "Yes (Low bandwidth user may want to disable this)"
+msgstr ""
 
 msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr "Kyllä, seuranta pystyy nyt seuraamaan saman käyttäjän istuntoja eri IP: istä. Torrenttiin liittyy käyttäjä, kun se käynnistyy, ja vain silloin on IP-merkitys. Joten jos haluat siemeniä / kaivaa tietokoneelta A ja tietokoneelta B samalla tilillä, sinun pitäisi päästä sivustoon tietokoneelta A, käynnistää torrentti siellä ja toistaa sitten molemmat vaiheet tietokoneesta B (ei rajoitettu kahteen tietokoneeseen tai yhteen torrent kummallakin, tämä on vain yksinkertaisin esimerkki). Sinun ei tarvitse kirjautua sisään uudelleen sulkemalla torrentti."
@@ -12683,6 +12873,11 @@ msgid "You must enter an email address!"
 msgstr "Sinun on annettava sähköpostiosoite!"
 
 msgid "You must enter both a subject and message."
+msgstr "Sinun on kirjoitettava sekä aihe että viesti."
+
+#, fuzzy
+#| msgid "You must enter both a subject and message."
+msgid "You must enter your current password."
 msgstr "Sinun on kirjoitettava sekä aihe että viesti."
 
 msgid "You must finish your old game first."
@@ -14212,6 +14407,11 @@ msgstr[1] "{0, numero} <br> kertaa"
 msgid "{0} (ID: #{1})"
 msgstr "{0} (tunnus: # {1})"
 
+#, fuzzy, no-php-format
+#| msgid "{0} - CODER Role Added by {1}\n"
+msgid "{0} - Added by {1}"
+msgstr "{0} - CODER-rooli on lisännyt {1}\n"
+
 #, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
 msgstr "{0} - CODER-rooli on lisännyt {1}\n"
@@ -14435,6 +14635,15 @@ msgstr "{0} viikkoa"
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} tunnuksella: {1} raportti lähetetty."
+
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr ""
+
+#, fuzzy, no-php-format
+#| msgid "{0}'s Mood"
+msgid "{0}'s Menu"
+msgstr "{0} mieliala"
 
 #, no-php-format
 msgid "{0}'s Mood"

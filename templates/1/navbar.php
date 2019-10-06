@@ -210,7 +210,7 @@ function staff_panel()
                 if ($value['av_class'] <= $user_class && $value['type'] === 'user') {
                     $panels['0' . _('Users')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'settings') {
-                    $panels['1' . ('Settings')][] = make_link($value);
+                    $panels['1' . _('Settings')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'stats') {
                     $panels['2' . _('Stats')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'other') {

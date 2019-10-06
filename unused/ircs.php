@@ -94,7 +94,7 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
             echo $who . ' - ' . _('No such user or is staff, please try again.');
         } else {
             if ($nnewname) {
-                echo $newname . ' - ' . ('Is taken, please try again.');
+                echo $newname . ' - ' . _('Is taken, please try again.');
             } else {
                 $modd = isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '';
                 $newusername = isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '';

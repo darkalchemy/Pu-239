@@ -434,7 +434,7 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='left10 level-item'>
                         <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='" . ('Click to show the background image') . "'>{$clock}</div>
+                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='" . _('Click to show the background image') . "'>{$clock}</div>
                     </div>";
 
     return $StatusBar;

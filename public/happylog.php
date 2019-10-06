@@ -27,9 +27,9 @@ if ($count > 0) {
     $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
     $heading = "
         <tr>
-            <td class='colhead w-50'>" . ('Name') . "</td>
-            <td class='colhead'>" . ('Multiplier') . "</td>
-            <td class='colhead' nowrap='nowrap'>" . ('Date Started') . '</td>
+            <td class='colhead w-50'>" . _('Name') . "</td>
+            <td class='colhead'>" . _('Multiplier') . "</td>
+            <td class='colhead' nowrap='nowrap'>" . _('Date Started') . '</td>
         </tr>';
     $body = '';
     foreach ($res as $arr) {

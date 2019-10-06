@@ -1353,6 +1353,12 @@ msgstr "Todos los torrentes sin modificar"
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "Todos los archivos deben estar en formato original (generalmente RAR de 14.3 MB)."
 
+msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgstr ""
+
+msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
+msgstr ""
+
 msgid "All postings older than that will be set as read."
 msgstr "Todas las publicaciones anteriores a esa se establecerán como leídas."
 
@@ -1648,6 +1654,14 @@ msgstr "Pidiendo una nueva semilla"
 msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr "Asignado por mods a su discreción a los usuarios que sienten que contribuyen con algo especial al sitio."
 
+#, fuzzy
+#| msgid "Bottom"
+msgid "At Bottom"
+msgstr "Fondo"
+
+msgid "At Top<br>What order you want the posts to be listed in."
+msgstr ""
+
 #, no-php-format
 msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
 msgstr "Actualmente, no hay forma de hacer que esta configuración siempre funcione correctamente con {0}. Cada torrent se asociará con el usuario que accedió por última vez al sitio desde la LAN antes de que se iniciara el torrent. A menos que haya cooperación entre los usuarios, es posible mezclar estadísticas. (El usuario A accede al sitio, descarga un archivo .torrent, pero no inicia el torrent inmediatamente. Mientras tanto, el usuario B accede al sitio. El usuario A luego inicia el torrent. El torrent contará para las estadísticas del usuario B, no para el usuario A)."
@@ -1699,6 +1713,11 @@ msgstr "Avatar"
 
 msgid "Avatar Guidelines -"
 msgstr "Pautas de avatar -"
+
+#, fuzzy
+#| msgid "Additional Options"
+msgid "Avatar Options"
+msgstr "Opciones adicionales"
 
 msgid "Avatar Possible"
 msgstr "Avatar posible"
@@ -2409,6 +2428,9 @@ msgstr "Haga clic aquí si no se redirige ..."
 msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Haga clic en su {0} perfil {1}, luego en su nombre de usuario (en la parte superior)."
 
+msgid "Click to show the background image"
+msgstr ""
+
 msgid "Click to view members invite tree"
 msgstr "Haga clic para ver el árbol de invitación de miembros"
 
@@ -2759,6 +2781,11 @@ msgstr "Estado de ánimo actual"
 msgid "Current Moods"
 msgstr "Estados de ánimo actuales"
 
+#, fuzzy
+#| msgid "Reset Password"
+msgid "Current Password"
+msgstr "Restablecer la contraseña"
+
 msgid "Current Password can not be empty!"
 msgstr "¡La contraseña actual no puede estar vacía!"
 
@@ -2876,6 +2903,11 @@ msgstr "Fecha ganada"
 msgid "Date From"
 msgstr "Fecha de"
 
+#, fuzzy
+#| msgid "Date Earned"
+msgid "Date Started"
+msgstr "Fecha ganada"
+
 msgid "Date added"
 msgstr "Fecha Agregada"
 
@@ -2906,6 +2938,9 @@ msgstr "Muerto: 0 sembradoras y leechers = 0 pares en total"
 msgid "Deal With It"
 msgstr "Tratar con él"
 
+msgid "Dealer"
+msgstr ""
+
 msgid "Dealt With"
 msgstr "Lidiar con"
 
@@ -2928,6 +2963,11 @@ msgstr "Información de depuración"
 msgid "December"
 msgstr "diciembre"
 
+#, fuzzy
+#| msgid "Default is"
+msgid "Default"
+msgstr "El valor predeterminado es"
+
 msgid "Default Reputation"
 msgstr "Reputación predeterminada"
 
@@ -2945,6 +2985,9 @@ msgstr "Valor predeterminado para \"Guardar PM en el buzón enviado\""
 
 msgid "Default is"
 msgstr "El valor predeterminado es"
+
+msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
+msgstr ""
 
 msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr "Los valores predeterminados son: zip y rar. ¡Agregue más bajo su propio riesgo! Cada entrada debe estar separada por un solo espacio."
@@ -3136,6 +3179,10 @@ msgid "Display/Style"
 msgstr "Pantalla / estilo"
 
 #, no-php-format
+msgid "Displayed on your public page. May contain {0}BBcode{1}."
+msgstr ""
+
+#, no-php-format
 msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
 msgstr "El comportamiento disruptivo en los foros o en el sitio generará una advertencia ({0}). <br> ¡Solo obtendrá <b> uno </b> advertencia! ¡Después de eso es adiós Kansas!"
 
@@ -3184,6 +3231,9 @@ msgstr "¿Realmente quieres eliminar esta entrada de noticias? Hacer clic"
 #, no-php-format
 msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 msgstr "¿Realmente quieres eliminar {0} de tu lista de mierda? Haga clic en {1} aquí {2} si está seguro."
+
+msgid "Do you wish to have your email address visible on the forums?"
+msgstr ""
 
 msgid "Documentary"
 msgstr "Documental"
@@ -3855,6 +3905,9 @@ msgstr "Erm, no está ahí!"
 
 msgid "Error"
 msgstr "Error"
+
+msgid "Error! Change a few things up and try submitting again."
+msgstr ""
 
 msgid "Eternity"
 msgstr "Eternidad"
@@ -4806,6 +4859,11 @@ msgstr "Soy conectable"
 msgid "I applied"
 msgstr "Apliqué"
 
+#, fuzzy
+#| msgid "Sort of relaxed"
+msgid "I feel sort of relaxed"
+msgstr "Algo relajado"
+
 msgid "I have a positive ratio"
 msgstr "Tengo una relación positiva"
 
@@ -4838,6 +4896,16 @@ msgstr "Llevo un sombrero de papel de aluminio"
 
 msgid "I wear a tin-foil hat!"
 msgstr "¡Llevo un sombrero de papel de aluminio!"
+
+#, fuzzy
+#| msgid "Paranoid"
+msgid "I'm paranoid"
+msgstr "Paranoico"
+
+#, fuzzy
+#| msgid "Totally relaxed"
+msgid "I'm totally relaxed"
+msgstr "Totalmente relajado"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr "He descargado una película y no sé qué significa CAM / TS / TC / SCR."
@@ -5400,6 +5468,11 @@ msgstr "Irc Idle Time"
 msgid "Is daylight saving time in effect?"
 msgstr "¿Está vigente el horario de verano?"
 
+#, fuzzy
+#| msgid "No such user, please try again."
+msgid "Is taken, please try again."
+msgstr "No existe ese usuario, por favor intente nuevamente."
+
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "¿No es esto lo mismo que arriba? No. Las conexiones limitan el número de pares con los que su cliente está hablando y / o descargando. Las cargas limitan el número de pares a los que su cliente realmente está cargando. El número ideal suele ser mucho más bajo que el número de conexiones y depende mucho de su conexión (física)."
 
@@ -5687,6 +5760,9 @@ msgstr "Nivel"
 msgid "Level Description"
 msgstr "Descripción del nivel"
 
+msgid "Lifesaver"
+msgstr ""
+
 msgid "Likes"
 msgstr "Gustos"
 
@@ -5743,6 +5819,10 @@ msgstr "Cargando..."
 
 msgid "Location"
 msgstr "Ubicación"
+
+#, no-php-format
+msgid "Location Options => Is this the correct time? {0}"
+msgstr ""
 
 msgid "Lock"
 msgstr "Bloquear"
@@ -6384,6 +6464,11 @@ msgstr "¿Pregunta de opción múltiple? (Permite a los usuarios seleccionar má
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Las etiquetas múltiples deben estar separadas por una coma como etiqueta1, etiqueta2"
 
+#, fuzzy
+#| msgid "Multi"
+msgid "Multiplier"
+msgstr "Multi"
+
 msgid "Music"
 msgstr "Música"
 
@@ -6398,6 +6483,9 @@ msgstr "Debe haber sido miembro durante al menos 90 días, haber subido al menos
 
 msgid "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 msgstr "Debe coincidir con el archivo aceptado anteriormente ext's. ¡Agregue más bajo su propio riesgo! Cada entrada debe estar separada por un solo espacio"
+
+msgid "Must ne an image url."
+msgstr ""
 
 msgid "My Blocks"
 msgstr "Mis bloques"
@@ -6825,6 +6913,9 @@ msgstr "Sin estado de inmunidad establecido"
 
 msgid "No information to show"
 msgstr "No hay información para mostrar"
+
+msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
+msgstr ""
 
 msgid "No invitees yet."
 msgstr "Aún no hay invitados."
@@ -7468,6 +7559,11 @@ msgstr "PM enviado a todos los pares no conectables"
 msgid "PM comment"
 msgstr "Comentario PM"
 
+#, fuzzy
+#| msgid "Multi options"
+msgid "PM options"
+msgstr "Múltiples opciones"
+
 msgid "PM's"
 msgstr "PM's"
 
@@ -7495,6 +7591,11 @@ msgstr "Parámetros"
 
 msgid "Paranoia"
 msgstr "Paranoia"
+
+#, fuzzy
+#| msgid "Paranoia level changed"
+msgid "Paranoia Levels explained"
+msgstr "Nivel de paranoia cambiado"
 
 msgid "Paranoia level changed"
 msgstr "Nivel de paranoia cambiado"
@@ -7616,6 +7717,11 @@ msgstr "Personal"
 msgid "Personal Message"
 msgstr "Mensaje personal"
 
+#, fuzzy
+#| msgid "Personal Stats"
+msgid "Personal Options"
+msgstr "Estadísticas personales"
+
 msgid "Personal Statistics"
 msgstr "Estadísticas personales"
 
@@ -7694,6 +7800,11 @@ msgstr "¡Tenga en cuenta!"
 
 msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr "Tenga en cuenta que el personal puede dar o quitar puntos por romper las reglas o hacer el bien a la comunidad."
+
+#, fuzzy
+#| msgid "Please note!"
+msgid "Please remember!"
+msgstr "¡Tenga en cuenta!"
 
 msgid "Please select a backup to delete."
 msgstr "Seleccione una copia de seguridad para eliminar."
@@ -8531,6 +8642,9 @@ msgstr "STV"
 msgid "Safe Mode"
 msgstr "Modo seguro"
 
+msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
+msgstr ""
+
 msgid "Same as PU, but has been around longer."
 msgstr "Igual que PU, pero ha existido por más tiempo."
 
@@ -8735,6 +8849,11 @@ msgstr "Seguridad"
 msgid "Security Check"
 msgstr "Control de seguridad"
 
+#, fuzzy
+#| msgid "Security"
+msgid "Security Options"
+msgstr "Seguridad"
+
 msgid "Sedders"
 msgstr "Sedders"
 
@@ -8830,6 +8949,11 @@ msgstr "Sembrando {0} torrentes"
 
 msgid "Seedtime"
 msgstr "Siembra"
+
+#, fuzzy
+#| msgid "Select All"
+msgid "Select"
+msgstr "Seleccionar todo"
 
 msgid "Select All"
 msgstr "Seleccionar todo"
@@ -9076,6 +9200,11 @@ msgstr "Establece la tipografía (fuente) para el texto adjunto."
 msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr "Establecer esto en No dará la opción para la clase seleccionada y superior para ver publicaciones y temas eliminados y decidir si deben eliminarse."
 
+#, fuzzy
+#| msgid "HnR Settings"
+msgid "Settings"
+msgstr "Configuraciones de HnR"
+
 msgid "Settings Check"
 msgstr "Verificación de configuraciones"
 
@@ -9178,6 +9307,11 @@ msgstr "Enfermo"
 
 msgid "Signature"
 msgstr "Firma"
+
+#, fuzzy
+#| msgid "Signature Rights"
+msgid "Signature Options"
+msgstr "Derechos de firma"
 
 msgid "Signature Rights"
 msgstr "Derechos de firma"
@@ -9706,6 +9840,11 @@ msgstr "Tema:"
 
 msgid "Submit"
 msgstr "Enviar"
+
+#, fuzzy
+#| msgid "No Changes"
+msgid "Submit Changes"
+msgstr "Sin cambios"
 
 msgid "Submit News Item"
 msgstr "Enviar noticia"
@@ -10566,6 +10705,14 @@ msgstr "Esta no es tu publicación para eliminar."
 msgid "This is not your post to edit."
 msgstr "Esta no es tu publicación para editar."
 
+msgid "This is only used by an upload script, msg any staff member for the details."
+msgstr ""
+
+#, fuzzy
+#| msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
+msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
+msgstr "Esto se usa para scripts de descarga automática, como CouchPotota, SickRage y otros"
+
 msgid "This is only users that are active on the torrents right now."
 msgstr "Estos son solo los usuarios que están activos en los torrents en este momento."
 
@@ -10586,6 +10733,9 @@ msgstr "Esto se usa para Scars Upload Script y posiblemente otros"
 
 msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgstr "Esto se usa para scripts de descarga automática, como CouchPotota, SickRage y otros"
+
+msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
+msgstr ""
 
 msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr "Esto es lo que se muestra al usuario cuando sus puntos de reputación están por encima de la cantidad ingresada como mínimo."
@@ -10883,6 +11033,11 @@ msgstr "Top 10"
 msgid "Top 100"
 msgstr "Top 100"
 
+#, fuzzy
+#| msgid "Top Moods"
+msgid "Top Member Mood's"
+msgstr "Los mejores estados de ánimo"
+
 msgid "Top Moods"
 msgstr "Los mejores estados de ánimo"
 
@@ -10951,6 +11106,11 @@ msgstr "Moderador de torrents"
 
 msgid "Torrent Notification Failed"
 msgstr "Notificación de torrent fallida"
+
+#, fuzzy
+#| msgid "Torrent ratio"
+msgid "Torrent Options"
+msgstr "Ratio de torrente"
 
 msgid "Torrent Owner Notified"
 msgstr "Propietario de torrent notificado"
@@ -11430,6 +11590,11 @@ msgstr "Subida agregada"
 msgid "Upload credit"
 msgstr "Subir crédito"
 
+#, fuzzy, no-php-format
+#| msgid "Download disablement for {0} by {1}."
+msgid "Upload disablement for {0} by {1}."
+msgstr "Descargar la desactivación para {0} por {1}."
+
 msgid "Upload disablement from "
 msgstr "Subir desactivación desde"
 
@@ -11694,6 +11859,11 @@ msgstr "Nombre de usuario cambiado"
 msgid "Username is Available"
 msgstr "Nombre de usuario disponible"
 
+#, fuzzy
+#| msgid "Username is Available"
+msgid "Username is not Available"
+msgstr "Nombre de usuario disponible"
+
 msgid "Username not allowed."
 msgstr "Nombre de usuario no permitido."
 
@@ -11838,6 +12008,12 @@ msgstr "Ver mensajes del personal"
 
 msgid "View application"
 msgstr "Ver aplicación"
+
+#, fuzzy
+#| msgid "You bought {0} ticket."
+#| msgid_plural "You bought {0} tickets."
+msgid "View bought tickets"
+msgstr "Usted compró el boleto {0}."
 
 msgid "View comments"
 msgstr "Ver comentarios"
@@ -12066,6 +12242,17 @@ msgstr "Cuando esté completo"
 msgid "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 msgstr "Cuando se inicia un torrent por primera vez, el rastreador usa la IP para identificar al usuario. Por lo tanto, el torrent se asociará con el usuario <i> que accedió por última vez al sitio </i> desde esa IP. Si comparte su IP de alguna manera (está detrás de NAT / ICS, o está usando un proxy), y algunas de las personas con las que lo comparte también son usuarios, ocasionalmente puede ver sus torrents en su perfil. (Si inician una sesión de torrent desde esa IP y usted fue el último en visitar el sitio, el torrent se asociará con usted). Tenga en cuenta que ahora los torrents que figuran en su perfil siempre contarán para sus estadísticas totales."
 
+msgid "When any of your uploaded torrents are commented on, you will be PMed."
+msgstr ""
+
+msgid "When any of your uploaded torrents are deleted, you will be PMed."
+msgstr ""
+
+#, fuzzy
+#| msgid "New post in subscribed thread"
+msgid "When someone posts in a subscribed thread, you will be PMed."
+msgstr "Nueva publicación en hilo suscrito"
+
 msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr "Cuando la cuenta ha sido estacionada, los límites se colocan en la cuenta, no puede usar el rastreador ni navegar por ninguna de las páginas."
 
@@ -12203,6 +12390,9 @@ msgstr "si"
 
 msgid "Yes &#160; "
 msgstr "Sí & # 160;"
+
+msgid "Yes (Low bandwidth user may want to disable this)"
+msgstr ""
 
 msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr "Sí, el rastreador ahora es capaz de seguir sesiones de diferentes IP para el mismo usuario. Un torrente está asociado con el usuario cuando se inicia, y solo en ese momento es relevante la IP. Entonces, si desea sembrar / sanguijuela desde la computadora A y la computadora B con la misma cuenta, debe acceder al sitio desde la computadora A, iniciar el torrent allí y luego repetir ambos pasos desde la computadora B (no limitado a dos computadoras o a una sola torrent en cada uno, este es solo el ejemplo más simple). No necesita volver a iniciar sesión al cerrar el torrent."
@@ -12683,6 +12873,11 @@ msgid "You must enter an email address!"
 msgstr "¡Debes ingresar una dirección de correo electrónico!"
 
 msgid "You must enter both a subject and message."
+msgstr "Debe ingresar tanto un asunto como un mensaje."
+
+#, fuzzy
+#| msgid "You must enter both a subject and message."
+msgid "You must enter your current password."
 msgstr "Debe ingresar tanto un asunto como un mensaje."
 
 msgid "You must finish your old game first."
@@ -14212,6 +14407,11 @@ msgstr[1] "{0, número} <br> veces"
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
+#, fuzzy, no-php-format
+#| msgid "{0} - CODER Role Added by {1}\n"
+msgid "{0} - Added by {1}"
+msgstr "{0} - CODER Rol agregado por {1}\n"
+
 #, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
 msgstr "{0} - CODER Rol agregado por {1}\n"
@@ -14435,6 +14635,15 @@ msgstr "{0} semanas"
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} con id: {1} informe enviado."
+
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr ""
+
+#, fuzzy, no-php-format
+#| msgid "{0}'s Mood"
+msgid "{0}'s Menu"
+msgstr "El estado de ánimo de {0}"
 
 #, no-php-format
 msgid "{0}'s Mood"
