@@ -1,3 +1,0 @@
-files:
-  - source: /locale/en/LC_MESSAGES/messages.po
-    translation: /locale/%two_letters_code%/LC_MESSAGES/messages.po
