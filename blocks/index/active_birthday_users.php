@@ -49,7 +49,7 @@ $birthday_users .= "
     <div id='birthday' class='box'>
         <div class='bordered'>
             <div class='alt_bordered bg-00'>
-                <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>" . _pf('There is %d Birthday Today', 'There are %d Birthdays Today', $birthday['count']) . "</div>
+                <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>" . _pfe('There is {0} Birthday Today', 'There are {0} Birthdays Today', $birthday['count']) . "</div>
                 <div class='level-item is-wrapped padding20'>
                     {$birthday['birthdayusers']}
                 </div>

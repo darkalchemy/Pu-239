@@ -34,7 +34,7 @@ if (isset($_POST['form']) != 1) {
         stderr(_('Access Denied'), _('It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.'));
     } else {
         $HTMLOUT .= '
-        <h1>' . _('Uploader application') . "</h1>
+        <h1 class="has-text-centered">' . _('Uploader application') . "</h1>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
         $ratio = member_ratio($user['uploaded'], $user['downloaded']);
@@ -103,8 +103,13 @@ if (isset($_POST['form']) != 1) {
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        " . _('I am an uploader at other sites') . "</td><td><input type='radio' name='sites' value='yes'>" . _('Yes') . "
-                        <input name='sites' type='radio' value='no' checked>" . _('No') . "
+                        " . _('I am an uploader at other sites') . "
+                    </td>
+                    <td>
+                        <div class='level-left'>
+                            <input type='radio' name='sites' value='yes' class='right5'>" . _('Yes') . "
+                            <input name='sites' type='radio' value='no' class='left20 right5' checked>" . _('No') . "
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -119,26 +124,28 @@ if (isset($_POST['form']) != 1) {
                         " . _('I have scene access') . "
                     </td>
                     <td>
-                        <input type='radio' name='scene' value='yes'>" . _('Yes') . "
-                        <input name='scene' type='radio' value='no' checked>" . _('No') . "
+                        <div class='level-left'>
+                            <input type='radio' name='scene' value='yes' class='right5'>" . _('Yes') . "
+                            <input name='scene' type='radio' value='no' class='left20 right5' checked>" . _('No') . "
+                        </div>
                     </td>
                 </tr>
                 <tr>
                     <td colspan='2'>
-                        <p>
+                        <div class='level-left top5'>
                             <span class='right10'>
                                 " . _('I know how to create, upload and seed torrents') . "
                             </span>
-                            <input type='radio' name='creating' value='yes'>" . _('Yes') . "
-                            <input type='radio' name='creating' value='no' checked>" . _('No') . "
-                        </p>
-                        <p>
+                            <input type='radio' name='creating' value='yes' class='right5'>" . _('Yes') . "
+                            <input type='radio' name='creating' value='no' class='left20 right5' checked>" . _('No') . "
+                        </div>
+                        <div class='level-left top5 bottom5'>
                             <span class='right10'>
                                 " . _('I understand that I have to keep seeding my torrents until there are at least two other seeders') . "
                             </span>
-                            <input type='radio' name='seeding' value='yes'>" . _('Yes') . "
-                            <input name='seeding' type='radio' value='no' checked>" . _('No') . "
-                        </p>
+                            <input type='radio' name='seeding' value='yes' class='right5'>" . _('Yes') . "
+                            <input name='seeding' type='radio' value='no' class='left20 right5' checked>" . _('No') . "
+                        </div>
                         <input name='form' type='hidden' value='1'>
                     </td>
                 </tr>
@@ -150,7 +157,7 @@ if (isset($_POST['form']) != 1) {
     }
 } else {
     if (!is_valid_id((int) $_POST['userid'])) {
-        stderr(_('Error'), _f('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
+        stderr(_('Error'), _('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
     }
     if (!$_POST['speed']) {
         stderr(_('Error'), _('It appears you have left the field with your upload speed blank.'));
@@ -205,7 +212,7 @@ if (isset($_POST['form']) != 1) {
         ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
-        stderr(_('Error'), _f('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
+        stderr(_('Error'), _('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
     } else {
         $subject = 'Uploader application';
         $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "][b]{$user['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";

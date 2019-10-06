@@ -5,7 +5,6 @@ declare(strict_types = 1);
 use Pu239\Database;
 
 require_once __DIR__ . '/../include/bittorrent.php';
-require_once INCL_DIR . 'phpzip.php';
 check_user_status();
 global $container;
 
@@ -44,5 +43,5 @@ if ($action === 'download') {
         sql_query('UPDATE subtitles SET hits = hits + 1 WHERE id = ' . sqlesc($id));
     }
 } else {
-    stderr(_('Error'), _('No way'));
+    stderr(_('Error'), _('You do not have the permission to do that.'));
 }

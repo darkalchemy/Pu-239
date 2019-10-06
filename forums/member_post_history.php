@@ -238,7 +238,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt = "' . _('Bottom') . '" class="emoticon"></a></span></td>
 		</tr>
 		<tr>
-		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $member_id)) . ($arr['anonymous'] === '1' || empty($user_arr['title']) ? '' : ' < br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
+		<td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . '<br>' . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $member_id)) . ($arr['anonymous'] === '1' || empty($user_arr['title']) ? '' : ' <br><span style=" font-size: xx-small;">[' . htmlsafechars((string) $user_arr['title']) . ']</span>') . '<br><span style="font-weight: bold;">' . ($arr['anonymous'] === 'yes' ? '' : get_user_class_name((int) $user_arr['class'])) . ' </span><br></td>
 		<td class="' . $post_status . '" colspan="2">' . $body . $edited_by . '</td>
 		</tr>
         </table>';

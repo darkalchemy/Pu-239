@@ -55,42 +55,63 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
         stderr(_('Error'), _('No credit mod found with that ID!'));
     }
     while ($mod = mysqli_fetch_assoc($res)) {
-        $HTMLOUT .= "<form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' enctype='multipart/form-data' accept-charset='utf-8'>
-  <table>
-    <tr><td class='rowhead'>" . _('Mod name') . '</td>' . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td></tr>\n" . "<tr>
-    <td class='rowhead'>" . _('Description') . '</td>' . "<td style='padding: 0'>
-    <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "'></td></tr>\n" . "<tr>
-    <td class='rowhead'>" . _('Category') . "</td>
-  <td style='padding: 0'>
-  <select name='category'>";
-
-        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="category"');
+        $HTMLOUT .= "
+        <form method='post' action='" . $_SERVER['PHP_SELF'] . '?action=update&amp;id=' . $id . "' enctype='multipart/form-data' accept-charset='utf-8'>
+            <table>
+                <tr>
+                    <td class='rowhead'>" . _('Mod name') . "</td>
+                    <td style='padding: 0'><input type='text' size='60' maxlength='120' name='name' " . "value='" . htmlsafechars($mod['name']) . "'></td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>" . _('Description') . "</td>
+                    <td style='padding: 0'>
+                        <input type='text' size='60' maxlength='120' name='description' value='" . htmlsafechars($mod['description']) . "'>
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>" . _('Category') . "</td>
+                    <td style='padding: 0'>
+                        <select name='category'>";
+        $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field = "category"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $v) {
-                $HTMLOUT .= "<option value='$v' " . ($mod['category'] == $v ? 'selected' : '') . ">$v</option>";
+                $HTMLOUT .= "
+                            <option value='$v' " . ($mod['category'] == $v ? 'selected' : '') . ">$v</option>";
             }
         }
-
-        $HTMLOUT .= '</select></td></tr>';
-
-        $HTMLOUT .= "<tr><td class='rowhead'>" . _('Link') . '</td>' . "<td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "'></td></tr>\n" . "<tr>
-  <td class='rowhead'>" . _('Status') . "</td>
-  <td style='padding: 0'>
-  <select name='modstatus'>";
-
+        $HTMLOUT .= "
+                        </select>
+                    </td>
+                </tr>
+                <tr><td class='rowhead'>" . _('Link') . "</td>
+                    <td style='padding: 0'><input type='text' size='60' maxlength='120' name='link' " . "value='" . htmlsafechars($mod['pu239lnk']) . "'></td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>" . _('Status') . "</td>
+                    <td class='is-paddingless'>
+                        <select name='modstatus'>";
         $result = sql_query('SHOW COLUMNS FROM modscredits WHERE field="status"');
         while ($row = mysqli_fetch_row($result)) {
             foreach (explode("','", substr($row[1], 6, -2)) as $y) {
-                $HTMLOUT .= "<option value='$y' " . ($mod['status'] == $y ? 'selected' : '') . ">$y</option>";
+                $HTMLOUT .= "
+                            <option value='$y' " . ($mod['status'] == $y ? 'selected' : '') . ">$y</option>";
             }
         }
-
-        $HTMLOUT .= '</select></td></tr>';
-
-        $HTMLOUT .= "<tr><td class='rowhead'>" . _('Credits') . "</td><td style='padding: 0'>
-  <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "'></td></tr>\n";
-        $HTMLOUT .= "<tr><td colspan='2'><input type='submit' value='Submit'></td></tr>\n";
-        $HTMLOUT .= '</table></form>';
+        $HTMLOUT .= "
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td class='rowhead'>" . _('Credits') . "</td>
+                    <td style='padding: 0'>
+                        <input type='text' size='60' maxlength='120' name='credits' value='" . htmlsafechars($mod['credit']) . "'>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan='2'><input type='submit' value='" . _('Submit') . "'></td>
+                </tr>
+            </table>
+        </form>";
     }
     $title = _('Mod Credits');
     $breadcrumbs = [
@@ -100,11 +121,11 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
 } elseif ($action === 'update' && has_access($user['class'], UC_SYSOP, 'coder')) {
     $id = (int) $_GET['id'];
     if (!is_valid_id($id)) {
-        stderr('Error', 'Invalid ID!');
+        stderr(_('Error'), _('Invalid ID'));
     }
     $res = sql_query('SELECT id FROM modscredits WHERE id=' . sqlesc($id));
     if (mysqli_num_rows($res) == 0) {
-        stderr(_('Error'), _('No credit mod found with that ID!'));
+        stderr(_('Error'), _('Invalid ID'));
     }
 
     $name = $_POST['name'];
@@ -135,20 +156,7 @@ if ($action === 'edit' && has_access($user['class'], UC_SYSOP, 'coder')) {
     die();
 }
 
-$HTMLOUT .= "<script>
-  <!--
-  function confirm_delete(id)
-  {
-    if(confirm('Are you sure you want to delete this mod credit?'))
-    {
-    self.location.href='" . $_SERVER['PHP_SELF'] . "?action=delete&id='+id;
-    }
-  }
-  //-->
-  </script>";
-
 $res = sql_query('SELECT * FROM modscredits') or sqlerr(__FILE__, __LINE__);
-
 $fluent = $container->get(Database::class);
 $credits = $fluent->from('modscredits')
                   ->orderBy('id')
@@ -205,16 +213,17 @@ if ($user['class'] >= UC_MAX) {
     $body = '
     <tr>
         <td>' . _('Name:') . "</td>
-        <td><input name='name' type='text' class='w-100'></td>
+        <td><input name='name' type='text' class='w-100' required></td>
     </tr>
     <tr>
         <td>" . _('Description:') . "</td>
-        <td><input name='description' type='text' class='w-100' maxlength='120'></td>
+        <td><input name='description' type='text' class='w-100' maxlength='120' required></td>
     </tr>
     <tr>
         <td>" . _('Category:') . "</td>
         <td>
-            <select name='category'>
+            <select name='category' required>
+                <option value=''>" . _('Select One') . "</option>
                 <option value='Addon'>" . _('Addon') . "</option>
                 <option value='Forum'>" . _('Forum') . "</option>
                 <option value='Message/Email'>" . _('Message/E-mail') . "</option>
@@ -227,12 +236,13 @@ if ($user['class'] >= UC_MAX) {
     </tr>
     <tr>
         <td>' . _('Link:') . "</td>
-        <td><input name='link' type='text' class='w-100'></td>
+        <td><input name='link' type='text' class='w-100' required></td>
     </tr>
     <tr>
         <td>" . _('Status:') . "</td>
         <td>
-            <select name='status'>
+            <select name='status' required>
+                <option value=''>" . _('Select One') . "</option>
                 <option value='In-Progress'>" . _('In-Progress') . "</option>
                 <option value='Complete'>" . _('Complete') . '</option>
             </select>
@@ -240,7 +250,7 @@ if ($user['class'] >= UC_MAX) {
     </tr>
     <tr>
         <td>' . _('Credits:') . "</td>
-        <td><input name='credit' type='text' class='w-100' maxlength='120'><br><span class='small'>" . _('Values separated by commas') . "</span></td>
+        <td><input name='credit' type='text' class='w-100' maxlength='120' required><br><span class='small'>" . _('Values separated by commas') . "</span></td>
     </tr>
     <tr>
         <td colspan='2' class='has-text-centered'>

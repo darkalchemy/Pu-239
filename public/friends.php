@@ -14,7 +14,7 @@ global $container, $site_config;
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $curuser['id'];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 if (!is_valid_id($userid)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 if ($userid != $curuser['id']) {
     stderr(_('Error'), _('Access denied.'));
@@ -25,12 +25,12 @@ $messages_class = $container->get(Message::class);
 $cache = $container->get(Cache::class);
 if ($action === 'add') {
     if (!isset($_GET['targetid'])) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $targetid = (int) $_GET['targetid'];
     $type = $_GET['type'];
     if (!is_valid_id($targetid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     if ($curuser['id'] == $targetid) {
         stderr(_('Error'), _("You can't add yourself."));
@@ -58,7 +58,7 @@ if ($action === 'add') {
         ];
         $messages_class->insert($msgs_buffer);
         if (mysqli_num_rows($r) == 1) {
-            stderr(_('Error'), _f('User ID is already in your %s list', htmlsafechars($table_is)));
+            stderr(_('Error'), _('User ID is already in your %s list', htmlsafechars($table_is)));
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
         stderr(_('Request Added!'), _fe('The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br>{0}Go to your Friends List{1}', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag'><b>", '</b></a>'));
@@ -67,7 +67,7 @@ if ($action === 'add') {
     if ($type === 'block') {
         $r = sql_query("SELECT id FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($r) == 1) {
-            stderr(_('Error'), _f('User ID is already in your %s list', htmlsafechars($table_is)));
+            stderr(_('Error'), _('User ID is already in your %s list', htmlsafechars($table_is)));
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
@@ -90,7 +90,7 @@ if ($action === 'confirm') {
         stderr(_('Error'), _('Invalid type.'));
     }
     if (!is_valid_id($targetid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
@@ -126,11 +126,11 @@ if ($action === 'confirm') {
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     $type = htmlsafechars($_GET['type']);
     if (!is_valid_id($targetid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr(_f('Delete %s Request', $type), _fe('Do you really want to delete this friend request? Click {0}here{1} if you are sure.', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>", '</b></a>'));
+        stderr(_('Delete %s Request', $type), _fe('Do you really want to delete this friend request? Click {0}here{1} if you are sure.', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>", '</b></a>'));
     }
     if ($_GET['h'] != $hash) {
         stderr(_('Error'), _('Invalid data.'));
@@ -150,7 +150,7 @@ if ($action === 'confirm') {
     $sure = isset($_GET['sure']) ? (int) $_GET['sure'] : false;
     $type = htmlsafechars($_GET['type']);
     if (!is_valid_id($targetid)) {
-        stderr(_('Error'), _('Invalid ID.'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
@@ -269,7 +269,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _f('Personal Lists for %s', format_comment($user['username'])) . " $country</h1>
+        <h1 class='has-text-centered'>" . _('Personal Lists for %s', format_comment($user['username'])) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>

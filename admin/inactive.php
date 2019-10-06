@@ -54,15 +54,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <p>' . _('Hey') . " $username,</p>
 <p>" . _('Your account at ') . " {$site_config['site']['name']} " . _(' has been marked as inactive and will be deleted. If you wish to remain a member at') . " {$site_config['site']['name']}" . _(', please login.') . '<br>
-' . _('Your username is :') . " $username<br>
-" . _('And was created :') . " $added<br>
-" . _('Last accessed :') . " $last_access<br>
-" . _('Login at :') . " {$site_config['paths']['baseurl']}/login.php<br>
+' . _('Your username is: ') . " $username<br>
+" . _('And was created: ') . " $added<br>
+" . _('Last accessed: ') . " $last_access<br>
+" . _('Login at: ') . " {$site_config['paths']['baseurl']}/login.php<br>
 " . _('If you have forgotten your password you can retrieve it at') . " {$site_config['paths']['baseurl']}/resetpw.php<br>
 " . _('Welcome back!') . " {$site_config['site']['name']}</p>
 </body>
 </html>";
-            $mail = send_mail($arr['email'], '' . _('Your account at ') . "{$site_config['site']['name']}!", $body, strip_tags($body));
+            $mail = send_mail($arr['email'], _('Your account at ') . "{$site_config['site']['name']}!", $body, strip_tags($body));
         }
 
         if ($record_mail) {
@@ -111,7 +111,7 @@ if ($count_inactive > 0) {
     </script>";
     $HTMLOUT .= "
     <div class='row'><div class='col-md-12'>
-    <h1 class='has-text-centered'>$count" . _(' accounts inactive for longer than') . " $days " . _('days.') . "</h1>
+    <h1 class='has-text-centered'>" . _fe('{0} accounts inactive for longer than {1} days.', $count, $days) . "</h1>
     <form method='post' action='staffpanel.php?tool=inactive&amp;action=inactive' enctype='multipart/form-data' accept-charset='utf-8'>
     <table class='table table-bordered'>
     <tr>
@@ -122,8 +122,8 @@ if ($count_inactive > 0) {
     <td class='colhead'>" . _('Last seen') . "</td>
     <td class='colhead'>" . _('X') . '</td></tr>';
     while ($arr = mysqli_fetch_assoc($res)) {
-        $ratio = member_ratio($arr['uploaded'], $arr['downloaded']);
-        $last_seen = (($arr['last_access'] == '0') ? 'never' : '' . get_date((int) $arr['last_access'], 'DATE') . '&#160;');
+        $ratio = member_ratio((float) $arr['uploaded'], (float) $arr['downloaded']);
+        $last_seen = (($arr['last_access'] == '0') ? 'never' : get_date((int) $arr['last_access'], 'DATE'));
         $class = get_user_class_name((int) $arr['class']);
         $HTMLOUT .= '<tr>
         <td>' . format_username((int) $arr['id']) . '</td>
@@ -145,13 +145,13 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>" . _('Last Email sent by') . ' ' . format_username((int) $date['userid']) . ' ' . _('on') . ' <b>' . get_date((int) $date['last_mail'], 'DATE') . ' -  ' . $date['mails'] . '</b>' . _(' Email') . ' ' . ($date['mails'] > 1 ? 's' : '') . '  ' . _('sent!') . '</td></tr>';
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>" . _pfe('Last Email sent by {1} on {2} - {0, number} email sent', 'Last Email sent by {1} on {2} - {0, number} emails sent', $date['mails'], format_username((int) $date['userid']), get_date((int) $date['last_mail'], 'DATE')) . '</td></tr>';
         }
     }
     $HTMLOUT .= '</table></form>';
     $HTMLOUT .= '</div></div>';
 } else {
-    $HTMLOUT .= stdmsg('<h2>' . _('No account inactive for longer than') . '</h2>', '<p>' . $days . ' ' . _('days.') . '</p>');
+    $HTMLOUT .= stdmsg(_('Awesome'), _fe('No account inactive for longer than {0} days.', $days));
 }
 if ($count > $perpage) {
     $HTMLOUT .= $pager['pagerbottom'];

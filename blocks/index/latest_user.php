@@ -14,7 +14,7 @@ $latest_user .= "
         <div id='latestuser' class='box'>
             <div class='bordered'>
                 <div class='alt_bordered bg-00 level-item is-wrapped padding20'>
-                    " . _f('Welcome to our newest member&nbsp;%s!', $latestuser) . '
+                    " . _fe('Welcome to our newest member&nbsp;{0}!', $latestuser) . '
                 </div>
             </div>
         </div>';

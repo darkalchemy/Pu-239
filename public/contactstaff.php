@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $session->set('is-success', _('Message was sent! Wait for staff to respond now!'));
             header('Location: ' . $site_config['paths']['baseurl']);
         } else {
-            $session->set('is-warning', _f('There was something wrong, Mysql Err: %s') . ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
+            $session->set('is-warning', _('There was something wrong!'));
         }
     }
 } else {
@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             " . _('Subject') . "
                         </th>
                         <th>
-                            <input type='text' name='subject' class='w-100'/>
+                            <input type='text' name='subject' class='w-100'>
                         </th>
                     </tr>";
 

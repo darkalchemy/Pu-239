@@ -18,7 +18,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr('Error', _f('Sorry, you must be a %s to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+    stderr(_('Error'), _('Sorry, you must be a %s to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
     die();
@@ -80,10 +80,10 @@ $user_deposit = $row['deposit'];
 $user_enableplay = $row['enableplay'];
 unset($row);
 if ($user_enableplay === 'no') {
-    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('your banned from casino') . '', 'bottom20');
+    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('you are banned from casino'), 'bottom20');
 }
 if (($user_win - $user_lost) > $max_download_user) {
-    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('you have reached the max download for a single user') . '', 'bottom20');
+    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('you have reached the max download for a single user'), 'bottom20');
 }
 if ($user['downloaded'] > 0) {
     $ratio = $user['uploaded'] / $user['downloaded'];
@@ -93,7 +93,7 @@ if ($user['downloaded'] > 0) {
     $ratio = 0;
 }
 if (!$site_config['site']['ratio_free'] && $ratio < $required_ratio) {
-    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('your ratio is under') . " {$required_ratio}", 'bottom20');
+    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('your ratio is under') . " {$required_ratio}", 'bottom20');
 }
 $row = $casino->get_totals();
 $global_down = $row['globaldown'];
@@ -132,7 +132,7 @@ if ($user_win < $user_everytimewin_mb) {
     }
 }
 if ($global_down > $max_download_global) {
-    stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('but global max win is above') . ' ' . htmlsafechars(mksize($max_download_global)), 'bottom20');
+    stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('but global max win is above') . ' ' . htmlsafechars(mksize($max_download_global)), 'bottom20');
 }
 
 $goback = "<a href='{$_SERVER['PHP_SELF']}'>" . _('Go back') . '</a>';
@@ -174,7 +174,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     $win = $win_amount * $betmb;
     if ($user['uploaded'] < $betmb) {
-        stderr(_('Sorry'), '' . htmlsafechars($user['username']) . ' ' . _('but you have not uploaded') . ' ' . htmlsafechars(mksize($betmb)), 'bottom20');
+        stderr(_('Sorry'), htmlsafechars($user['username']) . ' ' . _('but you have not uploaded') . ' ' . htmlsafechars(mksize($betmb)), 'bottom20');
     }
     if (random_int(0, $cheat_value) == $cheat_value) {
         $update = [
@@ -187,7 +187,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             'win' => new Literal('win + ' . $win),
         ];
         $casino->update_user($update, $user['id']);
-        stderr(_('Yes'), '' . htmlsafechars($winner_was) . ' ' . _('is the result') . ' ' . htmlsafechars($user['username']) . ' ' . _('you got it and win') . ' ' . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback", 'bottom20');
+        stderr(_('Yes'), htmlsafechars($winner_was) . ' ' . _('is the result') . ' ' . htmlsafechars($user['username']) . ' ' . _('you got it and win') . ' ' . htmlsafechars(mksize($win)) . "&#160;&#160;&#160;$goback", 'bottom20');
     } else {
         if (isset($_POST['number'])) {
             do {
@@ -239,9 +239,9 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
         $tbet = $casino_bets->get_bet($betid);
         $nogb = mksize($tbet['amount']);
         if ($user['id'] == $tbet['userid']) {
-            stderr(_('Sorry'), '' . _('You want to bet against yourself lol') . " ?&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _('You want to bet against yourself lol') . " ?&#160;&#160;&#160;$goback", 'bottom20');
         } elseif ($tbet['challenged'] != 'empty') {
-            stderr(_('Sorry'), '' . _('Someone has already taken that bet') . "!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _('Someone has already taken that bet') . "!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($user['uploaded'] < $tbet['amount']) {
             $debt = $tbet['amount'] - $user['uploaded'];
@@ -325,7 +325,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             ];
             $casino_bets->update($update, $betid);
             $subject = _('Casino Results');
-            $msg = '' . _('You just won') . ' ' . htmlsafechars($nogb) . ' ' . _('of upload credit from') . ' ' . $user['username'] . '!';
+            $msg = _fe('You just won {0} of upload credit from {1}!', format_comment($nogb), $user['username']);
 
             $msgs_buffer[] = [
                 'receiver' => $tbet['userid'],
@@ -336,7 +336,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             $messages_class->insert($msgs_buffer);
 
             if ($writelog == 1) {
-                write_log('' . htmlsafechars($tbet['proposed']) . " won $nogb " . _('of upload credit off') . ' ' . $user['username']);
+                write_log(htmlsafechars($tbet['proposed']) . " won $nogb " . _('of upload credit off') . ' ' . $user['username']);
             }
             if ($delold === 1) {
                 $casino_bets->delete_bet($tbet['id']);
@@ -356,7 +356,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
     }
     if (isset($_POST['unit'])) {
         if ($openbet >= $maxusrbet) {
-            stderr(_('Sorry'), '' . _('There are already') . " $openbet " . _('bets open, take an open bet or wait till someone plays') . "!&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _('There are already') . " $openbet " . _('bets open, take an open bet or wait till someone plays') . "!&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 0) {
             stderr(_('Sorry'), _("This won't work, are you trying to cheat? Enter a positive value.") . "&#160;&#160;&#160;$goback", 'bottom20');
@@ -365,17 +365,17 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             stderr(_('Sorry'), _("This won't work enter without a decimal point") . "?&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($maxbet < $nobits) {
-            stderr(_('Sorry'), _f("%1$s The Max allowed bet is %2$s GB!", htmlsafechars($user['username']), $maxbetGB) . "&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _fe('{0} The Max allowed bet is {1} GB!', htmlsafechars($user['username']), $maxbetGB) . "&#160;&#160;&#160;$goback", 'bottom20');
         }
         if ($nobits <= 104857599) {
-            stderr(_('Sorry'), _f("%1$s The Min allowed bet is 100 MB!", htmlsafechars($user['username'])) . "&#160;&#160;&#160;$goback", 'bottom20');
+            stderr(_('Sorry'), _fe('{0} The Min allowed bet is 100 MB!', htmlsafechars($user['username'])) . "&#160;&#160;&#160;$goback", 'bottom20');
         }
 
         $newups = $user['uploaded'] - $nobits;
         $debt = $nobits - $user['uploaded'];
         if ($user['uploaded'] < $nobits) {
             if ($alwdebt != 1) {
-                stderr(_('Sorry'), '<h2>' . _('Thats') . ' ' . htmlsafechars(mksize($debt)) . ' ' . _('more than you got') . "!</h2>$goback", 'bottom20');
+                stderr(_('Sorry'), '<h2>' . _fe("That's {0} more than you have!", mksize($debt)) . "</h2>$goback", 'bottom20');
             }
         }
         $betsp = $casino_bets->get_bets($user['id']);
@@ -413,7 +413,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             <h1 class='has-text-centered'>{$site_config['site']['name']} Casino</h1>";
     if ($openbet < $maxusrbet) {
         if ($totbets >= $maxtotbet) {
-            $HTMLOUT .= '' . _('There are already') . " $maxtotbet " . _('bets open, take an open bet or wait till someone plays') . '!';
+            $HTMLOUT .= _('There are already') . " $maxtotbet " . _('bets open, take an open bet or wait till someone plays') . '!';
         } else {
             $blocks[] = "
             <div class='has-text-centered w-40 bg-03 margin20 padding20 round10'>

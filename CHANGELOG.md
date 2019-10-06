@@ -1,3 +1,7 @@
+### 06 Oct, 2019
+update: more hard coded strings to gettext  
+fix: many of the poorly formatted strings  
+
 ### 02 Oct, 2019
 fix: double }}  
 change: default language from en-US to en  

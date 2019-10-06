@@ -9,7 +9,7 @@ global $container;
 $fluent = $container->get(Database::class);
 $id = isset($_GET['id']) ? (int) $_GET['id'] : (isset($_POST['id']) ? (int) $_POST['id'] : 0);
 if (!is_valid_id($id)) {
-    stderr(_('Error'), _('Bad ID.'));
+    stderr(_('Error'), _('Invalid ID.'));
 }
 $what = $fluent->from('attachments')
                ->where('id = ?', $id)

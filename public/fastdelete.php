@@ -49,10 +49,10 @@ $torrents_class = $container->get(Torrent::class);
 $torrents_class->delete_by_id($tid['id']);
 $torrents_class->remove_torrent($tid['info_hash']);
 if ($user['id'] != $tid['owner']) {
-    $msg = sqlesc('' . _('Your upload') . " [b]{$tid['name']}[/b] " . _('has been deleted by') . " {$user['username']}");
+    $msg = sqlesc(_fe('Your upload {0} has been deleted by {1}', "[b]{$tid['name']}[/b]", $user['username']));
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (2, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
 }
-write_log('' . _('Torrent') . " {$tid['name']} " . _('was deleted by') . " {$user['username']}");
+write_log(_fe('Torrent {0} was deleted by {1}', $tid['name'], $user['username']));
 $cache = $container->get(Cache::class);
 if ($site_config['bonus']['on']) {
     $dt = sqlesc(TIME_NOW - (14 * 86400));
@@ -72,10 +72,9 @@ if ($site_config['bonus']['on']) {
     }
 }
 $session = $container->get(Session::class);
-$session->set('is-success', '[h2]Torrent deleted[/h2][p]' . htmlsafechars($tid['name']) . '[/p]');
+$session->set('is-success', _fe('Torrent deleted<br>{0}', format_comment($tid['name'])));
 if (isset($_GET['returnto'])) {
     header("Location: {$site_config['paths']['baseurl']}{$_GET['returnto']}");
 } else {
     header("Location: {$site_config['paths']['baseurl']}");
 }
-die();

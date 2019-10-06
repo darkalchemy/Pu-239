@@ -23,13 +23,13 @@ if (php_sapi_name() === 'cli') {
 /**
  * @param array $argv
  *
- * @throws AuthError
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws AuthError
  *
  * @return bool|string
  */

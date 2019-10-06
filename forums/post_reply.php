@@ -8,7 +8,7 @@ flood_limit('forums');
 $page = $colour = $arr_quote = '';
 $topic_id = isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0);
 if (!is_valid_id($topic_id)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 global $CURUSER, $site_config;
 
@@ -18,7 +18,7 @@ if ($arr['locked'] === 'yes') {
     stderr(_('Error'), _('This topic is locked'));
 }
 if ($CURUSER['class'] < $arr['min_class_read'] || $CURUSER['class'] < $arr['min_class_write']) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 if ($CURUSER['forum_post'] === 'no' || $CURUSER['status'] !== 0) {
     stderr(_('Error'), _('Your posting rights have been suspended.'));

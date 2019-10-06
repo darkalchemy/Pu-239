@@ -119,7 +119,7 @@ function show_level(array $input)
         $body .= "
         <tr>
             <td>#{$res['reputationlevelid']}</td>
-            <td>" . _('User') . ' <b>' . htmlsafechars($res['level']) . "</b></td>
+            <td>" . _fe('User <b>{0}</b>', format_comment($res['level'])) . "</b></td>
             <td><input type='text' name='reputation[" . $res['reputationlevelid'] . "]' value='" . $res['minimumreputation'] . "'></td>
             <td>
                 <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reputation_ad&amp;mode=edit&amp;reputationlevelid=" . $res['reputationlevelid'] . "'>
@@ -162,12 +162,12 @@ function show_form(array $input, string $type)
     $html = _('This allows you to add a new reputation level or edit an existing reputation level.');
     $res = [];
     if ($type === 'edit') {
-        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid=' . (int) $input['reputationlevelid']) or sqlerr(__LINE__, __FILE__);
+        $query = sql_query('SELECT * FROM reputationlevel WHERE reputationlevelid = ' . (int) $input['reputationlevelid']) or sqlerr(__LINE__, __FILE__);
         if (!$res = mysqli_fetch_assoc($query)) {
-            stderr(_('Error:'), _('Please specify an ID.'));
+            stderr(_('Error'), _('Invalid ID.'));
         }
         $title = _('Edit Reputation Level');
-        $html .= "<br><span style='font-weight:normal;'>" . htmlsafechars($res['level']) . ' (' . _('ID:#') . "{$res['reputationlevelid']})</span><br>";
+        $html .= '<br>' . _fe('{0} (ID: #{1})', format_comment($res['level']), $res['reputationlevelid']) . '<br>';
         $button = _('Update');
         $extra = "<input type='button' class='button is-small' value='" . _('Back') . "' accesskey='b' class='button is-small' onclick='history.back()'>";
         $mode = 'doedit';
@@ -218,7 +218,7 @@ function do_update(array $input, string $type)
         }
         $level = sqlesc($level);
         $minrep = sqlesc(intval($input['minimumreputation']));
-        $redirect = '' . _('Saved Reputation Level') . ' <i>' . htmlsafechars($input['level']) . '</i> ' . _('Successfully.') . '';
+        $redirect = _fe('Saved Reputation Level <i>{0}</i> Successfully.', format_comment($input['level']));
     }
     // what we gonna do?
     if ($type === 'new') {
@@ -226,12 +226,12 @@ function do_update(array $input, string $type)
     } elseif ($type === 'edit') {
         $levelid = intval($input['reputationlevelid']);
         if (!is_valid_id($levelid)) {
-            stderr(_('Error'), _('Invalid ID.'));
+            stderr(_('Error'), _('Invalid ID'));
         }
         // check it's a valid rep id
         $query = sql_query("SELECT reputationlevelid FROM reputationlevel WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
-            stderr(_('Error'), _('No valid ID.'));
+            stderr(_('Error'), _('Invalid ID.'));
         }
         sql_query("UPDATE reputationlevel SET minimumreputation = $minrep, level = $level WHERE reputationlevelid=$levelid") or sqlerr(__FILE__, __LINE__);
     } else {
@@ -241,7 +241,7 @@ function do_update(array $input, string $type)
                 sql_query('UPDATE reputationlevel SET minimumreputation = ' . (int) $v . ' WHERE reputationlevelid=' . sqlesc($k)) or sqlerr(__FILE__, __LINE__);
             }
         } else {
-            stderr(_('Error'), _('No valid ID.'));
+            stderr(_('Error'), _('Invalid ID.'));
         }
         $redirect = _('Saved Reputation Level Successfully.');
     }
@@ -285,7 +285,7 @@ function show_form_rep(array $input)
     global $site_config;
 
     if (!isset($input['reputationid']) || !is_valid_id((int) $input['reputationid'])) {
-        stderr(_('Error'), _('Nothing here by that ID.'));
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $title = _('User Reputation Manager');
     $query = sql_query('SELECT r.*, p.topic_id, t.topic_name, leftfor.username AS leftfor_name, 
@@ -372,12 +372,12 @@ function view_list(array $now_date, array $input, int $time_offset)
             $end = TIME_NOW;
         }
         if ($start >= $end) {
-            stderr(_('Time'), _('Start date is after the end date.'));
+            stderr(_('Error'), _('Start date is after the end date.'));
         }
         if (!empty($input['leftby'])) {
             $left_b = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftby'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_b)) {
-                stderr(_('DB ERROR'), _('Could not find user ') . htmlsafechars($input['leftby']));
+                stderr(_('Error'), _fe('Could not find user {0}', format_comment($input['leftby'])));
             }
             $leftby = mysqli_fetch_assoc($left_b);
             $who = $leftby['id'];
@@ -386,7 +386,7 @@ function view_list(array $now_date, array $input, int $time_offset)
         if (!empty($input['leftfor'])) {
             $left_f = sql_query('SELECT id FROM users WHERE username = ' . sqlesc($input['leftfor'])) or sqlerr(__FILE__, __LINE__);
             if (!mysqli_num_rows($left_f)) {
-                stderr(_('DB ERROR'), _('Could not find user ') . htmlsafechars($input['leftfor']));
+                stderr(_('Error'), _fe('Could not find user {0}', format_comment($input['leftfor'])));
             }
             $leftfor = mysqli_fetch_assoc($left_f);
             $user = $leftfor['id'];
@@ -432,7 +432,7 @@ function view_list(array $now_date, array $input, int $time_offset)
         }
         // do the pager thang!
         $deflimit = 10;
-        $links = "<span style=\"background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;\">{$total['cnt']}&#160;" . _('Records') . '</span>';
+        $links = '<span style="background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;">' . _fe('{0} Records', $total['cnt']) . '</span>';
         if ($total['cnt'] > $deflimit) {
             require_once INCL_DIR . 'function_pager.php';
             $links = pager_rep([
@@ -452,7 +452,7 @@ function view_list(array $now_date, array $input, int $time_offset)
                                     left join users leftby ON leftby.id=r.whoadded 
                                     WHERE $cond ORDER BY $order LIMIT $first, $deflimit") or sqlerr(__FILE__, __LINE__);
         if (!mysqli_num_rows($query)) {
-            stderr(_('DB ERROR'), _('Nothing here'));
+            stderr(_('Error'), _('Nothing here'));
         }
         while ($r = mysqli_fetch_assoc($query)) {
             $r['dateadd'] = date('M j, Y, g:i a', $r['dateadd']);
@@ -495,12 +495,12 @@ function do_delete_rep(array $input)
     global $container, $site_config;
 
     if (!is_valid_id((int) $input['reputationid'])) {
-        stderr(_('ERROR'), _("'Can't find ID"));
+        stderr(_('Error'), _('Invalid ID'));
     }
     // check it's a valid ID.
     $query = sql_query('SELECT reputationid, reputation, userid FROM reputation WHERE reputationid=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if (($r = mysqli_fetch_assoc($query)) === false) {
-        stderr(_('DELETE'), _('No valid ID.'));
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $sql = sql_query('SELECT reputation ' . 'FROM users ' . 'WHERE id=' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     $User = mysqli_fetch_assoc($sql);
@@ -532,17 +532,17 @@ function do_edit_rep(array $input)
         $reason = str_replace('<br>', '', $input['reason']);
         $reason = trim($reason);
         if ((strlen(trim($reason)) < 2) || ($reason == '')) {
-            stderr(_('TEXT'), _('The text you entered was too short.'));
+            stderr(_('Error'), _('The text you entered was too short.'));
         }
         if (strlen($input['reason']) > 250) {
-            stderr(_('TEXT'), _('The text entry is too long.'));
+            stderr(_('Error'), _('The text entry is too long.'));
         }
     }
     $oldrep = $input['oldreputation'];
     $newrep = $input['reputation'];
     $query = sql_query('SELECT reputationid, reason, userid FROM reputation WHERE reputationid = ' . sqlesc($input['reputationid'])) or sqlerr(__FILE__, __LINE__);
     if ($r = mysqli_fetch_assoc($query) === false) {
-        stderr(_('INPUT'), _('No ID'));
+        stderr(_('Error'), _('Invalid ID'));
     }
     if ($oldrep != $newrep) {
         if ($r['reason'] != $reason) {
@@ -559,7 +559,7 @@ function do_edit_rep(array $input)
         ], $site_config['expires']['user_cache']);
         $cache->delete('user_' . $r['userid']);
     }
-    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', '' . _('Saved Reputation #ID') . " {$r['reputationid']} " . _('Successfully.') . '', 5);
+    redirect('staffpanel.php?tool=reputation_ad&amp;mode=list', _fe('Saved Reputation ID: #{0} Successfully', $r['reputationid']), 5);
 }
 
 /**
@@ -623,7 +623,7 @@ function get_month_dropdown(array $now_date, $i = 0)
 {
     $return = '';
     $month = [
-        '----',
+        '',
         _('January'),
         _('February'),
         _('March'),
@@ -653,7 +653,7 @@ function rep_cache()
 {
     $query = sql_query('SELECT * FROM reputationlevel') or sqlerr(__FILE__, __LINE__);
     if (!mysqli_num_rows($query)) {
-        stderr(_('Cache'), _('No items to cache'));
+        stderr(_('Error'), _('No items to cache'));
     }
     $rep_out = '<' . "?php\n\n\$reputations = [\n";
     while ($row = mysqli_fetch_assoc($query)) {

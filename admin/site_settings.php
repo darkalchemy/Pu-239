@@ -267,11 +267,11 @@ foreach ($keys as $key) {
                 </td>
                 <td>
                     <div class='top5 bottom5'>
-                        <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='" . _('"Boolean" is true or false
-"Integer" is a whole number
-"Float" is decimal
-"String" is any string of characters
-"Array" is an array of strings, if more than 1 item in the array, the strings should be separated by a |') . "'>{$row['description']}</textarea>
+                        <textarea name='{$row['id']}_description' rows='6' class='w-100' placeholder='" . _("'Boolean' is true or false
+'Integer' is a whole number
+'Float' is decimal
+'String' is any string of characters
+'Array' is an array of strings, if more than 1 item in the array, the strings should be separated by a '|'") . "'>{$row['description']}</textarea>
                     </div>
                 </td>
             </tr>" . (isset($row['parent']) ? "

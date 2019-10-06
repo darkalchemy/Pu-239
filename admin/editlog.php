@@ -43,9 +43,9 @@ if (!$exist || (isset($_POST['update']) && ($_POST['update'] === 'Update'))) {
     $data = json_encode($fetch_set);
     $session = $container->get(Session::class);
     if (file_put_contents($file_data, $data)) {
-        $session->set('is-success', "Coder's Log was updated for {$CURUSER['username']}");
+        $session->set('is-success', _fe("Coder's Log was updated for {0}", $CURUSER['username']));
     } else {
-        $session->set('is-warning', "[h3]Could not save data to:[/h3][p]{$file_data}[/p]");
+        $session->set('is-warning', _fe('Could not save data to: [p]{0}[/p]', $file_data));
     }
     $data = $fetch_set;
     unset($_POST);

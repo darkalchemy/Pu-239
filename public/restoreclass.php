@@ -20,4 +20,3 @@ $fluent->deleteFrom('ajax_chat_online')
        ->execute();
 
 header("Location: {$site_config['paths']['baseurl']}");
-die();

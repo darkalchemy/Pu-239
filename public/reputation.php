@@ -18,7 +18,7 @@ $closewindow = true;
 require_once CACHE_DIR . 'rep_settings_cache.php';
 
 if (!$GVARS['rep_is_online']) {
-    die(_('Reputation system offline, sorry'));
+    stderr(_('Error'), _('Reputation system is offline.'));
 }
 
 if (isset($_POST) || isset($_GET)) {
@@ -67,35 +67,35 @@ if ($rep_locale === 'posts') {
 }
 switch ($rep_locale) {
     case 'comments':
-        $this_rep = 'Comment';
+        $this_rep = _('Comment');
         break;
 
     case 'torrents':
-        $this_rep = 'Torrent';
+        $this_rep = _('Torrent');
         break;
 
     case 'users':
-        $this_rep = 'Profile';
+        $this_rep = _('Profile');
         break;
 
     default:
-        $this_rep = 'Post';
+        $this_rep = _('Post');
 }
 
 if (!mysqli_num_rows($forum)) {
-    rep_output($this_rep . ' Does Not Exist - Incorrect Access');
+    rep_output(_('%s Does Not Exist - Incorrect Access', $this_rep));
 }
 
 $res = mysqli_fetch_assoc($forum) or sqlerr(__LINE__, __FILE__);
 if (isset($res['minclassread'])) {
     if ($user['class'] < $res['minclassread']) {
-        rep_output('Wrong Permissions');
+        rep_output(_('Wrong Permissions'));
     }
 }
 
 $repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$user['id']}") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
-    rep_output('You have already added Rep to this ' . $this_rep . '!');
+    rep_output(_('You have already added Rep to this %s!', $this_rep));
 }
 
 if (!$is_mod) {
@@ -139,7 +139,7 @@ if (isset($input['reason']) && !empty($input['reason'])) {
 }
 
 if (isset($input['do']) && $input['do'] === 'addrep') {
-    if ($res['userid'] == $user['id']) { // sneaky bastiges!
+    if ($res['userid'] == $user['id']) {
         rep_output(_('You cannot rep your own stuffs!'));
     }
     $score = fetch_reppower($user, $input['reputation']);
@@ -216,21 +216,21 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         }
         switch ($rep_locale) {
             case 'comments':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/details.php?id=%d&amp;viewcomm=%d#comm%d' target='_blank'>this Comment</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = _fe('Your reputation on {0}this Comment{1} is {2}<br>Total: {3} points.', "<a href='{$site_config['paths']['baseurl']}/details.php?id={$res['locale']}&amp;viewcomm={$input['pid']}#comm{$input['pid']}' target='_blank'>", '</a>', $rep, $total);
                 break;
 
             case 'torrents':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/details.php?id=%d' target='_blank'>this Torrent</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = _fe('Your reputation on {0}this Torrent{1} is {2}<br>Total: {3} points.', "<a href='{$site_config['paths']['baseurl']}/details.php?id={$input['pid']}' target='_blank'>", '</a>', $rep, $total);
                 break;
 
             case 'users':
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/userdetails.php?id=%d' target='_blank'>your profile</a> is %s<br>Total: %s points.", $input['pid'], $rep, $total);
+                $rep_info = _fe('Your reputation on {0}your profile{1} is {2}<br>Total: {3} points.', "<a href='{$site_config['paths']['baseurl']}/userdetails.php?id={$input['pid']}' target='_blank'>", '</a>', $rep, $total);
                 break;
 
             default:
-                $rep_info = sprintf("Your reputation on <a href='{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid=%d&amp;page=p%d#%d' target='_blank'>this Post</a> is %s<br>Total: %s points.", $res['locale'], $input['pid'], $input['pid'], $rep, $total);
+                $rep_info = _fe('Your reputation on {0}this Post{1} is {2}<br>Total: {3} points.', "{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['locale']}&amp;page=p{$input['pid']}#{$input['pid']}' target='_blank'>", '</a>', $rep, $total);
         }
-        $rep_points = sprintf('' . _('You have') . ' %d ' . _('Reputation Point(s).') . '', $user['reputation']);
+        $rep_points = _fe('You have %d Reputation Point(s).', $user['reputation']);
         $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>
@@ -253,8 +253,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                             </td>
                         </tr>";
     } else {
-        $res['username'] = $res['anon'] === 'yes' ? 'Anonymous' : $res['username'];
-        $rep_text = sprintf("What do you think of %s's " . $this_rep . '?', htmlsafechars($res['username']));
+        $res['username'] = $res['anon'] === 'yes' ? get_anonymous_name() : $res['username'];
+        $rep_text = _fe("What do you think of {0}'s {1}?", format_comment($res['username']), $this_rep);
         $negativerep = ($is_mod || $GVARS['g_rep_negative']) ? true : false;
         $closewindow = false;
         $html = "
@@ -287,7 +287,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        ' . _('Your comments on this :') . ' ' . $this_rep . "<br>
+                                                        ' . _fe('Your comments on this: {0}', $this_rep) . "<br>
                                                         <input type='text' maxlength='250' name='reason' class='w-100'>
                                                     </td>
                                                 </tr>
@@ -300,7 +300,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                         <input type='hidden' name='pid' value='{$input['pid']}'>
                                         <input type='hidden' name='locale' value='{$input['locale']}'>
                                         <input type='submit' value='" . _('Add To Reputation') . "' class='button is-small' accesskey='s'>
-                                        <input type='button' value='Close Window' class='button is-small' accesskey='c' onclick='self.close()'>
+                                        <input type='button' value='" . _('Close Window') . "' class='button is-small' accesskey='c' onclick='self.close()'>
                                     </div>
                                 </form>
                             </td>
@@ -325,7 +325,7 @@ function rep_output($msg = '', $html = '')
             </td>
         </tr>";
     }
-    $htmlout = doc_head('Reputation System') . "
+    $htmlout = doc_head(_('Reputation System')) . "
     <link rel='stylesheet' href='" . get_file_name('vendor_css') . "'>
     <link rel='stylesheet' href='" . get_file_name('css') . "'>
     <link rel='stylesheet' href='" . get_file_name('main_css') . "'>
@@ -338,7 +338,7 @@ function rep_output($msg = '', $html = '')
         }
     </script>
     <div class='has-text-centered'>
-        <div class='has-text-success'>Reputation System</div>
+        <div class='has-text-success'>" . _('Reputation System') . "</div>
             <table class='table table-bordered table-striped'>
                 $html";
     if ($closewindow) {

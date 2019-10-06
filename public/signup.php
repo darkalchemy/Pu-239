@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'invite_code' => 'alpha_num:between:64,64',
     ]);
     if ($validation->fails() || !valid_username($post['username'], false, true)) {
-        $session->set('is-warning', 'Invalid information provided, please try again.');
+        $session->set('is-warning', _('Invalid information provided, please try again.'));
         write_log(getip() . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();

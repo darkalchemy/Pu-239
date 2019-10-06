@@ -19,10 +19,6 @@ $user = check_user_status();
 $HTMLOUT = '';
 global $container, $site_config;
 
-if ($user['class'] < UC_MIN) {
-    stderr('Sorry', 'You must be at least a User.');
-}
-
 if (isset($_GET['id']) && $user['class'] >= UC_STAFF) {
     $userid = (int) $_GET['id'];
     $users_class = $container->get(User::class);
@@ -49,25 +45,25 @@ $cost = (!$ratio_fix) ? 0 : (int) $ratio_fix;
 $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['sid']) || empty($_POST['tid']) || empty($_POST['userid'])) {
-        $session->set('is-danger', 'Invalid POST resquest');
+        $session->set('is-danger', _('Invalid Data'));
     } else {
         $torrents_class = $container->get(Torrent::class);
         $torrent = $torrents_class->get((int) $_POST['tid']);
         if (!$torrent) {
-            $session->set('is-danger', 'No torrent with that ID!');
+            $session->set('is-danger', _('Invalid ID'));
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
         $snatched_class = $container->get(Snatched::class);
         $snatched = $snatched_class->get_snatched((int) $_POST['userid'], (int) $_POST['tid']);
         if (!$snatched || $snatched['id'] != $_POST['sid']) {
-            $session->set('is-danger', 'No snatched torrent with that ID!');
+            $session->set('is-danger', _('Invalid ID'));
             header("Location: {$_SERVER['PHP_SELF']}");
             die();
         }
         if (!empty($_POST['seed'])) {
             if ($cost > $bp) {
-                $session->set('is-danger', 'You do not have enough bonus points!');
+                $session->set('is-danger', _('You do not have enough bonus points!'));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -77,19 +73,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'seedtime' => $_POST['seed'],
             ];
             $snatched_class->update($set, (int) $_POST['tid'], (int) $_POST['userid']);
-            $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . " - $cost Points for a seedtime fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . _fe('{0} Points for a seedtime fix on torrent: {1} => {2}', $cost, $_POST['tid'], format_comment($torrent['name'])) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'seedbonus' => $user_stuff['seedbonus'] - $cost,
                 'bonuscomment' => $bonuscomment,
             ];
             $users_class->update($set, (int) $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
-            $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
+            $session->set('is-success', _('You have successfully removed the HnR for this torrent!'));
         } elseif (!empty($_POST['bytes'])) {
             $downloaded = $site_config['site']['ratio_free'] ? $torrent['size'] : $snatched['downloaded'];
             $bytes = $downloaded - $snatched['uploaded'];
             if ($diff < $bytes) {
-                $session->set('is-danger', 'You do not have enough upload credit!');
+                $session->set('is-danger', _('You do not have enough upload credit!'));
                 header("Location: {$_SERVER['PHP_SELF']}");
                 die();
             }
@@ -99,14 +95,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'uploaded' => $snatched['downloaded'],
             ];
             $snatched_class->update($set, (int) $_POST['tid'], (int) $_POST['userid']);
-            $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . mksize($bytes) . " upload credit for a ratio fix on torrent: {$_POST['tid']} =>" . htmlsafechars($torrent['name']) . ".\n{$user_stuff['bonuscomment']}";
+            $bonuscomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . _fe('{0} upload credit for a ratio fix on torrent: {1} => {2}', mksize($bytes), $_POST['tid'], format_comment($torrent['name'])) . ".\n{$user_stuff['bonuscomment']}";
             $set = [
                 'uploaded' => $user_stuff['uploaded'] - $bytes,
                 'bonuscomment' => $bonuscomment,
             ];
             $users_class->update($set, (int) $_POST['userid']);
             $cache->delete('userhnrs_' . $userid);
-            $session->set('is-success', 'You have successfully removed the HnR for this torrent!');
+            $session->set('is-success', _('You have successfully removed the HnR for this torrent!'));
         }
     }
     unset($_POST);
@@ -157,18 +153,18 @@ if (count($hnrs) > 0) {
         <tr>
             <th>' . _('Type') . '</th>
             <th>' . _('Name') . "</th>
-            <th class='has-text-centered'>" . _('S') . "</th>
-            <th class='has-text-centered'>" . _('L') . "</th>
-            <th class='has-text-centered'>" . _('UL') . '</th>
+            <th class='has-text-centered'>" . _('Seeders') . "</th>
+            <th class='has-text-centered'>" . _('Leechers') . "</th>
+            <th class='has-text-centered'>" . _('Uploaded') . '</th>
             ' . ($site_config['site']['ratio_free'] ? "
             <th class='has-text-centered'>" . _('Size') . '</th>' : "
-            <th class='has-text-centered'>" . _('DL') . '</th>') . "
+            <th class='has-text-centered'>" . _('Downloaded') . '</th>') . "
             <th class='has-text-centered'>" . _('Ratio') . "</th>
-            <th class='has-text-centered'>" . _('When Completed') . "</th>
+            <th class='has-text-centered'>" . _('Completed') . "</th>
             <th class='has-text-centered'>" . _('Last Action') . "</th>
             <th class='has-text-centered'>" . _('Speed') . "</th>
-            <th class='has-text-centered'>Buyout</th>
-        </tr>";
+            <th class='has-text-centered'>" . _('Buyout') . '</th>
+        </tr>';
     $body = '';
     foreach ($hnrs as $a) {
         $torrent_needed_seed_time = ($a['st'] - $a['torrent_added']);
@@ -251,7 +247,7 @@ if (count($hnrs) > 0) {
                 <input type='hidden' name='tid' value='{$a['tid']}'>
                 <input type='hidden' name='userid' value='{$userid}'>
                 <div class='padding10 has-text-centered'>
-                    <input type='submit' value='Seedtime Fix' class='button is-small tooltipper' title='Buyout with {$cost} bonus points to fix the seedtime for this torrent'>
+                    <input type='submit' value='Seedtime Fix' class='button is-small tooltipper' title='" . _fe('Buyout with {0} bonus points to fix the seedtime for this torrent', $cost) . "'>
                 </div>
             </form>";
         } else {
@@ -268,22 +264,22 @@ if (count($hnrs) > 0) {
                 <input type='hidden' name='tid' value='{$a['tid']}'>
                 <input type='hidden' name='userid' value='{$userid}'>
                 <div class='padding10 has-text-centered'>
-                    <input type='submit' value='Ratio Fix' class='button is-small tooltipper' title='Buyout with " . mksize($bytes) . " upload credit to fix the ratio for this torrent'>
+                    <input type='submit' value='Ratio Fix' class='button is-small tooltipper' title='" . _fe('Buyout with {0} upload credit to fix the ratio for this torrent', mksize($bytes)) . "'>
                 </div>
             </form>";
         } else {
             $buybytes = '';
         }
 
-        $or = $buyout != '' && $buybytes != '' ? 'or' : '';
-        $sucks = $buyout == '' ? "Seed for $need_to_seed" : "or<br>Seed for $need_to_seed";
-        $a['cat'] = $a['parent_name'] . '::' . $a['catname'];
-        $caticon = !empty($a['image']) ? "<img height='42px' class='tnyrad tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$user['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
+        $or = !empty($buyout) && !empty($buybytes) ? 'or' : '';
+        $sucks = empty($buyout) ? _fe('Seed for {0}', $need_to_seed) : _fe('or<br>Seed for {0}', $need_to_seed);
+        $a['cat'] = $a['parent_name'] . ' :: ' . $a['catname'];
+        $caticon = !empty($a['image']) ? "<img height='42px' class='round5 tooltipper' src='{$site_config['paths']['images_baseurl']}caticons/{$user['categorie_icon']}/{$a['image']}' alt='{$a['cat']}' title='{$a['name']}'>" : $a['cat'];
         $body .= "
         <tr>
-            <td style='padding: 5px'>$caticon</td>
-            <td><a class='is-link' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . htmlsafechars($a['name']) . "</b></a>
-                <br><span style='color: .$color.'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? '' . _('seeded for') . '</font>: ' . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? '<br>' . _('should still seed for: ') . '' . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>" . _('seeding') . '</b>]</span>' : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
+            <td class='padding5'>$caticon</td>
+            <td><a class='is-link' href='details.php?id=" . (int) $a['tid'] . "&amp;hit=1'><b>" . format_comment($a['name']) . "</b></a>
+                <br><span style='color: {$color};'>  " . (($user['class'] >= UC_STAFF || $user['id'] == $userid) ? _('seeded for') . '</span>: ' . mkprettytime($a['seedtime']) . (($need_to_seed != '0:00') ? '<br>' . _('should still seed for: ') . '' . $need_to_seed . '&#160;&#160;' : '') . ($a['seeder'] === 'yes' ? "&#160;<span class='has-text-success'> [<b>" . _('seeding') . '</b>]</span>' : $hit_n_run . '&#160;' . $mark_of_cain . $needs_seed) : '') . "
             </td>
             <td class='has-text-centered'>" . (int) $a['seeders'] . "</td>
             <td class='has-text-centered'>" . (int) $a['leechers'] . "</td>
@@ -298,11 +294,13 @@ if (count($hnrs) > 0) {
     }
     $completed .= main_table($body, $heading);
 } else {
-    $completed = main_div("<div class='padding20 has-text-centered'>" . _f('%s has no Hit and Runs!', format_username($userid)) . '</div>');
+    $completed = main_div(_('%s has no Hit and Runs!', format_username($userid)), '', 'padding20 has-text-centered');
 }
 
 $title = _('HnRs');
 $breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/userdetails.php?id={$userid}'>" . _('User Details') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/usercp.php?id={$userid}'>" . _('User CP') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
 echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($completed) . stdfoot();

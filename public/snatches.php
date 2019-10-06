@@ -22,7 +22,7 @@ if (empty($_GET['id'])) {
 }
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 
 $fluent = $container->get(Database::class);
@@ -86,7 +86,7 @@ foreach ($snatches as $arr) {
     $ratio = ($arr['downloaded'] > 0 ? number_format($arr['uploaded'] / $arr['downloaded'], 3) : ($arr['uploaded'] > 0 ? 'Inf.' : '---'));
     $completed = sprintf('%.2f%%', 100 * (1 - ($arr['to_go'] / $arr['size'])));
     $snatchuser = (isset($arr['userid']) ? format_username((int) $arr['userid']) : _('Unknown'));
-    $username = get_anonymous($arr['owner']) || $arr['anonymous'] === '1' ? ($user['class'] < UC_STAFF && $arr['userid'] != $user['id'] ? '' : $snatchuser . ' - ') . '<i>' . _('Kezer Soze') . '</i>' : $snatchuser;
+    $username = get_anonymous((int) $arr['owner']) || $arr['anonymous'] === '1' ? ($user['class'] < UC_STAFF && $arr['userid'] != $user['id'] ? '' : $snatchuser . ' - ') . '<i>' . _('Kezer Soze') . '</i>' : $snatchuser;
     $body .= "
         <tr>
             <td class='has-text-left'>{$username}</td>

@@ -39,17 +39,17 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
     $mp = $pages - 1;
     if ($page >= 1) {
         $pager = "
-                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile' title='Goto Page $page'>Previous</a>";
+                        <a href='{$href}page=" . ($page - 1) . "' class='pagination-previous button $class tooltipper is_hidden-mobile' title='" . _fe('Goto Page {0}', $page) . "'>" . _('Previous') . '</a>';
     } else {
         $pager = "
-                        <a class='pagination-previous button $class is_hidden-mobile' disabled>Previous</a>";
+                        <a class='pagination-previous button $class is_hidden-mobile' disabled>" . _('Previous') . '</a>';
     }
     if ($page < $mp && $mp >= 0) {
         $pager2 = "
-                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='Goto Page " . ($page + 2) . "'>Next</a>";
+                        <a href='{$href}page=" . ($page + 1) . "' class='pagination-next button $class tooltipper is_hidden-mobile' title='" . _fe('Goto Page {0}', $page + 2) . "'>" . _('Next') . '</a>';
     } else {
         $pager2 = "
-                        <a class='pagination-next button $class is_hidden-mobile' disabled>Next</a>";
+                        <a class='pagination-next button $class is_hidden-mobile' disabled>" . _('Next') . '</a>';
     }
 
     if ($count) {
@@ -72,10 +72,10 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
             $text = $i + 1;
             if ($page != $i) {
                 $pagerarr[] = "
-                            <li><a href='{$href}page=$i' class='pagination-link button $class' aria-label='Goto page $text'>$text</a></li>";
+                            <li><a href='{$href}page=$i' class='pagination-link button $class' aria-label='" . _fe('Goto Page {0}', $text) . "'>$text</a></li>";
             } else {
                 $pagerarr[] = "
-                            <li><a class='pagination-link is-current' aria-label='Page $text' aria-current='page'>$text</a></li>";
+                            <li><a class='pagination-link is-current' aria-label='" . _fe('Page {0}', $text) . "' aria-current='page'>$text</a></li>";
             }
         }
         $pagerarr[] = '
@@ -85,7 +85,7 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
                         $pagerstr
                     </nav>";
         $pagerbottom = "
-                    <div class='has-text-centered top20 bottom10'>Overall $count items in " . ($i) . ' page' . plural($i) . ", showing $perpage per page.</div>
+                    <div class='has-text-centered top20 bottom10'>" . _pfe('Overall {1} items in {0, number} page, showing {2} per page.', 'Overall {1} items in {0, number} pages, showing {2} per page.', $i, $count, $perpage) . "</div>
                     <nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";
@@ -136,17 +136,17 @@ function pager_rep($data)
     $next_link = '';
     if ($pager['current_page'] > 1) {
         $start = $data['start_value'] - $data['perpage'];
-        $previous_link = "<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='Previous'><span class='{$mini}pagelink'>&lt;</span></a>";
+        $previous_link = "<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='" . _('Previous') . "'><span class='{$mini}pagelink'>&lt;</span></a>";
     }
     if ($pager['current_page'] < $pager['pages']) {
         $start = $data['start_value'] + $data['perpage'];
-        $next_link = "&#160;<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='Next'><span class='{$mini}pagelink'>&gt;</span></a>";
+        $next_link = "&#160;<a href='{$data['url']}&amp;$parameter=$start' class='tooltipper' title='" . _('Next') . "'><span class='{$mini}pagelink'>&gt;</span></a>";
     }
     if ($pager['pages'] > 1) {
         if (isset($data['mini'])) {
             $pager['first_page'] = "<img src='{$site_config['paths']['images_baseurl']}multipage.gif' alt='' title=''>";
         } else {
-            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>{$pager['pages']} Pages</span>&#160;";
+            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>" . _pf('{0, number} Page', '{0, number} Pages', $pager['pages']) . '</span>&#160;';
         }
         for ($i = 0; $i <= $pager['pages'] - 1; ++$i) {
             $RealNo = $i * $data['perpage'];

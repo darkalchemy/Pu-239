@@ -99,7 +99,7 @@ function crazyhour()
             <div class='tooltip_templates'>
                 <div id='crazy_tooltip' class='margin20'>
                     <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        " . _f('CrazyHour %1$s %2$s Ends in %3$s at %4$s', $crazytitle, $crazymessage, mkprettytime($crazyhour['remaining']), get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1)) . '
+                        " . _('CrazyHour %1$s %2$s Ends in %3$s at %4$s', $crazytitle, $crazymessage, mkprettytime($crazyhour['remaining']), get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1)) . '
                     </div>
                 </div>
             </div>
@@ -120,8 +120,8 @@ function crazyhour()
                     <div class='has-text-centered is-primary'>
                         " . _('All torrents are FREE') . '<br>
                         ' . _('and triple upload credit!') . '<br>
-                        ' . _f('starts in %s', mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW)) . '<br>
-                        ' . _f('at %s', get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1)) . '
+                        ' . _('starts in %s', mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW)) . '<br>
+                        ' . _('at %s', get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1)) . '
                     </div>
                 </div>
             </div>

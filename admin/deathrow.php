@@ -68,13 +68,13 @@ function notify_owner(array $tids)
                        ->select('owner')
                        ->select('name')
                        ->where('id', $tids)
-                       ->fetchAll();
+                       ->fetch();
 
     $dt = TIME_NOW;
     $subject = _('Dead Torrent Notice');
     $values = [];
     foreach ($torrents as $torrent) {
-        $msg = '' . _('Torrent') . " [url={$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}]\"{$torrent['name']}\"[/url] " . _('will soon be deleted. Please re-seed this torrent to avoid deletion') . '';
+        $msg = _fe('Torrent {0}{1}{2} will soon be deleted. Please re-seed this torrent to avoid deletion.', "[url={$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}]", format_comment($torrent['name']), '[/url]');
         $values[] = [
             'receiver' => $torrent['owner'],
             'added' => $dt,
@@ -103,7 +103,7 @@ if (!empty($_POST['remove'])) {
     $deleted = notify_owner($_POST['remove']);
     $session = $container->get(Session::class);
     if ($deleted) {
-        $session->set('is-success', _('Torrent Owner') . plural($deleted) . _(' Notified'));
+        $session->set('is-success', _('Torrent Owner Notified'));
     } else {
         $session->set('is-success', _('Torrent Notification Failed'));
     }
@@ -232,7 +232,7 @@ if ($count) {
                        ->fetchAll();
 
     $HTMLOUT .= "
-        <h1 class='has-text-centered'>$count " . _(' Torrents On Deathrow') . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
+        <h1 class='has-text-centered'>" . _pfe('{0, number} Torrent On Deathrow', '{0, number} Torrents On Deathrow', $count) . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $heading = '
         <tr>
@@ -245,11 +245,11 @@ if ($count) {
     $body = '';
     foreach ($torrents as $queued) {
         if ($queued['reason'] == 1) {
-            $reason = _('no peers, not seeded within ') . calctime($x_time);
+            $reason = _fe('no peers, not seeded within {0}', calctime($x_time));
         } elseif ($queued['reason'] == 2) {
-            $reason = _('no peers, not snatched in ') . calctime($y_time);
+            $reason = _fe('no peers, not snatched in {0}', calctime($y_time));
         } else {
-            $reason = _('no seeder activity within ') . calctime($z_time) . _(' on new torrent');
+            $reason = _fe('no seeder activity within {0} on new torrent', calctime($z_time));
         }
         $id = (int) $queued['tid'];
         $body .= '
@@ -276,7 +276,7 @@ if ($count) {
     echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } else {
     $HTMLOUT = "<h1 class='has-text-centered'>" . _(' Torrents On Deathrow') . '</h1>';
-    $HTMLOUT .= stdmsg('Awesome', 'There are not torrents on deathrow');
+    $HTMLOUT .= stdmsg(_('Awesome'), _('There are not torrents on deathrow'));
     $title = _('Deathrow');
     $breadcrumbs = [
         "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',

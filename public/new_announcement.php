@@ -20,26 +20,26 @@ $stdfoot = [
 global $site_config;
 
 if ($user['class'] < UC_MAX) {
-    stderr(_('Error'), _("You're not authorised"));
+    stderr(_('Error'), _("You're not authorized"));
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== The expiry days.
     $days = [
-        7 => '7 Days',
-        14 => '14 Days',
-        21 => '21 Days',
-        28 => '28 Days',
-        56 => '2 Months',
+        7 => _('%d Days', 7),
+        14 => _('%d Days', 14),
+        21 => _('%d Days', 21),
+        28 => _('%d Days', 28),
+        56 => _('%d Months', 7),
     ];
     //== Usersearch POST data...
     $n_pms = isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0;
     $ann_query = isset($_POST['ann_query']) ? rawurldecode(trim($_POST['ann_query'])) : '';
     if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $ann_query)) {
-        stderr('Error', 'Misformed Query');
+        stderr(_('Error'), _('Misformed Query'));
     }
     if (!$n_pms) {
-        stderr('Error', 'No recipients');
+        stderr(_('Error'), _('No recipients'));
     }
     //== POST data ...
     $body = trim((isset($_POST['body']) ? $_POST['body'] : ''));
@@ -48,10 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ((isset($_POST['buttonval']) && $_POST['buttonval'] === 'Submit')) {
         //== Check values before inserting into row...
         if (empty($body)) {
-            stderr('Error', 'No body to announcement');
+            stderr(_('Error'), _('No body to announcement'));
         }
         if (empty($subject)) {
-            stderr('Error', 'No subject to announcement');
+            stderr(_('Error'), _('No subject to announcement'));
         }
         unset($flag);
         reset($days);
@@ -61,16 +61,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         if (!isset($flag)) {
-            stderr('Error', 'Invalid expiry selection');
+            stderr(_('Error'), _('Invalid expiry selection'));
         }
         $expires = TIME_NOW + (86400 * $expiry); // 86400 seconds in one day.
         $created = TIME_NOW;
         $query = sprintf('INSERT INTO announcement_main (owner_id, created, expires, sql_query, subject, body) VALUES (%s, %s, %s, %s, %s, %s)', sqlesc($user['id']), sqlesc($created), sqlesc($expires), sqlesc($ann_query), sqlesc($subject), sqlesc($body));
         sql_query($query);
         if (mysqli_affected_rows($mysqli)) {
-            stderr('Success', 'Announcement was successfully created');
+            stderr('Success', _('Announcement was successfully created'));
         }
-        stderr('Error', 'Contact an administrator');
+        stderr(_('Error'), _('Contact an administrator'));
     }
 
     $HTMLOUT = '';
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $HTMLOUT .= "<form name='compose' method='post' action='{$site_config['paths']['baseurl']}/new_announcement.php' enctype='multipart/form-data' accept-charset='utf-8'>
      <table>
      <tr>
-     <td colspan='2'><b>Subject: </b>
+     <td colspan='2'><b>" . _('Subject') . ": </b>
      <input name='subject' type='text' size='76' value='" . htmlsafechars($subject) . "'></td>
      </tr>
      <tr><td colspan='2'><div class='has-text-centered'>
@@ -104,18 +104,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($body) {
         $newtime = TIME_NOW + (86400 * $expiry);
         $HTMLOUT .= "<table class='main'>
-     <tr><td class='has-text-centered'><h2><span class='has-text-primary'>Announcement: 
-     " . htmlsafechars($subject) . "</span></h2></td></tr>
+     <tr><td class='has-text-centered'><h2><span class='has-text-primary'>" . _('Announcement') . ': 
+     ' . htmlsafechars($subject) . "</span></h2></td></tr>
      <tr><td class='text'>
-     " . format_comment($body) . '<br><hr>Expires: ' . get_date((int) $newtime, 'DATE') . '';
+     " . format_comment($body) . '<br><hr>' . _('Expires') . ': ' . get_date((int) $newtime, 'DATE') . '';
         $HTMLOUT .= '</td></tr></table>';
     }
-} else { // Shouldn't be here
-    header('HTTP/1.0 404 Not Found');
-    $HTMLOUT = '<h1>Not Found</h1><p>The requested URL ' . htmlsafechars($_SERVER['SCRIPT_NAME']) . " was not found on this server.</p>
-<hr>
-<address>{$_SERVER['SERVER_SOFTWARE']} Server at {$site_config['paths']['baseurl']} Port 80</address></body></html>\n";
-    echo $HTMLOUT;
+} else {
+    header('Location: 404.html');
     die();
 }
 

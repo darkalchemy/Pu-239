@@ -47,7 +47,7 @@ if ($cache_share_ratio['seed_time_total'] > 0 && $cache_share_ratio['total_numbe
             <td>
                 <div class="level-left">' . (($user['downloaded'] > 0 || $user['uploaded'] > 2147483648) ? '
                     <span class="right10" style="color: ' . get_ratio_color($avg_time_ratio) . ';">' . number_format($avg_time_ratio, 3) . '</span>' . ratio_image_machine($avg_time_ratio) . '
-                    <span class="left10">[</span><span style="color: ' . get_ratio_color($avg_time_ratio) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . _(' per torrent average ]  Ratio based on the assumption that all torrents were New. ') : _('Inf.')) . '
+                    <span class="left10">[</span><span style="color: ' . get_ratio_color($avg_time_ratio) . ';">&#160;' . $avg_time_seeding . '</span>&#160;' . _('per torrent average') . ' ] ' . _('Ratio based on the assumption that all torrents were New.') : _('Inf.')) . '
                 </div>
             </td>
         </tr>';

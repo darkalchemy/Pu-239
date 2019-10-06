@@ -23,14 +23,14 @@ if ($message['sender'] !== $CURUSER['id']) {
     $forwarded_username = htmlsafechars($CURUSER['username']);
 }
 
-$HTMLOUT .= '<h1>' . _('Fwd: ') . '' . htmlsafechars($message['subject']) . '</h1>
+$HTMLOUT .= '<h1>' . _('Fwd: ') . htmlsafechars($message['subject']) . '</h1>
         <form action="messages.php" method="post" accept-charset="utf-8">
         <input type="hidden" name="id" value="' . $pm_id . '">
         <input type="hidden" name="action" value="forward_pm">
     <table class="table table-bordered">
     <tr>
         <td colspan="2" class="colhead"><h1>' . _('forward message ') . '
-        <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=":">' . _('Fwd: ') . '' . htmlsafechars($message['subject']) . '</h1></td>
+        <img src="' . $site_config['paths']['images_baseurl'] . 'arrow_next.gif" alt=":">' . _('Fwd: ') . htmlsafechars($message['subject']) . '</h1></td>
     </tr>
     <tr>
         <td><span>' . _('To:') . '</span></td>
@@ -46,23 +46,23 @@ $HTMLOUT .= '<h1>' . _('Fwd: ') . '' . htmlsafechars($message['subject']) . '</h
     </tr>
     <tr>
         <td><span>' . _('Subject:') . '</span></td>
-        <td><input type="text" class="w-100" name="subject" value="' . _('Fwd: ') . '' . htmlsafechars($message['subject']) . '"></td>
+        <td><input type="text" class="w-100" name="subject" value="' . _fe('Fwd: {0}', format_comment($message['subject'])) . '"></td>
     </tr>
     <tr>
         <td></td>
-        <td>' . _('-------- Original Message from ') . '' . $forwarded_username . '' . _(': --------') . '<br>' . format_comment($message['msg']) . '</td>
+        <td>-------- ' . _fe('Original Message from {0}', $forwarded_username) . ': --------<br>' . format_comment($message['msg']) . '</td>
     </tr>
     <tr>
         <td></td>
         <td><span>' . _('You can add your own message, it will appear above the PM being forwarded.') . '</span></td>
     </tr>
     <tr>
-        <td><span>' . _('Message:') . '</span></td>
+        <td><span>' . _('Message') . ':</span></td>
         <td class="is-paddingless">' . BBcode($body) . '</td>
     </tr>
     <tr>
         <td colspan="2">' . ($CURUSER['class'] >= UC_STAFF ? '<span class="label label-danger">' . _('Mark as URGENT!') . '</span>
-        <input type="checkbox" name="urgent" value="yes"> ;' : '') . '' . _(' Save Message ') . '
+        <input type="checkbox" name="urgent" value="yes"> ; ' : '') . _('Save Message') . '
         <input type="checkbox" name="save" value="1">
         <input type="hidden" name="first_from" value="' . $forwarded_username . '">
         <input type="submit" class="button is-small" name="move" value="' . _('Forward') . '"></td>

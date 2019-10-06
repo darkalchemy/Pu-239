@@ -67,10 +67,10 @@ function move_cat($params)
     global $container;
 
     if ((!isset($params['id']) || !is_valid_id((int) $params['id'])) || (!isset($params['new_cat_id']) || !is_valid_id((int) $params['new_cat_id']))) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
     if (!is_valid_id((int) $params['new_cat_id']) || ((int) $params['id'] === (int) $params['new_cat_id'])) {
-        stderr(_('MOD ERROR'), _('You can not move torrents into the same category'));
+        stderr(_('Error'), _('You can not move torrents into the same category'));
     }
     $fluent = $container->get(Database::class);
     $count = $fluent->from('categories')
@@ -83,7 +83,7 @@ function move_cat($params)
                     ->fetch('count');
 
     if ($count != 2) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     }
     $set = [
         'category' => $params['new_cat_id'],
@@ -104,7 +104,7 @@ function move_cat($params)
         header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     } else {
-        stderr(_('MOD ERROR'), _('There was an error deleting the category'));
+        stderr(_('Error'), _('There was an error deleting the category'));
     }
 }
 
@@ -122,13 +122,13 @@ function move_cat_form($params)
     global $site_config;
 
     if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
 
     $current_cat = get_cat($params['id']);
 
     if (empty($current_cat)) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     }
 
     $select = "
@@ -147,12 +147,12 @@ function move_cat_form($params)
         <form action='{$_SERVER['PHP_SELF']}?tool=categories' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <input type='hidden' name='mode' value='takemove_cat'>
             <input type='hidden' name='id' value='{$current_cat['id']}'>
-            <h2 class='has-text-centered'>" . _('You are about to move category: ') . ' ' . format_comment($current_cat['name']) . "</h2>
+            <h2 class='has-text-centered'>" . _fe('You are about to move category: {0}', format_comment($current_cat['name'])) . "</h2>
             <h3 class='has-text-centered'>" . _('Note: This tool will move ALL torrents FROM one category to ANOTHER category only! It will NOT delete any categories or torrents.') . '</h3>';
     $body = "
             <div class='w-50 has-text-centered padding20'>
-                <p class='has-text-danger level'>" . _('Old Category Name:') . " <span class='has-text-primary'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
-                <p class='is-success level'>" . _('Select a new category:') . " $select</p>
+                <p class='has-text-danger level'>" . _('Old Category Name') . ": <span class='has-text-primary'>" . htmlsafechars($current_cat['parent_name']) . '::' . htmlsafechars($current_cat['name']) . "</span></p>
+                <p class='is-success level'>" . _('Select a new category') . ": $select</p>
                 <div class='has-text-centered'>
                     <input type='submit' class='button is-small right20' value='" . _('Move') . "'>
                     <input type='button' class='button is-small' value='" . _('Cancel') . "' onclick=\"history.go(-1)\">
@@ -183,11 +183,11 @@ function add_cat($params)
         'parent_id',
     ] as $x) {
         if (!isset($params[$x])) {
-            stderr(_('MOD ERROR'), _('Some fields were left blank') . ': ' . $x);
+            stderr(_('Error'), _('Some fields were left blank') . ': ' . $x);
         }
     }
     if (!empty($params['cat_image']) && !preg_match("/^[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
-        stderr(_('MOD ERROR'), _('File name is not allowed') . ': ' . $params['cat_image']);
+        stderr(_('Error'), _('File name is not allowed') . ': ' . $params['cat_image']);
     }
     $values = [
         'name' => $params['new_cat_name'],
@@ -206,7 +206,7 @@ function add_cat($params)
     $cache->delete('genrelist_ordered_');
     $cache->delete('categories');
     if (!$insert) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     } else {
         header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
@@ -226,7 +226,7 @@ function delete_cat($params)
 
     $cache = $container->get(Cache::class);
     if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
     $fluent = $container->get(Database::class);
     $cat = $fluent->from('categories')
@@ -234,7 +234,7 @@ function delete_cat($params)
                   ->fetch();
 
     if (!$cat) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     }
     $count = $fluent->from('torrents')
                     ->select(null)
@@ -243,7 +243,7 @@ function delete_cat($params)
                     ->fetch('count');
 
     if ($count) {
-        stderr(_('MOD ERROR'), _('There are still torrents assigned to this category'));
+        stderr(_('Error'), _('There are still torrents assigned to this category'));
     }
 
     $results = $fluent->deleteFrom('categories')
@@ -257,7 +257,7 @@ function delete_cat($params)
         header("Location: {$_SERVER['PHP_SELF']}?tool=categories");
         die();
     } else {
-        stderr(_('MOD ERROR'), _('There was an error deleting the category'));
+        stderr(_('Error'), _('There was an error deleting the category'));
     }
 }
 
@@ -272,12 +272,12 @@ function delete_cat_form($params)
     global $container, $site_config;
 
     if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
     $cat = get_cat($params['id']);
 
     if (!$cat) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     }
     $fluent = $container->get(Database::class);
     $count = $fluent->from('torrents')
@@ -287,7 +287,7 @@ function delete_cat_form($params)
                     ->fetch('count');
 
     if ($count) {
-        stderr(_('MOD ERROR'), _('There are still torrents assigned to this category'));
+        stderr(_('Error'), _('There are still torrents assigned to this category'));
     }
 
     $htmlout = "
@@ -296,11 +296,11 @@ function delete_cat_form($params)
             <input type='hidden' name='id' value='{$cat['id']}'>";
     $htmlout .= main_div("
             <div class='w-50 has-text-centered padding20'>
-                <h2 class='has-text-centered'>" . _('You are about to delete category: ') . " {$cat['name']}</h2>
-                <p class='has-text-danger level'>" . _('Cat Name:') . " <span class='has-text-primary'>{$cat['name']}</span></p>
-                <p class='has-text-danger level'>" . _('Parent Name') . " <span class='has-text-primary'>{$cat['parent_name']}</span></p>
-                <p class='has-text-danger level'>" . _('Description:') . " <span class='has-text-primary'>{$cat['cat_desc']}</span></p>
-                <p class='has-text-danger level'>" . _('Image:') . " <span class='has-text-primary'>{$cat['image']}</span></p>
+                <h2 class='has-text-centered'>" . _('You are about to delete category') . ": {$cat['name']}</h2>
+                <p class='has-text-danger level'>" . _('Cat Name') . ": <span class='has-text-primary'>{$cat['name']}</span></p>
+                <p class='has-text-danger level'>" . _('Parent Name') . ": <span class='has-text-primary'>{$cat['parent_name']}</span></p>
+                <p class='has-text-danger level'>" . _('Description') . ": <span class='has-text-primary'>{$cat['cat_desc']}</span></p>
+                <p class='has-text-danger level'>" . _('Image') . ": <span class='has-text-primary'>{$cat['image']}</span></p>
                 <input type='submit' class='button is-small right20' value='" . _('Delete') . "'>
                 <input type='button' class='button is-small' value='" . _('Cancel') . "' onclick=\"history.go(-1)\">
             </div>");
@@ -327,7 +327,7 @@ function edit_cat($params)
 
     $cache = $container->get(Cache::class);
     if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
     foreach ([
         'cat_name',
@@ -336,11 +336,11 @@ function edit_cat($params)
         'order_id',
     ] as $x) {
         if (!isset($params[$x])) {
-            stderr(_('MOD ERROR'), _('Some fields were left blank ') . $x . '');
+            stderr(_('Error'), _('Some fields were left blank '));
         }
     }
     if (!empty($params['cat_image']) && !preg_match("/^[A-Za-z0-9_\-]+\.(?:gif|jpg|jpeg|png)$/i", $params['cat_image'])) {
-        stderr(_('MOD ERROR'), _('File name is not allowed'));
+        stderr(_('Error'), _('File name is not allowed'));
     }
 
     $set = [
@@ -386,13 +386,13 @@ function edit_cat_form($params)
     global $site_config;
 
     if (!isset($params['id']) || !is_valid_id((int) $params['id'])) {
-        stderr(_('MOD ERROR'), _('No category ID selected'));
+        stderr(_('Error'), _('No category ID selected'));
     }
 
     $cat = get_cat($params['id']);
 
     if (!$cat) {
-        stderr(_('MOD ERROR'), _('That category does not exist or has been deleted'));
+        stderr(_('Error'), _('That category does not exist or has been deleted'));
     }
 
     $parents = get_parents($cat);
@@ -404,7 +404,7 @@ function edit_cat_form($params)
     $htmlout .= main_div("
             <div class='w-100 has-text-centered padding20'>
                 <h2>" . _('Edit Category') . "</h2>
-                <p class='is-success level'>" . _('New Cat Name:') . "<input type='text' name='cat_name' class='w-75' value='{$cat['name']}' required></p>
+                <p class='is-success level'>" . _('New Cat Name') . ": <input type='text' name='cat_name' class='w-75' value='{$cat['name']}' required></p>
                 <div class='is-success level-wide'>
                     " . _('Hidden') . "
                     <select name='cat_hidden' class='w-75' required>
@@ -415,8 +415,8 @@ function edit_cat_form($params)
                 </div>
                 <div class='has-text-info has-text-centered top10 bottom20'>" . _('If a parent is hidden, then all of the children are also hidden') . "</div>
                 $parents
-                <p class='is-success level'>" . _('New Order ID:') . "<input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}' required></p>
-                <p class='is-success level'>" . _('Description:') . "<textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
+                <p class='is-success level'>" . _('New Order ID') . ": <input type='number' min='0' max='1000' name='order_id' class='w-75' value='{$cat['ordered']}' required></p>
+                <p class='is-success level'>" . _('Description') . ": <textarea class='w-75' rows='5' name='cat_desc'>{$cat['cat_desc']}</textarea></p>
                 $select
                 <input type='submit' class='button is-small right10' value='" . _('Edit') . "'>
                 <input type='button' class='button is-small' value='" . _('Cancel') . "' onclick=\"history.go(-1)\">
@@ -448,7 +448,7 @@ function show_categories()
             <div class='has-text-centered padding20'>
                 <h2>" . _('Make a new category') . "</h2>
                 <p class='is-success level'>
-                    " . _('New Cat Name:') . "
+                    " . _('New Cat Name') . ":
                     <input type='text' name='new_cat_name' class='w-75' maxlength='50' placeholder='New Category Name' required>
                 </p>
                 <div class='is-success level-wide'>
@@ -462,7 +462,7 @@ function show_categories()
                 <div class='has-text-info has-text-centered top10 bottom20'>" . _('If a parent is hidden, then all of the children are also hidden') . "</div>
                 $parents
                 <p class='is-success level'>
-                    " . _('Description:') . "
+                    " . _('Description') . ":
                     <textarea class='w-75' rows='5' name='new_cat_desc'></textarea>
                 </p>
                 $select
@@ -473,7 +473,7 @@ function show_categories()
         </form>';
 
     $htmlout .= "
-        <h2 class='has-text-centered top20'>" . _('Current Categories:') . '</h2>';
+        <h2 class='has-text-centered top20'>" . _('Current Categories') . ':</h2>';
     $body = '';
     $heading = "
         <tr>
@@ -548,10 +548,10 @@ function build_table(array $data, string $parent_name)
 /**
  * @param array $cat
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -654,10 +654,10 @@ function set_ordered(array $params)
 /**
  * @param array $cat
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -679,7 +679,7 @@ function get_images(array $cat)
     if (is_array($files) && count($files)) {
         natsort($files);
         $select = "
-            <p class='is-success level'>" . _('Select a new image:') . "
+            <p class='is-success level'>" . _('Select a new image') . ":
                 <select class='w-75' name='cat_image'>
                     <option value='0'>" . _('Select Image') . '</option>';
         foreach ($files as $file) {
@@ -690,10 +690,10 @@ function get_images(array $cat)
         $select .= "
                 </select>
             </p>
-            <p class='has-text-danger has-text-centered'>" . _f('Info: If you want a new image, you have to upload it to each of the %s directories first.', realpath(IMAGES_DIR) . '/caticons/') . '</p>';
+            <p class='has-text-danger has-text-centered'>" . _fe('Info: If you want a new image, you have to upload it to each of the {0} directories first.', realpath(IMAGES_DIR) . '/caticons/') . '</p>';
     } else {
         $select = "
-            <p class='has-text-danger has-text-centered'>" . _f('Warning: There are no images in the directory %s, please upload one.', realpath(IMAGES_DIR) . '/caticons/1/') . '</p>';
+            <p class='has-text-danger has-text-centered'>" . _fe('Warning: There are no images in the directory {0}, please upload one.', realpath(IMAGES_DIR) . '/caticons/1/') . '</p>';
     }
 
     return $select;
@@ -702,10 +702,10 @@ function get_images(array $cat)
 /**
  * @param int $id
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return mixed
  */

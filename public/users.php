@@ -129,4 +129,4 @@ $title = _('Users');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

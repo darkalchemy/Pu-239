@@ -168,7 +168,7 @@ if (mysqli_num_rows($res) >= 1) {
 }
 
 $HTMLOUT .= "
-    <h3 class='has-text-centered top20'>" . _('ADD NEW PROMOTION RULE') . "</h3>
+    <h3 class='has-text-centered top20'>" . _('Add New Promotion Rule') . "</h3>
     <form name='add' action='staffpanel.php?tool=class_promo&amp;mode=add' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 $heading = "
         <tr>

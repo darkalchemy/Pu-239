@@ -22,8 +22,8 @@ if ($auth->isLoggedIn()) {
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
-if (!$site_config['mail']['smtp_enable']) {
-    stderr(_('Error'), 'Mail functions have not been enabled.');
+if (!$site_config['mail']['smtp_enable'] || $site_config['mail']['smtp_password'] === 'gmail password' || $site_config['mail']['smtp_username'] === 'gmail username') {
+    stderr(_('Error'), _('Mail functions have not been enabled.'));
 }
 $stdfoot = [];
 $HTMLOUT = '';
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'email' => 'required|email',
     ]);
     if ($validation->fails()) {
-        write_log(getip() . ' has tried to recover using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_('%s has tried to reset password using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'confirm_password' => 'required|same:password',
     ]);
     if ($validation->fails()) {
-        write_log(getip() . ' has tried to recover using invalid data. ' . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_('%s has tried to reset password using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'token' => 'required|alpha_dash',
     ]);
     if ($validation->fails()) {
-        write_log(getip() . ' has tried to recover using invalid data. ' . json_encode($get, JSON_PRETTY_PRINT));
+        write_log(_('%s has tried to reset password using invalid data. ', getip()) . json_encode($get, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
                 <input type='hidden' name='token' value='{$get['token']}'>
             </div>
             <div class='has-text-centered padding10'>
-                <input id='signup' type='submit' value='Reset' class='button is-small top20'>
+                <input id='signup' type='submit' value='" . _('Reset') . "' class='button is-small top20'>
             </div>";
         $HTMLOUT .= main_div($body, '', 'padding20') . '
         </div>

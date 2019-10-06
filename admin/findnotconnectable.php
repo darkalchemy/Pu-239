@@ -34,7 +34,7 @@ if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'list') {
     $count = mysqli_num_rows($result);
     @((mysqli_free_result($result) || (is_object($result) && (get_class($result) === 'mysqli_result'))) ? true : false);
     if (mysqli_num_rows($res2) == 0) {
-        $HTMLOUT .= stdmsg(_('Sorry'), _('All Peers Are Connectable!'));
+        $HTMLOUT .= stdmsg(_('Error'), _('All Peers Are Connectable!'));
     } else {
         $HTMLOUT .= '
         ' . _('This is only users that are active on the torrents right now.') . "<br>
@@ -96,9 +96,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fluent->insertInto('notconnectablepmlog')
                ->values($values)
                ->execute();
-        $session->set('is-success', 'PM Sent to all non connectable peers');
+        $session->set('is-success', _('PM Sent to all non connectable peers'));
     } else {
-        $session->set('is-warning', 'No non connectable peers');
+        $session->set('is-warning', _('No non-connectable peers'));
     }
 }
 if (isset($_GET['action1']) && htmlsafechars($_GET['action1']) === 'sendpm') {
@@ -167,7 +167,7 @@ if (isset($_GET['action1']) == '') {
         }
         $HTMLOUT .= main_table($body, $heading);
     } else {
-        $HTMLOUT .= stdmsg(_('Sorry'), _('All Peers Are Connectable!'));
+        $HTMLOUT .= stdmsg(_('Error'), _('All Peers Are Connectable!'));
     }
 }
 $title = _('Non Connectables');

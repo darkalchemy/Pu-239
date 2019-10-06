@@ -88,7 +88,7 @@ $genres = [
         _('FPS'),
         _('Strategy'),
         _('Adventure'),
-        _('3rd Person'),
+        _('Third Person'),
         _('Action'),
     ],
     'apps' => [

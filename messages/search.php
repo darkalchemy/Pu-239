@@ -59,7 +59,7 @@ $header = '
 $body = '
                 <tr>
                     <td><span>' . _('Search terms:') . '</span></td>
-                    <td><input type="text" class="search" name="keywords" value="' . $keywords . '">' . _(' [ words to search for. common words are ignored ]') . '</td>
+                    <td><input type="text" class="search" name="keywords" value="' . $keywords . '"> [ ' . _('words to search for. common words are ignored') . ' ] </td>
                 </tr>
                 <tr>
                     <td><span>' . _('Search box:') . '</span></td>
@@ -67,20 +67,20 @@ $body = '
                 </tr>
                 <tr>
                     <td><span>' . _('Search all boxes:') . '</span></td>
-                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? 'checked' : '') . '>' . _(' [ if checked the above box selection will be ignored ]') . '</td>
+                    <td><input name="all_boxes" type="checkbox" value="1" ' . ($all_boxes == 1 ? 'checked' : '') . '> [ ' . _('if checked the above box selection will be ignored') . ' ] </td>
                 </tr>
                 <tr>
                     <td><span>' . _('By member:') . '</span></td>
-                    <td><input type="text" class="member" name="member" value="' . $member . '">' . _(' [ search messages by this member only ]') . '</td>
+                    <td><input type="text" class="member" name="member" value="' . $member . '"> [ ' . _('search messages by this member only') . ' ] </td>
                 </tr>
                 <tr>
                     <td><span>' . _('System messages:') . '</span></td>
-                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? 'checked' : '') . '>' . _(' System [ search system messages only ]') . '</td>
+                    <td><input name="system" type="checkbox" value="system" ' . ($member_sys === 'system' ? 'checked' : '') . '>' . _('System (search system messages only)') . '</td>
                 </tr>
                 <tr>
                     <td><span>' . _('Search in:') . '</span></td>
                     <td><input name="subject" type="checkbox" value="1" ' . ($subject == 1 ? 'checked' : '') . '>' . _('Subject') . '
-                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? 'checked' : '') . '>' . _(' message text [ select one or both. if none selected, both are assumed ]') . '</td>
+                    <input name="text" type="checkbox" value="1" ' . ($text === 1 ? 'checked' : '') . '>' . _('message text (select one or both. if none selected, both are assumed)') . '</td>
                 </tr>
                 <tr>
                     <td><span>' . _('Sort by:') . '</span></td>
@@ -97,18 +97,18 @@ $body = '
                     <td><span> ' . _('Show:') . ' </span></td>
                     <td>
                     <select name="limit">
-                        <option value="25" ' . (($limit == 25 || !$limit) ? 'selected' : '') . '>' . _('first 25 results') . ' </option>
-                        <option value="50" ' . ($limit == 50 ? 'selected' : '') . '>' . _('first 50 results') . ' </option>
-                        <option value="75" ' . ($limit == 75 ? 'selected' : '') . '>' . _('first 75 results') . ' </option>
-                        <option value="100" ' . ($limit == 100 ? 'selected' : '') . '>' . _('first 100 results') . ' </option>
-                        <option value="150" ' . ($limit == 150 ? 'selected' : '') . '>' . _('first 150 results') . ' </option>
-                        <option value="200" ' . ($limit == 200 ? 'selected' : '') . '>' . _('first 200 results') . ' </option>
+                        <option value="25" ' . (($limit == 25 || !$limit) ? 'selected' : '') . '>' . _fe('first {0} results, 25') . ' </option>
+                        <option value="50" ' . ($limit == 50 ? 'selected' : '') . '>' . _fe('first {0} results', 50) . ' </option>
+                        <option value="75" ' . ($limit == 75 ? 'selected' : '') . '>' . _fe('first {0} results', 75) . ' </option>
+                        <option value="100" ' . ($limit == 100 ? 'selected' : '') . '>' . _fe('first {0} results', 100) . ' </option>
+                        <option value="150" ' . ($limit == 150 ? 'selected' : '') . '>' . _fe('first {0} results', 200) . ' </option>
+                        <option value="200" ' . ($limit == 200 ? 'selected' : '') . '>' . _fe('first {0} results', 200) . ' </option>
                         <option value="1000" ' . ($limit == 1000 ? 'selected' : '') . '>' . _('all results') . ' </option>
                     </select></td>
                 </tr> ' . ($limit < 100 ? '
                 <tr>
                     <td><span> ' . _('Display as:') . ' </span></td>
-                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? 'checked' : '') . '><span> ' . _('List ') . ' </span>
+                    <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? 'checked' : '') . '><span> ' . _('List') . ' </span>
                     <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? 'checked' : '') . '><span> ' . _('Message') . ' </span></td>
                 </tr> ' : '') . ' < tr class="no_hover">
                     <td colspan="2" class="has-text-centered margin20">
@@ -217,14 +217,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($keywords)) {
         $search_str = $keywords;
     } elseif (isset($member)) {
-        $search_str = _("Member %s's PM's", format_username((int) $arr_userid['id']));
+        $search_str = _fe("Member {0}'s PM's", format_username((int) $arr_userid['id']));
     } elseif (isset($member_sys)) {
         $search_str = _('system messages');
     }
     $results = '
-        <h1>' . _f('Your search for %s', $search_str) . '</h1>
+        <h1>' . _('Your search for %s', $search_str) . '</h1>
         <h3>' . ($num_result < $limit ? _('returned') : _('showing first')) . ' <span>' . $num_result . '</span>
-        ' . _('match') . '' . ($num_result === 1 ? '' : _('es')) . _('!') . ($num_result === 0 ? _(' better luck next time...') : '') . '
+        ' . _('match') . ($num_result === 1 ? '' : _('es')) . _('!') . ($num_result === 0 ? _(' better luck next time...') : '') . '
         </h3>';
     if ($num_result > 0) {
         $results .= " <form action='messages.php' method='post' name='messages' enctype='multipart/form-data' accept-charset='utf-8'>

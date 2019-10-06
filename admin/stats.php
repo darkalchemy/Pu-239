@@ -62,7 +62,7 @@ if ($count > $perpage) {
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
 }
 if ($count === 0) {
-    stdmsg(_('Sorry...'), _('No uploaders.'));
+    stdmsg(_('Error'), _('No uploaders.'));
 } else {
     if ($count > $perpage) {
         $HTMLOUT .= $pager['pagertop'];
@@ -94,7 +94,7 @@ if ($count === 0) {
     }
 }
 if ($n_tor == 0) {
-    stdmsg(_('Sorry...'), _('No categories defined!'));
+    stdmsg(_('Error'), _('No categories defined!'));
 } else {
     if ($catorder === 'lastul') {
         $orderby = 'last DESC, c.name';

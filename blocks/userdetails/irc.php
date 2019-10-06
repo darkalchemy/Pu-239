@@ -17,7 +17,7 @@ function calctime($val)
     $mins = intval($val / 60);
     //$secs = $val - ($mins * 60);
 
-    return "&#160;$days " . _('days') . ", $hours " . _('hrs') . ", $mins " . _('minutes') . '';
+    return "&#160;$days " . _('days') . ", $hours " . _('hours') . ", $mins " . _('minutes') . '';
 }
 
 if ($user['onirc'] === 'yes') {

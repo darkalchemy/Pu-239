@@ -40,7 +40,7 @@ $action = (in_array($posted_action, $valid_actions) ? $posted_action : 'forum');
 switch ($action) {
     case 'delete':
         if (!$id) {
-            stderr(_('Error'), _('Invalid ID.'));
+            stderr(_('Error'), _('Invalid ID'));
         }
         $fluent->deleteFrom('over_forums')
                ->where('id = ?', $id)
@@ -113,24 +113,24 @@ switch ($action) {
             <input type="hidden" name="id" value="' . $id . '">
             <table class="table table-bordered table-striped">
             <tr>
-                <td colspan="2">' . _('edit overforum: ') . '' . htmlsafechars($row['name']) . '</td>
+                <td colspan="2">' . _('edit overforum') . ': ' . htmlsafechars($row['name']) . '</td>
             </tr>
-                <td><span class="has-text-weight-bold">' . _('Overforum name:') . '</span></td>
+                <td><span class="has-text-weight-bold">' . _('Overforum name') . ':</span></td>
             <td><input name="name" type="text" class="w-100" maxlength="60" value="' . htmlsafechars($row['name']) . '"></td>
           </tr>
           <tr>
-            <td><span class="has-text-weight-bold">' . _('Overforum description:') . '</span>  </td>
+            <td><span class="has-text-weight-bold">' . _('Overforum description') . ':</span>  </td>
             <td><input name="desc" type="text" class="w-100" maxlength="200" value="' . htmlsafechars($row['description']) . '"></td>
           </tr>
             <tr>
-            <td><span class="has-text-weight-bold">' . _('Minimun view permission:') . ' </span></td>
+            <td><span class="has-text-weight-bold">' . _('Minimun view permission') . ':</span></td>
             <td>
             <select name="min_class_view">';
             for ($i = 0; $i <= $maxclass; ++$i) {
                 $over_forums .= '<option class="body" value="' . $i . '" ' . ($row['min_class_view'] == $i ? 'selected' : '') . '>' . get_user_class_name((int) $i) . '</option>';
             }
             $HTMLOUT .= $over_forums . '</select></td></tr><tr> 
-            <td><span class="has-text-weight-bold">' . _('Over forum Sort:') . '</span></td>
+            <td><span class="has-text-weight-bold">' . _('Over forum Sort') . ':</span></td>
             <td>
             <select name="sort">';
             $count = $fluent->from('over_forums')
@@ -201,15 +201,15 @@ switch ($action) {
                     <td colspan="2">' . _('Make new over forum') . '</td>
                 </tr>
                 <tr>
-                    <td><span>' . _('Overforum name:') . '</span></td>
+                    <td><span>' . _('Overforum name') . ':</span></td>
                     <td><input name="name" type="text" class="w-100" maxlength="60"></td>
                 </tr>
                 <tr>
-                    <td><span>' . _('Overforum description:') . '</span>  </td>
+                    <td><span>' . _('Overforum description') . ':</span>  </td>
                     <td><input name="desc" type="text" class="w-100" maxlength="200"></td>
                 </tr>
                 <tr>
-                    <td><span>' . _('Minimun view permission:') . '</span></td>
+                    <td><span>' . _('Minimun view permission') . ':</span></td>
                     <td>
                         <select name="min_class_view">';
         for ($i = 0; $i <= $maxclass; ++$i) {
@@ -221,7 +221,7 @@ switch ($action) {
                     </td>
                 </tr>
                 <tr>
-                    <td><span>' . _('Over forum Sort:') . '</span></td>
+                    <td><span>' . _('Over forum Sort') . ':</span></td>
                     <td>
                         <select name="sort">';
         $count = $fluent->from('over_forums')

@@ -17,8 +17,8 @@ $edit = (preg_match('/edit_post/', $_SERVER['QUERY_STRING']) ? '
 	<tr>
 		<td>Edited By</td>
 		<td>
-			<input type='radio' name='show_edited_by' value='yes' " . ($show_edited_by === 'yes' ? 'checked' : '') . "> Yes
-			<input type='radio' name='show_edited_by' value='no' " . ($show_edited_by === 'no' ? 'checked' : '') . '> No
+			<input type='radio' name='show_edited_by' value='yes' " . ($show_edited_by === 'yes' ? 'checked' : '') . ">" . _('Yes') . "
+			<input type='radio' name='show_edited_by' value='no' " . ($show_edited_by === 'no' ? 'checked' : '') . '>' . _('No') . '
 		</td>
 	</tr>' : '') : '');
 
@@ -150,10 +150,10 @@ $HTMLOUT .= main_table('
             </td>
             <td>
                 <div>
-                    <input type="radio" name="bb_code" value="yes" ' . ($bb_code === 'yes' ? 'checked' : '') . '> Allow ' . _('BBcode in post') . '
+                    <input type="radio" name="bb_code" value="yes" ' . ($bb_code === 'yes' ? 'checked' : '') . '>' . _('Allow BBcode in post') . '
                 </div>
                 <div>
-                    <input type="radio" name="bb_code" value="no" ' . ($bb_code === 'no' ? 'checked' : '') . '> No ' . _('BBcode in post') . '
+                    <input type="radio" name="bb_code" value="no" ' . ($bb_code === 'no' ? 'checked' : '') . '>' . _('No BBcode allowed in post') . '
                 </div>
             </td>
         </tr>' . $edit . '

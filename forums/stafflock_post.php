@@ -6,7 +6,7 @@ $post_id = (isset($_GET['post_id']) ? (int) $_GET['post_id'] : (isset($_POST['po
 $topic_id = (isset($_GET['topic_id']) ? (int) $_GET['topic_id'] : (isset($_POST['topic_id']) ? (int) $_POST['topic_id'] : 0));
 $mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
 if (!is_valid_id($post_id) || !is_valid_id($topic_id)) {
-    stderr(_('Error'), _('Bad ID.'));
+    stderr(_('Error'), _('Invalid ID.'));
 }
 //=== make sure it's their post or they are staff... this may change
 $res_post = sql_query('SELECT p.user_id, p.staff_lock, u.id, u.class, u.status, t.locked, t.user_id AS owner_id, t.first_post, f.min_class_read, f.min_class_write, f.id AS forum_id FROM posts AS p LEFT JOIN users AS u ON p.user_id=u.id LEFT JOIN topics AS t ON t.id=p.topic_id LEFT JOIN forums AS f ON t.forum_id=f.id WHERE p.id=' . sqlesc($post_id)) or sqlerr(__FILE__, __LINE__);

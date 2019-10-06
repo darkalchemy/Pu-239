@@ -52,13 +52,13 @@ $sections = [
 ];
 $session = $container->get(Session::class);
 if (!isset($_GET['id'])) {
-    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Missing ID') . '');
+    $session->set('is-warning', '[h3]' . _('Error') . '[/h3] ' . _('Missing ID') . '');
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
 
 if (!is_valid_id((int) $_GET['id'])) {
-    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Bad ID') . " {$_GET['id']}");
+    $session->set('is-warning', '[h3]' . _('Error') . '[/h3] ' . _('Invalid ID') . " {$_GET['id']}");
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -75,7 +75,7 @@ if (!empty($torrent['next']['id'])) {
     $next = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['next']['id']}&amp;hit=1' class='tooltipper' title='" . htmlsafechars((string) $torrent['next']['name']) . "'><i class='icon-right-open size_2' aria-hidden='true'></i></a>";
 }
 if (empty($torrent)) {
-    $session->set('is-warning', '[h3]' . _('USER ERROR') . '[/h3] ' . _('Bad ID') . "{$_GET['id']}");
+    $session->set('is-warning', '[h3]' . _('Error') . '[/h3] ' . _('Invalid ID') . "{$_GET['id']}");
     header("Location: {$site_config['paths']['baseurl']}/index.php");
     die();
 }
@@ -103,7 +103,7 @@ if ($moderator) {
         $torrents_class->update($set, $id);
         $torrent['checked_by'] = $user['id'];
         $torrent['checked_when'] = $dt;
-        write_log("Torrent [url={$site_config['paths']['baseurl']}details.php?id=$id](" . htmlsafechars((string) $torrent['name']) . ")[/url] was checked by {$user['username']}");
+        write_log(_fe('Torrent {0}({1}){2} was checked by {3}', "[url={$site_config['paths']['baseurl']}details.php?id=$id]", htmlsafechars((string) $torrent['name']), '[/url]', $user['username']));
         if (!empty($_GET['returnto'])) {
             $returnto = str_replace('&amp;', '&', $_GET['returnto']);
             header("Location: {$site_config['paths']['baseurl']}" . urldecode($returnto));
@@ -331,7 +331,7 @@ if (!empty($torrent['audios'])) {
     $info_block .= tr(_('Audios'), $audios, 1);
 }
 if ($torrent['visible'] === 'no') {
-    $info_block .= tr(_('Visible'), '<div class="left10">' . _('No') . _(' (dead)') . '</div>', 1);
+    $info_block .= tr(_('Visible'), '<div class="left10">' . _('No') . '(' . _('dead') . ')</div>', 1);
 }
 if ($moderator) {
     $info_block .= tr(_('Banned'), "<div class='left10'>{$torrent['banned']}</div>", 1);
@@ -356,8 +356,8 @@ $info_block .= tr(_('Size'), '<div class="left10">' . mksize($torrent['size']) .
 $info_block .= tr(_('Added'), '<div class="left10">' . get_date((int) $torrent['added'], 'LONG') . '</div>', 1);
 $info_block .= tr(_('Views'), "<div class='left10'>{$torrent['views']}</div>", 1);
 $info_block .= tr(_('Hits'), "<div class='left10'>{$torrent['hits']}</div>", 1);
-$info_block .= tr(_('Snatched'), '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} " . _(' time') . '' . plural($torrent['times_completed']) . '</a>' : '0 ' . _(' time') . '') . '</div>', 1);
-$info_block .= tr(_('Peers'), "<div class='left10'><a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='tooltipper' title='" . _('See full list') . "'>{$torrent['seeders']} seeder" . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . '' . _(' peer(s) total') . '', 1);
+$info_block .= tr(_('Snatched'), '<div class="left10">' . ($torrent['times_completed'] > 0 ? "<a href='{$site_config['paths']['baseurl']}/snatches.php?id={$id}'>{$torrent['times_completed']} " . _(' time') . plural($torrent['times_completed']) . '</a>' : '0 ' . _(' time') . '') . '</div>', 1);
+$info_block .= tr(_('Peers'), "<div class='left10'><a href='{$site_config['paths']['baseurl']}/peerlist.php?id=$id#seeders' class='tooltipper' title='" . _('See full list') . "'>{$torrent['seeders']} seeder" . plural($torrent['seeders']) . ' + ' . $torrent['leechers'] . ' leecher' . plural($torrent['leechers']) . ' = ' . ($torrent['seeders'] + $torrent['leechers']) . _(' peer(s) total') . '', 1);
 
 if (!empty($torrent['descr'])) {
     $descr = $cache->get('torrent_descr_' . $id);

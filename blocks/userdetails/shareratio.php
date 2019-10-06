@@ -10,8 +10,8 @@ if ($user['paranoia'] < 2 || $CURUSER['id'] === $user['id'] || $CURUSER['class']
             <td class="rowhead" style="vertical-align: middle">' . _('Share ratio') . '</td>
             <td>
                 <div class="level-left">
-                    ' . member_ratio($user['uploaded'], $user['downloaded']) . '
-                    <span class="left10">' . get_user_ratio_image($user['uploaded'], $user['downloaded']) . '</span>
+                    ' . member_ratio((float) $user['uploaded'], (float) $user['downloaded']) . '
+                    <span class="left10">' . get_user_ratio_image((float) $user['uploaded'], (float) $user['downloaded']) . '</span>
                 </div>
             </td>
         </tr>';

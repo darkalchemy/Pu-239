@@ -50,7 +50,7 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
     stderr(_('Error'), _('This is the first post in the topic, only Staff can delete topics.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr(_('Error'), _f('This is the first post in the topic, you must use %s', '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . _('Delete Topic') . '</a>.'));
+    stderr(_('Error'), _('This is the first post in the topic, you must use %s', '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . _('Delete Topic') . '</a>.'));
 }
 if ($arr_post['post_status'] !== 'deleted') {
     stderr(_('Error'), _("This post was not soft deleted, it can't be undeleted"));

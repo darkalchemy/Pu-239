@@ -41,7 +41,7 @@ require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'function_translate.php';
 
 if (!PRODUCTION) {
-    $pu239_version = new SebastianBergmann\Version('0.7', ROOT_DIR);
+    $pu239_version = new SebastianBergmann\Version('0.61', ROOT_DIR);
     $site_config['sourcecode']['version'] = $pu239_version->getVersion();
 }
 $load = sys_getloadavg();
@@ -76,9 +76,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -105,9 +105,9 @@ function getip()
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -153,13 +153,27 @@ function get_category_icons()
 }
 
 /**
+ * @throws AuthError
+ * @throws DependencyException
+ * @throws NotFoundException
+ * @throws NotLoggedInException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return mixed
  */
 function get_language()
 {
-    global $CURUSER, $site_config;
+    global $container, $site_config;
 
-    return isset($CURUSER['language']) ? $CURUSER['language'] : $site_config['language']['site'];
+    $auth = $container->get(Auth::class);
+    if ($auth->isLoggedIn()) {
+        $user = check_user_status();
+
+        return $user['language'];
+    }
+
+    return $site_config['language']['site'];
 }
 
 function get_template()
@@ -198,9 +212,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -376,11 +390,18 @@ function searchfield($s)
  */
 function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null)
 {
-    $title = _('Error');
+    $page = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
+    $self = isset($_SERVER['PHP_SELF']) ? ucfirst(str_replace([
+        '/',
+        '.php',
+    ], '', $_SERVER['PHP_SELF'])) : '';
+    $title = !empty($heading) ? $heading : _('Error');
     $breadcrumbs = [
+        "<a href='$page'>$self</a>",
         "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
     ];
     echo stdhead($title, [], 'page_wrapper', $breadcrumbs) . stdmsg($heading, $text, $outer_class, $inner_class) . stdfoot();
+    die();
 }
 
 /**
@@ -422,9 +443,9 @@ function get_userid()
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return float|int
  */
@@ -632,7 +653,7 @@ function parked($user)
 
     if ($user['status'] === 1) {
         $session = $container->get(Session::class);
-        $session->set('is-warning', 'Your account is currently parked.');
+        $session->set('is-warning', _('Your account is currently parked.'));
         if (!preg_match('/(usercp|takeeditcp)/', $_SERVER['REQUEST_URI'])) {
             header('Location: ' . $site_config['paths']['baseurl'] . '/usercp.php?action=security');
             die();
@@ -652,7 +673,7 @@ function suspended($user)
 
     if ($user['status'] === 5) {
         $session = $container->get(Session::class);
-        $session->set('is-warning', 'Your account is currently suspended.');
+        $session->set('is-warning', _('Your account is currently suspended.'));
         if (!preg_match('/messages/', $_SERVER['REQUEST_URI'])) {
             header('Location: ' . $site_config['paths']['baseurl'] . '/messages.php');
             die();
@@ -686,12 +707,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
+ * @throws NotLoggedInException
+ * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
- * @throws NotLoggedInException
- * @throws UnbegunTransaction
  *
  * @return bool|mixed|User
  */
@@ -825,9 +846,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -904,9 +925,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
  */
@@ -1045,14 +1066,14 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
         $user = $container->get(User::class);
         if ($user->get_count_by_username(htmlsafechars($username))) {
             if ($ajax) {
-                echo "<div class='has-text-danger tooltipper margin10' title='Username Not Available'><i class='icon-thumbs-down icon' aria-hidden='true'></i>Sorry... Username - <b>" . htmlsafechars($_GET['wantusername']) . '</b> is already in use.</div>';
+                echo "<div class='has-text-danger tooltipper margin10' title='" . ('Username is not Available') . "'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _fe('Sorry... Username - {0} is already in use.', format_comment($_GET['wantusername'])) . '</div>';
                 die();
             }
 
             return false;
         } else {
             if ($ajax) {
-                echo "<div class='has-text-success tooltipper margin10' title='Username Available'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>Username is Available</b></div>";
+                echo "<div class='has-text-success tooltipper margin10' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . "</b></div>";
                 die();
             }
         }
@@ -1169,9 +1190,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1212,9 +1233,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|null
  */
@@ -1248,9 +1269,9 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return false|mixed|string
  */
@@ -1318,9 +1339,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -1349,9 +1370,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool|null $fresh
  * @param bool|null $async
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|mixed|string
  */
@@ -1404,9 +1425,9 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 /**
  * @param bool $details
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed|string
  */
@@ -1474,9 +1495,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed
  */
@@ -1532,5 +1553,4 @@ function clear_di_cache()
 if (!file_exists(TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php')) {
     die('Please run php bin/uglify.php to generate the required files');
 }
-
 require_once TEMPLATE_DIR . get_stylesheet() . DIRECTORY_SEPARATOR . 'files.php';

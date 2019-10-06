@@ -41,10 +41,10 @@ function bookmarktable($res, $userid, $variant = 'index')
     $HTMLOUT = "
     <div class='has-text-centered bottom20'>
         " . _('Icon Legend :') . "
-        <i class='icon-bookmark-empty icon has-text-danger'></i>" . _(' = Delete Bookmark |') . "
-        <i class='icon-download icon'></i>" . _(' = Download Torrent |') . "
-        <i class='icon-key icon has-text-success'></i>" . _(' = Bookmark is Private |') . "
-        <i class='icon-users icon has-text-danger'></i>" . _(' = Bookmark is Public') . '
+        <i class='icon-bookmark-empty icon has-text-danger'></i> = " . _('Delete Bookmark') . " | 
+        <i class='icon-download icon'></i> = " . _('Download Torrent') . " | 
+        <i class='icon-key icon has-text-success'></i> = " . _('Bookmark is Private') . " | 
+        <i class='icon-users icon has-text-danger'></i> = " . _('Bookmark is Public') . '
     </div>';
 
     $heading = '
@@ -53,7 +53,7 @@ function bookmarktable($res, $userid, $variant = 'index')
                         <th class='has-text-left'>" . _('Name') . '</th>';
     $heading .= ($variant === 'index' ? '
                         <th>' . _('Delete') . '</th>
-                        <th>' : '') . '' . _('Download') . '</th>
+                        <th>' : '') . _('Download') . '</th>
                         <th>' . _('Share') . '</th>';
     if ($variant === 'mytorrents') {
         $heading .= '
@@ -159,9 +159,9 @@ function bookmarktable($res, $userid, $variant = 'index')
             $body .= "
                         <td class='has-text-right'>";
             if ($row['visible'] === 'no') {
-                $body .= '<b>' . _('No') . '</b>';
+                $body .= _('No');
             } else {
-                $body .= '' . _('Yes') . '';
+                $body .= _('Yes');
             }
             $body .= '
                         </td>';
@@ -188,13 +188,8 @@ function bookmarktable($res, $userid, $variant = 'index')
         $body .= "
                         <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>
                         <td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . '</td>';
-        if ($row['times_completed'] != 1) {
-            $_s = '' . _('times') . '';
-        } else {
-            $_s = '' . _('time') . '';
-        }
         $body .= "
-                        <td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>";
+                        <td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id=$id'>" . _pfe('{0, number}<br>time', '{0, number}<br>times', number_format($row['times_completed'])) . '</a></td>';
         if ((int) $row['seeders']) {
             if ($variant === 'index') {
                 if ($row['leechers']) {
@@ -238,10 +233,10 @@ function bookmarktable($res, $userid, $variant = 'index')
 
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : $user['id'];
 if (!is_valid_id($userid)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 if ($userid != $user['id']) {
-    stderr(_('Error'), '' . _('Access denied. Try ') . "<a href='{$site_config['paths']['baseurl']}/sharemarks.php?id={$userid}'>" . _('Here') . '</a>');
+    stderr(_('Error'), _('Access denied. Try ') . "<a href='{$site_config['paths']['baseurl']}/sharemarks.php?id={$userid}'>" . _('Here') . '</a>');
 }
 $HTMLOUT .= '
     <div class="has-text-centered bottom20">
@@ -300,4 +295,4 @@ $title = _('Bookmarks');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

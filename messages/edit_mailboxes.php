@@ -96,7 +96,7 @@ if (isset($_POST['action2'])) {
                     $set = [
                         'location' => 1,
                     ];
-                    $messages_class->update_location($set, $row['boxnumber'], $CURUSER['id']);
+                    $messages_class->update_location($set, (int) $row['boxnumber'], $CURUSER['id']);
                     $fluent->delete('pmboxes')
                            ->where('id = ?', $row['id'])
                            ->execute();
@@ -172,8 +172,8 @@ if (!empty($boxes)) {
         $all_my_boxes .= '
                     <tr>
                         <td colspan="2">
-                            ' . _('Box #') . '' . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
-                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">[ ' . _p('contains %s message', 'contains %s messages', $messages) . ' ]
+                            ' . _('Box #') . ((int) $row['boxnumber'] - 1) . ' <span>' . htmlsafechars($row['name']) . ':</span>
+                            <input type="text" name="edit' . ((int) $row['id']) . '" value="' . htmlsafechars($row['name']) . '" class="w-100">[ ' . _pfe('contains {0} message', 'contains {0} messages', $messages) . ' ]
                         </td>
                     </tr>';
     }
@@ -204,7 +204,7 @@ if (!empty($boxes)) {
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . '' . _('%d PMs per page', $i) . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . _('%d PMs per page', $i) . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -297,7 +297,7 @@ $HTMLOUT .= main_table('
         <select name="show_pm_avatar">
         <option value="yes" ' . ($show_pm_avatar ? 'selected' : '') . '>' . _('show avatars on view mailbox') . '</option>
         <option value="no" ' . (!$show_pm_avatar ? 'selected' : '') . '>' . _("don't show avatars on view mailbox") . '</option>
-        </select>' . _(' [ Show avatars when viewing your mailboxes. ]') . '</td>
+        </select> [ ' . _('Show avatars when viewing your mailboxes.') . ' ] </td>
     </tr>
     <tr>
         <td><span>' . _('Accept PMs:') . '</span></td>
@@ -308,11 +308,11 @@ $HTMLOUT .= main_table('
     </tr>
     <tr>
         <td><span>' . _('Save PMs:') . '</span></td>
-        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes">' . _(' [ Default for "Save PM to Sentbox" ]') . '</td>
+        <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes"> [' . _("Default for 'Save PM to Sentbox'") . ' ] </td>
     </tr>
     <tr>
         <td><span>' . _('Delete PMs:') . '</span></td>
-        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes">[ ' . _('Default for "Delete PM on reply"') . ' ]</td>
+        <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes"> [ ' . _("Default for 'Delete PM on reply'") . ' ] </td>
     </tr>
     <tr>
         <td><span>' . _('Email notification:') . '</span></td>

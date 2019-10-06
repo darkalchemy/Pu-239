@@ -17,32 +17,32 @@ $user = check_user_status();
 global $container, $site_config;
 
 /**
- * @param $text
- * @param $char
- * @param $link
+ * @param string $text
+ * @param int    $char
+ * @param string $link
  *
+ * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
- * @throws DependencyException
  *
- * @return mixed|string
+ * @return mixed|string|string[]|null
  */
-function readMore($text, $char, $link)
+function readMore(string $text, int $char, string $link)
 {
     $text = strip_tags(format_comment($text));
 
-    return strlen($text) > $char ? substr(format_comment($text), 0, $char - 1) . "...<br><a href='$link'><span class='has-text-primary'>" . _('Read more') . '</span></a>' : format_comment($text);
+    return strlen($text) > $char ? substr(format_comment($text), 0, $char - 1) . "...<br><a href='$link'><div class='is-link top10'>" . _('Read more') . '</div></a>' : format_comment($text);
 }
 
 /**
  * @param array $array
  * @param int   $class
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
@@ -182,7 +182,7 @@ $div = "
     <h2 class='has-text-centered'>" . _('Search') . "</h2>
     <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='text' name='search' class='w-50' placeholder='" . _('Search for a torrent') . "' value='$search'><br>
-        <input type='submit' value='search!' class='button is-small margin20'>
+        <input type='submit' value='" . _('Search') . "' class='button is-small margin20'>
     </form>
     <div class='tabs is-centered is-small'>
         <ul>";
@@ -224,12 +224,12 @@ if (!empty($rows)) {
             <div class='column'>";
         $heading = '
                     <tr>
-                        <th>Name</th>
+                        <th>' . _('Name') . '</th>
                         <th>' . _('Added') . '</th>
                         <th>' . _('Size') . '</th>
                         <th>' . _('Snatched') . '</th>
-                        <th>S.</th>
-                        <th>L.</th>
+                        <th>' . _('Sedders') . '</th>
+                        <th>' . _('Leechers') . '</th>
                     </tr>';
         $body = "
                     <tr>
@@ -247,7 +247,7 @@ if (!empty($rows)) {
                 </tr>';
         $body = "
                 <tr>
-                    <td><div class='readmore'>" . format_comment($row['descr'], true, true, false) . '</div></td>
+                    <td><div class='readmore'>" . readMore(format_comment($row['descr'], true, true, false), 1000, "{$site_config['paths']['baseurl']}/details.php?id={$row['id']}") . '</div></td>
                 </tr>';
         $div .= main_table($body, $heading, 'top20');
         $div .= "
@@ -274,4 +274,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($htmlout) . stdfoot();

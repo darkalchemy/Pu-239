@@ -20,27 +20,27 @@ if (!$auth->isLoggedIn()) {
 $HTMLOUT = "
         <fieldset id='rules'>
             <legend class='level-center-center padding20 size_7'>
-                <img src='{$site_config['paths']['images_baseurl']}info.png' alt='' class='tooltipper right5' title='Guidelines' width='25'>Guidelines
-            </legend>";
+                <img src='{$site_config['paths']['images_baseurl']}info.png' alt='' class='tooltipper right5' title='" . _('Guidelines') . "' width='25'>" . _('Guidelines') . '
+            </legend>';
 
 $main_div = "
                     <div id='accordion'>
                         <p class='accordion-toggle has-text-black round5-top'>
-                            " . _('General rules -') . "<span class='is-blue'>" . _(' Breaking these rules can and will get you banned!') . "</span>
+                            " . _('General rules') . " - <span class='is-blue'>" . _('Breaking these rules can and will get you banned!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('Do not defy the moderators expressed wishes!') . '</li>
-                                <li>' . _("Do not upload our torrents to other trackers! (See the <a href='http://Pu239.silly/faq.php#up3' class='is-link'><b>FAQ</b></a> for details.)") . "</li>
-                                <li><a id='warning'></a>" . _("Disruptive behaviour in the forums or on the site will result in a warning (<img src='./images/warned.gif' alt=''> ).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!") . "</li>
+                                <li>' . _fe('Do not upload our torrents to other trackers! (See the {0}FAQ{1} for details.)', "<a href='http://Pu239.silly/faq.php#up3' class='is-link'>") . "</li>
+                                <li><a id='warning'></a>" . _fe("Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!", "<img src='./images/warned.gif' alt=''>") . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black'>
                             " . _('Downloading rules -') . "<span class='is-blue'>" . _(' By not following these rules you will lose download privileges!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
-                                <li>" . _("Access to the newest torrents is conditional on a good ratio! (See the <a href='http://Pu239.silly/faq.php#dl8' class='is-link'><b>FAQ</b></a> for details.)") . '</li>
+                            <ul class='left20 disc'>
+                                <li>" . _fe('Access to the newest torrents is conditional on a good ratio! (See the {0}FAQ{1} for details.', "<a href='http://Pu239.silly/faq.php#dl8' class='is-link'>", '</a>') . '</li>
                                 <li>' . _('Low ratios may result in severe consequences, including banning in extreme cases.') . "</li>
                             </ul>
                         </div>
@@ -48,34 +48,29 @@ $main_div = "
                             " . _('General Forum Guidelines -') . "<span class='is-blue'>" . _(' Please follow these guidelines or else you might end up with a warning!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('No aggressive behaviour or flaming in the forums.') . '</li>
                                 <li>' . _('No trashing of other peoples topics (i.e. SPAM).') . '</li>
                                 <li>' . _('No language other than English in the forums.') . '</li>
                                 <li>' . _('No systematic foul language (and none at all on  titles).') . '</li>
                                 <li>' . _('No links to warez or crack sites in the forums.') . '</li>
                                 <li>' . _('No requesting or posting of serials, CD keys, passwords or cracks in the forums.') . '</li>
-                                <li>' . _("No requesting if there has been no '<a href='https://nullrefer.com/?https://www.nforce.nl/'>scene</a>' release in the last 7 days.") . '</li>
+                                <li>' . _fe('No requesting if there has been no {0}scene{1} release in the last 7 days.', "<a href='" . url_proxy('https://www.nforce.nl/', false) . "' target='_blank'>", '</a>') . '</li>
                                 <li>' . _('No bumping... (All bumped threads will be deleted.)') . '</li>
                                 <li>' . _('No images larger than 800x600, and preferably web-optimised.') . '</li>
                                 <li>' . _('No double posting. If you wish to post again, and yours is the last post in the thread please use the EDIT function, instead of posting a double.') . '</li>
                                 <li>' . _('Please ensure all questions are posted in the correct section!<br>(Game questions in the Games section, Apps questions in the Apps section, etc.)') . '</li>
-                                <li>' . _("Last, please read the <a href='http://Pu239.silly/faq.php' class='is-link'><b>FAQ</b></a> before asking any questions!") . "</li>
+                                <li>' . _fe('Last, please read the {0}FAQ{1} before asking any questions!', "<a href='http://Pu239.silly/faq.php' class='is-link'>", '</a>') . "</li>
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black" . (!$auth->hasRole(Roles::UPLOADER) ? ' round5-bottom' : '') . "'>
                             " . _('Avatar Guidelines -') . "<span class='is-blue'>" . _(' Please try to follow these guidelines') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('The allowed formats are .gif, .jpg and .png.') . '</li>
-                                <li>' . _('Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB.
-    (Browsers will rescale them anyway: smaller images will be expanded and will not look good;
-    larger images will just waste bandwidth and CPU cycles.) For now this is just a guideline but
-    it will be automatically enforced in the near future.') . '</li>
-                                <li>' . _('Do not use potentially offensive material involving porn, religious material, animal / human
-    cruelty or ideologically charged images. Mods have wide discretion on what is acceptable.
-    If in doubt PM one.') . '</li>
+                                <li>' . _('Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will rescale them anyway: smaller images will be expanded and will not look good; larger images will just waste bandwidth and CPU cycles.) For now this is just a guideline but it will be automatically enforced in the near future.') . '</li>
+                                <li>' . _('Do not use potentially offensive material involving porn, religious material, animal / human cruelty or ideologically charged images. Mods have wide discretion on what is acceptable. If in doubt PM one.') . '</li>
                             </ul>
                         </div>';
 
@@ -85,9 +80,9 @@ if ($auth->hasRole(Roles::UPLOADER)) {
                             " . _('Uploading rules -') . "<span class='is-blue'>" . _(' Torrents violating these rules may be deleted without notice') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('All uploads must include a proper NFO.') . '</li>
-                                <li>' . _("Only scene releases. If it's not on <a href='https://nullrefer.com/?https://www.nforce.nl' class='is-link'>NFOrce</a> or <a href='https://nullrefer.com/?https://www.grokmusiq.com/' class='is-link'>grokMusiQ</a> then forget it!") . '</li>
+                                <li>' . _fe("Only scene releases. If it's not on {0}NFOrce{1} or {2}grokMusiQ{3} then forget it!", "<a href='" . url_proxy('https://www.nforce.nl', false) . "' target='_blank' class='is-link'>", '</a>', "<a href='" . url_proxy('https://www.grokmusiq.com/', false) . "' target='_blank' class='is-link'>", '</a>') . '</li>
                                 <li>' . _('The stuff must not be older than seven (7) days.') . '</li>
                                 <li>' . _('All files must be in original format (usually 14.3 MB RARs).') . '</li>
                                 <li>' . _('Pre-release stuff should be labeled with an *ALPHA* or *BETA* tag.') . '</li>
@@ -134,15 +129,15 @@ if ($user['class'] >= UC_STAFF) {
                                 </tr>
                                 <tr>
                                     <td><span class='moderator'>" . _('Moderator') . '</span></td>
-                                    <td>' . _("Appointed by Sysop only. If you think you've got a good candidate, send him a <a class='is-link' href='http://Pu239.silly/messages.php?action=send_message&amp;receiver=1'>PM</a>") . "</td>
+                                    <td>' . _fe("Appointed by Sysop only. If you think you've got a good candidate, send him a {0}PM{1}", "<a class='is-link' href='http://Pu239.silly/messages.php?action=send_message&amp;receiver=1'>", '</a>') . "</td>
                                 </tr>
                             </table>
                         </div>
                         <p class='accordion-toggle has-text-black'>
-                            " . _('Moderating Rules -') . "<span class='is-blue'>" . _(' Use your better judgement!') . "</span>
+                            " . _('Moderating Rules -') . "<span class='is-blue'> " . _('Use your better judgement!') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('The most important rule: Use your better judgment!') . '</li>
                                 <li>' . _("Don't be afraid to say <b>NO</b>! (a.k.a. 'Helshad's rule'.)") . '</li>
                                 <li>' . _("Don't defy another mod in public, instead send a PM or through IM.") . '</li>
@@ -158,10 +153,10 @@ if ($user['class'] >= UC_STAFF) {
                             </ul>
                         </div>
                         <p class='accordion-toggle has-text-black round5-bottom'>
-                            " . _('Moderating options -') . "<span class='is-blue'>" . _(' What are my privileges as a mod?') . "</span>
+                            " . _('Moderating options -') . "<span class='is-blue'> " . _('What are my privileges as a mod?') . "</span>
                         </p>
                         <div class='accordion-content padding20'>
-                            <ul>
+                            <ul class='left20 disc'>
                                 <li>" . _('You can delete and edit forum posts.') . '</li>
                                 <li>' . _('You can delete and edit torrents.') . '</li>
                                 <li>' . _('You can delete and change users avatars.') . '</li>
@@ -170,7 +165,7 @@ if ($user['class'] >= UC_STAFF) {
                                 <li>' . _('You can see the complete info of all users.') . '</li>
                                 <li>' . _('You can add comments to users (for other mods and admins to read).') . '</li>
                                 <li>' . _('You can stop reading now because you already knew about these options. ;)') . '</li>
-                                <li>' . _("Lastly, check out the <a href='http://Pu239.silly/staff.php' class='is-link'>Staff</a> page (top right corner).") . '</li>
+                                <li>' . _fe('Lastly, check out the {0}Staff{1} page.', "<a href='http://Pu239.silly/staff.php' class='is-link'>", '</a>') . '</li>
                             </ul>
                         </div>';
 }

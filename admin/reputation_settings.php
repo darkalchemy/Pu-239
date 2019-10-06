@@ -101,14 +101,14 @@ $body = '
                 </td>
             </tr>
             <tr>
-                <td><b>' . _('Number of Reputation Ratings to Display') . ' </b><div style="color: lightgrey;">' . _('Controls how many ratings to display in the user&#38;#39;s profile (userdetails).') . ' </div></td>
+                <td><b>' . _('Number of Reputation Ratings to Display') . ' </b><div style="color: lightgrey;">' . _("Controls how many ratings to display in the user's profile (userdetails).") . ' </div></td>
                 <td><div style="width: auto;"><input name="rep_userrates" value="<#rep_userrates#>" size="30" type="text"></div></td>
             </tr>
             <tr><td colspan="2" class="has-text-centered"><div class="padding20 size_6">' . _('Reputation Powers') . '</div></td></tr>
             <tr>
                 <td>
-                    <b>' . _('Administrator&#38;#39;s Reputation Power') . ' </b>
-                    <div style="color: lightgrey;">' . _('How many reputation points does an administrator give or take away with each click?<br>') . ' < br>' . _('Set to 0 to have administrators follow the same rules as everyone else.') . ' </div>
+                    <b>' . _("Administrator's Reputation Power") . ' </b>
+                    <div style="color: lightgrey;">' . _('How many reputation points does an administrator give or take away with each click?<br>') . ' <br>' . _('Set to 0 to have administrators follow the same rules as everyone else.') . ' </div>
                 </td>
                 <td>
                     <div style="width: auto;"><input name="rep_adminpower" value="<#rep_adminpower#>" size="30" type="text"></div>
@@ -202,7 +202,7 @@ function template_out(array $matches)
     global $GVARS;
 
     if ($matches[1] === 'rep_is_online') {
-        return '' . _('Yes &#160;') . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . _('&#160; No') . '';
+        return _('Yes') . '<input name="rep_is_online" value="1" ' . ($GVARS['rep_is_online'] == 1 ? 'checked' : '') . ' type="radio">&#160;&#160;&#160;<input name="rep_is_online" value="0" ' . ($GVARS['rep_is_online'] == 1 ? '' : 'checked') . ' type="radio">' . _('No') . '';
     } else {
         return $GVARS[$matches[1]];
     }

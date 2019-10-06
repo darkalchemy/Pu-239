@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: {$_SERVER['PHP_SELF']}?tool=bonusmanage");
             die();
         } else {
-            stderr(_('Oops'), _('Something went wrong with the sql query'));
+            stderr(_('Error'), _('Something went wrong with the sql query'));
         }
     }
 }

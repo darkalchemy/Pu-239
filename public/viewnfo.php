@@ -16,7 +16,7 @@ $id = (int) $_GET['id'];
 if ($user['class'] === UC_MIN) {
     stderr(_('Error'), 'Need to rank up');
 } elseif (!is_valid_id($id)) {
-    stderr('error', 'Invalid ID');
+    stderr(_('Error'), _('Invalid ID'));
 }
 $torrent = $container->get(Torrent::class);
 $nfo = $torrent->get_items([

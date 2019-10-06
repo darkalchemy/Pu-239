@@ -46,7 +46,7 @@ if ($results === false || is_null($results)) {
 
 $temp = "
         <ul>
-            <li class='has-text-centered'>" . _fe("No results. Try refining your search for '{0}.'", $keyword) . '</li>
+            <li class='has-text-centered'>" . _fe("No results. Try refining your search for '{0}'.", $keyword) . '</li>
         </ul>';
 
 if (!empty($results)) {

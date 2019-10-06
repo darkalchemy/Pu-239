@@ -19,7 +19,7 @@ $HTMLOUT = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tid = (isset($_POST['tid']) ? (int) $_POST['tid'] : 0);
     if ($tid === 0) {
-        stderr(_(':w00t:'), _('wtf are your trying to do!?'));
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $fluent = $container->get(Database::class);
     $torrents = $fluent->from('torrents')
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        ->fetch('count');
 
     if (empty($torrents)) {
-        stderr(_(':w00t:'), _('That is not a torrent!!!!'));
+        stderr(_('Error'), _('Invalid ID.'));
     }
     $row = $fluent->from('torrents AS t')
                   ->select(null)
@@ -54,9 +54,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $newd = $a['ud'] > 0 && $a['ud'] > $a['sd'] ? $a['ud'] - $a['sd'] : 0;
         $tname = htmlsafechars($a['name']);
         if (!empty($a['uid'])) {
-            $msg = '' . _('Hey,') . ' ' . htmlsafechars($a['username']) . "\n";
-            $msg .= '' . _('Looks like torrent') . ' ' . htmlsafechars($a['name']) . ' ' . _('is nuked and we want to take back the data you downloaded') . '';
-            $msg .= '' . _('So you downloaded') . ' ' . mksize($a['sd']) . ' ' . _('your new download will be') . ' ' . mksize($newd) . "\n";
+            $msg = _fe('Hey, {0}', htmlsafechars($a['username'])) . "\n";
+            $msg .= _fe('Looks like torrent {0} has been nuked and we want to take back the data you downloaded!', htmlsafechars($a['name']));
+            $msg .= _fe('So you downloaded {0} your new download will be {1}', mksize($a['sd']), mksize($newd)) . "\n";
             if ($a['owner'] === $a['uid']) {
                 $update = [
                     'seedbonus' => $a['seedbonus'] - $site_config['bonus']['per_delete'],
@@ -85,9 +85,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $torrents_class->delete_by_id($tid);
     $torrents_class->remove_torrent($hash);
 
-    write_log('' . _('Torrent') . " $tname  " . _('was deleted by') . ' ' . htmlsafechars($CURUSER['username']) . ' ' . _('and all users were Re-Paid Download credit') . '');
+    write_log(_fe('Torrent {0} was deleted by {1} and all users were Re-Paid Download credit.', $tname, htmlsafechars($CURUSER['username'])));
     header('Refresh: 3; url=staffpanel.php?tool=datareset');
-    stderr(_(':w00t:'), _('it worked! long live Pu-239 - Please wait while you are re-directed!'));
+    stderr(_('Success'), _fe('It worked! Long live {0} - Please wait while you are re-directed!', $site_config['site']['name']));
 } else {
     $form = "
     <form action='{$_SERVER['PHP_SELF']}?tool=datareset&amp;action=datareset' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type='number' name='tid' id='tid' class='left10'>
         <div style='background:#990033;' class='has-text-left padding10 top20 bottom20 round5'>
             <ul>
-                <li>" . _('Torrent id must be a number and only a number!!!') . '</li>
+                <li>" . _('Torrent id must be a number and only a number!') . '</li>
                 <li>' . _("If the torrent is not nuked or there is not problem with it , don't use this as it will delete the torrent and any other entries associated with it!") . '</li>
                 <li>' . _("If you don't know what this will do, go play somewhere else") . "</b></li>
             </ul>

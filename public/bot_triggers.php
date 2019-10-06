@@ -80,7 +80,7 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
         $errors = $validation->errors()
                              ->firstOfAll();
         foreach ($errors as $key => $value) {
-            stderr('Error', "$key : $value");
+            stderr(_('Error'), "$key : $value");
         }
     }
     if (!empty($add_trigger)) {
@@ -89,9 +89,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'userid' => $user['id'],
         ];
         if ($trigger_class->insert($values)) {
-            $session->set('is-success', 'Trigger: ' . $add_trigger . ' added successfully.');
+            $session->set('is-success', _fe('Trigger: {0} added successfully.', $add_trigger));
         } else {
-            $session->set('is-warning', 'Trigger: ' . $add_trigger . ' failed to be added.');
+            $session->set('is-warning', _fe('Trigger: {0} failed to be added.', $add_trigger));
         }
     } elseif (!empty($update_trigger)) {
         $values = [
@@ -99,9 +99,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'userid' => $user['id'],
         ];
         if ($trigger_class->update($values, $phraseid)) {
-            $session->set('is-success', 'Trigger: ' . $add_trigger . ' updated successfully.');
+            $session->set('is-success', _fe('Trigger: {0} updated successfully.', $add_trigger));
         } else {
-            $session->set('is-warning', 'Trigger: ' . $add_trigger . ' failed to be updated.');
+            $session->set('is-warning', _fe('Trigger: {0} failed to be updated.', $add_trigger));
         }
     } elseif (!empty($add_reply)) {
         $values = [
@@ -110,9 +110,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'userid' => $user['id'],
         ];
         if ($replies_class->insert($values)) {
-            $session->set('is-success', 'Reply: ' . $add_reply . ' added successfully.');
+            $session->set('is-success', _fe('Reply: {0} added successfully.', $add_reply));
         } else {
-            $session->set('is-warning', 'Reply: ' . $add_reply . ' failed to add.');
+            $session->set('is-warning', _fe('Reply: {0} failed to be added.', $add_reply));
         }
     } elseif (!empty($update_reply)) {
         $values = [
@@ -120,9 +120,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'userid' => $user['id'],
         ];
         if ($replies_class->update($values, $reply_id)) {
-            $session->set('is-success', 'Reply: ' . $add_trigger . ' updated successfully.');
+            $session->set('is-success', _fe('Reply: {0} updated successfully.', $add_reply));
         } else {
-            $session->set('is-warning', 'Reply: ' . $add_trigger . ' failed to update.');
+            $session->set('is-warning', _fe('Reply: {0} failed to be updated.', $add_reply));
         }
     } elseif (!empty($approve_trigger)) {
         dd(3);
@@ -130,9 +130,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'approved_by' => $user['id'],
         ];
         if ($trigger_class->update($update, $approve_trigger)) {
-            $session->set('is-success', 'Trigger Approved.');
+            $session->set('is-success', _('Trigger Approved.'));
         } else {
-            $session->set('is-warning', 'Trigger Approval Failed.');
+            $session->set('is-warning', _('Trigger Approval Failed.'));
         }
     } elseif (!empty($approve_reply)) {
         dd(4);
@@ -140,21 +140,22 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             'approved_by' => $user['id'],
         ];
         if ($replies_class->update($update, $approve_reply)) {
-            $session->set('is-success', 'Reply Approved.');
+            $session->set('is-success', _('Reply Approved.'));
         } else {
-            $session->set('is-warning', 'Reply Approval Failed.');
+            $session->set('is-warning', _('Reply Approval Failed.'));
         }
     } elseif ($action === 'delete_trigger' && !empty($phraseid)) {
         if ($trigger_class->delete($phraseid)) {
-            $session->set('is-success', 'Trigger #' . $phraseid . ' was deleted.');
+            $session->set('is-success', _fe('Trigger: #{0} was deleted.', $phraseid));
         } else {
-            $session->set('is-warning', 'Trigger #' . $phraseid . ' was [i]NOT[/i] deleted.');
+            $session->set('is-success', _fe('Trigger: #{0} was [i]NOT[/] deleted.', $phraseid));
         }
     } elseif ($action === 'delete_reply' && !empty($reply_id)) {
         if ($replies_class->delete($reply_id)) {
-            $session->set('is-success', 'Reply #' . $reply_id . ' was deleted.');
+            $session->set('is-success', _fe('Reply: #{0} was deleted.', $reply_id));
         } else {
-            $session->set('is-warning', 'Reply #' . $reply_id . ' was [i]NOT[/i] deleted.');
+            $session->set('is-success', _fe('Reply: #{0} was [i]NOT[/] deleted.', $phraseid));
+            $session->set('is-warning', _fe('Reply #{0} was [i]NOT[/i] deleted.', $reply_id));
         }
     } elseif ($action === 'view_replies') {
         $replies = $replies_class->get_replies();
@@ -162,9 +163,9 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
         $trigger = $trigger_class->get_by_id($phraseid);
         $form = main_div("
 			<form method='post' action='{$_SERVER['PHP_SELF']}?action=add_reply' enctype='multipart/form-data' accept-charset='utf-8'>
-				<div class='has-text-centered padding20'>BBCode and emoticons are allowed.</div>
+				<div class='has-text-centered padding20'>" . _('BBCode and emoticons are allowed.') . "</div>
 				<div class='has-text-centered padding20 w-75'>
-				    <div class='has-text-left'><span class='padding20'>Add response for:</span> <blockquote class='padding20 bg-00 round10'>$trigger</blockquote></div>
+				    <div class='has-text-left'><span class='padding20'>" . _('Add response for') . ":</span> <blockquote class='padding20 bg-00 round10'>$trigger</blockquote></div>
 				</div>
 				<div class='padding20 level-center-center'>
 				    <input type='text' name='add_reply' class='w-50 right5'>
@@ -176,46 +177,46 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
         $trigger = $trigger_class->get_by_id($phraseid);
         $form = main_div("
 			<form method='post' action='{$_SERVER['PHP_SELF']}?action=edit_trigger' enctype='multipart/form-data' accept-charset='utf-8'>
-				<div class='has-text-centered padding20'>BBCode and emoticons are allowed.</div>
-				<div class='has-text-centered padding20 w-75'>Edit Trigger:</div>
+				<div class='has-text-centered padding20'>" . _('BBCode and emoticons are allowed.') . "</div>
+				<div class='has-text-centered padding20 w-75'>" . _('Edit Trigger') . ":</div>
 				<div class='padding20 level-center-center'>
 				    <input type='text' name='update_trigger' class='w-50 right5' value='{$trigger}'>
 				    <input type='hidden' name='id' value='{$data['id']}'>
-				    <input type='submit' value='Edit Trigger' class='button is-small left5'>
+				    <input type='submit' value='" . _('Edit Trigger') . "' class='button is-small left5'>
 				</div>
 			</form>", 'has-text-centered');
     } elseif ($action === 'edit_reply') {
         $reply = $replies_class->get_by_id($reply_id);
         $form = main_div("
 			<form method='post' action='{$_SERVER['PHP_SELF']}?action=edit_reply' enctype='multipart/form-data' accept-charset='utf-8'>
-				<div class='has-text-centered padding20'>BBCode and emoticons are allowed.</div>
-				<div class='has-text-centered padding20 w-75'>Edit Reply:</div>
+				<div class='has-text-centered padding20'>" . _('BBCode and emoticons are allowed.') . "</div>
+				<div class='has-text-centered padding20 w-75'>" . _('Edit Reply') . ":</div>
 				<div class='padding20 level-center-center'>
 				    <input type='text' name='update_reply' class='w-50 right5' value='{$reply}'>
 				    <input type='hidden' name='reply_id' value='{$data['reply_id']}'>
 				    <input type='hidden' name='id' value='{$data['id']}'>
-				    <input type='submit' value='Edit Reply' class='button is-small left5'>
+				    <input type='submit' value='" . _('Edit Reply') . "' class='button is-small left5'>
 				</div>
 			</form>", 'has-text-centered');
     }
 }
 $HTMLOUT = "
-        <h1 class='has-text-centered'>Bot Triggers</h1>";
+        <h1 class='has-text-centered'>" . _('Bot Triggers') . '</h1>';
 if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
     if ($approved) {
         $links = [
-            "<a class='is-link tooltipper' title='Show All Triggers' href='{$_SERVER['PHP_SELF']}'>Show All</a>",
-            "<a class='is-link tooltipper' title='Show Unapproved Triggers' href='{$_SERVER['PHP_SELF']}?action=unapproved'>Show Unapproved</a>",
+            "<a class='is-link tooltipper' title='" . _('Show All Triggers') . "' href='{$_SERVER['PHP_SELF']}'>" . _('Show All') . '</a>',
+            "<a class='is-link tooltipper' title='" . _('Show Unapproved Triggers') . "' href='{$_SERVER['PHP_SELF']}?action=unapproved'>" . _('Show Unapproved') . '</a>',
         ];
     } elseif ($unapproved) {
         $links = [
-            "<a class='is-link tooltipper' title='Show All Triggers' href='{$_SERVER['PHP_SELF']}'>Show All</a>",
-            "<a class='is-link tooltipper' title='Show Unapproved Triggers' href='{$_SERVER['PHP_SELF']}?action=approved'>Show Approved</a>",
+            "<a class='is-link tooltipper' title='" . _('Show All Triggers') . "' href='{$_SERVER['PHP_SELF']}'>" . _('Show All') . '</a>',
+            "<a class='is-link tooltipper' title='" . _('Show Unapproved Triggers') . "' href='{$_SERVER['PHP_SELF']}?action=approved'>" . _('Show Approved') . '</a>',
         ];
     } else {
         $links = [
-            "<a class='is-link tooltipper' title='Show Unapproved Triggers' href='{$_SERVER['PHP_SELF']}?action=approved'>Show Approved</a>",
-            "<a class='is-link tooltipper' title='Show Unapproved Triggers' href='{$_SERVER['PHP_SELF']}?action=unapproved'>Show Unapproved</a>",
+            "<a class='is-link tooltipper' title='" . _('Show Approved Triggers') . "' href='{$_SERVER['PHP_SELF']}?action=approved'>" . _('Show Approved') . '</a>',
+            "<a class='is-link tooltipper' title='" . _('Show Unapproved Triggers') . "' href='{$_SERVER['PHP_SELF']}?action=unapproved'>" . _('Show Unapproved') . '</a>',
         ];
     }
 
@@ -235,10 +236,10 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder')) {
 if (!isset($form)) {
     $HTMLOUT .= main_div("
 			<form method='post' action='{$_SERVER['PHP_SELF']}?action=add_trigger' enctype='multipart/form-data' accept-charset='utf-8'>
-				<div class='has-text-centered padding20'>BBCode and emoticons are allowed.</div>
+				<div class='has-text-centered padding20'>" . _('BBCode and emoticons are allowed.') . "</div>
 				<div class='padding20 level-center-center'>
 				    <input type='text' name='add_trigger' class='w-50 right5'>
-				    <input type='submit' value='Add New Trigger' class='button is-small left5'>
+				    <input type='submit' value='" . _('Add New Trigger') . "' class='button is-small left5'>
 				</div>
 			</form>", 'has-text-centered');
 } else {
@@ -251,18 +252,18 @@ if ($unapproved) {
     $triggers = $trigger_class->getall();
 }
 
-$heading = "
+$heading = '
 					<tr>
-						<th>Trigger Phrase<br><small>For the bot to respond, the users text must include each word from one of the phases below.<br>Click the trigger to view or add responses</small></th>
-						<th class='has-text-centered'>Added By</th>
-						<th class='has-text-centered'>Approved By</th>" . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
-						<th class='has-text-centered'>Tools</th>" : '') . "
-						<th class='has-text-centered'>Add Reply</th>
-					</tr>";
+						<th>' . _('Trigger Phrase') . '<br><small>' . _('For the bot to respond, the users text must include each word from one of the phases below.<br>Click the trigger to view or add responses.') . "</small></th>
+						<th class='has-text-centered'>" . _('Added By') . "</th>
+						<th class='has-text-centered'>" . _('Approved By') . '</th>' . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
+						<th class='has-text-centered'>" . _('Tools') . '</th>' : '') . "
+						<th class='has-text-centered'>" . _('Add Reply') . '</th>
+					</tr>';
 
 $body = '';
 if (empty($triggers)) {
-    $HTMLOUT .= stdmsg('Ooops', 'No bot triggers', 'top20');
+    $HTMLOUT .= stdmsg(_('Error'), _('No bot triggers'), 'top20');
 } else {
     foreach ($triggers as $trigger) {
         $approved = '';
@@ -271,18 +272,18 @@ if (empty($triggers)) {
         } elseif (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && $user['id'] != $trigger['userid']) {
             $approved = "
 				<form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-					<label for='approve_trigger'>Approve</label>
+					<label for='approve_trigger'>" . _('Approve') . "</label>
 					<input name='approve_trigger' id='approve_trigger' type='checkbox' value='{$trigger['id']}' onChange='this.form.submit()'>
 				</form>";
         } else {
-            $approved = "You can't approve your trigger.";
+            $approved = _("You can't approve your trigger.");
         }
-        $inner_heading = "
+        $inner_heading = '
                     <tr>
-                        <th>Reply Phrase<br><small>The bot will respond to the trigger phrase by selecting one of these responses, at random</small></th>
-                        <th class='has-text-centered'>Added By</th>
-                        <th class='has-text-centered'>Approved By</th>" . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
-						<th class='has-text-centered'>Tools</th>" : '') . '
+                        <th>' . _('Reply Phrase') . '<br><small>' . _('The bot will respond to the trigger phrase by selecting one of these responses, at random.') . "</small></th>
+                        <th class='has-text-centered'>" . _('Added By') . "</th>
+                        <th class='has-text-centered'>" . _('Approved By') . '</th>' . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
+						<th class='has-text-centered'>" . _('Tools') . '</th>' : '') . '
                     </tr>';
         $inner_body = $each = '';
         if (!empty($replies)) {
@@ -292,7 +293,7 @@ if (empty($triggers)) {
                 }
                 $each_checkbox = "
                     <form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
-                        <label for='approve_reply'>Approve</label>
+                        <label for='approve_reply'>" . _('Approve') . "</label>
                         <input name='approve_reply' id='approve_reply' type='checkbox' value='{$eaches['id']}' onChange='this.form.submit()'>
                     </form>";
 
@@ -302,7 +303,7 @@ if (empty($triggers)) {
                 } elseif (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && $user['id'] != $eaches['userid']) {
                     $each_approved = $each_checkbox;
                 } else {
-                    $each_approved = 'You can\'t approve your reply.';
+                    $each_approved = _("You can't approve your reply.");
                 }
                 $post_id = encrypt($eaches['id'], $site_config['salt']['one']);
                 $current_text = trim($eaches['reply']);
@@ -346,10 +347,10 @@ if (empty($triggers)) {
         if (!empty($replies)) {
             $inner_heading = '
                         <tr>
-                            <th>Reply Phrase<br><small>The bot will respond to the trigger phrase by selecting one of these responses, at random</small></th>
-                            <th>Added By</th>
-                            <th>Approved By</th>
-                            <th>Tools</th>
+                            <th>' . _('Reply Phrase') . '<br><small>' . _('The bot will respond to the trigger phrase by selecting one of these responses, at random.') . '</small></th>
+                            <th>' . _('Added By') . '</th>
+                            <th>' . _('Approved By') . '</th>
+                            <th>' . _('Tools') . '</th>
                         </tr>';
             $inner_body = '';
             foreach ($replies as $reply) {

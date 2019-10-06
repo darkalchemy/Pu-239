@@ -20,7 +20,7 @@ $possible_actions = [
 $fluent = $container->get(Database::class);
 $needed = isset($_GET['needed']) && !is_array($_GET['needed']) ? htmlsafechars($_GET['needed']) : 'seeders';
 if (!in_array($needed, $possible_actions)) {
-    stderr(_('Error'), 'A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.');
+    stderr(_('Error'), _('Invalid action'));
 }
 $categorie = genrelist(false);
 $change = [];

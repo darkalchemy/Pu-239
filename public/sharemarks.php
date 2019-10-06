@@ -169,9 +169,9 @@ function sharetable($res, $userid, $user, $variant = 'index')
         $body .= '
     <td>' . str_replace(' ', '<br>', mksize($row['size'])) . "</td>\n";
         if ($row['times_completed'] != 1) {
-            $_s = '' . _('times') . '';
+            $_s = _('times');
         } else {
-            $_s = '' . _('time') . '';
+            $_s = _('time');
         }
         $body .= "<td><a href='snatches.php?id=$id'>" . number_format($row['times_completed']) . "<br>$_s</a></td>\n";
         if ($row['seeders']) {
@@ -212,11 +212,11 @@ global $container, $site_config;
 
 $userid = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($userid)) {
-    stderr(_('Error'), _('Invalid ID.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
 $HTMLOUT .= '
     <div class="has-text-centered bottom20">
-        <h1>' . _f('Sharemarks for %s', format_username((int) $userid)) . '</h1>
+        <h1>' . _('Sharemarks for %s', format_username((int) $userid)) . '</h1>
         <div class="tabs is-centered">
             <ul>
                 <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="is-link">My Bookmarks</a></li>
@@ -276,4 +276,4 @@ $title = _('Sharemarks');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

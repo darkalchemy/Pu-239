@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Refresh:2; url=staffpanel.php?tool=nameblacklist');
         stderr(_('Success'), _('The file was written...wait for redirect'));
     } else {
-        stderr(_('Error'), _f('%s is not writable', $site_config['paths']['nameblacklist']));
+        stderr(_('Error'), _fe('{0} is not writable', $site_config['paths']['nameblacklist']));
     }
 } else {
     $out = stdmsg(_('Current words on blacklist'), count($blacklist) ? implode(', ', array_keys($blacklist)) : _('There is no username on the blacklist'));

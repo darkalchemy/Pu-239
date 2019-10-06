@@ -140,7 +140,7 @@ for ($i = 0; $i <= count($valid_sort); ++$i) {
 }
 $HTMLOUT .= "
     <h1 class='has-text-centered'>" . _('All snatched torrents') . "</h1>
-    <div class='has-text-centered size_4 bottom20'>" . _('We currently have') . '&#160;' . $count . '&#160;' . _('snatched torrents') . '</div>';
+    <div class='has-text-centered size_4 bottom20'>" . _pfe('We currently have {0} snatched torrent', 'We currently have {0} snatched torrents', $count) . '</div>';
 $snatchedperpage = 25;
 $pager = pager($snatchedperpage, $count, $_SERVER['PHP_SELF'] . '?tool=snatched_torrents&amp;' . $pagerlink);
 if ($count > $snatchedperpage) {

@@ -54,7 +54,7 @@ if ($count > 0) {
             <td>' . get_date((int) $data['date'], '') . '</td>
             <td>' . $browser . '</td>
             <td>' . htmlsafechars($data['ip']) . '</td>
-            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username((int) $data['uid']) : _('&#160;[Guest]')) . "</td>
+            <td>' . htmlsafechars($data['ip']) . ' ' . ((int) $data['uid'] ? format_username((int) $data['uid']) : ' [' . _('Guest') . ']') . "</td>
             <td><a href='" . htmlsafechars($data['referer']) . "'>" . htmlsafechars(CutName($data['referer'], 50)) . "</a></td>
             <td><a href='" . htmlsafechars($data['page']) . "'>" . _('page viewed') . '</a></td>
         </tr>';

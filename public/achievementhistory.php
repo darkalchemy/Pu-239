@@ -48,10 +48,10 @@ if ($id === $user['id']) {
 
 $HTMLOUT .= "
     <div class='has-text-centered'>
-        <h1 class='level-item'>" . _('Achievements for:') . '&nbsp;' . format_username((int) $arr['id']) . '</h1>
-        <h2>' . _('Currently') . ' ' . htmlsafechars($row['0']) . _(' achievement') . ($row[0] == 1 ? '' : 's') . '.';
+        <h1 class='level-item'>" . _('Achievements for') . ':&nbsp;' . format_username((int) $arr['id']) . '</h1>
+        <h2>' . _pfe('Currently {0, number} achievment.', 'Currently {0, number} achievments.', (int) $row['0']);
 if ($id === $user['id']) {
-    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'>{$achpoints}" . _(' Points Available') . " // {$spentpoints}" . _(' Points spent.') . '</a>';
+    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'> " . _pfe('{0} Point Available', '{0} Points Available', $achpoints) . ' // ' . _pfe('{0} Point spent', '{0} Points spent', $spentpoints) . '</a>';
 }
 $HTMLOUT .= '</h2>
     </div>';
@@ -59,7 +59,7 @@ if ($count > $perpage) {
     $HTMLOUT .= $pager['pagertop'];
 }
 if ($count === 0) {
-    $HTMLOUT .= stdmsg(_('No Achievements'), _('It appears that') . ' ' . format_username((int) $arr['id']) . ' ' . _(' currently has no achievements.'));
+    $HTMLOUT .= stdmsg(_('No Achievements'), _fe('It appears that {0} currently has no achievements.', format_username((int) $arr['id'])));
 } else {
     $heading = '
                     <tr>
@@ -72,7 +72,9 @@ if ($count === 0) {
     while ($arr = mysqli_fetch_assoc($res)) {
         $body .= "
                     <tr>
-                        <td class='has-text-centered'><img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'></td>
+                        <td class='has-text-centered'>
+                            <img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'>
+                        </td>
                         <td>" . htmlsafechars($arr['description']) . '</td>
                         <td>' . get_date((int) $arr['date'], '') . '</td>
                     </tr>';

@@ -152,7 +152,7 @@ function cleanup_show_main()
         $row['_clean_time'] = get_date((int) $row['clean_time'], 'LONG', 1, 0);
         $row['clean_increment'] = (int) $row['clean_increment'];
         $row['_class'] = $row['clean_on'] != 1 ? " style='color:red'" : '';
-        $row['_title'] = $row['clean_on'] != 1 ? ' ' . _(' (Locked)') . '' : '';
+        $row['_title'] = $row['clean_on'] != 1 ? ' (' . _('Locked') . ')' : '';
         $row['_clean_time'] = $row['clean_on'] != 1 ? "<span class='has-text-danger'>{$row['_clean_time']}</span>" : $row['_clean_time'];
         $on_off = $row['clean_on'] != 1 ? "<i class='icon-toggle-off icon has-text-danger'></i>" : "<i class='icon-toggle-on icon has-text-success'></i>";
         $htmlout .= "
@@ -247,11 +247,11 @@ function cleanup_show_edit()
     </div>
 
     <div style='margin-bottom:5px;'>
-    <label style='float:left;width:200px;'>" . _('Cleanup Log') . '</label>' . _('Yes &#160; ') . "<input name='clean_log' value='1' {$logyes} type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' {$logno} type='radio'>" . _(' &#160; No') . "</div>
+    <label style='float:left;width:200px;'>" . _('Cleanup Log') . '</label>' . _('Yes &#160; ') . "<input name='clean_log' value='1' {$logyes} type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' {$logno} type='radio'>" . _('No') . "</div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>" . _('Cleanup On or Off?') . '</label>
-    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' {$cleanon} type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' {$cleanoff} type='radio'> " . _(' &#160; No') . "
+    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' {$cleanon} type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' {$cleanoff} type='radio'> " . _('No') . "
     </div>
 
     <div style='text-align:center;'>
@@ -301,7 +301,7 @@ function cleanup_take_edit($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
+            stderr(_('Error'), _("Don't leave any field blank"));
         }
     }
     unset($opts);
@@ -375,12 +375,12 @@ function cleanup_show_new()
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>" . _('Cleanup Log') . '</label>
-    ' . _('Yes &#160; ') . " <input name='clean_log' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio'> " . _(' &#160; No') . "
+    ' . _('Yes &#160; ') . " <input name='clean_log' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_log' value='0' checked type='radio'> " . _('No') . "
     </div>
 
     <div style='margin-bottom:5px;'>
     <label style='float:left;width:200px;'>" . _('Cleanup On or Off?') . '</label>
-    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio'> " . _(' &#160; No') . "
+    ' . _('Yes &#160; ') . " <input name='clean_on' value='1' type='radio'>&#160;&#160;&#160;<input name='clean_on' value='0' checked type='radio'> " . _('No') . "
     </div>
 
     <div style='text-align:center;'>
@@ -431,7 +431,7 @@ function cleanup_take_new($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
+            stderr(_('Error'), _("Don't leave any field blank ") . " $x");
         }
     }
     unset($opts);
@@ -532,7 +532,7 @@ function cleanup_take_unlock($params)
         }
         $params[$x] = filter_var($params[$x], FILTER_VALIDATE_INT, $opts);
         if (!is_numeric($params[$x])) {
-            stderr(_('Error'), '' . _("Don't leave any field blank ") . " $x");
+            stderr(_('Error'), _("Don't leave any field blank ") . " $x");
         }
     }
     unset($opts);

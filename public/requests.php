@@ -111,7 +111,7 @@ if (isset($data['action'])) {
             $id = isset($data['id']) ? (int) $data['id'] : 0;
             $request = $request_class->get($id, false, $user['id']);
             $edit_form = "
-                <h2 class='has-text-centered'>" . _('Add Comment') . '' . htmlsafechars($request['name']) . "</h2>
+                <h2 class='has-text-centered'>" . _('Add Comment') . htmlsafechars($request['name']) . "</h2>
                 <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=post_comment' accept-charset='utf-8'>
                     <input type='hidden' name='id' value='{$id}'>
                     <div class='columns is-marginless is-paddingless'>
@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($add) {
             if ($request_class->insert($values)) {
                 $session->unset('post_request_data');
-                $session->set('is-success', _f('Request: %s Added', format_comment($_POST['name'])));
+                $session->set('is-success', _('Request: %s Added', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -302,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['updated'] = $dt;
             unset($values['added']);
             if ($request_class->update($values, (int) $_POST['id'])) {
-                $session->set('is-success', _f('Request: %s Updated', format_comment($_POST['name'])));
+                $session->set('is-success', _('Request: %s Updated', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -320,14 +320,14 @@ $form = "
                 <div class='columns is-marginless is-paddingless'>
                     <div class='column is-one-quarter has-text-left'>" . _('Request') . "</div>
                     <div class='column'>
-                        <input type='text' class='w-100' name='name' autocomplete='on' value='" . (!empty($post_data['name']) ? htmlsafechars($post_data['name']) : '') . "' required>
+                        <input type='text' class='w-100' name='name' autocomplete='on' value='" . (!empty($post_data['name']) ? format_comment($post_data['name']) : '') . "' required>
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
                     <div class='column is-one-quarter has-text-left'>" . _('Poster') . "</div>
                     <div class='column'>
-                        <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
-                        <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' " . (!empty($post_data['poster']) ? "value='" . htmlsafechars($post_data['poster']) . "'" : '') . ">
+                        <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? format_comment($post_data['poster']) : '') . "'>
+                        <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' " . (!empty($post_data['poster']) ? "value='" . format_comment($post_data['poster']) . "'" : '') . ">
                         <div class='poster_container has-text-centered'></div>
                         <div id='droppable' class='droppable bg-03 top20'>
                             <span id='comment'>" . _('Drop images or click here to select images.') . "</span>
@@ -341,13 +341,13 @@ $form = "
                 <div class='columns is-marginless is-paddingless'>
                     <div class='column is-one-quarter has-text-left'>" . _('IMDb Link') . "</div>
                     <div class='column'>
-                        <input type='url' class='w-100' id='url' name='url' autocomplete='on' value='" . (!empty($post_data['url']) ? htmlsafechars($post_data['url']) : '') . "' required>
+                        <input type='url' class='w-100' id='url' name='url' autocomplete='on' value='" . (!empty($post_data['url']) ? format_comment($post_data['url']) : '') . "' required>
                         <div id='imdb_outer'></div>
                     </div>
                 </div>
                 <div class='columns is-marginless is-paddingless'>
                     <div class='column is-one-quarter has-text-left'>" . _('Description') . "</div>
-                    <div class='column'>" . BBcode(!empty($post_data['description']) ? htmlsafechars($post_data['description']) : '') . '</div>
+                    <div class='column'>" . BBcode(!empty($post_data['description']) ? format_comment($post_data['description']) : '') . '</div>
                 </div>';
 if ($has_access) {
     if ($add) {
@@ -431,7 +431,7 @@ if ($view && is_valid_id($id)) {
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=pay_bounty&amp;id={$id}' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$id}'>
                             <div class='level-center-center'>
-                                <input type='submit' value='" . sprintf($lang['request_pay_bounty'], number_format($post_data['bounties'])) . "' class='button is-small'>
+                                <input type='submit' value='" . _fe('Pay {0} bounty', number_format($post_data['bounties'])) . "' class='button is-small'>
                             </div>
                         </form>
                         <div class='bg-03 padding20 top20 round10'>" . _('Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded.') . '</div>
@@ -441,14 +441,14 @@ if ($view && is_valid_id($id)) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>" . _('Add a Bounty to: ') . '' . htmlsafechars($post_data['name']) . "</h2>
-                        <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . sprintf($lang['request_bounty_user'], $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
+                        <h2 class='has-text-centered'>" . _('Add a Bounty to: %s', format_comment($post_data['name'])) . "</h2>
+                        <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . _fe('You have contributed {0} / {1} of the total bounty offered', $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
                         {$show_bounties}
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_bounty' accept-charset='utf-8'>
                             <input type='hidden' name='id' value='{$id}'>
                             <div class='level-center-center'>
                                 <input type='number' name='bounty' min='100' max='" . ($user['seedbonus'] > 100000 ? 100000 : $user['seedbonus']) . "' step='100' class='left10 right10' required>
-                                <input type='submit' value='" . _('Add a Bounty to: ') . "' class='button is-small left10 right10'>
+                                <input type='submit' value='" . _('Add Bounty') . "' class='button is-small left10 right10'>
                             </div>
                         </form>
                         <div class='bg-03 padding20 top20 round10'>" . _('Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded.') . '</div>
@@ -458,10 +458,10 @@ if ($view && is_valid_id($id)) {
     $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>" . _('Add a comment to: ') . '' . htmlsafechars($post_data['name']) . "</h2>
-                        <a class='button is-small' href='{$site_config['paths']['baseurl']}/requests.php?action=add_comment&amp;id={$id}'>Add a comment</a>
+                        <h2 class='has-text-centered'>" . _('Add a comment to: %s', format_comment($post_data['name'])) . "</h2>
+                        <a class='button is-small' href='{$site_config['paths']['baseurl']}/requests.php?action=add_comment&amp;id={$id}'>" . _('Add Comment') . '</a>
                     </div>
-                </div>";
+                </div>';
     $comments = $comment_class->get_comment_by_column('request', $id);
     $view_request .= commenttable($comments, 'request');
     $view_request = main_div($view_request, 'has-text-left', 'padding20');
@@ -513,7 +513,7 @@ if (!empty($edit_form)) {
                 $background = $images_class->find_images($imdb_id, $type = 'background');
                 $background = !empty($background) ? "style='background-image: url({$background});'" : '';
                 $poster = !empty($request['poster']) ? $request['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
-                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$request['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$request['name']}' class='tooltip-poster'>";
+                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$request['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='" . _('Poster') . "' class='tooltip-poster'>";
             }
             $chef = "<span class='" . get_user_class_name($request['class'], true) . "'>" . $request['username'] . '</span>';
             $plot = $torrent->get_plot($imdb_id);
@@ -530,7 +530,7 @@ if (!empty($edit_form)) {
             } else {
                 $plot = '';
             }
-            $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'upcoming_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot, $lang);
+            $hover = upcoming_hover($site_config['paths']['baseurl'] . '/requests.php?action=view_request&amp;id=' . $request['id'], 'upcoming_' . $request['id'], $request['name'], $background, $poster, get_date($request['added'], 'MYSQL'), get_date($request['added'], 'MYSQL'), $chef, $plot);
             $body .= "
                     <tr>
                         <td class='has-text-centered'>{$caticon}</td>
@@ -569,4 +569,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

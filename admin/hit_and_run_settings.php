@@ -39,14 +39,14 @@ $HTMLOUT .= "
 <form action='staffpanel.php?tool=hit_and_run_settings' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
 
 $HTMLOUT .= main_table("
-    <tr><td class='w-50'>" . _('Hit And Run Online:') . '</td><td>' . _('Yes') . "<input type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked' : '') . '>' . _(' No') . "<input type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked' : '') . "></td></tr>
+    <tr><td class='w-50'>" . _('Hit And Run Online:') . '</td><td>' . _('Yes') . "<input type='radio' name='hnr_online' value='1' " . ($site_config['hnr_config']['hnr_online'] ? 'checked' : '') . '> ' . _('No') . "<input type='radio' name='hnr_online' value='0' " . (!$site_config['hnr_config']['hnr_online'] ? 'checked' : '') . "></td></tr>
     <tr><td class='w-50'>" . _('First Class (Under and Equal)') . "</td><td><input type='text' name='firstclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['firstclass']) . "'></td></tr>
     <tr><td class='w-50'>" . _('Second Class (Under)') . "</td><td><input type='text' name='secondclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['secondclass']) . "'></td></tr>
     <tr><td class='w-50'>" . _('Third Class (Above and Equal)') . "</td><td><input type='text' name='thirdclass' size='20' value='" . htmlsafechars($site_config['hnr_config']['thirdclass']) . "'></td></tr>
 
-    <tr><td class='w-50'>" . _('Torrent Age Group 1 Under') . "</td><td><input type='number' name='torrentage1' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage1'] . "'>" . _(' Days') . "</td></tr>
-    <tr><td class='w-50'>" . _('Torrent Age Group 2 Under') . "</td><td><input type='number' name='torrentage2' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage2'] . "'>" . _(' Days') . "</td></tr>
-    <tr><td class='w-50'>" . _('Torrent Age Group 3 Over') . "</td><td><input type='number' name='torrentage3' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage3'] . "'>" . _(' Days') . "</td></tr>
+    <tr><td class='w-50'>" . _('Torrent Age Group 1 Under') . "</td><td><input type='number' name='torrentage1' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage1'] . "'> " . _('Days') . "</td></tr>
+    <tr><td class='w-50'>" . _('Torrent Age Group 2 Under') . "</td><td><input type='number' name='torrentage2' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage2'] . "'> " . _('Days') . "</td></tr>
+    <tr><td class='w-50'>" . _('Torrent Age Group 3 Over') . "</td><td><input type='number' name='torrentage3' min='0' max='31' step='1' value='" . $site_config['hnr_config']['torrentage3'] . "'> " . _('Days') . "</td></tr>
     <tr><td colspan='2'><div class='has-text-centered size_6'>" . _('Group 1') . "</div></td></tr>
 
     <tr><td class='w-50'>" . _('Seed Time For Torrent Age Group 1 First Class') . "</td><td><input type='number' name='_3day_first' min='0' max='4320' step='1' value='" . $site_config['hnr_config']['_3day_first'] . "'>" . _(' Hours') . "</td></tr>
@@ -83,4 +83,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

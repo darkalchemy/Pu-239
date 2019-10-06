@@ -4602,4 +4602,11 @@ KEY `expires` (`expires`)
         'query' => "UPDATE `users` SET `language` = 'en_US'",
         'flush' => true,
     ],
+    [
+        'id' => 1570352349,
+        'info' => 'Update site lang',
+        'date' => '06 Oct, 2019',
+        'query' => "UPDATE `site_config` SET `value` = 'en_US' WHERE `parent` = 'language' AND `name` = 'site'",
+        'flush' => true,
+    ],
 ];

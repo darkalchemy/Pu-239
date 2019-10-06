@@ -13,7 +13,7 @@ global $container, $site_config;
 
 $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
 if (!is_valid_id($id)) {
-    stderr('USER ERROR', 'Bad id');
+    stderr(_('Error'), _('Invalid ID'));
 }
 
 $fluent = $container->get(Database::class);
@@ -51,7 +51,7 @@ foreach ($files as $subrow) {
     $body .= "
             <tr>
                 <td class='has-text-centered'>
-                    <img src='{$site_config['paths']['images_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . htmlsafechars($ext) . " file'></td>
+                    <img src='{$site_config['paths']['images_baseurl']}icons/" . htmlsafechars($ext) . ".png' class='tooltipper icon' alt='" . htmlsafechars($ext) . " file' title='" . _fe('{0} file', format_comment($ext)) . "'></td>
                 <td>" . htmlsafechars($subrow['filename']) . "</td>
                 <td class='has-text-right'>" . mksize($subrow['size']) . '</td>
             </tr>';

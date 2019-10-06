@@ -35,7 +35,7 @@ if (!empty($agents)) {
     }
     $HTMLOUT = main_table($body, $heading);
 } else {
-    $HTMLOUT = stdmsg(_('Sorry'), _("There are no peers and therefore there are no client ID's"));
+    $HTMLOUT = stdmsg(_('Error'), _("There are no peers and therefore there are no client ID's"));
 }
 $title = _('Torrent Clients');
 $breadcrumbs = [

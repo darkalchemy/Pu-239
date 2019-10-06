@@ -208,13 +208,13 @@ function staff_panel()
         if ($staff_panel) {
             foreach ($staff_panel as $key => $value) {
                 if ($value['av_class'] <= $user_class && $value['type'] === 'user') {
-                    $panels['0Users'][] = make_link($value);
+                    $panels['0' . _('Users')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'settings') {
-                    $panels['1Settings'][] = make_link($value);
+                    $panels['1' . ('Settings')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'stats') {
-                    $panels['2Stats'][] = make_link($value);
+                    $panels['2' . _('Stats')][] = make_link($value);
                 } elseif ($value['av_class'] <= $user_class && $value['type'] === 'other') {
-                    $panels['3Other'][] = make_link($value);
+                    $panels['3' . _('Other')][] = make_link($value);
                 }
             }
         }

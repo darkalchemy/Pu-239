@@ -13,7 +13,7 @@ global $container, $site_config;
 $HTMLOUT = "
         <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Arcade Top Scores!') . "</h1>
         <div class='bottom10 has-text-centered'>
-            <div>" . _f('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</div>
+            <div>" . _('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</div>
             <div class='level-center top10'>
                 <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade.php'>" . _('Back to the Arcade') . '</a>
             </div>
@@ -111,7 +111,7 @@ foreach ($list as $gname) {
             $body .= '
                     <tr>
                         <td colspan="4">
-                            <div class="top10 bottom10 has-text-centered">Your high score was ' . number_format((float) $user_high) . ' and you ranked #' . number_format((float) $user_rank) . '.</div>
+                            <div class="top10 bottom10 has-text-centered">' . _fe('Your high score was {0} and you ranked #{1}.', number_format((float) $user_high), number_format((float) $user_rank)) . '</div>
                         </td>
                     </tr>';
         }

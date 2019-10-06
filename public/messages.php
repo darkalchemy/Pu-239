@@ -53,7 +53,7 @@ $possible_actions = [
 ];
 $action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : (isset($_POST['action']) ? htmlsafechars($_POST['action']) : 'view_mailbox');
 if (!in_array($action, $possible_actions)) {
-    stderr(_('Error'), _('A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways.'));
+    stderr(_('Error'), _('Invalid action'));
 }
 
 $change_pm_number = isset($_GET['change_pm_number']) ? (int) $_GET['change_pm_number'] : (isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 0);
@@ -74,7 +74,7 @@ $good_order_by = [
 ];
 $order_by = (isset($_GET['order_by']) ? htmlsafechars($_GET['order_by']) : 'added');
 if (!in_array($order_by, $good_order_by)) {
-    stderr(_('Error'), _('Tempt not too much the hatred of my spirit, for I am sick when I do look on thee.'));
+    stderr(_('Error'), _('Invalid Sort'));
 }
 
 $top_links = '
@@ -82,7 +82,7 @@ $top_links = '
         <ul class="level-center bg-06">
             <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=search">' . _('Search Messages') . '</a></li>
             <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=edit_mailboxes">' . _('Mailbox Manager / PM settings') . '</a></li>
-            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message">Send Message</a></li>
+            <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=send_message">' . _('Send Message') . '</a></li>
             <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=new_draft">' . _('Write New Draft') . '</a></li>
             <li class="is-link margin10"><a href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox">' . _('Inbox') . '</a></li>
         </ul>
@@ -197,9 +197,9 @@ switch ($action) {
  * @param int $box
  * @param int $userid
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -245,9 +245,9 @@ function get_all_boxes(int $box, int $userid)
  * @param int $mailbox
  * @param int $userid
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed|string
  */
@@ -281,8 +281,9 @@ function insertJumpTo(int $mailbox, int $userid)
 
     return $insertJumpTo;
 }
+
 $title = _('Mailbox');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

@@ -243,7 +243,7 @@ if ($user['donor'] && $viewer['id'] == $user['id'] || has_access($viewer['class'
         $h1 .= "
             <div class='top20 has-text-centered'>
                 " . _('Donated Status Until') . ' - ' . get_date((int) $user['donoruntil'], 'DATE', 1, 0) . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . ' ] ' . _('To go') . "...</b>
-                <br><span class='size_4'> " . _('To re-new your donation click') . " <a class='is-link' href='{$site_config['paths']['baseurl']}/donate.php'>" . _('HERE') . '</a>.</span>
+                <br><span class='size_4'> " . _('To re-new your donation click') . " <a class='is-link' href='{$site_config['paths']['baseurl']}/donate.php'>" . _('here') . '</a>.</span>
             </div>';
     }
 }
@@ -387,7 +387,7 @@ if ($viewer['id'] !== $user['id'] && has_access($viewer['class'], UC_STAFF, 'cod
 
     $the_flip_box_4 = '[ <a id="staff_notes"></a><a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'4\')" id="b_4" title="' . _('Open / Close Staff Notes') . '">view <img onclick="flipBox(\'4\')" src="' . $site_config['paths']['images_baseurl'] . 's/panel_on.gif" id="b_4" width="8" height="8" alt="' . _('Open / Close Staff Notes') . '" class="tooltipper" title="' . _('Open / Close Staff Notes') . '"></a> ]';
     $HTMLOUT .= '<tr><td class="rowhead">' . _('Staff Notes') . '</td><td class="has-text-left">
-                            <a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'6\')" id="b_6" title="' . _('Add - Edit - View staff note') . '">' . ($user['staff_notes'] !== '' ? '' . _('View - Add - Edit') . ' ' : '' . _('Add') . ' ') . '<img onclick="flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" id="b_6" width="8" height="8" alt="' . _('Add - Edit - View staff note') . '" class="tooltipper" title="' . _('Add - Edit - View staff note') . '"></a>
+                            <a class="is-link tooltipper" href="#staff_notes" onclick="flipBox(\'6\')" id="b_6" title="' . _('Add - Edit - View staff note') . '">' . ($user['staff_notes'] !== '' ? _('View - Add - Edit') . ' ' : _('Add') . ' ') . '<img onclick="flipBox(\'6\')" src="' . $site_config['paths']['images_baseurl'] . 'panel_on.gif" id="b_6" width="8" height="8" alt="' . _('Add - Edit - View staff note') . '" class="tooltipper" title="' . _('Add - Edit - View staff note') . '"></a>
                             <div class="has-text-left" id="box_6">
                                 <form method="post" action="ajax/member_input.php" name="notes_for_staff" accept-charset="utf-8">
                                     <input name="id" type="hidden" value="' . (int) $user['id'] . '">
@@ -541,7 +541,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             if ($donoruntil === 0) {
                 $HTMLOUT .= _('Arbitrary duration');
             } else {
-                $HTMLOUT .= _('Donated status until') . ' ' . get_date((int) $user['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . ' ] ' . _('To go') . '';
+                $HTMLOUT .= _('Donated status until') . ' ' . get_date((int) $user['donoruntil'], 'DATE') . ' [ ' . mkprettytime($donoruntil - TIME_NOW) . ' ] ' . _('To go');
             }
         } else {
             $HTMLOUT .= '
@@ -883,14 +883,14 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
             }
         } else {
             $HTMLOUT .= '<td>' . _('Warn for') . '<select name="warned" class="w-100">
-        <option value="0">' . _('------') . '</option>
-        <option value="1">' . _('1 week') . '</option>
-        <option value="2">' . _('2 weeks') . '</option>
-        <option value="4">' . _('4 weeks') . '</option>
-        <option value="8">' . _('8 weeks') . '</option>
+        <option value="0">------</option>
+        <option value="1">' . _fe('{0} week', 1) . '</option>
+        <option value="2">' . _fe('{0} weeks', 2) . '</option>
+        <option value="4">' . _fe('{0} weeks', 4) . '</option>
+        <option value="8">' . _fe('{0} weeks', 8) . '</option>
         <option value="255">' . _('Unlimited') . '</option>
         </select></td></tr>
-        <tr><td colspan="3" class="has-text-left">' . _('PM Comment:') . '<input type="text" class="w-100" name="warned_pm"></td></tr>';
+        <tr><td colspan="3" class="has-text-left">' . _('PM Comment') . ':<input type="text" class="w-100" name="warned_pm"></td></tr>';
         }
     }
 
@@ -1043,7 +1043,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
 }
 $HTMLOUT .= '</div></div></div>';
 
-$title = _f('Details for %s', format_comment($user['username']));
+$title = _('User Details');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];

@@ -450,8 +450,8 @@ switch ($action) {
             $body = '';
             if ($arr_forums['forum_id'] === $arr_forums['over_forum_id']) {
                 $forum_id = $arr_forums['real_forum_id'];
-                $forum_name = htmlsafechars($arr_forums['name']);
-                $forum_description = htmlsafechars($arr_forums['description']);
+                $forum_name = _(htmlsafechars($arr_forums['name']));
+                $forum_description = _(htmlsafechars($arr_forums['description']));
                 $topic_count = number_format($arr_forums['topic_count']);
                 $post_count = number_format($arr_forums['post_count']);
                 $last_post_arr = $cache->get('forum_last_post_' . $forum_id . '_' . $user['class']);
@@ -481,10 +481,11 @@ switch ($action) {
                     $cache->set('forum_last_post_' . $forum_id . '_' . $user['class'], $last_post_arr, $site_config['expires']['last_post']);
                 }
                 $last_post = '';
+                $topic_name = !empty($last_post_arr['topic_name']) ? format_comment(_($last_post_arr['topic_name'])) : '';
                 if (!empty($last_post_arr) && $last_post_arr['last_post'] > 0) {
                     $last_post_id = $last_post_arr['last_post'];
                     if (($last_read_post_arr = $cache->get('last_read_post_' . $last_post_arr['topic_id'] . '_' . $user['id'])) === false) {
-                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($user['id']) . ' AND topic_id=' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
+                        $query = sql_query('SELECT last_post_read FROM read_posts WHERE user_id = ' . sqlesc($user['id']) . ' AND topic_id = ' . sqlesc($last_post_arr['topic_id'])) or sqlerr(__FILE__, __LINE__);
                         $last_read_post_arr = mysqli_fetch_row($query);
                         $cache->set('last_read_post_' . $last_post_arr['topic_id'] . '_' . $user['id'], $last_read_post_arr, $site_config['expires']['last_read_post']);
                     }
@@ -493,12 +494,12 @@ switch ($action) {
 
                     if ($last_post_arr['tan'] === '1') {
                         if (!has_access($user['class'], UC_STAFF, 'coder') && $last_post_arr['user_id'] != $user['id']) {
-                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . $topic_name . '" class="tooltipper"><span style="font-weight: bold;">' . CutName($topic_name, 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         } else {
-                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                            $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': <i>' . get_anonymous_name() . '</i> [' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . ']<br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . $topic_name . '"><span style="font-weight: bold;">' . CutName($topic_name, 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                         }
                     } else {
-                        $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . format_comment($last_post_arr['topic_name']) . '" class="tooltipper"><span style="font-weight: bold;">' . CutName(format_comment($last_post_arr['topic_name']), 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
+                        $last_post = '<span style="white-space:nowrap;">' . _('Last Post by') . ': ' . (!empty($last_post_arr['user_id']) ? format_username((int) $last_post_arr['user_id']) : _('Lost')) . '</span><br>in &#9658; <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . (int) $last_post_arr['topic_id'] . '&amp;page=last#' . $last_post_id . '" title="' . $topic_name . '" class="tooltipper"><span style="font-weight: bold;">' . CutName($topic_name, 30) . '</span></a><br>' . get_date((int) $last_post_arr['added'], '') . '<br></span>';
                     }
                 } else {
                     $img = 'unlocked';
@@ -706,4 +707,4 @@ $title = _('Forums');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

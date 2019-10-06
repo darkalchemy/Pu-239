@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: {$site_config['paths']['baseurl']}/login.php");
         die();
     } catch (TooManyRequestsException $e) {
-        $session->set('is-danger', _('Too many requests.'));
+        $session->set('is-danger', _('Too many requests from your IP..'));
         header("Location: {$site_config['paths']['baseurl']}/index.php");
         die();
     }

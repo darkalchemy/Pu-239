@@ -12,7 +12,7 @@ $set = [
 $messages_class = $container->get(Message::class);
 $result = $messages_class->update($set, $pm_id);
 if (!$result) {
-    stderr(_('Error'), '' . _('Message could not be moved!') . '<br><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '>' . _('BACK') . '</a>');
+    stderr(_('Error'), _('Message could not be moved!') . '<br><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '>' . _('BACK') . '</a>');
 }
 $cache = $container->get(Cache::class);
 $cache->delete('inbox_' . $CURUSER['id']);

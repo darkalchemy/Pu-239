@@ -128,7 +128,7 @@ unset($res, $row);
 
 $res = sql_query('SELECT UNIX_TIMESTAMP() - ' . $serverStatus['Uptime']) or sqlerr(__FILE__, __LINE__);
 $row = mysqli_fetch_row($res);
-$HTMLOUT .= "<p class='has-text-centered'>" . _('This MySQL server has been running for ') . '' . timespanFormat($serverStatus['Uptime']) . _('. It started up on ') . localisedDate((int) $row[0]) . '</p>';
+$HTMLOUT .= "<p class='has-text-centered'>" . _fe('This MySQL server has been running for {0}. It started up on {1}', timespanFormat($serverStatus['Uptime']), localisedDate((int) $row[0])) . '</p>';
 ((mysqli_free_result($res) || (is_object($res) && (get_class($res) === 'mysqli_result'))) ? true : false);
 unset($res, $row);
 
@@ -143,7 +143,7 @@ foreach ($tmp_array as $name => $value) {
 }
 unset($tmp_array);
 $TRAFFIC_STATS = '';
-$TRAFFIC_STATS_HEAD = "<p class='has-text-centered'>" . _('Traffic Per Hour') . '' . _(' These tables show the network traffic statistics of this MySQL server since its startup ') . '</p>';
+$TRAFFIC_STATS_HEAD = "<p class='has-text-centered'>" . _('Traffic Per Hour. These tables show the network traffic statistics of this MySQL server since its startup ') . '</p>';
 $TRAFFIC_STATS .= main_table("
     <tr>
         <td colspan='3' class='bg-08 has-text-centered'>" . _('Traffic Per Hour') . '</td>
@@ -187,8 +187,8 @@ $TRAFFIC_STATS2 = main_table("
     </tr>');
 $QUERY_STATS = "
     <div class='has-text-centered'>
-        <h1>" . _('Query Statistics:') . '</h1>
-        ' . _("Since it's start up, ") . number_format((float) $serverStatus['Questions'], 0, '.', ',') . '' . _(' queries have been sent to the server.') . '
+        <h1>" . _('Query Statistics') . '</h1>
+        ' . _fe("Since it's start up, {0} queries have been sent to the server.", number_format((float) $serverStatus['Questions'], 0, '.', ',')) . '
     </div>';
 $heading = '
     <tr>

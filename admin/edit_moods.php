@@ -20,7 +20,7 @@ $edit_mood['image'] = isset($edit_params['image']) ? $edit_params['image'] : '';
 $edit_mood['bonus'] = isset($edit_params['bonus']) ? 1 : 0;
 $cache = $container->get(Cache::class);
 if ($edit_mood['action'] === 'added') {
-    if ($edit_mood['name'] != _('is example mood') && $edit_mood['image'] != 'smile1.gif') {
+    if ($edit_mood['name'] != 'is example mood' && $edit_mood['image'] != 'smile1.gif') {
         sql_query('INSERT INTO moods (name, image, bonus) VALUES (' . sqlesc($edit_mood['name']) . ', ' . sqlesc($edit_mood['image']) . ', ' . sqlesc($edit_mood['bonus']) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('topmoods');
         write_log('<b>' . _('Mood Added') . '</b> ' . htmlsafechars($CURUSER['username']) . ' - ' . htmlsafechars($edit_mood['name']) . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($edit_mood['image']) . '" alt="">');
@@ -80,7 +80,7 @@ if (mysqli_num_rows($res)) {
       <td><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['image']) . '" alt=""></td>
       <td>' . htmlsafechars($arr['name']) . '</td>
       <td>' . htmlsafechars($arr['image']) . '</td>
-      <td>' . ($arr['bonus'] != 0 ? '' . _('Yes') . '' : '' . _('No') . '') . '</td>
+      <td>' . ($arr['bonus'] != 0 ? _('Yes') . '' : _('No') . '') . '</td>
       <td><a style="color:#FF0000" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;id=' . (int) $arr['id'] . '&amp;action=edit">' . _('Edit') . '</a></td></tr>' . //<td><a style="color:#FF0000" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=edit_moods&amp;action=remove$amp;id='.$arr['id'].'&amp;hash='.$form_hash.'>'._('Remove').'</a></td></tr>
             '';
     }

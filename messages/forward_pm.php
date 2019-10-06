@@ -65,7 +65,7 @@ if (!has_access($CURUSER['class'], UC_STAFF, '')) {
 
 $subject = htmlsafechars($_POST['subject']);
 $first_from = valid_username($_POST['first_from']) ? htmlsafechars($_POST['first_from']) : '';
-$msg = "\n\n" . $_POST['body'] . "\n\n" . _f("-------- Original Message from [b]%1$s :: [/b]%2$s\n%3$s", $first_from, htmlsafechars($message['subject']), $message['msg']);
+$msg = "\n\n" . $_POST['body'] . "\n\n" . _fe("-------- Original Message from [b]{0} :: [/b]{1}\n{3}", $first_from, htmlsafechars($message['subject']), $message['msg']);
 
 $msgs_buffer[] = [
     'sender' => $CURUSER['id'],
@@ -88,7 +88,7 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
     $body = doc_head("{$title} PM received") . '
 </head>
 <body>
-<p>' . _f('You have received a PM from %s!', $username) . '</p>
+<p>' . _fe('You have received a PM from %s!', $username) . '</p>
 <p>' . _('You can use the URL below to view the message (you may have to login).') . "</p>
 <p>{$site_config['paths']['baseurl']}/messages.php</p>
 <p>--{$site_config['site']['name']}</p>
