@@ -1624,14 +1624,16 @@ msgstr "Laat kommentaar toe"
 msgid "Allow members to change their vote"
 msgstr "Laat lede toe om hul stem te verander"
 
-msgid "Allow members to change their vote? Default is"
-msgstr "Laat lede toe om hul stem te verander? Standaard is"
+msgid "Allow members to change their vote? Default is \"no\""
+msgstr "Laat lede toe om hul stem te verander? Standaard is \"nee\""
 
 msgid "Allow members to have more then one selection"
 msgstr "Laat lede toe om meer as een keuse te hê"
 
-msgid "Allow members to have more then one selection? Default is"
-msgstr "Laat lede toe om meer as een keuse te hê? Standaard is"
+msgid ""
+"Allow members to have more then one selection? Default is 'Single option'!"
+msgstr ""
+"Laat lede toe om meer as een keuse te hê? Standaard is 'Enkele opsie'!"
 
 msgid "Allowed Mark Of Cains"
 msgstr "Toegelaat merk van kettings"
@@ -5492,6 +5494,9 @@ msgstr "Hoe werk hierdie promosie-ding in elk geval?"
 msgid "How far back to search"
 msgstr "Hoe ver terug om te soek"
 
+msgid "How long should this poll run? Default is 'run forever'"
+msgstr "Hoe lank moet hierdie peiling duur? Standaard is 'hardloop vir ewig'"
+
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr ""
 "Hoe lank moet hierdie peiling duur? Standaard is om 'Vir ewig te hardloop'"
@@ -7156,10 +7161,10 @@ msgid "Message moved!"
 msgstr "Boodskap geskuif!"
 
 #, no-php-format
-msgid "Message sent to {0, number} user"
-msgid_plural "Message sent to {0, number} users"
-msgstr[0] "Boodskap is aan {0, nommer} gebruiker gestuur"
-msgstr[1] "Boodskap is aan {0, nommer} gebruikers gestuur"
+msgid "Message sent to {0} user"
+msgid_plural "Message sent to {0} users"
+msgstr[0] "Boodskap is aan {0} gebruiker gestuur"
+msgstr[1] "Boodskap is aan {0} gebruikers gestuur"
 
 msgid "Message to "
 msgstr "Boodskap aan"
@@ -14500,12 +14505,12 @@ msgid ""
 msgstr ""
 "U kan u eie boodskap voeg, dit sal verskyn bo die PM wat aangestuur word."
 
-#, php-format
-msgid "You can buy another %d ticket if you get get more bonus points."
+#, no-php-format
+msgid "You can buy another {0} ticket if you get get more bonus points."
 msgid_plural ""
-"You can buy another %d tickets if you get get more bonus points."
-msgstr[0] "U kan nog 'n %d kaartjie koop as u meer bonuspunte kry."
-msgstr[1] "U kan nog 'n %d kaartjies koop as u meer bonuspunte kry."
+"You can buy another {0} tickets if you get get more bonus points."
+msgstr[0] "U kan nog 'n {0} kaartjie koop as u meer bonuspunte kry."
+msgstr[1] "U kan nog {0} kaartjies koop as u meer bonuspunte kry."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "U kan webwerfpersoneel kontak met u versoek op irc"
@@ -15896,21 +15901,6 @@ msgstr "as jy seker is."
 
 msgid "in"
 msgstr "in"
-
-msgid "in $d day"
-msgid_plural "in $d days"
-msgstr[0] "oor $ d dag"
-msgstr[1] "oor $ d dae"
-
-msgid "in $d month"
-msgid_plural "in $d months"
-msgstr[0] "oor $ d maand"
-msgstr[1] "oor $ d maande"
-
-msgid "in $d week"
-msgid_plural "in $d weeks"
-msgstr[0] "oor $ d week"
-msgstr[1] "oor $ d weke"
 
 msgid "in Forum"
 msgstr "in Forum"
