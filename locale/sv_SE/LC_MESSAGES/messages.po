@@ -498,99 +498,11 @@ msgstr "% Föremål:"
 msgid "% Misses: "
 msgstr "% Saknas:"
 
-msgid "%$1d user disabled!"
-msgid_plural "%$1d users disabled!"
-msgstr[0] "% $ 1d användare inaktiverad!"
-msgstr[1] "% $ 1d användare inaktiverade!"
-
-msgid "%1 month ago"
-msgid_plural "%1 months ago"
-msgstr[0] "%1 månad sedan"
-msgstr[1] "% 1 månader sedan"
-
-msgid "%1 week ago"
-msgid_plural "%1 weeks ago"
-msgstr[0] "%1 vecka sedan"
-msgstr[1] "% 1 veckor sedan"
-
-msgid "%1 year ago"
-msgid_plural "%1 years ago"
-msgstr[0] "%1 år sedan"
-msgstr[1] "% 1 år sedan"
-
-#, php-format
-msgid "%1$s user unwarned."
-msgid_plural "%1$s users unwarned."
-msgstr[0] "%1$s användaren ovarig."
-msgstr[1] "%1$s användare ovariga."
-
-#, php-format
-msgid "%2$d uploader application to be dealt with."
-msgid_plural "%2$d uploader applications to be dealt with."
-msgstr[0] "%2$d uppladdningsapplikation som ska hanteras."
-msgstr[1] "%2$d uppladdningsapplikationer som ska hanteras."
-
-#, php-format
-msgid "%2$s was hit %1$d time in %3$s seconds"
-msgid_plural "%2$s was hit %1$d times in %3$s seconds"
-msgstr[0] "%2$s träffades %1$d tid på %3$s sekunder"
-msgstr[1] "%2$s träffades %1$d gånger på %3$s sekunder"
-
-#, php-format
-msgid "%d Active User"
-msgid_plural "%d Active Users"
-msgstr[0] "%d Aktiv användare"
-msgstr[1] "%d Aktiva användare"
-
-#, php-format
-msgid "%d Member visited during the last 24 hours"
-msgid_plural "%d Members visited during the last 24 hours"
-msgstr[0] "%d Medlem besökt under det senaste dygnet"
-msgstr[1] "%d Medlemmar besökt under det senaste dygnet"
-
-#, php-format
-msgid "%d New Report"
-msgid_plural "%d New Reports"
-msgstr[0] "%d Ny rapport"
-msgstr[1] "%d Nya rapporter"
-
-#, php-format
-msgid "%d Ticket"
-msgid_plural "%d Tickets"
-msgstr[0] "%d Biljett"
-msgstr[1] "%d Biljetter"
-
-#, php-format
-msgid "%d Unread PM"
-msgid_plural "%d Unread PM's"
-msgstr[0] "%d Olästa PM"
-msgstr[1] "%d Olästa PM"
-
-#, php-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] "%d dag"
-msgstr[1] "%d dagar"
-
-#, php-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d timme"
-msgstr[1] "%d timmar"
-
-#, php-format
-msgid ""
-"%s ghost torrent was sucessfully cleaned. You may now restart your torrents,"
-" the tracker has been updated."
-msgid_plural ""
-"%s ghost torrents were sucessfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
-msgstr[0] ""
-"%s spöktorrent städades framgångsrikt. Du kan nu starta om dina torrenter, "
-"trackaren har uppdaterats."
-msgstr[1] ""
-"%s spöktorrenter rengörs i framgång. Du kan nu starta om dina torrenter, "
-"trackaren har uppdaterats."
+#, no-php-format
+msgid "%{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "% {0} vecka sedan"
+msgstr[1] "{0} veckor sedan"
 
 msgid ""
 "'And/or' means any or both. Your delay will be the largest one for which you"
@@ -1654,14 +1566,16 @@ msgstr "Tillåt kommentarer"
 msgid "Allow members to change their vote"
 msgstr "Låt medlemmarna ändra sin röst"
 
-msgid "Allow members to change their vote? Default is"
-msgstr "Låt medlemmarna ändra sin röst? Standard är"
+msgid "Allow members to change their vote? Default is \"no\""
+msgstr "Låt medlemmarna ändra sin röst? Standard är \"nej\""
 
 msgid "Allow members to have more then one selection"
 msgstr "Låt medlemmarna ha mer än ett urval"
 
-msgid "Allow members to have more then one selection? Default is"
-msgstr "Tillåta medlemmar att ha mer än ett urval? Standard är"
+msgid ""
+"Allow members to have more then one selection? Default is 'Single option'!"
+msgstr ""
+"Tillåta medlemmar att ha mer än ett urval? Standard är \"Enkel alternativ\"!"
 
 msgid "Allowed Mark Of Cains"
 msgstr "Tillåtet märke av kedjor"
@@ -3208,6 +3122,10 @@ msgstr "CrazyHour"
 
 msgid "CrazyHour ON"
 msgstr "CrazyHour ON"
+
+#, no-php-format
+msgid "CrazyHour {0} {1} Ends in {2} at {3}"
+msgstr "CrazyHour {0} {1} Avslutas i {2} vid {3}"
 
 msgid "CrazyHour?"
 msgstr "CrazyHour?"
@@ -4860,6 +4778,14 @@ msgstr "Gratis i 4 veckor"
 msgid "Free for 8 weeks"
 msgstr "Gratis i 8 veckor"
 
+#, no-php-format
+msgid "Free for {0} week"
+msgstr "Gratis {0} veckan"
+
+#, no-php-format
+msgid "Free for {0} weeks"
+msgstr "Gratis i {0} veckor"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech ON"
 
@@ -5258,18 +5184,6 @@ msgstr "Här är"
 msgid "Hey"
 msgstr "Hallå"
 
-#, php-format
-msgid "Hey %1$s!<br>%2$d new report to be dealt with."
-msgid_plural "Hey %1$s!<br>%2$d new reports to be dealt with."
-msgstr[0] "Hej %1$s! <br> %2$d ny rapport som ska behandlas."
-msgstr[1] "Hej %1$s! <br> %2$d nya rapporter som ska hanteras."
-
-#, php-format
-msgid "Hey %1$s!<br>There is %2$d new message for the staff."
-msgid_plural "Hey %1$s!<br>There are %2$d new messages for the staff."
-msgstr[0] "Hej %1$s! <br> Det finns ett nytt meddelande för personalen %2$d."
-msgstr[1] "Hej %1$s! <br> Det finns %2$d nya meddelanden för personalen."
-
 msgid "Hey its now happy hour!"
 msgstr "Hej det är nu happy hour!"
 
@@ -5301,6 +5215,24 @@ msgstr ""
 "så njut\n"
 "Skål,\n"
 "{8} Personal."
+
+#, no-php-format
+msgid "Hey {0}!"
+msgstr "Hej {0}!"
+
+#, no-php-format
+msgid "Hey {1}!<br>There is {0, number} new message for the staff."
+msgid_plural "Hey {1}!<br>There are {0, number} new messages for the staff."
+msgstr[0] ""
+"Hej {1}! <br> Det finns {0, nummer} nytt meddelande för personalen."
+msgstr[1] ""
+"Hej {1}! <br> Det finns {0, nummer} nya meddelanden för personalen."
+
+#, no-php-format
+msgid "Hey {1}!<br>{0, number} new report to be dealt with."
+msgid_plural "Hey {1}!<br>{0, number} new reports to be dealt with."
+msgstr[0] "Hej {1}! <br> {0, number} ny rapport som ska behandlas."
+msgstr[1] "Hej {1}! <br> {0, number} nya rapporter som ska behandlas."
 
 msgid "Hey! I've seen Power Users with less than 25GB uploaded!"
 msgstr "Hallå! Jag har sett Power-användare med mindre än 25 GB laddat upp!"
@@ -5501,6 +5433,9 @@ msgstr "Hur fungerar denna marknadsföringssak?"
 
 msgid "How far back to search"
 msgstr "Hur långt tillbaka att söka"
+
+msgid "How long should this poll run? Default is 'run forever'"
+msgstr "Hur länge ska denna undersökning löpa? Standard är \"kör för alltid\""
 
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr "Hur länge ska denna undersökning löpa? Standard är att \"Run Forever\""
@@ -7164,10 +7099,10 @@ msgid "Message moved!"
 msgstr "Meddelandet flyttas!"
 
 #, no-php-format
-msgid "Message sent to {0, number} user"
-msgid_plural "Message sent to {0, number} users"
-msgstr[0] "Meddelande skickat till {0, nummer} användare"
-msgstr[1] "Meddelande skickas till {0, nummer} användare"
+msgid "Message sent to {0} user"
+msgid_plural "Message sent to {0} users"
+msgstr[0] "Meddelande skickas till {0} användaren"
+msgstr[1] "Meddelande skickas till {0} användare"
 
 msgid "Message to "
 msgstr "Meddelande till"
@@ -7378,12 +7313,6 @@ msgstr "Det vanligaste skälet till att statistiken inte uppdateras"
 
 msgid "Most common reasons for stats not updating"
 msgstr "Vanliga orsaker till att statistik inte uppdateras"
-
-#, php-format
-msgid "Most ever visited in 24 hours was %1$d Member on %2$s"
-msgid_plural "Most ever visited in 24 hours was %1$d Members on %2$s"
-msgstr[0] "Mest besökta någonsin på 24 timmar var %1$d Medlem på %2$s"
-msgstr[1] "Mest besökta någonsin på 24 timmar var %1$d Medlemmar på %2$s"
 
 msgid "Most recent comments, in reverse order"
 msgstr "Senaste kommentarerna i omvänd ordning"
@@ -8662,11 +8591,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] "Totalt sett {1} objekt på {0, antal} sida, med {2} per sida."
-msgstr[1] ""
-"Totalt sett {1} artiklar på {0, antal} sidor, som visar {2} per sida."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "Totalt sett {0} artiklar på {1} sidor, som visar {2} per sida."
 
 msgid "Overforum description"
 msgstr "Beskrivning av överforum"
@@ -10650,6 +10576,14 @@ msgstr "Silver i 4 veckor"
 msgid "Silver for 8 weeks"
 msgstr "Silver i 8 veckor"
 
+#, no-php-format
+msgid "Silver for {0} week"
+msgstr "Silver för {0} veckan"
+
+#, no-php-format
+msgid "Silver for {0} weeks"
+msgstr "Silver i {0} veckor"
+
 msgid "Simple Search"
 msgstr "Enkel sökning"
 
@@ -12091,12 +12025,6 @@ msgid "There have been no active users in the last 15 minutes."
 msgstr ""
 "Det har inte varit några aktiva användare under de senaste 15 minuterna."
 
-#, php-format
-msgid "There is %s new bug!"
-msgid_plural "There are %s new bugs!"
-msgstr[0] "Det finns ett nytt fel med %s!"
-msgstr[1] "Det finns %s nya buggar!"
-
 msgid ""
 "There is a minimum of 2 options, and a maximun of 20 options. you have "
 "entered"
@@ -12159,6 +12087,12 @@ msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Det finns {0} födelsedag idag"
 msgstr[1] "Det finns {0} födelsedagar idag"
+
+#, no-php-format
+msgid "There is {0} new bug!"
+msgid_plural "There are {0} new bugs!"
+msgstr[0] "Det finns {0} nytt fel!"
+msgstr[1] "Det finns {0} nya buggar!"
 
 msgid "There may be three reasons for this:"
 msgstr "Det kan finnas tre skäl till detta:"
@@ -12857,6 +12791,10 @@ msgstr "Topp humör"
 msgid "Top Scores"
 msgstr "Maxpoäng"
 
+#, no-php-format
+msgid "Top Scores Earn {0} Karma Points"
+msgstr "Toppresultat tjäna {0} Karma-poäng"
+
 msgid "Top Torrents"
 msgstr "Topptorrenter"
 
@@ -12978,6 +12916,10 @@ msgstr "Torrent hittades inte"
 #, no-php-format
 msgid "Torrent {0} ({1}) was deleted by {2} ({3})"
 msgstr "Torrent {0} ({1}) raderades av {2} ({3})"
+
+#, no-php-format
+msgid "Torrent {0} ({1}) was uploaded by {2}"
+msgstr "Torrent {0} ({1}) laddades upp av {2}"
 
 #, no-php-format
 msgid "Torrent {0} was deleted by {1}"
@@ -13357,6 +13299,10 @@ msgstr "Fram tills"
 
 msgid "Until "
 msgstr "Fram tills"
+
+#, no-php-format
+msgid "Until {0} ({1} to go)."
+msgstr "Till {0} ({1} att gå)."
 
 #, no-php-format
 msgid "Until {0} ({1}) to go."
@@ -14364,19 +14310,19 @@ msgstr "Du MÅSTE läsa {0} det här meddelandet {1} innan du tar bort det!"
 msgid "You already gave points to this torrent."
 msgstr "Du gav redan poäng till denna torrent."
 
-#, php-format
+#, no-php-format
 msgid ""
-"You already have %d open bet. Wait until it is completed before you start "
+"You already have {0} open bet. Wait until it is completed before you start "
 "another."
 msgid_plural ""
-"You already have %d open bets. Wait until they are completed before you "
+"You already have {0} open bets. Wait until they are completed before you "
 "start another."
 msgstr[0] ""
-"Du har redan en %d öppen insats. Vänta tills den är klar innan du startar en"
-" annan."
-msgstr[1] ""
-"Du har redan %d öppna spel. Vänta tills de är klar innan du startar en "
+"Du har redan {0} öppet spel. Vänta tills den är klar innan du startar en "
 "annan."
+msgstr[1] ""
+"Du har redan {0} öppna satsningar. Vänta tills de är klar innan du startar "
+"en annan."
 
 msgid "You already received your gift!"
 msgstr "Du har redan fått din gåva!"
@@ -14492,12 +14438,12 @@ msgstr ""
 "Du kan lägga till ditt eget meddelande, det kommer att visas ovanför PM som "
 "vidarebefordras."
 
-#, php-format
-msgid "You can buy another %d ticket if you get get more bonus points."
+#, no-php-format
+msgid "You can buy another {0} ticket if you get get more bonus points."
 msgid_plural ""
-"You can buy another %d tickets if you get get more bonus points."
-msgstr[0] "Du kan köpa en annan %d-biljett om du får fler bonuspoäng."
-msgstr[1] "Du kan köpa ytterligare %d biljetter om du får fler bonuspoäng."
+"You can buy another {0} tickets if you get get more bonus points."
+msgstr[0] "Du kan köpa en annan {0} -biljett om du får fler bonuspoäng."
+msgstr[1] "Du kan köpa ytterligare {0} biljetter om du får fler bonuspoäng."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "Du kan kontakta anställda med din begäran på irc"
@@ -14677,16 +14623,6 @@ msgstr "Du har det"
 msgid "You had"
 msgstr "Du hade"
 
-#, no-php-format
-msgid "You have %d Reputation Point(s)."
-msgstr "Du har %d Reputationspunkt (er)."
-
-#, php-format
-msgid "You have %d new message"
-msgid_plural "You have %d new messages"
-msgstr[0] "Du har ett nytt meddelande om %d"
-msgstr[1] "Du har %d nya meddelanden"
-
 msgid "You have a new friend!"
 msgstr "Du har en ny vän!"
 
@@ -14736,11 +14672,11 @@ msgstr "Du har slutfört denna Torrent"
 msgid "You have contributed {0} / {1} of the total bounty offered"
 msgstr "Du har bidragit med {0} / {1} av den totala erbjudna vinsten"
 
-#, php-format
-msgid "You have enough points for %d ticket."
-msgid_plural "You have enough points for %d tickets."
-msgstr[0] "Du har tillräckligt med poäng för en biljett för %d."
-msgstr[1] "Du har tillräckligt med poäng för %d biljetter."
+#, no-php-format
+msgid "You have enough points for {0} ticket."
+msgid_plural "You have enough points for {0} tickets."
+msgstr[0] "Du har tillräckligt med poäng för {0} biljett."
+msgstr[1] "Du har tillräckligt med poäng för {0} biljetter."
 
 msgid "You have exceeded the maximum number of IPs allowed"
 msgstr "Du har överskridit det maximala antalet tillåtna IP: er"
@@ -14829,6 +14765,18 @@ msgstr "Du har röstat för detta erbjudande."
 
 msgid "You have voted to support this request."
 msgstr "Du har röstat för att stödja den här begäran."
+
+#, no-php-format
+msgid "You have {0} Reputation Point."
+msgid_plural "You have {0} Reputation Points."
+msgstr[0] "Du har {0} ryktepunkt."
+msgstr[1] "Du har {0} ryktepunkter."
+
+#, no-php-format
+msgid "You have {0} new message"
+msgid_plural "You have {0} new messages"
+msgstr[0] "Du har {0} nytt meddelande"
+msgstr[1] "Du har {0} nya meddelanden"
 
 #, no-php-format
 msgid "You have {0} unread message in your inbox"
@@ -15180,6 +15128,10 @@ msgstr "din epostadress har bekräftats"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Ditt misslyckande med anslutning kan bero på flera orsaker."
+
+#, no-php-format
+msgid "Your forum posts count has been updated! [{0}]"
+msgstr "Dina räkningar för ditt forum har uppdaterats! [{0}]"
 
 msgid "Your friends"
 msgstr "Dina vänner"
@@ -15881,39 +15833,6 @@ msgstr "om du är säker."
 msgid "in"
 msgstr "i"
 
-msgid "in $d day"
-msgid_plural "in $d days"
-msgstr[0] "på $ d dag"
-msgstr[1] "om $ d dagar"
-
-msgid "in $d month"
-msgid_plural "in $d months"
-msgstr[0] "i $ d månad"
-msgstr[1] "om $ d månader"
-
-msgid "in $d week"
-msgid_plural "in $d weeks"
-msgstr[0] "om $ d veckan"
-msgstr[1] "om $ d veckor"
-
-#, php-format
-msgid "in %d day"
-msgid_plural "in %d days"
-msgstr[0] "i %d dag"
-msgstr[1] "i %d dagar"
-
-#, php-format
-msgid "in %d month"
-msgid_plural "in %d months"
-msgstr[0] "i %d månad"
-msgstr[1] "inom %d månader"
-
-#, php-format
-msgid "in %d week"
-msgid_plural "in %d weeks"
-msgstr[0] "i %d vecka"
-msgstr[1] "i %d veckor"
-
 msgid "in Forum"
 msgstr "i forumet"
 
@@ -15929,6 +15848,24 @@ msgstr "i personalpanelen var"
 #, no-php-format
 msgid "in {0} by {1} ({2})"
 msgstr "i {0} av {1} ({2})"
+
+#, no-php-format
+msgid "in {0} day"
+msgid_plural "in {0} days"
+msgstr[0] "om {0} dag"
+msgstr[1] "om {0} dagar"
+
+#, no-php-format
+msgid "in {0} month"
+msgid_plural "in {0} months"
+msgstr[0] "om {0} månad"
+msgstr[1] "om {0} månader"
+
+#, no-php-format
+msgid "in {0} week"
+msgid_plural "in {0} weeks"
+msgstr[0] "om {0} veckan"
+msgstr[1] "om {0} veckor"
 
 msgid "include a proper NFO"
 msgstr "inkludera en korrekt NFO"
@@ -16593,8 +16530,18 @@ msgid "{0} - UPLOADER Role Removed by {1}\n"
 msgstr "{0} - UPLOADER-roll tas bort av {1}\n"
 
 #, no-php-format
+msgid "{0} Active User"
+msgid_plural "{0} Active Users"
+msgstr[0] "{0} Aktiv användare"
+msgstr[1] "{0} Aktiva användare"
+
+#, no-php-format
 msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Lade till {1} i {2} användarlistan {4}."
+
+#, no-php-format
+msgid "{0} Days"
+msgstr "{0} dagar"
 
 #, no-php-format
 msgid "{0} GB"
@@ -16607,6 +16554,22 @@ msgstr "{0} Inbjudan"
 #, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Lotteri"
+
+#, no-php-format
+msgid "{0} Member visited during the last 24 hours"
+msgid_plural "{0} Members visited during the last 24 hours"
+msgstr[0] "{0} medlem besökte under det senaste dygnet"
+msgstr[1] "{0} Medlemmar har besökt det senaste dygnet"
+
+#, no-php-format
+msgid "{0} Months"
+msgstr "{0} månader"
+
+#, no-php-format
+msgid "{0} New Report"
+msgid_plural "{0} New Reports"
+msgstr[0] "{0} Ny rapport"
+msgstr[1] "{0} Nya rapporter"
 
 #, no-php-format
 msgid "{0} Old School Arcade!"
@@ -16643,6 +16606,18 @@ msgstr "{0} Max tillåten satsning är {1} GB!"
 #, no-php-format
 msgid "{0} The Min allowed bet is 100 MB!"
 msgstr "{0} Min tillåtna satsning är 100 MB!"
+
+#, no-php-format
+msgid "{0} Ticket"
+msgid_plural "{0} Tickets"
+msgstr[0] "{0} Biljett"
+msgstr[1] "{0} Biljetter"
+
+#, no-php-format
+msgid "{0} Unread PM"
+msgid_plural "{0} Unread PM's"
+msgstr[0] "{0} Olästa PM"
+msgstr[1] "{0} Olästa PM"
 
 #, no-php-format
 msgid "{0} You bought {1} Freeslots for  {2} Karma."
@@ -16705,6 +16680,12 @@ msgid "{0} and won"
 msgstr "{0} och vann"
 
 #, no-php-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} dag"
+msgstr[1] "{0} dagar"
+
+#, no-php-format
 msgid "{0} file"
 msgstr "{0} fil"
 
@@ -16713,6 +16694,20 @@ msgid "{0} flushed {1, number} torrent."
 msgid_plural "{0} flushed {1, number} torrents."
 msgstr[0] "{0} spolad {1, nummer} torrent."
 msgstr[1] "{0} spolade {1, antal} torrenter."
+
+#, no-php-format
+msgid ""
+"{0} ghost torrent was sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgid_plural ""
+"{0} ghost torrents were sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgstr[0] ""
+"{0} spöktorrent städades framgångsrikt. Du kan nu starta om dina torrenter, "
+"trackaren har uppdaterats."
+msgstr[1] ""
+"{0} spöktorrenter rengördes i framgång. Du kan nu starta om dina torrenter, "
+"trackaren har uppdaterats."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
@@ -16733,6 +16728,12 @@ msgstr ""
 #, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} har försökt att logga in med ogiltiga data."
+
+#, no-php-format
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} timme"
+msgstr[1] "{0} timmar"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -16762,6 +16763,12 @@ msgstr[0] "{0} medlem ville bara se resultaten"
 msgstr[1] "{0} medlemmar ville bara se resultaten"
 
 #, no-php-format
+msgid "{0} month ago"
+msgid_plural "{0} months ago"
+msgstr[0] "{0} månad sedan"
+msgstr[1] "{0} månader sedan"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} av 10 på den skitna skalan"
 
@@ -16770,8 +16777,36 @@ msgid "{0} per announce period"
 msgstr "{0} per annonseringsperiod"
 
 #, no-php-format
+msgid "{0} set by {1}<br>"
+msgstr "{0} inställd av {1} <br>"
+
+#, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
 msgstr "{0} ladda upp kredit för en ratio fix på torrent: {1} => {2}"
+
+#, no-php-format
+msgid "{0} uploader application to be dealt with."
+msgid_plural "{0} uploader applications to be dealt with."
+msgstr[0] "{0} uppladdningsapplikation som ska hanteras."
+msgstr[1] "{0} uppladdningsapplikationer som ska hanteras."
+
+#, no-php-format
+msgid "{0} user HnR's warning removed"
+msgid_plural "{0} users HnR's warning removed"
+msgstr[0] "{0} användarens HnR-varning har tagits bort"
+msgstr[1] "{0} användare HnR: s varning har tagits bort"
+
+#, no-php-format
+msgid "{0} user disabled!"
+msgid_plural "{0} users disabled!"
+msgstr[0] "{0} användaren inaktiverad!"
+msgstr[1] "{0} användare inaktiverade!"
+
+#, no-php-format
+msgid "{0} user unwarned."
+msgid_plural "{0} users unwarned."
+msgstr[0] "{0} användare ovarig."
+msgstr[1] "{0} användare ovariga."
 
 #, no-php-format
 msgid "{0} view offensive avatar by {1}, {2}\n"
@@ -16782,12 +16817,24 @@ msgid "{0} week"
 msgstr "{0} vecka"
 
 #, no-php-format
+msgid "{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "{0} veckan sedan"
+msgstr[1] "{0} veckor sedan"
+
+#, no-php-format
 msgid "{0} weeks"
 msgstr "{0} veckor"
 
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} med id: {1} rapport skickad."
+
+#, no-php-format
+msgid "{0} year ago"
+msgid_plural "{0} years ago"
+msgstr[0] "{0} år sedan"
+msgstr[1] "{0} år sedan"
 
 #, no-php-format
 msgid "{0}'s Entertainment"
@@ -16860,6 +16907,12 @@ msgid_plural ""
 msgstr[0] "{1} har just köpt {2} {0, nummer} Lotteri! {3} GOOD LUCK!"
 msgstr[1] ""
 "{1} har just köpt {2} {0, nummer} Lotteri biljetter! {3} GOOD LUCK!"
+
+#, php-format
+msgid "{1} was hit {0, number} time in {2} seconds"
+msgid_plural "{1} was hit {0, number} times in {2} seconds"
+msgstr[0] "{1} träffades {0, antal} tid på {2} sekunder"
+msgstr[1] "{1} träffades {0, antal} gånger på {2} sekunder"
 
 #, no-php-format
 msgid "{1}: Modded Torrents from {0, number} day ago"
