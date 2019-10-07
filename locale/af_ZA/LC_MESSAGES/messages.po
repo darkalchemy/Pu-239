@@ -8608,10 +8608,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] "Altesaam {1} items op {0, nommer} -bladsy, met {2} per bladsy."
-msgstr[1] "Altesaam {1} items in {0, aantal} bladsye, met {2} per bladsy."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "Altesaam {0} items op {1} bladsye, met {2} per bladsy."
 
 msgid "Overforum description"
 msgstr "Overforum beskrywing"
