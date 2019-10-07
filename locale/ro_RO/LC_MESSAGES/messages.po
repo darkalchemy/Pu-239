@@ -499,116 +499,12 @@ msgstr "% Articole:"
 msgid "% Misses: "
 msgstr "% Misses:"
 
-msgid "%$1d user disabled!"
-msgid_plural "%$1d users disabled!"
-msgstr[0] "% $ 1d utilizator dezactivat!"
-msgstr[1] "% $ 1d utilizatori dezactivați!"
-msgstr[2] "% $ 1d utilizatori dezactivați!"
-
-msgid "%1 month ago"
-msgid_plural "%1 months ago"
-msgstr[0] "% Acum 1 lună"
-msgstr[1] "% Acum 1 lună"
-msgstr[2] "% Acum 1 lună"
-
-msgid "%1 week ago"
-msgid_plural "%1 weeks ago"
-msgstr[0] "%1 săptămână în urmă"
-msgstr[1] "% 1 săptămână în urmă"
-msgstr[2] "% 1 săptămână în urmă"
-
-msgid "%1 year ago"
-msgid_plural "%1 years ago"
-msgstr[0] "%1 an in urma"
-msgstr[1] "% 1 ani în urmă"
-msgstr[2] "% 1 ani în urmă"
-
-#, php-format
-msgid "%1$s user unwarned."
-msgid_plural "%1$s users unwarned."
-msgstr[0] "Utilizatorul %1$s nedescris."
-msgstr[1] "utilizatorii %1$s nedeclarați."
-msgstr[2] "utilizatorii %1$s nedeclarați."
-
-#, php-format
-msgid "%2$d uploader application to be dealt with."
-msgid_plural "%2$d uploader applications to be dealt with."
-msgstr[0] "%2$d cerere de încărcare care urmează să fie tratată."
-msgstr[1] "%2$d aplicații de încărcat care urmează să fie tratate."
-msgstr[2] "%2$d aplicații de încărcat care urmează să fie tratate."
-
-#, php-format
-msgid "%2$s was hit %1$d time in %3$s seconds"
-msgid_plural "%2$s was hit %1$d times in %3$s seconds"
-msgstr[0] "%2$s a fost lovit %1$d timp în %3$s secunde"
-msgstr[1] "%2$s a fost lovit %1$d de ori în %3$s secunde"
-msgstr[2] "%2$s a fost lovit %1$d de ori în %3$s secunde"
-
-#, php-format
-msgid "%d Active User"
-msgid_plural "%d Active Users"
-msgstr[0] "%d utilizator activ"
-msgstr[1] "%d Utilizatori activi"
-msgstr[2] "%d Utilizatori activi"
-
-#, php-format
-msgid "%d Member visited during the last 24 hours"
-msgid_plural "%d Members visited during the last 24 hours"
-msgstr[0] "%d Membru vizitat în ultimele 24 de ore"
-msgstr[1] "%d Membrii vizitați în ultimele 24 de ore"
-msgstr[2] "%d Membrii vizitați în ultimele 24 de ore"
-
-#, php-format
-msgid "%d New Report"
-msgid_plural "%d New Reports"
-msgstr[0] "%d Raport nou"
-msgstr[1] "Rapoarte noi %d"
-msgstr[2] "Rapoarte noi %d"
-
-#, php-format
-msgid "%d Ticket"
-msgid_plural "%d Tickets"
-msgstr[0] "%d Bilet"
-msgstr[1] "%d Bilete"
-msgstr[2] "%d Bilete"
-
-#, php-format
-msgid "%d Unread PM"
-msgid_plural "%d Unread PM's"
-msgstr[0] "%d PM necitit"
-msgstr[1] "%d PM necitite"
-msgstr[2] "%d PM necitite"
-
-#, php-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] "%d zi"
-msgstr[1] "%d zile"
-msgstr[2] "%d zile"
-
-#, php-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d ora"
-msgstr[1] "%d ore"
-msgstr[2] "%d ore"
-
-#, php-format
-msgid ""
-"%s ghost torrent was sucessfully cleaned. You may now restart your torrents,"
-" the tracker has been updated."
-msgid_plural ""
-"%s ghost torrents were sucessfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
-msgstr[0] ""
-"%s torrentul fantomă a fost curățat cu succes. Acum puteți reporni "
-"torentele, trackerul a fost actualizat."
-msgstr[1] ""
-"%s torentele fantomă au fost curățate cu succes. Acum puteți reporni "
-"torentele, trackerul a fost actualizat."
-msgstr[2] ""
-"%s torentele fantomă au fost curățate cu succes. Acum puteți reporni "
-"torentele, trackerul a fost actualizat."
+#, no-php-format
+msgid "%{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "În urmă cu săptămână% {0}"
+msgstr[1] "{0} săptămâni în urmă"
+msgstr[2] "{0} săptămâni în urmă"
 
 msgid ""
 "'And/or' means any or both. Your delay will be the largest one for which you"
@@ -1685,14 +1581,17 @@ msgstr "Permite comentarii"
 msgid "Allow members to change their vote"
 msgstr "Permiteți membrilor să își schimbe votul"
 
-msgid "Allow members to change their vote? Default is"
-msgstr "Permiteți membrilor să își schimbe votul? Implicit este"
+msgid "Allow members to change their vote? Default is \"no\""
+msgstr "Permiteți membrilor să își schimbe votul? Implicit este „nu”"
 
 msgid "Allow members to have more then one selection"
 msgstr "Permiteți membrilor să aibă mai mult de o selecție"
 
-msgid "Allow members to have more then one selection? Default is"
-msgstr "Permiteți membrilor să aibă mai mult de o selecție? Implicit este"
+msgid ""
+"Allow members to have more then one selection? Default is 'Single option'!"
+msgstr ""
+"Permiteți membrilor să aibă mai mult de o selecție? Implicit este „Opțiune "
+"unică”!"
 
 msgid "Allowed Mark Of Cains"
 msgstr "Permiterea Marcii Cainilor"
@@ -3260,6 +3159,10 @@ msgstr "CrazyHour"
 
 msgid "CrazyHour ON"
 msgstr "CrazyHour ON"
+
+#, no-php-format
+msgid "CrazyHour {0} {1} Ends in {2} at {3}"
+msgstr "CrazyHour {0} {1} Se încheie în {2} la {3}"
 
 msgid "CrazyHour?"
 msgstr "CrazyHour?"
@@ -4931,6 +4834,14 @@ msgstr "Gratuit timp de 4 săptămâni"
 msgid "Free for 8 weeks"
 msgstr "Gratuit timp de 8 săptămâni"
 
+#, no-php-format
+msgid "Free for {0} week"
+msgstr "Gratuit pentru {0} săptămână"
+
+#, no-php-format
+msgid "Free for {0} weeks"
+msgstr "Gratuit pentru {0} săptămâni"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech ON"
 
@@ -5331,20 +5242,6 @@ msgstr "Aici este"
 msgid "Hey"
 msgstr "Hei"
 
-#, php-format
-msgid "Hey %1$s!<br>%2$d new report to be dealt with."
-msgid_plural "Hey %1$s!<br>%2$d new reports to be dealt with."
-msgstr[0] "Hei %1$s! <br> %2$d raport nou care urmează să fie tratat."
-msgstr[1] "Hei %1$s! <br> %2$d noi rapoarte care trebuie tratate."
-msgstr[2] "Hei %1$s! <br> %2$d noi rapoarte care trebuie tratate."
-
-#, php-format
-msgid "Hey %1$s!<br>There is %2$d new message for the staff."
-msgid_plural "Hey %1$s!<br>There are %2$d new messages for the staff."
-msgstr[0] "Hei %1$s! <br> Există un mesaj nou %2$d pentru personal."
-msgstr[1] "Hei %1$s! <br> Există mesaje noi %2$d pentru personal."
-msgstr[2] "Hei %1$s! <br> Există mesaje noi %2$d pentru personal."
-
 msgid "Hey its now happy hour!"
 msgstr "Hei este acum ora fericită!"
 
@@ -5376,6 +5273,24 @@ msgstr ""
 "deci bucura-te\n"
 "noroc,\n"
 "{8} Personal."
+
+#, no-php-format
+msgid "Hey {0}!"
+msgstr "Hei {0}!"
+
+#, no-php-format
+msgid "Hey {1}!<br>There is {0, number} new message for the staff."
+msgid_plural "Hey {1}!<br>There are {0, number} new messages for the staff."
+msgstr[0] "Hei {1}! <br> Există {0, numărul} mesaj nou pentru personal."
+msgstr[1] "Hei {1}! <br> Există {0, număr} mesaje noi pentru personal."
+msgstr[2] "Hei {1}! <br> Există {0, număr} mesaje noi pentru personal."
+
+#, no-php-format
+msgid "Hey {1}!<br>{0, number} new report to be dealt with."
+msgid_plural "Hey {1}!<br>{0, number} new reports to be dealt with."
+msgstr[0] "Hei {1}! <br> {0, număr} raport nou de tratat."
+msgstr[1] "Hei {1}! <br> {0, număr} rapoarte noi de tratat."
+msgstr[2] "Hei {1}! <br> {0, număr} rapoarte noi de tratat."
 
 msgid "Hey! I've seen Power Users with less than 25GB uploaded!"
 msgstr "Hei! Am văzut utilizatori de putere cu mai puțin de 25 GB încărcați!"
@@ -5576,6 +5491,11 @@ msgstr "Cum funcționează oricum acest lucru de promovare?"
 
 msgid "How far back to search"
 msgstr "Cât de mult înapoi pentru a căuta"
+
+msgid "How long should this poll run? Default is 'run forever'"
+msgstr ""
+"Cât timp ar trebui să funcționeze acest sondaj? Default este „rulat pentru "
+"totdeauna”"
 
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr ""
@@ -7251,11 +7171,11 @@ msgid "Message moved!"
 msgstr "Mesajul a fost mutat!"
 
 #, no-php-format
-msgid "Message sent to {0, number} user"
-msgid_plural "Message sent to {0, number} users"
-msgstr[0] "Mesaj trimis utilizatorului {0, număr}"
-msgstr[1] "Mesaj trimis către {0, număr} utilizatori"
-msgstr[2] "Mesaj trimis către {0, număr} utilizatori"
+msgid "Message sent to {0} user"
+msgid_plural "Message sent to {0} users"
+msgstr[0] "Mesaj trimis utilizatorului {0}"
+msgstr[1] "Mesaj trimis către {0} utilizatori"
+msgstr[2] "Mesaj trimis către {0} utilizatori"
 
 msgid "Message to "
 msgstr "Mesaj pentru"
@@ -7468,13 +7388,6 @@ msgstr "Motivul cel mai frecvent pentru statistici care nu se actualizează"
 
 msgid "Most common reasons for stats not updating"
 msgstr "Cele mai comune motive pentru care statisticile nu se actualizează"
-
-#, php-format
-msgid "Most ever visited in 24 hours was %1$d Member on %2$s"
-msgid_plural "Most ever visited in 24 hours was %1$d Members on %2$s"
-msgstr[0] "Cel mai vizitat vreodată în 24 de ore a fost membru %1$d pe %2$s"
-msgstr[1] "Cel mai vizitat în 24 de ore a fost membrii %1$d pe %2$s"
-msgstr[2] "Cel mai vizitat în 24 de ore a fost membrii %1$d pe %2$s"
 
 msgid "Most recent comments, in reverse order"
 msgstr "Comentariile cele mai recente, în ordine inversă"
@@ -8764,12 +8677,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] ""
-"În total {1} elemente din pagina {0, număr}, care arată {2} pe pagină."
-msgstr[1] "În total {1} articole din {0, număr} pagini, cu {2} pe pagină."
-msgstr[2] "În total {1} articole din {0, număr} pagini, cu {2} pe pagină."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "În total {0} articole din {1} pagini, care arată {2} pe pagină."
 
 msgid "Overforum description"
 msgstr "Descrierea supraforumului"
@@ -10766,6 +10675,14 @@ msgstr "Argint 4 săptămâni"
 msgid "Silver for 8 weeks"
 msgstr "Argint 8 săptămâni"
 
+#, no-php-format
+msgid "Silver for {0} week"
+msgstr "Argint pentru {0} săptămână"
+
+#, no-php-format
+msgid "Silver for {0} weeks"
+msgstr "Argint pentru {0} săptămâni"
+
 msgid "Simple Search"
 msgstr "Căutare simplă"
 
@@ -12230,13 +12147,6 @@ msgstr "Nu au fost utilizatori activi în ultimele 15 minute"
 msgid "There have been no active users in the last 15 minutes."
 msgstr "Nu au fost utilizatori activi în ultimele 15 minute."
 
-#, php-format
-msgid "There is %s new bug!"
-msgid_plural "There are %s new bugs!"
-msgstr[0] "%s este o eroare nouă!"
-msgstr[1] "Există bug-uri noi %s!"
-msgstr[2] "Există bug-uri noi %s!"
-
 msgid ""
 "There is a minimum of 2 options, and a maximun of 20 options. you have "
 "entered"
@@ -12299,6 +12209,13 @@ msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Există {0} ziua de naștere astăzi"
 msgstr[1] "Există {0} zile de naștere astăzi"
 msgstr[2] "Există {0} zile de naștere astăzi"
+
+#, no-php-format
+msgid "There is {0} new bug!"
+msgid_plural "There are {0} new bugs!"
+msgstr[0] "Există {0} eroare nouă!"
+msgstr[1] "Există {0} bug-uri noi!"
+msgstr[2] "Există {0} bug-uri noi!"
 
 msgid "There may be three reasons for this:"
 msgstr "Pot exista trei motive pentru acest lucru:"
@@ -13023,6 +12940,10 @@ msgstr "Top Moods"
 msgid "Top Scores"
 msgstr "Scoruri de top"
 
+#, no-php-format
+msgid "Top Scores Earn {0} Karma Points"
+msgstr "Cele mai bune scoruri câștiga {0} Karma Points"
+
 msgid "Top Torrents"
 msgstr "Top Torrents"
 
@@ -13145,6 +13066,10 @@ msgstr "Torrent nu a fost găsit"
 #, no-php-format
 msgid "Torrent {0} ({1}) was deleted by {2} ({3})"
 msgstr "Torrent {0} ({1}) a fost șters de {2} ({3})"
+
+#, no-php-format
+msgid "Torrent {0} ({1}) was uploaded by {2}"
+msgstr "Torrent {0} ({1}) a fost încărcat de {2}"
 
 #, no-php-format
 msgid "Torrent {0} was deleted by {1}"
@@ -13527,6 +13452,10 @@ msgstr "Pana cand"
 
 msgid "Until "
 msgstr "Pana cand"
+
+#, no-php-format
+msgid "Until {0} ({1} to go)."
+msgstr "Până la {0} ({1} pentru a merge)."
 
 #, no-php-format
 msgid "Until {0} ({1}) to go."
@@ -14555,22 +14484,22 @@ msgstr "Trebuie să citiți {0} acest mesaj {1} înainte de al șterge!"
 msgid "You already gave points to this torrent."
 msgstr "Ai dat deja puncte acestui torrent."
 
-#, php-format
+#, no-php-format
 msgid ""
-"You already have %d open bet. Wait until it is completed before you start "
+"You already have {0} open bet. Wait until it is completed before you start "
 "another."
 msgid_plural ""
-"You already have %d open bets. Wait until they are completed before you "
+"You already have {0} open bets. Wait until they are completed before you "
 "start another."
 msgstr[0] ""
-"Aveți deja un pariu deschis %d. Așteptați până când este finalizat înainte "
-"de a începe un altul."
+"Aveți deja {0} pariu deschis. Așteptați până când este finalizat înainte de "
+"a începe un altul."
 msgstr[1] ""
-"Aveți deja %d pariuri deschise. Așteptați până când sunt finalizate înainte "
-"de a începe altul."
+"Aveți deja {0} pariuri deschise. Așteptați până când sunt finalizate înainte"
+" de a începe altul."
 msgstr[2] ""
-"Aveți deja %d pariuri deschise. Așteptați până când sunt finalizate înainte "
-"de a începe altul."
+"Aveți deja {0} pariuri deschise. Așteptați până când sunt finalizate înainte"
+" de a începe altul."
 
 msgid "You already received your gift!"
 msgstr "Ti-ai primit deja cadoul!"
@@ -14686,16 +14615,16 @@ msgstr ""
 "Puteți adăuga propriul mesaj, acesta va apărea deasupra PM fiind "
 "redirecționat."
 
-#, php-format
-msgid "You can buy another %d ticket if you get get more bonus points."
+#, no-php-format
+msgid "You can buy another {0} ticket if you get get more bonus points."
 msgid_plural ""
-"You can buy another %d tickets if you get get more bonus points."
+"You can buy another {0} tickets if you get get more bonus points."
 msgstr[0] ""
-"Puteți cumpăra un alt bilet %d dacă obțineți mai multe puncte bonus."
+"Puteți cumpăra un alt bilet {0} dacă obțineți mai multe puncte bonus."
 msgstr[1] ""
-"Puteți cumpăra alte bilete %d dacă obțineți mai multe puncte bonus."
+"Puteți cumpăra alte {0} bilete dacă obțineți mai multe puncte bonus."
 msgstr[2] ""
-"Puteți cumpăra alte bilete %d dacă obțineți mai multe puncte bonus."
+"Puteți cumpăra alte {0} bilete dacă obțineți mai multe puncte bonus."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "Puteți contacta personalul site-ului cu solicitarea dvs. pe irc"
@@ -14877,17 +14806,6 @@ msgstr "Ai inteles"
 msgid "You had"
 msgstr "Ai avut"
 
-#, no-php-format
-msgid "You have %d Reputation Point(s)."
-msgstr "Aveți un punct de refacere %d."
-
-#, php-format
-msgid "You have %d new message"
-msgid_plural "You have %d new messages"
-msgstr[0] "Aveți un mesaj nou %d"
-msgstr[1] "Aveți %d mesaje noi"
-msgstr[2] "Aveți %d mesaje noi"
-
 msgid "You have a new friend!"
 msgstr "Ai un prieten nou!"
 
@@ -14937,12 +14855,12 @@ msgstr "Ați completat acest Torrent"
 msgid "You have contributed {0} / {1} of the total bounty offered"
 msgstr "Ați contribuit {0} / {1} din suma totală oferită"
 
-#, php-format
-msgid "You have enough points for %d ticket."
-msgid_plural "You have enough points for %d tickets."
-msgstr[0] "Aveți destule puncte pentru un bilet %d."
-msgstr[1] "Aveți destule puncte pentru bilete %d."
-msgstr[2] "Aveți destule puncte pentru bilete %d."
+#, no-php-format
+msgid "You have enough points for {0} ticket."
+msgid_plural "You have enough points for {0} tickets."
+msgstr[0] "Aveți suficiente puncte pentru {0} bilet."
+msgstr[1] "Aveți suficiente puncte pentru {0} bilete."
+msgstr[2] "Aveți suficiente puncte pentru {0} bilete."
 
 msgid "You have exceeded the maximum number of IPs allowed"
 msgstr "Ați depășit numărul maxim de IP-uri permise"
@@ -15031,6 +14949,20 @@ msgstr "Ați votat în favoarea acestei oferte."
 
 msgid "You have voted to support this request."
 msgstr "Ați votat pentru a susține această solicitare."
+
+#, no-php-format
+msgid "You have {0} Reputation Point."
+msgid_plural "You have {0} Reputation Points."
+msgstr[0] "Aveți {0} punct de reputație."
+msgstr[1] "Aveți {0} puncte de reputație."
+msgstr[2] "Aveți {0} puncte de reputație."
+
+#, no-php-format
+msgid "You have {0} new message"
+msgid_plural "You have {0} new messages"
+msgstr[0] "Aveți {0} mesaj nou"
+msgstr[1] "Aveți {0} mesaje noi"
+msgstr[2] "Aveți {0} mesaje noi"
 
 #, no-php-format
 msgid "You have {0} unread message in your inbox"
@@ -15391,6 +15323,10 @@ msgstr "E-mailul dvs. a fost confirmat"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Eșecul dvs. de conectare se poate datora mai multor motive."
+
+#, no-php-format
+msgid "Your forum posts count has been updated! [{0}]"
+msgstr "Numărul postărilor de pe forum a fost actualizat! [{0}]"
 
 msgid "Your friends"
 msgstr "Prietenii tai"
@@ -16103,45 +16039,6 @@ msgstr "dacă ești sigur."
 msgid "in"
 msgstr "în"
 
-msgid "in $d day"
-msgid_plural "in $d days"
-msgstr[0] "în $ d zi"
-msgstr[1] "în $ d zile"
-msgstr[2] "în $ d zile"
-
-msgid "in $d month"
-msgid_plural "in $d months"
-msgstr[0] "în $ d lună"
-msgstr[1] "în $ d luni"
-msgstr[2] "în $ d luni"
-
-msgid "in $d week"
-msgid_plural "in $d weeks"
-msgstr[0] "în $ d săptămână"
-msgstr[1] "în $ d săptămâni"
-msgstr[2] "în $ d săptămâni"
-
-#, php-format
-msgid "in %d day"
-msgid_plural "in %d days"
-msgstr[0] "in %d zi"
-msgstr[1] "in %d zile"
-msgstr[2] "in %d zile"
-
-#, php-format
-msgid "in %d month"
-msgid_plural "in %d months"
-msgstr[0] "in %d luna"
-msgstr[1] "in %d luni"
-msgstr[2] "in %d luni"
-
-#, php-format
-msgid "in %d week"
-msgid_plural "in %d weeks"
-msgstr[0] "in saptamana %d"
-msgstr[1] "în %d săptămâni"
-msgstr[2] "în %d săptămâni"
-
 msgid "in Forum"
 msgstr "în Forum"
 
@@ -16157,6 +16054,27 @@ msgstr "în panoul personalului era"
 #, no-php-format
 msgid "in {0} by {1} ({2})"
 msgstr "în {0} de {1} ({2})"
+
+#, no-php-format
+msgid "in {0} day"
+msgid_plural "in {0} days"
+msgstr[0] "în {0} zi"
+msgstr[1] "în {0} zile"
+msgstr[2] "în {0} zile"
+
+#, no-php-format
+msgid "in {0} month"
+msgid_plural "in {0} months"
+msgstr[0] "în {0} luna"
+msgstr[1] "în {0} luni"
+msgstr[2] "în {0} luni"
+
+#, no-php-format
+msgid "in {0} week"
+msgid_plural "in {0} weeks"
+msgstr[0] "în {0} săptămână"
+msgstr[1] "în {0} săptămâni"
+msgstr[2] "în {0} săptămâni"
 
 msgid "include a proper NFO"
 msgstr "includeți un NFO corespunzător"
@@ -16836,8 +16754,19 @@ msgid "{0} - UPLOADER Role Removed by {1}\n"
 msgstr "{0} - ROLUL DE DESCĂRCARE Eliminat cu {1}\n"
 
 #, no-php-format
+msgid "{0} Active User"
+msgid_plural "{0} Active Users"
+msgstr[0] "{0} Utilizator activ"
+msgstr[1] "{0} Utilizatori activi"
+msgstr[2] "{0} Utilizatori activi"
+
+#, no-php-format
 msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Adăugată {1} la {2} lista de utilizatori urmăriți {4}."
+
+#, no-php-format
+msgid "{0} Days"
+msgstr "{0} Zile"
 
 #, no-php-format
 msgid "{0} GB"
@@ -16850,6 +16779,24 @@ msgstr "{0} Invitație"
 #, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Loterie"
+
+#, no-php-format
+msgid "{0} Member visited during the last 24 hours"
+msgid_plural "{0} Members visited during the last 24 hours"
+msgstr[0] "{0} Membru vizitat în ultimele 24 de ore"
+msgstr[1] "{0} Membrii vizitați în ultimele 24 de ore"
+msgstr[2] "{0} Membrii vizitați în ultimele 24 de ore"
+
+#, no-php-format
+msgid "{0} Months"
+msgstr "{0} luni"
+
+#, no-php-format
+msgid "{0} New Report"
+msgid_plural "{0} New Reports"
+msgstr[0] "{0} Raport nou"
+msgstr[1] "{0} rapoarte noi"
+msgstr[2] "{0} rapoarte noi"
 
 #, no-php-format
 msgid "{0} Old School Arcade!"
@@ -16889,6 +16836,20 @@ msgstr "{0} Pariul maxim admis este {1} GB!"
 #, no-php-format
 msgid "{0} The Min allowed bet is 100 MB!"
 msgstr "{0} Pariul minim admis este de 100 MB!"
+
+#, no-php-format
+msgid "{0} Ticket"
+msgid_plural "{0} Tickets"
+msgstr[0] "{0} Bilet"
+msgstr[1] "{0} Bilete"
+msgstr[2] "{0} Bilete"
+
+#, no-php-format
+msgid "{0} Unread PM"
+msgid_plural "{0} Unread PM's"
+msgstr[0] "{0} PM necitit"
+msgstr[1] "{0} PM-urile necitite"
+msgstr[2] "{0} PM-urile necitite"
 
 #, no-php-format
 msgid "{0} You bought {1} Freeslots for  {2} Karma."
@@ -16951,6 +16912,13 @@ msgid "{0} and won"
 msgstr "{0} și câștigat"
 
 #, no-php-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} zi"
+msgstr[1] "{0} zile"
+msgstr[2] "{0} zile"
+
+#, no-php-format
 msgid "{0} file"
 msgstr "Fișier {0}"
 
@@ -16960,6 +16928,23 @@ msgid_plural "{0} flushed {1, number} torrents."
 msgstr[0] "{0} curățat {1, număr} torrent."
 msgstr[1] "{0} s-au spălat {1, număr} torente."
 msgstr[2] "{0} s-au spălat {1, număr} torente."
+
+#, no-php-format
+msgid ""
+"{0} ghost torrent was sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgid_plural ""
+"{0} ghost torrents were sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgstr[0] ""
+"{0} torrentul fantomă a fost curățat cu succes. Acum puteți reporni "
+"torentele, trackerul a fost actualizat."
+msgstr[1] ""
+"{0} torentele fantomă au fost curățate cu succes. Acum puteți reporni "
+"torentele, trackerul a fost actualizat."
+msgstr[2] ""
+"{0} torentele fantomă au fost curățate cu succes. Acum puteți reporni "
+"torentele, trackerul a fost actualizat."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
@@ -16982,6 +16967,13 @@ msgstr ""
 #, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} a încercat să se autentifice folosind date nevalide."
+
+#, no-php-format
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} ora"
+msgstr[1] "{0} ore"
+msgstr[2] "{0} ore"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -17012,6 +17004,13 @@ msgstr[1] "{0} membri au vrut doar să vadă rezultatele"
 msgstr[2] "{0} membri au vrut doar să vadă rezultatele"
 
 #, no-php-format
+msgid "{0} month ago"
+msgid_plural "{0} months ago"
+msgstr[0] "{0} luni în urmă"
+msgstr[1] "{0} luni în urmă"
+msgstr[2] "{0} luni în urmă"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} din 10 pe scara de timiditate"
 
@@ -17020,9 +17019,41 @@ msgid "{0} per announce period"
 msgstr "{0} pe perioada de anunțare"
 
 #, no-php-format
+msgid "{0} set by {1}<br>"
+msgstr "{0} setat de {1} <br>"
+
+#, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
 msgstr ""
 "{0} încărcați creditul pentru o corecție a raportului pe torrent: {1} => {2}"
+
+#, no-php-format
+msgid "{0} uploader application to be dealt with."
+msgid_plural "{0} uploader applications to be dealt with."
+msgstr[0] "{0} aplicația de încărcare care urmează să fie tratată."
+msgstr[1] "{0} aplicații de încărcat care urmează să fie tratate."
+msgstr[2] "{0} aplicații de încărcat care urmează să fie tratate."
+
+#, no-php-format
+msgid "{0} user HnR's warning removed"
+msgid_plural "{0} users HnR's warning removed"
+msgstr[0] "{0} Avertismentul utilizatorului HnR a fost eliminat"
+msgstr[1] "{0} utilizatorii Avertismentul HnR a fost eliminat"
+msgstr[2] "{0} utilizatorii Avertismentul HnR a fost eliminat"
+
+#, no-php-format
+msgid "{0} user disabled!"
+msgid_plural "{0} users disabled!"
+msgstr[0] "{0} utilizator dezactivat!"
+msgstr[1] "{0} utilizatori dezactivați!"
+msgstr[2] "{0} utilizatori dezactivați!"
+
+#, no-php-format
+msgid "{0} user unwarned."
+msgid_plural "{0} users unwarned."
+msgstr[0] "{0} utilizator nesocotit."
+msgstr[1] "{0} utilizatorii nu au avut parte."
+msgstr[2] "{0} utilizatorii nu au avut parte."
 
 #, no-php-format
 msgid "{0} view offensive avatar by {1}, {2}\n"
@@ -17033,12 +17064,26 @@ msgid "{0} week"
 msgstr "{0} săptămână"
 
 #, no-php-format
+msgid "{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "{0} săptămână în urmă"
+msgstr[1] "{0} săptămâni în urmă"
+msgstr[2] "{0} săptămâni în urmă"
+
+#, no-php-format
 msgid "{0} weeks"
 msgstr "{0} săptămâni"
 
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} cu id: {1} raport trimis."
+
+#, no-php-format
+msgid "{0} year ago"
+msgid_plural "{0} years ago"
+msgstr[0] "{0} acum un an"
+msgstr[1] "{0} ani în urmă"
+msgstr[2] "{0} ani în urmă"
 
 #, no-php-format
 msgid "{0}'s Entertainment"
@@ -17114,6 +17159,13 @@ msgstr[1] ""
 "{1} tocmai a cumpărat {2} {0, număr} Bilete Loteria! {3} BUNĂ LUCRU!"
 msgstr[2] ""
 "{1} tocmai a cumpărat {2} {0, număr} Bilete Loteria! {3} BUNĂ LUCRU!"
+
+#, php-format
+msgid "{1} was hit {0, number} time in {2} seconds"
+msgid_plural "{1} was hit {0, number} times in {2} seconds"
+msgstr[0] "{1} a fost lovit {0, număr} timp în {2} secunde"
+msgstr[1] "{1} a fost lovit {0, număr} de ori în {2} secunde"
+msgstr[2] "{1} a fost lovit {0, număr} de ori în {2} secunde"
 
 #, no-php-format
 msgid "{1}: Modded Torrents from {0, number} day ago"
