@@ -8578,10 +8578,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] "Samlet set {1} poster på {0, antal} side, der viser {2} pr. Side."
-msgstr[1] "Samlet set {1} varer på {0, antal} sider, der viser {2} pr. Side."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "Samlet set {0} varer på {1} sider, der viser {2} pr. Side."
 
 msgid "Overforum description"
 msgstr "Overforum beskrivelse"
