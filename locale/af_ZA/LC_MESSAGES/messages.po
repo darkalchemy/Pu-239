@@ -495,63 +495,11 @@ msgstr "% Items:"
 msgid "% Misses: "
 msgstr "% Mis:"
 
-msgid "%$1d user disabled!"
-msgid_plural "%$1d users disabled!"
-msgstr[0] "% 1d gebruiker gedeaktiveer!"
-msgstr[1] "% $ 1d gebruikers gedeaktiveer!"
-
-msgid "%1 month ago"
-msgid_plural "%1 months ago"
-msgstr[0] "%1 maand gelede"
-msgstr[1] "% 1 maande gelede"
-
-msgid "%1 week ago"
-msgid_plural "%1 weeks ago"
-msgstr[0] "%1 week gelede"
-msgstr[1] "% 1 weke gelede"
-
-msgid "%1 year ago"
-msgid_plural "%1 years ago"
-msgstr[0] "%1 jaar gelede"
-msgstr[1] "% 1 jaar gelede"
-
-#, php-format
-msgid "%2$d uploader application to be dealt with."
-msgid_plural "%2$d uploader applications to be dealt with."
-msgstr[0] "%2$d oplaaier aansoek wat hanteer moet word."
-msgstr[1] "%2$d oplaaier-aansoeke wat hanteer moet word."
-
-#, php-format
-msgid "%d Ticket"
-msgid_plural "%d Tickets"
-msgstr[0] "%d kaartjie"
-msgstr[1] "%d Kaartjies"
-
-#, php-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] "%d dag"
-msgstr[1] "%d dae"
-
-#, php-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d uur"
-msgstr[1] "%d uur"
-
-#, php-format
-msgid ""
-"%s ghost torrent was sucessfully cleaned. You may now restart your torrents,"
-" the tracker has been updated."
-msgid_plural ""
-"%s ghost torrents were sucessfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
-msgstr[0] ""
-"%s spook torrent was suksesvol skoongemaak. U kan nou u torrents herbegin, "
-"die spoorsnyer is opgedateer."
-msgstr[1] ""
-"%s spookorrels is suksesvol skoongemaak. U kan nou u torrents herbegin, die "
-"spoorsnyer is opgedateer."
+#, no-php-format
+msgid "%{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "% {0} week gelede"
+msgstr[1] "{0} weke gelede"
 
 msgid ""
 "'And/or' means any or both. Your delay will be the largest one for which you"
@@ -5278,6 +5226,10 @@ msgstr ""
 "so, geniet\n"
 "cheers,\n"
 "{8} Personeel."
+
+#, no-php-format
+msgid "Hey {0}!"
+msgstr "Hallo {0}!"
 
 #, no-php-format
 msgid "Hey {1}!<br>There is {0, number} new message for the staff."
@@ -12084,12 +12036,6 @@ msgstr "Daar was die afgelope 15 minute geen aktiewe gebruikers nie"
 msgid "There have been no active users in the last 15 minutes."
 msgstr "Daar was die afgelope 15 minute geen aktiewe gebruikers nie."
 
-#, php-format
-msgid "There is %s new bug!"
-msgid_plural "There are %s new bugs!"
-msgstr[0] "Daar is 'n nuwe fout met %s!"
-msgstr[1] "Daar is %s nuwe foute!"
-
 msgid ""
 "There is a minimum of 2 options, and a maximun of 20 options. you have "
 "entered"
@@ -12151,6 +12097,12 @@ msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Daar is {0} verjaarsdag vandag"
 msgstr[1] "Daar is {0} verjaarsdae vandag"
+
+#, no-php-format
+msgid "There is {0} new bug!"
+msgid_plural "There are {0} new bugs!"
+msgstr[0] "Daar is {0} nuwe fout!"
+msgstr[1] "Daar is {0} nuwe foute!"
 
 msgid "There may be three reasons for this:"
 msgstr "Daar kan drie redes hiervoor wees:"
@@ -16682,6 +16634,12 @@ msgid "{0} The Min allowed bet is 100 MB!"
 msgstr "{0} Die Min toegelate weddenskap is 100 MB!"
 
 #, no-php-format
+msgid "{0} Ticket"
+msgid_plural "{0} Tickets"
+msgstr[0] "{0} kaartjie"
+msgstr[1] "{0} Kaartjies"
+
+#, no-php-format
 msgid "{0} Unread PM"
 msgid_plural "{0} Unread PM's"
 msgstr[0] "{0} Ongelees PM"
@@ -16762,6 +16720,20 @@ msgstr[0] "{0} gespoel {1, nommer} torrent."
 msgstr[1] "{0} gespoel {1, aantal} torrents."
 
 #, no-php-format
+msgid ""
+"{0} ghost torrent was sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgid_plural ""
+"{0} ghost torrents were sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgstr[0] ""
+"{0} spookorrels is suksesvol skoongemaak. U kan nou u torrents herbegin, die"
+" spoorsnyer is opgedateer."
+msgstr[1] ""
+"{0} spookstore is suksesvol skoongemaak. U kan nou u torrents herbegin, die "
+"spoorsnyer is opgedateer."
+
+#, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
 msgstr "{0} het verdubbel en sodoende die weddenskap verdubbel tot {1}."
 
@@ -16781,6 +16753,12 @@ msgstr ""
 #, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} het probeer om aan te meld met ongeldige data."
+
+#, no-php-format
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} uur"
+msgstr[1] "{0} uur"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -16810,6 +16788,12 @@ msgstr[0] "{0} lid wou net die resultate sien"
 msgstr[1] "{0} lede wou net die resultate sien"
 
 #, no-php-format
+msgid "{0} month ago"
+msgid_plural "{0} months ago"
+msgstr[0] "{0} maand gelede"
+msgstr[1] "{0} maande gelede"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} uit 10 op die skaalheidskaal"
 
@@ -16827,10 +16811,22 @@ msgstr ""
 "{0} laai krediet op vir 'n verhoudingsoplossing op torrent: {1} => {2}"
 
 #, no-php-format
+msgid "{0} uploader application to be dealt with."
+msgid_plural "{0} uploader applications to be dealt with."
+msgstr[0] "{0} oplaaiprogram wat hanteer moet word."
+msgstr[1] "{0} oplaaiprogramme wat behandel moet word."
+
+#, no-php-format
 msgid "{0} user HnR's warning removed"
 msgid_plural "{0} users HnR's warning removed"
 msgstr[0] "{0} Waarskuwing van gebruiker HnR verwyder"
 msgstr[1] "{0} HnR se waarskuwing vir gebruikers is verwyder"
+
+#, no-php-format
+msgid "{0} user disabled!"
+msgid_plural "{0} users disabled!"
+msgstr[0] "{0} gebruiker gedeaktiveer!"
+msgstr[1] "{0} gebruikers gedeaktiveer!"
 
 #, no-php-format
 msgid "{0} user unwarned."
@@ -16847,12 +16843,24 @@ msgid "{0} week"
 msgstr "{0} week"
 
 #, no-php-format
+msgid "{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "{0} week gelede"
+msgstr[1] "{0} weke gelede"
+
+#, no-php-format
 msgid "{0} weeks"
 msgstr "{0} weke"
 
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "{0} met ID: {1} verslag gestuur."
+
+#, no-php-format
+msgid "{0} year ago"
+msgid_plural "{0} years ago"
+msgstr[0] "{0} jaar gelede"
+msgstr[1] "{0} jaar gelede"
 
 #, no-php-format
 msgid "{0}'s Entertainment"
