@@ -499,133 +499,13 @@ msgstr "% Przedmiotów:"
 msgid "% Misses: "
 msgstr "% Braków:"
 
-msgid "%$1d user disabled!"
-msgid_plural "%$1d users disabled!"
-msgstr[0] "Użytkownik% 1d wyłączony!"
-msgstr[1] "Użytkownicy% 1d $ wyłączeni!"
-msgstr[2] "Użytkownicy% 1d $ wyłączeni!"
-msgstr[3] "Użytkownicy% 1d $ wyłączeni!"
-
-msgid "%1 month ago"
-msgid_plural "%1 months ago"
-msgstr[0] "%1 miesiąc temu"
-msgstr[1] "% 1 miesięcy temu"
-msgstr[2] "% 1 miesięcy temu"
-msgstr[3] "% 1 miesięcy temu"
-
-msgid "%1 week ago"
-msgid_plural "%1 weeks ago"
-msgstr[0] "%1 tydzień temu"
-msgstr[1] "% 1 tygodni temu"
-msgstr[2] "% 1 tygodni temu"
-msgstr[3] "% 1 tygodni temu"
-
-msgid "%1 year ago"
-msgid_plural "%1 years ago"
-msgstr[0] "%1 rok temu"
-msgstr[1] "%1 rok temu"
-msgstr[2] "%1 rok temu"
-msgstr[3] "%1 rok temu"
-
-#, php-format
-msgid "%1$s user unwarned."
-msgid_plural "%1$s users unwarned."
-msgstr[0] "%1$s użytkownik bez ostrzeżenia."
-msgstr[1] "%1$s użytkownicy bez ostrzeżenia."
-msgstr[2] "%1$s użytkownicy bez ostrzeżenia."
-msgstr[3] "%1$s użytkownicy bez ostrzeżenia."
-
-#, php-format
-msgid "%2$d uploader application to be dealt with."
-msgid_plural "%2$d uploader applications to be dealt with."
-msgstr[0] "Aplikacja do przesyłania %2$d do załatwienia."
-msgstr[1] "%2$d aplikacje do przesyłania, którymi należy się zająć."
-msgstr[2] "%2$d aplikacje do przesyłania, którymi należy się zająć."
-msgstr[3] "%2$d aplikacje do przesyłania, którymi należy się zająć."
-
-#, php-format
-msgid "%2$s was hit %1$d time in %3$s seconds"
-msgid_plural "%2$s was hit %1$d times in %3$s seconds"
-msgstr[0] "%2$s został trafiony czas %1$d w %3$s sekund"
-msgstr[1] "%2$s został trafiony %1$d razy w %3$s sekund"
-msgstr[2] "%2$s został trafiony %1$d razy w %3$s sekund"
-msgstr[3] "%2$s został trafiony %1$d razy w %3$s sekund"
-
-#, php-format
-msgid "%d Active User"
-msgid_plural "%d Active Users"
-msgstr[0] "%d Aktywny użytkownik"
-msgstr[1] "%d Aktywni użytkownicy"
-msgstr[2] "%d Aktywni użytkownicy"
-msgstr[3] "%d Aktywni użytkownicy"
-
-#, php-format
-msgid "%d Member visited during the last 24 hours"
-msgid_plural "%d Members visited during the last 24 hours"
-msgstr[0] "%d Członek odwiedził w ciągu ostatnich 24 godzin"
-msgstr[1] "%d Członkowie odwiedzeni w ciągu ostatnich 24 godzin"
-msgstr[2] "%d Członkowie odwiedzeni w ciągu ostatnich 24 godzin"
-msgstr[3] "%d Członkowie odwiedzeni w ciągu ostatnich 24 godzin"
-
-#, php-format
-msgid "%d New Report"
-msgid_plural "%d New Reports"
-msgstr[0] "%d Nowy raport"
-msgstr[1] "%d Nowe raporty"
-msgstr[2] "%d Nowe raporty"
-msgstr[3] "%d Nowe raporty"
-
-#, php-format
-msgid "%d Ticket"
-msgid_plural "%d Tickets"
-msgstr[0] "Bilet %d"
-msgstr[1] "%d Bilety"
-msgstr[2] "%d Bilety"
-msgstr[3] "%d Bilety"
-
-#, php-format
-msgid "%d Unread PM"
-msgid_plural "%d Unread PM's"
-msgstr[0] "%d Nieprzeczytane PM"
-msgstr[1] "%d Nieprzeczytane wiadomości PM"
-msgstr[2] "%d Nieprzeczytane wiadomości PM"
-msgstr[3] "%d Nieprzeczytane wiadomości PM"
-
-#, php-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] "%d dzień"
-msgstr[1] "%d dni"
-msgstr[2] "%d dni"
-msgstr[3] "%d dni"
-
-#, php-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d godzina"
-msgstr[1] "%d godzin"
-msgstr[2] "%d godzin"
-msgstr[3] "%d godzin"
-
-#, php-format
-msgid ""
-"%s ghost torrent was sucessfully cleaned. You may now restart your torrents,"
-" the tracker has been updated."
-msgid_plural ""
-"%s ghost torrents were sucessfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
-msgstr[0] ""
-"%s ghost torrent został pomyślnie wyczyszczony. Możesz teraz ponownie "
-"uruchomić torrenty, moduł śledzący został zaktualizowany."
-msgstr[1] ""
-"%s duchowe torrenty zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
-"uruchomić torrenty, moduł śledzący został zaktualizowany."
-msgstr[2] ""
-"%s duchowe torrenty zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
-"uruchomić torrenty, moduł śledzący został zaktualizowany."
-msgstr[3] ""
-"%s duchowe torrenty zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
-"uruchomić torrenty, moduł śledzący został zaktualizowany."
+#, no-php-format
+msgid "%{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "% {0} tydzień temu"
+msgstr[1] "{0} tygodni temu"
+msgstr[2] "{0} tygodni temu"
+msgstr[3] "{0} tygodni temu"
 
 msgid ""
 "'And/or' means any or both. Your delay will be the largest one for which you"
@@ -1697,14 +1577,17 @@ msgstr "Zezwalaj na komentarze"
 msgid "Allow members to change their vote"
 msgstr "Pozwól członkom zmienić swój głos"
 
-msgid "Allow members to change their vote? Default is"
-msgstr "Czy członkowie mogą zmienić swój głos? Domyślnie jest"
+msgid "Allow members to change their vote? Default is \"no\""
+msgstr "Czy członkowie mogą zmienić swój głos? Domyślnie jest to „nie”"
 
 msgid "Allow members to have more then one selection"
 msgstr "Pozwól członkom mieć więcej niż jeden wybór"
 
-msgid "Allow members to have more then one selection? Default is"
-msgstr "Czy członkowie mogą mieć więcej niż jeden wybór? Domyślnie jest"
+msgid ""
+"Allow members to have more then one selection? Default is 'Single option'!"
+msgstr ""
+"Czy członkowie mogą mieć więcej niż jeden wybór? Domyślnie jest to "
+"„Pojedyncza opcja”!"
 
 msgid "Allowed Mark Of Cains"
 msgstr "Dozwolone Mark Of Cains"
@@ -3260,6 +3143,10 @@ msgstr "CrazyHour"
 
 msgid "CrazyHour ON"
 msgstr "CrazyHour ON"
+
+#, no-php-format
+msgid "CrazyHour {0} {1} Ends in {2} at {3}"
+msgstr "CrazyHour {0} {1} Kończy się za {2} o {3}"
 
 msgid "CrazyHour?"
 msgstr "CrazyHour?"
@@ -4927,6 +4814,14 @@ msgstr "Bezpłatnie przez 4 tygodnie"
 msgid "Free for 8 weeks"
 msgstr "Bezpłatnie przez 8 tygodni"
 
+#, no-php-format
+msgid "Free for {0} week"
+msgstr "Bezpłatnie przez {0} tygodni"
+
+#, no-php-format
+msgid "Free for {0} weeks"
+msgstr "Bezpłatnie przez {0} tygodni"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech ON"
 
@@ -5324,22 +5219,6 @@ msgstr "Tutaj jest"
 msgid "Hey"
 msgstr "Hej"
 
-#, php-format
-msgid "Hey %1$s!<br>%2$d new report to be dealt with."
-msgid_plural "Hey %1$s!<br>%2$d new reports to be dealt with."
-msgstr[0] "Hej %1$s! <br> %2$d nowy raport do załatwienia."
-msgstr[1] "Hej %1$s! <br> %2$d nowe raporty, którymi należy się zająć."
-msgstr[2] "Hej %1$s! <br> %2$d nowe raporty, którymi należy się zająć."
-msgstr[3] "Hej %1$s! <br> %2$d nowe raporty, którymi należy się zająć."
-
-#, php-format
-msgid "Hey %1$s!<br>There is %2$d new message for the staff."
-msgid_plural "Hey %1$s!<br>There are %2$d new messages for the staff."
-msgstr[0] "Hej %1$s! <br> Jest nowa wiadomość dla personelu dla %2$d."
-msgstr[1] "Hej %1$s! <br> Istnieją nowe wiadomości %2$d dla personelu."
-msgstr[2] "Hej %1$s! <br> Istnieją nowe wiadomości %2$d dla personelu."
-msgstr[3] "Hej %1$s! <br> Istnieją nowe wiadomości %2$d dla personelu."
-
 msgid "Hey its now happy hour!"
 msgstr "Hej, teraz jest szczęśliwa godzina!"
 
@@ -5371,6 +5250,29 @@ msgstr ""
 "więc ciesz się\n"
 "Twoje zdrowie,\n"
 "{8} Personel."
+
+#, no-php-format
+msgid "Hey {0}!"
+msgstr "Cześć {0}!"
+
+#, no-php-format
+msgid "Hey {1}!<br>There is {0, number} new message for the staff."
+msgid_plural "Hey {1}!<br>There are {0, number} new messages for the staff."
+msgstr[0] "Cześć {1}! <br> Jest nowa wiadomość {0, liczba} dla personelu."
+msgstr[1] ""
+"Cześć {1}! <br> Istnieją nowe wiadomości dla personelu {0, liczba}."
+msgstr[2] ""
+"Cześć {1}! <br> Istnieją nowe wiadomości dla personelu {0, liczba}."
+msgstr[3] ""
+"Cześć {1}! <br> Istnieją nowe wiadomości dla personelu {0, liczba}."
+
+#, no-php-format
+msgid "Hey {1}!<br>{0, number} new report to be dealt with."
+msgid_plural "Hey {1}!<br>{0, number} new reports to be dealt with."
+msgstr[0] "Cześć {1}! <br> {0, number} nowy raport do załatwienia."
+msgstr[1] "Cześć {1}! <br> {0, liczba} nowe raporty do załatwienia."
+msgstr[2] "Cześć {1}! <br> {0, liczba} nowe raporty do załatwienia."
+msgstr[3] "Cześć {1}! <br> {0, liczba} nowe raporty do załatwienia."
 
 msgid "Hey! I've seen Power Users with less than 25GB uploaded!"
 msgstr ""
@@ -5574,6 +5476,9 @@ msgstr "Jak w ogóle działa ta promocja?"
 
 msgid "How far back to search"
 msgstr "Jak daleko do wyszukiwania"
+
+msgid "How long should this poll run? Default is 'run forever'"
+msgstr "Jak długo powinna trwać ta ankieta? Domyślnie „działa na zawsze”"
 
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr "Jak długo powinna trwać ta ankieta? Domyślnie jest to „Run Forever”"
@@ -7244,12 +7149,12 @@ msgid "Message moved!"
 msgstr "Wiadomość przeniesiona!"
 
 #, no-php-format
-msgid "Message sent to {0, number} user"
-msgid_plural "Message sent to {0, number} users"
-msgstr[0] "Wiadomość wysłana do użytkownika {0, numer}"
-msgstr[1] "Wiadomość wysłana do {0, liczba} użytkowników"
-msgstr[2] "Wiadomość wysłana do {0, liczba} użytkowników"
-msgstr[3] "Wiadomość wysłana do {0, liczba} użytkowników"
+msgid "Message sent to {0} user"
+msgid_plural "Message sent to {0} users"
+msgstr[0] "Wiadomość wysłana do użytkownika {0}"
+msgstr[1] "Wiadomość wysłana do {0} użytkowników"
+msgstr[2] "Wiadomość wysłana do {0} użytkowników"
+msgstr[3] "Wiadomość wysłana do {0} użytkowników"
 
 msgid "Message to "
 msgstr "Wiadomość do"
@@ -7462,17 +7367,6 @@ msgstr "Najczęstszy powód braku aktualizacji statystyk"
 
 msgid "Most common reasons for stats not updating"
 msgstr "Najczęstsze przyczyny braku aktualizacji statystyk"
-
-#, php-format
-msgid "Most ever visited in 24 hours was %1$d Member on %2$s"
-msgid_plural "Most ever visited in 24 hours was %1$d Members on %2$s"
-msgstr[0] "Najczęściej odwiedzany w ciągu 24 godzin był %1$d Członek na %2$s"
-msgstr[1] ""
-"Najczęściej odwiedzane w ciągu 24 godzin było %1$d Członkowie na %2$s"
-msgstr[2] ""
-"Najczęściej odwiedzane w ciągu 24 godzin było %1$d Członkowie na %2$s"
-msgstr[3] ""
-"Najczęściej odwiedzane w ciągu 24 godzin było %1$d Członkowie na %2$s"
 
 msgid "Most recent comments, in reverse order"
 msgstr "Najnowsze komentarze w odwrotnej kolejności"
@@ -8758,16 +8652,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] ""
-"Łącznie {1} pozycji na stronie {0, liczba}, pokazując {2} na stronie."
-msgstr[1] ""
-"Łącznie {1} elementów na {0, liczba} stronach, pokazując {2} na stronie."
-msgstr[2] ""
-"Łącznie {1} elementów na {0, liczba} stronach, pokazując {2} na stronie."
-msgstr[3] ""
-"Łącznie {1} elementów na {0, liczba} stronach, pokazując {2} na stronie."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "Łącznie {0} elementów na {1} stronach, pokazując {2} na stronie."
 
 msgid "Overforum description"
 msgstr "Opis overforum"
@@ -10743,6 +10629,14 @@ msgstr "Srebro przez 4 tygodnie"
 msgid "Silver for 8 weeks"
 msgstr "Srebro przez 8 tygodni"
 
+#, no-php-format
+msgid "Silver for {0} week"
+msgstr "Srebro za {0} tygodni"
+
+#, no-php-format
+msgid "Silver for {0} weeks"
+msgstr "Srebro za {0} tygodni"
+
 msgid "Simple Search"
 msgstr "Proste wyszukiwanie"
 
@@ -12201,14 +12095,6 @@ msgstr "W ciągu ostatnich 15 minut nie było aktywnych użytkowników"
 msgid "There have been no active users in the last 15 minutes."
 msgstr "W ciągu ostatnich 15 minut nie było aktywnych użytkowników."
 
-#, php-format
-msgid "There is %s new bug!"
-msgid_plural "There are %s new bugs!"
-msgstr[0] "Jest nowy błąd %s!"
-msgstr[1] "Istnieją nowe błędy %s!"
-msgstr[2] "Istnieją nowe błędy %s!"
-msgstr[3] "Istnieją nowe błędy %s!"
-
 msgid ""
 "There is a minimum of 2 options, and a maximun of 20 options. you have "
 "entered"
@@ -12274,6 +12160,14 @@ msgstr[0] "Dzisiaj jest {0} urodziny"
 msgstr[1] "Dzisiaj są urodziny {0}"
 msgstr[2] "Dzisiaj są urodziny {0}"
 msgstr[3] "Dzisiaj są urodziny {0}"
+
+#, no-php-format
+msgid "There is {0} new bug!"
+msgid_plural "There are {0} new bugs!"
+msgstr[0] "Pojawił się {0} nowy błąd!"
+msgstr[1] "Wprowadzono {0} nowych błędów!"
+msgstr[2] "Wprowadzono {0} nowych błędów!"
+msgstr[3] "Wprowadzono {0} nowych błędów!"
 
 msgid "There may be three reasons for this:"
 msgstr "Przyczyny tego mogą być trzy:"
@@ -12980,6 +12874,10 @@ msgstr "Najlepsze nastroje"
 msgid "Top Scores"
 msgstr "Najwyższe wyniki"
 
+#, no-php-format
+msgid "Top Scores Earn {0} Karma Points"
+msgstr "Najlepsze wyniki Zarób {0} punktów Karmy"
+
 msgid "Top Torrents"
 msgstr "Najlepsze torrenty"
 
@@ -13102,6 +13000,10 @@ msgstr "Torrent nie został znaleziony"
 #, no-php-format
 msgid "Torrent {0} ({1}) was deleted by {2} ({3})"
 msgstr "Torrent {0} ({1}) został usunięty przez {2} ({3})"
+
+#, no-php-format
+msgid "Torrent {0} ({1}) was uploaded by {2}"
+msgstr "Torrent {0} ({1}) został przesłany przez {2}"
 
 #, no-php-format
 msgid "Torrent {0} was deleted by {1}"
@@ -13482,6 +13384,10 @@ msgstr "Aż do"
 
 msgid "Until "
 msgstr "Aż do"
+
+#, no-php-format
+msgid "Until {0} ({1} to go)."
+msgstr "Do {0} ({1}, aby przejść)."
 
 #, no-php-format
 msgid "Until {0} ({1}) to go."
@@ -14499,25 +14405,25 @@ msgstr "MUSISZ przeczytać {0} tę wiadomość {1}, zanim ją usuniesz!"
 msgid "You already gave points to this torrent."
 msgstr "Dałeś już punkty temu torrentowi."
 
-#, php-format
+#, no-php-format
 msgid ""
-"You already have %d open bet. Wait until it is completed before you start "
+"You already have {0} open bet. Wait until it is completed before you start "
 "another."
 msgid_plural ""
-"You already have %d open bets. Wait until they are completed before you "
+"You already have {0} open bets. Wait until they are completed before you "
 "start another."
 msgstr[0] ""
-"Masz już otwarty zakład %d. Zaczekaj na zakończenie, zanim zaczniesz "
+"Masz już {0} otwarty zakład. Zaczekaj na zakończenie, zanim zaczniesz "
 "kolejną."
 msgstr[1] ""
-"Masz już otwarte zakłady %d. Zaczekaj na ich ukończenie, zanim zaczniesz "
-"kolejną."
+"Masz już {0} otwartych zakładów. Zaczekaj na ich ukończenie, zanim zaczniesz"
+" kolejną."
 msgstr[2] ""
-"Masz już otwarte zakłady %d. Zaczekaj na ich ukończenie, zanim zaczniesz "
-"kolejną."
+"Masz już {0} otwartych zakładów. Zaczekaj na ich ukończenie, zanim zaczniesz"
+" kolejną."
 msgstr[3] ""
-"Masz już otwarte zakłady %d. Zaczekaj na ich ukończenie, zanim zaczniesz "
-"kolejną."
+"Masz już {0} otwartych zakładów. Zaczekaj na ich ukończenie, zanim zaczniesz"
+" kolejną."
 
 msgid "You already received your gift!"
 msgstr "Już otrzymałeś prezent!"
@@ -14632,18 +14538,21 @@ msgid ""
 "You can add your own message, it will appear above the PM being forwarded."
 msgstr "Możesz dodać własną wiadomość, pojawi się ona nad przesłanym PM."
 
-#, php-format
-msgid "You can buy another %d ticket if you get get more bonus points."
+#, no-php-format
+msgid "You can buy another {0} ticket if you get get more bonus points."
 msgid_plural ""
-"You can buy another %d tickets if you get get more bonus points."
+"You can buy another {0} tickets if you get get more bonus points."
 msgstr[0] ""
-"Możesz kupić kolejny bilet %d, jeśli zdobędziesz więcej punktów bonusowych."
+"Możesz kupić kolejny bilet {0}, jeśli zdobędziesz więcej punktów bonusowych."
 msgstr[1] ""
-"Możesz kupić kolejne bilety %d, jeśli zdobędziesz więcej punktów bonusowych."
+"Możesz kupić kolejne {0} biletów, jeśli zdobędziesz więcej punktów "
+"bonusowych."
 msgstr[2] ""
-"Możesz kupić kolejne bilety %d, jeśli zdobędziesz więcej punktów bonusowych."
+"Możesz kupić kolejne {0} biletów, jeśli zdobędziesz więcej punktów "
+"bonusowych."
 msgstr[3] ""
-"Możesz kupić kolejne bilety %d, jeśli zdobędziesz więcej punktów bonusowych."
+"Możesz kupić kolejne {0} biletów, jeśli zdobędziesz więcej punktów "
+"bonusowych."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "Możesz skontaktować się z personelem witryny z prośbą na irc"
@@ -14826,18 +14735,6 @@ msgstr "Masz to"
 msgid "You had"
 msgstr "Miałeś"
 
-#, no-php-format
-msgid "You have %d Reputation Point(s)."
-msgstr "Masz punkty reputacji %d."
-
-#, php-format
-msgid "You have %d new message"
-msgid_plural "You have %d new messages"
-msgstr[0] "Masz nową wiadomość %d"
-msgstr[1] "Masz %d nowych wiadomości"
-msgstr[2] "Masz %d nowych wiadomości"
-msgstr[3] "Masz %d nowych wiadomości"
-
 msgid "You have a new friend!"
 msgstr "Masz nowego przyjaciela!"
 
@@ -14887,13 +14784,13 @@ msgstr "Ukończyłeś ten torrent"
 msgid "You have contributed {0} / {1} of the total bounty offered"
 msgstr "Włożyłeś {0} / {1} całkowitej oferowanej nagrody"
 
-#, php-format
-msgid "You have enough points for %d ticket."
-msgid_plural "You have enough points for %d tickets."
-msgstr[0] "Masz wystarczającą liczbę punktów za bilet %d."
-msgstr[1] "Masz wystarczającą liczbę punktów za bilety %d."
-msgstr[2] "Masz wystarczającą liczbę punktów za bilety %d."
-msgstr[3] "Masz wystarczającą liczbę punktów za bilety %d."
+#, no-php-format
+msgid "You have enough points for {0} ticket."
+msgid_plural "You have enough points for {0} tickets."
+msgstr[0] "Masz wystarczającą liczbę punktów za bilet {0}."
+msgstr[1] "Masz wystarczającą liczbę punktów za bilety {0}."
+msgstr[2] "Masz wystarczającą liczbę punktów za bilety {0}."
+msgstr[3] "Masz wystarczającą liczbę punktów za bilety {0}."
 
 msgid "You have exceeded the maximum number of IPs allowed"
 msgstr "Przekroczono maksymalną dozwoloną liczbę adresów IP"
@@ -14982,6 +14879,22 @@ msgstr "Głosowałeś za tą ofertą."
 
 msgid "You have voted to support this request."
 msgstr "Głosowałeś za poparciem tej prośby."
+
+#, no-php-format
+msgid "You have {0} Reputation Point."
+msgid_plural "You have {0} Reputation Points."
+msgstr[0] "Masz {0} Punkt reputacji."
+msgstr[1] "Masz {0} punktów reputacji."
+msgstr[2] "Masz {0} punktów reputacji."
+msgstr[3] "Masz {0} punktów reputacji."
+
+#, no-php-format
+msgid "You have {0} new message"
+msgid_plural "You have {0} new messages"
+msgstr[0] "Masz {0} nową wiadomość"
+msgstr[1] "Masz {0} nowych wiadomości"
+msgstr[2] "Masz {0} nowych wiadomości"
+msgstr[3] "Masz {0} nowych wiadomości"
 
 #, no-php-format
 msgid "You have {0} unread message in your inbox"
@@ -15347,6 +15260,10 @@ msgstr "Twój email został potwierdzony"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Brak połączenia może wynikać z kilku powodów."
+
+#, no-php-format
+msgid "Your forum posts count has been updated! [{0}]"
+msgstr "Liczba postów na forum została zaktualizowana! [{0}]"
 
 msgid "Your friends"
 msgstr "Twoi przyjaciele"
@@ -16059,51 +15976,6 @@ msgstr "jeśli jesteś pewien"
 msgid "in"
 msgstr "w"
 
-msgid "in $d day"
-msgid_plural "in $d days"
-msgstr[0] "w dzień d"
-msgstr[1] "za $ d dni"
-msgstr[2] "za $ d dni"
-msgstr[3] "za $ d dni"
-
-msgid "in $d month"
-msgid_plural "in $d months"
-msgstr[0] "za miesiąc"
-msgstr[1] "za $ d miesięcy"
-msgstr[2] "za $ d miesięcy"
-msgstr[3] "za $ d miesięcy"
-
-msgid "in $d week"
-msgid_plural "in $d weeks"
-msgstr[0] "w $ d tygodniu"
-msgstr[1] "za $ d tygodni"
-msgstr[2] "za $ d tygodni"
-msgstr[3] "za $ d tygodni"
-
-#, php-format
-msgid "in %d day"
-msgid_plural "in %d days"
-msgstr[0] "w dzień %d"
-msgstr[1] "za %d dni"
-msgstr[2] "za %d dni"
-msgstr[3] "za %d dni"
-
-#, php-format
-msgid "in %d month"
-msgid_plural "in %d months"
-msgstr[0] "za miesiąc %d"
-msgstr[1] "za %d miesięcy"
-msgstr[2] "za %d miesięcy"
-msgstr[3] "za %d miesięcy"
-
-#, php-format
-msgid "in %d week"
-msgid_plural "in %d weeks"
-msgstr[0] "w tygodniu %d"
-msgstr[1] "w %d tygodni"
-msgstr[2] "w %d tygodni"
-msgstr[3] "w %d tygodni"
-
 msgid "in Forum"
 msgstr "na forum"
 
@@ -16119,6 +15991,30 @@ msgstr "w panelu personelu był"
 #, no-php-format
 msgid "in {0} by {1} ({2})"
 msgstr "w {0} autor: {1} ({2})"
+
+#, no-php-format
+msgid "in {0} day"
+msgid_plural "in {0} days"
+msgstr[0] "za {0} dzień"
+msgstr[1] "za {0} dni"
+msgstr[2] "za {0} dni"
+msgstr[3] "za {0} dni"
+
+#, no-php-format
+msgid "in {0} month"
+msgid_plural "in {0} months"
+msgstr[0] "za {0} miesięcy"
+msgstr[1] "za {0} miesięcy"
+msgstr[2] "za {0} miesięcy"
+msgstr[3] "za {0} miesięcy"
+
+#, no-php-format
+msgid "in {0} week"
+msgid_plural "in {0} weeks"
+msgstr[0] "za {0} tygodni"
+msgstr[1] "za {0} tygodni"
+msgstr[2] "za {0} tygodni"
+msgstr[3] "za {0} tygodni"
 
 msgid "include a proper NFO"
 msgstr "zawierać odpowiedni NFO"
@@ -16801,8 +16697,20 @@ msgid "{0} - UPLOADER Role Removed by {1}\n"
 msgstr "{0} - Rola UPLOADERA usunięta przez {1}\n"
 
 #, no-php-format
+msgid "{0} Active User"
+msgid_plural "{0} Active Users"
+msgstr[0] "{0} Aktywny użytkownik"
+msgstr[1] "{0} Aktywni użytkownicy"
+msgstr[2] "{0} Aktywni użytkownicy"
+msgstr[3] "{0} Aktywni użytkownicy"
+
+#, no-php-format
 msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Dodano {1} do listy {2} obserwowanych użytkowników {4}."
+
+#, no-php-format
+msgid "{0} Days"
+msgstr "{0} dni"
 
 #, no-php-format
 msgid "{0} GB"
@@ -16815,6 +16723,26 @@ msgstr "{0} Zaproszenie"
 #, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Loteria"
+
+#, no-php-format
+msgid "{0} Member visited during the last 24 hours"
+msgid_plural "{0} Members visited during the last 24 hours"
+msgstr[0] "{0} Członek odwiedził w ciągu ostatnich 24 godzin"
+msgstr[1] "{0} Członkowie odwiedzili w ciągu ostatnich 24 godzin"
+msgstr[2] "{0} Członkowie odwiedzili w ciągu ostatnich 24 godzin"
+msgstr[3] "{0} Członkowie odwiedzili w ciągu ostatnich 24 godzin"
+
+#, no-php-format
+msgid "{0} Months"
+msgstr "{0} miesięcy"
+
+#, no-php-format
+msgid "{0} New Report"
+msgid_plural "{0} New Reports"
+msgstr[0] "{0} Nowy raport"
+msgstr[1] "{0} Nowe raporty"
+msgstr[2] "{0} Nowe raporty"
+msgstr[3] "{0} Nowe raporty"
 
 #, no-php-format
 msgid "{0} Old School Arcade!"
@@ -16855,6 +16783,22 @@ msgstr "{0} Maksymalny dozwolony zakład to {1} GB!"
 #, no-php-format
 msgid "{0} The Min allowed bet is 100 MB!"
 msgstr "{0} Minimalny dozwolony zakład to 100 MB!"
+
+#, no-php-format
+msgid "{0} Ticket"
+msgid_plural "{0} Tickets"
+msgstr[0] "{0} Bilet"
+msgstr[1] "{0} Bilety"
+msgstr[2] "{0} Bilety"
+msgstr[3] "{0} Bilety"
+
+#, no-php-format
+msgid "{0} Unread PM"
+msgid_plural "{0} Unread PM's"
+msgstr[0] "{0} Nieprzeczytane PM"
+msgstr[1] "{0} Nieprzeczytane wiadomości PM"
+msgstr[2] "{0} Nieprzeczytane wiadomości PM"
+msgstr[3] "{0} Nieprzeczytane wiadomości PM"
 
 #, no-php-format
 msgid "{0} You bought {1} Freeslots for  {2} Karma."
@@ -16916,6 +16860,14 @@ msgid "{0} and won"
 msgstr "{0} i wygrał"
 
 #, no-php-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} dzień"
+msgstr[1] "{0} dni"
+msgstr[2] "{0} dni"
+msgstr[3] "{0} dni"
+
+#, no-php-format
 msgid "{0} file"
 msgstr "Plik {0}"
 
@@ -16926,6 +16878,26 @@ msgstr[0] "{0} opróżnił {1, number} torrent."
 msgstr[1] "{0} opróżnił {1, liczba} torrentów."
 msgstr[2] "{0} opróżnił {1, liczba} torrentów."
 msgstr[3] "{0} opróżnił {1, liczba} torrentów."
+
+#, no-php-format
+msgid ""
+"{0} ghost torrent was sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgid_plural ""
+"{0} ghost torrents were sucessfully cleaned. You may now restart your "
+"torrents, the tracker has been updated."
+msgstr[0] ""
+"{0} duch torrent został pomyślnie wyczyszczony. Możesz teraz ponownie "
+"uruchomić torrenty, moduł śledzący został zaktualizowany."
+msgstr[1] ""
+"{0} torrenty duchów zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
+"uruchomić torrenty, moduł śledzący został zaktualizowany."
+msgstr[2] ""
+"{0} torrenty duchów zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
+"uruchomić torrenty, moduł śledzący został zaktualizowany."
+msgstr[3] ""
+"{0} torrenty duchów zostały pomyślnie wyczyszczone. Możesz teraz ponownie "
+"uruchomić torrenty, moduł śledzący został zaktualizowany."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
@@ -16948,6 +16920,14 @@ msgstr ""
 #, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} próbował się zalogować, używając nieprawidłowych danych."
+
+#, no-php-format
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} godzina"
+msgstr[1] "{0} godzin"
+msgstr[2] "{0} godzin"
+msgstr[3] "{0} godzin"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -16979,6 +16959,14 @@ msgstr[2] "Członkowie {0} chcieli tylko zobaczyć wyniki"
 msgstr[3] "Członkowie {0} chcieli tylko zobaczyć wyniki"
 
 #, no-php-format
+msgid "{0} month ago"
+msgid_plural "{0} months ago"
+msgstr[0] "{0} miesiąc temu"
+msgstr[1] "{0} miesięcy temu"
+msgstr[2] "{0} miesięcy temu"
+msgstr[3] "{0} miesięcy temu"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} na 10 w skali gówna"
 
@@ -16987,8 +16975,44 @@ msgid "{0} per announce period"
 msgstr "{0} na okres ogłoszenia"
 
 #, no-php-format
+msgid "{0} set by {1}<br>"
+msgstr "{0} ustawiony przez {1} <br>"
+
+#, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
 msgstr "{0} przesłanie środków na poprawkę stosunku do torrenta: {1} => {2}"
+
+#, no-php-format
+msgid "{0} uploader application to be dealt with."
+msgid_plural "{0} uploader applications to be dealt with."
+msgstr[0] "Aplikacja do przesyłania {0} do załatwienia."
+msgstr[1] "{0} aplikacje do przesyłania, którymi należy się zająć."
+msgstr[2] "{0} aplikacje do przesyłania, którymi należy się zająć."
+msgstr[3] "{0} aplikacje do przesyłania, którymi należy się zająć."
+
+#, no-php-format
+msgid "{0} user HnR's warning removed"
+msgid_plural "{0} users HnR's warning removed"
+msgstr[0] "Usunięto ostrzeżenie {0} użytkownika HnR"
+msgstr[1] "Usunięto ostrzeżenie HnR użytkowników {0}"
+msgstr[2] "Usunięto ostrzeżenie HnR użytkowników {0}"
+msgstr[3] "Usunięto ostrzeżenie HnR użytkowników {0}"
+
+#, no-php-format
+msgid "{0} user disabled!"
+msgid_plural "{0} users disabled!"
+msgstr[0] "Użytkownik {0} wyłączony!"
+msgstr[1] "{0} użytkowników wyłączonych!"
+msgstr[2] "{0} użytkowników wyłączonych!"
+msgstr[3] "{0} użytkowników wyłączonych!"
+
+#, no-php-format
+msgid "{0} user unwarned."
+msgid_plural "{0} users unwarned."
+msgstr[0] "{0} użytkownik nie ostrzeżony."
+msgstr[1] "{0} użytkowników bez ostrzeżenia."
+msgstr[2] "{0} użytkowników bez ostrzeżenia."
+msgstr[3] "{0} użytkowników bez ostrzeżenia."
 
 #, no-php-format
 msgid "{0} view offensive avatar by {1}, {2}\n"
@@ -16999,12 +17023,28 @@ msgid "{0} week"
 msgstr "{0} tydzień"
 
 #, no-php-format
+msgid "{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "{0} tydzień temu"
+msgstr[1] "{0} tygodni temu"
+msgstr[2] "{0} tygodni temu"
+msgstr[3] "{0} tygodni temu"
+
+#, no-php-format
 msgid "{0} weeks"
 msgstr "{0} tygodni"
 
 #, no-php-format
 msgid "{0} with id: {1} report sent."
 msgstr "Wysłano raport {0} o identyfikatorze: {1}."
+
+#, no-php-format
+msgid "{0} year ago"
+msgid_plural "{0} years ago"
+msgstr[0] "{0} rok temu"
+msgstr[1] "{0} lat temu"
+msgstr[2] "{0} lat temu"
+msgstr[3] "{0} lat temu"
 
 #, no-php-format
 msgid "{0}'s Entertainment"
@@ -17078,6 +17118,14 @@ msgstr[0] "{1} właśnie kupił {2} {0, numer} Loteria! {3} DOBRA SZCZĘŚCIE!"
 msgstr[1] "{1} właśnie kupił {2} {0, liczba} losów! {3} DOBRA SZCZĘŚCIE!"
 msgstr[2] "{1} właśnie kupił {2} {0, liczba} losów! {3} DOBRA SZCZĘŚCIE!"
 msgstr[3] "{1} właśnie kupił {2} {0, liczba} losów! {3} DOBRA SZCZĘŚCIE!"
+
+#, php-format
+msgid "{1} was hit {0, number} time in {2} seconds"
+msgid_plural "{1} was hit {0, number} times in {2} seconds"
+msgstr[0] "Uderzono {1} czas {0, liczba} w {2} sekund"
+msgstr[1] "Uderzono {1} {0, liczba} razy w {2} sekund"
+msgstr[2] "Uderzono {1} {0, liczba} razy w {2} sekund"
+msgstr[3] "Uderzono {1} {0, liczba} razy w {2} sekund"
 
 #, no-php-format
 msgid "{1}: Modded Torrents from {0, number} day ago"
