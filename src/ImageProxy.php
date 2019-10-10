@@ -24,12 +24,12 @@ class ImageProxy
      * @param int|null $height
      * @param int|null $quality
      *
-     * @throws \Envms\FluentPDO\Exception
+     * @return bool|string
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
      *
-     * @return bool|string
+     * @throws \Envms\FluentPDO\Exception
      */
     public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
@@ -51,7 +51,7 @@ class ImageProxy
         if (!empty($quality)) {
             $hash = $this->convert_image($url, $path, $quality);
         } elseif ($width || $height) {
-            $hash = $this->resize_image($url, $path, $width, $height);
+            $hash = $this->resize_image($path, $width, $height);
         }
 
         $this->set_permissions($path);
@@ -64,11 +64,11 @@ class ImageProxy
      * @param string $url
      * @param string $path
      *
-     * @throws DependencyException
+     * @return bool
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
      *
-     * @return bool
+     * @throws DependencyException
      */
     protected function store_image(string $url, string $path)
     {
@@ -158,9 +158,9 @@ class ImageProxy
      * @param $path
      * @param $quality
      *
+     * @return string
      * @throws InvalidManipulation
      *
-     * @return string
      */
     protected function convert_image(string $url, string $path, int $quality)
     {
@@ -200,21 +200,20 @@ class ImageProxy
      *
      * @return bool|string
      */
-    protected function resize_image(string $url, string $path, int $width = null, int $height = null)
+    protected function resize_image(string $path, int $width = null, int $height = null)
     {
         $manager = new ImageManager(['driver' => 'imagick']);
-        $hash = hash('sha256', $url . (!empty($width) ? "_$width" : "_$height"));
+        $hash = hash('sha256', $path . (!empty($width) ? "_$width" : '') . (!empty($height) ? "_$height" : ''));
         $new_path = PROXY_IMAGES_DIR . $hash;
 
         if (file_exists($new_path)) {
             return $hash;
         }
         try {
-            $image = $manager->make($path)
-                             ->resize($width, $height, function ($constraint) {
-                                 $constraint->aspectRatio();
-                                 $constraint->upsize();
-                             });
+           $image = $manager->make($path)->resize($width, $height, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            });
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage() . "\n";
 

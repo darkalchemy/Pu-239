@@ -427,9 +427,9 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
         preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $s, $matches);
         $i = 0;
         foreach ($matches[1] as $match) {
-            preg_match('/width=[\'|"](\d+)[\'|"] height=[\'|"](\d+)[\'|"]/', $matches[2][$i++], $dimensions);
-            $width = !empty($dimensions[1]) ? (int) $dimensions[1] : null;
-            $height = !empty($dimensions[2]) ? (int) $dimensions[2] : null;
+            preg_match("#width=['|\"](\d+|auto)['|\"]\s+height=['|\"](\d+|auto)['|\"]#", $matches[2][$i++], $dimensions);
+            $width = isset($dimensions[1]) && $dimensions[1] !== 'auto' ? (int) $dimensions[1] : null;
+            $height = isset($dimensions[2]) && $dimensions[2] !== 'auto' ? (int) $dimensions[2] : null;
             $s = str_replace($match, url_proxy($match, true, $width, $height), $s);
         }
         // [img] proxied local images
