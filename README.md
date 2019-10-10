@@ -200,8 +200,8 @@ An image proxy for hot linked images is built in and enabled by default, disable
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
 
 #### Translations:
-This project uses gettext to manage text strings. Currently there is only english text and 7 addtional languages, translated by Google Translate. Unfortunately, it is not yet 100%. There are still quite a few hard coded strings left here and there.  
-If you would like to see a specific translation or assist with a currect translation, please join us at [Transifex](https://www.transifex.com/pu-239/).  
+This project uses gettext to manage text strings. This has been translated into 17 languages, translated by Google Translate. Unfortunately, it is not yet 100%. There are still quite a few hard coded strings left here and there.  
+If you would like to see a specific translation or assist with a current translation, please join us at [Transifex](https://www.transifex.com/pu-239/).  
 [Transifex](https://www.transifex.com/pu-239/) was kind enough to provide this project with a free open source license.
 
 #### Credits:  
