@@ -24,12 +24,12 @@ class ImageProxy
      * @param int|null $height
      * @param int|null $quality
      *
-     * @return bool|string
      * @throws DependencyException
      * @throws InvalidManipulation
      * @throws NotFoundException
-     *
      * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool|string
      */
     public function get_image(string $url, ?int $width, ?int $height, ?int $quality)
     {
@@ -64,11 +64,11 @@ class ImageProxy
      * @param string $url
      * @param string $path
      *
-     * @return bool
      * @throws NotFoundException
      * @throws \Envms\FluentPDO\Exception
-     *
      * @throws DependencyException
+     *
+     * @return bool
      */
     protected function store_image(string $url, string $path)
     {
@@ -158,9 +158,9 @@ class ImageProxy
      * @param $path
      * @param $quality
      *
-     * @return string
      * @throws InvalidManipulation
      *
+     * @return string
      */
     protected function convert_image(string $url, string $path, int $quality)
     {
@@ -193,7 +193,6 @@ class ImageProxy
     }
 
     /**
-     * @param string   $url
      * @param string   $path
      * @param int|null $width
      * @param int|null $height
@@ -210,10 +209,11 @@ class ImageProxy
             return $hash;
         }
         try {
-           $image = $manager->make($path)->resize($width, $height, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image = $manager->make($path)
+                             ->resize($width, $height, function ($constraint) {
+                                 $constraint->aspectRatio();
+                                 $constraint->upsize();
+                             });
         } catch (Exception $e) {
             echo 'Message: ' . $e->getMessage() . "\n";
 
@@ -255,13 +255,13 @@ class ImageProxy
     }
 
     /**
-     * @param int         $width
-     * @param int         $height
-     * @param string|null $color
+     * @param int    $width
+     * @param int    $height
+     * @param string $color
      *
      * @return \Intervention\Image\Image
      */
-    public function create_image(int $width = 1000, int $height = 1000, string $color = null)
+    public function create_image(int $width, int $height, string $color)
     {
         $manager = new ImageManager(['driver' => 'imagick']);
         $img = $manager->canvas($width, $height, $color)
