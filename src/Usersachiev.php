@@ -12,7 +12,6 @@ use PDOStatement;
  */
 class Usersachiev
 {
-    protected $cache;
     protected $fluent;
     protected $env;
     protected $limit;
@@ -22,16 +21,14 @@ class Usersachiev
     /**
      * Usersachiev constructor.
      *
-     * @param Cache    $cache
      * @param Database $fluent
      * @param Settings $settings
      *
      * @throws Exception
      */
-    public function __construct(Cache $cache, Database $fluent, Settings $settings)
+    public function __construct(Database $fluent, Settings $settings)
     {
         $this->fluent = $fluent;
-        $this->cache = $cache;
         $this->settings = $settings;
         $this->site_config = $this->settings->get_settings();
         $this->limit = $this->site_config['db']['query_limit'];
@@ -89,6 +86,44 @@ class Usersachiev
                                 ->set($set)
                                 ->where('userid = ?', $userid)
                                 ->execute();
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @return string
+     */
+    public function get_count(int $userid)
+    {
+        try {
+            return $this->fluent->from('usersachiev')
+                                ->select(null)
+                                ->select('achpoints')
+                                ->where('userid = ?', $userid)
+                                ->where('achpoints >= 1')
+                                ->fetch('achpoints');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @return string
+     */
+    public function get_points(int $userid)
+    {
+        try {
+            return $this->fluent->from('usersachiev')
+                                ->select(null)
+                                ->select('achpoints')
+                                ->select('spentpoints')
+                                ->where('userid = ?', $userid)
+                                ->fetch();
         } catch (\Exception $e) {
             return $e->getMessage();
         }

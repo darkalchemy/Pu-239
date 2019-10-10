@@ -33,7 +33,7 @@ if ($site_config['alerts']['bug'] && has_access($user['class'], UC_STAFF, 'coder
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
                         " . _('New Bug Message') . "
                     </div>
-                    <div class='has-text-centered'>" . _('New Bug Message') . " {$user['username']}!<br> " . _pf('There is %s new bug!', 'There are %s new bugs!', $bug_count) . '</div>
+                    <div class='has-text-centered'>" . _('New Bug Message') . " {$user['username']}!<br> " . _pfe('There is {0} new bug!', 'There are {0} new bugs!', $bug_count) . '</div>
                  </div>
             </div>
         </a>

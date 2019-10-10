@@ -83,7 +83,7 @@ switch ($rep_locale) {
 }
 
 if (!mysqli_num_rows($forum)) {
-    rep_output(_('%s Does Not Exist - Incorrect Access', $this_rep));
+    rep_output(_fe('{0} Does Not Exist - Incorrect Access', $this_rep));
 }
 
 $res = mysqli_fetch_assoc($forum) or sqlerr(__LINE__, __FILE__);
@@ -95,7 +95,7 @@ if (isset($res['minclassread'])) {
 
 $repeat = sql_query("SELECT postid FROM reputation WHERE postid ={$input['pid']} AND whoadded={$user['id']}") or sqlerr(__FILE__, __LINE__);
 if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
-    rep_output(_('You have already added Rep to this %s!', $this_rep));
+    rep_output(_fe('You have already added Rep to this {0}!', $this_rep));
 }
 
 if (!$is_mod) {
@@ -230,7 +230,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
             default:
                 $rep_info = _fe('Your reputation on {0}this Post{1} is {2}<br>Total: {3} points.', "{$site_config['paths']['baseurl']}/forums.php?action=viewtopic&amp;topicid={$res['locale']}&amp;page=p{$input['pid']}#{$input['pid']}' target='_blank'>", '</a>', $rep, $total);
         }
-        $rep_points = _fe('You have %d Reputation Point(s).', $user['reputation']);
+        $rep_points = _pfe('You have {0} Reputation Point.', 'You have {0} Reputation Points.', $user['reputation']);
         $html = "
                         <tr>
                             <td class='has-text-centered'>{$rep_info}</td>

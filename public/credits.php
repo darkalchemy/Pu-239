@@ -12,7 +12,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 $HTMLOUT = '';
-$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 $act_validation = [
     '',
     'add',

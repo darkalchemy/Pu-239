@@ -319,8 +319,8 @@ class User
      * @param int   $userid
      * @param bool  $persist
      *
-     * @throws Exception
      * @throws UnbegunTransaction
+     * @throws Exception
      *
      * @return bool|int|PDOStatement
      */
@@ -557,12 +557,25 @@ class User
     {
         try {
             $this->auth->forgotPassword($email, function ($selector, $token) use ($email) {
-                $body = sprintf(doc_head($this->site_config['site']['name'] . _(' Reset Password Request')), $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
+                $body = doc_head(_fe('{0} Reset Password Request', $this->site_config['site']['name'])) . _fe('
+</head>
+<body>
+<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>
+<p>The request originated from {1}.</p>
+<p>If you did not do this, you can ignore this email. Please do not reply.</p>
+<p>Should you wish to confirm this request, please follow this link:</p>
+<br>
+<p><b>{2}/recover.php?selector={3}&token={4}</b></p>
+<br>
+<p>After you do this, you will be able to log with the new password.</p>
+<p>--{5}</p>
+</body>
+</html>', $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
                 send_mail($email, "{$this->site_config['site']['name']} " . _('password reset confirmation'), $body, strip_tags($body));
             });
-            stderr(_('Error'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
+            stderr(_('Success'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
         } catch (InvalidEmailException $e) {
-            stderr(_('Error'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
+            stderr(_('Success'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
         } catch (EmailNotVerifiedException $e) {
             stderr(_('Error'), _('Email has not been verified.'));
         } catch (ResetDisabledException $e) {
@@ -752,6 +765,32 @@ class User
                                 ->select(null)
                                 ->select('COUNT(id) AS count')
                                 ->where('username = ?', $username)
+                                ->fetch('count');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param string $where
+     * @param string $by
+     *
+     * @return mixed|string
+     */
+    public function get_count(string $where, string $by)
+    {
+        $allowed_columns = [
+            'invitedby',
+        ];
+        if (!in_array($where, $allowed_columns)) {
+            return false;
+        }
+        try {
+            return $this->fluent->from('users')
+                                ->select(null)
+                                ->select('COUNT(id) AS count')
+                                ->where('status = 0')
+                                ->where($where . ' = ?', $by)
                                 ->fetch('count');
         } catch (\Exception $e) {
             return $e->getMessage();

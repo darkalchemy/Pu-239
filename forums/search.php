@@ -344,21 +344,21 @@ $search_in_forums .= '
 $search_when_drop_down = '
         <select name="search_when">
             <option class="body" value="0" ' . ($search_when === 0 ? 'selected' : '') . '>' . _('No time frame') . '</option>
-            <option class="body" value="604800" ' . ($search_when === 604800 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 1) . '</option>
-            <option class="body" value="1209600" ' . ($search_when === 1209600 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 2) . '</option>
-            <option class="body" value="1814400" ' . ($search_when === 1814400 ? 'selected' : '') . '>' . _p('%1 week ago', '%1 weeks ago', 3) . '</option>
-            <option class="body" value="2419200" ' . ($search_when === 2419200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 1) . '</option>
-            <option class="body" value="4838400" ' . ($search_when === 4838400 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 2) . '</option>
-            <option class="body" value="7257600" ' . ($search_when === 7257600 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 3) . '</option>
-            <option class="body" value="9676800" ' . ($search_when === 9676800 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 4) . '</option>
-            <option class="body" value="12096000" ' . ($search_when === 12096000 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 5) . '</option>
-            <option class="body" value="14515200" ' . ($search_when === 14515200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 6) . '</option>
-            <option class="body" value="16934400" ' . ($search_when === 16934400 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 7) . '</option>
-            <option class="body" value="19353600" ' . ($search_when === 19353600 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 8) . '</option>
-            <option class="body" value="21772800" ' . ($search_when === 21772800 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 9) . '</option>
-            <option class="body" value="24192000" ' . ($search_when === 24192000 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 10) . '</option>
-            <option class="body" value="26611200" ' . ($search_when === 26611200 ? 'selected' : '') . '>' . _p('%1 month ago', '%1 months ago', 11) . '</option>
-            <option class="body" value="30800000" ' . ($search_when === 30800000 ? 'selected' : '') . '>' . _p('%1 year ago', '%1 years ago', 1) . '</option>
+            <option class="body" value="604800" ' . ($search_when === 604800 ? 'selected' : '') . '>' . _pfe('%{0} week ago', '{0} weeks ago', 1) . '</option>
+            <option class="body" value="1209600" ' . ($search_when === 1209600 ? 'selected' : '') . '>' . _pfe('{0} week ago', '{0} weeks ago', 2) . '</option>
+            <option class="body" value="1814400" ' . ($search_when === 1814400 ? 'selected' : '') . '>' . _pfe('{0} week ago', '{0} weeks ago', 3) . '</option>
+            <option class="body" value="2419200" ' . ($search_when === 2419200 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 1) . '</option>
+            <option class="body" value="4838400" ' . ($search_when === 4838400 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 2) . '</option>
+            <option class="body" value="7257600" ' . ($search_when === 7257600 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 3) . '</option>
+            <option class="body" value="9676800" ' . ($search_when === 9676800 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 4) . '</option>
+            <option class="body" value="12096000" ' . ($search_when === 12096000 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 5) . '</option>
+            <option class="body" value="14515200" ' . ($search_when === 14515200 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 6) . '</option>
+            <option class="body" value="16934400" ' . ($search_when === 16934400 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 7) . '</option>
+            <option class="body" value="19353600" ' . ($search_when === 19353600 ? 'selected' : '') . '>' . _p('{0} month ago', '{0} months ago', 8) . '</option>
+            <option class="body" value="21772800" ' . ($search_when === 21772800 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 9) . '</option>
+            <option class="body" value="24192000" ' . ($search_when === 24192000 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 10) . '</option>
+            <option class="body" value="26611200" ' . ($search_when === 26611200 ? 'selected' : '') . '>' . _pfe('{0} month ago', '{0} months ago', 11) . '</option>
+            <option class="body" value="30800000" ' . ($search_when === 30800000 ? 'selected' : '') . '>' . _pfe('{0} year ago', '{0} years ago', 1) . '</option>
             <option class="body" value="0">' . _('Eternity') . '</option>
         </select>';
 $sort_by_drop_down = '

@@ -48,4 +48,22 @@ class Topic
 
         return $forum_id;
     }
+
+    /**
+     * @param int $userid
+     *
+     * @return mixed|string
+     */
+    public function get_user_count(int $userid)
+    {
+        try {
+            return $this->fluent->from('topics')
+                                ->select(null)
+                                ->select('COUNT(id) AS count')
+                                ->where('user_id = ?', $userid)
+                                ->fetch('count');
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

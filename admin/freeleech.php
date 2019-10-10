@@ -126,11 +126,11 @@ $HTMLOUT .= "
     <tr><td class='rowhead'>" . _('Expires in ') . "
     </td><td>
     <select name='expires'>
-    <option value='1'>" . _pf('%d day', '%d days', 1) . "</option>
-    <option value='2'>" . _pf('%d day', '%d days', 2) . "</option>
-    <option value='3'>" . _pf('%d day', '%d days', 3) . "</option>
-    <option value='5'>" . _pf('%d day', '%d days', 5) . "</option>
-    <option value='7'>" . _pf('%d day', '%d days', 6) . "</option>
+    <option value='1'>" . _pfe('{0} day', '{0} days', 1) . "</option>
+    <option value='2'>" . _pfe('{0} day', '{0} days', 2) . "</option>
+    <option value='3'>" . _pfe('{0} day', '{0} days', 3) . "</option>
+    <option value='5'>" . _pfe('{0} day', '{0} days', 5) . "</option>
+    <option value='7'>" . _pfe('{0} day', '{0} days', 6) . "</option>
     <option value='255'>" . _('Unlimited') . "</option>
     </select></td></tr>
     <tr><td class='rowhead'>" . _('Title') . "</td>

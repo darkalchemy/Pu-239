@@ -290,7 +290,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $header = "
                 <tr>
                     <th colspan='2'>
-                        <h2 class='has-text-centered'>" . ($action === 'edit' ? _('Editing: %s', $page_name) : _('Add A New Staff Page')) . '</h2>
+                        <h2 class='has-text-centered'>" . ($action === 'edit' ? _fe('Editing: {0}', $page_name) : _('Add A New Staff Page')) . '</h2>
                     </th>
                 </tr>';
         $body = "

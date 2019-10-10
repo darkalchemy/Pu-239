@@ -85,7 +85,7 @@ function pager(int $perpage, int $count, $href, $opts = [], $class = null)
                         $pagerstr
                     </nav>";
         $pagerbottom = "
-                    <div class='has-text-centered top20 bottom10'>" . _pfe('Overall {1} items in {0, number} page, showing {2} per page.', 'Overall {1} items in {0, number} pages, showing {2} per page.', $i, $count, $perpage) . "</div>
+                    <div class='has-text-centered top20 bottom10'>" . _fe('Overall {0} items in {1} pages, showing {2} per page.', $count, $i, $perpage) . "</div>
                     <nav class='pagination is-centered is-marginless is-small' role='navigation' aria-label='pagination'>{$pager}{$pager2}
                         $pagerstr
                     </nav>";
@@ -146,7 +146,7 @@ function pager_rep($data)
         if (isset($data['mini'])) {
             $pager['first_page'] = "<img src='{$site_config['paths']['images_baseurl']}multipage.gif' alt='' title=''>";
         } else {
-            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>" . _pf('{0, number} Page', '{0, number} Pages', $pager['pages']) . '</span>&#160;';
+            $pager['first_page'] = "<span style='background: #F0F5FA; border: 1px solid #072A66;padding: 1px 3px 1px 3px;'>" . _pf('{0} Page', '{0} Pages', $pager['pages']) . '</span>&#160;';
         }
         for ($i = 0; $i <= $pager['pages'] - 1; ++$i) {
             $RealNo = $i * $data['perpage'];

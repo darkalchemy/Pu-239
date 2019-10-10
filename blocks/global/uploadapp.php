@@ -31,10 +31,10 @@ if ($site_config['alerts']['uploadapp'] && has_access($user['class'], UC_STAFF, 
             <div class='tooltip_templates'>
                 <div id='uploadapp_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        " . _('Hey %s!', $user['username']) . "
+                        " . _fe('Hey {0}!', $user['username']) . "
                     </div>
                     <div class='has-text-centered'>
-                        " . _pf('%2$d uploader application to be dealt with.', '%2$d uploader applications to be dealt with.', $newapp) . '
+                        " . _pfe('{0} uploader application to be dealt with.', '{0} uploader applications to be dealt with.', $newapp) . '
                     </div>
                 </div>
             </div>

@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
-            stderr(_('Success'), _pf('{0, number} user disabled', '{0} users disabled', $d));
+            stderr(_('Success'), _pf('{0} user disabled', '{0} users disabled', $d));
         } else {
             stderr(_('Error'), _('Something went wrong!'));
         }
@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $q1 = sql_query("UPDATE users SET hnrwarn='no', modcomment=CONCAT(" . sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' - Hit and Run Warning removed by ' . $CURUSER['username'] . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or sqlerr(__FILE__, __LINE__);
             if ($g && $q1) {
                 header('Refresh: 2; url=' . $r);
-                stderr(_('Success'), _pf("%1$s user HnR's warning removed", "%1$s users HnR's warning removed", count($pms)));
+                stderr(_('Success'), _pfe("{0} user HnR's warning removed", "{0} users HnR's warning removed", count($pms)));
             } else {
                 stderr(_('Error'), _('Something went wrong!'));
             }

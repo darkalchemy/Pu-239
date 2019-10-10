@@ -157,7 +157,7 @@ if (isset($_POST['form']) != 1) {
     }
 } else {
     if (!is_valid_id((int) $_POST['userid'])) {
-        stderr(_('Error'), _('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
+        stderr(_('Error'), _fe('It appears something went wrong while sending your application. Please {0}try again{1}', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>", '</a>'));
     }
     if (!$_POST['speed']) {
         stderr(_('Error'), _('It appears you have left the field with your upload speed blank.'));
@@ -212,7 +212,7 @@ if (isset($_POST['form']) != 1) {
         ->execute();
     $cache->delete('new_uploadapp_');
     if (!$res) {
-        stderr(_('Error'), _('It appears something went wrong while sending your application. Please %s', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>" . _('try again') . '</a>'));
+        stderr(_('Error'), _fe('It appears something went wrong while sending your application. Please {0}try again{1}', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>", '</a>'));
     } else {
         $subject = 'Uploader application';
         $msg = "An uploader application has just been filled in by [url={$site_config['paths']['baseurl']}/userdetails.php?id=" . (int) $user['id'] . "][b]{$user['username']}[/b][/url]. Click [url={$site_config['paths']['baseurl']}/staffpanel.php?tool=uploadapps&action=app][b]Here[/b][/url] to go to the uploader applications page.";

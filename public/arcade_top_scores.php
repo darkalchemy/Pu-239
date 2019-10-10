@@ -13,7 +13,7 @@ global $container, $site_config;
 $HTMLOUT = "
         <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Arcade Top Scores!') . "</h1>
         <div class='bottom10 has-text-centered'>
-            <div>" . _('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</div>
+            <div>" . _fe('Top Scores Earn {0} Karma Points', $site_config['arcade']['top_score_points']) . "</div>
             <div class='level-center top10'>
                 <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade.php'>" . _('Back to the Arcade') . '</a>
             </div>

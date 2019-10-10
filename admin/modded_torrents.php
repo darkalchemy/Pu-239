@@ -281,8 +281,8 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = _pfe('by {1} within the last {0, number} day', 'by {1} within the last {0, number} days', $_POST['time'], $_POST['username']);
-            $title = _pfe('{1}: Modded Torrents from {0, number} day ago', '{1}: Modded Torrents from {0, number} days ago', $_POST['time'], $_POST['username']);
+            $text = _pfe('by {1} within the last {0} day', 'by {1} within the last {0} days', $_POST['time'], $_POST['username']);
+            $title = _pfe('{1}: Modded Torrents from {0} day ago', '{1}: Modded Torrents from {0} days ago', $_POST['time'], $_POST['username']);
         } elseif ($when) {
             $data = $fluent->from('torrents')
                            ->select(null)
@@ -294,7 +294,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->orderBy('checked_when DESC')
                            ->fetchAll();
 
-            $text = _pf('from the past {0, number} day.', 'from the past {0, number} days.', $_POST['time']);
+            $text = _pf('from the past {0} day.', 'from the past {0} days.', $_POST['time']);
             $title = pfe('{1}: Modded Torrents from {0, number day ago', '{1}: Modded Torrents from {0, number days ago', $_POST['time'], $_POST['username']);
         } elseif ($whom) {
             $data = $fluent->from('torrents AS t')

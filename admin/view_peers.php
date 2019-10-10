@@ -21,7 +21,7 @@ $count = $peer->get_count();
 $peersperpage = 25;
 $HTMLOUT .= "
     <h1 class='has-text-centered'>" . _('Site Peers') . "</h1>
-    <div class='size_4 has-text-centered margin20'>" . _pfe('There is {0, number} peer currently on the tracker', 'There are {0, number} peers currently on the tracker', $count) . '</div>';
+    <div class='size_4 has-text-centered margin20'>" . _pfe('There is {0} peer currently on the tracker', 'There are {0} peers currently on the tracker', $count) . '</div>';
 $valid_sort = [
     'id',
     'userid',

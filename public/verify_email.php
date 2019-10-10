@@ -39,7 +39,7 @@ try {
 if (empty($emails[0])) {
     $session->set('is-success', _('Your email has been confirmed'));
 } else {
-    $session->set('is-success', _('Your email has been changed to %s', $emails[1]));
+    $session->set('is-success', _fe('Your email has been changed to {0}', $emails[1]));
 }
 $cache = $container->get(Cache::class);
 $userid = $auth->getUserId();

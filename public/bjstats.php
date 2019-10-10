@@ -2,14 +2,16 @@
 
 declare(strict_types = 1);
 
+use Pu239\Database;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-global $site_config;
+global $container, $site_config;
 
-if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _('Sorry, you must be a %s to play blackjack!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+if (!has_access($user['class'], $site_config['allowed']['play'], '')) {
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play blackjack!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
 }
@@ -23,24 +25,21 @@ if ($user['class'] < $site_config['allowed']['play']) {
  */
 function bjtable($res, $frame_caption)
 {
-    $htmlout = '';
-    $htmlout .= begin_frame($frame_caption, true);
-    $htmlout .= begin_table();
-    $htmlout .= "<tr>
-    <td class='colhead'>" . _('Rank') . "</td>
-    <td class='colhead'>" . _('User') . "</td>
-    <td class='colhead has-text-right'>" . _('Wins') . "</td>
-    <td class='colhead has-text-right'>" . _('Losses') . "</td>
-    <td class='colhead has-text-right'>" . _('Games') . "</td>
-    <td class='colhead has-text-right'>" . _('Percentage') . "</td>
-    <td class='colhead has-text-right'>" . _('Win/Loss') . '</td>
-    </tr>';
+    $htmlout = "<h1 class='has-text-centered'>$frame_caption</h1>";
+    $heading = '
+        <tr>
+            <th>' . _('Rank') . '</th>
+            <th>' . _('User') . "</th>
+            <th class='colhead has-text-right'>" . _('Wins') . "</th>
+            <th class='colhead has-text-right'>" . _('Losses') . "</th>
+            <th class='colhead has-text-right'>" . _('Games') . "</th>
+            <th class='colhead has-text-right'>" . _('Percentage') . "</th>
+            <th class='colhead has-text-right'>" . _('Win/Loss') . '</th>
+        </tr>';
     $num = 0;
-    while ($a = mysqli_fetch_assoc($res)) {
-        ++$num;
-        //==Calculate Win %
+    $body = '';
+    foreach ($res as $a) {
         $win_perc = number_format(($a['wins'] / $a['games']) * 100, 1);
-        //==Add a user's +/- statistic
         $plus_minus = $a['wins'] - $a['losses'];
         if ($plus_minus >= 0) {
             $plus_minus = mksize(($a['wins'] - $a['losses']) * 100 * 1024 * 1024);
@@ -48,10 +47,10 @@ function bjtable($res, $frame_caption)
             $plus_minus = '-';
             $plus_minus .= mksize(($a['losses'] - $a['wins']) * 100 * 1024 * 1024);
         }
-        $htmlout .= "
+        $body .= '
             <tr>
-                <td>$num</td>
-                <td>" . format_username((int) $a['id']) . "</td>
+                <td>' . ++$num . '</td>
+                <td>' . format_username((int) $a['id']) . "</td>
                 <td class='has-text-right'>" . number_format($a['wins'], 0) . "</td>
                 <td class='has-text-right'>" . number_format($a['losses'], 0) . "</td>
                 <td class='has-text-right'>" . number_format($a['games'], 0) . "</td>
@@ -59,29 +58,68 @@ function bjtable($res, $frame_caption)
                 <td class='has-text-right'>$plus_minus</td>
             </tr>";
     }
-    $htmlout .= end_table();
-    $htmlout .= end_frame();
+    if (empty($body)) {
+        $body .= "
+            <tr>
+                <td colspan='7' class='has-text-centered'>" . _('No Game Stats') . '</td>
+            </tr>';
+    }
+    $htmlout .= main_table($body, $heading);
 
     return $htmlout;
 }
 
-$HTMLOUT = '';
 $mingames = 10;
-$HTMLOUT .= '<br>';
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY games DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
-$HTMLOUT .= bjtable($res, _('Most Games Played'));
-$HTMLOUT .= '<br><br>';
-//==Highest Win %
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins / (bjwins + bjlosses) AS winperc FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY winperc DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+$fluent = $container->get(Database::class);
+$res = $fluent->from('users')
+              ->select('id')
+              ->select('username')
+              ->select('bjwins AS wins')
+              ->select('bjlosses AS losses')
+              ->select('bjwins + bjlosses AS games')
+              ->where('bjwins + bjlosses > ?', $mingames)
+              ->orderBy('games')
+              ->limit(10)
+              ->fetchAll();
+$HTMLOUT = bjtable($res, _('Most Games Played'));
+
+$res = $fluent->from('users')
+              ->select('id')
+              ->select('username')
+              ->select('bjwins AS wins')
+              ->select('bjlosses AS losses')
+              ->select('bjwins + bjlosses AS games')
+              ->select('bjwins / (bjwins + bjlosses) AS winperc')
+              ->where('bjwins + bjlosses > ?', $mingames)
+              ->orderBy('winperc')
+              ->limit(10)
+              ->fetchAll();
 $HTMLOUT .= bjtable($res, _('Highest Win Percentage'));
-$HTMLOUT .= '<br><br>';
-//==Highest Win %
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjwins - bjlosses AS winnings FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY winnings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+
+$res = $fluent->from('users')
+              ->select('id')
+              ->select('username')
+              ->select('bjwins AS wins')
+              ->select('bjlosses AS losses')
+              ->select('bjwins - bjlosses AS winnings')
+              ->where('bjwins + bjlosses > ?', $mingames)
+              ->orderBy('winnings')
+              ->limit(10)
+              ->fetchAll();
 $HTMLOUT .= bjtable($res, _('Most Credit Won'));
-$HTMLOUT .= '<br><br>';
-$res = sql_query('SELECT id, username, bjwins AS wins, bjlosses AS losses, bjwins + bjlosses AS games, bjlosses - bjwins AS losings FROM users WHERE bjwins + bjlosses >' . sqlesc($mingames) . ' ORDER BY losings DESC LIMIT 10') or sqlerr(__FILE__, __LINE__);
+
+$res = $fluent->from('users')
+              ->select('id')
+              ->select('username')
+              ->select('bjwins AS wins')
+              ->select('bjlosses AS losses')
+              ->select('bjlosses - bjwins AS losings')
+              ->select('bjwins / (bjwins + bjlosses) AS winperc')
+              ->where('bjwins + bjlosses > ?', $mingames)
+              ->orderBy('losings')
+              ->limit(10)
+              ->fetchAll();
 $HTMLOUT .= bjtable($res, _('Most Credit Lost'));
-$HTMLOUT .= '<br><br>';
 $title = _('Blackjack Stats');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",

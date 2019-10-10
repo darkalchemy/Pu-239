@@ -12,7 +12,7 @@ global $container, $site_config;
 
 $HTMLOUT = '';
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _('Sorry, you must be a %s to play these games!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play these games!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
 }
@@ -46,22 +46,22 @@ $HTMLOUT = "
             </div>' . main_div("
             <div class='columns is-multiline is-variable is-0-mobile is-1-tablet is-2-desktop'>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1'><div class='has-text-centered $color1'>" . _('BlackJack %s', '1GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1'><div class='has-text-centered $color1'>" . _fe('Blackjack {0}', '1GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=10'><div class='has-text-centered $color2'>" . _('BlackJack %s', '10GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=10'><div class='has-text-centered $color2'>" . _fe('Blackjack {0}', '10GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=20'><div class='has-text-centered $color3'>" . _('BlackJack %s', '20GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=20'><div class='has-text-centered $color3'>" . _fe('Blackjack {0}', '20GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=50'><div class='has-text-centered $color4'>" . _('BlackJack %s', '50GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=50'><div class='has-text-centered $color4'>" . _fe('Blackjack {0}', '50GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
@@ -71,22 +71,22 @@ $HTMLOUT = "
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=100'><div class='has-text-centered $color5'>" . _('BlackJack %s', '100GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=100'><div class='has-text-centered $color5'>" . _fe('Blackjack {0}', '100GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=250'><div class='has-text-centered $color6'>" . _('BlackJack %s', '250GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=250'><div class='has-text-centered $color6'>" . _fe('Blackjack {0}', '250GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=500'><div class='has-text-centered $color7'>" . _('BlackJack %s', '500GB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=500'><div class='has-text-centered $color7'>" . _fe('Blackjack {0}', '500GB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>
                 <div class='column is-one-third'>
-                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1000'><div class='has-text-centered $color8'>" . _('BlackJack %s', '1TB') . "</div>
+                    <a href='{$site_config['paths']['baseurl']}/blackjack.php?id=1000'><div class='has-text-centered $color8'>" . _fe('Blackjack {0}', '1TB') . "</div>
                         <img src='{$site_config['paths']['images_baseurl']}blackjack.jpg' alt='blackjack' class='round10 w-100'>
                     </a>
                 </div>

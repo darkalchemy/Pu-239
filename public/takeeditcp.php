@@ -17,7 +17,7 @@ use Pu239\Message;
 use Pu239\Session;
 
 $curuser_cache = $user_cache = $urladd = $changedemail = $birthday = '';
-$action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
+$action = isset($_POST['action']) ? htmlsafechars($_POST['action']) : '';
 $updateset = $curuser_cache = $user_cache = [];
 $setbits = $clrbits = $setbits2 = $clrbits2 = 0;
 global $container, $site_config;

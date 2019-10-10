@@ -71,7 +71,7 @@ if (!empty($row) && $row['curr_ann_id'] == 0 && $row['curr_ann_last_check'] == 0
             $query = sprintf('INSERT INTO announcement_process (main_id, ' . 'user_id, status) VALUES (%s, %s, %s)', sqlesc($ann_row['main_id']), sqlesc($row['id']), sqlesc($status));
         } else {
             // Update Process result set status = 2 (Read)
-            $query = sprintf('UPDATE announcement_process SET status = %s ' . 'WHERE process_id=%s', sqlesc($status), sqlesc($ann_row['process_id']));
+            $query = sprintf('UPDATE announcement_process SET status = %s ' . 'WHERE process_id = %s', sqlesc($status), sqlesc($ann_row['process_id']));
         }
         sql_query($query) or sqlerr(__FILE__, __LINE__);
     } else {

@@ -583,7 +583,7 @@ if ($request > 0) {
     $filled = 1;
 }
 if ($filled == 0) {
-    write_log(_('Torrent %1$s (%2$s) was uploaded by %3$s', $id, $torrent, $user['username']));
+    write_log(_fe('Torrent {0} ({1}) was uploaded by {2}', $id, $torrent, $user['username']));
 }
 
 $notify = $users_class->get_notifications($catid);

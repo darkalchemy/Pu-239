@@ -12,7 +12,7 @@ global $site_config;
 
 $HTMLOUT = $ip = $mask = '';
 $HTMLOUT .= begin_main_frame();
-$ip = isset($_GET['ip']) ? htmlsafechars(trim($_GET['ip'])) : '';
+$ip = isset($_GET['ip']) ? htmlsafechars($_GET['ip']) : '';
 if ($ip) {
     $regex = "/^(((1?\d{1,2})|(2[0-4]\d)|(25[0-5]))(\.\b|$)){4}$/";
     if (!preg_match($regex, $ip)) {
@@ -25,7 +25,7 @@ if ($ip) {
         ];
         echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
     }
-    $mask = isset($_GET['mask']) ? htmlsafechars(trim($_GET['mask'])) : '';
+    $mask = isset($_GET['mask']) ? htmlsafechars($_GET['mask']) : '';
     if ($mask == '' || $mask === '255.255.255.255') {
         $where1 = "u.ip = '$ip'";
         $where2 = "ips.ip = '$ip'";

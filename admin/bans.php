@@ -40,9 +40,9 @@ if ($remove > 0) {
     }
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $CURUSER['class'] >= UC_MAX) {
-    $first = trim($_POST['first']);
-    $last = trim($_POST['last']);
-    $comment = htmlsafechars(trim($_POST['comment']));
+    $first = htmlsafechars($_POST['first']);
+    $last = htmlsafechars($_POST['last']);
+    $comment = htmlsafechars($_POST['comment']);
     if (!$first || !$last || !$comment) {
         stderr(_('Error'), _('Missing form data.'));
     }

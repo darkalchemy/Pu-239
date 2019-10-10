@@ -34,7 +34,7 @@ if ($site_config['alerts']['staffmsg'] && has_access($user['class'], UC_STAFF, '
                             " . _p('New Staff Message', 'New Staff Messages', $answeredby) . "
                         </div>
                         <div class='has-text-centered'>
-                            " . _pf('Hey %1$s!<br>There is %2$d new message for the staff.', 'Hey %1$s!<br>There are %2$d new messages for the staff.', $user['username'], $answeredby) . '
+                            " . _pfe('Hey {1}!<br>There is {0} new message for the staff.', 'Hey {1}!<br>There are {0} new messages for the staff.', $answeredby, $user['username']) . '
                         </div>
                     </div>
                 </div>

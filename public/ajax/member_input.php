@@ -45,12 +45,12 @@ switch ($action) {
         if ($id === $curuser['id']) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => _pfe('{0} flushed {1, number} torrent.', '{0} flushed {1, number} torrents.', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count),
+                'txt' => _pfe('{0} flushed {1} torrent.', '{0} flushed {1} torrents.', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count),
             ];
         } elseif ($id !== $curuser['id'] && $curuser['class'] >= UC_STAFF) {
             $values = [
                 'added' => TIME_NOW,
-                'txt' => _pfe('Staff Flush: {0} flushed {1, number} torrent for {2}', 'Staff Flush: {0} flushed {1, number} torrents for {2}', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count, "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]"),
+                'txt' => _pfe('Staff Flush: {0} flushed {1} torrent for {2}', 'Staff Flush: {0} flushed {1} torrents for {2}', "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$curuser['id']}]{$curuser['username']}[/url]", $count, "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$id}]{$user['username']}[/url]"),
             ];
         }
         $fluent = $container->get(Database::class);

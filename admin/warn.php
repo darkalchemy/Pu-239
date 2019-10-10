@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $d = mysqli_affected_rows($mysqli);
             header('Refresh: 2; url=' . $r);
-            stderr(_('Success'), _p('%$1d user disabled!', '%$1d users disabled!', $d));
+            stderr(_('Success'), _pfe('{0} user disabled!', '{0} users disabled!', $d));
         } else {
             stderr(_('Error'), _('Something went wrong!'));
         }
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $q1 = sql_query("UPDATE users SET warned='0', modcomment=CONCAT(" . sqlesc(get_date((int) $dt, 'DATE', 1) . _fe('Hey, your warning was removed by {0}', $CURUSER['username']) . "\n") . ',modcomment) WHERE id IN (' . implode(', ', $_uids) . ')') or ($q2_err = ((is_object($mysqli)) ? mysqli_error($mysqli) : (($___mysqli_res = mysqli_connect_error()) ? $___mysqli_res : false)));
             if ($q1) {
                 header('Refresh: 2; url=' . $r);
-                stderr(_('Success'), _pf('%1$s user unwarned.', '%1$s users unwarned.', count($msgs_buffer)));
+                stderr(_('Success'), _pfe('{0} user unwarned.', '{0} users unwarned.', count($msgs_buffer)));
             } else {
                 stderr(_('Error'), _('Something went wrong!'));
             }
@@ -118,7 +118,7 @@ $HTMLOUT .= "
                 $link
             </li>
         </ul>
-        <h1 class='has-text-centered'>" . _pf('total - {0, number} user', 'total - {0, number} users', $count) . '</h1>';
+        <h1 class='has-text-centered'>" . _pf('total - {0} user', 'total - {0} users', $count) . '</h1>';
 if ($count == 0) {
     $HTMLOUT .= stdmsg(_('Error'), _fe('There is no {0}', strtolower($title)));
 } else {

@@ -57,9 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $art = isset($post['art']) ? $post['art'] : '';
     $donate = isset($post['donate']) ? (int) $post['donate'] : 0;
     $torrent_id = isset($post['torrent_id']) ? (int) $post['torrent_id'] : 0;
-    $username = isset($post['username']) ? htmlsafechars(trim($post['username'])) : '';
+    $username = isset($post['username']) ? htmlsafechars($post['username']) : '';
     $bonusgift = isset($post['bonusgift']) ? (int) $post['bonusgift'] : 0;
-    $title = isset($post['title']) ? htmlsafechars(trim($post['title'])) : '';
+    $title = isset($post['title']) ? htmlsafechars($post['title']) : '';
     $users_class = $container->get(User::class);
     $bonuslog = $container->get(Bonuslog::class);
     $auth = $container->get(Auth::class);
@@ -219,8 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $rep_to_steal = $options[$option]['points'] / 1000;
                 $new_bonus = $user['seedbonus'] - $options[$option]['points'];
                 $pm = [];
-                $pm['subject'] = 'You just got robbed by %s';
-                $pm['subject_thief'] = 'Theft summary';
+                $pm['subject'] = _fe('You just got robbed by {0}');
+                $pm['subject_thief'] = _('Theft summary');
                 $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['paths']['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
                 $pm['message_thief'] = "Hey %s:\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ";
                 $foo = [

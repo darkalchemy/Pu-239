@@ -294,7 +294,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($add) {
             if ($request_class->insert($values)) {
                 $session->unset('post_request_data');
-                $session->set('is-success', _('Request: %s Added', format_comment($_POST['name'])));
+                $session->set('is-success', _fe('Request: {0} Added', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -302,7 +302,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['updated'] = $dt;
             unset($values['added']);
             if ($request_class->update($values, (int) $_POST['id'])) {
-                $session->set('is-success', _('Request: %s Updated', format_comment($_POST['name'])));
+                $session->set('is-success', _fe('Request: {0} Updated', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -441,7 +441,7 @@ if ($view && is_valid_id($id)) {
         $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>" . _('Add a Bounty to: %s', format_comment($post_data['name'])) . "</h2>
+                        <h2 class='has-text-centered'>" . _fe('Add a Bounty to: {0}', format_comment($post_data['name'])) . "</h2>
                         <h4 class='has-text-centered bottom20'><span class='tooltipper' title='" . _fe('You have contributed {0} / {1} of the total bounty offered', $post_data['bounty'], $post_data['bounties']) . "'>" . number_format($post_data['bounty']) . ' / ' . number_format($post_data['bounties']) . "</span></h4>
                         {$show_bounties}
                         <form class='form-inline table-wrapper' method='post' action='{$site_config['paths']['baseurl']}/requests.php?action=add_bounty' accept-charset='utf-8'>
@@ -458,7 +458,7 @@ if ($view && is_valid_id($id)) {
     $view_request .= "
                 <div class='columns bg-03 top20 round10'>
                     <div class='has-text-centered padding20'>
-                        <h2 class='has-text-centered'>" . _('Add a comment to: %s', format_comment($post_data['name'])) . "</h2>
+                        <h2 class='has-text-centered'>" . _fe('Add a comment to: {0}', format_comment($post_data['name'])) . "</h2>
                         <a class='button is-small' href='{$site_config['paths']['baseurl']}/requests.php?action=add_comment&amp;id={$id}'>" . _('Add Comment') . '</a>
                     </div>
                 </div>';

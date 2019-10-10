@@ -1109,7 +1109,7 @@ var ajaxChat = {
                 + encodedUserName
                 + '\');" title="Display your stats in chat. [Private Message]">Your Stats'
                 + '</a></li>'
-                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/casino \');" title="Show Casino and BlackJack Stats.">'
+                + '<li class="disc"><a href="javascript:ajaxChat.sendMessageWrapper(\'/casino \');" title="Show Casino and Blackjack Stats.">'
                 + 'Game Stats'
                 + '</a></li>'
                 + '<li class="disc"><a href="' + window.location.origin + '/hnrs.php" target="_blank">Hit and Runs</a></li>'

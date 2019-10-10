@@ -26,15 +26,15 @@ if ($site_config['alerts']['report'] && has_access($user['class'], UC_STAFF, 'co
     <li>
         <a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reports&amp;action=reports'>
             <span class='button tag is-danger dt-tooltipper-small' data-tooltip-content='#reportmessage_tooltip'>
-                " . _pf('%d New Report', '%d New Reports', $delt_with) . "
+                " . _pfe('{0} New Report', '{0} New Reports', $delt_with) . "
             </span>
             <div class='tooltip_templates'>
                 <div id='reportmessage_tooltip' class='margin20'>
                     <div class='size_6 has-text-centered has-text-danger has-text-weight-bold bottom10'>
-                        " . _pf('%d New Report', '%d New Reports', $delt_with) . "
+                        " . _pfe('{0} New Report', '{0} New Reports', $delt_with) . "
                     </div>
                     <div class='has-text-centered'>
-                        " . _pf('Hey %1$s!<br>%2$d new report to be dealt with.', 'Hey %1$s!<br>%2$d new reports to be dealt with.', $user['username'], $delt_with) . '
+                        " . _pfe('Hey {1}!<br>{0} new report to be dealt with.', 'Hey {1}!<br>{0} new reports to be dealt with.', $delt_with, $user['username']) . '
                     </div>
                 </div>
             </div>

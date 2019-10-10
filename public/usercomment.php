@@ -26,7 +26,7 @@ $stdfoot = [
     ],
 ];
 $HTMLOUT = '';
-$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : '';
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : '';
 
 $fluent = $container->get(Database::class);
 $users_class = $container->get(User::class);

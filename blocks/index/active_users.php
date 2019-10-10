@@ -50,7 +50,7 @@ $active_users .= "
             <div class='bordered'>
                 <div class='alt_bordered bg-00'>
                     <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>
-                        " . _pf('%d Active User', '%d Active Users', $active['actcount']) . "
+                        " . _pfe('{0} Active User', '{0} Active Users', $active['actcount']) . "
                     </div>
                     <div class='level-item is-wrapped padding20'>
                         {$active['activeusers']}
