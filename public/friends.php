@@ -253,12 +253,12 @@ if (empty($res)) {
             <img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="' . _('Offline') . '" class="tooltipper" title="' . _('Offline') . '">';
         $title = !empty($friend['title']) ? htmlsafechars($friend['title']) : '';
         $ratio = member_ratio((float) $friend['uploaded'], (float) $friend['downloaded']);
-        $last_seen = _fe('Last seen: {0}', get_anonymous((int) $friend['id']) ? 'Never' : get_date($friend['last_access'], 'LONG'));
+        $last_seen = _fe('Last seen: {0}', get_anonymous((int) $friend['id']) ? 'Never' : '<br>' . get_date($friend['last_access'], 'LONG'));
         $delete = "<span class='button is-small right5'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . $friend['id'] . "' class='has-text-black'>" . _('Remove') . '</a></span>';
         $pm_link = " <span class='button is-small left5'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black'>" . _('Send PM') . '</a></span>';
         $avatar = get_avatar($friend);
         $friends .= "
-            <div class='masonry-item-clean padding20 bg-02 round10 has-text-centered'>
+            <div class='masonry-item-clean padding20 round10 has-text-centered'>
                 {$avatar}
                 <div class='level-wide'>" . format_username($friend['id']) . "{$online}</div>
                 <div class='level-center'>{$title} {$ratio}</div>
