@@ -2967,6 +2967,9 @@ msgstr "Delete PMs"
 msgid "Delete PMs:"
 msgstr "Delete PMs:"
 
+msgid "Delete Post"
+msgstr "Delete Post"
+
 msgid "Delete Reason"
 msgstr "Delete Reason"
 
@@ -3414,6 +3417,9 @@ msgstr "Edit Offer"
 
 msgid "Edit Poll"
 msgstr "Edit Poll"
+
+msgid "Edit Post"
+msgstr "Edit Post"
 
 msgid "Edit Reply"
 msgstr "Edit Reply"
@@ -7963,6 +7969,9 @@ msgstr "Previous Months Images"
 msgid "Priority"
 msgstr "Priority"
 
+msgid "Private Messages"
+msgstr "Private Messages"
+
 msgid "Private messages disabled = "
 msgstr "Private messages disabled = "
 
@@ -8987,6 +8996,10 @@ msgstr "Select {0}"
 msgid "Send"
 msgstr "Send"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Send <i class=\"{0}\">{1}</i> a PM</i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Send All not connectable Users A PM"
 
@@ -9882,6 +9895,9 @@ msgstr "Subscribed to topic"
 
 msgid "Subscript"
 msgstr "Subscript"
+
+msgid "Subscriptions"
+msgstr "Subscriptions"
 
 msgid "Subtitle"
 msgstr "Subtitle"
@@ -11457,6 +11473,10 @@ msgstr "Undelete"
 msgid "Underline"
 msgstr "Underline"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "Unfriend <i class=\"{0}\">{1}</i>"
+
 msgid "Unknow Browser"
 msgstr "Unknow Browser"
 
@@ -11807,6 +11827,9 @@ msgstr "User info?"
 
 msgid "User information"
 msgstr "User information"
+
+msgid "User is Anonymous"
+msgstr "User is Anonymous"
 
 msgid "User name"
 msgstr "User name"
@@ -13766,9 +13789,6 @@ msgstr "has just placed a"
 msgid "has never hit"
 msgstr "has never hit"
 
-msgid "has no posts to look at"
-msgstr "has no posts to look at"
-
 msgid "has won"
 msgstr "has won"
 
@@ -14646,6 +14666,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0} has no Hit and Runs!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "{0} has no posts to look at!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} has tried to login using invalid data. "
 
@@ -14833,7 +14857,7 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
 msgstr[1] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} was hit {0} time in {2} seconds"

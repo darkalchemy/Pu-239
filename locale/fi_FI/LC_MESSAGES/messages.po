@@ -2971,6 +2971,9 @@ msgstr "Poista PM"
 msgid "Delete PMs:"
 msgstr "Poista PM: t"
 
+msgid "Delete Post"
+msgstr "Poista viesti"
+
 msgid "Delete Reason"
 msgstr "Poista syy"
 
@@ -3418,6 +3421,9 @@ msgstr "Muokkaa tarjousta"
 
 msgid "Edit Poll"
 msgstr "Muokkaa kyselyä"
+
+msgid "Edit Post"
+msgstr "Muokkaa viestiä"
 
 msgid "Edit Reply"
 msgstr "Muokkaa vastausta"
@@ -7967,6 +7973,9 @@ msgstr "Edellisten kuukausien kuvat"
 msgid "Priority"
 msgstr "prioriteetti"
 
+msgid "Private Messages"
+msgstr "yksityisviestit"
+
 msgid "Private messages disabled = "
 msgstr "Yksityiset viestit poistettu käytöstä ="
 
@@ -8991,6 +9000,10 @@ msgstr "Valitse {0}"
 msgid "Send"
 msgstr "Lähettää"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Lähetä <i class=\"{0}\"> {1} </i> a PM </i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Lähetä kaikille käyttäjille, joita ei voida liittää, PM"
 
@@ -9886,6 +9899,9 @@ msgstr "Tilattu aiheeseen"
 
 msgid "Subscript"
 msgstr "alaindeksi"
+
+msgid "Subscriptions"
+msgstr "Tilaukset"
 
 msgid "Subtitle"
 msgstr "alaotsikko"
@@ -11461,6 +11477,10 @@ msgstr "undelete"
 msgid "Underline"
 msgstr "Korostaa"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "Ystävällinen <i class=\"{0}\"> {1} </i>"
+
 msgid "Unknow Browser"
 msgstr "Tuntematon selain"
 
@@ -11811,6 +11831,9 @@ msgstr "Käyttäjätiedot?"
 
 msgid "User information"
 msgstr "Käyttäjän tiedot"
+
+msgid "User is Anonymous"
+msgstr "Käyttäjä on tuntematon"
 
 msgid "User name"
 msgstr "Käyttäjänimi"
@@ -13770,9 +13793,6 @@ msgstr "on juuri sijoittanut"
 msgid "has never hit"
 msgstr "ei ole koskaan lyönyt"
 
-msgid "has no posts to look at"
-msgstr "ei ole tarkasteltavia viestejä"
-
 msgid "has won"
 msgstr "on voittanut"
 
@@ -14650,6 +14670,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0} ei ole osuma ja juoksee!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "{0}: lla ei ole tarkasteltavia viestejä!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} on yrittänyt kirjautua sisään virheellisillä tiedoilla."
 
@@ -14837,7 +14861,7 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} on juuri ostanut {2} {0} arpajaisen lipun! {3} hyvää onnea!"
 msgstr[1] "{1} on juuri ostanut {2} {0} arpalippuja! {3} HYVÄÄ onnea!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} osui {0} aikaan {2} sekunnissa"

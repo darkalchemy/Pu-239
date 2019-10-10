@@ -159,3 +159,9 @@ $HTMLOUT .= '
     </form>';
 
 require_once FORUM_DIR . 'last_ten.php';
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}'>{$topic_name}</a>",
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}&page={$page}#{$post_id}'>" . _('Post') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=edit_post&post_id={$post_id}&topic_id={$topic_id}&page={$page}'>" . _('Edit Post') . '</a>',
+];

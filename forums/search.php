@@ -442,3 +442,7 @@ $table_body = '
                 </tr>';
 
 $HTMLOUT .= main_table($table_body) . '</form>' . $content;
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=search'>" . _('Search') . '</a>',
+];

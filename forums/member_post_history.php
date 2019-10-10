@@ -141,7 +141,12 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 
     $res = sql_query('SELECT p.id AS post_id, p.topic_id, p.user_id, p.added, p.body, p.edited_by, p.edit_date, p.icon, p.post_title, p.bbcode, p.post_history, p.edit_reason, p.status AS post_status, p.anonymous, t.id AS topic_id, t.topic_name, t.forum_id, t.sticky, t.locked, t.poll_id, t.status AS topic_status, f.name AS forum_name, f.description FROM posts AS p LEFT JOIN topics AS t ON p.topic_id=t.id LEFT JOIN forums AS f ON f.id=t.forum_id WHERE  ' . ($CURUSER['class'] < UC_STAFF ? 'p.status = \'ok\' AND t.status = \'ok\' AND' : ($CURUSER['class'] < $site_config['forum_config']['min_delete_view_class'] ? 'p.status != \'deleted\' AND t.status != \'deleted\'  AND' : '')) . ' p.user_id=' . sqlesc($member_id) . ' AND f.min_class_read <= ' . $CURUSER['class'] . ' ORDER BY p.id ' . $ASC_DESC . $LIMIT) or sqlerr(__FILE__, __LINE__);
     if ($count === 0) {
-        stderr(_('Sorry'), (!empty($member_id) ? format_username((int) $member_id) . ' ' . _('has no posts to look at') . '!' : _('No member with that ID!')));
+        $breadcrumbs = [
+            "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+            "<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>" . _('Member Post History') . '</a>',
+            "<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history&id={$member_id}'>" . _('Error') . '</a>',
+        ];
+        stderr(_('Sorry'), (!empty($member_id) ? _fe('{0} has no posts to look at!', format_username((int) $member_id)) : _('Invalid ID')), '', '', $breadcrumbs);
     }
     $HTMLOUT .= $mini_menu . '<h1 class="has-text-centered">' . $count . ' ' . _('Posts by') . ' ' . format_username((int) $member_id) . '</h1>
             <ul class="level-center bottom20">
@@ -245,3 +250,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
     }
     $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . ' < a id="bottom"></a>';
 }
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=member_post_history'>" . _('Member Post History') . '</a>',
+];

@@ -95,3 +95,7 @@ if ($count === 0) {
     }
     $HTMLOUT .= '</table>' . ($count > $perpage ? $menu_bottom : '');
 }
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=new_replies'>" . _('New Replies') . '</a>',
+];

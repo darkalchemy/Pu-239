@@ -2968,6 +2968,9 @@ msgstr "PM 삭제"
 msgid "Delete PMs:"
 msgstr "PM 삭제 :"
 
+msgid "Delete Post"
+msgstr ""
+
 msgid "Delete Reason"
 msgstr "이유 삭제"
 
@@ -3415,6 +3418,9 @@ msgstr "오퍼 편집"
 
 msgid "Edit Poll"
 msgstr "설문 조사 편집"
+
+msgid "Edit Post"
+msgstr ""
 
 msgid "Edit Reply"
 msgstr "답글 수정"
@@ -7958,6 +7964,9 @@ msgstr "지난 달 이미지"
 msgid "Priority"
 msgstr "우선 순위"
 
+msgid "Private Messages"
+msgstr ""
+
 msgid "Private messages disabled = "
 msgstr "비공개 메시지 비활성화 ="
 
@@ -8981,6 +8990,10 @@ msgstr "{0}을 (를) 선택하십시오"
 msgid "Send"
 msgstr "보내다"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr ""
+
 msgid "Send All not connectable Users A PM"
 msgstr "연결할 수없는 모든 사용자에게 PM 보내기"
 
@@ -9875,6 +9888,9 @@ msgstr "주제 구독"
 
 msgid "Subscript"
 msgstr "아래 첨자"
+
+msgid "Subscriptions"
+msgstr ""
 
 msgid "Subtitle"
 msgstr "부제"
@@ -11442,6 +11458,10 @@ msgstr "삭제 취소"
 msgid "Underline"
 msgstr "밑줄"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr ""
+
 msgid "Unknow Browser"
 msgstr "알 수없는 브라우저"
 
@@ -11792,6 +11812,9 @@ msgstr "사용자 정보?"
 
 msgid "User information"
 msgstr "사용자 정보"
+
+msgid "User is Anonymous"
+msgstr ""
 
 msgid "User name"
 msgstr "사용자 이름"
@@ -13738,9 +13761,6 @@ msgstr "방금 배치했습니다"
 msgid "has never hit"
 msgstr "적중하지 않았다"
 
-msgid "has no posts to look at"
-msgstr "볼 게시물이 없습니다"
-
 msgid "has won"
 msgstr "이겼다"
 
@@ -14600,6 +14620,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0}에 히트 및 런이 없습니다!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr ""
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0}이 (가) 유효하지 않은 데이터를 사용하여 로그인을 시도했습니다."
 
@@ -14775,7 +14799,7 @@ msgid "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
 msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] ""
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] ""

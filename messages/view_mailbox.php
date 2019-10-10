@@ -163,3 +163,7 @@ $HTMLOUT .= (!empty($messages) ? "
     </div>
         ' . ($count > $perpage ? $pager['pagerbottom'] . '<br>' : '') . '
     </form>';
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/messages.php'>" . _('Private Messages') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/messages.php'>{$mailbox_name}</a>",
+];

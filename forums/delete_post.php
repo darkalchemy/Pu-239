@@ -93,6 +93,12 @@ if ($sanity_check > 0) {
     header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
-    stderr(_('Sanity Check!'), '' . _('Are you sure you want to delete this post? If so, click') . ' 
-	<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.');
+    $breadcrumbs = [
+        "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+        "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}'>" . _('Topic') . '</a>',
+        "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}&page={$page}#{$post_id}'>" . _('Post') . '</a>',
+        "<a href='{$site_config['paths']['baseurl']}/forums.php?action=edit_post&post_id={$post_id}&topic_id={$topic_id}&page={$page}'>" . _('Delete Post') . '</a>',
+    ];
+    stderr(_('Sanity Check!'), _('Are you sure you want to delete this post? If so, click') . ' 
+	<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=delete_post&amp;post_id=' . $post_id . '&amp;topic_id=' . $topic_id . '&amp;sanity_check=1">Here</a>.', '', '', $breadcrumbs);
 }

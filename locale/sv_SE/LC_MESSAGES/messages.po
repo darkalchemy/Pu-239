@@ -2971,6 +2971,9 @@ msgstr "Radera PM"
 msgid "Delete PMs:"
 msgstr "Ta bort PM:"
 
+msgid "Delete Post"
+msgstr "Radera inlägg"
+
 msgid "Delete Reason"
 msgstr "Ta bort orsak"
 
@@ -3418,6 +3421,9 @@ msgstr "Redigera erbjudande"
 
 msgid "Edit Poll"
 msgstr "Redigera undersökning"
+
+msgid "Edit Post"
+msgstr "Redigera inlägg"
 
 msgid "Edit Reply"
 msgstr "Redigera svar"
@@ -7967,6 +7973,9 @@ msgstr "Föregående månaders bilder"
 msgid "Priority"
 msgstr "Prioritet"
 
+msgid "Private Messages"
+msgstr "privata meddelanden"
+
 msgid "Private messages disabled = "
 msgstr "Privata meddelanden inaktiverade ="
 
@@ -8991,6 +9000,10 @@ msgstr "Välj {0}"
 msgid "Send"
 msgstr "Skicka"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Skicka <i class=\"{0}\"> {1} </i> a PM </i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Skicka alla användare som inte kan anslutas A PM"
 
@@ -9886,6 +9899,9 @@ msgstr "Prenumererar på ämnet"
 
 msgid "Subscript"
 msgstr "Index"
+
+msgid "Subscriptions"
+msgstr "Prenumerationer"
 
 msgid "Subtitle"
 msgstr "Texta"
@@ -11461,6 +11477,10 @@ msgstr "Återställ"
 msgid "Underline"
 msgstr "Understrykning"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "Ovänlighet <i class=\"{0}\"> {1} </i>"
+
 msgid "Unknow Browser"
 msgstr "Ta bort webbläsaren"
 
@@ -11811,6 +11831,9 @@ msgstr "Användarinformation?"
 
 msgid "User information"
 msgstr "Användar information"
+
+msgid "User is Anonymous"
+msgstr "Användaren är anonym"
 
 msgid "User name"
 msgstr "Användarnamn"
@@ -13770,9 +13793,6 @@ msgstr "har just placerat en"
 msgid "has never hit"
 msgstr "har aldrig slagit"
 
-msgid "has no posts to look at"
-msgstr "har inga inlägg att titta på"
-
 msgid "has won"
 msgstr "har vunnit"
 
@@ -14650,6 +14670,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0} har ingen Hit and Runs!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "{0} har inga inlägg att titta på!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} har försökt att logga in med ogiltiga data."
 
@@ -14837,7 +14861,7 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} har just köpt {2} {0} Lotteri! {3} GOOD LUCK!"
 msgstr[1] "{1} har just köpt {2} {0} Lotteri biljetter! {3} GOOD LUCK!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} träffades {0} tiden på {2} sekunder"

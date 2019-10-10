@@ -14,6 +14,10 @@ $count = $fluent->from('subscriptions')
                 ->select('COUNT(id) AS count')
                 ->where('user_id = ?', $CURUSER['id'])
                 ->fetch('count');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=subscriptions'>" . _('Subscriptions') . '</a>',
+];
 if ($count === 0) {
     $HTMLOUT .= main_div("
         <h1 class='has-text-centered'>" . _('No Subscriptions Found') . '!</h1>

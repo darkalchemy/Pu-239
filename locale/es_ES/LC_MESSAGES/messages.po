@@ -2971,6 +2971,9 @@ msgstr "Eliminar PMs"
 msgid "Delete PMs:"
 msgstr "Eliminar PMs:"
 
+msgid "Delete Post"
+msgstr "Eliminar mensaje"
+
 msgid "Delete Reason"
 msgstr "Eliminar motivo"
 
@@ -3418,6 +3421,9 @@ msgstr "Editar oferta"
 
 msgid "Edit Poll"
 msgstr "Editar encuesta"
+
+msgid "Edit Post"
+msgstr "Editar post"
 
 msgid "Edit Reply"
 msgstr "Editar respuesta"
@@ -7967,6 +7973,9 @@ msgstr "Imágenes de meses anteriores"
 msgid "Priority"
 msgstr "Prioridad"
 
+msgid "Private Messages"
+msgstr "mensajes privados"
+
 msgid "Private messages disabled = "
 msgstr "Mensajes privados deshabilitados ="
 
@@ -8991,6 +9000,10 @@ msgstr "Seleccione {0}"
 msgid "Send"
 msgstr "Enviar"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Enviar <i class=\"{0}\"> {1} </i> a PM </i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Enviar todos los usuarios no conectables A PM"
 
@@ -9886,6 +9899,9 @@ msgstr "Suscrito al tema"
 
 msgid "Subscript"
 msgstr "Subíndice"
+
+msgid "Subscriptions"
+msgstr "Suscripciones"
 
 msgid "Subtitle"
 msgstr "Subtitular"
@@ -11461,6 +11477,10 @@ msgstr "Recuperar"
 msgid "Underline"
 msgstr "Subrayar"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "No amigo <i class=\"{0}\"> {1} </i>"
+
 msgid "Unknow Browser"
 msgstr "Navegador desconocido"
 
@@ -11811,6 +11831,9 @@ msgstr "¿Información de usuario?"
 
 msgid "User information"
 msgstr "Informacion del usuario"
+
+msgid "User is Anonymous"
+msgstr "El usuario es anónimo."
 
 msgid "User name"
 msgstr "Nombre de usuario"
@@ -13770,9 +13793,6 @@ msgstr "acaba de colocar un"
 msgid "has never hit"
 msgstr "nunca ha golpeado"
 
-msgid "has no posts to look at"
-msgstr "no tiene publicaciones para mirar"
-
 msgid "has won"
 msgstr "ha ganado"
 
@@ -14650,6 +14670,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "¡{0} no tiene Hit and Runs!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "¡{0} no tiene publicaciones para mirar!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} ha intentado iniciar sesión con datos no válidos."
 
@@ -14837,7 +14861,7 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "¡{1} acaba de comprar {2} {0} boleto de lotería! {3} ¡BUENA SUERTE!"
 msgstr[1] "¡{1} acaba de comprar {2} {0} boletos de lotería! {3} ¡BUENA SUERTE!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} fue golpeado {0} veces en {2} segundos"

@@ -704,7 +704,9 @@ function insert_quick_jump_menu($current_forum = 0, $staff = false)
 }
 
 $title = _('Forums');
-$breadcrumbs = [
-    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
-];
+if (empty($breadcrumbs)) {
+    $breadcrumbs = [
+        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+    ];
+}
 echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

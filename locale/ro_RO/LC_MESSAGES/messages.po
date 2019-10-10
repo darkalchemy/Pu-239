@@ -2974,6 +2974,9 @@ msgstr "Ștergeți PM-urile"
 msgid "Delete PMs:"
 msgstr "Ștergeți PM-urile:"
 
+msgid "Delete Post"
+msgstr "Șterge Postare"
+
 msgid "Delete Reason"
 msgstr "Ștergeți motivul"
 
@@ -3421,6 +3424,9 @@ msgstr "Modificați oferta"
 
 msgid "Edit Poll"
 msgstr "Editează sondaj"
+
+msgid "Edit Post"
+msgstr "Editează postarea"
 
 msgid "Edit Reply"
 msgstr "Modificați Răspuns"
@@ -7976,6 +7982,9 @@ msgstr "Imagini din lunile anterioare"
 msgid "Priority"
 msgstr "Prioritate"
 
+msgid "Private Messages"
+msgstr "mesaje private"
+
 msgid "Private messages disabled = "
 msgstr "Mesaje private dezactivate ="
 
@@ -9001,6 +9010,10 @@ msgstr "Selectați {0}"
 msgid "Send"
 msgstr "Trimite"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Trimite <i class=\"{0}\"> {1} </i> a PM </i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Trimite Toți utilizatorii neconectabili un PM"
 
@@ -9897,6 +9910,9 @@ msgstr "Abonat la subiect"
 
 msgid "Subscript"
 msgstr "subscript"
+
+msgid "Subscriptions"
+msgstr "Abonamente"
 
 msgid "Subtitle"
 msgstr "Subtitlu"
@@ -11480,6 +11496,10 @@ msgstr "Undelete"
 msgid "Underline"
 msgstr "sublinia"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "Unfriend <i class=\"{0}\"> {1} </i>"
+
 msgid "Unknow Browser"
 msgstr "Browserul necunoscut"
 
@@ -11830,6 +11850,9 @@ msgstr "Informații despre utilizator?"
 
 msgid "User information"
 msgstr "Informații despre utilizator"
+
+msgid "User is Anonymous"
+msgstr "Utilizatorul este anonim"
 
 msgid "User name"
 msgstr "Nume de utilizator"
@@ -13802,9 +13825,6 @@ msgstr "tocmai a plasat un"
 msgid "has never hit"
 msgstr "nu a lovit niciodată"
 
-msgid "has no posts to look at"
-msgstr "nu are postări de privit"
-
 msgid "has won"
 msgstr "a câștigat"
 
@@ -14700,6 +14720,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0} nu are hit și rulează!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "{0} nu are mesaje de analizat!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} a încercat să se autentifice folosind date nevalide."
 
@@ -14899,7 +14923,7 @@ msgstr[0] "{1} tocmai a cumpărat {2} {0} Bilet de loterie! {3} BUNĂ LUCRU!"
 msgstr[1] "{1} tocmai a cumpărat {2} {0} Bilete de loterie! {3} BUNĂ LUCRU!"
 msgstr[2] "{1} tocmai a cumpărat {2} {0} Bilete de loterie! {3} BUNĂ LUCRU!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} a fost lovit {0} de timp în {2} secunde"

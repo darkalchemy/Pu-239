@@ -943,3 +943,9 @@ if ($CURUSER['class'] >= UC_STAFF) {
     </div>';
 }
 $HTMLOUT .= quick_reply($topic_id);
+
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&forum_id={$forum_id}'>{$forum_name}</a>",
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}'>{$topic_name}</a>",
+];
