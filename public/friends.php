@@ -251,22 +251,39 @@ if (empty($res)) {
         $online = $friend['last_access'] >= $dt && get_anonymous($friend['id']) ? '
             <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="' . _('Online') . '" class="tooltipper" title="' . _('Online') . '">' : '
             <img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="' . _('Offline') . '" class="tooltipper" title="' . _('Offline') . '">';
-        $title = !empty($friend['title']) ? htmlsafechars($friend['title']) : '';
-        $ratio = member_ratio((float) $friend['uploaded'], (float) $friend['downloaded']);
-        $last_seen = _fe('Last seen: {0}', get_anonymous((int) $friend['id']) ? 'Never' : '<br>' . get_date($friend['last_access'], 'LONG'));
-        $delete = "<span class='button is-small right5'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . $friend['id'] . "' class='has-text-black'>" . _('Remove') . '</a></span>';
-        $pm_link = " <span class='button is-small left5'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black'>" . _('Send PM') . '</a></span>';
+        $title = !empty($friend['title']) ? "<span class='" . get_user_class_name($friend['class'], true) . "'>" . htmlsafechars($friend['title']) . '</span>' : "<span class='" . get_user_class_name($friend['class'], true) . "'>" . get_user_class_name($friend['class']) . '</span>';
+        $user_ratio = member_ratio((float) $friend['uploaded'], (float) $friend['downloaded']);
+        $ratio_details = '
+            <div class="level-wide">
+                <span class="right20">' . _('Uploaded') . ':</span>    
+                <span class="left20">' . mksize($friend['uploaded']) . '</span>
+            </div>
+            <div class="level-wide">
+                <span class="right20">' . _('Downloaded') . ':</span>    
+                <span class="left20">' . mksize($friend['downloaded']) . '</span>
+            </div>
+            <div class="level-wide">
+                <span class="right20">' . _('Ratio') . ":</span>    
+                <span class=\"left20\">{$user_ratio}</span>
+            </div>";
+        $ratio = "<span class='tooltipper' title='{$ratio_details}'>{$user_ratio}</span>";
+        $last_seen = get_anonymous((int) $friend['id']) ? _('User is Anonymous') : "<span class='tooltipper' title='" . _fe('Last seen: {0}', get_date($friend['last_access'], 'LONG')) . "'>" . get_date($friend['last_access'], 'LONG') . '</span>';
+        $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . $friend['id'] . "' class='has-text-black tooltipper' title='" . _fe('Unfriend <i class="{0}">{1}</i>', get_user_class_name($friend['class'], true), $friend['username']) . "'>" . _('Remove') . '</a></span>';
+        $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black tooltipper' title='" . _fe('Send <i class="{0}">{1}</i> a PM</i>', get_user_class_name($friend['class'], true), $friend['username']) . "'>" . _('Send PM') . '</a></span>';
         $avatar = get_avatar($friend);
         $friends .= "
-            <div class='masonry-item-clean padding20 round10 has-text-centered'>
-                {$avatar}
-                <div class='level-wide'>" . format_username($friend['id']) . "{$online}</div>
-                <div class='level-center'>{$title} {$ratio}</div>
-                <div>{$last_seen}</div>
-                <div class='level-center-center top10'>
-                    {$delete}{$pm_link}
+            <div class='masonry-item-clean flex-vertical comments h-100'>
+                <div class='has-text-centered'>$avatar</div>
+                <div>
+                    <div class='level-wide'>" . format_username($friend['id']) . "{$online}</div>
+                    <div class='level-wide'>{$title} {$ratio}</div>
+                    <div class='has-text-centered'>{$last_seen}</div>
+                    <div class='level-wide top10'>
+                        {$delete}{$pm_link}
+                    </div>
                 </div>
-            </div>";
+            </div>
+        ";
     }
 }
 

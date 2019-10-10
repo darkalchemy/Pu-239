@@ -674,13 +674,15 @@ function get_avatar($avatar)
     }
     if ($CURUSER['avatars'] === 'yes') {
         if ($avatar['anonymous']) {
-            $avatar = "<img src='{$site_config['paths']['images_baseurl']}anonymous_1.png' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<div class='anonymous'>
+                    <img src='{$site_config['paths']['images_baseurl']}anonymous_1.png' alt='avatar' class='avatar mw-150 round5 bottom10'>
+                </div>";
         } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
-            $avatar = "<img src='{$site_config['paths']['images_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='{$site_config['paths']['images_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150 round5 bottom10'>";
         } elseif (empty($avatar['avatar'])) {
-            $avatar = "<img src='{$site_config['paths']['images_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='{$site_config['paths']['images_baseurl']}forumicons/default_avatar.gif' alt='avatar' class='avatar mw-150 round5 bottom10'>";
         } else {
-            $avatar = "<img src='{$avatar['avatar']}' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='{$avatar['avatar']}' alt='avatar' class='avatar mw-150 round5 bottom10'>";
         }
 
         return $avatar;
