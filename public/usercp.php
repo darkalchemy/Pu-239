@@ -79,7 +79,7 @@ $possible_actions = [
     'reset_api_key',
 ];
 $session = $container->get(Session::class);
-$action = isset($_GET['action']) ? htmlsafechars(trim($_GET['action'])) : 'default';
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'default';
 if (!in_array($action, $possible_actions)) {
     $session->set('is-warning', _('Error! Change a few things up and try submitting again.'));
 }

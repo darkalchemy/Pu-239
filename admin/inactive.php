@@ -18,7 +18,7 @@ $record_mail = true;
 $days = 30;
 $session = $container->get(Session::class);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = isset($_POST['action']) ? htmlsafechars(trim($_POST['action'])) : '';
+    $action = isset($_POST['action']) ? htmlsafechars($_POST['action']) : '';
     if (empty($_POST['userid']) && (($action === 'deluser') || ($action === 'mail'))) {
         $session->set('is-warning', _('For this to work you must select at least a user!'));
     }
@@ -145,7 +145,7 @@ if ($count_inactive > 0) {
         $ress = sql_query("SELECT avps.value_s AS userid, avps.value_i AS last_mail, avps.value_u AS mails, users.username FROM avps LEFT JOIN users ON avps.value_s=users.id WHERE avps.arg='inactivemail' LIMIT 1");
         $date = mysqli_fetch_assoc($ress);
         if ($date['last_mail'] > 0) {
-            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>" . _pfe('Last Email sent by {1} on {2} - {0, number} email sent', 'Last Email sent by {1} on {2} - {0, number} emails sent', $date['mails'], format_username((int) $date['userid']), get_date((int) $date['last_mail'], 'DATE')) . '</td></tr>';
+            $HTMLOUT .= "<tr><td colspan='6' class='colhead has-text-danger'>" . _pfe('Last Email sent by {1} on {2} - {0} email sent', 'Last Email sent by {1} on {2} - {0} emails sent', $date['mails'], format_username((int) $date['userid']), get_date((int) $date['last_mail'], 'DATE')) . '</td></tr>';
         }
     }
     $HTMLOUT .= '</table></form>';

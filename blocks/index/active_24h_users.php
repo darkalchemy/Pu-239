@@ -67,13 +67,13 @@ $active_users_24 .= "
             <div class='bordered'>
                 <div class='alt_bordered bg-00 has-text-centered'>
                     <div class='bg-00 padding10 bottom10 round5 size_5'>
-                        " . _pf('%d Member visited during the last 24 hours', '%d Members visited during the last 24 hours', $active24['totalonline24']) . "
+                        " . _pfe('{0} Member visited during the last 24 hours', '{0} Members visited during the last 24 hours', $active24['totalonline24']) . "
                     </div>
                     <div class='top10 bottom10 level-item is-wrapped top10 bottom10 padding20'>
                         {$active24['activeusers24']}
                     </div>
                     <div class='bg-00 padding10 has-text-centered round5 size_3'>
-                        " . _pf('Most ever visited in 24 hours was %1$d Member on %2$s', 'Most ever visited in 24 hours was %1$d Members on %2$s', $active24['last24'], $active24['record']) . '
+                        " . _fe('Most ever visited in 24 hours was {0} Members on {1}', $active24['last24'], $active24['record']) . '
                     </div>
                 </div>
             </div>

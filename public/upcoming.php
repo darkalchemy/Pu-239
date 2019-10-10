@@ -85,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($add) {
         if ($cooker_class->insert($values)) {
             $session->unset('post_data');
-            $session->set('is-success', _('Recipe: %s Added', format_comment($_POST['name'])));
+            $session->set('is-success', _fe('Recipe: {0} Added', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }
     } elseif ($edit) {
         if ($cooker_class->update($values, (int) $_POST['id'])) {
-            $session->set('is-success', _('Recipe: %s Updated', format_comment($_POST['name'])));
+            $session->set('is-success', _fe('Recipe: {0} Updated', format_comment($_POST['name'])));
             header('Location: ' . $_SERVER['PHP_SELF']);
             die();
         }

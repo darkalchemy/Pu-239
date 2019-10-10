@@ -27,7 +27,7 @@ if ($validation->fails()) {
     if (!isset($_GET['torrent_pass'])) {
         format_rss(_("Your link doesn't have a torrent pass"), null);
     } elseif (strlen($_GET['torrent_pass']) != 64) {
-        format_rss(_('Your torrent pass is not long enough! Go to %s and reset your passkey', $site_config['site']['name']), null);
+        format_rss(_fe('Your torrent pass is not long enough! Go to {0} and reset your passkey', $site_config['site']['name']), null);
     } else {
         format_rss(_("Your link isn't a valid rss link."), null);
     }
@@ -36,7 +36,7 @@ if ($validation->fails()) {
     $torrent_pass = $_GET['torrent_pass'];
     $user = $users_class->get_user_from_torrent_pass($torrent_pass);
     if (!$user) {
-        format_rss(_('Your torrent pass is invlaid! Go to %s and reset your passkey', $site_config['site']['name']), null);
+        format_rss(_fe('Your torrent pass is invlaid! Go to {0} and reset your passkey', $site_config['site']['name']), null);
     } elseif ($user['status'] === 2) {
         format_rss(_("Permission denied, you're account is disabled"), null);
     } elseif ($user['status'] === 1) {

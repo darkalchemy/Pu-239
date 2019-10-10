@@ -39,7 +39,7 @@ if ($user) {
                         {$mode}
                     </div>
                     <div class='has-text-centered'>
-                        " . _('%1$s set by %2$s<br>%3$s', $free['title'], $username) . ($free['expires'] != 1 ? _(' Until %1$s (%2$s to go).', get_date((int) $free['expires'], 'DATE'), mkprettytime($free['expires'] - TIME_NOW)) : '') . '
+                        " . _fe('{0} set by {1}<br>', $free['title'], $username) . ($free['expires'] != 1 ? _fe('Until {0} ({1} to go).', get_date((int) $free['expires'], 'DATE'), mkprettytime($free['expires'] - TIME_NOW)) : '') . '
                     </div>
                 </div>
             </div>

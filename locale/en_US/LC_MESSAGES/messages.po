@@ -45,6 +45,38 @@ msgstr ""
 "       {3} Staff\n"
 "       PS. Your donator status will last for {4} and can be found on your user details page and can only be seen by you {5} It was set by {6}"
 
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
+"<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
+"<p>The request originated from {1}.</p>\n"
+"<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
+"<p>Should you wish to confirm this request, please follow this link:</p>\n"
+"<br>\n"
+"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<br>\n"
+"<p>After you do this, you will be able to log with the new password.</p>\n"
+"<p>--{5}</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+"</head>\n"
+"<body>\n"
+"<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
+"<p>The request originated from {1}.</p>\n"
+"<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
+"<p>Should you wish to confirm this request, please follow this link:</p>\n"
+"<br>\n"
+"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<br>\n"
+"<p>After you do this, you will be able to log with the new password.</p>\n"
+"<p>--{5}</p>\n"
+"</body>\n"
+"</html>"
+
 msgid ""
 "\n"
 "Fields left blank will be ignored; Wildcards * and ? may be used in Name, Email and Comments, as well as multiple values separated by spaces (e.g. 'wyz Max*' in Name will list both users named 'wyz' and those whose names start by 'Max'. Similarly  '~' can be used for negation, e.g. '~alfiest' in comments will restrict the search to users that do not have 'alfiest' in their comments).<br><br>\n"
@@ -348,9 +380,6 @@ msgstr " Read Messages."
 msgid " Registration"
 msgstr " Registration"
 
-msgid " Reset Password Request"
-msgstr " Reset Password Request"
-
 msgid " Seconds "
 msgstr " Seconds "
 
@@ -486,91 +515,11 @@ msgstr "% Items: "
 msgid "% Misses: "
 msgstr "% Misses: "
 
-msgid "%$1d user disabled!"
-msgid_plural "%$1d users disabled!"
-msgstr[0] "%$1d user disabled!"
-msgstr[1] "%$1d users disabled!"
-
-msgid "%1 month ago"
-msgid_plural "%1 months ago"
-msgstr[0] "%1 month ago"
-msgstr[1] "%1 months ago"
-
-msgid "%1 week ago"
-msgid_plural "%1 weeks ago"
-msgstr[0] "%1 week ago"
-msgstr[1] "%1 weeks ago"
-
-msgid "%1 year ago"
-msgid_plural "%1 years ago"
-msgstr[0] "%1 year ago"
-msgstr[1] "%1 years ago"
-
-#, php-format
-msgid "%1$s user unwarned."
-msgid_plural "%1$s users unwarned."
-msgstr[0] "%1$s user unwarned."
-msgstr[1] "%1$s users unwarned."
-
-#, php-format
-msgid "%2$d uploader application to be dealt with."
-msgid_plural "%2$d uploader applications to be dealt with."
-msgstr[0] "%2$d uploader application to be dealt with."
-msgstr[1] "%2$d uploader applications to be dealt with."
-
-#, php-format
-msgid "%2$s was hit %1$d time in %3$s seconds"
-msgid_plural "%2$s was hit %1$d times in %3$s seconds"
-msgstr[0] "%2$s was hit %1$d time in %3$s seconds"
-msgstr[1] "%2$s was hit %1$d times in %3$s seconds"
-
-#, php-format
-msgid "%d Active User"
-msgid_plural "%d Active Users"
-msgstr[0] "%d Active User"
-msgstr[1] "%d Active Users"
-
-#, php-format
-msgid "%d Member visited during the last 24 hours"
-msgid_plural "%d Members visited during the last 24 hours"
-msgstr[0] "%d Member visited during the last 24 hours"
-msgstr[1] "%d Members visited during the last 24 hours"
-
-#, php-format
-msgid "%d New Report"
-msgid_plural "%d New Reports"
-msgstr[0] "%d New Report"
-msgstr[1] "%d New Reports"
-
-#, php-format
-msgid "%d Ticket"
-msgid_plural "%d Tickets"
-msgstr[0] "%d Ticket"
-msgstr[1] "%d Tickets"
-
-#, php-format
-msgid "%d Unread PM"
-msgid_plural "%d Unread PM's"
-msgstr[0] "%d Unread PM"
-msgstr[1] "%d Unread PM's"
-
-#, php-format
-msgid "%d day"
-msgid_plural "%d days"
-msgstr[0] "%d day"
-msgstr[1] "%d days"
-
-#, php-format
-msgid "%d hour"
-msgid_plural "%d hours"
-msgstr[0] "%d hour"
-msgstr[1] "%d hours"
-
-#, php-format
-msgid "%s ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgid_plural "%s ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgstr[0] "%s ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgstr[1] "%s ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+#, no-php-format
+msgid "%{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "%{0} week ago"
+msgstr[1] "{0} weeks ago"
 
 msgid "'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition."
 msgstr "'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition."
@@ -856,8 +805,9 @@ msgstr "A Ban with that ID could not be found"
 msgid "A DivX re-enc is a film that has been taken from its original VCD source, and re-encoded into a small DivX file. Most commonly found on file sharers, these are usually labeled something like Film.Name.Group(1of2) etc. Common groups are SMR and TND. These aren't really worth downloading, unless you're that unsure about a film u only want a 200mb copy of it. Generally avoid."
 msgstr "A DivX re-enc is a film that has been taken from its original VCD source, and re-encoded into a small DivX file. Most commonly found on file sharers, these are usually labeled something like Film.Name.Group(1of2) etc. Common groups are SMR and TND. These aren't really worth downloading, unless you're that unsure about a film u only want a 200mb copy of it. Generally avoid."
 
-msgid "A New achievment has been added"
-msgstr "A New achievment has been added"
+#, no-php-format
+msgid "A New achievment has been added. Achievement: [{0}]"
+msgstr "A New achievment has been added. Achievement: [{0}]"
 
 msgid "A Recipe has just come out of the oven"
 msgstr "A Recipe has just come out of the oven"
@@ -1008,17 +958,11 @@ msgstr "Account suspended = No"
 msgid "Account suspended = Yes"
 msgstr "Account suspended = Yes"
 
-msgid "Achievement"
-msgstr "Achievement"
-
 msgid "Achievement History"
 msgstr "Achievement History"
 
 msgid "Achievement Icon"
 msgstr "Achievement Icon"
-
-msgid "Achievement List"
-msgstr "Achievement List"
 
 msgid "Achievement Name"
 msgstr "Achievement Name"
@@ -1170,12 +1114,20 @@ msgstr "Add Upload Credit"
 msgid "Add User"
 msgstr "Add User"
 
+#, no-php-format
+msgid "Add a Bounty to: {0}"
+msgstr "Add a Bounty to: {0}"
+
 msgid "Add a New Class"
 msgstr "Add a New Class"
 
 #, no-php-format
 msgid "Add a comment to {0}"
 msgstr "Add a comment to {0}"
+
+#, no-php-format
+msgid "Add a comment to: {0}"
+msgstr "Add a comment to: {0}"
 
 msgid "Add a new cleanup task"
 msgstr "Add a new cleanup task"
@@ -1350,10 +1302,10 @@ msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr "All files must be in original format (usually 14.3 MB RARs)."
 
 msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
-msgstr ""
+msgstr "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
 
 msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
-msgstr ""
+msgstr "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
 
 msgid "All postings older than that will be set as read."
 msgstr "All postings older than that will be set as read."
@@ -1391,14 +1343,14 @@ msgstr "Allow Comments"
 msgid "Allow members to change their vote"
 msgstr "Allow members to change their vote"
 
-msgid "Allow members to change their vote? Default is"
-msgstr "Allow members to change their vote? Default is"
+msgid "Allow members to change their vote? Default is \"no\""
+msgstr "Allow members to change their vote? Default is \"no\""
 
 msgid "Allow members to have more then one selection"
 msgstr "Allow members to have more then one selection"
 
-msgid "Allow members to have more then one selection? Default is"
-msgstr "Allow members to have more then one selection? Default is"
+msgid "Allow members to have more then one selection? Default is 'Single option'!"
+msgstr "Allow members to have more then one selection? Default is 'Single option'!"
 
 msgid "Allowed Mark Of Cains"
 msgstr "Allowed Mark Of Cains"
@@ -1627,10 +1579,10 @@ msgid "Articles starting with the letter"
 msgstr "Articles starting with the letter"
 
 #, no-php-format
-msgid "As a {0}, you may have up to {1, number} PM Box, other than your in, sent and draft boxes."
-msgid_plural "As a {0}, you may have up to {1, number} PM Boxes, other than your in, sent and draft boxes."
-msgstr[0] "As a {0}, you may have up to {1, number} PM Box, other than your in, sent and draft boxes."
-msgstr[1] "As a {0}, you may have up to {1, number} PM Boxes, other than your in, sent and draft boxes."
+msgid "As a {0}, you may have up to {1} PM Box, other than your in, sent and draft boxes."
+msgid_plural "As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes."
+msgstr[0] "As a {0}, you may have up to {1} PM Box, other than your in, sent and draft boxes."
+msgstr[1] "As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes."
 
 msgid "As explained above peers favour other peers that upload to them. When you start leeching a new torrent you have nothing to offer to other peers and they will tend to ignore you. This makes the starts slow, in particular if, by change, the peers you are connected to include few or no seeders. The download speed should increase as soon as you have some pieces to share."
 msgstr "As explained above peers favour other peers that upload to them. When you start leeching a new torrent you have nothing to offer to other peers and they will tend to ignore you. This makes the starts slow, in particular if, by change, the peers you are connected to include few or no seeders. The download speed should increase as soon as you have some pieces to share."
@@ -1650,13 +1602,11 @@ msgstr "Asking for a re-seed"
 msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr "Assigned by mods at their discretion to users they feel contribute something special to the site."
 
-#, fuzzy
-#| msgid "Bottom"
 msgid "At Bottom"
-msgstr "Bottom"
+msgstr "At Bottom"
 
 msgid "At Top<br>What order you want the posts to be listed in."
-msgstr ""
+msgstr "At Top<br>What order you want the posts to be listed in."
 
 #, no-php-format
 msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
@@ -1710,10 +1660,8 @@ msgstr "Avatar"
 msgid "Avatar Guidelines -"
 msgstr "Avatar Guidelines -"
 
-#, fuzzy
-#| msgid "Additional Options"
 msgid "Avatar Options"
-msgstr "Additional Options"
+msgstr "Avatar Options"
 
 msgid "Avatar Possible"
 msgstr "Avatar Possible"
@@ -1942,22 +1890,6 @@ msgstr "Bittorrent peers tend to favour those other peers that upload to them. T
 msgid "Black"
 msgstr "Black"
 
-#, no-php-format
-msgid "BlackJack {0}: You tied with {1} You both had {2} points\n"
-msgstr "BlackJack {0}: You tied with {1} You both had {2} points\n"
-
-#, no-php-format
-msgid "BlackJack {0}: Your opponent was {1}. You both had {2} - it was a tie."
-msgstr "BlackJack {0}: Your opponent was {1}. You both had {2} - it was a tie."
-
-#, no-php-format
-msgid "BlackJack {0}: {1} {2} (You had {3} point, {4} had {6} points\n"
-msgstr "BlackJack {0}: {1} {2} (You had {3} point, {4} had {6} points\n"
-
-#, no-php-format
-msgid "BlackJack {0}: {1} {2} (You had {3} points, {4} had {5} points.)"
-msgstr "BlackJack {0}: {1} {2} (You had {3} points, {4} had {5} points.)"
-
 msgid "Blackjack"
 msgstr "Blackjack"
 
@@ -1966,6 +1898,30 @@ msgstr "Blackjack Results"
 
 msgid "Blackjack Stats"
 msgstr "Blackjack Stats"
+
+#, no-php-format
+msgid "Blackjack {0}"
+msgstr "Blackjack {0}"
+
+#, no-php-format
+msgid "Blackjack {0}: You tied with {1} You both had {2} points\n"
+msgstr "Blackjack {0}: You tied with {1} You both had {2} points\n"
+
+#, no-php-format
+msgid "Blackjack {0}: Your opponent was {1}. You both had {2} - it was a tie."
+msgstr "Blackjack {0}: Your opponent was {1}. You both had {2} - it was a tie."
+
+#, no-php-format
+msgid "Blackjack {0}: {1} {2} (You had {3} point, {4} had {6} points\n"
+msgstr "Blackjack {0}: {1} {2} (You had {3} point, {4} had {6} points\n"
+
+#, no-php-format
+msgid "Blackjack {0}: {1} {2} (You had {3} points, {4} had {5} points.)"
+msgstr "Blackjack {0}: {1} {2} (You had {3} points, {4} had {5} points.)"
+
+#, no-php-format
+msgid "Blackjack {0}GB"
+msgstr "Blackjack {0}GB"
 
 msgid "Blah blah blah."
 msgstr "Blah blah blah."
@@ -2425,7 +2381,7 @@ msgid "Click on your {0}profile{1}, then on your user name (at the top)."
 msgstr "Click on your {0}profile{1}, then on your user name (at the top)."
 
 msgid "Click to show the background image"
-msgstr ""
+msgstr "Click to show the background image"
 
 msgid "Click to view members invite tree"
 msgstr "Click to view members invite tree"
@@ -2606,11 +2562,12 @@ msgstr "Confusion now hath made his masterpiece!"
 msgid "Congratulations!"
 msgstr "Congratulations!"
 
-msgid "Congratulations, you have just won"
-msgstr "Congratulations, you have just won"
+#, no-php-format
+msgid "Congratulations, you have just won ''{0}''"
+msgstr "Congratulations, you have just won ''{0}''"
 
-msgid "Congratulations, your downloaded total has been reset from a negative value back to 0"
-msgstr "Congratulations, your downloaded total has been reset from a negative value back to 0"
+msgid "Congratulations, your downloaded total has been reset to 0"
+msgstr "Congratulations, your downloaded total has been reset to 0"
 
 #, no-php-format
 msgid "Congratulations, your uploader application has been accepted! You have been given  to Uploader Role and you are now able to upload torrents. Please make sure you have read the {0}guidelines on uploading{1} before you do."
@@ -2708,6 +2665,10 @@ msgstr "CrazyHour"
 msgid "CrazyHour ON"
 msgstr "CrazyHour ON"
 
+#, no-php-format
+msgid "CrazyHour {0} {1} Ends in {2} at {3}"
+msgstr "CrazyHour {0} {1} Ends in {2} at {3}"
+
 msgid "CrazyHour?"
 msgstr "CrazyHour?"
 
@@ -2777,10 +2738,8 @@ msgstr "Current Mood"
 msgid "Current Moods"
 msgstr "Current Moods"
 
-#, fuzzy
-#| msgid "Reset Password"
 msgid "Current Password"
-msgstr "Reset Password"
+msgstr "Current Password"
 
 msgid "Current Password can not be empty!"
 msgstr "Current Password can not be empty!"
@@ -2819,16 +2778,10 @@ msgid "Currently viewing this topic"
 msgstr "Currently viewing this topic"
 
 #, no-php-format
-msgid "Currently you have {0, number} custom box. You may add up to {1} additional mailboxes."
-msgid_plural "Currently you have {0, number} custom boxes. You may add up to {1}additional mailboxes."
-msgstr[0] "Currently you have {0, number} custom box. You may add up to {1} additional mailboxes."
-msgstr[1] "Currently you have {0, number} custom boxes. You may add up to {1}additional mailboxes."
-
-#, no-php-format
-msgid "Currently {0, number} achievment."
-msgid_plural "Currently {0, number} achievments."
-msgstr[0] "Currently {0, number} achievment."
-msgstr[1] "Currently {0, number} achievments."
+msgid "Currently you have {0} custom box. You may add up to {1} additional mailboxes."
+msgid_plural "Currently you have {0} custom boxes. You may add up to {1}additional mailboxes."
+msgstr[0] "Currently you have {0} custom box. You may add up to {1} additional mailboxes."
+msgstr[1] "Currently you have {0} custom boxes. You may add up to {1}additional mailboxes."
 
 msgid "Custom Title"
 msgstr "Custom Title"
@@ -2899,10 +2852,8 @@ msgstr "Date Earned"
 msgid "Date From"
 msgstr "Date From"
 
-#, fuzzy
-#| msgid "Date Earned"
 msgid "Date Started"
-msgstr "Date Earned"
+msgstr "Date Started"
 
 msgid "Date added"
 msgstr "Date added"
@@ -2935,7 +2886,7 @@ msgid "Deal With It"
 msgstr "Deal With It"
 
 msgid "Dealer"
-msgstr ""
+msgstr "Dealer"
 
 msgid "Dealt With"
 msgstr "Dealt With"
@@ -2959,10 +2910,8 @@ msgstr "Debug Info"
 msgid "December"
 msgstr "December"
 
-#, fuzzy
-#| msgid "Default is"
 msgid "Default"
-msgstr "Default is"
+msgstr "Default"
 
 msgid "Default Reputation"
 msgstr "Default Reputation"
@@ -2983,7 +2932,7 @@ msgid "Default is"
 msgstr "Default is"
 
 msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
-msgstr ""
+msgstr "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
 
 msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
@@ -3042,6 +2991,9 @@ msgstr "Delete comment"
 msgid "Delete forum?"
 msgstr "Delete forum?"
 
+msgid "Delete from Blocks List"
+msgstr "Delete from Blocks List"
+
 msgid "Delete it!"
 msgstr "Delete it!"
 
@@ -3062,6 +3014,10 @@ msgstr "Delete torrent. Reason"
 
 msgid "Delete users"
 msgstr "Delete users"
+
+#, no-php-format
+msgid "Delete {0} Request"
+msgstr "Delete {0} Request"
 
 msgid "Deleted"
 msgstr "Deleted"
@@ -3176,7 +3132,7 @@ msgstr "Display/Style"
 
 #, no-php-format
 msgid "Displayed on your public page. May contain {0}BBcode{1}."
-msgstr ""
+msgstr "Displayed on your public page. May contain {0}BBcode{1}."
 
 #, no-php-format
 msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
@@ -3229,7 +3185,7 @@ msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if
 msgstr "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 
 msgid "Do you wish to have your email address visible on the forums?"
-msgstr ""
+msgstr "Do you wish to have your email address visible on the forums?"
 
 msgid "Documentary"
 msgstr "Documentary"
@@ -3538,6 +3494,10 @@ msgstr "Editing the .torrent with Notepad is not recommended. It may look like a
 
 msgid "Editing the poll will re-set all the votes (ie: delete them)."
 msgstr "Editing the poll will re-set all the votes (ie: delete them)."
+
+#, no-php-format
+msgid "Editing: {0}"
+msgstr "Editing: {0}"
 
 msgid "Either this or the ISBN must be set in order to lookup the books details. The ISBN should yield better results."
 msgstr "Either this or the ISBN must be set in order to lookup the books details. The ISBN should yield better results."
@@ -3903,7 +3863,7 @@ msgid "Error"
 msgstr "Error"
 
 msgid "Error! Change a few things up and try submitting again."
-msgstr ""
+msgstr "Error! Change a few things up and try submitting again."
 
 msgid "Eternity"
 msgstr "Eternity"
@@ -4205,6 +4165,14 @@ msgstr "Free for 4 weeks"
 
 msgid "Free for 8 weeks"
 msgstr "Free for 8 weeks"
+
+#, no-php-format
+msgid "Free for {0} week"
+msgstr "Free for {0} week"
+
+#, no-php-format
+msgid "Free for {0} weeks"
+msgstr "Free for {0} weeks"
 
 msgid "FreeLeech ON"
 msgstr "FreeLeech ON"
@@ -4566,18 +4534,6 @@ msgstr "Here is the"
 msgid "Hey"
 msgstr "Hey"
 
-#, php-format
-msgid "Hey %1$s!<br>%2$d new report to be dealt with."
-msgid_plural "Hey %1$s!<br>%2$d new reports to be dealt with."
-msgstr[0] "Hey %1$s!<br>%2$d new report to be dealt with."
-msgstr[1] "Hey %1$s!<br>%2$d new reports to be dealt with."
-
-#, php-format
-msgid "Hey %1$s!<br>There is %2$d new message for the staff."
-msgid_plural "Hey %1$s!<br>There are %2$d new messages for the staff."
-msgstr[0] "Hey %1$s!<br>There is %2$d new message for the staff."
-msgstr[1] "Hey %1$s!<br>There are %2$d new messages for the staff."
-
 msgid "Hey its now happy hour!"
 msgstr "Hey its now happy hour!"
 
@@ -4609,6 +4565,22 @@ msgstr ""
 "so, enjoy\n"
 "cheers,\n"
 "{8} Staff."
+
+#, no-php-format
+msgid "Hey {0}!"
+msgstr "Hey {0}!"
+
+#, no-php-format
+msgid "Hey {1}!<br>There is {0} new message for the staff."
+msgid_plural "Hey {1}!<br>There are {0} new messages for the staff."
+msgstr[0] "Hey {1}!<br>There is {0} new message for the staff."
+msgstr[1] "Hey {1}!<br>There are {0} new messages for the staff."
+
+#, no-php-format
+msgid "Hey {1}!<br>{0} new report to be dealt with."
+msgid_plural "Hey {1}!<br>{0} new reports to be dealt with."
+msgstr[0] "Hey {1}!<br>{0} new report to be dealt with."
+msgstr[1] "Hey {1}!<br>{0} new reports to be dealt with."
 
 msgid "Hey! I've seen Power Users with less than 25GB uploaded!"
 msgstr "Hey! I've seen Power Users with less than 25GB uploaded!"
@@ -4802,6 +4774,9 @@ msgstr "How does this promotion thing work anyway?"
 msgid "How far back to search"
 msgstr "How far back to search"
 
+msgid "How long should this poll run? Default is 'run forever'"
+msgstr "How long should this poll run? Default is 'run forever'"
+
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr "How long this poll should run? Default is to 'Run Forever'"
 
@@ -4855,10 +4830,8 @@ msgstr "I am connectable"
 msgid "I applied"
 msgstr "I applied"
 
-#, fuzzy
-#| msgid "Sort of relaxed"
 msgid "I feel sort of relaxed"
-msgstr "Sort of relaxed"
+msgstr "I feel sort of relaxed"
 
 msgid "I have a positive ratio"
 msgstr "I have a positive ratio"
@@ -4893,15 +4866,11 @@ msgstr "I wear a tin-foil hat"
 msgid "I wear a tin-foil hat!"
 msgstr "I wear a tin-foil hat!"
 
-#, fuzzy
-#| msgid "Paranoid"
 msgid "I'm paranoid"
-msgstr "Paranoid"
+msgstr "I'm paranoid"
 
-#, fuzzy
-#| msgid "Totally relaxed"
 msgid "I'm totally relaxed"
-msgstr "Totally relaxed"
+msgstr "I'm totally relaxed"
 
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
@@ -5464,10 +5433,8 @@ msgstr "Irc Idle Time"
 msgid "Is daylight saving time in effect?"
 msgstr "Is daylight saving time in effect?"
 
-#, fuzzy
-#| msgid "No such user, please try again."
 msgid "Is taken, please try again."
-msgstr "No such user, please try again."
+msgstr "Is taken, please try again."
 
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
@@ -5476,17 +5443,18 @@ msgid "It <i>is</i> our policy to allow new accounts to be opened from behind a 
 msgstr "It <i>is</i> our policy to allow new accounts to be opened from behind a proxy."
 
 #, no-php-format
+msgid "It appears something went wrong while sending your application. Please {0}try again{1}"
+msgstr "It appears something went wrong while sending your application. Please {0}try again{1}"
+
+#, no-php-format
 msgid "It appears that there are currently no snatches for this {0}torrent.{1}"
 msgstr "It appears that there are currently no snatches for this {0}torrent.{1}"
 
 msgid "It appears that there is no uploader application with that ID."
 msgstr "It appears that there is no uploader application with that ID."
 
-msgid "It appears that you currently have no Achievement Bonus Points available to spend."
-msgstr "It appears that you currently have no Achievement Bonus Points available to spend."
-
-msgid "It appears that you have entered an invalid id."
-msgstr "It appears that you have entered an invalid id."
+msgid "It appears that you don't have any Achievement Bonus Points available to spend."
+msgstr "It appears that you don't have any Achievement Bonus Points available to spend."
 
 #, no-php-format
 msgid "It appears that {0} currently has no achievements."
@@ -5628,10 +5596,10 @@ msgid "Last Activity "
 msgstr "Last Activity "
 
 #, no-php-format
-msgid "Last Email sent by {1} on {2} - {0, number} email sent"
-msgid_plural "Last Email sent by {1} on {2} - {0, number} emails sent"
-msgstr[0] "Last Email sent by {1} on {2} - {0, number} email sent"
-msgstr[1] "Last Email sent by {1} on {2} - {0, number} emails sent"
+msgid "Last Email sent by {1} on {2} - {0} email sent"
+msgid_plural "Last Email sent by {1} on {2} - {0} emails sent"
+msgstr[0] "Last Email sent by {1} on {2} - {0} email sent"
+msgstr[1] "Last Email sent by {1} on {2} - {0} emails sent"
 
 msgid "Last IP"
 msgstr "Last IP"
@@ -5668,6 +5636,10 @@ msgstr "Last referers"
 
 msgid "Last seen"
 msgstr "Last seen"
+
+#, no-php-format
+msgid "Last seen: {0}"
+msgstr "Last seen: {0}"
 
 msgid "Last upload"
 msgstr "Last upload"
@@ -5757,7 +5729,7 @@ msgid "Level Description"
 msgstr "Level Description"
 
 msgid "Lifesaver"
-msgstr ""
+msgstr "Lifesaver"
 
 msgid "Likes"
 msgstr "Likes"
@@ -5818,7 +5790,7 @@ msgstr "Location"
 
 #, no-php-format
 msgid "Location Options => Is this the correct time? {0}"
-msgstr ""
+msgstr "Location Options => Is this the correct time? {0}"
 
 msgid "Lock"
 msgstr "Lock"
@@ -6202,10 +6174,10 @@ msgid "Message moved!"
 msgstr "Message moved!"
 
 #, no-php-format
-msgid "Message sent to {0, number} user"
-msgid_plural "Message sent to {0, number} users"
-msgstr[0] "Message sent to {0, number} user"
-msgstr[1] "Message sent to {0, number} users"
+msgid "Message sent to {0} user"
+msgid_plural "Message sent to {0} users"
+msgstr[0] "Message sent to {0} user"
+msgstr[1] "Message sent to {0} users"
 
 msgid "Message to "
 msgstr "Message to "
@@ -6406,11 +6378,9 @@ msgstr "Most common reason for stats not updating"
 msgid "Most common reasons for stats not updating"
 msgstr "Most common reasons for stats not updating"
 
-#, php-format
-msgid "Most ever visited in 24 hours was %1$d Member on %2$s"
-msgid_plural "Most ever visited in 24 hours was %1$d Members on %2$s"
-msgstr[0] "Most ever visited in 24 hours was %1$d Member on %2$s"
-msgstr[1] "Most ever visited in 24 hours was %1$d Members on %2$s"
+#, no-php-format
+msgid "Most ever visited in 24 hours was {0} Members on {1}"
+msgstr "Most ever visited in 24 hours was {0} Members on {1}"
 
 msgid "Most recent comments, in reverse order"
 msgstr "Most recent comments, in reverse order"
@@ -6460,10 +6430,8 @@ msgstr "Multiple choice question? (Allows users to select more than one choice)"
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
 msgstr "Multiple tags must be seperated by a comma like tag1,tag2"
 
-#, fuzzy
-#| msgid "Multi"
 msgid "Multiplier"
-msgstr "Multi"
+msgstr "Multiplier"
 
 msgid "Music"
 msgstr "Music"
@@ -6481,7 +6449,7 @@ msgid "Must match the above accepted file ext's. Add more at your own risk! Each
 msgstr "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 
 msgid "Must ne an image url."
-msgstr ""
+msgstr "Must ne an image url."
 
 msgid "My Blocks"
 msgstr "My Blocks"
@@ -6729,9 +6697,6 @@ msgstr "Next Question in: {0}"
 msgid "No"
 msgstr "No"
 
-msgid "No Achievement Bonus Points"
-msgstr "No Achievement Bonus Points"
-
 msgid "No Achievements"
 msgstr "No Achievements"
 
@@ -6761,6 +6726,9 @@ msgstr "No Freeslots left."
 
 msgid "No Friends yet."
 msgstr "No Friends yet."
+
+msgid "No Game Stats"
+msgstr "No Game Stats"
 
 msgid "No Image"
 msgstr "No Image"
@@ -6898,6 +6866,10 @@ msgstr "No files deleted since last check."
 msgid "No files modified since last check."
 msgstr "No files modified since last check."
 
+#, no-php-format
+msgid "No game with that name! ({0})"
+msgstr "No game with that name! ({0})"
+
 msgid "No idea what to do"
 msgstr "No idea what to do"
 
@@ -6911,7 +6883,7 @@ msgid "No information to show"
 msgstr "No information to show"
 
 msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
-msgstr ""
+msgstr "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
 
 msgid "No invitees yet."
 msgstr "No invitees yet."
@@ -7307,6 +7279,14 @@ msgstr "Offer Title"
 msgid "Offer was NOT Deleted"
 msgstr "Offer was NOT Deleted"
 
+#, no-php-format
+msgid "Offer: {0} Added"
+msgstr "Offer: {0} Added"
+
+#, no-php-format
+msgid "Offer: {0} Updated"
+msgstr "Offer: {0} Updated"
+
 msgid "Offered By"
 msgstr "Offered By"
 
@@ -7504,10 +7484,8 @@ msgid "OverForum:"
 msgstr "OverForum:"
 
 #, no-php-format
-msgid "Overall {1} items in {0, number} page, showing {2} per page."
-msgid_plural "Overall {1} items in {0, number} pages, showing {2} per page."
-msgstr[0] "Overall {1} items in {0, number} page, showing {2} per page."
-msgstr[1] "Overall {1} items in {0, number} pages, showing {2} per page."
+msgid "Overall {0} items in {1} pages, showing {2} per page."
+msgstr "Overall {0} items in {1} pages, showing {2} per page."
 
 msgid "Overforum description"
 msgstr "Overforum description"
@@ -7555,10 +7533,8 @@ msgstr "PM Sent to all non connectable peers"
 msgid "PM comment"
 msgstr "PM comment"
 
-#, fuzzy
-#| msgid "Multi options"
 msgid "PM options"
-msgstr "Multi options"
+msgstr "PM options"
 
 msgid "PM's"
 msgstr "PM's"
@@ -7588,10 +7564,8 @@ msgstr "Parameters"
 msgid "Paranoia"
 msgstr "Paranoia"
 
-#, fuzzy
-#| msgid "Paranoia level changed"
 msgid "Paranoia Levels explained"
-msgstr "Paranoia level changed"
+msgstr "Paranoia Levels explained"
 
 msgid "Paranoia level changed"
 msgstr "Paranoia level changed"
@@ -7710,13 +7684,15 @@ msgstr "Person"
 msgid "Personal"
 msgstr "Personal"
 
+#, no-php-format
+msgid "Personal Lists for {0}"
+msgstr "Personal Lists for {0}"
+
 msgid "Personal Message"
 msgstr "Personal Message"
 
-#, fuzzy
-#| msgid "Personal Stats"
 msgid "Personal Options"
-msgstr "Personal Stats"
+msgstr "Personal Options"
 
 msgid "Personal Statistics"
 msgstr "Personal Statistics"
@@ -7797,10 +7773,8 @@ msgstr "Please note!"
 msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 
-#, fuzzy
-#| msgid "Please note!"
 msgid "Please remember!"
-msgstr "Please note!"
+msgstr "Please remember!"
 
 msgid "Please select a backup to delete."
 msgstr "Please select a backup to delete."
@@ -7886,6 +7860,10 @@ msgstr "Port"
 
 msgid "Port Check"
 msgstr "Port Check"
+
+#, no-php-format
+msgid "Port Status for {0}"
+msgstr "Port Status for {0}"
 
 msgid "Positive"
 msgstr "Positive"
@@ -8080,12 +8058,6 @@ msgstr "REPACK"
 msgid "RSS Link Type"
 msgstr "RSS Link Type"
 
-msgid "Random Achievement Bonus"
-msgstr "Random Achievement Bonus"
-
-msgid "Random Bonus"
-msgstr "Random Bonus"
-
 msgid "Rank"
 msgstr "Rank"
 
@@ -8195,6 +8167,14 @@ msgstr "Recipe Title"
 
 msgid "Recipe was NOT Deleted"
 msgstr "Recipe was NOT Deleted"
+
+#, no-php-format
+msgid "Recipe: {0} Added"
+msgstr "Recipe: {0} Added"
+
+#, no-php-format
+msgid "Recipe: {0} Updated"
+msgstr "Recipe: {0} Updated"
 
 msgid "Recipes"
 msgstr "Recipes"
@@ -8500,6 +8480,14 @@ msgstr "Request Title"
 msgid "Request was NOT Deleted"
 msgstr "Request was NOT Deleted"
 
+#, no-php-format
+msgid "Request: {0} Added"
+msgstr "Request: {0} Added"
+
+#, no-php-format
+msgid "Request: {0} Updated"
+msgstr "Request: {0} Updated"
+
 msgid "Requested By"
 msgstr "Requested By"
 
@@ -8639,7 +8627,7 @@ msgid "Safe Mode"
 msgstr "Safe Mode"
 
 msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
-msgstr ""
+msgstr "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
 
 msgid "Same as PU, but has been around longer."
 msgstr "Same as PU, but has been around longer."
@@ -8845,10 +8833,8 @@ msgstr "Security"
 msgid "Security Check"
 msgstr "Security Check"
 
-#, fuzzy
-#| msgid "Security"
 msgid "Security Options"
-msgstr "Security"
+msgstr "Security Options"
 
 msgid "Sedders"
 msgstr "Sedders"
@@ -8946,10 +8932,8 @@ msgstr "Seeding {0} torrents"
 msgid "Seedtime"
 msgstr "Seedtime"
 
-#, fuzzy
-#| msgid "Select All"
 msgid "Select"
-msgstr "Select All"
+msgstr "Select"
 
 msgid "Select All"
 msgstr "Select All"
@@ -9196,10 +9180,8 @@ msgstr "Sets the type-face (font) for the enclosed text."
 msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 
-#, fuzzy
-#| msgid "HnR Settings"
 msgid "Settings"
-msgstr "HnR Settings"
+msgstr "Settings"
 
 msgid "Settings Check"
 msgstr "Settings Check"
@@ -9218,6 +9200,10 @@ msgstr "Share ratio?"
 
 msgid "Sharemarks"
 msgstr "Sharemarks"
+
+#, no-php-format
+msgid "Sharemarks for {0}"
+msgstr "Sharemarks for {0}"
 
 msgid "Shit"
 msgstr "Shit"
@@ -9304,10 +9290,8 @@ msgstr "Sick"
 msgid "Signature"
 msgstr "Signature"
 
-#, fuzzy
-#| msgid "Signature Rights"
 msgid "Signature Options"
-msgstr "Signature Rights"
+msgstr "Signature Options"
 
 msgid "Signature Rights"
 msgstr "Signature Rights"
@@ -9356,6 +9340,14 @@ msgstr "Silver for 4 weeks"
 
 msgid "Silver for 8 weeks"
 msgstr "Silver for 8 weeks"
+
+#, no-php-format
+msgid "Silver for {0} week"
+msgstr "Silver for {0} week"
+
+#, no-php-format
+msgid "Silver for {0} weeks"
+msgstr "Silver for {0} weeks"
 
 msgid "Simple Search"
 msgstr "Simple Search"
@@ -9554,20 +9546,13 @@ msgstr "Sorry {0}, you'll have to wait until {1} finishes {2} game before you ca
 msgid "Sorry {0}, your ratio is lower than the requirement of {1}%"
 msgstr "Sorry {0}, your ratio is lower than the requirement of {1}%"
 
-msgid "Sorry, Dunk64 has just run over you with his ultra-powered wheelchair. Better luck next time."
-msgstr "Sorry, Dunk64 has just run over you with his ultra-powered wheelchair. Better luck next time."
+#, no-php-format
+msgid "Sorry, The evil villian {0} has stolen your bonus point."
+msgstr "Sorry, The evil villian {0} has stolen your bonus point."
 
-msgid "Sorry, Hoodini has magically made your achievement bonus point dissapear, better luck next time."
-msgstr "Sorry, Hoodini has magically made your achievement bonus point dissapear, better luck next time."
-
-msgid "Sorry, Some help has used your achievement bonus point in attempt to buy puppy chow to lure doggies into his dinner plate."
-msgstr "Sorry, Some help has used your achievement bonus point in attempt to buy puppy chow to lure doggies into his dinner plate."
-
-msgid "Sorry, The evil villian Adam has stolen your bonus point."
-msgstr "Sorry, The evil villian Adam has stolen your bonus point."
-
-msgid "Sorry, We put your achievement bonus point into the collection plate in an attempt to get Ducktape a prostitute."
-msgstr "Sorry, We put your achievement bonus point into the collection plate in an attempt to get Ducktape a prostitute."
+#, no-php-format
+msgid "Sorry, We put your achievement bonus point into the collection plate in an attempt to get {0} a date."
+msgstr "Sorry, We put your achievement bonus point into the collection plate in an attempt to get {0} a date."
 
 msgid "Sorry, no member was found"
 msgstr "Sorry, no member was found"
@@ -9587,8 +9572,36 @@ msgstr "Sorry, user limit reached. Please try again later."
 msgid "Sorry, we cannot save scores of this game or there are no scores saved, yet."
 msgstr "Sorry, we cannot save scores of this game or there are no scores saved, yet."
 
+#, no-php-format
+msgid "Sorry, you must be a {0} to play blackjack!"
+msgstr "Sorry, you must be a {0} to play blackjack!"
+
+#, no-php-format
+msgid "Sorry, you must be a {0} to play in the arcade!"
+msgstr "Sorry, you must be a {0} to play in the arcade!"
+
+#, no-php-format
+msgid "Sorry, you must be a {0} to play in the casino!"
+msgstr "Sorry, you must be a {0} to play in the casino!"
+
+#, no-php-format
+msgid "Sorry, you must be a {0} to play these games!"
+msgstr "Sorry, you must be a {0} to play these games!"
+
 msgid "Sorry, your uploader application has been rejected. It appears that you are not qualified enough to become uploader."
 msgstr "Sorry, your uploader application has been rejected. It appears that you are not qualified enough to become uploader."
+
+#, no-php-format
+msgid "Sorry, {0} has just run over you with his ultra-powered wheelchair. Better luck next time."
+msgstr "Sorry, {0} has just run over you with his ultra-powered wheelchair. Better luck next time."
+
+#, no-php-format
+msgid "Sorry, {0} has magically made your achievement bonus point disappear, better luck next time."
+msgstr "Sorry, {0} has magically made your achievement bonus point disappear, better luck next time."
+
+#, no-php-format
+msgid "Sorry, {0} has used your achievement bonus point in attempt to buy puppy chow to lure doggies onto his dinner plate."
+msgstr "Sorry, {0} has used your achievement bonus point in attempt to buy puppy chow to lure doggies onto his dinner plate."
 
 #, no-php-format
 msgid "Sorry... Username - {0} is already in use."
@@ -9627,6 +9640,9 @@ msgstr "Sorted Yer connectable"
 msgid "Speed"
 msgstr "Speed"
 
+msgid "Spend those Points"
+msgstr "Spend those Points"
+
 msgid "Spider"
 msgstr "Spider"
 
@@ -9649,10 +9665,10 @@ msgid "Staff Comment"
 msgstr "Staff Comment"
 
 #, no-php-format
-msgid "Staff Flush: {0} flushed {1, number} torrent for {2}"
-msgid_plural "Staff Flush: {0} flushed {1, number} torrents for {2}"
-msgstr[0] "Staff Flush: {0} flushed {1, number} torrent for {2}"
-msgstr[1] "Staff Flush: {0} flushed {1, number} torrents for {2}"
+msgid "Staff Flush: {0} flushed {1} torrent for {2}"
+msgid_plural "Staff Flush: {0} flushed {1} torrents for {2}"
+msgstr[0] "Staff Flush: {0} flushed {1} torrent for {2}"
+msgstr[1] "Staff Flush: {0} flushed {1} torrents for {2}"
 
 msgid "Staff List"
 msgstr "Staff List"
@@ -9837,10 +9853,8 @@ msgstr "Subject: "
 msgid "Submit"
 msgstr "Submit"
 
-#, fuzzy
-#| msgid "No Changes"
 msgid "Submit Changes"
-msgstr "No Changes"
+msgstr "Submit Changes"
 
 msgid "Submit News Item"
 msgstr "Submit News Item"
@@ -10387,9 +10401,9 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at {0}PortForward{1})."
 
 #, no-php-format
-msgid "The winner will get {0} will get {1} added to their seedbonus amount"
+msgid "The winner will get {0} added to their seedbonus amount"
 msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "The winner will get {0} will get {1} added to their seedbonus amount"
+msgstr[0] "The winner will get {0} added to their seedbonus amount"
 msgstr[1] "The winners will get {0} added to their seedbonus amount"
 
 #, no-php-format
@@ -10399,6 +10413,9 @@ msgstr "The {0} has begun! Get your tickets now. The pot is {1} and each ticket 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
+
+msgid "Theft summary"
+msgstr "Theft summary"
 
 msgid "There"
 msgstr "There"
@@ -10412,8 +10429,8 @@ msgstr "There are already"
 msgid "There are currently no PM boxes to edit."
 msgstr "There are currently no PM boxes to edit."
 
-msgid "There are currently no achievements added to the list"
-msgstr "There are currently no achievements added to the list"
+msgid "There are currently no achievements added to the list!<br>The staff has been slacking"
+msgstr "There are currently no achievements added to the list!<br>The staff has been slacking"
 
 msgid "There are currently no uploader applications"
 msgstr "There are currently no uploader applications"
@@ -10497,12 +10514,6 @@ msgstr "There have been no active users in the last 15 minutes"
 msgid "There have been no active users in the last 15 minutes."
 msgstr "There have been no active users in the last 15 minutes."
 
-#, php-format
-msgid "There is %s new bug!"
-msgid_plural "There are %s new bugs!"
-msgstr[0] "There is %s new bug!"
-msgstr[1] "There are %s new bugs!"
-
 msgid "There is a minimum of 2 options, and a maximun of 20 options. you have entered"
 msgstr "There is a minimum of 2 options, and a maximun of 20 options. you have entered"
 
@@ -10536,22 +10547,28 @@ msgid "There is nothing cookin'"
 msgstr "There is nothing cookin'"
 
 #, no-php-format
-msgid "There is {0, number} new bug. Please check it."
-msgid_plural "There is {0, number} new bugs. Please check them."
-msgstr[0] "There is {0, number} new bug. Please check it."
-msgstr[1] "There is {0, number} new bugs. Please check them."
-
-#, no-php-format
-msgid "There is {0, number} peer currently on the tracker"
-msgid_plural "There are {0, number} peers currently on the tracker"
-msgstr[0] "There is {0, number} peer currently on the tracker"
-msgstr[1] "There are {0, number} peers currently on the tracker"
-
-#, no-php-format
 msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "There is {0} Birthday Today"
 msgstr[1] "There are {0} Birthdays Today"
+
+#, no-php-format
+msgid "There is {0} new bug!"
+msgid_plural "There are {0} new bugs!"
+msgstr[0] "There is {0} new bug!"
+msgstr[1] "There are {0} new bugs!"
+
+#, no-php-format
+msgid "There is {0} new bug. Please check it."
+msgid_plural "There is {0} new bugs. Please check them."
+msgstr[0] "There is {0} new bug. Please check it."
+msgstr[1] "There is {0} new bugs. Please check them."
+
+#, no-php-format
+msgid "There is {0} peer currently on the tracker"
+msgid_plural "There are {0} peers currently on the tracker"
+msgstr[0] "There is {0} peer currently on the tracker"
+msgstr[1] "There are {0} peers currently on the tracker"
 
 msgid "There may be three reasons for this:"
 msgstr "There may be three reasons for this:"
@@ -10599,10 +10616,10 @@ msgid "There was something wrong!"
 msgstr "There was something wrong!"
 
 #, no-php-format
-msgid "There will be {0, number} winner, picked at random."
-msgid_plural "There will be {0, number} winners, picked at random."
-msgstr[0] "There will be {0, number} winner, picked at random."
-msgstr[1] "There will be {0, number} winners, picked at random."
+msgid "There will be {0} winner, picked at random."
+msgid_plural "There will be {0} winners, picked at random."
+msgstr[0] "There will be {0} winner, picked at random."
+msgstr[1] "There will be {0} winners, picked at random."
 
 #, no-php-format
 msgid "There's a further message that causes the torrent to be removed from the user's profile, namely {0}. This is usually sent when stopping in the middle of a download, e.g. by pressing 'Cancel'."
@@ -10702,12 +10719,10 @@ msgid "This is not your post to edit."
 msgstr "This is not your post to edit."
 
 msgid "This is only used by an upload script, msg any staff member for the details."
-msgstr ""
+msgstr "This is only used by an upload script, msg any staff member for the details."
 
-#, fuzzy
-#| msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
-msgstr "This is used for auto download scripts, such as CouchPotota, SickRage and others"
+msgstr "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
 
 msgid "This is only users that are active on the torrents right now."
 msgstr "This is only users that are active on the torrents right now."
@@ -10731,7 +10746,7 @@ msgid "This is used for auto download scripts, such as CouchPotota, SickRage and
 msgstr "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 
 msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
-msgstr ""
+msgstr "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
 
 msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
@@ -11029,16 +11044,18 @@ msgstr "Top 10"
 msgid "Top 100"
 msgstr "Top 100"
 
-#, fuzzy
-#| msgid "Top Moods"
 msgid "Top Member Mood's"
-msgstr "Top Moods"
+msgstr "Top Member Mood's"
 
 msgid "Top Moods"
 msgstr "Top Moods"
 
 msgid "Top Scores"
 msgstr "Top Scores"
+
+#, no-php-format
+msgid "Top Scores Earn {0} Karma Points"
+msgstr "Top Scores Earn {0} Karma Points"
 
 msgid "Top Torrents"
 msgstr "Top Torrents"
@@ -11103,10 +11120,8 @@ msgstr "Torrent Moderator"
 msgid "Torrent Notification Failed"
 msgstr "Torrent Notification Failed"
 
-#, fuzzy
-#| msgid "Torrent ratio"
 msgid "Torrent Options"
-msgstr "Torrent ratio"
+msgstr "Torrent Options"
 
 msgid "Torrent Owner Notified"
 msgstr "Torrent Owner Notified"
@@ -11160,6 +11175,10 @@ msgstr "Torrent was not found"
 #, no-php-format
 msgid "Torrent {0} ({1}) was deleted by {2} ({3})"
 msgstr "Torrent {0} ({1}) was deleted by {2} ({3})"
+
+#, no-php-format
+msgid "Torrent {0} ({1}) was uploaded by {2}"
+msgstr "Torrent {0} ({1}) was uploaded by {2}"
 
 #, no-php-format
 msgid "Torrent {0} was deleted by {1}"
@@ -11260,6 +11279,9 @@ msgstr "Traceroute"
 
 msgid "Traceroute!"
 msgstr "Traceroute!"
+
+msgid "Trade your achievement points for random gifts."
+msgstr "Trade your achievement points for random gifts."
 
 msgid "Traffic Per Hour"
 msgstr "Traffic Per Hour"
@@ -11514,6 +11536,10 @@ msgid "Until "
 msgstr "Until "
 
 #, no-php-format
+msgid "Until {0} ({1} to go)."
+msgstr "Until {0} ({1} to go)."
+
+#, no-php-format
 msgid "Until {0} ({1}) to go."
 msgstr "Until {0} ({1}) to go."
 
@@ -11537,15 +11563,6 @@ msgstr "Update"
 
 msgid "Update Database"
 msgstr "Update Database"
-
-msgid "Update Forum Post Counter"
-msgstr "Update Forum Post Counter"
-
-msgid "Update Forum Topic Counter"
-msgstr "Update Forum Topic Counter"
-
-msgid "Update Invite Counter"
-msgstr "Update Invite Counter"
 
 msgid "Update Time"
 msgstr "Update Time"
@@ -11586,10 +11603,9 @@ msgstr "Upload added"
 msgid "Upload credit"
 msgstr "Upload credit"
 
-#, fuzzy, no-php-format
-#| msgid "Download disablement for {0} by {1}."
+#, no-php-format
 msgid "Upload disablement for {0} by {1}."
-msgstr "Download disablement for {0} by {1}."
+msgstr "Upload disablement for {0} by {1}."
 
 msgid "Upload disablement from "
 msgstr "Upload disablement from "
@@ -11742,6 +11758,10 @@ msgstr "User Details"
 msgid "User ID"
 msgstr "User ID"
 
+#, no-php-format
+msgid "User ID is already in your {0} list"
+msgstr "User ID is already in your {0} list"
+
 msgid "User Names"
 msgstr "User Names"
 
@@ -11855,10 +11875,8 @@ msgstr "Username changed"
 msgid "Username is Available"
 msgstr "Username is Available"
 
-#, fuzzy
-#| msgid "Username is Available"
 msgid "Username is not Available"
-msgstr "Username is Available"
+msgstr "Username is not Available"
 
 msgid "Username not allowed."
 msgstr "Username not allowed."
@@ -12005,11 +12023,8 @@ msgstr "View Staff Messages"
 msgid "View application"
 msgstr "View application"
 
-#, fuzzy
-#| msgid "You bought {0} ticket."
-#| msgid_plural "You bought {0} tickets."
 msgid "View bought tickets"
-msgstr "You bought {0} ticket."
+msgstr "View bought tickets"
 
 msgid "View comments"
 msgstr "View comments"
@@ -12239,15 +12254,13 @@ msgid "When a torrent is first started, the tracker uses the IP to identify the 
 msgstr "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 
 msgid "When any of your uploaded torrents are commented on, you will be PMed."
-msgstr ""
+msgstr "When any of your uploaded torrents are commented on, you will be PMed."
 
 msgid "When any of your uploaded torrents are deleted, you will be PMed."
-msgstr ""
+msgstr "When any of your uploaded torrents are deleted, you will be PMed."
 
-#, fuzzy
-#| msgid "New post in subscribed thread"
 msgid "When someone posts in a subscribed thread, you will be PMed."
-msgstr "New post in subscribed thread"
+msgstr "When someone posts in a subscribed thread, you will be PMed."
 
 msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
@@ -12388,7 +12401,7 @@ msgid "Yes &#160; "
 msgstr "Yes &#160; "
 
 msgid "Yes (Low bandwidth user may want to disable this)"
-msgstr ""
+msgstr "Yes (Low bandwidth user may want to disable this)"
 
 msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
@@ -12412,11 +12425,11 @@ msgstr "You MUST read {0}this message{1} before you delete it!"
 msgid "You already gave points to this torrent."
 msgstr "You already gave points to this torrent."
 
-#, php-format
-msgid "You already have %d open bet. Wait until it is completed before you start another."
-msgid_plural "You already have %d open bets. Wait until they are completed before you start another."
-msgstr[0] "You already have %d open bet. Wait until it is completed before you start another."
-msgstr[1] "You already have %d open bets. Wait until they are completed before you start another."
+#, no-php-format
+msgid "You already have {0} open bet. Wait until it is completed before you start another."
+msgid_plural "You already have {0} open bets. Wait until they are completed before you start another."
+msgstr[0] "You already have {0} open bet. Wait until it is completed before you start another."
+msgstr[1] "You already have {0} open bets. Wait until they are completed before you start another."
 
 msgid "You already received your gift!"
 msgstr "You already received your gift!"
@@ -12509,11 +12522,11 @@ msgstr "You can add comments to users (for other mods and admins to read)."
 msgid "You can add your own message, it will appear above the PM being forwarded."
 msgstr "You can add your own message, it will appear above the PM being forwarded."
 
-#, php-format
-msgid "You can buy another %d ticket if you get get more bonus points."
-msgid_plural "You can buy another %d tickets if you get get more bonus points."
-msgstr[0] "You can buy another %d ticket if you get get more bonus points."
-msgstr[1] "You can buy another %d tickets if you get get more bonus points."
+#, no-php-format
+msgid "You can buy another {0} ticket if you get get more bonus points."
+msgid_plural "You can buy another {0} tickets if you get get more bonus points."
+msgstr[0] "You can buy another {0} ticket if you get get more bonus points."
+msgstr[1] "You can buy another {0} tickets if you get get more bonus points."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "You can contact site staff with your request on irc"
@@ -12658,18 +12671,12 @@ msgstr "You got it"
 msgid "You had"
 msgstr "You had"
 
-#, no-php-format
-msgid "You have %d Reputation Point(s)."
-msgstr "You have %d Reputation Point(s)."
-
-#, php-format
-msgid "You have %d new message"
-msgid_plural "You have %d new messages"
-msgstr[0] "You have %d new message"
-msgstr[1] "You have %d new messages"
-
 msgid "You have a new friend!"
 msgstr "You have a new friend!"
+
+#, no-php-format
+msgid "You have already added Rep to this {0}!"
+msgstr "You have already added Rep to this {0}!"
 
 #, no-php-format
 msgid "You have already reported: {0} with id: {1}!"
@@ -12717,11 +12724,11 @@ msgstr "You have completed this Torrent"
 msgid "You have contributed {0} / {1} of the total bounty offered"
 msgstr "You have contributed {0} / {1} of the total bounty offered"
 
-#, php-format
-msgid "You have enough points for %d ticket."
-msgid_plural "You have enough points for %d tickets."
-msgstr[0] "You have enough points for %d ticket."
-msgstr[1] "You have enough points for %d tickets."
+#, no-php-format
+msgid "You have enough points for {0} ticket."
+msgid_plural "You have enough points for {0} tickets."
+msgstr[0] "You have enough points for {0} ticket."
+msgstr[1] "You have enough points for {0} tickets."
 
 msgid "You have exceeded the maximum number of IPs allowed"
 msgstr "You have exceeded the maximum number of IPs allowed"
@@ -12808,6 +12815,18 @@ msgid "You have voted to support this request."
 msgstr "You have voted to support this request."
 
 #, no-php-format
+msgid "You have {0} Reputation Point."
+msgid_plural "You have {0} Reputation Points."
+msgstr[0] "You have {0} Reputation Point."
+msgstr[1] "You have {0} Reputation Points."
+
+#, no-php-format
+msgid "You have {0} new message"
+msgid_plural "You have {0} new messages"
+msgstr[0] "You have {0} new message"
+msgstr[1] "You have {0} new messages"
+
+#, no-php-format
 msgid "You have {0} unread message in your inbox"
 msgid_plural "You have {0} unread messages in your inbox"
 msgstr[0] "You have {0} unread message in your inbox"
@@ -12827,6 +12846,10 @@ msgstr "You just got 3 invites , and 1750 Karma Bonus Points!"
 
 msgid "You just got 3 invites and 1750 Karma Bonus Points!"
 msgstr "You just got 3 invites and 1750 Karma Bonus Points!"
+
+#, no-php-format
+msgid "You just got robbed by {0}"
+msgstr "You just got robbed by {0}"
 
 #, no-php-format
 msgid "You just won {0} of upload credit from {1}!"
@@ -12871,10 +12894,8 @@ msgstr "You must enter an email address!"
 msgid "You must enter both a subject and message."
 msgstr "You must enter both a subject and message."
 
-#, fuzzy
-#| msgid "You must enter both a subject and message."
 msgid "You must enter your current password."
-msgstr "You must enter both a subject and message."
+msgstr "You must enter your current password."
 
 msgid "You must finish your old game first."
 msgstr "You must finish your old game first."
@@ -12908,10 +12929,10 @@ msgid "You need to upload the cleanup file first!"
 msgstr "You need to upload the cleanup file first!"
 
 #, no-php-format
-msgid "You now have {0, number} ticket!"
-msgid_plural "You now have {0, number} tickets!"
-msgstr[0] "You now have {0, number} ticket!"
-msgstr[1] "You now have {0, number} tickets!"
+msgid "You now have {0} ticket!"
+msgid_plural "You now have {0} tickets!"
+msgstr[0] "You now have {0} ticket!"
+msgstr[1] "You now have {0} tickets!"
 
 msgid "You oppose this request."
 msgstr "You oppose this request."
@@ -12921,10 +12942,10 @@ msgid "You own ticket numbers: {0}"
 msgstr "You own ticket numbers: {0}"
 
 #, no-php-format
-msgid "You reached your limit. The max is {0, number} ticket."
-msgid_plural "You reached your limit. The max is {0, number} tickets."
-msgstr[0] "You reached your limit. The max is {0, number} ticket."
-msgstr[1] "You reached your limit. The max is {0, number} tickets."
+msgid "You reached your limit. The max is {0} ticket."
+msgid_plural "You reached your limit. The max is {0} tickets."
+msgstr[0] "You reached your limit. The max is {0} ticket."
+msgstr[1] "You reached your limit. The max is {0} tickets."
 
 msgid "You should optimize this query."
 msgstr "You should optimize this query."
@@ -13027,6 +13048,10 @@ msgstr "Your Signature rights turned back on by "
 msgid "Your Signature rights turned off by "
 msgstr "Your Signature rights turned off by "
 
+#, no-php-format
+msgid "Your Torrent Client IP [{0}]"
+msgstr "Your Torrent Client IP [{0}]"
+
 msgid "Your Torrent Client Port"
 msgstr "Your Torrent Client Port"
 
@@ -13120,6 +13145,10 @@ msgstr "Your download speed is always finite. If you are a peer in a fast torren
 msgid "Your downloading ability has been disabled by "
 msgstr "Your downloading ability has been disabled by "
 
+#, no-php-format
+msgid "Your email has been changed to {0}"
+msgstr "Your email has been changed to {0}"
+
 msgid "Your email has been confirmed"
 msgstr "Your email has been confirmed"
 
@@ -13153,10 +13182,6 @@ msgstr "Your identity has been confirmed."
 
 msgid "Your invite sending privileges has been disabled by the Staff!"
 msgstr "Your invite sending privileges has been disabled by the Staff!"
-
-#, no-php-format
-msgid "Your invited count has been updated! [{0}]"
-msgstr "Your invited count has been updated! [{0}]"
 
 msgid "Your leechwarn Status has been removed by "
 msgstr "Your leechwarn Status has been removed by "
@@ -13212,6 +13237,14 @@ msgstr "Your requests list is empty."
 
 msgid "Your text here"
 msgstr "Your text here"
+
+#, no-php-format
+msgid "Your torrent pass is invlaid! Go to {0} and reset your passkey"
+msgstr "Your torrent pass is invlaid! Go to {0} and reset your passkey"
+
+#, no-php-format
+msgid "Your torrent pass is not long enough! Go to {0} and reset your passkey"
+msgstr "Your torrent pass is not long enough! Go to {0} and reset your passkey"
 
 #, no-php-format
 msgid "Your upload {0} has been deleted by {1}"
@@ -13497,10 +13530,10 @@ msgid "by {0} on {1}"
 msgstr "by {0} on {1}"
 
 #, no-php-format
-msgid "by {1} within the last {0, number} day"
-msgid_plural "by {1} within the last {0, number} days"
-msgstr[0] "by {1} within the last {0, number} day"
-msgstr[1] "by {1} within the last {0, number} days"
+msgid "by {1} within the last {0} day"
+msgid_plural "by {1} within the last {0} days"
+msgstr[0] "by {1} within the last {0} day"
+msgstr[1] "by {1} within the last {0} days"
 
 msgid "bytes "
 msgstr "bytes "
@@ -13689,10 +13722,10 @@ msgid "freeslot"
 msgstr "freeslot"
 
 #, php-format
-msgid "from the past {0, number} day."
-msgid_plural "from the past {0, number} days."
-msgstr[0] "from the past {0, number} day."
-msgstr[1] "from the past {0, number} days."
+msgid "from the past {0} day."
+msgid_plural "from the past {0} days."
+msgstr[0] "from the past {0} day."
+msgstr[1] "from the past {0} days."
 
 msgid "from watched users"
 msgstr "from watched users"
@@ -13770,39 +13803,6 @@ msgstr "if you are sure."
 msgid "in"
 msgstr "in"
 
-msgid "in $d day"
-msgid_plural "in $d days"
-msgstr[0] "in $d day"
-msgstr[1] "in $d days"
-
-msgid "in $d month"
-msgid_plural "in $d months"
-msgstr[0] "in $d month"
-msgstr[1] "in $d months"
-
-msgid "in $d week"
-msgid_plural "in $d weeks"
-msgstr[0] "in $d week"
-msgstr[1] "in $d weeks"
-
-#, php-format
-msgid "in %d day"
-msgid_plural "in %d days"
-msgstr[0] "in %d day"
-msgstr[1] "in %d days"
-
-#, php-format
-msgid "in %d month"
-msgid_plural "in %d months"
-msgstr[0] "in %d month"
-msgstr[1] "in %d months"
-
-#, php-format
-msgid "in %d week"
-msgid_plural "in %d weeks"
-msgstr[0] "in %d week"
-msgstr[1] "in %d weeks"
-
 msgid "in Forum"
 msgstr "in Forum"
 
@@ -13818,6 +13818,24 @@ msgstr "in the staff panel was"
 #, no-php-format
 msgid "in {0} by {1} ({2})"
 msgstr "in {0} by {1} ({2})"
+
+#, no-php-format
+msgid "in {0} day"
+msgid_plural "in {0} days"
+msgstr[0] "in {0} day"
+msgstr[1] "in {0} days"
+
+#, no-php-format
+msgid "in {0} month"
+msgid_plural "in {0} months"
+msgstr[0] "in {0} month"
+msgstr[1] "in {0} months"
+
+#, no-php-format
+msgid "in {0} week"
+msgid_plural "in {0} weeks"
+msgstr[0] "in {0} week"
+msgstr[1] "in {0} weeks"
 
 msgid "include a proper NFO"
 msgstr "include a proper NFO"
@@ -14193,9 +14211,6 @@ msgstr "sql"
 msgid "staff"
 msgstr "staff"
 
-msgid "staff has been slacking"
-msgstr "staff has been slacking"
-
 msgid "successfully backed-up the database."
 msgstr "successfully backed-up the database."
 
@@ -14242,16 +14257,13 @@ msgid "total - "
 msgstr "total - "
 
 #, php-format
-msgid "total - {0, number} user"
-msgid_plural "total - {0, number} users"
-msgstr[0] "total - {0, number} user"
-msgstr[1] "total - {0, number} users"
+msgid "total - {0} user"
+msgid_plural "total - {0} users"
+msgstr[0] "total - {0} user"
+msgstr[1] "total - {0} users"
 
 msgid "total file size and number of pieces do not match"
 msgstr "total file size and number of pieces do not match"
-
-msgid "try again"
-msgstr "try again"
 
 msgid "unique users that are not connectable."
 msgstr "unique users that are not connectable."
@@ -14375,38 +14387,13 @@ msgid_plural "{0, number) Members removed from the list"
 msgstr[0] "{0, number) Member removed from the list"
 msgstr[1] "{0, number) Members removed from the list"
 
-#, php-format
-msgid "{0, number} Page"
-msgid_plural "{0, number} Pages"
-msgstr[0] "{0, number} Page"
-msgstr[1] "{0, number} Pages"
-
-#, no-php-format
-msgid "{0, number} Torrent On Deathrow"
-msgid_plural "{0, number} Torrents On Deathrow"
-msgstr[0] "{0, number} Torrent On Deathrow"
-msgstr[1] "{0, number} Torrents On Deathrow"
-
-#, php-format
-msgid "{0, number} user disabled"
-msgid_plural "{0} users disabled"
-msgstr[0] "{0, number} user disabled"
-msgstr[1] "{0} users disabled"
-
-#, no-php-format
-msgid "{0, number}<br>time"
-msgid_plural "{0, number}<br>times"
-msgstr[0] "{0, number}<br>time"
-msgstr[1] "{0, number}<br>times"
-
 #, no-php-format
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: #{1})"
 
-#, fuzzy, no-php-format
-#| msgid "{0} - CODER Role Added by {1}\n"
+#, no-php-format
 msgid "{0} - Added by {1}"
-msgstr "{0} - CODER Role Added by {1}\n"
+msgstr "{0} - Added by {1}"
 
 #, no-php-format
 msgid "{0} - CODER Role Added by {1}\n"
@@ -14449,8 +14436,22 @@ msgid "{0} - UPLOADER Role Removed by {1}\n"
 msgstr "{0} - UPLOADER Role Removed by {1}\n"
 
 #, no-php-format
+msgid "{0} Active User"
+msgid_plural "{0} Active Users"
+msgstr[0] "{0} Active User"
+msgstr[1] "{0} Active Users"
+
+#, no-php-format
 msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Added {1} to the {2} watched users list{4}."
+
+#, no-php-format
+msgid "{0} Days"
+msgstr "{0} Days"
+
+#, no-php-format
+msgid "{0} Does Not Exist - Incorrect Access"
+msgstr "{0} Does Not Exist - Incorrect Access"
 
 #, no-php-format
 msgid "{0} GB"
@@ -14465,20 +14466,42 @@ msgid "{0} Lottery"
 msgstr "{0} Lottery"
 
 #, no-php-format
+msgid "{0} Member visited during the last 24 hours"
+msgid_plural "{0} Members visited during the last 24 hours"
+msgstr[0] "{0} Member visited during the last 24 hours"
+msgstr[1] "{0} Members visited during the last 24 hours"
+
+#, no-php-format
+msgid "{0} Months"
+msgstr "{0} Months"
+
+#, no-php-format
+msgid "{0} New Report"
+msgid_plural "{0} New Reports"
+msgstr[0] "{0} New Report"
+msgstr[1] "{0} New Reports"
+
+#, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0} Old School Arcade!"
 
-#, no-php-format
-msgid "{0} Point Available"
-msgid_plural "{0} Points Available"
-msgstr[0] "{0} Point Available"
-msgstr[1] "{0} Points Available"
+#, php-format
+msgid "{0} Page"
+msgid_plural "{0} Pages"
+msgstr[0] "{0} Page"
+msgstr[1] "{0} Pages"
 
 #, no-php-format
-msgid "{0} Point spent"
-msgid_plural "{0} Points spent"
-msgstr[0] "{0} Point spent"
-msgstr[1] "{0} Points spent"
+msgid "{0} Point Available."
+msgid_plural "{0} Points Available."
+msgstr[0] "{0} Point Available."
+msgstr[1] "{0} Points Available."
+
+#, no-php-format
+msgid "{0} Point spent."
+msgid_plural "{0} Points spent."
+msgstr[0] "{0} Point spent."
+msgstr[1] "{0} Points spent."
 
 #, no-php-format
 msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
@@ -14487,6 +14510,10 @@ msgstr "{0} Points for a seedtime fix on torrent: {1} => {2}"
 #, no-php-format
 msgid "{0} Records"
 msgstr "{0} Records"
+
+#, no-php-format
+msgid "{0} Reset Password Request"
+msgstr "{0} Reset Password Request"
 
 #, no-php-format
 msgid "{0} Rules"
@@ -14499,6 +14526,24 @@ msgstr "{0} The Max allowed bet is {1} GB!"
 #, no-php-format
 msgid "{0} The Min allowed bet is 100 MB!"
 msgstr "{0} The Min allowed bet is 100 MB!"
+
+#, no-php-format
+msgid "{0} Ticket"
+msgid_plural "{0} Tickets"
+msgstr[0] "{0} Ticket"
+msgstr[1] "{0} Tickets"
+
+#, no-php-format
+msgid "{0} Torrent On Deathrow"
+msgid_plural "{0} Torrents On Deathrow"
+msgstr[0] "{0} Torrent On Deathrow"
+msgstr[1] "{0} Torrents On Deathrow"
+
+#, no-php-format
+msgid "{0} Unread PM"
+msgid_plural "{0} Unread PM's"
+msgstr[0] "{0} Unread PM"
+msgstr[1] "{0} Unread PM's"
 
 #, no-php-format
 msgid "{0} You bought {1} Freeslots for  {2} Karma."
@@ -14545,6 +14590,12 @@ msgid "{0} accounts inactive for longer than {1} days."
 msgstr "{0} accounts inactive for longer than {1} days."
 
 #, no-php-format
+msgid "{0} achievement earned."
+msgid_plural "{0} achievements earned."
+msgstr[0] "{0} achievement earned."
+msgstr[1] "{0} achievements earned."
+
+#, no-php-format
 msgid "{0} and lost"
 msgstr "{0} and lost"
 
@@ -14557,14 +14608,26 @@ msgid "{0} and won"
 msgstr "{0} and won"
 
 #, no-php-format
+msgid "{0} day"
+msgid_plural "{0} days"
+msgstr[0] "{0} day"
+msgstr[1] "{0} days"
+
+#, no-php-format
 msgid "{0} file"
 msgstr "{0} file"
 
 #, no-php-format
-msgid "{0} flushed {1, number} torrent."
-msgid_plural "{0} flushed {1, number} torrents."
-msgstr[0] "{0} flushed {1, number} torrent."
-msgstr[1] "{0} flushed {1, number} torrents."
+msgid "{0} flushed {1} torrent."
+msgid_plural "{0} flushed {1} torrents."
+msgstr[0] "{0} flushed {1} torrent."
+msgstr[1] "{0} flushed {1} torrents."
+
+#, no-php-format
+msgid "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgstr[0] "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgstr[1] "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
@@ -14579,8 +14642,22 @@ msgid "{0} has just confirmed your Friendship Request. See your Friends {1}here{
 msgstr "{0} has just confirmed your Friendship Request. See your Friends {1}here{2}"
 
 #, no-php-format
+msgid "{0} has no Hit and Runs!"
+msgstr "{0} has no Hit and Runs!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} has tried to login using invalid data. "
+
+#, no-php-format
+msgid "{0} has tried to reset password using invalid data. "
+msgstr "{0} has tried to reset password using invalid data. "
+
+#, no-php-format
+msgid "{0} hour"
+msgid_plural "{0} hours"
+msgstr[0] "{0} hour"
+msgstr[1] "{0} hours"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -14605,6 +14682,12 @@ msgstr[0] "{0} member just wanted to see the results"
 msgstr[1] "{0} members just wanted to see the results"
 
 #, no-php-format
+msgid "{0} month ago"
+msgid_plural "{0} months ago"
+msgstr[0] "{0} month ago"
+msgstr[1] "{0} months ago"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} out of 10 on the shittyness scale"
 
@@ -14613,8 +14696,48 @@ msgid "{0} per announce period"
 msgstr "{0} per announce period"
 
 #, no-php-format
+msgid "{0} set by {1}<br>"
+msgstr "{0} set by {1}<br>"
+
+#, no-php-format
+msgid "{0} time"
+msgid_plural "{0} times"
+msgstr[0] "{0} time"
+msgstr[1] "{0} times"
+
+#, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
 msgstr "{0} upload credit for a ratio fix on torrent: {1} => {2}"
+
+#, no-php-format
+msgid "{0} uploader application to be dealt with."
+msgid_plural "{0} uploader applications to be dealt with."
+msgstr[0] "{0} uploader application to be dealt with."
+msgstr[1] "{0} uploader applications to be dealt with."
+
+#, no-php-format
+msgid "{0} user HnR's warning removed"
+msgid_plural "{0} users HnR's warning removed"
+msgstr[0] "{0} user HnR's warning removed"
+msgstr[1] "{0} users HnR's warning removed"
+
+#, php-format
+msgid "{0} user disabled"
+msgid_plural "{0} users disabled"
+msgstr[0] "{0} user disabled"
+msgstr[1] "{0} users disabled"
+
+#, no-php-format
+msgid "{0} user disabled!"
+msgid_plural "{0} users disabled!"
+msgstr[0] "{0} user disabled!"
+msgstr[1] "{0} users disabled!"
+
+#, no-php-format
+msgid "{0} user unwarned."
+msgid_plural "{0} users unwarned."
+msgstr[0] "{0} user unwarned."
+msgstr[1] "{0} users unwarned."
 
 #, no-php-format
 msgid "{0} view offensive avatar by {1}, {2}\n"
@@ -14625,6 +14748,12 @@ msgid "{0} week"
 msgstr "{0} week"
 
 #, no-php-format
+msgid "{0} week ago"
+msgid_plural "{0} weeks ago"
+msgstr[0] "{0} week ago"
+msgstr[1] "{0} weeks ago"
+
+#, no-php-format
 msgid "{0} weeks"
 msgstr "{0} weeks"
 
@@ -14633,13 +14762,18 @@ msgid "{0} with id: {1} report sent."
 msgstr "{0} with id: {1} report sent."
 
 #, no-php-format
-msgid "{0}'s Entertainment"
-msgstr ""
+msgid "{0} year ago"
+msgid_plural "{0} years ago"
+msgstr[0] "{0} year ago"
+msgstr[1] "{0} years ago"
 
-#, fuzzy, no-php-format
-#| msgid "{0}'s Mood"
+#, no-php-format
+msgid "{0}'s Entertainment"
+msgstr "{0}'s Entertainment"
+
+#, no-php-format
 msgid "{0}'s Menu"
-msgstr "{0}'s Mood"
+msgstr "{0}'s Menu"
 
 #, no-php-format
 msgid "{0}'s Mood"
@@ -14686,17 +14820,27 @@ msgid "{0}Youtube{1}"
 msgstr "{0}Youtube{1}"
 
 #, no-php-format
+msgid "{0}and tied"
+msgstr "{0}and tied"
+
+#, no-php-format
 msgid "{0}and won"
 msgstr "{0}and won"
 
 #, no-php-format
-msgid "{1} has just bought {2}{0, number} Lottery Ticket!{3} GOOD LUCK!"
-msgid_plural "{1} has just bought {2}{0, number} Lottery Tickets!{3} GOOD LUCK!"
-msgstr[0] "{1} has just bought {2}{0, number} Lottery Ticket!{3} GOOD LUCK!"
-msgstr[1] "{1} has just bought {2}{0, number} Lottery Tickets!{3} GOOD LUCK!"
+msgid "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
+msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
+msgstr[0] "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
+msgstr[1] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
+
+#, php-format
+msgid "{1} was hit {0} time in {2} seconds"
+msgid_plural "{1} was hit {0} times in {2} seconds"
+msgstr[0] "{1} was hit {0} time in {2} seconds"
+msgstr[1] "{1} was hit {0} times in {2} seconds"
 
 #, no-php-format
-msgid "{1}: Modded Torrents from {0, number} day ago"
-msgid_plural "{1}: Modded Torrents from {0, number} days ago"
-msgstr[0] "{1}: Modded Torrents from {0, number} day ago"
-msgstr[1] "{1}: Modded Torrents from {0, number} days ago"
+msgid "{1}: Modded Torrents from {0} day ago"
+msgid_plural "{1}: Modded Torrents from {0} days ago"
+msgstr[0] "{1}: Modded Torrents from {0} day ago"
+msgstr[1] "{1}: Modded Torrents from {0} days ago"

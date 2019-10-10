@@ -216,7 +216,7 @@ if (!is_valid_id($userid)) {
 }
 $HTMLOUT .= '
     <div class="has-text-centered bottom20">
-        <h1>' . _('Sharemarks for %s', format_username((int) $userid)) . '</h1>
+        <h1>' . _fe('Sharemarks for {0}', format_username((int) $userid)) . '</h1>
         <div class="tabs is-centered">
             <ul>
                 <li><a href="' . $site_config['paths']['baseurl'] . '/bookmarks.php" class="is-link">My Bookmarks</a></li>

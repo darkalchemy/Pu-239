@@ -3,7 +3,9 @@
 declare(strict_types = 1);
 
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Message;
+use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -20,7 +22,8 @@ if ($userid != $curuser['id']) {
     stderr(_('Error'), _('Access denied.'));
 }
 $dt = TIME_NOW;
-//== action == add
+$fluent = $container->get(Database::class);
+$session = $container->get(Session::class);
 $messages_class = $container->get(Message::class);
 $cache = $container->get(Cache::class);
 if ($action === 'add') {
@@ -58,7 +61,7 @@ if ($action === 'add') {
         ];
         $messages_class->insert($msgs_buffer);
         if (mysqli_num_rows($r) == 1) {
-            stderr(_('Error'), _('User ID is already in your %s list', htmlsafechars($table_is)));
+            stderr(_('Error'), _fe('User ID is already in your {0} list', htmlsafechars($table_is)));
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ", 'no')") or sqlerr(__FILE__, __LINE__);
         stderr(_('Request Added!'), _fe('The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br>{0}Go to your Friends List{1}', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid#$frag'><b>", '</b></a>'));
@@ -67,7 +70,7 @@ if ($action === 'add') {
     if ($type === 'block') {
         $r = sql_query("SELECT id FROM $table_is WHERE userid=" . sqlesc($userid) . " AND $field_is = " . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         if (mysqli_num_rows($r) == 1) {
-            stderr(_('Error'), _('User ID is already in your %s list', htmlsafechars($table_is)));
+            stderr(_('Error'), _fe('User ID is already in your {0} list', htmlsafechars($table_is)));
         }
         sql_query("INSERT INTO $table_is VALUES (0, " . sqlesc($userid) . ', ' . sqlesc($targetid) . ')') or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
@@ -118,8 +121,7 @@ if ($action === 'confirm') {
         ];
         $messages_class->insert($msgs_buffer);
         $frag = 'friends';
-        header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        stderr('Success', _('Friend was added successfully.'));
+        $session->set('is-success', _('Friend was added successfully.'));
     }
 } elseif ($action === 'delpending') {
     $targetid = (int) $_GET['targetid'];
@@ -130,7 +132,7 @@ if ($action === 'confirm') {
     }
     $hash = md5('c@@me' . $curuser['id'] . $targetid . $type . 'confirm' . 'sa7t');
     if (!$sure) {
-        stderr(_('Delete %s Request', $type), _fe('Do you really want to delete this friend request? Click {0}here{1} if you are sure.', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>", '</b></a>'));
+        stderr(_fe('Delete {0} Request', $type), _fe('Do you really want to delete this friend request? Click {0}here{1} if you are sure.', "<a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delpending&amp;type=$type&amp;targetid=$targetid&amp;sure=1&amp;h=$hash'><b>", '</b></a>'));
     }
     if ($_GET['h'] != $hash) {
         stderr(_('Error'), _('Invalid data.'));
@@ -142,8 +144,7 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $userid);
         $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
-        header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        stderr(_('Success'), _('Friend was deleted successfully.'));
+        $session->set('is-success', _('Friend was deleted successfully.'));
     }
 } elseif ($action === 'delete') {
     $targetid = (int) $_GET['targetid'];
@@ -167,15 +168,13 @@ if ($action === 'confirm') {
         $cache->delete('user_friends_' . $userid);
         $cache->delete('user_friends_' . $targetid);
         $frag = 'friends';
-        header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        stderr(_('Success'), _('Friend was deleted successfully.'));
+        $session->set('is-success', _('Friend was deleted successfully.'));
     } elseif ($type === 'block') {
         sql_query('DELETE FROM blocks WHERE userid = ' . sqlesc($userid) . ' AND blockid = ' . sqlesc($targetid)) or sqlerr(__FILE__, __LINE__);
         $cache->delete('Blocks_' . $userid);
         $cache->delete('Blocks_' . $targetid);
         $frag = 'blocks';
-        header("Refresh: 3; url=friends.php?id=$userid#$frag");
-        stderr(_('Success'), _('Block was deleted successfully.'));
+        $session->set('is-success', _('Block was deleted successfully.'));
     } else {
         stderr(_('Error'), _('Invalid type.'));
     }
@@ -227,36 +226,60 @@ if (mysqli_num_rows($res) == 0) {
     $friendreqs .= '</table>';
 }
 $i = 0;
-$res = sql_query('SELECT f.friendid AS id, u.username, u.class, u.avatar, u.offensive_avatar, u.anonymous_until, u.title, u.donor, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access, u.uploaded, u.downloaded, u.country, u.perms FROM friends AS f LEFT JOIN users AS u ON f.friendid=u.id WHERE userid=' . sqlesc($userid) . " AND f.confirmed = 'yes' ORDER BY username") or sqlerr(__FILE__, __LINE__);
+$res = $fluent->from('friends AS f')
+              ->select(null)
+              ->select('f.friendid AS id')
+              ->select('u.username')
+              ->select('u.class')
+              ->select('u.title')
+              ->select('u.last_access')
+              ->select('u.uploaded')
+              ->select('u.downloaded')
+              ->select('u.avatar')
+              ->select('u.anonymous_until')
+              ->select('u.offensive_avatar')
+              ->innerJoin('users AS u ON friendid = u.id')
+              ->where('f.userid = ?', $userid)
+              ->where("f.confirmed = 'yes'")
+              ->fetchAll();
 $friends = '';
-if (mysqli_num_rows($res) == 0) {
+if (empty($res)) {
     $friends = '<em>' . _('Your friends list is empty.') . '</em>';
 } else {
-    while ($friend = mysqli_fetch_assoc($res)) {
-        $dt = $dt - 180;
-        $online = ($friend['last_access'] >= $dt && get_anonymous((int) $friend['id']) ? ' <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="Online" class="tooltipper" title="Online">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="Offline" class="tooltipper" title="Offline">');
+    foreach ($res as $friend) {
+        $dt = $dt - 300;
+        $online = $friend['last_access'] >= $dt && get_anonymous($friend['id']) ? '
+            <img src="' . $site_config['paths']['images_baseurl'] . 'online.png" alt="' . _('Online') . '" class="tooltipper" title="' . _('Online') . '">' : '
+            <img src="' . $site_config['paths']['images_baseurl'] . 'offline.png" alt="' . _('Offline') . '" class="tooltipper" title="' . _('Offline') . '">';
         $title = !empty($friend['title']) ? htmlsafechars($friend['title']) : '';
-        if (!$title) {
-            $title = get_user_class_name((int) $friend['class']);
-        }
         $ratio = member_ratio((float) $friend['uploaded'], (float) $friend['downloaded']);
-        $linktouser = format_username((int) $friend['id']) . " [$title] [$ratio]<br>" . _('last seen on') . ' ' . (get_anonymous((int) $friend['id']) ? get_date((int) $friend['last_access'], '') : 'Never');
-        $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . (int) $friend['id'] . "' class='has-text-black'>" . _('Remove') . '</a></span>';
-        $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . (int) $friend['id'] . "' class='has-text-black'>" . _('Send PM') . '</a></span>';
+        $last_seen = _fe('Last seen: {0}', get_anonymous((int) $friend['id']) ? get_date($friend['last_access'], 'LONG') : 'Never');
+        $delete = "<span class='button is-small right5'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . $friend['id'] . "' class='has-text-black'>" . _('Remove') . '</a></span>';
+        $pm_link = " <span class='button is-small left5'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black'>" . _('Send PM') . '</a></span>';
         $avatar = get_avatar($friend);
-        $friends .= "<div>{$avatar}<p>{$linktouser} {$online}<br><br>{$delete}{$pm_link}</p></div><br>";
+        $friends .= "
+            <div class='masonry-item-clean padding20 bg-02 round10 has-text-centered'>
+                {$avatar}
+                <div class='level-wide'>" . format_username($friend['id']) . "{$online}</div>
+                <div class='level-center'>{$title} {$ratio}</div>
+                <div>{$last_seen}</div>
+                <div class='level-center-center top10'>
+                    {$delete}{$pm_link}
+                </div>
+            </div>";
     }
 }
 
-$res = sql_query('SELECT b.blockid AS id, u.username, u.donor, u.class, u.warned, u.status, u.leechwarn, u.chatpost, u.pirate, u.king, u.last_access FROM blocks AS b LEFT JOIN users AS u ON b.blockid=u.id WHERE userid=' . sqlesc($userid) . ' ORDER BY username') or sqlerr(__FILE__, __LINE__);
+$res = sql_query('SELECT b.blockid AS id, u.username FROM blocks AS b LEFT JOIN users AS u ON b.blockid = u.id WHERE userid = ' . sqlesc($userid) . ' ORDER BY u.username') or sqlerr(__FILE__, __LINE__);
 $blocks = '';
 if (mysqli_num_rows($res) == 0) {
     $blocks = '<em>' . _('Your blocked list is empty.') . '</em>';
 } else {
     while ($block = mysqli_fetch_assoc($res)) {
-        $blocks .= '<div>';
-        $blocks .= "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black'>" . _('Delete') . '</a></span><br>';
-        $blocks .= '<p>' . format_username((int) $block['id']) . '</p></div><br>';
+        $blocks .= "
+            <div class='button is-small margin10'>
+                <a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=block&amp;targetid=" . (int) $block['id'] . "' class='has-text-black tooltipper' title='" . _('Delete from Blocks List') . "'>" . format_comment($block['username']) . '</a>
+            </div>';
     }
 }
 
@@ -269,7 +292,7 @@ foreach ($countries as $cntry) {
     }
 }
 $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _('Personal Lists for %s', format_comment($user['username'])) . " $country</h1>
+        <h1 class='has-text-centered'>" . _fe('Personal Lists for {0}', format_comment($user['username'])) . " $country</h1>
         <table class='table table-bordered table-striped top20 bottom20'>
             <thead>
                 <tr>
@@ -283,8 +306,8 @@ $HTMLOUT .= "
             </thead>
             <tbody>
                 <tr>
-                    <td class='w-50'>$friends</td>
-                    <td>$blocks</td>
+                    <td class='w-50'><div class='masonry-small'>$friends</div></td>
+                    <td><div class='level-left'>$blocks</div></td>
                 </tr>
             </tbody>
         </table>

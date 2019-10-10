@@ -2,8 +2,11 @@
 
 declare(strict_types = 1);
 
-use Pu239\Cache;
+use Envms\FluentPDO\Literal;
+use Pu239\Ach_bonus;
 use Pu239\Session;
+use Pu239\User;
+use Pu239\Usersachiev;
 
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
@@ -11,92 +14,89 @@ require_once INCL_DIR . 'function_bbcode.php';
 $user = check_user_status();
 global $container, $site_config;
 
-$id = $user['id'];
-$min = 1;
-$max = 38;
-$rand = (int) random_int((int) $min, (int) $max);
-$fluent = $container->get(\Pu239\Database::class);
-$count = $fluent->from('usersachiev')
-                ->select(null)
-                ->select('achpoints')
-                ->where('userid = ?', $id)
-                ->where('achpoints >= 1')
-                ->fetch('achpoints');
 $session = $container->get(Session::class);
-$cache = $container->get(Cache::class);
-if (!$count) {
-    $session->set('is-warning', _('It appears that you currently have no Achievement Bonus Points available to spend.'));
-    header("Refresh: 3; url=achievementhistory.php?id=$id");
-    stderr(_('No Achievement Bonus Points'), _('It appears that you currently have no Achievement Bonus Points available to spend.'));
+$usersachiev = $container->get(Usersachiev::class);
+$achieve_points = $usersachiev->get_count($user['id']);
+if (empty($achieve_points)) {
+    $session->set('is-warning', _("It appears that you don't have any Achievement Bonus Points available to spend."));
+    header("Location: {$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}");
     die();
 }
-$HTMLOUT = '';
-$bonus = $fluent->from('ach_bonus')
-                ->where('bonus_id = ?', $rand)
-                ->fetch();
-
-$bonus_desc = format_comment($bonus['bonus_desc']);
-$bonus_type = (int) $bonus['bonus_type'];
-$bonus_do = (int) $bonus['bonus_do'];
-$get_d = sql_query('SELECT * FROM users WHERE id=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$dn = mysqli_fetch_assoc($get_d);
-$down = (float) $dn['downloaded'];
-$up = (float) $dn['uploaded'];
-$invite = (int) $dn['invites'];
-$karma = (float) $dn['seedbonus'];
-if ($bonus_type === 1) {
-    if ($down >= $bonus_do) {
-        $msg = _('Congratulations, you have just won') . " $bonus_desc";
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $sql = 'UPDATE users SET downloaded = downloaded - ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
-    } elseif ($down < $bonus_do) {
-        $msg = _('Congratulations, your downloaded total has been reset from a negative value back to 0');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-        $sql = "UPDATE users SET downloaded = '0' WHERE id =" . sqlesc($id);
-        sql_query($sql) or sqlerr(__FILE__, __LINE__);
+$users_class = $container->get(User::class);
+$ach_bonus = $container->get(Ach_bonus::class);
+$bonus = $ach_bonus->get_random();
+$bonus['bonus_desc'] = format_comment($bonus['bonus_desc']);
+$msg = '';
+if ($bonus['bonus_type'] === 1) {
+    if ($user['downloaded'] >= $bonus['bonus_do']) {
+        $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+        $update = [
+            'downloaded' => $user['downloaded'] - $bonus['bonus_do'],
+        ];
+        $users_class->update($update, $user['id']);
+    } elseif ($user['downloaded'] < $bonus['bonus_do']) {
+        $msg = _('Congratulations, your downloaded total has been reset to 0');
+        $update = [
+            'downloaded' => 0,
+        ];
+        $users_class->update($update, $user['id']);
     }
-} elseif ($bonus_type == 2) {
-    $msg = _('Congratulations, you have just won') . " $bonus_desc";
-    sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $sql = 'UPDATE users SET uploaded = uploaded + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
-    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-} elseif ($bonus_type == 3) {
-    $msg = _('Congratulations, you have just won') . " $bonus_desc";
-    sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $sql = 'UPDATE users SET invites = invites + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
-    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-} elseif ($bonus_type == 4) {
-    $msg = _('Congratulations, you have just won') . " $bonus_desc";
-    sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    $sql = 'UPDATE users SET seedbonus = seedbonus + ' . sqlesc($bonus_do) . ' WHERE id=' . sqlesc($id);
-    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-} elseif ($bonus_type == 5) {
+} elseif ($bonus['bonus_type'] === 2) {
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'uploaded' => $user['uploaded'] + $bonus['bonus_do'],
+    ];
+    $users_class->update($update, $user['id']);
+} elseif ($bonus['bonus_type'] === 3) {
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'invites' => $user['invites'] + $bonus['bonus_do'],
+    ];
+    $users_class->update($update, $user['id']);
+} elseif ($bonus['bonus_type'] === 4) {
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'seedbonus' => $user['seedbonus'] + $bonus['bonus_do'],
+    ];
+    $users_class->update($update, $user['id']);
+} elseif ($bonus['bonus_type'] === 5) {
     $rand_fail = random_int(1, 5);
-    if ($rand_fail == 1) {
-        $msg = _('Sorry, Dunk64 has just run over you with his ultra-powered wheelchair. Better luck next time.');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    } elseif ($rand_fail == 2) {
-        $msg = _('Sorry, We put your achievement bonus point into the collection plate in an attempt to get Ducktape a prostitute.');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    } elseif ($rand_fail == 3) {
-        $msg = _('Sorry, The evil villian Adam has stolen your bonus point.');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    } elseif ($rand_fail == 4) {
-        $msg = _('Sorry, Some help has used your achievement bonus point in attempt to buy puppy chow to lure doggies into his dinner plate.');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-    } elseif ($rand_fail == 5) {
-        $msg = _('Sorry, Hoodini has magically made your achievement bonus point dissapear, better luck next time.');
-        sql_query('UPDATE usersachiev SET achpoints = achpoints - 1, spentpoints = spentpoints + 1 WHERE userid=' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
+    if ($rand_fail === 1) {
+        $msg = _fe('Sorry, {0} has just run over you with his ultra-powered wheelchair. Better luck next time.', get_anonymous_name());
+    } elseif ($rand_fail === 2) {
+        $msg = _fe('Sorry, We put your achievement bonus point into the collection plate in an attempt to get {0} a date.', get_anonymous_name());
+    } elseif ($rand_fail === 3) {
+        $msg = _fe('Sorry, The evil villian {0} has stolen your bonus point.', $site_config['chatbot']['name']);
+    } elseif ($rand_fail === 4) {
+        $msg = _fe('Sorry, {0} has used your achievement bonus point in attempt to buy puppy chow to lure doggies onto his dinner plate.', get_anonymous_name());
+    } else {
+        $msg = _fe('Sorry, {0} has magically made your achievement bonus point disappear, better luck next time.', get_anonymous_name());
     }
+} elseif ($bonus['bonus_type'] === 6) {
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'freeslots' => $user['freeslots'] + $bonus['bonus_do'],
+    ];
+    $users_class->update($update, $user['id']);
+} elseif ($bonus['bonus_type'] === 7) {
+    $base = $user['free_switch'] = 0 || $user['free_switch'] <= TIME_NOW ? TIME_NOW : $user['free_switch'];
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'free_switch' => $base + $bonus['bonus_do'],
+    ];
+    $users_class->update($update, $user['id']);
 }
-if (isset($bonus_type)) {
-    $cache->delete('user_' . $id);
+if (!empty($msg)) {
+    $update = [
+        'achpoints' => new Literal('achpoints - 1'),
+        'spentpoints' => new Literal('spentpoints + 1'),
+    ];
+    $usersachiev->update($update, $user['id']);
+    $session->set('is-success', $msg);
+    header("Location: {$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}");
+    die();
+} else {
+    $session->set('is-warning', _('Invalid data'));
+    header("Location: {$site_config['paths']['baseurl']}/achievementhistory.php?id={$user['id']}");
+    die();
 }
-header("Refresh: 3; url=achievementhistory.php?id=$id");
-stderr(_('Random Achievement Bonus'), "$msg");
-$title = _('Random Bonus');
-$breadcrumbs = [
-    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
-];
-echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();

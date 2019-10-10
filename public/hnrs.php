@@ -294,7 +294,7 @@ if (count($hnrs) > 0) {
     }
     $completed .= main_table($body, $heading);
 } else {
-    $completed = main_div(_('%s has no Hit and Runs!', format_username($userid)), '', 'padding20 has-text-centered');
+    $completed = main_div(_fe('{0} has no Hit and Runs!', format_username($userid)), '', 'padding20 has-text-centered');
 }
 
 $title = _('HnRs');

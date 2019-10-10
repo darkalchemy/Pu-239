@@ -126,7 +126,7 @@ if (!empty($lottery_config)) {
                                 <option value='" . TIME_NOW . "'>" . _('Now') . '</option>';
         for ($i = 2; $i <= 24; $i += 2) {
             $table .= "
-                                <option value='" . (TIME_NOW + (3600 * $i)) . "'>" . _pf('%d hour', '%d hours', $i) . '</option>';
+                                <option value='" . (TIME_NOW + (3600 * $i)) . "'>" . _pfe('{0} hour', '{0} hours', $i) . '</option>';
         }
         $table .= '
                             </select>
@@ -138,7 +138,7 @@ if (!empty($lottery_config)) {
                             <select name='end_date' class='w-100'>";
         for ($i = 7; $i >= 1; --$i) {
             $table .= "
-                                <option value='" . (TIME_NOW + (84600 * $i)) . "'>" . _pf('%d day', '%d days', $i) . '</option>';
+                                <option value='" . (TIME_NOW + (84600 * $i)) . "'>" . _pfe('{0} day', '{0} days', $i) . '</option>';
         }
         $table .= "
                             </select>

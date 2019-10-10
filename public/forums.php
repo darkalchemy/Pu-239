@@ -232,13 +232,13 @@ $more_options = '
 <td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll starts') . ':</span></td>
 <td><select name="poll_starts">
 <option value="0" ' . ($poll_starts === 0 ? 'selected' : '') . '>' . _('Start Now') . '!</option>
-<option value="1" ' . ($poll_starts === 1 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 1) . '</option>
-<option value="2" ' . ($poll_starts === 2 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 2) . '</option>
-<option value="3" ' . ($poll_starts === 3 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 3) . '</option>
-<option value="4" ' . ($poll_starts === 4 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 4) . '</option>
-<option value="5" ' . ($poll_starts === 5 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 5) . '</option>
-<option value="6" ' . ($poll_starts === 6 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 6) . '</option>
-<option value="7" ' . ($poll_starts === 7 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 16) . '</option>
+<option value="1" ' . ($poll_starts === 1 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+<option value="2" ' . ($poll_starts === 2 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+<option value="3" ' . ($poll_starts === 3 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+<option value="4" ' . ($poll_starts === 4 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+<option value="5" ' . ($poll_starts === 5 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+<option value="6" ' . ($poll_starts === 6 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+<option value="7" ' . ($poll_starts === 7 ? 'selected' : '') . '>' . _pfe('in {0} week', 'in {0} weeks', 16) . '</option>
 </select>' . _('When to start the poll. Default is: Start Now!') . '</td>
 </tr>
 <tr>
@@ -246,19 +246,19 @@ $more_options = '
 <td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll ends') . ':</span></td>
 <td><select name="poll_ends">
 <option value="1356048000" ' . ($poll_ends === 1356048000 ? 'selected' : '') . '>' . _('Run Forever') . '</option>
-<option value="1" ' . ($poll_ends === 1 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 1) . '</option>
-<option value="2" ' . ($poll_ends === 2 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 2) . '</option>
-<option value="3" ' . ($poll_ends === 3 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 3) . '</option>
-<option value="4" ' . ($poll_ends === 4 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 4) . '</option>
-<option value="5" ' . ($poll_ends === 5 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 5) . '</option>
-<option value="6" ' . ($poll_ends === 6 ? 'selected' : '') . '>' . _p('in $d day', 'in $d days', 6) . '</option>
-<option value="7" ' . ($poll_ends === 7 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 1) . '</option>
-<option value="14" ' . ($poll_ends === 14 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 2) . '</option>
-<option value="21" ' . ($poll_ends === 21 ? 'selected' : '') . '>' . _p('in $d week', 'in $d weeks', 3) . '</option>
-<option value="28" ' . ($poll_ends === 28 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 1) . '</option>
-<option value="56" ' . ($poll_ends === 56 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 2) . '</option>
-<option value="84" ' . ($poll_ends === 84 ? 'selected' : '') . '>' . _p('in $d month', 'in $d months', 3) . '</option>
-</select> How long should this poll run? Default is "run forever"</td>
+<option value="1" ' . ($poll_ends === 1 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+<option value="2" ' . ($poll_ends === 2 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+<option value="3" ' . ($poll_ends === 3 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+<option value="4" ' . ($poll_ends === 4 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+<option value="5" ' . ($poll_ends === 5 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+<option value="6" ' . ($poll_ends === 6 ? 'selected' : '') . '>' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+<option value="7" ' . ($poll_ends === 7 ? 'selected' : '') . '>' . _pfe('in {0} week', 'in {0} weeks', 1) . '</option>
+<option value="14" ' . ($poll_ends === 14 ? 'selected' : '') . '>' . _pfe('in {0} week', 'in {0} weeks', 2) . '</option>
+<option value="21" ' . ($poll_ends === 21 ? 'selected' : '') . '>' . _pfe('in {0} week', 'in {0} weeks', 3) . '</option>
+<option value="28" ' . ($poll_ends === 28 ? 'selected' : '') . '>' . _pfe('in {0} month', 'in {0} months', 1) . '</option>
+<option value="56" ' . ($poll_ends === 56 ? 'selected' : '') . '>' . _pfe('in {0} month', 'in {0} months', 2) . '</option>
+<option value="84" ' . ($poll_ends === 84 ? 'selected' : '') . '>' . _pfe('in {0} month', 'in {0} months', 3) . '</option>
+</select>' . _("How long should this poll run? Default is 'run forever'") . '</td>
 </tr>
 <tr>
 <td><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'forums/multi.gif" alt=' . _('Multi options') . ' class="emoticon lazy"/></td>
@@ -266,13 +266,13 @@ $more_options = '
 <td><select name="multi_options">
 <option value="1" ' . ($multi_options === 1 ? 'selected' : '') . '>' . _('Single option') . '!</option>
 ' . $options . '
-</select>' . _('Allow members to have more then one selection? Default is') . ' ' . _('Single option') . '}!</td>
+</select>' . _("Allow members to have more then one selection? Default is 'Single option'!") . '</td>
 </tr>
 <tr>
 <td></td>
 <td><span style="white-space:nowrap;font-weight: bold;">' . _('Change vote') . ':</span></td>
 <td><input name="change_vote" value="yes" type="radio" ' . ($change_vote === 'yes' ? 'checked' : '') . '>' . _('Yes') . '
-<input name="change_vote" value="no" type="radio" ' . ($change_vote === 'no' ? 'checked' : '') . '>' . _('No') . '<br> ' . _('Allow members to change their vote? Default is') . ' "no"
+<input name="change_vote" value="no" type="radio" ' . ($change_vote === 'no' ? 'checked' : '') . '>' . _('No') . '<br> ' . _('Allow members to change their vote? Default is "no"') . '
 </td></tr>'), '', '', 'padding20') . '
 </div>';
 $forum_id = isset($_GET['forum_id']) ? (int) $_GET['forum_id'] : (isset($_POST['forum_id']) ? (int) $_POST['forum_id'] : 0);
@@ -641,10 +641,10 @@ function ratingpic_forums($num)
  * @param int  $current_forum
  * @param bool $staff
  *
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  * @throws InvalidManipulation
  * @throws DependencyException
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */

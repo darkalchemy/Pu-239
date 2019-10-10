@@ -667,13 +667,13 @@ function get_avatar($avatar)
         unset($user);
     }
 
-    $avatar['anonymous'] = !empty($avatar['anonymous']) ? $avatar['anonymous'] : 'no';
+    $avatar['anonymous'] = !empty($avatar['anonymous_until']) ? true : false;
     $avatar['offensive_avatar'] = !empty($avatar['offensive_avatar']) ? $avatar['offensive_avatar'] : 'no';
     if (!empty($avatar['avatar']) && !preg_match('#' . $site_config['paths']['baseurl'] . '#', $avatar['avatar'])) {
         $avatar['avatar'] = url_proxy($avatar['avatar'], true, 150);
     }
     if ($CURUSER['avatars'] === 'yes') {
-        if ($avatar['anonymous'] === '1') {
+        if ($avatar['anonymous']) {
             $avatar = "{$site_config['paths']['images_baseurl']}anonymous_1.jpg";
         } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150'>";

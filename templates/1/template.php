@@ -317,7 +317,7 @@ function stdfoot(array $stdfoot = [])
                             " . _fe('PHP Peak Memory {0} in {1} seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
                         </p>
                         <p class='is-marginless'>
-                            " . _pf('%2$s was hit %1$d time in %3$s seconds', '%2$s was hit %1$d times in %3$s seconds', $queries, $sql_version, $querytime) . '
+                            " . _pf('{1} was hit {0} time in {2} seconds', '{1} was hit {0} times in {2} seconds', $queries, $sql_version, $querytime) . '
                         </p>
                         ' . ($debug ? "
                         <p class='is-marginless'>

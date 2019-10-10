@@ -1,4 +1,6 @@
 ### 06 Oct, 2019
+fix: session not found  
+update: db files  
 update: more hard coded strings to gettext  
 fix: many of the poorly formatted strings  
 

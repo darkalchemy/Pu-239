@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                            ->fetch('count');
 
     if ($user_tickets + $tickets > $lottery_config['user_tickets']) {
-        $session->set('is-warning', _pfe('You reached your limit. The max is {0, number} ticket.', 'You reached your limit. The max is {0, number} tickets.', $lottery_config['user_tickets']));
+        $session->set('is-warning', _pfe('You reached your limit. The max is {0} ticket.', 'You reached your limit. The max is {0} tickets.', $lottery_config['user_tickets']));
         $fail = true;
     } elseif ($CURUSER['seedbonus'] < $tickets * $lottery_config['ticket_amount']) {
         $session->set('is-warning', _('You need more points to buy the amount of tickets you want'));
@@ -51,10 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $cache->update_row('user_' . $CURUSER['id'], [
                 'seedbonus' => $seedbonus_new,
             ], $site_config['expires']['user_cache']);
-            $session->set('is-success', _pfe('You bought {0} ticket.', 'You bought {0} tickets.', number_format($tickets)) . ' ' . _pfe('You now have {0, number} ticket!', 'You now have {0, number} tickets!', number_format($tickets + $user_tickets)));
+            $session->set('is-success', _pfe('You bought {0} ticket.', 'You bought {0} tickets.', number_format($tickets)) . ' ' . _pfe('You now have {0} ticket!', 'You now have {0} tickets!', number_format($tickets + $user_tickets)));
             if ($site_config['site']['autoshout_chat'] || $site_config['site']['autoshout_irc']) {
                 $classColor = get_user_class_color($CURUSER['class']);
-                $msg = _pfe('{1} has just bought {2}{0, number} Lottery Ticket!{3} GOOD LUCK!', '{1} has just bought {2}{0, number} Lottery Tickets!{3} GOOD LUCK!', $tickets, "[color=#$classColor]" . format_comment($CURUSER['username']) . '[/color]', "[url={$site_config['paths']['baseurl']}/lottery.php]", '[/url]');
+                $msg = _pfe('{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!', '{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!', $tickets, "[color=#$classColor]" . format_comment($CURUSER['username']) . '[/color]', "[url={$site_config['paths']['baseurl']}/lottery.php]", '[/url]');
                 autoshout($msg);
             }
         } else {
@@ -111,8 +111,8 @@ $body = "
                     <li>' . _('Purchaseable shows how many tickets you can afford to purchase.') . '</li>
                     <li>' . _('You can only buy up to your purchaseable amount.') . '</li>
                     <li>' . _fe('The competiton will end: {0}', get_date((int) $lottery_config['end_date'], 'LONG')) . '</li>
-                    <li>' . _pfe('There will be {0, number} winner, picked at random.', 'There will be {0, number} winners, picked at random.', $lottery_config['total_winners']) . '</li>
-                    <li>' . _pfe('The winner will get {0} will get {1} added to their seedbonus amount', 'The winners will get {0} added to their seedbonus amount', number_format($lottery['per_user'])) . '</li>
+                    <li>' . _pfe('There will be {0} winner, picked at random.', 'There will be {0} winners, picked at random.', $lottery_config['total_winners']) . '</li>
+                    <li>' . _pfe('The winner will get {0} added to their seedbonus amount', 'The winners will get {0} added to their seedbonus amount', number_format($lottery['per_user'])) . '</li>
                     <li>' . _('The Winners will be announced once the lottery has closed and posted on the home page.') . '</li>';
 if (!$lottery_config['use_prize_fund']) {
     $body .= '
@@ -131,15 +131,15 @@ $table = '
             </tr>
             <tr>
                 <td>' . _('Total Tickets Purchased') . '</td>
-                <td>' . _pf('%d Ticket', '%d Tickets', number_format((int) $lottery['total_tickets'])) . '</td>
+                <td>' . _pfe('{0} Ticket', '{0} Tickets', number_format((int) $lottery['total_tickets'])) . '</td>
             </tr>
             <tr>
                 <td>' . _('Tickets Purchased by You') . '</td>
-                <td>' . _pf('%d Ticket', '%d Tickets', number_format((int) $lottery['current_user']['total_tickets'])) . '</td>
+                <td>' . _pfe('{0} Ticket', '{0} Tickets', number_format((int) $lottery['current_user']['total_tickets'])) . '</td>
             </tr>
             <tr>
                 <td>' . _('Purchaseable') . '</td>
-                <td>' . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? _pf('You have enough points for %d ticket.', 'You have enough points for %d tickets.', number_format((int) $lottery['current_user']['can_buy'])) . ' ' . _pf('You can buy another %d ticket if you get get more bonus points.', 'You can buy another %d tickets if you get get more bonus points.', $lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) : number_format($lottery['current_user']['can_buy'])) . '</td>
+                <td>' . ($lottery['current_user']['could_buy'] > $lottery['current_user']['can_buy'] ? _pfe('You have enough points for {0} ticket.', 'You have enough points for {0} tickets.', number_format((int) $lottery['current_user']['can_buy'])) . ' ' . _pfe('You can buy another {0} ticket if you get get more bonus points.', 'You can buy another {0} tickets if you get get more bonus points.', $lottery['current_user']['could_buy'] - $lottery['current_user']['can_buy']) : number_format($lottery['current_user']['can_buy'])) . '</td>
             </tr>';
 
 $html = main_div($body) . main_table($table, '', 'top20');

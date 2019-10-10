@@ -2512,7 +2512,7 @@ class AJAXChat
     {
         $res = sql_query("SELECT COUNT(id) AS count FROM blackjack WHERE status = 'waiting'") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
-        $msg = '[code][color=#00FF00]' . $row[0] . ' game' . plural((int) $row[0]) . ' of [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]BlackJack[/url] waiting to be played.[/color] ';
+        $msg = '[code][color=#00FF00]' . $row[0] . ' game' . plural((int) $row[0]) . ' of [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]Blackjack[/url] waiting to be played.[/color] ';
 
         $res = sql_query("SELECT COUNT(id) AS count, SUM(amount) AS amount FROM casino_bets WHERE winner = ''") or sqlerr(__FILE__, __LINE__);
         $row = mysqli_fetch_row($res);
@@ -2552,7 +2552,7 @@ class AJAXChat
         $resbj = sql_query('SELECT SUM(bjwins) FROM users') or sqlerr(__FILE__, __LINE__);
         $bjsum = mysqli_fetch_row($resbj);
         if ($bjsum) {
-            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]BlackJack[/url] tables.[/color]';
+            $msg .= '[color=#00FF00]' . mksize($bjsum[0] * 1024 * 1024 * 1024) . ' have been won (and lost) at the [url=' . $this->_siteConfig['paths']['baseurl'] . '/games.php]Blackjack[/url] tables.[/color]';
         }
         $msg .= '[/code]';
         $type = null;

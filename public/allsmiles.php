@@ -33,10 +33,10 @@ $list1 = $list2 = $list3 = '';
 $smilies = $container->get('smilies');
 foreach ($smilies as $code => $url) {
     $list1 .= "
-        <span class='margin10 mw-50 is-flex'>
+        <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt=''>
+                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt='{$code}'>
                 </a>
             </span>
         </span>";
@@ -44,10 +44,10 @@ foreach ($smilies as $code => $url) {
 $customsmilies = $container->get('custom_smilies');
 foreach ($customsmilies as $code => $url) {
     $list2 .= "
-        <span class='margin10 mw-50 is-flex'>
+       <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt=''>
+                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt='{$code}'>
                 </a>
             </span>
         </span>";
@@ -56,10 +56,10 @@ if ($user['class'] >= UC_STAFF) {
     $staff_smilies = $container->get('staff_smilies');
     foreach ($staff_smilies as $code => $url) {
         $list3 .= "
-        <span class='margin10 mw-50 is-flex'>
+        <span class='margin10 mw-50 is-flex tooltipper' title='{$code}'>
             <span class='bordered bg-04'>
                 <a href=\"javascript: pops('" . str_replace("'", "\'", $code) . "')\">
-                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt=''>
+                    <img src='{$site_config['paths']['images_baseurl']}smilies/" . $url . "' alt='{$code}'>
                 </a>
             </span>
         </span>";
@@ -92,6 +92,8 @@ $htmlout .= '
     </div>';
 $htmlout .= main_div($list);
 $htmlout .= "
+    <script src='" . get_file_name('jquery_js') . "'></script>
+    <script src='" . get_file_name('tooltipster_js') . "'></script>
     <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
 </body>
 </html>";

@@ -23,7 +23,7 @@ $html .= '
         </span>
     </div>';
 $qs = sql_query('SELECT count(t.id) AS tickets , u.id, u.seedbonus FROM tickets AS t LEFT JOIN users AS u ON u.id = t.user GROUP BY u.id ORDER BY tickets DESC, username') or sqlerr(__FILE__, __LINE__);
-$header = $body = '';
+$header = $body = $html = '';
 
 if (!mysqli_num_rows($qs)) {
     $html .= '<div class="has-text-centered size_5 padding20">' . _('No tickets have been purchased!') . '</div>';

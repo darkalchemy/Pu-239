@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($add) {
             if ($offer_class->insert($values)) {
                 $session->unset('post_offer_data');
-                $session->set('is-success', _('Offer: %s Added', format_comment($_POST['name'])));
+                $session->set('is-success', _fe('Offer: {0} Added', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }
@@ -242,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $values['updated'] = $dt;
             unset($values['added']);
             if ($offer_class->update($values, (int) $_POST['id'])) {
-                $session->set('is-success', _('Offer: %s Updated', format_comment($_POST['name'])));
+                $session->set('is-success', _fe('Offer: {0} Updated', format_comment($_POST['name'])));
                 header('Location: ' . $_SERVER['PHP_SELF']);
                 die();
             }

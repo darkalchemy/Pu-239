@@ -9,7 +9,7 @@ $user = check_user_status();
 global $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _('Sorry, you must be a %s to play in the arcade!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play in the arcade!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20', 'bottom20');
     die();
@@ -18,7 +18,7 @@ if ($user['class'] < $site_config['allowed']['play']) {
 $HTMLOUT = "
             <div class='has-text-centered'>
                 <h1>{$site_config['site']['name']} " . _('Old School Arcade!') . '</h1>
-                <span>' . _('Top Scores Earn %s Karma Points', $site_config['arcade']['top_score_points']) . "</span>
+                <span>' . _fe('Top Scores Earn {0} Karma Points', $site_config['arcade']['top_score_points']) . "</span>
                 <div class='level-center top10'>
                     <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>" . _('Top Scores') . '</a>
                 </div>

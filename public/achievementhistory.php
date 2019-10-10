@@ -2,64 +2,73 @@
 
 declare(strict_types = 1);
 
+use Pu239\Achievement;
+use Pu239\Post;
+use Pu239\Topic;
+use Pu239\User;
+use Pu239\Usersachiev;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$HTMLOUT = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
-    stderr(_('Error'), _('It appears that you have entered an invalid id.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
-$res = sql_query('SELECT u.id, u.username, a.achpoints, a.spentpoints FROM users AS u LEFT JOIN usersachiev AS a ON u.id = a.userid WHERE u.id = ' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$arr = mysqli_fetch_assoc($res);
+$usersachiev = $container->get(Usersachiev::class);
+$arr = $usersachiev->get_points($id);
 if (!$arr) {
-    stderr(_('Error'), _('It appears that you have entered an invalid id.'));
+    stderr(_('Error'), _('Invalid ID'));
 }
-$achpoints = (int) $arr['achpoints'];
-$spentpoints = (int) $arr['spentpoints'];
-$res = sql_query('SELECT COUNT(id) FROM achievements WHERE userid =' . sqlesc($id)) or sqlerr(__FILE__, __LINE__);
-$row = mysqli_fetch_row($res);
-$count = (int) $row[0];
+$post = $container->get(Post::class);
+$posts = $post->get_user_count($id);
+$topic = $container->get(Topic::class);
+$topics = $topic->get_user_count($id);
+$users_class = $container->get(User::class);
+$invited = $users_class->get_count('invitedby', (string) $id);
+$update = [
+    'forumposts' => $posts,
+    'forumtopics' => $topics,
+    'invited' => $invited,
+];
+$usersachiev->update($update, $id);
+$achievement = $container->get(Achievement::class);
+$count = (int) $achievement->get_achievements_count($id);
 $perpage = 15;
 $pager = pager($perpage, $count, "?id=$id&amp;");
 global $site_config;
 
-if ($id === $user['id']) {
-    $HTMLOUT .= "
+$HTMLOUT = "
     <div class='w-100'>
-        <ul class='level-center padding20 bg-06'>
-            <li>
-                <a href='{$site_config['paths']['baseurl']}/achievementlist.php'>" . _('Achievements List') . "</a>
-            </li>
-            <li>
-                <a href='{$site_config['paths']['baseurl']}/postcounter.php'>" . _('Update Forum Post Counter') . "</a>
-            </li>
-            <li>
-                <a href='{$site_config['paths']['baseurl']}/topiccounter.php'>" . _('Update Forum Topic Counter') . "</a>
-            </li>
-            <li>
-                <a href='{$site_config['paths']['baseurl']}/invitecounter.php'>" . _('Update Invite Counter') . '</a>
+        <ul class='level-center bg-06'>
+            <li class='is-link margin10'>
+                <a href='{$site_config['paths']['baseurl']}/achievementlist.php'>" . _('Achievements List') . '</a>
             </li>
         </ul>
     </div>';
-}
 
 $HTMLOUT .= "
     <div class='has-text-centered'>
-        <h1 class='level-item'>" . _('Achievements for') . ':&nbsp;' . format_username((int) $arr['id']) . '</h1>
-        <h2>' . _pfe('Currently {0, number} achievment.', 'Currently {0, number} achievments.', (int) $row['0']);
-if ($id === $user['id']) {
-    $HTMLOUT .= " <a class='is-link' href='{$site_config['paths']['baseurl']}/achievementbonus.php'> " . _pfe('{0} Point Available', '{0} Points Available', $achpoints) . ' // ' . _pfe('{0} Point spent', '{0} Points spent', $spentpoints) . '</a>';
+        <h1 class='level-item'>" . _('Achievements for') . ':&nbsp;' . format_username($id) . '</h1>
+        <ul class="level-center-center bottom20 size_5">
+            <li class="right10">' . _pfe('{0} achievement earned.', '{0} achievements earned.', $count) . '</li>
+            <li class="left10 right10">' . _pfe('{0} Point spent.', '{0} Points spent.', $arr['spentpoints']) . '</li>
+            <li class="left10">' . _pfe('{0} Point Available.', '{0} Points Available.', $arr['achpoints']) . '</li>
+        </ul>';
+if ($id === $user['id'] && $arr['achpoints'] > 0) {
+    $HTMLOUT .= "
+        <div>
+            <a href='{$site_config['paths']['baseurl']}/achievementbonus.php' class='button is-small bottom20 tooltipper' title='" . _('Trade your achievement points for random gifts.') . "'>" . _('Spend those Points') . '</a>
+        </div>';
 }
-$HTMLOUT .= '</h2>
+$HTMLOUT .= '
     </div>';
-if ($count > $perpage) {
-    $HTMLOUT .= $pager['pagertop'];
-}
+$HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
+
 if ($count === 0) {
-    $HTMLOUT .= stdmsg(_('No Achievements'), _fe('It appears that {0} currently has no achievements.', format_username((int) $arr['id'])));
+    stderr(_('No Achievements'), _fe('It appears that {0} currently has no achievements.', format_username($id)));
 } else {
     $heading = '
                     <tr>
@@ -67,24 +76,21 @@ if ($count === 0) {
                         <th>' . _('Description') . '</th>
                         <th>' . _('Date Earned') . '</th>
                     </tr>';
-    $res = sql_query('SELECT * FROM achievements WHERE userid=' . sqlesc($id) . " ORDER BY date DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);
     $body = '';
-    while ($arr = mysqli_fetch_assoc($res)) {
+    $res = $achievement->get_achievements($id, $pager['pdo']['limit'], $pager['pdo']['offset']);
+    foreach ($res as $arr) {
         $body .= "
                     <tr>
                         <td class='has-text-centered'>
-                            <img src='{$site_config['paths']['images_baseurl']}achievements/" . htmlsafechars($arr['icon']) . "' alt='" . htmlsafechars($arr['achievement']) . "' class='tooltipper icon' title='" . htmlsafechars($arr['achievement']) . "'>
+                            <img src='{$site_config['paths']['images_baseurl']}achievements/" . format_comment($arr['icon']) . "' alt='" . format_comment($arr['achievement']) . "' class='tooltipper icon' title='" . format_comment($arr['achievement']) . "'>
                         </td>
-                        <td>" . htmlsafechars($arr['description']) . '</td>
+                        <td>" . format_comment($arr['description']) . '</td>
                         <td>' . get_date((int) $arr['date'], '') . '</td>
                     </tr>';
     }
-    $HTMLOUT .= main_table($body, $heading) . '
-        </div>';
+    $HTMLOUT .= main_table($body, $heading);
 }
-if ($count > $perpage) {
-    $HTMLOUT .= $pager['pagerbottom'];
-}
+$HTMLOUT .= $count > $perpage ? $pager['pagerbottom'] : '';
 $title = _('Achievement History');
 $breadcrumbs = [
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",

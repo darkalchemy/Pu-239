@@ -26,11 +26,11 @@ if ($user['class'] < UC_MAX) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     //== The expiry days.
     $days = [
-        7 => _('%d Days', 7),
-        14 => _('%d Days', 14),
-        21 => _('%d Days', 21),
-        28 => _('%d Days', 28),
-        56 => _('%d Months', 7),
+        7 => _fe('{0} Days', 7),
+        14 => _fe('{0} Days', 14),
+        21 => _fe('{0} Days', 21),
+        28 => _fe('{0} Days', 28),
+        56 => _fe('{0} Months', 7),
     ];
     //== Usersearch POST data...
     $n_pms = isset($_POST['n_pms']) ? (int) $_POST['n_pms'] : 0;

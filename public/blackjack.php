@@ -16,7 +16,7 @@ global $container, $site_config;
 
 $HTMLOUT = $debugout = '';
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _('Sorry, you must be a %s to play blackjack!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play blackjack!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
 }
@@ -41,7 +41,7 @@ $blackjack['gameid'] = array_search($blackjack['id'], $blackjack['allowed']) + 1
 $blackjack['version'] = "blackjack{$blackjack['gameid']}";
 $blackjack['modifier'] = $blackjack['id'];  //default is 1 for 1 GB
 $blackjack['min_uploaded'] = $blackjack['gameid']; // min to play * $blackjack['modifier']
-$blackjack['title'] = _('Blackjack %sGB', $blackjack['gameid']);
+$blackjack['title'] = _fe('Blackjack {0}GB', $blackjack['gameid']);
 $blackjack['min'] = 5; // min upload credit that will required to play any game
 $blackjack['max'] = 5120; // max upload credit that will required to play any game
 $blackjack['gm'] = $blackjack['min_uploaded'] * $blackjack['modifier'];
@@ -112,7 +112,7 @@ $required_ratio = 1.0;
 
 $blackjack['mb'] = $blackjack['mib'] * $blackjack['mib'] * $blackjack['mib'] * $blackjack['modifier'];
 $game_size = mksize($blackjack['mb']);
-$link = '[url=' . $site_config['paths']['baseurl'] . '/blackjack.php?id=' . $id . ']BlackJack ' . $game_size . '[/url]';
+$link = '[url=' . $site_config['paths']['baseurl'] . '/blackjack.php?id=' . $id . ']Blackjack ' . $game_size . '[/url]';
 $dt = TIME_NOW;
 $game = isset($_POST['game']) ? htmlsafechars($_POST['game']) : '';
 $start_ = isset($_POST['start_']) ? htmlsafechars($_POST['start_']) : '';
@@ -135,7 +135,7 @@ if (!empty($list) && count($list) > 0) {
     $dealer = true;
     $user_warning = _('You are the dealer, you must take a card below 17.');
 } else {
-    $sql = 'SELECT dealer_cards FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid=' . sqlesc($user['id']);
+    $sql = 'SELECT dealer_cards FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($user['id']);
     $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
     $list = mysqli_fetch_assoc($res);
     if (!empty($list) && count($list) > 0) {
@@ -466,14 +466,14 @@ if ($game) {
                     ], $site_config['expires']['user_cache']);
 
                     $lost_str = str_replace('10GB', mksize($blackjack['mb']), _('You lost 10GB to'));
-                    $msg = _fe("BlackJack {0}: {1} {2} (You had {3} point, {4} had {6} points\n", $game_size, $lost_str, $user['username'], $a['points'], $user['username'], 21);
+                    $msg = _fe("Blackjack {0}: {1} {2} (You had {3} point, {4} had {6} points\n", $game_size, $lost_str, $user['username'], $a['points'], $user['username'], 21);
                     $subject = _('Blackjack Results');
                     $outcome = _fe('{0}and won', $dbl_text);
                 } else {
                     $subject = _('Blackjack Results');
                     $winorlose = _('nobody won');
-                    $msg = _fe("BlackJack {0}: You tied with {1} You both had {2} points\n", $game_size, $user['username'], $a['points']);
-                    $outcome = _('%sand tied', $dbl_text);
+                    $msg = _fe("Blackjack {0}: You tied with {1} You both had {2} points\n", $game_size, $user['username'], $a['points']);
+                    $outcome = _fe('{0}and tied', $dbl_text);
                 }
                 $msgs_buffer[] = [
                     'receiver' => $a['userid'],
@@ -545,7 +545,7 @@ if ($game) {
                 if ($a['points'] > 21) {
                     $subject = _('Blackjack Results');
                     $winorlose = _('nobody won');
-                    $msg = "BlackJack $game_size: " . _('You tied with') . ' ' . $user['username'] . ' (' . _('You both had') . ' ' . $a['points'] . " points).\n\n";
+                    $msg = "Blackjack $game_size: " . _('You tied with') . ' ' . $user['username'] . ' (' . _('You both had') . ' ' . $a['points'] . " points).\n\n";
                     $outcome = "{$dbl_text}and busted";
                 } else {
                     $subject = _('Blackjack Results');
@@ -576,7 +576,7 @@ if ($game) {
                     ], $site_config['expires']['user_cache']);
 
                     $won_str = str_replace('10GB', mksize($blackjack['mb']), _('You won 10GB and beat'));
-                    $msg = "BlackJack $game_size: $won_str " . $user['username'] . ' (' . _('You had') . ' ' . $a['points'] . ' ' . _('points') . ', ' . $user['username'] . " had $points points).\n\n";
+                    $msg = "Blackjack $game_size: $won_str " . $user['username'] . ' (' . _('You had') . ' ' . $a['points'] . ' ' . _('points') . ', ' . $user['username'] . " had $points points).\n\n";
                     $outcome = "{$dbl_text}and lost";
                 }
                 $msgs_buffer[] = [
@@ -761,14 +761,14 @@ if ($game) {
             if ($a['points'] == $playerarr['points']) {
                 $subject = _('Blackjack Results');
                 $winorlose = _('nobody won');
-                $msg = _fe('BlackJack {0}: Your opponent was {1}. You both had {2} - it was a tie.', $game_size, $user['username'], $points_text) . "\n\n";
+                $msg = _fe('Blackjack {0}: Your opponent was {1}. You both had {2} - it was a tie.', $game_size, $user['username'], $points_text) . "\n\n";
                 $outcome = _fe('{0} and tied', $dbl_text);
             } else {
                 // winner $user
                 if (($a['points'] < $playerarr['points'] && $a['points'] < 21) || ($a['points'] > $playerarr['points'] && $a['points'] > 21)) {
                     $subject = _('Blackjack Results');
                     $lost_str = str_replace('10GB', mksize($blackjack['mb']), _('You lost 10GB to'));
-                    $msg = _fe('BlackJack {0}: {1} {2} (You had {3} points, {4} had {5} points.)', $game_size, $lost_str, $user['username'], (int) $a['points'], $user['username'], (int) $playerarr['points']) . "\n\n";
+                    $msg = _fe('Blackjack {0}: {1} {2} (You had {3} points, {4} had {5} points.)', $game_size, $lost_str, $user['username'], (int) $a['points'], $user['username'], (int) $playerarr['points']) . "\n\n";
                     $winorlose = _('you won') . ' ' . mksize($blackjack['mb']);
                     $st_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
                     $nd_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
@@ -783,7 +783,7 @@ if ($game) {
                 } elseif (($a['points'] > $playerarr['points'] && $a['points'] < 21) || $a['points'] == 21 || ($a['points'] < $playerarr['points'] && $a['points'] > 21)) {
                     $subject = _('Blackjack Results');
                     $won_str = str_replace('10GB', mksize($blackjack['mb']), _('You won 10GB and beat'));
-                    $msg = _fe('BlackJack {0}: {1} {2} (You had {3} points, {4} had {5} points.)', $game_size, $won_str, $user['username'], (int) $a['points'], $user['username'], (int) $playerarr['points']) . "\n\n";
+                    $msg = _fe('Blackjack {0}: {1} {2} (You had {3} points, {4} had {5} points.)', $game_size, $won_str, $user['username'], (int) $a['points'], $user['username'], (int) $playerarr['points']) . "\n\n";
                     $winorlose = _('you lost') . ' ' . mksize($blackjack['mb']);
                     $st_query = '- ' . $blackjack['mb'] . ', bjlosses = bjlosses +';
                     $nd_query = '+ ' . $blackjack['mb'] . ', bjwins = bjwins +';
@@ -1077,9 +1077,9 @@ if ($game) {
 /**
  * @param $cardid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed|null
  */

@@ -19,8 +19,8 @@ if (is_valid_id($remove)) {
     write_log(_fe('Email ban {0} was removed by {1}', $remove, $CURUSER['username']));
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = htmlsafechars(trim($_POST['email']));
-    $comment = htmlsafechars(trim($_POST['comment']));
+    $email = htmlsafechars($_POST['email']);
+    $comment = htmlsafechars($_POST['comment']);
     if (!$email || !$comment) {
         stderr(_('Error'), _('Missing Form Data.'));
     }

@@ -28,9 +28,9 @@ $HTMLOUT = '';
  * @param        $userid
  * @param string $variant
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -189,7 +189,7 @@ function bookmarktable($res, $userid, $variant = 'index')
                         <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>
                         <td class='has-text-centered'>" . str_replace(' ', '<br>', mksize($row['size'])) . '</td>';
         $body .= "
-                        <td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id=$id'>" . _pfe('{0, number}<br>time', '{0, number}<br>times', number_format($row['times_completed'])) . '</a></td>';
+                        <td class='has-text-centered'><a href='{$site_config['paths']['baseurl']}/snatches.php?id=$id'>" . _pfe('{0} time', '{0} times', $row['times_completed']) . '</a></td>';
         if ((int) $row['seeders']) {
             if ($variant === 'index') {
                 if ($row['leechers']) {

@@ -239,13 +239,13 @@ switch ($action) {
 		<td><span style="white - space:nowrap;font-weight: bold;">' . _('Poll starts') . ':</span></td>
 		<td><select name="poll_starts">
 											<option class="body" value="0">' . _('Start Now') . '!</option>
-											<option class="body" value="1">' . _p('in %d day', 'in %d days', 1) . '</option>
-											<option class="body" value="2">' . _p('in %d day', 'in %d days', 2) . '</option>
-											<option class="body" value="3">' . _p('in %d day', 'in %d days', 3) . '</option>
-											<option class="body" value="4">' . _p('in %d day', 'in %d days', 4) . '</option>
-											<option class="body" value="5">' . _p('in %d day', 'in %d days', 5) . '</option>
-											<option class="body" value="6">' . _p('in %d day', 'in %d days', 6) . '</option>
-											<option class="body" value="7">' . _p('in %d week', 'in %d weeks', 1) . '</option>
+											<option class="body" value="1">' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+											<option class="body" value="2">' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+											<option class="body" value="3">' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+											<option class="body" value="4">' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+											<option class="body" value="5">' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+											<option class="body" value="6">' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+											<option class="body" value="7">' . _pfe('in {0} week', 'in {0} weeks', 1) . '</option>
 											</select> ' . _("When to start the poll. Default is 'Start Now'") . '!" </td>
 	</tr>
 	<tr>
@@ -253,18 +253,18 @@ switch ($action) {
 		<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll ends') . ':</span></td>
 		<td><select name = "poll_ends">
 											<option class="body" value = "1356048000">' . _('Run Forever') . '</option>
-											<option class="body" value = "1">' . _p('in %d day', 'in %d days', 1) . '</option>
-											<option class="body" value = "2">' . _p('in %d day', 'in %d days', 2) . '</option>
-											<option class="body" value = "3">' . _p('in %d day', 'in %d days', 3) . '</option>
-											<option class="body" value = "4">' . _p('in %d day', 'in %d days', 4) . '</option>
-											<option class="body" value = "5">' . _p('in %d day', 'in %d days', 5) . '</option>
-											<option class="body" value = "6">' . _p('in %d day', 'in %d days', 6) . '</option>
-											<option class="body" value = "7">' . _p('in %d week', 'in %d weeks', 1) . '</option>
-											<option class="body" value = "14">' . _p('in %d week', 'in %d weeks', 2) . '</option>
-											<option class="body" value = "21">' . _p('in %d week', 'in %d weeks', 3) . '</option>
-											<option class="body" value = "28">' . _p('in %d month', 'in %d months', 1) . '</option>
-											<option class="body" value = "56">' . _p('in %d month', 'in %d months', 2) . '</option>
-											<option class="body" value = "84">' . _p('in %d month', 'in %d months', 3) . '</option>
+											<option class="body" value = "1">' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+											<option class="body" value = "2">' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+											<option class="body" value = "3">' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+											<option class="body" value = "4">' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+											<option class="body" value = "5">' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+											<option class="body" value = "6">' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+											<option class="body" value = "7">' . _pfe('in {0} week', 'in {0} weeks', 1) . '</option>
+											<option class="body" value = "14">' . _pfe('in {0} week', 'in {0} weeks', 2) . '</option>
+											<option class="body" value = "21">' . _pfe('in {0} week', 'in {0} weeks', 3) . '</option>
+											<option class="body" value = "28">' . _pfe('in {0} month', 'in {0} months', 1) . '</option>
+											<option class="body" value = "56">' . _pfe('in {0} month', 'in {0} months', 2) . '</option>
+											<option class="body" value = "84">' . _pfe('in {0} month', 'in {0} months', 3) . '</option>
 											</select>' . _("How long this poll should run? Default is to 'Run Forever'") . '"</td>
 	</tr>
 	<tr>
@@ -487,13 +487,13 @@ switch ($action) {
 		<td><span style="white - space:nowrap;font-weight: bold;">' . _('Poll starts') . ':</span></td>
 		<td><select name="poll_starts">
 											<option class="body" value="0">' . _('Start Now') . '!</option>
-											<option class="body" value="1">' . _p('in %d day', 'in %d days', 1) . '</option>
-											<option class="body" value="2">' . _p('in %d day', 'in %d days', 2) . '</option>
-											<option class="body" value="3">' . _p('in %d day', 'in %d days', 3) . '</option>
-											<option class="body" value="4">' . _p('in %d day', 'in %d days', 4) . '</option>
-											<option class="body" value="5">' . _p('in %d day', 'in %d days', 5) . '</option>
-											<option class="body" value="6">' . _p('in %d day', 'in %d days', 6) . '</option>
-											<option class="body" value="7">' . _p('in %d week', 'in %d weeks', 1) . '</option>
+											<option class="body" value="1">' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+											<option class="body" value="2">' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+											<option class="body" value="3">' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+											<option class="body" value="4">' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+											<option class="body" value="5">' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+											<option class="body" value="6">' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+											<option class="body" value="7">' . _pfe('in {0} week', 'in {0} weeks', 1) . '</option>
 											</select> ' . _("When to start the poll. Default is 'Start Now'") . '!" <br>
 											Poll set to start: ' . get_date((int) $poll_starts, '') . ' </td>
 	</tr>
@@ -502,19 +502,19 @@ switch ($action) {
 		<td><span style="white-space:nowrap;font-weight: bold;">' . _('Poll ends') . ':</span></td>
 		<td><select name = "poll_ends">
 											<option class="body" value = "1356048000">' . _('Run Forever') . '</option>
-											<option class="body" value = "1">' . _p('in %d day', 'in %d days', 1) . '</option>
-											<option class="body" value = "2">' . _p('in %d day', 'in %d days', 2) . '</option>
-											<option class="body" value = "3">' . _p('in %d day', 'in %d days', 3) . '</option>
-											<option class="body" value = "4">' . _p('in %d day', 'in %d days', 4) . '</option>
-											<option class="body" value = "5">' . _p('in %d day', 'in %d days', 5) . '</option>
-											<option class="body" value = "6">' . _p('in %d day', 'in %d days', 6) . '</option>
-											<option class="body" value = "7">' . _p('in %d week', 'in %d weeks', 1) . '</option>
-											<option class="body" value = "14">' . _p('in %d week', 'in %d weeks', 2) . '</option>
-											<option class="body" value = "21">' . _p('in %d week', 'in %d weeks', 3) . '</option>
-											<option class="body" value = "28">' . _p('in %d month', 'in %d months', 1) . '</option>
-											<option class="body" value = "56">' . _p('in %d month', 'in %d months', 2) . '</option>
-											<option class="body" value = "84">' . _p('in %d month', 'in %d months', 3) . '</option>
-											<option class="body" value = "168">' . _p('in %d month', 'in %d months', 6) . '</option>
+											<option class="body" value = "1">' . _pfe('in {0} day', 'in {0} days', 1) . '</option>
+											<option class="body" value = "2">' . _pfe('in {0} day', 'in {0} days', 2) . '</option>
+											<option class="body" value = "3">' . _pfe('in {0} day', 'in {0} days', 3) . '</option>
+											<option class="body" value = "4">' . _pfe('in {0} day', 'in {0} days', 4) . '</option>
+											<option class="body" value = "5">' . _pfe('in {0} day', 'in {0} days', 5) . '</option>
+											<option class="body" value = "6">' . _pfe('in {0} day', 'in {0} days', 6) . '</option>
+											<option class="body" value = "7">' . _pfe('in {0} week', 'in {0} weeks', 1) . '</option>
+											<option class="body" value = "14">' . _pfe('in {0} week', 'in {0} weeks', 2) . '</option>
+											<option class="body" value = "21">' . _pfe('in {0} week', 'in {0} weeks', 3) . '</option>
+											<option class="body" value = "28">' . _pfe('in {0} month', 'in {0} months', 1) . '</option>
+											<option class="body" value = "56">' . _pfe('in {0} month', 'in {0} months', 2) . '</option>
+											<option class="body" value = "84">' . _pfe('in {0} month', 'in {0} months', 3) . '</option>
+											<option class="body" value = "168">' . _pfe('in {0} month', 'in {0} months', 6) . '</option>
 											</select>' . _("How long this poll should run? Default is to 'Run Forever'") . '<br>
 											Poll set to end: ' . ($poll_ends === 1356048000 ? '' . _('Run Forever') . '' : get_date((int) $poll_ends, '')) . ' </td>
 	</tr>

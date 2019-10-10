@@ -18,7 +18,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _('Sorry, you must be a %s to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
 } elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
     stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
     die();
@@ -431,7 +431,7 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             </div>";
         }
     } else {
-        $HTMLOUT .= _p('You already have %d open bet. Wait until it is completed before you start another.', 'You already have %d open bets. Wait until they are completed before you start another.', $maxusrbet);
+        $HTMLOUT .= _pfe('You already have {0} open bet. Wait until it is completed before you start another.', 'You already have {0} open bets. Wait until they are completed before you start another.', $maxusrbet);
     }
     $maxbetShow = mksize($maxbet);
     $open_bets = "

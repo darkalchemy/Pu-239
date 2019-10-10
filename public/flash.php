@@ -16,7 +16,7 @@ $all_our_games = $site_config['arcade']['games'];
 if (isset($_GET['gamename'])) {
     $gamename = strip_tags($_GET['gamename']);
     if (!in_array($gamename, $all_our_games)) {
-        stderr(_('Error'), _('No game with that name! (%s)', $gamename));
+        stderr(_('Error'), _fe('No game with that name! ({0})', $gamename));
     }
 }
 
@@ -48,7 +48,7 @@ $HTMLOUT .= "
             </ul>
         </div>
         <h1 class='has-text-centered'>" . _fe('{0} Old School Arcade!', $site_config['site']['name']) . "</h1>
-        <div class='has-text-centered'>" . _('Top Scores Earn %d Karma Points', $site_config['arcade']['top_score_points']) . '</div>';
+        <div class='has-text-centered'>" . _fe('Top Scores Earn {0} Karma Points', $site_config['arcade']['top_score_points']) . '</div>';
 
 $HTMLOUT .= "
         <div class='bordered top20'>

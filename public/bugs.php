@@ -237,7 +237,7 @@ if ($action === 'viewbug') {
     if ($count > 0) {
         $HTMLOUT .= $count > $perpage ? $pager['pagertop'] : '';
         $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _pfe('There is {0, number} new bug. Please check it.', 'There is {0, number} new bugs. Please check them.', $na_count) . "</h1>
+        <h1 class='has-text-centered'>" . _pfe('There is {0} new bug. Please check it.', 'There is {0} new bugs. Please check them.', $na_count) . "</h1>
         <div class='has-text-centered size_3'>" . _('All solved bugs will be deleted after 30 days (from added date).') . '</div>';
         $heading = '        
     <tr>

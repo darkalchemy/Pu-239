@@ -99,7 +99,7 @@ function crazyhour()
             <div class='tooltip_templates'>
                 <div id='crazy_tooltip' class='margin20'>
                     <div class='size_4 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                        " . _('CrazyHour %1$s %2$s Ends in %3$s at %4$s', $crazytitle, $crazymessage, mkprettytime($crazyhour['remaining']), get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1)) . '
+                        " . _fe('CrazyHour {0} {1} Ends in {2} at {3}', $crazytitle, $crazymessage, mkprettytime($crazyhour['remaining']), get_date((int) $crazyhour['crazyhour']['var'], 'WITHOUT_SEC', 1, 1)) . '
                     </div>
                 </div>
             </div>

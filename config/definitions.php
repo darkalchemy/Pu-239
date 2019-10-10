@@ -10,7 +10,9 @@ use Imdb\Config;
 use Jobby\Jobby;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Container\ContainerInterface;
+use Pu239\Ach_bonus;
 use Pu239\Achievement;
+use Pu239\Achievementlist;
 use Pu239\Ban;
 use Pu239\Block;
 use Pu239\Bonuslog;
@@ -60,7 +62,9 @@ use SlashTrace\SlashTrace;
 use function DI\autowire;
 
 return [
+    Ach_bonus::class => autowire(),
     Achievement::class => autowire(),
+    Achievementlist::class => autowire(),
     Ban::class => autowire(),
     Block::class => autowire(),
     Bonuslog::class => autowire(),
@@ -221,14 +225,23 @@ return [
     }),
     I18n::class => DI\factory(function () {
         $i18n = new I18n([
+            Codes::AF_ZA,
             Codes::DA_DK,
+            Codes::DE_DE,
             Codes::EN_US,
             Codes::ES_ES,
             Codes::FI_FI,
             Codes::FR_FR,
+            Codes::IT_IT,
+            Codes::KO_KR,
             Codes::NB_NO,
+            Codes::NL_NL,
+            Codes::PL_PL,
             Codes::RO_RO,
+            Codes::RU_RU,
             Codes::SV_SE,
+            Codes::ZH_CN,
+            Codes::ZH_TW,
         ]);
 
         return $i18n;

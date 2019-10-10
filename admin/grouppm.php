@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $messages_class = $container->get(Message::class);
             $r = $messages_class->insert($msgs_buffer);
-            $err[] = $r ? _pfe('Message sent to {0, number} user', 'Message sent to {0, number} users', count($msgs_buffer)) : _('Unable to send the message try again!');
+            $err[] = $r ? _pfe('Message sent to {0} user', 'Message sent to {0} users', count($msgs_buffer)) : _('Unable to send the message try again!');
         } else {
             $err[] = _('There are not any users in the groups you selected!');
         }

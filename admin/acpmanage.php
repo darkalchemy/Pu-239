@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ids'])) {
             stderr(_('Error'), _('Invalid Credentials.'));
         }
     }
-    $do = isset($_POST['do']) ? htmlsafechars(trim($_POST['do'])) : '';
+    $do = isset($_POST['do']) ? htmlsafechars($_POST['do']) : '';
     if ($do == 'enabled') {
         sql_query('UPDATE users SET status = 0 WHERE id IN (' . implode(', ', array_map('sqlesc', $ids)) . ') AND status = 2') or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $id, [

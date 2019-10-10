@@ -232,7 +232,7 @@ if ($count) {
                        ->fetchAll();
 
     $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _pfe('{0, number} Torrent On Deathrow', '{0, number} Torrents On Deathrow', $count) . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
+        <h1 class='has-text-centered'>" . _pfe('{0} Torrent On Deathrow', '{0} Torrents On Deathrow', $count) . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='' method='post' enctype='multipart/form-data' accept-charset='utf-8'>";
     $heading = '
         <tr>
