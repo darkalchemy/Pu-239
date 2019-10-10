@@ -434,3 +434,8 @@ $HTMLOUT .= $table . ($may_post ? '
 		                    <input type="submit" name="button" class="button is-small" value="' . _('New Topic') . '">
 		                </form>
 		            </div>' : '<span>' . _('You are not permitted to post in this forum.') . '</span>') . $the_top_and_bottom . ($count > $perpage ? $menu_bottom : '');
+
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&forum_id={$forum_id}'>{$forum_name}</a>",
+];

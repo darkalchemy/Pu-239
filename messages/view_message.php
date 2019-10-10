@@ -78,7 +78,11 @@ if ($message['friend'] > 0) {
 }
 
 $avatar = get_avatar($arr_user_stuff);
-
+if (($message['receiver'] != $user['id'] || $message['sender'] === $user['id']) && strpos($_SERVER['HTTP_REFERER'], 'box=-1') !== false) {
+    $mailbox = -1;
+} else {
+    $mailbox = $message['location'];
+}
 if ($message['location'] > 1) {
     $name = $fluent->from('pmboxes')
                    ->select(null)
@@ -96,6 +100,8 @@ if ($message['location'] > 1) {
             <span class="right10 left10">' . _fe("please note: you have a maximum of {0} PM's for all mail boxes that are not sentbox.", $maxbox) . '</span>
             <span class="has-text-danger">***</span>
         </div>';
+} else {
+    $mailbox_name = ($mailbox === $site_config['pm']['inbox'] ? _('Inbox') : ($mailbox === $site_config['pm']['sent'] ? _('Sentbox') : ($mailbox === $site_config['pm']['deleted'] ? _('Deleted') : _('Drafts'))));
 }
 
 $HTMLOUT .= "
@@ -107,7 +113,7 @@ $HTMLOUT .= "
 $body = "
             <tr class='no_hover'>
                 <td colspan='2'>
-                    <h2>" . _('Subject:') . ' ' . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : _('No Subject')) . "</h2>
+                    <h2>" . _('Subject') . ': ' . ($message['subject'] !== '' ? htmlsafechars($message['subject']) : _('No Subject')) . "</h2>
                 </td>
             </tr>
             <tr class='no_hover'>
@@ -146,16 +152,6 @@ $body = "
                     </div>
                 </div>
             </td>
-
-            <!--
-                <td class='has-text-centered min-150 mw-150'>{$avatar}</td>
-                <td>
-                    <div class='flex-vertical comments h-100 padding10'>
-                        <div>" . format_comment($message['msg'], false) . "</div>
-                        <div>$attachment</div>
-                    </div>
-                </td>
-            -->
             </tr>
             <tr class='no_hover'>
                 <td colspan='2'>
@@ -180,3 +176,8 @@ $HTMLOUT .= main_table($body) . "
             " . insertJumpTo(0, $user['id']) . '
         </div>
     </div>';
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/messages.php'>" . _('Private Messages') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/messages.php?action=view_mailbox&box={$mailbox}'>{$mailbox_name}</a>",
+    "<a href='{$site_config['paths']['baseurl']}/messages.php?action=view_message&id={$pm_id}'>" . format_comment($message['subject']) . '</a>',
+];

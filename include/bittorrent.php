@@ -379,6 +379,7 @@ function searchfield($s)
  * @param             $text
  * @param string|null $outer_class
  * @param string|null $inner_class
+ * @param array       $breadcrumbs
  *
  * @throws AuthError
  * @throws DependencyException
@@ -388,7 +389,7 @@ function searchfield($s)
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  */
-function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null)
+function stderr($heading, $text, ?string $outer_class = null, ?string $inner_class = null, array $breadcrumbs = [])
 {
     $page = isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '';
     $self = isset($_SERVER['PHP_SELF']) ? ucfirst(str_replace([
@@ -396,10 +397,12 @@ function stderr($heading, $text, ?string $outer_class = null, ?string $inner_cla
         '.php',
     ], '', $_SERVER['PHP_SELF'])) : '';
     $title = !empty($heading) ? $heading : _('Error');
-    $breadcrumbs = [
-        "<a href='$page'>$self</a>",
-        "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
-    ];
+    if (empty($breadcrumbs)) {
+        $breadcrumbs = [
+            "<a href='$page'>$self</a>",
+            "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
+        ];
+    }
     echo stdhead($title, [], 'page_wrapper', $breadcrumbs) . stdmsg($heading, $text, $outer_class, $inner_class) . stdfoot();
     die();
 }

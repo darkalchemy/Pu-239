@@ -2974,6 +2974,9 @@ msgstr "Slet PM'er"
 msgid "Delete PMs:"
 msgstr "Slet PM'er:"
 
+msgid "Delete Post"
+msgstr "Slet indlæg"
+
 msgid "Delete Reason"
 msgstr "Slet årsag"
 
@@ -3421,6 +3424,9 @@ msgstr "Rediger tilbud"
 
 msgid "Edit Poll"
 msgstr "Rediger poll"
+
+msgid "Edit Post"
+msgstr "Rediger indlæg"
 
 msgid "Edit Reply"
 msgstr "Rediger svar"
@@ -7970,6 +7976,9 @@ msgstr "Forrige måneders billeder"
 msgid "Priority"
 msgstr "Prioritet"
 
+msgid "Private Messages"
+msgstr "Private beskeder"
+
 msgid "Private messages disabled = "
 msgstr "Private beskeder deaktiveret ="
 
@@ -8994,6 +9003,10 @@ msgstr "Vælg {0}"
 msgid "Send"
 msgstr "Sende"
 
+#, no-php-format
+msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
+msgstr "Send <i class=\"{0}\"> {1} </i> a PM </i>"
+
 msgid "Send All not connectable Users A PM"
 msgstr "Send alle brugere, der ikke kan forbindes, A PM"
 
@@ -9889,6 +9902,9 @@ msgstr "Abonner på emnet"
 
 msgid "Subscript"
 msgstr "Sænket"
+
+msgid "Subscriptions"
+msgstr "Abonnementer"
 
 msgid "Subtitle"
 msgstr "Undertekst"
@@ -11464,6 +11480,10 @@ msgstr "Genopretter"
 msgid "Underline"
 msgstr "Understrege"
 
+#, no-php-format
+msgid "Unfriend <i class=\"{0}\">{1}</i>"
+msgstr "Uvenlig <i class=\"{0}\"> {1} </i>"
+
 msgid "Unknow Browser"
 msgstr "Ikke kend browser"
 
@@ -11814,6 +11834,9 @@ msgstr "Brugerinfo?"
 
 msgid "User information"
 msgstr "Brugerinformation"
+
+msgid "User is Anonymous"
+msgstr "Brugeren er anonym"
 
 msgid "User name"
 msgstr "Brugernavn"
@@ -13773,9 +13796,6 @@ msgstr "har lige placeret en"
 msgid "has never hit"
 msgstr "har aldrig ramt"
 
-msgid "has no posts to look at"
-msgstr "har ingen indlæg at se på"
-
 msgid "has won"
 msgstr "har vundet"
 
@@ -14653,6 +14673,10 @@ msgid "{0} has no Hit and Runs!"
 msgstr "{0} har intet hit og løb!"
 
 #, no-php-format
+msgid "{0} has no posts to look at!"
+msgstr "{0} har ingen indlæg at se på!"
+
+#, no-php-format
 msgid "{0} has tried to login using invalid data. "
 msgstr "{0} har forsøgt at logge ind ved hjælp af ugyldige data."
 
@@ -14840,7 +14864,7 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} har lige købt {2} {0} Lotteri! {3} GODE LUCK!"
 msgstr[1] "{1} har lige købt {2} {0} Lotteribilletter! {3} GODE LUCK!"
 
-#, php-format
+#, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
 msgstr[0] "{1} blev slået {0} tid på {2} sekunder"

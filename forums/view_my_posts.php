@@ -130,3 +130,7 @@ while ($arr = mysqli_fetch_assoc($res)) {
     </table>';
 }
 $HTMLOUT .= '<a id="bottom"></a>' . ($count > $perpage ? $menu_bottom : '');
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_my_posts'>" . _('My Posts') . '</a>',
+];

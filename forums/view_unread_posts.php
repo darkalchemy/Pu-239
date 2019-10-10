@@ -183,3 +183,7 @@ if ($count === 0) {
     }
     $HTMLOUT .= main_table($body, $heading) . $menu_bottom;
 }
+$breadcrumbs = [
+    "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
+    "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_unread_posts'>" . _('Unread Posts') . '</a>',
+];
