@@ -674,7 +674,7 @@ function get_avatar($avatar)
     }
     if ($CURUSER['avatars'] === 'yes') {
         if ($avatar['anonymous']) {
-            $avatar = "<img src='{$site_config['paths']['images_baseurl']}anonymous_1.jpg' alt='avatar' class='avatar mw-150'>";
+            $avatar = "<img src='{$site_config['paths']['images_baseurl']}anonymous_1.png' alt='avatar' class='avatar mw-150'>";
         } elseif ($avatar['offensive_avatar'] === 'yes' && $CURUSER['view_offensive_avatar'] === 'no') {
             $avatar = "<img src='{$site_config['paths']['images_baseurl']}fuzzybunny.gif' alt='avatar' class='avatar mw-150'>";
         } elseif (empty($avatar['avatar'])) {
