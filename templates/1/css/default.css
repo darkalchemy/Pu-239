@@ -1167,6 +1167,15 @@ body.background-16 {
     width: auto;
 }
 
+.anonymous {
+    background: rgba(63,63,63, .5);
+    border-radius: .3125em;
+}
+
+.anonymous img {
+    padding: 20px 0;
+}
+
 .code {
     tab-size: 4;
     white-space: pre-wrap;
@@ -1211,7 +1220,7 @@ img.bar {
 .masonry-small {
     display: grid;
     grid-gap: 1em;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 
 .masonry-item-clean,
