@@ -1146,7 +1146,9 @@ function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $h
 {
     global $container, $site_config;
     if (empty($url) || stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) {
-        return $url;
+        if (stripos($url, 'img.php') === false) {
+            return $url;
+        }
     }
     if (!$image) {
         return (!empty($site_config['site']['anonymizer_url']) ? $site_config['site']['anonymizer_url'] : '') . $url;

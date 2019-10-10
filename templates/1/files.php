@@ -33,7 +33,7 @@ function get_file_name($file)
         case 'jquery_js':
             return "{$site_config['paths']['baseurl']}/js/1/jquery_21c3cb84.js";
         case 'chat_main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/chat_main_6f1fa437.js";
+            return "{$site_config['paths']['baseurl']}/js/1/chat_main_bbb6db4a.js";
         case 'chat_js':
             return "{$site_config['paths']['baseurl']}/js/1/chat_8dfdde8e.js";
         case 'chat_log_js':
