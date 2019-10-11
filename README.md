@@ -1,6 +1,6 @@
-# Pu-239 v0.61
+# Pu-239 v0.62
 
-![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.61)
+![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.62)
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
