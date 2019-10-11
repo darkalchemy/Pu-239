@@ -94,7 +94,7 @@ if ($res_cooker) {
                 <td>' . _('Recipes') . ":</span></td>
                 <td>
                     <select name='recipe' class='w-100'>
-                        <option value='0'>" . _('Select One') . '</option>';
+                        <option value='0'>" . _('Select') . '</option>';
     foreach ($res_cooker as $arr_recipe) {
         $has_recipes .= "
                         <option value='{$arr_recipe['id']}' " . ($recipe == $arr_recipe['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_recipe['name']) . '</option>';
@@ -118,7 +118,7 @@ if ($res_requests) {
                 <td>' . _('Requests') . ":</span></td>
                 <td>
                     <select name='request' class='w-100'>
-                        <option value='0'>" . _('Select One') . '</option>';
+                        <option value='0'>" . _('Select') . '</option>';
     foreach ($res_requests as $arr_request) {
         $has_requests .= "
                         <option value='{$arr_request['id']}' " . ($request == $arr_request['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_request['name']) . '</option>';
@@ -144,7 +144,7 @@ if ($res_offers) {
                 <td>' . _('My Offers') . ":</td>
                 <td>
                     <select name='offer' class='w-100'>
-                        <option value='0'>" . _('Select One') . '</option>';
+                        <option value='0'>" . _('Select') . '</option>';
     foreach ($res_offers as $arr_offer) {
         $has_offers .= "
                         <option value='{$arr_offer['id']}' " . ($offer == $arr_offer['id'] ? 'selected' : '') . '>' . htmlsafechars($arr_offer['name']) . '</option>';
@@ -216,7 +216,7 @@ $HTMLOUT .= "
                 <td>
                     <input type='url' id='image_url' placeholder='External Image URL' class='w-100' onchange=\"return grab_url(event)\">
                     <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' value='$poster'>
-                    <br>" . _('(Minimum Poster Width should be 400 Px , larger sizes will be scaled.)') . "
+                    <br>" . _('(Minimum Poster Width should be 400 px, larger sizes will be scaled.)') . "
                     <div class='poster_container has-text-centered'></div>
                 </td>
             </tr>
@@ -280,7 +280,7 @@ foreach ($subs as $s) {
                     <div class='w-15 margin10 tooltipper bordered level-center-center' title='" . htmlsafechars($s['name']) . "'>
                         <input name='subs[]' type='checkbox' value='{$s['name']}' " . (in_array($s['name'], $has_subs) ? 'checked' : '') . " class='margin20'>
                         <img class='sub_flag' src='{$site_config['paths']['images_baseurl']}/{$s['pic']}' alt='" . htmlsafechars($s['name']) . "'>
-                        <span class='has-text-centered margin20'>" . htmlsafechars($s['name']) . '</span>
+                        <span class='has-text-centered margin20'>" . format_comment($s['name']) . '</span>
                     </div>';
 }
 $subs_list .= '
@@ -306,16 +306,16 @@ $HTMLOUT .= "
 $rg = "
             <select name='release_group' class='w-100'>
                 <option value='none'>" . _('None') . "</option>
-                <option value='p2p' " . ($release_group === 'p2p' ? 'selected' : '') . ">p2p</option>
-                <option value='scene' " . ($release_group === 'scene' ? 'selected' : '') . '>Scene</option>
+                <option value='p2p' " . ($release_group === 'p2p' ? 'selected' : '') . '>' . _('p2p') . "</option>
+                <option value='scene' " . ($release_group === 'scene' ? 'selected' : '') . '>' . _('Scene') . '</option>
             </select>';
 $HTMLOUT .= tr(_('Category'), $rg, 1);
 $HTMLOUT .= tr(_('Anonymous Uploader'), "<div class='level-left'><input type='checkbox' name='uplver' id='uplver' value='1' " . ($uplver ? 'checked' : '') . "><label for='uplver' class='left5'>" . _("Don't show my username in 'Uploaded By' field in browse.") . '</label></div>', 1);
 if ($user['class'] >= $site_config['allowed']['torrents_disable_comments']) {
     $HTMLOUT .= tr(_('Allow Comments'), "
     <select name='allow_comments' class='w-100'>
-        <option value='yes' " . ($allow_comments === 'yes' ? 'selected' : '') . ">Yes</option>
-        <option value='no' " . ($allow_comments === 'no' ? 'selected' : '') . '>No</option>
+        <option value='yes' " . ($allow_comments === 'yes' ? 'selected' : '') . '>' . _('Yes') . "</option>
+        <option value='no' " . ($allow_comments === 'no' ? 'selected' : '') . '>' . _('No') . '</option>
     </select>', 1);
 }
 if (has_access($user['class'], UC_MIN, 'uploader')) {
@@ -325,11 +325,11 @@ if (has_access($user['class'], UC_MIN, 'uploader')) {
         <td>
             <select name='free_length' class='w-100'>
                 <option value='0'>" . _('Not Free') . "</option>
-                <option value='42' " . ($free_length == '42' ? 'selected' : '') . '>' . _('Free for 1 day') . "</option>
-                <option value='1' " . ($free_length == '1' ? 'selected' : '') . '>' . _('Free for 1 week') . "</option>
-                <option value='2' " . ($free_length == '2' ? 'selected' : '') . '>' . _('Free for 2 weeks') . "</option>
-                <option value='4' " . ($free_length == '4' ? 'selected' : '') . '>' . _('Free for 4 weeks') . "</option>
-                <option value='8' " . ($free_length == '8' ? 'selected' : '') . '>' . _('Free for 8 weeks') . "</option>
+                <option value='42' " . ($free_length == '42' ? 'selected' : '') . '>' . _fe('Free for {0} day', 1) . "</option>
+                <option value='1' " . ($free_length == '1' ? 'selected' : '') . '>' . _fe('Free for {0} week', 1) . "</option>
+                <option value='2' " . ($free_length == '2' ? 'selected' : '') . '>' . _fe('Free for {0} weeks', 2) . "</option>
+                <option value='4' " . ($free_length == '4' ? 'selected' : '') . '>' . _fe('Free for {0} weeks', 4) . "</option>
+                <option value='8' " . ($free_length == '8' ? 'selected' : '') . '>' . _fe('Free for {0} weeks', 8) . "</option>
                 <option value='255' " . ($free_length == '255' ? 'selected' : '') . '>' . _('Unlimited') . "</option>
             </select>
         </td>
@@ -339,11 +339,11 @@ if (has_access($user['class'], UC_MIN, 'uploader')) {
         <td>
             <select name='half_length' class='w-100'>
                 <option value='0'>" . _('Not Silver') . "</option>
-                <option value='42' " . ($half_length == '42' ? 'selected' : '') . '>' . _('Silver for 1 day') . "</option>
-                <option value='1' " . ($half_length == '1' ? 'selected' : '') . '>' . _('Silver for 1 week') . "</option>
-                <option value='2' " . ($half_length == '2' ? 'selected' : '') . '>' . _('Silver for 2 weeks') . "</option>
-                <option value='4' " . ($half_length == '4' ? 'selected' : '') . '>' . _('Silver for 4 weeks') . "</option>
-                <option value='8' " . ($half_length == '8' ? 'selected' : '') . '>' . _('Silver for 8 weeks') . "</option>
+                <option value='42' " . ($half_length == '42' ? 'selected' : '') . '>' . _fe('Silver for {0} day', 1) . "</option>
+                <option value='1' " . ($half_length == '1' ? 'selected' : '') . '>' . _fe('Silver for {0} week', 1) . "</option>
+                <option value='2' " . ($half_length == '2' ? 'selected' : '') . '>' . _fe('Silver for {0} weeks', 2) . "</option>
+                <option value='4' " . ($half_length == '4' ? 'selected' : '') . '>' . _fe('Silver for {0} weeks', 4) . "</option>
+                <option value='8' " . ($half_length == '8' ? 'selected' : '') . '>' . _fe('Silver for {0} weeks', 8) . "</option>
                 <option value='255' " . ($half_length == '255' ? 'selected' : '') . '>' . _('Unlimited') . '</option>
             </select>
         </td>

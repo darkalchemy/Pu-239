@@ -202,7 +202,7 @@ if (empty($mode)) {
                    ->execute();
 
             if ($site_config['backup']['write_to_log']) {
-                write_log($CURUSER['username'] . '(' . get_user_class_name((int) $CURUSER['class']) . ') ' . _(' successfully deleted') . ' ' . $count . ' ' . ($count > 1 ? _('databases') : _('database')) . '.');
+                write_log($CURUSER['username'] . '(' . get_user_class_name((int) $CURUSER['class']) . ') ' . _('successfully deleted') . ' ' . $count . ' ' . ($count > 1 ? _('databases') : _('database')) . '.');
             }
             $location = 'backup';
         } else {

@@ -80,7 +80,7 @@ bool bencdec::encode_file(string $filename, mixed $data);
 
 Creates the specified file, and writes the b-encoded version of $data returned
 from bencdec::encode($data); to the file.
-Returns false on error, true on sucess.
+Returns false on error, true on success.
 
 string bencdec::get_type(mixed $val);
 
@@ -192,7 +192,7 @@ to the decode function
 1.2.4 - Change the key sort order checking in decoding dictionaries with
 extended validation to use strcmp instead of a direct < comparison
 - Update some of the documentation.
-- Change the sucessful check in encode_file function to make sure it writes the
+- Change the successful check in encode_file function to make sure it writes the
 complete contents of the bencdoded data.
 - Add trigger_error to benc_type function if input type is invalid for b-encoding,
 this will log a php error when trying to encode something that is invalid.

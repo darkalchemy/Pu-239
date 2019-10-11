@@ -86,7 +86,7 @@ $select->limit($pager['pdo']['limit'])
        ->offset($pager['pdo']['offset'])
        ->orderBy('t.added DESC');
 $HTMLOUT = "
-    <h1 class='has-text-centered top20'>Movies</h1>";
+    <h1 class='has-text-centered top20'>" . _('Movies') . '</h1>';
 
 $body = "
         <div class='masonry padding20'>";
@@ -109,10 +109,10 @@ foreach ($select as $torrent) {
     $casts[] = $cast;
     $people = [];
     foreach ($cast as $person) {
-        $people[] = "<div class='size_2'><a href='{$site_config['paths']['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . htmlsafechars($person['name']) . '</a></div>';
+        $people[] = "<div class='size_2'><a href='{$site_config['paths']['baseurl']}/browse.php?sp=" . urlencode(htmlsafechars($person['name'])) . "'>" . format_comment($person['name']) . '</a></div>';
     }
 
-    $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . htmlsafechars($torrent['name']) . '</a>';
+    $name = "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$torrent['imdb_id']}'>" . format_comment($torrent['name']) . '</a>';
     if (empty($torrent['poster'])) {
         if (!empty($torrent['imdb_id'])) {
             $image = $images_class->find_images($torrent['imdb_id'], 'poster');
@@ -152,7 +152,7 @@ foreach ($select as $torrent) {
                             <div class='has-text-left size_4'>$name <span class='size_2'>({$year})</span></div>
                             $rating
                             <div class='size_2'>
-                                <span class='has-text-primary'>Peers:</span>
+                                <span class='has-text-primary'>" . _('Peers') . ":</span>
                                 <span class='has-text-primary'> {$seeders} / {$leechers}</span>
                             </div>" . implode("\n", $people) . '
                         </div>

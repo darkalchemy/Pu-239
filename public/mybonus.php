@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($users_class->update($set, $user['id'])) {
                     if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
                         $end = 86400 * 3 + $dt;
-                        $message = 'FreeLeech [ON]';
+                        $message = _('FreeLeech [ON]');
                         set_event(1, $dt, $end, $user['id'], $message);
                         $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
                         $values = [
@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 365 * 86400 : $user['free_switch'] + 365 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 year Freeleech Status.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 30 * 86400 : $user['free_switch'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month King Status.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'pirate' => $user['pirate'] === 0 ? $dt + 14 * 86400 : $user['king'] + 14 * 86400,
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 14 * 86400 : $user['free_switch'] + 14 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 2 weeks Pirate + freeleech Status.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -190,19 +190,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $gift_user = $users_class->getUserFromId((int) $gift_user_id);
                     $set = [
                         'seedbonus' => $user['seedbonus'] - $bonusgift,
-                        'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $bonusgift . " Points as gift to $username .\n " . $user['bonuscomment'],
+                        'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $bonusgift . ' ' . _fe('Points as gift to {0}.', $username) . "\n " . $user['bonuscomment'],
                     ];
                     if ($users_class->update($set, $user['id'])) {
                         $set = [
                             'seedbonus' => $gift_user['seedbonus'] + $bonusgift,
-                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . " Points as gift from {$user['username']} .\n " . $gift_user['bonuscomment'],
+                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . ' ' . _fe('Points as gift from {0}.', $user['username']) . "\n " . $gift_user['bonuscomment'],
                         ];
                         $users_class->update($set, $gift_user['id']);
                         $msgs_buffer[] = [
                             'receiver' => $gift_user_id,
                             'added' => $dt,
-                            'msg' => "You have been given a gift of $bonusgift Karma points by " . $user['username'],
-                            'subject' => 'Someone Loves you',
+                            'msg' => _fe('You have been given a gift of {0} Karma points by {1}', $bonusgift, $user['username']),
+                            'subject' => _('Someone Loves you'),
                         ];
                         $session->set('is-success', _fe('{0} You donated {1} Karma to {2}.', ':woot:', number_format($bonusgift), $username));
                     } else {
@@ -218,11 +218,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $rep_to_steal = $options[$option]['points'] / 1000;
                 $new_bonus = $user['seedbonus'] - $options[$option]['points'];
-                $pm = [];
-                $pm['subject'] = _fe('You just got robbed by {0}');
-                $pm['subject_thief'] = _('Theft summary');
-                $pm['message'] = "Hey\nWe are sorry to announce that you have been robbed by [url=" . $site_config['paths']['baseurl'] . "/userdetails.php?id=%d]%s[/url]\nNow your total reputation is [b]%d[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]";
-                $pm['message_thief'] = "Hey %s:\nYou robbed:\n%s\nYour total reputation is now [b]%d[/b] but you lost [b]%d[/b] karma points ";
                 $foo = [
                     50 => 3,
                     75 => 3,
@@ -254,8 +249,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $msgs_buffer[] = [
                         'receiver' => $ar['id'],
                         'added' => $dt,
-                        'subject' => sprintf($pm['subject'], $user['username']),
-                        'msg' => sprintf($pm['message'], $user['id'], $user['username'], $new_rep),
+                        'subject' => _fe('You just got robbed by {0}', $user['username']),
+                        'msg' => _fe("Hey\nWe are sorry to announce that you have been robbed by {0}{1}{2}.\nNow your total reputation is [b]{3}[/b]\n[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]", "[url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}]", $user['username'], '[/url]', $new_rep),
                     ];
                 }
                 if (isset($robbed_users)) {
@@ -263,8 +258,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $msgs_buffer[] = [
                         'receiver' => $user['id'],
                         'added' => $dt,
-                        'subject' => $pm['subject_thief'],
-                        'msg' => sprintf($pm['message_thief'], $user['username'], implode("\n", $robbed_users), $new_rep, $options[$option]['points']),
+                        'subject' => _('Theft summary'),
+                        'msg' => _fe("Hey {0}:\nYou robbed:\n{1}\nYour total reputation is now [b]{2}[/b] but you lost [b]{3}[/b] karma points ", $user['username'], implode("\n", $robbed_users), $new_rep, $options[$option]['points']),
                     ];
                     $set = [
                         'reputation' => $new_rep,
@@ -289,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'vip' => $user['vip'] === 0 ? $dt + 30 * 86400 : $user['vip'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month VIP Status.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month VIP Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -301,13 +296,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'warning') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['warned'] === 0) {
-                $session->set('is-warning', "How can we remove a warning that isn't there?");
+                $session->set('is-warning', _("How can we remove a warning that isn't there?"));
             } elseif ($user['seedbonus'] >= $options[$option]['points']) {
                 $set = [
                     'warned' => 0,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for removing warning.\n " . $user['bonuscomment'],
-                    'modcomment' => get_date((int) $dt, 'DATE', 1) . " - Warning removed by - Bribe with Karma.\n" . $user['modcomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for removing warning.') . "\n " . $user['bonuscomment'],
+                    'modcomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _('Warning removed by - Bribe with Karma.') . "\n" . $user['modcomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma. Please keep on your best behaviour from now on.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -334,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $snatched_class->update($set, $torrent_id, $user['id']);
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' Points for 1 to 1 ratio on torrent: ' . htmlsafechars((string) $snatched['name']) . ' ' . $torrent_id . ', ' . $difference . " bytes added.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 to 1 ratio on torrent') . ': ' . format_comment((string) $snatched['name']) . ' ' . $torrent_id . ', ' . _fe('{0} bytes added.', $difference) . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma. Please keep on your best behaviour from now on.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -349,7 +344,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'immunity' => $user['immunity'] === 0 ? $dt + 30 * 86400 : $user['immunity'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month Immunity Status.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Immunity Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -365,7 +360,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'status' => 1,
                     'parked_until' => $user['parked_until'] === 0 ? $dt + 365 * 86400 : $user['parked_until'] + 365 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for  1 Year Parked Profile.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for  1 Year Parked Profile.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -384,7 +379,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'opt2' => new Literal('((opt2 | ' . $setbits . ') & ~' . $clrbits . ')'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for user unlocks access.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for user unlocks access.') . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'], false)) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -401,7 +396,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'got_blocks' => 'yes',
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for user blocks access.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for user blocks access.') . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -416,7 +411,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'anonymous_until' => $user['anonymous_until'] === 0 ? $dt + 28 * 86400 : $user['anonymous_until'] + 28 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 14 Days Anonymous Profile.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 14 Days Anonymous Profile.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -438,7 +433,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'smile_until' => $user['smile_until'] === 0 ? $dt + 30 * 86400 : $user['smile_until'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 1 month Custom Smilies.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Custom Smilies.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -453,7 +448,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'reputation' => $user['reputation'] + 100,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for 100 Reputation Points.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 100 Reputation Points.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -468,7 +463,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'invites' => $user['invites'] + $options[$option]['menge'],
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['menge'] . " Invites for {$options[$option]['points']} Karma.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invites for {1} Karma.', $options[$option]['menge'], $options[$option]['points']) . ".\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} Invite for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
@@ -483,7 +478,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'invites' => $user['invites'] - $options[$option]['points'],
                     'seedbonus' => $user['seedbonus'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Invite for {$options[$option]['menge']} Karma.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Karma.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You sold {1} Invite {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['menge'])));
@@ -499,7 +494,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'invites' => $user['invites'] - $options[$option]['points'],
                     'freeslots' => $user['freeslots'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Invite for {$options[$option]['menge']} Freeslots.\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Freeslots.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You traded {1} Invites for {2} Freeslots.', ':woot:', "[b]{$options[$option]['points']}[/b]", number_format($options[$option]['menge'])));
@@ -514,10 +509,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'freeslots' => $user['freeslots'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for freeslots.\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points for Freeslots.', $options[$option]['points']) . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} Freeslots for  {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
+                    $session->set('is-success', _fe('{0} You bought {1} Freeslots for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
                 } else {
                     $session->set('is-warning', _('Something went wrong'));
                 }
@@ -535,7 +530,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'title' => $title,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . " Points for custom title. Old title was {$user['title']} new title is " . $title . ".\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe("{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''.", $options[$option]['points'], $user['title'], $title) . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -558,7 +553,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if ($torrents_class->update($set, (int) $torrent_id)) {
                         $set = [
                             'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' Points to Reanimate torrent: ' . $torrent['name'] . ".\n " . $user['bonuscomment'],
+                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points to Reanimate torrent: {1}.', $options[$option]['points'], $torrent['name']) . "\n " . $user['bonuscomment'],
                         ];
                         if ($users_class->update($set, $user['id'])) {
                             $session->set('is-success', _fe('{0} You reanimated {1} for {2} Karma.', ':woot:', "[b]{$torrent['name']}[/b]", number_format($options[$option]['points'])));
@@ -584,7 +579,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $HTMLOUT = "
     <div class='portlet'>
-        <div class='has-text-centered size_6 top20 bottom20'>Karma Bonus Point's System</div>";
+        <div class='has-text-centered size_6 top20 bottom20'>" . ("Karma Bonus Point's System") . '</div>';
 $HTMLOUT .= $fl_header . "
             <div class='has-text-centered top20'>
                 <span class='size_5'>" . _fe('Exchange your {0}{1}{2} Karma Bonus Points for goodies!', "<span class='has-text-primary'>", number_format((float) $user['seedbonus']), '</span>') . "</span>
@@ -609,41 +604,41 @@ foreach ($options as $gets) {
     }
     $button = "
                 <div class='has-text-centered top20'>
-                    <input type='submit' class='button is-small' value='Cost: " . number_format($gets['points']) . " Karma' " . ($user['seedbonus'] < $gets['points'] ? 'disabled' : '') . '>
+                    <input type='submit' class='button is-small' value='" . _fe('Cost: {0} Karma', number_format($gets['points'])) . "' " . ($user['seedbonus'] < $gets['points'] ? 'disabled' : '') . '>
                 </div>';
     switch (true) {
         case $gets['id'] === 5:
             $additional_text = "
                     <div class='top20 has-text-centered'>
-                        <label for='title'>Enter the <b>Special Title</b> you would like to have:</label>
-                        <input type='text' id='title' name='title' class='w-100' maxlength='30' value='" . (!empty($user['title']) ? htmlsafechars($user['title']) : '') . "' required>
+                        <label for='title'>" . ('Enter the <b>Special Title</b> you would like to have') . ":</label>
+                        <input type='text' id='title' name='title' class='w-100' maxlength='30' value='" . (!empty($user['title']) ? format_comment($user['title']) : '') . "' required>
                     </div>";
             break;
         case $gets['id'] === 7:
             $max = $user['seedbonus'] < 100000 ? $user['seedbonus'] : 100000;
             $additional_text = "
                     <div class='top20 has-text-centered'>
-                        <label for='username'>Enter the <b>username</b> you would like to send karma to:</label>
+                        <label for='username'>" . _('Enter the <b>username</b> you would like to send karma to') . ":</label>
                         <input type='text' id='username' name='username' class='w-100' maxlength='64' required>
                     </div>
                     <div class='top20 has-text-centered'>
-                        <label for='bonusgift'>Select how many points you want to send:</label>
+                        <label for='bonusgift'>" . _('Select how many points you want to send') . ":</label>
                         <input type='number' id='bonusgift' name='bonusgift' class='w-100' min='100' max='$max' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
-                        <input type='submit' class='button is-small' value='Give Karma Gift'>
+                        <input type='submit' class='button is-small' value='" . _('Give Karma Gift') . "'>
                     </div>";
             break;
         case $gets['id'] === 9:
             $additional_text = "
-                    <div class='top20 has-text-centered'>Min: {$gets['points_formatted']}</div>";
+                    <div class='top20 has-text-centered'>" . _('Min') . ": {$gets['points_formatted']}</div>";
             break;
         case $gets['id'] === 34:
         case $gets['id'] === 10:
             $additional_text = "
                     <div class='top20 has-text-centered'>
-                        <label for='torrent_id'>Enter the <b>Torrent ID:</b></label>
+                        <label for='torrent_id'>" . _('Enter the <b>Torrent ID:</b>') . "</label>
                         <input type='number' class='w-100' id='torrent_id' name='torrent_id' min='{$torrent_ids['min']}' max='{$torrent_ids['max']}' required>
                     </div>";
             break;
@@ -654,7 +649,7 @@ foreach ($options as $gets) {
                         $top_donator1
                     </div>
                     <div class='top20 has-text-centered'>
-                        <label for='donate'>Enter the <b>amount to contribute</b></label>
+                        <label for='donate'>" . _('Enter the <b>amount to contribute</b>') . "</label>
                         <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
@@ -669,7 +664,7 @@ foreach ($options as $gets) {
                         $top_donator2
                     </div>
                     <div class='top20 has-text-centered'>
-                        <label for='donate'>Enter the <b>amount to contribute</b></label>
+                        <label for='donate'>" . _('Enter the <b>amount to contribute</b>') . "</label>
                         <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
@@ -684,23 +679,23 @@ foreach ($options as $gets) {
                         $top_donator3
                     </div>
                     <div class='top20 has-text-centered'>
-                        <label for='donate'>Enter the <b>amount to contribute</b></label>
+                        <label for='donate'>" . _('Enter the <b>amount to contribute</b>') . "</label>
                         <input type='number' id='donate' name='donate' class='w-100' min='{$gets['minpoints']}' max='$max_donation' required>
                     </div>";
             $button = "
                     <div class='has-text-centered top20'>
-                        <input type='submit' class='button is-small' value='Donate!'>
+                        <input type='submit' class='button is-small' value='" . _('Donate') . "!'>
                     </div>";
             break;
         case $gets['id'] === 20:
         case $gets['id'] === 21:
             $button = "
                     <div class='has-text-centered top20'>
-                        <input type='submit' class='button is-small' value='Trade!'>
+                        <input type='submit' class='button is-small' value='" . _('Trade') . "!'>
                     </div>";
             break;
         case $gets['id'] === 24:
-            $additional_text = "<div class='top20 has-text-centered'>Min: {$gets['points_formatted']}</div>";
+            $additional_text = "<div class='top20 has-text-centered'>" . _('Min') . ": {$gets['points_formatted']}</div>";
             break;
         default:
             $additional_text = '';
@@ -710,12 +705,12 @@ foreach ($options as $gets) {
                 <div class='masonry-item-clean padding20 bg-04 round10'>
                     <div class='flex-vertical comments h-100'>
                         <div>
-                            <h2 class='has-text-centered has-text-weight-bold'>" . htmlsafechars($gets['bonusname']) . '</h2>' . htmlsafechars($gets['description']) . "
+                            <h2 class='has-text-centered has-text-weight-bold'>" . format_comment($gets['bonusname']) . '</h2>' . format_comment($gets['description']) . "
                         </div>
                         <div>
                             <form action='{$site_config['paths']['baseurl']}/mybonus.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>$additional_text
                                 <input type='hidden' name='option' value='" . $gets['id'] . "'>
-                                <input type='hidden' name='art' value='" . htmlsafechars($gets['art']) . "'>
+                                <input type='hidden' name='art' value='" . format_comment($gets['art']) . "'>
                                 <input type='hidden' name='menge' value='" . $gets['menge'] . "'>
                                 <input type='hidden' name='pointspool' value='" . $gets['pointspool'] . "'>
                                 <input type='hidden' name='minpoints' value='" . $gets['minpoints'] . "'>

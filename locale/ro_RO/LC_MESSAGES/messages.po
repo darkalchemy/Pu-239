@@ -107,210 +107,11 @@ msgstr ""
 msgid "  Descending"
 msgstr "  Descendentă"
 
-msgid " - AJAX Chat disablement by "
-msgstr " - Dezactivare chat AJAX de"
-
-msgid " - AJAX Chat disablement for"
-msgstr " - Dezactivare chat AJAX pentru"
-
-msgid " - AJAX Chat disablement status removed by "
-msgstr " - Starea de dezactivare a chatului AJAX a fost eliminată de"
-
-msgid " - Account Parked by "
-msgstr " - Cont parcat de"
-
-msgid " - Account UnParked by "
-msgstr " - Contul neplătit de"
-
-msgid " - Added Download"
-msgstr " - Descărcare adăugată"
-
-msgid " - Added Upload"
-msgstr " - Adăugare încărcare"
-
-msgid " - Avatar changed from "
-msgstr " - Avatar s-a schimbat din"
-
-msgid " - Avatar disablement by "
-msgstr " - Dezactivarea avatarului de"
-
-msgid " - Avatar disablement for"
-msgstr " - Dezactivarea avatarului pentru"
-
-msgid " - Avatar disablement status removed by "
-msgstr " - Starea de dezactivare Avatar eliminată de"
-
-msgid " - Avatar rights turned off by "
-msgstr " - Drepturile avatarului sunt dezactivate"
-
-msgid " - Avatar rights turned on by "
-msgstr " - Drepturile avatarului sunt activate"
-
-msgid " - Custom Title changed to "
-msgstr " - Titlu personalizat schimbat în"
-
-msgid " - Demoted from FLS by "
-msgstr " - Demotat din FLS de"
-
-msgid " - Download disablement by "
-msgstr " - Descărcați dezactivarea prin"
-
-msgid " - Download enabled by "
-msgstr " - Descărcare activată de"
-
-msgid " - Downloads disabled by "
-msgstr " - Descărcări dezactivate de"
-
-msgid " - Freeleech Status enabled by "
-msgstr " - Freeleech Status activat de"
-
-msgid " - Freeleech Status for"
-msgstr " - Freeleech Status pentru"
-
-msgid " - Freeleech Status removed by "
-msgstr " - Freeleech Status eliminat de"
-
-msgid " - Games disablement for"
-msgstr " - Dezactivarea jocurilor pentru"
-
-msgid " - Gaming disablement by "
-msgstr " - Dezactivarea jocurilor de către"
-
-msgid " - Gaming disablement status removed by "
-msgstr " - starea de dezactivare a jocurilor eliminată de"
-
-msgid " - Highspeed Upload disabled by "
-msgstr " - Încărcare maximă dezactivată de"
-
-msgid " - Highspeed Upload enabled by "
-msgstr " - Încărcare de mare viteză activată de"
-
-msgid " - Hit and runs set to "
-msgstr " - lovește și aleargă setat la"
-
-msgid " - Immune Status enabled by "
-msgstr " - Starea imunitară activată de"
-
-msgid " - Immunity Status for"
-msgstr " - Stare de imunitate pentru"
-
-msgid " - Immunity Status removed by "
-msgstr " - starea de imunitate eliminată de"
-
-msgid " - Invite amount changed to "
-msgstr " - Invită suma schimbată la"
-
-msgid " - Invites allowed changed from "
-msgstr " - Invitatile permise s-au schimbat din"
-
-msgid " - Offensive avatar set to no by "
-msgstr " - Avatar ofensiv setat pe nu"
-
-msgid " - Offensive avatar set to yes by "
-msgstr " - Avatar ofensiv setat pe da"
-
-#, no-php-format
-msgid " - Paranoia changed to {0} from {1} by {2}"
-msgstr " - Paranoia s-a schimbat în {0} din {1} cu {2}"
-
-msgid " - Peers limit set to"
-msgstr " - Limita de la egal la egal"
-
-msgid " - Pm disablement by "
-msgstr " - Dezactivarea Pm de"
-
-msgid " - Pm disablement for"
-msgstr " - Dezactivarea Pm pentru"
-
-msgid " - Pm disablement status removed by "
-msgstr " - starea de invalidare Pm eliminată de"
-
-msgid " - Posting disabled by "
-msgstr " - Postarea dezactivată de"
-
-msgid " - Posting enabled by "
-msgstr " - Publicarea activată de"
-
-msgid " - Promoted to FLS by "
-msgstr " - Promovat la FLS de"
-
-msgid " - Reputation points changed to "
-msgstr " - Punctele de reputație s-au schimbat în"
-
-msgid " - Seedbonus amount changed to "
-msgstr " - Suma Seedbonus schimbată în"
-
-msgid " - Signature changed from "
-msgstr " - Semnătura schimbată de la"
-
-msgid " - Signature rights turned off by "
-msgstr " - Drepturile de semnătură dezactivate"
-
-msgid " - Signature rights turned on by "
-msgstr " - Drepturile de semnătură activate"
-
-msgid " - Subtracted Download"
-msgstr " - Descărcare scăzută"
-
-msgid " - Subtracted Upload"
-msgstr " - Încărcarea scăzută"
-
-msgid " - This account has been Un-suspended by "
-msgstr " - Acest cont a fost suspendat de către"
-
-msgid " - This account has been suspended by "
-msgstr " - Acest cont a fost suspendat de"
-
-msgid " - Torrents limit set to"
-msgstr " - Limita de torent setată la"
-
-msgid " - Upload disablement by "
-msgstr " - Dezactivarea încărcării prin"
-
-msgid " - Upload disablement status removed by "
-msgstr " - starea de dezactivare a încărcării eliminată de"
-
-msgid " - Wait time set to"
-msgstr " - Așteptați timpul setat la"
-
-msgid " - freeslots amount changed to "
-msgstr " - suma schimbată în freeslots la"
-
-msgid " - leechwarn Status enabled by "
-msgstr " - leechwarn Status activat de"
-
-msgid " - leechwarn Status for"
-msgstr " - Starea leechwarn pentru"
-
-msgid " - leechwarn Status removed by "
-msgstr " - starea de leechwarn eliminată de"
-
-#, no-php-format
-msgid " - skype changed to {0} from {1} by {2}"
-msgstr " - skype schimbat în {0} din {1} cu {2}"
-
-msgid " - warned Status enabled by "
-msgstr " - Status avertizat activat de"
-
-msgid " - warned Status for"
-msgstr " - Status avertizat pentru"
-
-msgid " - warned Status removed by "
-msgstr " - avertizat Status eliminat de"
-
-#, no-php-format
-msgid " - website changed to {0} from {1} by {2}"
-msgstr " - site-ul web schimbat în {0} din {1} cu {2}"
-
 msgid " = Delete Bookmark |"
 msgstr " = Șterge marcaj |"
 
 msgid " = Download Torrent |"
 msgstr " = Descărcați Torrent |"
-
-#, no-php-format
-msgid " Add {0} to your Shit List {1}"
-msgstr " Adăugați {0} la lista de rahat {1}"
 
 msgid " Ascending "
 msgstr " Ascendent"
@@ -326,9 +127,6 @@ msgstr " DLed la"
 
 msgid " DLed at: "
 msgstr " DLed la:"
-
-msgid " Date"
-msgstr " Data"
 
 msgid " Days"
 msgstr " zi"
@@ -381,9 +179,6 @@ msgstr " Vă rugăm să încercați să urmați aceste orientări"
 msgid " Read Messages."
 msgstr " Citiți mesaje."
 
-msgid " Registration"
-msgstr " Înregistrare"
-
 msgid " Seconds "
 msgstr " secunde"
 
@@ -405,9 +200,6 @@ msgstr " Avertizat până"
 msgid " Whom to promote and why"
 msgstr " Pe cine să promoveze și de ce"
 
-msgid " Your shit list is empty. "
-msgstr " Lista ta de rahat este goală."
-
 msgid " better luck next time..."
 msgstr " mai mult noroc data viitoare..."
 
@@ -423,9 +215,6 @@ msgstr " dezactivat!"
 msgid " does not accept PMs."
 msgstr " nu acceptă PM-urile."
 
-msgid " expand"
-msgstr " extinde"
-
 msgid " for the reason why."
 msgstr " pentru motivul pentru care."
 
@@ -438,9 +227,6 @@ msgstr " a fost semnalizat cu o viteză de încărcare anormal de mare!"
 msgid " has been marked as inactive and will be deleted. If you wish to remain a member at"
 msgstr " a fost marcat ca inactiv și va fi șters. Dacă doriți să rămâneți membru la"
 
-msgid " has been suspended by "
-msgstr " a fost suspendat de"
-
 msgid " has blocked PMs from you."
 msgstr " a blocat PM-urile de la tine."
 
@@ -449,12 +235,6 @@ msgstr " nu a fost niciodată pe IRC!"
 
 msgid " new email is "
 msgstr " e-mail nou este"
-
-msgid " no hit and runners at the moment..."
-msgstr " nicio lovitură și alergători în acest moment ..."
-
-msgid " out of 10"
-msgstr " din 10"
 
 msgid " peer(s) total"
 msgstr " total (egal)"
@@ -471,17 +251,8 @@ msgstr " reguli încălcate:"
 msgid " selected messages."
 msgstr " mesaje selectate"
 
-msgid " shittiest at the top "
-msgstr " mai shittiest în vârf"
-
-msgid " shrink"
-msgstr " se contracta"
-
 msgid " still to go "
 msgstr " încă să merg"
-
-msgid " successfully deleted"
-msgstr " șters cu succes"
 
 msgid " time"
 msgstr " timp"
@@ -503,9 +274,6 @@ msgstr " utilizator"
 
 msgid " views"
 msgstr " vizualizari"
-
-msgid " week"
-msgstr " săptămână"
 
 msgid " you will experience no delay."
 msgstr " nu vei întâmpina nici o întârziere."
@@ -616,8 +384,8 @@ msgstr "(Cu toate acestea, fișierele pe care le descărcați de la noi trebuie 
 msgid "(In first place, it's unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.)"
 msgstr "(În primul rând, este puțin probabil ca ISP-ul dvs. să facă acest lucru. Rezoluția DNS și / sau problemele de rețea sunt vinovații obișnuiți.)"
 
-msgid "(Minimum Poster Width should be 400 Px , larger sizes will be scaled.)"
-msgstr "(Lățimea minimă a posterului trebuie să fie de 400 Px, dimensiunile mai mari vor fi scalate.)"
+msgid "(Minimum Poster Width should be 400 px, larger sizes will be scaled.)"
+msgstr "(Lățimea minimă a posterului trebuie să fie de 400 px, dimensiunile mai mari vor fi scalate.)"
 
 msgid "(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)"
 msgstr "(Sidenote de proselitizare: asigurați-vă că vă amintiți că nu v-ați bucurat de viteza mică. Semința pentru ca alții să nu suporte la fel.)"
@@ -689,12 +457,6 @@ msgstr ""
 
 msgid ". PM them for more information."
 msgstr ". PM-le pentru mai multe informații."
-
-msgid ". Please PM "
-msgstr ". Vă rog premier"
-
-msgid ". You can now upload torrents using highspeeds without being flagged as a cheater."
-msgstr ". Acum puteți încărca torrenturi folosind viteze înalte fără a fi semnalizat ca trișor."
 
 msgid ". You can post to forum again."
 msgstr ". Puteți posta din nou pe forum."
@@ -865,8 +627,17 @@ msgstr "Amprenta este o copie a filmului care nu a fost finalizat. Pot lipsi sce
 msgid "AJAX Chat disabled = "
 msgstr "Chat AJAX dezactivat ="
 
-msgid "AJAX Chat disablement from "
-msgstr "AJAX Dezactivare chat din"
+#, no-php-format
+msgid "AJAX Chat disablement by {0}."
+msgstr "AJAX Dezactivarea chatului de {0}."
+
+#, no-php-format
+msgid "AJAX Chat disablement for {0} by {1}."
+msgstr "AJAX Dezactivare chat pentru {0} de {1}."
+
+#, no-php-format
+msgid "AJAX Chat disablement status removed by {0}."
+msgstr "Starea de dezactivare a chatului AJAX a fost eliminată de {0}."
 
 msgid "AJAX Chat enabled = No"
 msgstr "Chat AJAX activat = Nu"
@@ -887,8 +658,15 @@ msgstr "APC (u) Accesări: {0}"
 msgid "API"
 msgstr "API-ul"
 
+msgid "API Key"
+msgstr "Cheie API"
+
 msgid "APIKey "
 msgstr "APIKey"
+
+#, no-php-format
+msgid "APIKey {0} reset to {1}."
+msgstr "APIKey {0} resetează la {1}."
 
 msgid "APIs Display Settings"
 msgstr "Setări afișare API-uri"
@@ -936,11 +714,17 @@ msgstr "Accesul la cele mai noi torrente este condiționat de un raport bun! (Co
 msgid "Account Manager"
 msgstr "Manager Conturi"
 
+msgid "Account Parked by "
+msgstr "Cont parcat de"
+
 msgid "Account Suspended!"
 msgstr "Cont suspendat!"
 
 msgid "Account Un-Suspended!"
 msgstr "Contul Suspendat!"
+
+msgid "Account UnParked by "
+msgstr "Cont neParked de"
 
 msgid "Account for "
 msgstr "Cont pentru"
@@ -1074,6 +858,9 @@ msgstr "Adaugă un nou sondaj"
 msgid "Add New Promotion Rule"
 msgstr "Adăugați o nouă regulă de promovare"
 
+msgid "Add New Reply"
+msgstr "Adăugați răspuns nou"
+
 msgid "Add New Reputation Level"
 msgstr "Adaugă un nou nivel de reputație"
 
@@ -1192,6 +979,10 @@ msgstr "Adăugați un cuvânt"
 msgid "Add {0} to the Watched Users List"
 msgstr "Adăugați {0} la lista de utilizatori urmăriți"
 
+#, no-php-format
+msgid "Add {0} to your Shit List {1}"
+msgstr "Adăugați {0} la lista de rahat {1}"
+
 msgid "Added"
 msgstr "Adăugat"
 
@@ -1200,6 +991,12 @@ msgstr "Adăugat de"
 
 msgid "Added By"
 msgstr "Adăugat de"
+
+msgid "Added Download"
+msgstr "Descărcare adăugată"
+
+msgid "Added Upload"
+msgstr "S-a adăugat încărcare"
 
 msgid "Added by"
 msgstr "Adăugat de"
@@ -1273,6 +1070,9 @@ msgstr "Aliniați dreapta"
 msgid "All (except blocks)"
 msgstr "Toate (cu excepția blocurilor)"
 
+msgid "All CSS and Javascript files processed"
+msgstr "Toate fișierele CSS și Javascript sunt procesate"
+
 msgid "All Comments (Reverse Order)"
 msgstr "Toate comentariile (Comanda inversă)"
 
@@ -1281,6 +1081,9 @@ msgstr "Toate comentariile (în ordine inversă)"
 
 msgid "All Donations"
 msgstr "Toate donațiile"
+
+msgid "All Double Upload"
+msgstr "Toate Încarcă dublă"
 
 msgid "All Peers Are Connectable!"
 msgstr "Toți colegii sunt conectabili!"
@@ -1530,9 +1333,6 @@ msgstr "Durata arbitrară"
 msgid "Arcade"
 msgstr "Arcadă"
 
-msgid "Arcade Top Scores!"
-msgstr "Jocuri Arcade de top!"
-
 msgid "Are all downloads subject to HnR, including incomplete downloads?"
 msgstr "Toate descărcările fac obiectul HnR, inclusiv descărcări incomplete?"
 
@@ -1636,8 +1436,15 @@ msgstr "fișiere audio"
 msgid "August"
 msgstr "August"
 
+msgid "Auth"
+msgstr "Auth"
+
 msgid "Auth Key "
 msgstr "Cheia Auth"
+
+#, no-php-format
+msgid "Auth Key {0} reset to {1}."
+msgstr "Tasta Auth {0} resetează la {1}."
 
 msgid "Author"
 msgstr "Autor"
@@ -1681,11 +1488,29 @@ msgstr "Adresa URL a avatarului"
 msgid "Avatar changed"
 msgstr "Avatarul s-a schimbat"
 
-msgid "Avatar disablement from "
-msgstr "Dezactivarea avatarului de la"
+msgid "Avatar changed from "
+msgstr "Avatar s-a schimbat din"
+
+#, no-php-format
+msgid "Avatar disablement by {0}."
+msgstr "Dezactivarea avatarului cu {0}."
+
+#, no-php-format
+msgid "Avatar disablement for {0} by {1}."
+msgstr "Dezactivarea avatarului pentru {0} de {1}."
+
+#, no-php-format
+msgid "Avatar disablement status removed by {0}."
+msgstr "Starea de dezactivare a avatarului a fost eliminată de {0}."
 
 msgid "Avatar rights enabled = "
 msgstr "Drepturi avatar activate ="
+
+msgid "Avatar rights turned off by "
+msgstr "Drepturile avatarului sunt dezactivate"
+
+msgid "Avatar rights turned on by "
+msgstr "Drepturile avatarului sunt activate"
 
 msgid "Avatar selection disabled = "
 msgstr "Selectarea avatarului este dezactivată ="
@@ -2070,11 +1895,17 @@ msgstr "Browser"
 msgid "Browser and OS detect?"
 msgstr "Browserul și sistemul de operare detectează?"
 
+msgid "Browser?"
+msgstr "Browser?"
+
 msgid "Browsing was used just as an example, the same would apply to gaming, IMing, etc..."
 msgstr "Navigarea a fost folosită doar ca exemplu, același lucru s-ar aplica și pentru jocuri, mesaje de imagini, etc."
 
 msgid "Bug Alert Message"
 msgstr "Mesaj de alertă de erori"
+
+msgid "Bug Alert Message?"
+msgstr "Eroare mesaj de alertă?"
 
 msgid "Bug Message Alert?"
 msgstr "Eroare mesaj de eroare?"
@@ -2132,8 +1963,14 @@ msgstr "Jucând la blackjack, pariați 10 GB credit de încărcare!"
 msgid "CAM"
 msgstr "CAM"
 
-msgid "CAUTION: This DELETES all messages in AJAX Chat!"
-msgstr "ATENȚIE: Aceasta Șterge toate mesajele din chat-ul AJAX!"
+msgid "CAUTION: This <b>DELETES</b> all messages in AJAX Chat!"
+msgstr "ATENȚIE: acest mesaj <b> Șterge </b> toate mesajele din chat-ul AJAX!"
+
+msgid "CD Number"
+msgstr "Numărul CD-ului"
+
+msgid "CD#"
+msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG Reader"
@@ -2290,6 +2127,90 @@ msgstr "Consultați {0} Întrebările frecvente și Ghidul BitTorrent de Brian. 
 msgid "Check this box to hide the uploader of the torrent"
 msgstr "Bifează această casetă pentru a ascunde încărcătorul torrentului"
 
+msgid "Check this option if you want to enable Disclaimer."
+msgstr "Bifează această opțiune dacă vrei să activezi Renunțarea la răspundere."
+
+msgid "Check this option if you want to enable Latest User."
+msgstr "Bifează această opțiune dacă vrei să activezi Ultimul utilizator."
+
+msgid "Check this option if you want to enable latest Comments."
+msgstr "Bifează această opțiune dacă vrei să activezi ultimele comentarii."
+
+msgid "Check this option if you want to enable latest Forum Posts."
+msgstr "Bifează această opțiune dacă vrei să activezi cele mai recente mesaje pe forum."
+
+msgid "Check this option if you want to enable latest movie torrents."
+msgstr "Bifează această opțiune dacă vrei să activezi cele mai recente torrente de film"
+
+msgid "Check this option if you want to enable latest torrents banner slider."
+msgstr "Bifați această opțiune dacă doriți să activați glisorul de banner cu cele mai recente torrente."
+
+msgid "Check this option if you want to enable latest torrents marquee."
+msgstr "Verificați această opțiune dacă doriți să activați cele mai recente mărci de torente."
+
+msgid "Check this option if you want to enable latest torrents."
+msgstr "Bifează această opțiune dacă vrei să activezi cele mai recente torrente."
+
+msgid "Check this option if you want to enable latest tv torrents."
+msgstr "Verificați această opțiune dacă doriți să activați cele mai recente torrente TV."
+
+msgid "Check this option if you want to enable staff_picks."
+msgstr "Bifează această opțiune dacă vrei să activezi staff_picks."
+
+msgid "Check this option if you want to enable the AJAX Chat."
+msgstr "Bifează această opțiune dacă vrei să activezi chatul AJAX."
+
+msgid "Check this option if you want to enable the Active Birthday Users."
+msgstr "Bifează această opțiune dacă vrei să activezi utilizatorii de naștere activă."
+
+msgid "Check this option if you want to enable the Active Irc Users."
+msgstr "Bifează această opțiune dacă vrei să activezi Utilizatorii activi Irc."
+
+msgid "Check this option if you want to enable the Active Poll."
+msgstr "Bifează această opțiune dacă vrei să activezi sondajul activ."
+
+msgid "Check this option if you want to enable the Active Users visited over 24hours."
+msgstr "Verificați această opțiune dacă doriți să activați utilizatorii activi vizitați pe parcursul a 24 de ore."
+
+msgid "Check this option if you want to enable the Active Users."
+msgstr "Verificați această opțiune dacă doriți să activați Utilizatorii activi."
+
+msgid "Check this option if you want to enable the Advertisements."
+msgstr "Bifează această opțiune dacă vrei să activezi reclamele."
+
+msgid "Check this option if you want to enable the Announcement Block."
+msgstr "Verificați această opțiune dacă doriți să activați blocul de anunțuri."
+
+msgid "Check this option if you want to enable the Christmas Gift."
+msgstr "Bifează această opțiune dacă vrei să activezi cadoul de Crăciun."
+
+msgid "Check this option if you want to enable the Cooker."
+msgstr "Verificați această opțiune dacă doriți să activați aragazul."
+
+msgid "Check this option if you want to enable the Donation Progress."
+msgstr "Bifează această opțiune dacă vrei să activezi Progresul donației."
+
+msgid "Check this option if you want to enable the IE user alert."
+msgstr "Verificați această opțiune dacă doriți să activați alerta utilizatorului IE."
+
+msgid "Check this option if you want to enable the MOvie of the week."
+msgstr "Verificați această opțiune dacă doriți să activați funcția de activare a săptămânii."
+
+msgid "Check this option if you want to enable the News Block."
+msgstr "Bifează această opțiune dacă vrei să activezi Blocul de știri."
+
+msgid "Check this option if you want to enable the Requests."
+msgstr "Bifează această opțiune dacă vrei să activezi Cererile."
+
+msgid "Check this option if you want to enable the Stats."
+msgstr "Verificați această opțiune dacă doriți să activați statisticile."
+
+msgid "Check this option if you want to enable the Trivia Game."
+msgstr "Bifează această opțiune dacă vrei să activezi jocul Trivia."
+
+msgid "Check this option if you want to enable the torrent freak news."
+msgstr "Verificați această opțiune dacă doriți să activați știrile freak despre torrent."
+
 msgid "Check this to post anonymously"
 msgstr "Verificați acest lucru pentru a posta anonim"
 
@@ -2299,8 +2220,14 @@ msgstr "bucătar-șef"
 msgid "Child Boards"
 msgstr "Tablouri pentru copii"
 
+msgid "Choose Class"
+msgstr "Alegeți clasa"
+
 msgid "Choose One"
 msgstr "Alege una"
+
+msgid "Choose Type"
+msgstr "Alegeți Tip"
 
 #, no-php-format
 msgid "Choose any public non-anonymous proxy that does not use port 80 (e.g. from {0}this{1}, {2}this{3} or {4}this{5}</a> list)."
@@ -2505,6 +2432,9 @@ msgstr "Istoricul comentariilor pentru"
 msgid "Comments left for "
 msgstr "Comentarii rămase pentru"
 
+msgid "Comments?"
+msgstr "Comentarii?"
+
 msgid "Commercial"
 msgstr "Comercial"
 
@@ -2585,6 +2515,9 @@ msgstr "conectabile"
 msgid "Connectable and port?"
 msgstr "Conectabil și port?"
 
+msgid "Connectable?"
+msgstr "Conectabile?"
+
 msgid "Connected"
 msgstr "Conectat"
 
@@ -2605,6 +2538,9 @@ msgstr "Contactați un administrator"
 
 msgid "Contact info?"
 msgstr "Informatii de contact?"
+
+msgid "Contact?"
+msgstr "A lua legatura?"
 
 msgid "Contents"
 msgstr "Cuprins"
@@ -2632,6 +2568,10 @@ msgstr "Calea corectă către gzip"
 
 msgid "Correct path to the mysqldump file"
 msgstr "Calea corectă către fișierul mysqldump"
+
+#, no-php-format
+msgid "Cost: {0} Karma"
+msgstr "Cost: {0} Karma"
 
 msgid "Could not change email, address already taken or password mismatch."
 msgstr "Nu s-a putut modifica e-mailul, adresa deja preluată sau nepotrivirea parolei."
@@ -2792,6 +2732,9 @@ msgstr[2] "În prezent, aveți {0} căsuțe personalizate. Puteți adăuga pân�
 
 msgid "Custom Title"
 msgstr "Titlu personalizat"
+
+msgid "Custom Title changed to "
+msgstr "Titlul personalizat a fost schimbat în"
 
 msgid "Custom title"
 msgstr "Titlu personalizat"
@@ -2956,6 +2899,9 @@ msgstr "Ștergeți marcaj"
 msgid "Delete Bookmark!"
 msgstr "Ștergeți marcajul!"
 
+msgid "Delete Bot Trigger and all Replies"
+msgstr "Ștergeți declanșatorul de bot și toate răspunsurile"
+
 msgid "Delete Category"
 msgstr "Ștergeți categoria"
 
@@ -2964,6 +2910,9 @@ msgstr "Ștergeți clasa"
 
 msgid "Delete Invite"
 msgstr "Șterge Invită"
+
+msgid "Delete Offer"
+msgstr "Ștergeți oferta"
 
 msgid "Delete PM"
 msgstr "Ștergeți PM"
@@ -2980,8 +2929,20 @@ msgstr "Șterge Postare"
 msgid "Delete Reason"
 msgstr "Ștergeți motivul"
 
+msgid "Delete Recipe"
+msgstr "Ștergeți rețetă"
+
+msgid "Delete Reply"
+msgstr "Ștergeți Răspuns"
+
+msgid "Delete Request"
+msgstr "Ștergeți solicitarea"
+
 msgid "Delete Selected"
 msgstr "Sterge selectia"
+
+msgid "Delete Subtitle"
+msgstr "Ștergeți subtitrare"
 
 msgid "Delete Sure?"
 msgstr "Ștergeți sigur?"
@@ -3047,6 +3008,9 @@ msgstr "Ștergerea unui torrent = - {0} puncte"
 
 msgid "Demoted"
 msgstr "retrogradat"
+
+msgid "Demoted from FLS by "
+msgstr "Demotat din FLS de"
 
 msgid "Demotion"
 msgstr "retrogradarea"
@@ -3224,6 +3188,9 @@ msgstr "Nu lăsați niciun câmp necompletat"
 msgid "Don't show my username in 'Uploaded By' field in browse."
 msgstr "Nu afișați numele meu de utilizator în câmpul „Încărcat de” în răsfoire."
 
+msgid "Donate"
+msgstr "Donează"
+
 msgid "Donated Status Until"
 msgstr "Statut donat Până la"
 
@@ -3273,6 +3240,9 @@ msgstr "Dublat"
 msgid "Doubleseed slot already in use."
 msgstr "Slot cu îndoială deja folosit."
 
+msgid "Doubleupload"
+msgstr "Doubleupload"
+
 msgid "Down"
 msgstr "Jos"
 
@@ -3292,15 +3262,19 @@ msgid "Download Torrent"
 msgstr "Descărcați Torrent"
 
 #, no-php-format
+msgid "Download disablement by {0}."
+msgstr "Descărcați dezactivarea cu {0}."
+
+#, no-php-format
 msgid "Download disablement for {0} by {1}."
 msgstr "Descărcați dezactivarea pentru {0} de {1}."
-
-msgid "Download disablement from "
-msgstr "Descărcați dezactivarea de la"
 
 #, no-php-format
 msgid "Download disablement status removed by {0}."
 msgstr "Descărcați starea de dezactivare eliminată de {0}."
+
+msgid "Download enabled by "
+msgstr "Descărcare activată de"
 
 msgid "Download link"
 msgstr "Link de descărcare"
@@ -3345,6 +3319,10 @@ msgstr "Descărcarea unui torrent = - {0} puncte"
 
 msgid "Downloading rules -"
 msgstr "Reguli de descărcare -"
+
+#, no-php-format
+msgid "Downloads disabled by {0}."
+msgstr "Descărcări dezactivate de {0}."
 
 msgid "Downloads edited = "
 msgstr "Descărcări editate ="
@@ -3398,6 +3376,9 @@ msgstr "Editați | ×"
 msgid "Edit / Delete Mail Boxes"
 msgstr "Editați / Ștergeți căsuțele de e-mail"
 
+msgid "Edit Bot Trigger"
+msgstr "Editează declanșarea botului"
+
 msgid "Edit Category"
 msgstr "Editează categoria"
 
@@ -3427,6 +3408,9 @@ msgstr "Editează sondaj"
 
 msgid "Edit Post"
 msgstr "Editează postarea"
+
+msgid "Edit Recipe"
+msgstr "Editează rețetă"
 
 msgid "Edit Reply"
 msgstr "Modificați Răspuns"
@@ -3467,6 +3451,9 @@ msgstr "Editează forumul"
 
 msgid "Edit forum:"
 msgstr "Editează forumul:"
+
+msgid "Edit it"
+msgstr "Editează-l"
 
 msgid "Edit it!"
 msgstr "Editează-l!"
@@ -3602,11 +3589,17 @@ msgstr "Activați API-ul AniDb"
 msgid "Enable Announcement?"
 msgstr "Activați anunțul?"
 
+msgid "Enable Avatar"
+msgstr "Activați Avatar"
+
 msgid "Enable Birthday Users?"
 msgstr "Activați utilizatorii de naștere?"
 
 msgid "Enable Bluray.com RSS API"
 msgstr "Activați API-ul Bluray.com RSS"
+
+msgid "Enable Bug Message alerts in stdhead"
+msgstr "Activați alertele Mesaj de erori în stdhead"
 
 msgid "Enable Bug message alerts in stdhead"
 msgstr "Activați alertele de mesaje Bug în stdhead"
@@ -3656,6 +3649,12 @@ msgstr "Activați cele mai recente torrente de filme?"
 msgid "Enable Latest TV Torrents?"
 msgstr "Activați cele mai recente torrente TV?"
 
+msgid "Enable Latest Torrents scroll?"
+msgstr "Activați cele mai recente defilări Torrents?"
+
+msgid "Enable Latest Torrents slider?"
+msgstr "Activați cel mai recent glisor Torrents?"
+
 msgid "Enable Latest Torrents?"
 msgstr "Activați cele mai recente torrente?"
 
@@ -3695,6 +3694,9 @@ msgstr "Activați Meniul Personal în Navbar"
 msgid "Enable Staff Picks"
 msgstr "Activați alegerile de personal"
 
+msgid "Enable Staff Picks?"
+msgstr "Activați alegerile de personal?"
+
 msgid "Enable The Lottery"
 msgstr "Activați Loteria"
 
@@ -3713,8 +3715,14 @@ msgstr "Activați API-ul TvMaze"
 msgid "Enable User Reputation system?"
 msgstr "Activați sistemul Reputatie utilizator?"
 
+msgid "Enable add reputation link"
+msgstr "Activați adăugarea linkului de reputație"
+
 msgid "Enable avatar"
 msgstr "Activați avatar"
+
+msgid "Enable birthdate and age"
+msgstr "Activați data nașterii și vârsta"
 
 msgid "Enable birthday display"
 msgstr "Activați afișarea zilei de naștere"
@@ -3731,6 +3739,9 @@ msgstr "Activați conectarea și portul"
 msgid "Enable contact info"
 msgstr "Activați informațiile de contact"
 
+msgid "Enable contact infos"
+msgstr "Activați informațiile de contact"
+
 msgid "Enable crazyhour alerts in stdhead"
 msgstr "Activați alertele Crazyhour în stdhead"
 
@@ -3743,6 +3754,9 @@ msgstr "Activați istoricul postărilor forumului"
 msgid "Enable freeslots and freeleech"
 msgstr "Activați freeslots și freeleech"
 
+msgid "Enable freeslots and freeleech status"
+msgstr "Activați freeslots și starea freeleech"
+
 msgid "Enable gender"
 msgstr "Activați genul"
 
@@ -3751,6 +3765,15 @@ msgstr "Activați alertele de happy hour în stdhead"
 
 msgid "Enable invited by"
 msgstr "Activați invitați de"
+
+msgid "Enable invited by list"
+msgstr "Activați invitați pe listă"
+
+msgid "Enable ip history lists"
+msgstr "Activați listele istoric ip"
+
+msgid "Enable irc online stats"
+msgstr "Activați statisticile online irc"
 
 msgid "Enable irc stats"
 msgstr "Activați statistici irc"
@@ -3764,8 +3787,17 @@ msgstr "Activați alerta privind starea contribuției karma în stdhead"
 msgid "Enable message alert block"
 msgstr "Activați blocul de alertă pentru mesaje"
 
+msgid "Enable message alerts in stdhead"
+msgstr "Activați alertele de mesaje în stdhead"
+
+msgid "Enable online time"
+msgstr "Activați timpul online"
+
 msgid "Enable report user"
 msgstr "Activare utilizator raport"
+
+msgid "Enable report users button"
+msgstr "Activați butonul de raportare a utilizatorilor"
 
 msgid "Enable reports alert in stdhead"
 msgstr "Activați alerta rapoarte în stdhead"
@@ -3773,8 +3805,14 @@ msgstr "Activați alerta rapoarte în stdhead"
 msgid "Enable reputation link"
 msgstr "Activați linkul de reputație"
 
+msgid "Enable seed time per torrent average ratio"
+msgstr "Activați timpul de sămânță pe raportul mediu torent"
+
 msgid "Enable seedbonus"
 msgstr "Activați seedbonus"
+
+msgid "Enable seeding, leeching, snatched and uploaded torrents"
+msgstr "Activați torentele de însămânțare, lipire, prindere și încărcare"
 
 msgid "Enable seeding, leeching, snatched, uploaded torrents"
 msgstr "Activați torentele de însămânțare, lipire, prindere, încărcare"
@@ -3788,11 +3826,20 @@ msgstr "Activați butonul de trimitere a mesajului"
 msgid "Enable share ratio"
 msgstr "Activați raportul de partajare"
 
+msgid "Enable show friends button"
+msgstr "Activați butonul show show friends"
+
 msgid "Enable staff snatched torrents"
 msgstr "Permiteți personalului să toarne torentele"
 
+msgid "Enable staff snatchlist"
+msgstr "Activați lista de snatch-uri a personalului"
+
 msgid "Enable the global demotion alert block"
 msgstr "Activați blocul global de alertă de retragere"
+
+msgid "Enable the global demotion alerts block in stdhead"
+msgstr "Activați blocul de alerte de retragere globală în stdhead"
 
 msgid "Enable torrent comments history"
 msgstr "Activați istoricul comentariilor torrentului"
@@ -3800,8 +3847,14 @@ msgstr "Activați istoricul comentariilor torrentului"
 msgid "Enable upload application alerts in stdhead"
 msgstr "Activați alertele de încărcare a aplicațiilor în stdhead"
 
+msgid "Enable uploaded and download"
+msgstr "Activați încărcarea și descărcarea"
+
 msgid "Enable uploaded and downloaded"
 msgstr "Activați încărcate și descărcate"
+
+msgid "Enable user comments"
+msgstr "Activați comentariile utilizatorilor"
 
 msgid "Enable user hits"
 msgstr "Activați accesările utilizatorului"
@@ -3853,6 +3906,15 @@ msgstr "Introduceti numele de utilizator"
 
 msgid "Enter password again"
 msgstr "Introduceți din nou parola"
+
+msgid "Enter the <b>Torrent ID:</b>"
+msgstr "Introduceți codul torrent <b>: </b>"
+
+msgid "Enter the <b>amount to contribute</b>"
+msgstr "Introduceți suma <b> pentru a contribui </b>"
+
+msgid "Enter the <b>username</b> you would like to send karma to"
+msgstr "Introduceți numele de utilizator <b> </b> la care doriți să trimiteți karma la"
 
 msgid "Enter the destination  Topic Id to append to."
 msgstr "Introduceți ID-ul subiectului de destinație la care se anexează."
@@ -3957,6 +4019,9 @@ msgstr "Fișier Editare jurnal"
 msgid "File name is not allowed"
 msgstr "Numele fișierului nu este permis"
 
+msgid "File not allowed only .srt , .sub , .vtt or .txt files"
+msgstr "Fișierul nu este permis numai fișierele .srt, .sub, .vtt sau .txt"
+
 msgid "File size: "
 msgstr "Mărime fișier:"
 
@@ -4052,6 +4117,9 @@ msgstr "Torrenturi de curățare?"
 msgid "Flush torrents"
 msgstr "Se toarnă torente"
 
+msgid "Flush torrents?"
+msgstr "Arătați torentele?"
+
 msgid "Flysystem Cache: "
 msgstr "Cache-sistem Flys:"
 
@@ -4116,6 +4184,9 @@ msgstr "Mesaje de forum"
 msgid "Forum Rights"
 msgstr "Drepturile forumului"
 
+msgid "Forum Subscribe PM"
+msgstr "Abonare forum PM"
+
 msgid "Forum description"
 msgstr "Descrierea forumului"
 
@@ -4136,6 +4207,9 @@ msgstr "Postări pe forum?"
 
 msgid "Forum rank"
 msgstr "Clasarea forumului"
+
+msgid "Forumposts?"
+msgstr "Forumposts?"
 
 msgid "Forums"
 msgstr "Forum"
@@ -4167,17 +4241,9 @@ msgstr "Torrent gratuit!"
 msgid "Free for 1 day"
 msgstr "Gratuit pentru 1 zi"
 
-msgid "Free for 1 week"
-msgstr "Gratuit timp de 1 săptămână"
-
-msgid "Free for 2 weeks"
-msgstr "Gratuit timp de 2 săptămâni"
-
-msgid "Free for 4 weeks"
-msgstr "Gratuit timp de 4 săptămâni"
-
-msgid "Free for 8 weeks"
-msgstr "Gratuit timp de 8 săptămâni"
+#, no-php-format
+msgid "Free for {0} day"
+msgstr "Gratuit pentru {0} zi"
 
 #, no-php-format
 msgid "Free for {0} week"
@@ -4187,11 +4253,20 @@ msgstr "Gratuit pentru {0} săptămână"
 msgid "Free for {0} weeks"
 msgstr "Gratuit pentru {0} săptămâni"
 
+msgid "Free stuffs?"
+msgstr "Lucruri gratuite?"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech ON"
 
+msgid "FreeLeech [ON]"
+msgstr "FreeLeech [ON]"
+
 msgid "Freeeslots total adjusted = Yes"
 msgstr "Totalizări gratuite ajustate = Da"
+
+msgid "Freeleech"
+msgstr "Freeleech"
 
 msgid "Freeleech Manager"
 msgstr "Freeleech Manager"
@@ -4217,8 +4292,15 @@ msgstr "Sloturi Freeleech:"
 msgid "Freeleech Status"
 msgstr "Freeleech Status"
 
-msgid "Freeleech Status from "
-msgstr "Freeleech Status din"
+msgid "Freeleech Status enabled by "
+msgstr "Freeleech Status activat de"
+
+#, no-php-format
+msgid "Freeleech Status for {0} by {1}."
+msgstr "Freeleech Status pentru {0} de {1}."
+
+msgid "Freeleech Status removed by "
+msgstr "Freeleech Status a fost eliminat de"
 
 msgid "Freeleech enabled = "
 msgstr "Freeleech activat ="
@@ -4327,11 +4409,23 @@ msgstr "Jocuri posibile"
 msgid "Games disabled = "
 msgstr "Jocuri dezactivate ="
 
+#, no-php-format
+msgid "Games disablement for {0} by {1}."
+msgstr "Dezactivarea jocurilor pentru {0} de {1}."
+
 msgid "Games possible = No"
 msgstr "Jocuri posibile = Nu"
 
 msgid "Games possible = Yes"
 msgstr "Jocuri posibile = Da"
+
+#, no-php-format
+msgid "Gaming disablement by {0}."
+msgstr "Dezactivarea jocurilor cu {0}."
+
+#, no-php-format
+msgid "Gaming disablement status removed by {0}"
+msgstr "Starea de dezactivare a jocurilor este eliminată cu {0}"
 
 msgid "Gender"
 msgstr "Sex"
@@ -4389,6 +4483,9 @@ msgstr "Obținerea de freesloturi suplimentare"
 msgid "Getting extra invites"
 msgstr "Primirea de invitații suplimentare"
 
+msgid "Give Karma Gift"
+msgstr "Fă cadou Karma"
+
 msgid "Giving a gift of karma points to another user"
 msgstr "Acordarea unui cadou de karma indică un alt utilizator"
 
@@ -4400,6 +4497,12 @@ msgstr "Statistici globale"
 
 msgid "Go Back"
 msgstr "Întoarce-te"
+
+msgid "Go To First"
+msgstr "Mergeți la primul"
+
+msgid "Go To Last"
+msgstr "Mergeți la ultimul"
 
 msgid "Go back"
 msgstr "Întoarce-te"
@@ -4462,6 +4565,9 @@ msgstr "HTML nu este permis <b> nu </b>."
 #, no-php-format
 msgid "HTML is not allowed. {0}Click here{1} for information on available tags."
 msgstr "HTML nu este permis. {0} Faceți clic aici {1} pentru informații despre etichetele disponibile."
+
+msgid "Half Download"
+msgstr "Jumătate de descărcare"
 
 msgid "Happy Log"
 msgstr "Jurnal fericit"
@@ -4547,6 +4653,18 @@ msgstr "Aici este"
 msgid "Hey"
 msgstr "Hei"
 
+#, no-php-format
+msgid ""
+"Hey\n"
+"We are sorry to announce that you have been robbed by {0}{1}{2}.\n"
+"Now your total reputation is [b]{3}[/b]\n"
+"[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]"
+msgstr ""
+"Hei\n"
+"Ne pare rău să vă anunțăm că ați fost jefuit de {0} {1} {2}.\n"
+"Acum reputația ta totală este [b] {3} [/ b]\n"
+"[color = # ff0000] Acest lucru este normal și nu ar trebui să vă faceți griji, dacă aveți suficiente puncte bonus puteți jefui alte persoane [/ color]"
+
 msgid "Hey its now happy hour!"
 msgstr "Hei este acum ora fericită!"
 
@@ -4582,6 +4700,18 @@ msgstr ""
 #, no-php-format
 msgid "Hey {0}!"
 msgstr "Hei {0}!"
+
+#, no-php-format
+msgid ""
+"Hey {0}:\n"
+"You robbed:\n"
+"{1}\n"
+"Your total reputation is now [b]{2}[/b] but you lost [b]{3}[/b] karma points "
+msgstr ""
+"Hei {0}:\n"
+"Ai jefuit:\n"
+"{1}\n"
+"Reputația ta totală este acum [b] {2} [/ b], dar ai pierdut [b] {3} [/ b] puncte karma"
 
 #, no-php-format
 msgid "Hey {1}!<br>There is {0} new message for the staff."
@@ -4648,6 +4778,12 @@ msgstr "Ascunde-mi imaginile"
 msgid "Hide accepted/rejected"
 msgstr "Ascundeți acceptat / respins"
 
+msgid "Hide current seed and leech"
+msgstr "Ascundeți sămânța curentă și prazul"
+
+msgid "Hide from Navbar"
+msgstr "Ascundeți-vă de Navbar"
+
 msgid "High"
 msgstr "Înalt"
 
@@ -4656,6 +4792,14 @@ msgstr "Procentul cel mai mare de câștig"
 
 msgid "Highly Anonymous"
 msgstr "Foarte anonim"
+
+#, no-php-format
+msgid "Highspeed Upload disabled by {0}."
+msgstr "Încărcare de viteză înaltă dezactivată de {0}."
+
+#, no-php-format
+msgid "Highspeed Upload enabled by {0}."
+msgstr "Încărcare de viteză înaltă activată de {0}."
 
 msgid "Highspeed Uploader"
 msgstr "Încărcător de mare viteză"
@@ -4720,6 +4864,9 @@ msgstr "Apăsați și alergați total ajustat = Da"
 msgid "Hit and run!"
 msgstr "Loveste si fugi!"
 
+msgid "Hit and runs set to "
+msgstr "Apăsați și aleargă setat la"
+
 msgid "HitnRun"
 msgstr "HitnRun"
 
@@ -4761,6 +4908,9 @@ msgstr "casă"
 
 msgid "How can I improve my download speed?"
 msgstr "Cum îmi pot îmbunătăți viteza de descărcare?"
+
+msgid "How can we remove a warning that isn't there?"
+msgstr "Cum putem elimina un avertisment care nu există?"
 
 msgid "How did you get here?"
 msgstr "Cum ai ajuns aici?"
@@ -4922,6 +5072,9 @@ msgstr "Link IMDb"
 
 msgid "IMDb Top 100 Movies"
 msgstr "IMDb Top 100 de filme"
+
+msgid "IMDb URL"
+msgstr "URL IMDb"
 
 msgid "IMDb Upcoming Movies"
 msgstr "Filme viitoare IMDb"
@@ -5125,11 +5278,20 @@ msgstr "Imagine negasita!"
 msgid "Images Manager"
 msgstr "Manager de imagini"
 
+#, no-php-format
+msgid "Immune Status enabled by {0}."
+msgstr "Imunitate activată de {0}."
+
 msgid "Immunity"
 msgstr "Imunitate"
 
-msgid "Immunity Status from "
-msgstr "Stare de imunitate din"
+#, no-php-format
+msgid "Immunity Status for {0} by {1}."
+msgstr "Stare de imunitate pentru {0} de {1}."
+
+#, no-php-format
+msgid "Immunity Status removed by {0}."
+msgstr "Starea imunității a fost eliminată cu {0}."
 
 msgid "Immunity for"
 msgstr "Imunitate pentru"
@@ -5397,6 +5559,9 @@ msgstr "Cod de invitație"
 msgid "Invite Tree"
 msgstr "Invită Arborele"
 
+msgid "Invite amount changed to "
+msgstr "Invitați suma modificată la"
+
 msgid "Invite rights"
 msgstr "Invitați drepturi"
 
@@ -5427,6 +5592,9 @@ msgstr "Invitați bonusul de masă adăugat - AutoSystem.\n"
 msgid "Invites added"
 msgstr "Au fost adăugate invitații"
 
+msgid "Invites allowed changed from "
+msgstr "Invitațiile permise s-au schimbat din"
+
 msgid "Invites enabled = "
 msgstr "Invitații activate ="
 
@@ -5450,6 +5618,9 @@ msgstr "Este efectiv ora de vară?"
 
 msgid "Is taken, please try again."
 msgstr "Este luat, vă rugăm să încercați din nou."
+
+msgid "Is your avatar offensive"
+msgstr "Avatarul tău este jignitor"
 
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Nu este același lucru ca mai sus? Nu. Conexiunile limitează numărul de colegi cu care vorbește și / sau se descarcă clientul dvs. Încărcările limitează numărul de colegi la care se încarcă clientul dvs. Numărul ideal este de obicei mult mai mic decât numărul de conexiuni și depinde foarte mult de conexiunea dvs. fizică."
@@ -5524,6 +5695,9 @@ msgstr "ianuarie"
 msgid "Join Date"
 msgstr "Data înscrierii"
 
+msgid "Join date?"
+msgstr "Data înscrierii?"
+
 msgid "Joined"
 msgstr "Alăturat"
 
@@ -5557,6 +5731,9 @@ msgstr "Karma"
 
 msgid "Karma Bonus Points"
 msgstr "Puncte Bonus Karma"
+
+msgid "Karma Contribution's"
+msgstr "Karma Contribution’s"
 
 msgid "Karma Contributions"
 msgstr "Karma Contributii"
@@ -6023,6 +6200,9 @@ msgstr "Efectuarea unei solicitări"
 msgid "Male"
 msgstr "Masculin"
 
+msgid "Manage Images"
+msgstr "Gestionați imagini"
+
 msgid "Manage Polls"
 msgstr "Gestionați sondajele"
 
@@ -6074,8 +6254,8 @@ msgstr "Puncte Karma Bonus de masă adăugate - AutoSystem.\n"
 msgid "Mass Message to All Non Connectable Users"
 msgstr "Mesaj de masă pentru toți utilizatorii neconectabili"
 
-msgid "Mass Pm"
-msgstr "Masa Pm"
+msgid "Mass PM"
+msgstr "Masa PM"
 
 msgid "Mass bonus for all or selected members:"
 msgstr "Bonus în masă pentru toți sau membrii selectați:"
@@ -6094,6 +6274,9 @@ msgstr "E-mail potrivit"
 
 msgid "Matched IP"
 msgstr "IP asociat"
+
+msgid "Max file size"
+msgstr "Dimensiunea maximă a fișierului"
 
 msgid "Maximum File Size"
 msgstr "Dimensiunea maximă a fișierului"
@@ -6228,6 +6411,9 @@ msgstr "Mesaje trimise."
 
 msgid "Messages weren't sent!"
 msgstr "Mesaje nu au fost trimise!"
+
+msgid "Min"
+msgstr "min"
 
 msgid "Min Class"
 msgstr "Clasa Min"
@@ -6380,6 +6566,9 @@ msgstr "Stare de spirit editată"
 msgid "More status variables"
 msgstr "Mai multe variabile de stare"
 
+msgid "More than 5"
+msgstr "Mai mult de 5"
+
 msgid "Most Credit Lost"
 msgstr "Cele mai multe pierderi de credit"
 
@@ -6482,6 +6671,9 @@ msgstr "ISP-ul meu folosește un proxy transparent. Ce ar trebuii să fac?"
 
 msgid "My Offers"
 msgstr "Ofertele mele"
+
+msgid "My Paranoia"
+msgstr "Paranoia mea"
 
 msgid "My Posts"
 msgstr "Mesajele mele"
@@ -6607,6 +6799,12 @@ msgstr "Manager nou"
 msgid "New Order ID"
 msgstr "ID nou pentru comandă"
 
+msgid "New Password"
+msgstr "Parolă Nouă"
+
+msgid "New Password Again"
+msgstr "parola noua din nou"
+
 msgid "New Posts"
 msgstr "Mesaje noi"
 
@@ -6621,6 +6819,9 @@ msgid_plural "New Staff Messages"
 msgstr[0] "Mesaj nou pentru personal"
 msgstr[1] "Mesaje noi de personal"
 msgstr[2] "Mesaje noi de personal"
+
+msgid "New Subtitle"
+msgstr "Subtitrare nouă"
 
 msgid "New Topic"
 msgstr "Subiect nou"
@@ -6916,6 +7117,9 @@ msgstr "Nu există articole în cache"
 msgid "No language other than English in the forums."
 msgstr "În forumuri nu există altă limbă decât engleza."
 
+msgid "No language selected"
+msgstr "Nicio limbă selectată"
+
 msgid "No leech warning Status Set"
 msgstr "Fără setare de stare de avertizare împotriva lipiciilor"
 
@@ -7174,6 +7378,9 @@ msgstr "Nimic gasit"
 msgid "Nothing found!"
 msgstr "Nimic gasit!"
 
+msgid "Nothing found! Try again with a refined search string."
+msgstr "Nimic gasit! Încercați din nou cu un șir de căutare rafinat."
+
 msgid "Nothing found."
 msgstr "Nimic gasit."
 
@@ -7265,6 +7472,9 @@ msgstr "O învață-mă cum ar trebui să uit să gândesc."
 msgid "OK"
 msgstr "O.K"
 
+msgid "ON"
+msgstr "PE"
+
 msgid "OPEN"
 msgstr "DESCHIS"
 
@@ -7285,6 +7495,12 @@ msgstr "Avatar ofensator"
 
 msgid "Offensive avatar enabled = "
 msgstr "Avatar ofensiv activat ="
+
+msgid "Offensive avatar set to no by "
+msgstr "Avatar ofensiv setat la nu"
+
+msgid "Offensive avatar set to yes by "
+msgstr "Avatar ofensiv setat pe da"
 
 msgid "Offer"
 msgstr "Oferi"
@@ -7336,9 +7552,6 @@ msgstr "Numele categoriei vechi"
 msgid "Old School Arcade"
 msgstr "Arcade Old School"
 
-msgid "Old School Arcade!"
-msgstr "Old School Arcade!"
-
 msgid "On"
 msgstr "Pe"
 
@@ -7368,6 +7581,12 @@ msgstr "Un raport unu la unu funcționează numai pe torenți mai mici de 6 GB!"
 
 msgid "Online"
 msgstr "Pe net"
+
+msgid "Online time?"
+msgstr "Timpul online?"
+
+msgid "Only .srt, .sub , .vtt or .txt files are accepted"
+msgstr "Sunt acceptate numai fișiere .srt, .sub, .vtt sau .txt"
 
 msgid "Only Dead"
 msgstr "Numai mort"
@@ -7543,6 +7762,9 @@ msgstr "Comentariul premierului"
 msgid "PM Notification"
 msgstr "Notificare PM"
 
+msgid "PM Possible"
+msgstr "PM Posibil"
+
 msgid "PM Sent Statistics"
 msgstr "PM a trimis statistici"
 
@@ -7551,6 +7773,18 @@ msgstr "PM trimis tuturor colegilor neconectabili"
 
 msgid "PM comment"
 msgstr "Comentariul premierului"
+
+#, no-php-format
+msgid "PM disablement by {0}."
+msgstr "Dezactivarea PM cu {0}."
+
+#, no-php-format
+msgid "PM disablement for {0} by {1}."
+msgstr "Dezactivarea PM pentru {0} de {1}."
+
+#, no-php-format
+msgid "PM disablement status removed by {0}."
+msgstr "Starea de dezactivare a PM a fost eliminată cu {0}."
 
 msgid "PM options"
 msgstr "Opțiunile PM"
@@ -7585,6 +7819,10 @@ msgstr "Paranoia"
 
 msgid "Paranoia Levels explained"
 msgstr "Niveluri paranoia explicate"
+
+#, no-php-format
+msgid "Paranoia changed to {0} from {1} by {2}"
+msgstr "Paranoia s-a schimbat în {0} din {1} cu {2}"
 
 msgid "Paranoia level changed"
 msgstr "Nivelul paranoiei s-a schimbat"
@@ -7654,6 +7892,9 @@ msgstr "Prezentare generală a colegilor"
 
 msgid "Peers limit adjusted = Yes"
 msgstr "Coeficientul limită ajustat = Da"
+
+msgid "Peers limit set to"
+msgstr "Limita de la egal a fost stabilită la"
 
 msgid "Peers that are Not Connectable"
 msgstr "Colegii care nu sunt conectabili"
@@ -7814,15 +8055,6 @@ msgstr "Vă rugăm să utilizați {0} acest formular {1} pentru a vă trimite pr
 msgid "Plot"
 msgstr "intrigă"
 
-msgid "Pm"
-msgstr "P.m"
-
-msgid "Pm Possible"
-msgstr "Pm posibil"
-
-msgid "Pm disablement from "
-msgstr "Dezactivarea Pm de la"
-
 msgid "Point"
 msgstr "Punct"
 
@@ -7831,6 +8063,44 @@ msgstr "puncte"
 
 msgid "Points Pool"
 msgstr "Pool de puncte"
+
+#, no-php-format
+msgid "Points as gift from {0}."
+msgstr "Puncte ca cadou de la {0}."
+
+#, no-php-format
+msgid "Points as gift to {0}."
+msgstr "Puncte ca cadou către {0}."
+
+msgid "Points for  1 Year Parked Profile."
+msgstr "Puncte pentru un profil parcat de 1 an."
+
+msgid "Points for 1 month Custom Smilies."
+msgstr "Puncte pentru 1 lună Zâmbete personalizate."
+
+msgid "Points for 1 month Immunity Status."
+msgstr "Puncte pentru statutul de imunitate de o lună."
+
+msgid "Points for 1 month VIP Status."
+msgstr "Puncte pentru statutul VIP de o lună."
+
+msgid "Points for 1 to 1 ratio on torrent"
+msgstr "Puncte pentru raportul 1 la 1 pe torrent"
+
+msgid "Points for 100 Reputation Points."
+msgstr "Puncte pentru 100 de puncte de reputație."
+
+msgid "Points for 14 Days Anonymous Profile."
+msgstr "Puncte pentru profil anonim de 14 zile."
+
+msgid "Points for removing warning."
+msgstr "Puncte pentru eliminarea avertismentului."
+
+msgid "Points for user blocks access."
+msgstr "Punctele pentru blocarea accesului utilizatorilor."
+
+msgid "Points for user unlocks access."
+msgstr "Punctele pentru utilizator deblochează accesul."
 
 msgid "Political"
 msgstr "Politic"
@@ -7933,6 +8203,12 @@ msgstr "Postat de"
 msgid "Poster"
 msgstr "Poster"
 
+msgid "Posting disabled by "
+msgstr "Postarea dezactivată de"
+
+msgid "Posting enabled by "
+msgstr "Postarea activată de"
+
 msgid "Posting rights"
 msgstr "Drepturi de înregistrare"
 
@@ -8006,6 +8282,9 @@ msgstr "Profil"
 msgid "Profile Views"
 msgstr "Vizualizări profil"
 
+msgid "Profile hits?"
+msgstr "Profiluri accesate?"
+
 msgid "Profile updated!"
 msgstr "Profil actualizat!"
 
@@ -8018,6 +8297,9 @@ msgstr "Promovat"
 #, no-php-format
 msgid "Promoted to 'Uploader' by {0}."
 msgstr "Promovat la „Uploader” de {0}."
+
+msgid "Promoted to FLS by "
+msgstr "Promovat în FLS de"
 
 msgid "Promotion Settings"
 msgstr "Setări promoție"
@@ -8259,6 +8541,9 @@ msgstr "Legat de tine"
 msgid "Release Date"
 msgstr "Data eliberării"
 
+msgid "Release Name"
+msgstr "Numele lansării"
+
 msgid "Relevance"
 msgstr "Relevanţă"
 
@@ -8413,6 +8698,9 @@ msgstr "Raportați Eșecul!"
 msgid "Report User"
 msgstr "Raportare utilizator"
 
+msgid "Report user?"
+msgstr "Raportați utilizator?"
+
 msgid "Report?"
 msgstr "Raport?"
 
@@ -8472,6 +8760,9 @@ msgstr "Reputația a fost eliminată cu succes"
 
 msgid "Reputation points"
 msgstr "Puncte de reputație"
+
+msgid "Reputation points changed to "
+msgstr "Punctele de reputație s-au schimbat în"
 
 msgid "Reputation points total adjusted"
 msgstr "Puncte de reputație ajustate total"
@@ -8577,6 +8868,9 @@ msgstr "Rezultate ca postări"
 msgid "Results in Feed"
 msgstr "Rezultate în Feed"
 
+msgid "Return to Details"
+msgstr "Reveniți la detalii"
+
 msgid "Return to the Games"
 msgstr "Înapoi la jocuri"
 
@@ -8668,6 +8962,9 @@ msgstr "Control mintal!"
 msgid "Sanity check"
 msgstr "Control mintal"
 
+msgid "Sanity check..."
+msgstr "Control mintal..."
+
 msgid "Save"
 msgstr "Salvați"
 
@@ -8709,6 +9006,9 @@ msgstr "Nivelul de reputație salvat cu succes."
 #, no-php-format
 msgid "Saying thanks = {0} points"
 msgstr "Spune mulțumiri = {0} puncte"
+
+msgid "Scene"
+msgstr "Scenă"
 
 msgid "Scene Tags..."
 msgstr "Etichete de scenă ..."
@@ -8789,6 +9089,9 @@ msgstr "Căutare după descriere (fuzzy)"
 msgid "Search by Genre"
 msgstr "Căutare după gen"
 
+msgid "Search by IMDb, TMDb, TvMaze ID, ISBN, type"
+msgstr "Căutare după IMDb, TMDb, ID TvMaze, ISBN, tip"
+
 msgid "Search by Name"
 msgstr "Cauta dupa nume"
 
@@ -8812,6 +9115,10 @@ msgstr "Cauta in:"
 
 msgid "Search log"
 msgstr "Jurnal de căutare"
+
+#, no-php-format
+msgid "Search result for <i>'{0}'</i>"
+msgstr "Rezultatul căutării pentru <i> '{0}' </i>"
 
 #, no-php-format
 msgid "Search results for {0}"
@@ -8915,6 +9222,9 @@ msgstr "Raportul timp de semințe?"
 msgid "SeedBox"
 msgstr "råsadniøå"
 
+msgid "Seedbonus amount changed to "
+msgstr "Suma Seedbonus a fost modificată în"
+
 msgid "Seedbonus points total adjusted"
 msgstr "Puncte Seedbonus ajustate total"
 
@@ -8927,8 +9237,8 @@ msgstr "Semănat pentru:"
 msgid "Seeder"
 msgstr "Semănătoare"
 
-msgid "Seeder Info (Top 5 Seeders)"
-msgstr "Informații despre semănătoare (primele 5 semănători)"
+msgid "Seeder Info: Top 5"
+msgstr "Informații despre semănător: Top 5"
 
 msgid "Seeder/Leecher Ratio (%)"
 msgstr "Proporția semănătorului / prazului (%)"
@@ -8996,6 +9306,9 @@ msgstr "Selectați data de încheiere pentru acest raport. Selectați o lună, z
 
 msgid "Select how many PMs you would like to see per page."
 msgstr "Selectați câte PM-uri doriți să vedeți pe pagină."
+
+msgid "Select how many points you want to send"
+msgstr "Selectați câte puncte doriți să trimiteți"
 
 msgid "Select one"
 msgstr "Alege unul"
@@ -9263,8 +9576,17 @@ msgstr "Show Aprobat"
 msgid "Show Approved Triggers"
 msgstr "Arată declanșatoare aprobate"
 
+msgid "Show Email"
+msgstr "Afișare e-mail"
+
+msgid "Show Friends"
+msgstr "Arata prietenilor"
+
 msgid "Show Friends?"
 msgstr "Afișați prietenilor?"
+
+msgid "Show PM?"
+msgstr "Afișați PM?"
 
 msgid "Show Unapproved"
 msgstr "Afișare neaprobat"
@@ -9280,6 +9602,12 @@ msgstr "Afișați avataruri când vedeți căsuțele dvs. poștale."
 
 msgid "Show hidden Categories"
 msgstr "Afișați categoriile ascunse"
+
+msgid "Show in Navbar"
+msgstr "Arată în Navbar"
+
+msgid "Show in Navbar cannot be empty."
+msgstr "Show in Navbar nu poate fi gol."
 
 msgid "Show pm?"
 msgstr "Spectacol pm?"
@@ -9311,6 +9639,9 @@ msgstr "Afișarea numărului de utilizatori înregistrați."
 msgid "Shows a warning if there is a new message for staff"
 msgstr "Afișează un avertisment dacă există un mesaj nou pentru personal"
 
+msgid "Shows if there is a new message for staff alert in stdhead"
+msgstr "Afișează dacă există un mesaj nou pentru alertarea personalului în stdhead"
+
 msgid "Sick"
 msgstr "Bolnav"
 
@@ -9326,11 +9657,20 @@ msgstr "Drepturi de semnătură"
 msgid "Signature changed"
 msgstr "Semnătura schimbată"
 
+msgid "Signature changed from "
+msgstr "Semnătura a fost schimbată de la"
+
 msgid "Signature post enabled = "
 msgstr "Postare de semnătură activată ="
 
 msgid "Signature rights"
 msgstr "Drepturi de semnătură"
+
+msgid "Signature rights turned off by "
+msgstr "Drepturile de semnătură sunt dezactivate"
+
+msgid "Signature rights turned on by "
+msgstr "Drepturile de semnătură sunt activate"
 
 msgid "Signup"
 msgstr "Inscrie-te"
@@ -9356,17 +9696,9 @@ msgstr "Torrent de argint!"
 msgid "Silver for 1 day"
 msgstr "Argint 1 zi"
 
-msgid "Silver for 1 week"
-msgstr "Argint timp de 1 săptămână"
-
-msgid "Silver for 2 weeks"
-msgstr "Argint timp de 2 săptămâni"
-
-msgid "Silver for 4 weeks"
-msgstr "Argint 4 săptămâni"
-
-msgid "Silver for 8 weeks"
-msgstr "Argint 8 săptămâni"
+#, no-php-format
+msgid "Silver for {0} day"
+msgstr "Argint pentru {0} zi"
 
 #, no-php-format
 msgid "Silver for {0} week"
@@ -9409,6 +9741,12 @@ msgstr "Scala de fonturi pe site"
 
 msgid "Site information"
 msgstr "Informații despre site"
+
+msgid "Site is Offline."
+msgstr "Site-ul este offline."
+
+msgid "Site is Online."
+msgstr "Site-ul este online."
 
 msgid "Site log"
 msgstr "Jurnalul site-ului"
@@ -9487,6 +9825,9 @@ msgstr "Câteva sfaturi utile."
 #, no-php-format
 msgid "Some {0}info{1} about the 'Anatomy of a torrent session'."
 msgstr "Unele {0} informații {1} despre „Anatomia unei sesiuni de torent”."
+
+msgid "Someone Loves you"
+msgstr "Cineva te iubeste"
 
 msgid "Someone has already taken that bet"
 msgstr "Cineva a luat deja acel pariu"
@@ -9732,8 +10073,8 @@ msgid "Staff actions log"
 msgstr "Jurnalul de acțiuni al personalului"
 
 #, no-php-format
-msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where sucessfully cleaned."
-msgstr "Personalul a aruncat {0} torentele fantomă la {1}. {2} torente unde s-a curățat cu succes."
+msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully cleaned."
+msgstr "Personalul a aruncat torentele fantome {0} la {1}. {2} torente unde au fost curățate cu succes"
 
 msgid "Staff mass bonus - added freeslots to"
 msgstr "Bonusul de masă al personalului - a adăugat freesloturi la"
@@ -9869,6 +10210,9 @@ msgstr "Sub-forum al"
 msgid "Sub-Forum of?"
 msgstr "Sub-forum din?"
 
+msgid "Subfile"
+msgstr "subfile"
+
 msgid "Subject"
 msgstr "Subiect"
 
@@ -9920,8 +10264,17 @@ msgstr "Subtitlu"
 msgid "Subtitle Details"
 msgstr "Detalii despre subtitrare"
 
+msgid "Subtitle Preview"
+msgstr "Previzualizare subtitrare"
+
 msgid "Subtitles"
 msgstr "Subtitrare"
+
+msgid "Subtracted Download"
+msgstr "Descărcare scăzută"
+
+msgid "Subtracted Upload"
+msgstr "Încărcarea scăzută"
 
 msgid "Succesfully Added"
 msgstr "Adăugat cu succes"
@@ -10202,9 +10555,6 @@ msgstr "Limita PU era de 25 GB și nu am eliminat pe nimeni atunci când am ridi
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "Promoția pe care ați încercat să o utilizați nu există sau a expirat!"
 
-msgid "The Reason:"
-msgstr "Motivul:"
-
 msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
 msgstr "Adresa URL trebuie să se încheie cu <b> .gif </b>, <b> .jepg </b>, <b> .jpg a09a4b739f17f8z8."
 
@@ -10245,8 +10595,11 @@ msgstr "Clasa implicită a noilor membri."
 msgid "The default setting-2 MBs, is currently set to: "
 msgstr "Setarea implicită - 2 MB, este în prezent setată la:"
 
-msgid "The description"
-msgstr "Descrierea"
+msgid "The description cannot be empty."
+msgstr "Descrierea nu poate fi goală."
+
+msgid "The description is too long max 100 chars."
+msgstr "Descrierea este prea lungă maxim 100 de caractere."
 
 msgid "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low."
 msgstr "Viteza de descărcare depinde în mare parte de raportul semănător-leecher (SLR). Viteza de descărcare slabă este în principal o problemă cu torentele noi și foarte populare în care SLR-ul este scăzut."
@@ -10254,11 +10607,17 @@ msgstr "Viteza de descărcare depinde în mare parte de raportul semănător-lee
 msgid "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere."
 msgstr "Adresa de e-mail trebuie să fie validă. Vei primi un e-mail de confirmare la care trebuie să răspunzi. Adresa de e-mail nu va fi afișată public nicăieri."
 
+msgid "The file can't be empty!"
+msgstr "Fișierul nu poate fi gol!"
+
 msgid "The file was written...wait for redirect"
 msgstr "Fișierul a fost scris ... așteptați redirecționarea"
 
-msgid "The filename"
-msgstr "Numele fișierului"
+msgid "The filename cannot be empty."
+msgstr "Numele fișierului nu poate fi gol."
+
+msgid "The filename is too long max 80 chars."
+msgstr "Numele fișierului este prea lung maxim 80 de caractere."
 
 #, no-php-format
 msgid "The following characters can be used: {0}. All other characters will be ignored."
@@ -10311,11 +10670,17 @@ msgid "The obscene terms where successfully deleted!"
 msgstr "Termenii obsceni unde s-au șters cu succes!"
 
 #, no-php-format
-msgid "The official IRC channel is {0}#pu-239{1}</p>"
-msgstr "Canalul IRC oficial este {0} # pu-239 {1} </p>"
+msgid "The official IRC channel is {0}#pu-239{1}"
+msgstr "Canalul oficial IRC este {0} # pu-239 {1}"
 
-msgid "The page name"
-msgstr "Numele paginii"
+msgid "The page name cannot be empty."
+msgstr "Numele paginii nu poate fi gol."
+
+msgid "The page name is too long max 80 chars."
+msgstr "Numele paginii este prea lung maxim 80 de caractere."
+
+msgid "The page name is too short (min 4 chars)."
+msgstr "Numele paginii este prea scurt (min 4 caractere)."
 
 #, no-php-format
 msgid "The password for account {0} is now {1}"
@@ -10449,9 +10814,6 @@ msgstr "Următorul {0} este destul de inteligent pentru a găsi IP-ul dvs. real,
 msgid "Theft summary"
 msgstr "Rezumatul furtului"
 
-msgid "There"
-msgstr "Acolo"
-
 msgid "There are a couple of things that you can try on your end to improve your speed:"
 msgstr "Există câteva lucruri pe care le puteți încerca la sfârșit pentru a vă îmbunătăți viteza:"
 
@@ -10512,6 +10874,10 @@ msgstr "Nu există erori raportate :)."
 
 msgid "There are no requests."
 msgstr "Nu există solicitări."
+
+#, no-php-format
+msgid "There are no subtitles, go {0}here{1} and start uploading."
+msgstr "Nu există subtitrări, accesați {0} aici {1} și începeți încărcarea."
 
 msgid "There are no torrents needing leechers right now."
 msgstr "Nu există torrente care au nevoie de lipitori în acest moment."
@@ -10584,6 +10950,13 @@ msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Există {0} ziua de naștere astăzi"
 msgstr[1] "Există {0} zile de naștere astăzi"
 msgstr[2] "Există {0} zile de naștere astăzi"
+
+#, no-php-format
+msgid "There is {0} error in the form."
+msgid_plural "There are {0} errors in the form."
+msgstr[0] "Există {0} eroare în formular."
+msgstr[1] "Există {0} erori în formular."
+msgstr[2] "Există {0} erori în formular."
 
 #, no-php-format
 msgid "There is {0} new bug!"
@@ -10693,11 +11066,17 @@ msgstr "Acest server MySQL a funcționat pentru {0}. A început pe {1}"
 msgid "This Year"
 msgstr "Anul acesta"
 
+msgid "This account has been Un-suspended by "
+msgstr "Acest cont a fost suspendat de către"
+
 msgid "This account has been disabled"
 msgstr "acest cont a fost dezactivat"
 
 msgid "This account has been suspended"
 msgstr "Acest cont a fost suspendat"
+
+msgid "This account has been suspended by "
+msgstr "Acest cont a fost suspendat de"
 
 msgid "This account is currently on the"
 msgstr "Acest cont este în prezent în"
@@ -11138,6 +11517,9 @@ msgstr "Torrent Age Group 2 Sub"
 msgid "Torrent Age Group 3 Over"
 msgstr "Torrent Age Group 3 Over"
 
+msgid "Torrent Catalof"
+msgstr "Torrent Catalof"
+
 msgid "Torrent Clients"
 msgstr "Clienții Torrent"
 
@@ -11168,11 +11550,18 @@ msgstr "Proprietarul Torrent a fost notificat"
 msgid "Torrent Pass"
 msgstr "Pasul Torrent"
 
+#, no-php-format
+msgid "Torrent Pass {0} reset to {1}."
+msgstr "Trecerea Torrent {0} resetată la {1}."
+
 msgid "Torrent Size"
 msgstr "Dimensiunea torrentului"
 
 msgid "Torrent Stats"
 msgstr "Statistici Torrent"
+
+msgid "Torrent comment PM"
+msgstr "Comentariu Torrent PM"
 
 msgid "Torrent comments?"
 msgstr "Comentarii torrent?"
@@ -11180,6 +11569,9 @@ msgstr "Comentarii torrent?"
 #, no-php-format
 msgid "Torrent deleted<br>{0}"
 msgstr "Torrent șters <br> {0}"
+
+msgid "Torrent deletion PM"
+msgstr "Ștergerea torentului PM"
 
 msgid "Torrent does not exist"
 msgstr "Torrent nu există"
@@ -11271,8 +11663,14 @@ msgstr "Torrente încărcate"
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrenturile sunt șterse automat după 28 de zile."
 
+msgid "Torrents blocks?"
+msgstr "Blocuri de torrente?"
+
 msgid "Torrents limit adjusted = Yes"
 msgstr "Limitarea torentelor ajustate = Da"
+
+msgid "Torrents limit set to"
+msgstr "Limita de torent setată la"
 
 msgid "Torrents per page"
 msgstr "Torrenturi pe pagină"
@@ -11318,6 +11716,9 @@ msgstr "traceroute"
 
 msgid "Traceroute!"
 msgstr "Traceroute!"
+
+msgid "Trade"
+msgstr "comerț"
 
 msgid "Trade your achievement points for random gifts."
 msgstr "Schimbă-ți punctele de realizare cu daruri aleatorii."
@@ -11637,6 +12038,9 @@ msgstr "Încarcă posibil"
 msgid "Upload Torrent"
 msgstr "Încărcați Torrent"
 
+msgid "Upload a Subtitle"
+msgstr "Încărcați un subtitlu"
+
 msgid "Upload a Torrent"
 msgstr "Încărcați un torrent"
 
@@ -11647,11 +12051,19 @@ msgid "Upload credit"
 msgstr "Încărcați credit"
 
 #, no-php-format
+msgid "Upload disablement by {0}."
+msgstr "Încărcarea dezactivată de {0}."
+
+#, no-php-format
 msgid "Upload disablement for {0} by {1}."
 msgstr "Încărcați dezactivarea pentru {0} de la {1}."
 
 msgid "Upload disablement from "
 msgstr "Încărcați dezactivarea din"
+
+#, no-php-format
+msgid "Upload disablement status removed by {0}"
+msgstr "Starea de dezactivare a încărcării este eliminată de {0}"
 
 msgid "Upload failed to save image."
 msgstr "Încărcarea nu a reușit să salveze imaginea."
@@ -11661,6 +12073,9 @@ msgstr "Încărcare eșuată!"
 
 msgid "Upload from URL"
 msgstr "Încărcați de pe URL"
+
+msgid "Upload it"
+msgstr "Încarcă-l"
 
 msgid "Uploaded"
 msgstr "Încărcat"
@@ -11717,9 +12132,6 @@ msgstr "Încărcări activate = Da"
 msgid "Upped by"
 msgstr "Atins de"
 
-msgid "Upper"
-msgstr "Superior"
-
 msgid "Upspeed"
 msgstr "Viteză de urcare"
 
@@ -11741,6 +12153,9 @@ msgstr "Utilizați Schița:"
 
 msgid "Use Prize Fund (No, uses default pot of all users)."
 msgstr "Utilizați fondul de premiere (nu, folosește potul implicit al tuturor utilizatorilor)"
+
+msgid "Use a descriptive name for your subtitle"
+msgstr "Utilizați un nume descriptiv pentru subtitrare"
 
 msgid "Use gzip compression"
 msgstr "Folosiți compresie gzip"
@@ -11842,6 +12257,9 @@ msgstr "Cont de utilizator {0}) {1}) Freeleech On Toate torrenturile au fost eli
 msgid "User class"
 msgstr "Clasa de utilizator"
 
+msgid "User comments?"
+msgstr "Comentariile utilizatorilor?"
+
 msgid "User immuntiy"
 msgstr "Imunitatea utilizatorului"
 
@@ -11868,6 +12286,9 @@ msgstr "Statistici utilizator"
 
 msgid "User status?"
 msgstr "Starea utilizatorului?"
+
+msgid "User traffic?"
+msgstr "Trafic utilizator?"
 
 msgid "User unlocks"
 msgstr "Utilizatorul se deblochează"
@@ -12057,8 +12478,14 @@ msgstr "Vizualizare original"
 msgid "View Recipes in the Oven"
 msgstr "Vizualizați rețete în cuptor"
 
+msgid "View Replies"
+msgstr "Vizualizați răspunsurile"
+
 msgid "View Reputation Comments"
 msgstr "Vizualizați comentariile despre reputație"
+
+msgid "View Signatures"
+msgstr "Vizualizați semnături"
 
 msgid "View Site Settings"
 msgstr "Vizualizați Setările site-ului"
@@ -12069,11 +12496,17 @@ msgstr "Vizualizați mesajele personalului"
 msgid "View application"
 msgstr "Vizualizați aplicația"
 
+msgid "View avatars"
+msgstr "Vizualizați avatare"
+
 msgid "View bought tickets"
 msgstr "Vizualizați biletele cumpărate"
 
 msgid "View comments"
 msgstr "Vezi comentarii"
+
+msgid "View offensive avatars"
+msgstr "Vizualizați avatare ofensive"
 
 msgid "View sharemarks"
 msgstr "Vizualizați marcajele"
@@ -12115,6 +12548,9 @@ msgstr "WORKPRINT (WP)"
 msgid "Wait time adjusted = Yes"
 msgstr "Timpul de așteptare ajustat = Da"
 
+msgid "Wait time set to"
+msgstr "Așteptați timpul setat la"
+
 msgid "Wall"
 msgstr "Perete"
 
@@ -12143,6 +12579,9 @@ msgstr "Avertizare"
 
 msgid "Warning :"
 msgstr "Avertizare :"
+
+msgid "Warning removed by - Bribe with Karma."
+msgstr "Avertisment eliminat de - Mită cu Karma."
 
 #, no-php-format
 msgid "Warning: There are no images in the directory {0}, please upload one."
@@ -12462,7 +12901,7 @@ msgstr "Hopa"
 msgid "You MUST enter a reason for this report! Use your back button and fill in the reason"
 msgstr "TREBUIE să introduceți un motiv pentru acest raport! Folosiți butonul înapoi și completați motivul"
 
-msgid "You MUST read this message before you delete it!!!  "
+msgid "You MUST read this message before you delete it!!!"
 msgstr "Trebuie să citiți acest mesaj înainte de al șterge !!!"
 
 #, no-php-format
@@ -12629,6 +13068,9 @@ msgstr "Nu puteți adăuga mulțumiri pe propriul torrent"
 msgid "You can't add yourself."
 msgstr "Nu te poți adăuga."
 
+msgid "You can't approve your replies!."
+msgstr "Nu puteți aproba răspunsurile dvs.!"
+
 msgid "You can't approve your reply."
 msgstr "Nu puteți aproba răspunsul dvs."
 
@@ -12709,6 +13151,10 @@ msgstr "Nu aveți acreditările corecte pentru a fi aici!"
 msgid "You dont have the credentials to lock."
 msgstr "Nu aveți certificatele de blocat."
 
+#, no-php-format
+msgid "You flushed the {0} cache"
+msgstr "Ați curățat memoria cache {0}"
+
 msgid "You forgot to fill some data"
 msgstr "Ai uitat să completezi câteva date"
 
@@ -12741,6 +13187,10 @@ msgstr "Ați votat deja, nu vă puteți schimba votul"
 msgid "You have been given"
 msgstr "Ți-a fost dat"
 
+#, no-php-format
+msgid "You have been given a gift of {0} Karma points by {1}"
+msgstr "Vi s-a oferit un cadou de {0} puncte Karma de {1}"
+
 msgid "You have been given.gift"
 msgstr "Ți-a fost dat.gift"
 
@@ -12760,8 +13210,9 @@ msgstr ""
 "        Dacă nu cunoașteți această persoană, vă rugăm să ignorați acest e-mail. Vă rugăm să nu răspundeți. <br>\n"
 "        Acesta este un site privat și trebuie să fiți de acord cu regulile înainte de a putea introduce:"
 
-msgid "You have been set as a high speed uploader by "
-msgstr "Ai fost setat ca un încărcător de mare viteză"
+#, no-php-format
+msgid "You have been set as a high speed uploader by {0}. You can now upload torrents using highspeeds without being flagged as a cheater."
+msgstr "Ați fost setat ca un încărcător de mare viteză de {0}. Acum puteți încărca torrenturi folosind viteze înalte fără a fi semnalizat ca trișor."
 
 #, no-php-format
 msgid "You have been {0} to {1} by {2}"
@@ -12829,14 +13280,51 @@ msgstr "Ați primit un comentariu la torrentul dvs. {0} {1} {2}."
 msgid "You have received donor status from {0}"
 msgstr "Ați primit statutul de donator de la {0}"
 
-msgid "You have received immunity Status from "
-msgstr "Ați primit statutul de imunitate de la"
+#, no-php-format
+msgid "You have received immunity Status from {0}."
+msgstr "Ați primit statutul de imunitate de la {0}."
 
 msgid "You have received leechwarn Status from "
 msgstr "Ați primit statutul de leechwarn de la"
 
 msgid "You have received warned Status from "
 msgstr "Ați primit Status avertizat de la"
+
+#, no-php-format
+msgid "You have received {0} AJAX Chat disablement from {1}"
+msgstr "Ați primit {0} Dezactivarea chatului AJAX de la {1}"
+
+#, no-php-format
+msgid "You have received {0} Avatar disablement from {1}."
+msgstr "Ați primit {0} dezactivarea avatarului de la {1}."
+
+#, no-php-format
+msgid "You have received {0} Download disablement from {1}."
+msgstr "Ați primit {0} Descărcare dezactivare de la {1}."
+
+#, no-php-format
+msgid "You have received {0} Freeleech Status from {1}."
+msgstr "Ați primit {0} Freeleech Status de la {1}."
+
+#, no-php-format
+msgid "You have received {0} Immunity Status from {1}."
+msgstr "Ați primit {0} Stare de imunitate de la {1}."
+
+#, no-php-format
+msgid "You have received {0} PM disablement from {1}."
+msgstr "Ați primit {0} dezactivarea PM de la {1}."
+
+#, no-php-format
+msgid "You have received {0} games disablement from {1}."
+msgstr "Ați primit {0} jocuri dezactivare de la {1}."
+
+#, no-php-format
+msgid "You have received {0} leechwarn Status from {1}."
+msgstr "Ați primit {0} statutul de leechwarn de la {1}."
+
+#, no-php-format
+msgid "You have received {0} warned Status from {1}."
+msgstr "Ați primit {0} Status avertizat de la {1}."
 
 msgid "You have snatched this torrent but not completed downloading"
 msgstr "Ați smuls acest torrent, dar nu ați finalizat descărcarea"
@@ -13046,17 +13534,21 @@ msgstr "Nu ești proprietarul!"
 msgid "You're not the owner! How did that happen?"
 msgstr "Nu ești proprietarul! Cum s-a întâmplat asta?"
 
-msgid "Your AJAX Chat rights have been disabled by "
-msgstr "Drepturile dvs. de chat AJAX au fost dezactivate de"
+#, no-php-format
+msgid "Your AJAX Chat rights have been disabled by {0}"
+msgstr "Drepturile dvs. de chat AJAX au fost dezactivate de {0}"
 
-msgid "Your AJAX Chat rights have been restored by "
-msgstr "Drepturile dvs. de chat AJAX au fost restaurate de"
+#, no-php-format
+msgid "Your AJAX Chat rights have been restored by {0}"
+msgstr "Drepturile dvs. de chat AJAX au fost restaurate de {0}"
 
-msgid "Your Avatar rights have been disabled by "
-msgstr "Drepturile dvs. Avatar au fost dezactivate de"
+#, no-php-format
+msgid "Your Avatar rights have been disabled by {0}."
+msgstr "Drepturile dvs. Avatar au fost dezactivate de {0}."
 
-msgid "Your Avatar rights have been restored by "
-msgstr "Drepturile dvs. de Avatar au fost restaurate de"
+#, no-php-format
+msgid "Your Avatar rights have been restored by {0}."
+msgstr "Drepturile dvs. de Avatar au fost restaurate de {0}."
 
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
@@ -13066,11 +13558,15 @@ msgstr "Drepturile dvs. de descărcare au fost dezactivate de {0}"
 msgid "Your Downloading rights have been restored by {0}"
 msgstr "Drepturile dvs. de descărcare au fost restaurate de {0}"
 
-msgid "Your Downloads have been enabled by "
-msgstr "Descărcările dvs. au fost activate de"
+#, no-php-format
+msgid "Your Downloads have been enabled by {0}."
+msgstr "Descărcările dvs. au fost activate de {0}."
 
 msgid "Your Freeleech Status has been removed by "
 msgstr "Starea dvs. Freeleech a fost eliminată de"
+
+msgid "Your IMDb link is invalid"
+msgstr "Link-ul dvs. IMDb nu este valid"
 
 #, no-php-format
 msgid "Your IP is: {0}"
@@ -13079,18 +13575,19 @@ msgstr "IP-ul dvs. este: {0}"
 msgid "Your ISP blocks the site's address"
 msgstr "ISP-ul dvs. blochează adresa site-ului"
 
-msgid "Your Immunity Status has been removed by "
-msgstr "Starea dvs. de imunitate a fost eliminată de"
+#, no-php-format
+msgid "Your Immunity Status has been removed by {0}."
+msgstr "Starea dvs. de imunitate a fost eliminată de {0}."
 
 #, no-php-format
 msgid "Your Opponent is: {0}"
 msgstr "Adversarul tău este: {0}"
 
-msgid "Your Pm rights have been disabled by "
-msgstr "Drepturile dvs. de Pm au fost dezactivate de"
+msgid "Your PM rights have been disabled by "
+msgstr "Drepturile dvs. de prim-ministru au fost dezactivate de"
 
-msgid "Your Pm rights have been restored by "
-msgstr "Drepturile dvs. de Pm au fost restaurate de"
+msgid "Your PM rights have been restored by "
+msgstr "Drepturile dvs. de prim-ministru au fost restaurate de"
 
 msgid "Your Posting rights have been given back by "
 msgstr "Drepturile dvs. de înregistrare au fost returnate de"
@@ -13123,8 +13620,9 @@ msgstr "Numele dvs. de utilizator a fost schimbat"
 msgid "Your account at "
 msgstr "Contul dvs. la"
 
-msgid "Your account has been suspended by "
-msgstr "Contul dvs. a fost suspendat de"
+#, no-php-format
+msgid "Your account has been suspended by {0}."
+msgstr "Contul dvs. a fost suspendat cu {0}."
 
 #, no-php-format
 msgid ""
@@ -13155,6 +13653,10 @@ msgstr "Contul dvs. este suspendat, puteți trimite PM-urile numai personalului!
 
 msgid "Your application has successfully been sent to the staff."
 msgstr "Cererea dvs. a fost trimisă cu succes personalului."
+
+#, no-php-format
+msgid "Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure."
+msgstr "Ești pe cale să ștergi subtitrarea <b> {0} </b>, faceți clic pe {1} aici {2} dacă sunteți sigur."
 
 msgid "Your avatar has been set to not offensive by "
 msgstr "Avatarul dvs. a fost setat să nu fie ofensiv"
@@ -13198,8 +13700,9 @@ msgstr "Privilegiile dvs. de descărcare au fost eliminate."
 msgid "Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as {0}NetLimiter{1}"
 msgstr "Viteza dvs. de descărcare este întotdeauna finită. Dacă sunteți un coleg într-un torrent rapid, aproape sigur va satura lățimea de bandă a descărcării, iar navigarea dvs. va avea de suferit. Momentan nu există niciun client care să vă permită să limitați viteza de descărcare, doar încărcarea. Va trebui să utilizați o soluție terță parte, cum ar fi {0} NetLimiter {1}"
 
-msgid "Your downloading ability has been disabled by "
-msgstr "Abilitatea dvs. de descărcare a fost dezactivată de"
+#, no-php-format
+msgid "Your downloading ability has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Abilitatea dvs. de descărcare a fost dezactivată de {0}. Vă rugăm PM {1} pentru motivul pentru care."
 
 #, no-php-format
 msgid "Your email has been changed to {0}"
@@ -13210,6 +13713,9 @@ msgstr "E-mailul dvs. a fost confirmat"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Eșecul dvs. de conectare se poate datora mai multor motive."
+
+msgid "Your file is too big."
+msgstr "Fișierul dvs. este prea mare."
 
 msgid "Your friends"
 msgstr "Prietenii tai"
@@ -13230,8 +13736,9 @@ msgstr "Drepturile dvs. de joc au fost restaurate de"
 msgid "Your high score was {0} and you ranked #{1}."
 msgstr "Scorul dvs. mare a fost {0} și ați clasat numărul # {1}."
 
-msgid "Your highspeed upload setting has been disabled by "
-msgstr "Setarea dvs. de viteză de încărcare a fost dezactivată de"
+#, no-php-format
+msgid "Your highspeed upload setting has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Setarea dvs. de viteză maximă a fost dezactivată de {0}. Vă rugăm PM {1} pentru motivul pentru care."
 
 msgid "Your identity has been confirmed."
 msgstr "Identitatea dvs. a fost confirmată."
@@ -13291,6 +13798,9 @@ msgstr "Reputația ta din {0} profilul tău {1} este {2} <br> Total: {3} puncte.
 msgid "Your requests list is empty."
 msgstr "Lista dvs. de solicitări este goală."
 
+msgid "Your shit list is empty. "
+msgstr "Lista ta de rahat este goală."
+
 msgid "Your text here"
 msgstr "Textul tău aici"
 
@@ -13312,8 +13822,9 @@ msgstr "Numele de utilizator este:"
 msgid "Your vote"
 msgstr "Votul dvs."
 
-msgid "Your warned Status has been removed by "
-msgstr "Starea dvs. avertizată a fost eliminată de"
+#, no-php-format
+msgid "Your warned Status has been removed by {0}"
+msgstr "Starea dvs. avertizată a fost eliminată de {0}"
 
 msgid "Youtube"
 msgstr "Youtube"
@@ -13595,9 +14106,6 @@ msgstr[2] "până la {1} în ultimele {0} zile"
 msgid "bytes "
 msgstr "bytes"
 
-msgid "cannot be empty"
-msgstr "nu poate fi gol"
-
 msgid "card count"
 msgstr "număr de carduri"
 
@@ -13731,6 +14239,9 @@ msgstr "egal"
 msgid "es"
 msgstr "es"
 
+msgid "expand"
+msgstr "extinde"
+
 msgid "expand even more"
 msgstr "extinde și mai mult"
 
@@ -13739,6 +14250,9 @@ msgstr "extinde copac"
 
 msgid "expense"
 msgstr "cheltuială"
+
+msgid "false"
+msgstr "fals"
 
 msgid "file info not found, empty filename in torrent file?"
 msgstr "informațiile despre fișier nu au fost găsite, numele de fișier gol în fișierul torrent?"
@@ -13779,6 +14293,9 @@ msgstr ""
 msgid "freeslot"
 msgstr "freeslot"
 
+msgid "freeslots amount changed to "
+msgstr "Suma schimbată în freeslots"
+
 #, php-format
 msgid "from the past {0} day."
 msgid_plural "from the past {0} days."
@@ -13791,9 +14308,6 @@ msgstr "de la utilizatorii urmăriți"
 
 msgid "fwd"
 msgstr "FWD"
-
-msgid "games disablement from "
-msgstr "dezactivarea jocurilor din"
 
 msgid "go back to where you were?"
 msgstr "du-te înapoi în locul în care ai fost?"
@@ -13815,6 +14329,9 @@ msgstr "a fost creditat în contul dvs."
 
 msgid "has been promoted to Uploader by"
 msgstr "a fost promovat la Uploader de"
+
+msgid "has been suspended by "
+msgstr "a fost suspendat de"
 
 msgid "has had a new post"
 msgstr "a avut o nouă postare"
@@ -13861,9 +14378,6 @@ msgstr "în"
 
 msgid "in Forum"
 msgstr "în Forum"
-
-msgid "in the form"
-msgstr "sub forma"
 
 msgid "in the recycle-bin"
 msgstr "în coșul de reciclare"
@@ -13957,12 +14471,6 @@ msgstr "este rezultatul"
 msgid "is the winner and not"
 msgstr "este câștigător și nu"
 
-msgid "is too long"
-msgstr "este prea lung"
-
-msgid "is too short (min 4 chars)"
-msgstr "este prea scurt (min 4 caractere)"
-
 msgid "joined: "
 msgstr "alăturat:"
 
@@ -13984,8 +14492,17 @@ msgstr "ultimele zece postări în ordine inversă"
 msgid "last unread post in this thread"
 msgstr "ultima postare necitită în acest thread"
 
-msgid "leechwarn Status from "
-msgstr "leechwarn Status de la"
+#, no-php-format
+msgid "leechwarn Status enabled by {0}."
+msgstr "leechwarn Status activat de {0}."
+
+#, no-php-format
+msgid "leechwarn Status for {0} by {1}."
+msgstr "leechwarn Status pentru {0} de {1}."
+
+#, no-php-format
+msgid "leechwarn Status removed by {0}."
+msgstr "leechwarn Status eliminat de {0}."
 
 msgid "less than one minute"
 msgstr "mai puțin de un minut"
@@ -13998,12 +14515,6 @@ msgstr "autentificați-vă pentru a utiliza această caracteristică!"
 
 msgid "match"
 msgstr "Meci"
-
-msgid "max 100 chars"
-msgstr "maxim 100 de caractere"
-
-msgid "max 80 chars"
-msgstr "maxim 80 de caractere"
 
 msgid "means the user is seeding."
 msgstr "înseamnă că utilizatorul face semănături."
@@ -14055,6 +14566,9 @@ msgstr "Nu"
 
 msgid "no files"
 msgstr "fara fisiere"
+
+msgid "no hit and runners at the moment..."
+msgstr "nicio lovitură și alergători în acest moment ..."
 
 msgid "no information"
 msgstr "fara informatii"
@@ -14123,6 +14637,9 @@ msgstr "orfan"
 
 msgid "out of 10, 1 being not so shitty, 10 being really shitty... Please select one."
 msgstr "din 10, 1 nefiind atât de șovăielnic, 10 fiind cu adevărat căcat ... Vă rugăm să selectați unul."
+
+msgid "p2p"
+msgstr "p2p"
 
 msgid "pDL(MB)"
 msgstr "PD-L (MB)"
@@ -14237,8 +14754,14 @@ msgstr "selectați numărul de invitații de adăugat."
 msgid "select parent forum if sub-forum"
 msgstr "selectați forumul părinte dacă este sub-forum"
 
+msgid "selected"
+msgstr "selectat"
+
 msgid "send a PM to this evil toad"
 msgstr "trimite un prim-ministru în acest răpitor răpitor"
+
+msgid "shittiest at the top "
+msgstr "mai shittiest în vârf"
 
 msgid "short of making that bet"
 msgstr "lipsa de a face acel pariu"
@@ -14261,6 +14784,13 @@ msgstr "afișează loviturile și rulează dezactivate"
 msgid "showing first"
 msgstr "arătând mai întâi"
 
+msgid "shrink"
+msgstr "se contracta"
+
+#, no-php-format
+msgid "skype changed to {0} from {1} by {2}"
+msgstr "skype s-a schimbat în {0} din {1} cu {2}"
+
 msgid "sorry, no member was found"
 msgstr "scuze, nu a fost găsit niciun membru"
 
@@ -14272,6 +14802,9 @@ msgstr "personal"
 
 msgid "successfully backed-up the database."
 msgstr "backup cu succes al bazei de date."
+
+msgid "successfully deleted"
+msgstr "șters cu succes"
 
 msgid "system messages"
 msgstr "mesaje de sistem"
@@ -14325,6 +14858,12 @@ msgstr[2] "total - {0} utilizatori"
 msgid "total file size and number of pieces do not match"
 msgstr "dimensiunea totală a fișierului și numărul de piese nu se potrivesc"
 
+msgid "true"
+msgstr "Adevărat"
+
+msgid "uglify.php failed"
+msgstr "uglify.php a eșuat"
+
 msgid "unique users that are not connectable."
 msgstr "utilizatori unici care nu sunt conectabili."
 
@@ -14367,8 +14906,17 @@ msgstr "vizualizați postările de la cele mai noi la cele mai vechi"
 msgid "view posts from oldest to newest"
 msgstr "vizualizați postările de la cele mai vechi la cele mai noi"
 
-msgid "warned Status from "
-msgstr "avertizat Status de la"
+#, no-php-format
+msgid "warned Status enabled by {0}."
+msgstr "avertizat Status activat de {0}."
+
+#, no-php-format
+msgid "warned Status for {0} by {1}."
+msgstr "avertizat Status pentru {0} de {1}."
+
+#, no-php-format
+msgid "warned Status removed by {0}."
+msgstr "avertizat Status eliminat de {0}."
 
 msgid "warned users"
 msgstr "avertizați utilizatorii"
@@ -14378,6 +14926,10 @@ msgstr "a fost înregistrat în timpul ușilor deschise"
 
 msgid "watched user list"
 msgstr "urmărit lista de utilizatori"
+
+#, no-php-format
+msgid "website changed to {0} from {1} by {2}"
+msgstr "site-ul web a fost schimbat în {0} din {1} cu {2}"
 
 msgid "week"
 msgstr "săptămână"
@@ -14442,13 +14994,6 @@ msgid "your total uploaded of {0}GB implies a delay of {1} hours. Even if your t
 msgstr "totalul dvs. încărcat de {0} GB implică o întârziere de {1} ore. Chiar dacă totalul dvs. a fost încărcat în {2} GB"
 
 #, no-php-format
-msgid "{0, number) Member removed from the list"
-msgid_plural "{0, number) Members removed from the list"
-msgstr[0] "{0, număr) Membru eliminat din listă"
-msgstr[1] "{0, număr) Membri eliminați din listă"
-msgstr[2] "{0, număr) Membri eliminați din listă"
-
-#, no-php-format
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
@@ -14508,6 +15053,10 @@ msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Adăugată {1} la {2} lista de utilizatori urmăriți {4}."
 
 #, no-php-format
+msgid "{0} Arcade Top Scores!"
+msgstr "{0} Arcade Top Scores!"
+
+#, no-php-format
 msgid "{0} Days"
 msgstr "{0} Zile"
 
@@ -14524,8 +15073,27 @@ msgid "{0} Invitation"
 msgstr "{0} Invitație"
 
 #, no-php-format
+msgid "{0} Invite for {1} Freeslots."
+msgstr "{0} Invitați pentru {1} Freeslots."
+
+#, no-php-format
+msgid "{0} Invite for {1} Karma."
+msgstr "{0} Invitați pentru {1} Karma."
+
+#, no-php-format
+msgid "{0} Invites for {1} Karma."
+msgstr "{0} Invitați pentru {1} Karma."
+
+#, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Loterie"
+
+#, no-php-format
+msgid "{0} Member removed from the list"
+msgid_plural "{0} Members removed from the list"
+msgstr[0] "{0} Membru eliminat din listă"
+msgstr[1] "{0} Membrii eliminați din listă"
+msgstr[2] "{0} Membrii eliminați din listă"
 
 #, no-php-format
 msgid "{0} Member visited during the last 24 hours"
@@ -14571,12 +15139,28 @@ msgstr[1] "{0} Puncte cheltuite."
 msgstr[2] "{0} Puncte cheltuite."
 
 #, no-php-format
+msgid "{0} Points for Freeslots."
+msgstr "{0} Puncte pentru Freeslots."
+
+#, no-php-format
 msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
 msgstr "{0} Puncte pentru o corecție în timpul semințelor pe torrent: {1} => {2}"
 
 #, no-php-format
+msgid "{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
+msgstr "{0} Puncte pentru titlu personalizat. Titlul vechi a fost '' {1} '' Titlul nou este '' {2} ''."
+
+#, no-php-format
+msgid "{0} Points to Reanimate torrent: {1}."
+msgstr "{0} Puncte către Reanimare torent: {1}."
+
+#, no-php-format
 msgid "{0} Records"
 msgstr "{0} Înregistrări"
+
+#, no-php-format
+msgid "{0} Registration"
+msgstr "{0} Înregistrare"
 
 #, no-php-format
 msgid "{0} Reset Password Request"
@@ -14616,7 +15200,7 @@ msgstr[1] "{0} PM-urile necitite"
 msgstr[2] "{0} PM-urile necitite"
 
 #, no-php-format
-msgid "{0} You bought {1} Freeslots for  {2} Karma."
+msgid "{0} You bought {1} Freeslots for {2} Karma."
 msgstr "{0} Ai cumpărat {1} Freeslots pentru {2} Karma."
 
 #, no-php-format
@@ -14679,6 +15263,10 @@ msgid "{0} and won"
 msgstr "{0} și câștigat"
 
 #, no-php-format
+msgid "{0} bytes added."
+msgstr "{0} octeți adăugați."
+
+#, no-php-format
 msgid "{0} day"
 msgid_plural "{0} days"
 msgstr[0] "{0} zi"
@@ -14697,8 +15285,8 @@ msgstr[1] "{0} curățate {1} torente."
 msgstr[2] "{0} curățate {1} torente."
 
 #, no-php-format
-msgid "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgid_plural "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid "{0} ghost torrent was successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
 msgstr[0] "{0} torrentul fantomă a fost curățat cu succes. Acum puteți reporni torentele, trackerul a fost actualizat."
 msgstr[1] "{0} torentele fantomă au fost curățate cu succes. Acum puteți reporni torentele, trackerul a fost actualizat."
 msgstr[2] "{0} torentele fantomă au fost curățate cu succes. Acum puteți reporni torentele, trackerul a fost actualizat."
@@ -14706,6 +15294,10 @@ msgstr[2] "{0} torentele fantomă au fost curățate cu succes. Acum puteți rep
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
 msgstr "{0} s-a dublat, dublând astfel pariul la {1}."
+
+#, no-php-format
+msgid "{0} has accessed the {1}"
+msgstr "{0} a accesat {1}"
 
 #, no-php-format
 msgid "{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
@@ -14769,6 +15361,10 @@ msgstr[1] "{0} luni în urmă"
 msgstr[2] "{0} luni în urmă"
 
 #, no-php-format
+msgid "{0} out of 10"
+msgstr "{0} din 10"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} din 10 pe scara de timiditate"
 
@@ -14781,11 +15377,23 @@ msgid "{0} set by {1}<br>"
 msgstr "{0} setat de {1} <br>"
 
 #, no-php-format
+msgid "{0} staff page"
+msgstr "{0} pagina personalului"
+
+#, no-php-format
 msgid "{0} time"
 msgid_plural "{0} times"
 msgstr[0] "{0} timp"
 msgstr[1] "{0} ori"
 msgstr[2] "{0} ori"
+
+#, no-php-format
+msgid "{0} to {1}"
+msgstr "De la {0} la {1}"
+
+#, no-php-format
+msgid "{0} to {1} by {2}."
+msgstr "{0} până la {1} de {2}."
 
 #, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
@@ -14831,8 +15439,15 @@ msgid "{0} view offensive avatar by {1}, {2}\n"
 msgstr "{0} vizualizați avatarul ofensiv de {1}, {2}\n"
 
 #, no-php-format
+msgid "{0} was deleted."
+msgstr "{0} a fost șters."
+
+#, no-php-format
 msgid "{0} week"
-msgstr "{0} săptămână"
+msgid_plural "{0} weeks"
+msgstr[0] "{0} săptămână"
+msgstr[1] "{0} săptămâni"
+msgstr[2] "{0} săptămâni"
 
 #, no-php-format
 msgid "{0} week ago"
@@ -14867,6 +15482,10 @@ msgstr "Meniul {0}"
 #, no-php-format
 msgid "{0}'s Mood"
 msgstr "Starea de spirit a {0}"
+
+#, no-php-format
+msgid "{0}'s Panel"
+msgstr "Panoul {0} lui"
 
 #, no-php-format
 msgid "{0}: Modded Torrents"

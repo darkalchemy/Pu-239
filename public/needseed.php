@@ -140,7 +140,7 @@ if ($needed === 'leechers') {
         $header = "
                 <tr>
                     <th class='has-text-centered'>" . _('Category') . '</th>
-                    <th>' . _('Torrent') . "</th>
+                    <th>' . _('Name') . "</th>
                     <th class='has-text-centered'>" . _('Seeders') . "</th>
                     <th class='has-text-centered'>" . _('Leechers') . '</th>
                 </tr>';

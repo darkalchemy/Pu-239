@@ -30,7 +30,7 @@ if (isset($_POST['delete'])) {
         $id = (int) $id;
         $message = $messages_class->get_by_id($id);
         if ($message['receiver'] == $CURUSER['id'] && $message['urgent'] === 'yes' && $message['unread'] === 'yes') {
-            stderr(_('Error'), _('You MUST read this message before you delete it!!!  ') . '<a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . _('BACK') . '</a>' . _(' to message.') . '');
+            stderr(_('Error'), _('You MUST read this message before you delete it!!!') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_message&id=' . $pm_id . '">' . _('BACK') . '</a>' . _(' to message.') . '');
         }
         if (($message['receiver'] == $CURUSER['id'] || $message['sender'] == $CURUSER['id']) && $message['location'] == $site_config['pm']['deleted']) {
             $result = $messages_class->delete($id, $CURUSER['id']);

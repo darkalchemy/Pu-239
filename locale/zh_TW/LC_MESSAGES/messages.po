@@ -107,210 +107,11 @@ msgstr ""
 msgid "  Descending"
 msgstr "  降序"
 
-msgid " - AJAX Chat disablement by "
-msgstr " -通過禁用AJAX聊天"
-
-msgid " - AJAX Chat disablement for"
-msgstr " -的AJAX聊天禁用"
-
-msgid " - AJAX Chat disablement status removed by "
-msgstr " -AJAX聊天禁用狀態已被刪除"
-
-msgid " - Account Parked by "
-msgstr " -帳戶存入者"
-
-msgid " - Account UnParked by "
-msgstr " -的帳戶未寄存"
-
-msgid " - Added Download"
-msgstr " -增加了下載"
-
-msgid " - Added Upload"
-msgstr " -添加了上傳"
-
-msgid " - Avatar changed from "
-msgstr " -頭像從"
-
-msgid " - Avatar disablement by "
-msgstr " -通過禁用頭像"
-
-msgid " - Avatar disablement for"
-msgstr " -的頭像禁用"
-
-msgid " - Avatar disablement status removed by "
-msgstr " -頭像禁用狀態已被刪除"
-
-msgid " - Avatar rights turned off by "
-msgstr " -頭像權利被關閉"
-
-msgid " - Avatar rights turned on by "
-msgstr " -由開啟頭像權"
-
-msgid " - Custom Title changed to "
-msgstr " -自定義標題更改為"
-
-msgid " - Demoted from FLS by "
-msgstr " -由FLS降級"
-
-msgid " - Download disablement by "
-msgstr " -通過下載禁用"
-
-msgid " - Download enabled by "
-msgstr " -啟用下載"
-
-msgid " - Downloads disabled by "
-msgstr " -禁止下載"
-
-msgid " - Freeleech Status enabled by "
-msgstr " -啟用閒聊狀態"
-
-msgid " - Freeleech Status for"
-msgstr " -的自由狀態"
-
-msgid " - Freeleech Status removed by "
-msgstr " -Freeleech狀態被刪除"
-
-msgid " - Games disablement for"
-msgstr " -的遊戲禁用"
-
-msgid " - Gaming disablement by "
-msgstr " -通過禁用遊戲"
-
-msgid " - Gaming disablement status removed by "
-msgstr " -遊戲禁用狀態已被刪除"
-
-msgid " - Highspeed Upload disabled by "
-msgstr " -禁止高速上傳"
-
-msgid " - Highspeed Upload enabled by "
-msgstr " -啟用了“高速上傳”"
-
-msgid " - Hit and runs set to "
-msgstr " -命中並設置為"
-
-msgid " - Immune Status enabled by "
-msgstr " -啟用的免疫狀態"
-
-msgid " - Immunity Status for"
-msgstr " -的免疫狀態"
-
-msgid " - Immunity Status removed by "
-msgstr " -豁免狀態被刪除"
-
-msgid " - Invite amount changed to "
-msgstr " -邀請金額更改為"
-
-msgid " - Invites allowed changed from "
-msgstr " -允許的邀請從更改為"
-
-msgid " - Offensive avatar set to no by "
-msgstr " -進攻頭像設置為否"
-
-msgid " - Offensive avatar set to yes by "
-msgstr " -進攻頭像設置為"
-
-#, no-php-format
-msgid " - Paranoia changed to {0} from {1} by {2}"
-msgstr " -偏執狂由{2}從{1}變為{0}"
-
-msgid " - Peers limit set to"
-msgstr " -同行限制設置為"
-
-msgid " - Pm disablement by "
-msgstr " -通過禁用Pm"
-
-msgid " - Pm disablement for"
-msgstr " -禁用Pm"
-
-msgid " - Pm disablement status removed by "
-msgstr " -Pm禁用狀態已被刪除"
-
-msgid " - Posting disabled by "
-msgstr " -禁止發布"
-
-msgid " - Posting enabled by "
-msgstr " -發布者："
-
-msgid " - Promoted to FLS by "
-msgstr " -晉升為FLS"
-
-msgid " - Reputation points changed to "
-msgstr " -聲望點更改為"
-
-msgid " - Seedbonus amount changed to "
-msgstr " -種子獎金金額更改為"
-
-msgid " - Signature changed from "
-msgstr " -簽名從"
-
-msgid " - Signature rights turned off by "
-msgstr " -簽名權被關閉"
-
-msgid " - Signature rights turned on by "
-msgstr " -簽名權由"
-
-msgid " - Subtracted Download"
-msgstr " -減去下載"
-
-msgid " - Subtracted Upload"
-msgstr " -減去上傳"
-
-msgid " - This account has been Un-suspended by "
-msgstr " -此帳戶已被以下用戶取消暫停："
-
-msgid " - This account has been suspended by "
-msgstr " -該帳戶已被暫停"
-
-msgid " - Torrents limit set to"
-msgstr " -洪流限制設置為"
-
-msgid " - Upload disablement by "
-msgstr " -禁止上傳"
-
-msgid " - Upload disablement status removed by "
-msgstr " -上載停用狀態已被刪除"
-
-msgid " - Wait time set to"
-msgstr " -等待時間設置為"
-
-msgid " - freeslots amount changed to "
-msgstr " -自由插槽數量更改為"
-
-msgid " - leechwarn Status enabled by "
-msgstr " -leechwarn狀態由啟用"
-
-msgid " - leechwarn Status for"
-msgstr " -的leechwarn狀態"
-
-msgid " - leechwarn Status removed by "
-msgstr " -leechwarn狀態被刪除"
-
-#, no-php-format
-msgid " - skype changed to {0} from {1} by {2}"
-msgstr " -Skype由{2}從{1}更改為{0}"
-
-msgid " - warned Status enabled by "
-msgstr " -警告狀態啟用者"
-
-msgid " - warned Status for"
-msgstr " -警告狀態"
-
-msgid " - warned Status removed by "
-msgstr " -警告狀態被刪除"
-
-#, no-php-format
-msgid " - website changed to {0} from {1} by {2}"
-msgstr " -網站由{2}由{1}更改為{0}"
-
 msgid " = Delete Bookmark |"
 msgstr " =刪除書籤|"
 
 msgid " = Download Torrent |"
 msgstr " =下載Torrent |"
-
-#, no-php-format
-msgid " Add {0} to your Shit List {1}"
-msgstr " 將{0}添加到您的屎列表{1}"
 
 msgid " Ascending "
 msgstr " 上升"
@@ -326,9 +127,6 @@ msgstr " 於"
 
 msgid " DLed at: "
 msgstr " DL位於："
-
-msgid " Date"
-msgstr " 日期"
 
 msgid " Days"
 msgstr " 天"
@@ -381,9 +179,6 @@ msgstr " 請嘗試遵循這些準則"
 msgid " Read Messages."
 msgstr " 閱讀消息。"
 
-msgid " Registration"
-msgstr " 註冊"
-
 msgid " Seconds "
 msgstr " 秒"
 
@@ -405,9 +200,6 @@ msgstr " 警告到"
 msgid " Whom to promote and why"
 msgstr " 向誰宣傳，為什麼"
 
-msgid " Your shit list is empty. "
-msgstr " 您的狗屎清單是空的。"
-
 msgid " better luck next time..."
 msgstr " 下次好運..."
 
@@ -423,9 +215,6 @@ msgstr " 殘疾人！"
 msgid " does not accept PMs."
 msgstr " 不接受PM。"
 
-msgid " expand"
-msgstr " 擴大"
-
 msgid " for the reason why."
 msgstr " 原因。"
 
@@ -438,9 +227,6 @@ msgstr " 被標記為異常高的上傳速度！"
 msgid " has been marked as inactive and will be deleted. If you wish to remain a member at"
 msgstr " 已被標記為無效，將被刪除。如果您想繼續成為會員"
 
-msgid " has been suspended by "
-msgstr " 已被暫停"
-
 msgid " has blocked PMs from you."
 msgstr " 阻止了您的PM。"
 
@@ -449,12 +235,6 @@ msgstr " 從未使用過IRC！"
 
 msgid " new email is "
 msgstr " 新電子郵件是"
-
-msgid " no hit and runners at the moment..."
-msgstr " 目前沒有任何攻擊和跑步者..."
-
-msgid " out of 10"
-msgstr " 十分之十"
 
 msgid " peer(s) total"
 msgstr " 同行總數"
@@ -471,17 +251,8 @@ msgstr " 違反規則："
 msgid " selected messages."
 msgstr " 選定的消息。"
 
-msgid " shittiest at the top "
-msgstr " 最胖的在頂部"
-
-msgid " shrink"
-msgstr " 收縮"
-
 msgid " still to go "
 msgstr " 還有"
-
-msgid " successfully deleted"
-msgstr " 成功刪除"
 
 msgid " time"
 msgstr " 時間"
@@ -504,9 +275,6 @@ msgstr " 用戶"
 msgid " views"
 msgstr " 意見"
 
-msgid " week"
-msgstr " 週"
-
 msgid " you will experience no delay."
 msgstr " 您將不會延遲。"
 
@@ -522,7 +290,7 @@ msgstr "未命中百分比："
 #, no-php-format
 msgid "%{0} week ago"
 msgid_plural "{0} weeks ago"
-msgstr[0] ""
+msgstr[0] "{0} weeks ago"
 
 msgid "'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition."
 msgstr "“和/或”表示任何一個或兩個。您的延誤將是您至少滿足一個條件的最大延誤。"
@@ -614,8 +382,8 @@ msgstr "（但是，從我們這裡下載的文件是您自己想要做的。您
 msgid "(In first place, it's unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.)"
 msgstr "（首先，您的ISP不太可能這樣做。DNS名稱解析和/或網絡問題是常見的罪魁禍首。）"
 
-msgid "(Minimum Poster Width should be 400 Px , larger sizes will be scaled.)"
-msgstr "（最小海報寬度應為400 Px，將按比例縮放更大的尺寸。）"
+msgid "(Minimum Poster Width should be 400 px, larger sizes will be scaled.)"
+msgstr "（最小海報寬度應為400像素，將按比例縮放更大的尺寸。）"
 
 msgid "(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)"
 msgstr "（有趣的旁注：請確保您記得自己不喜歡低速。播種，以便其他人不會同樣忍受。）"
@@ -687,12 +455,6 @@ msgstr ""
 
 msgid ". PM them for more information."
 msgstr "。下午他們以獲取更多信息。"
-
-msgid ". Please PM "
-msgstr "。請PM"
-
-msgid ". You can now upload torrents using highspeeds without being flagged as a cheater."
-msgstr "。現在，您可以使用高速上傳種子，而不會被標記為作弊者。"
 
 msgid ". You can post to forum again."
 msgstr "。您可以再次發佈到論壇。"
@@ -863,8 +625,17 @@ msgstr "工作拷貝是尚未完成的電影副本。它可能會丟失場景，
 msgid "AJAX Chat disabled = "
 msgstr "禁用AJAX聊天="
 
-msgid "AJAX Chat disablement from "
-msgstr "來自的AJAX聊天禁用"
+#, no-php-format
+msgid "AJAX Chat disablement by {0}."
+msgstr "{0}禁止AJAX聊天。"
+
+#, no-php-format
+msgid "AJAX Chat disablement for {0} by {1}."
+msgstr "{0}被{1}禁用了AJAX聊天功能。"
+
+#, no-php-format
+msgid "AJAX Chat disablement status removed by {0}."
+msgstr "{0}刪除了AJAX聊天的禁用狀態。"
 
 msgid "AJAX Chat enabled = No"
 msgstr "啟用AJAX聊天=否"
@@ -885,8 +656,15 @@ msgstr "APC（u）命中：{0}"
 msgid "API"
 msgstr "API"
 
+msgid "API Key"
+msgstr "API密鑰"
+
 msgid "APIKey "
 msgstr "API密鑰"
+
+#, no-php-format
+msgid "APIKey {0} reset to {1}."
+msgstr "APIKey {0}重置為{1}。"
 
 msgid "APIs Display Settings"
 msgstr "API顯示設置"
@@ -934,11 +712,17 @@ msgstr "要獲得最新的洪流，必須有很高的比例！ （有關詳細�
 msgid "Account Manager"
 msgstr "客戶經理"
 
+msgid "Account Parked by "
+msgstr "帳戶存入者"
+
 msgid "Account Suspended!"
 msgstr "帳戶已暫停！"
 
 msgid "Account Un-Suspended!"
 msgstr "帳戶未暫停！"
+
+msgid "Account UnParked by "
+msgstr "帳戶未寄存者"
 
 msgid "Account for "
 msgstr "帳戶"
@@ -1072,6 +856,9 @@ msgstr "新增投票"
 msgid "Add New Promotion Rule"
 msgstr "添加新的促銷規則"
 
+msgid "Add New Reply"
+msgstr "新增回覆"
+
 msgid "Add New Reputation Level"
 msgstr "添加新的信譽級別"
 
@@ -1190,6 +977,10 @@ msgstr "加字"
 msgid "Add {0} to the Watched Users List"
 msgstr "將{0}添加到監視的用戶列表"
 
+#, no-php-format
+msgid "Add {0} to your Shit List {1}"
+msgstr "將{0}添加到您的屎列表{1}"
+
 msgid "Added"
 msgstr "添加"
 
@@ -1198,6 +989,12 @@ msgstr "添加/依據"
 
 msgid "Added By"
 msgstr "添加人"
+
+msgid "Added Download"
+msgstr "新增下載"
+
+msgid "Added Upload"
+msgstr "添加了上傳"
 
 msgid "Added by"
 msgstr "添加者"
@@ -1271,6 +1068,9 @@ msgstr "右對齊"
 msgid "All (except blocks)"
 msgstr "全部（塊除外）"
 
+msgid "All CSS and Javascript files processed"
+msgstr "處理所有CSS和Javascript文件"
+
 msgid "All Comments (Reverse Order)"
 msgstr "所有評論（逆序）"
 
@@ -1279,6 +1079,9 @@ msgstr "所有評論（按相反順序）"
 
 msgid "All Donations"
 msgstr "所有捐款"
+
+msgid "All Double Upload"
+msgstr "全部雙重上傳"
 
 msgid "All Peers Are Connectable!"
 msgstr "所有對等點都是可連接的！"
@@ -1528,9 +1331,6 @@ msgstr "任意期限"
 msgid "Arcade"
 msgstr "拱廊"
 
-msgid "Arcade Top Scores!"
-msgstr "商場最高分！"
-
 msgid "Are all downloads subject to HnR, including incomplete downloads?"
 msgstr "所有下載是否都受HnR約束，包括不完整的下載？"
 
@@ -1584,7 +1384,7 @@ msgstr "以字母開頭的文章"
 #, no-php-format
 msgid "As a {0}, you may have up to {1} PM Box, other than your in, sent and draft boxes."
 msgid_plural "As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes."
-msgstr[0] ""
+msgstr[0] "As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes."
 
 msgid "As explained above peers favour other peers that upload to them. When you start leeching a new torrent you have nothing to offer to other peers and they will tend to ignore you. This makes the starts slow, in particular if, by change, the peers you are connected to include few or no seeders. The download speed should increase as soon as you have some pieces to share."
 msgstr "如上所述，對等方偏愛向其上載的其他對等方。當您開始偷取新的洪流時，您無法向其他同齡人提供任何東西，他們往往會忽略您。這會使啟動速度變慢，尤其是如果通過更改而使您連接的對等點的播種機數量很少或沒有播種機時，尤其如此。共享一些文件後，下載速度應該會提高。"
@@ -1632,8 +1432,15 @@ msgstr "音效"
 msgid "August"
 msgstr "八月"
 
+msgid "Auth"
+msgstr "驗證碼"
+
 msgid "Auth Key "
 msgstr "授權鍵"
+
+#, no-php-format
+msgid "Auth Key {0} reset to {1}."
+msgstr "驗證密鑰{0}重設為{1}。"
 
 msgid "Author"
 msgstr "作者"
@@ -1677,11 +1484,29 @@ msgstr "頭像網址"
 msgid "Avatar changed"
 msgstr "頭像已更改"
 
-msgid "Avatar disablement from "
-msgstr "的頭像禁用來自"
+msgid "Avatar changed from "
+msgstr "頭像從"
+
+#, no-php-format
+msgid "Avatar disablement by {0}."
+msgstr "{0}禁用頭像。"
+
+#, no-php-format
+msgid "Avatar disablement for {0} by {1}."
+msgstr "{1}對{0}的頭像禁用。"
+
+#, no-php-format
+msgid "Avatar disablement status removed by {0}."
+msgstr "阿凡達停用狀態已由{0}刪除。"
 
 msgid "Avatar rights enabled = "
 msgstr "頭像權利已啟用="
+
+msgid "Avatar rights turned off by "
+msgstr "阿凡達權利的關閉者"
+
+msgid "Avatar rights turned on by "
+msgstr "由開啟的頭像權利"
 
 msgid "Avatar selection disabled = "
 msgstr "頭像選擇已禁用="
@@ -2066,11 +1891,17 @@ msgstr "瀏覽器"
 msgid "Browser and OS detect?"
 msgstr "瀏覽器和操作系統檢測？"
 
+msgid "Browser?"
+msgstr "瀏覽器？"
+
 msgid "Browsing was used just as an example, the same would apply to gaming, IMing, etc..."
 msgstr "瀏覽僅用作示例，遊戲，IMing等也是如此。"
 
 msgid "Bug Alert Message"
 msgstr "錯誤警報消息"
+
+msgid "Bug Alert Message?"
+msgstr "錯誤警報消息？"
 
 msgid "Bug Message Alert?"
 msgstr "錯誤消息警報？"
@@ -2128,8 +1959,14 @@ msgstr "通過玩二十一點，您押注了10GB的上傳信用！"
 msgid "CAM"
 msgstr "凸輪"
 
-msgid "CAUTION: This DELETES all messages in AJAX Chat!"
-msgstr "注意：這會刪除AJAX聊天中的所有消息！"
+msgid "CAUTION: This <b>DELETES</b> all messages in AJAX Chat!"
+msgstr "注意：此<b>刪除</b> AJAX聊天中的所有消息！"
+
+msgid "CD Number"
+msgstr "CD編號"
+
+msgid "CD#"
+msgstr "光盤＃"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG閱讀器"
@@ -2286,6 +2123,90 @@ msgstr "查看{0} Brian的BitTorrent常見問題和指南。{1}"
 msgid "Check this box to hide the uploader of the torrent"
 msgstr "選中此框可隱藏種子的上傳者"
 
+msgid "Check this option if you want to enable Disclaimer."
+msgstr "如果要啟用免責聲明，請選中此選項。"
+
+msgid "Check this option if you want to enable Latest User."
+msgstr "如果要啟用“最新用戶”，請選中此選項。"
+
+msgid "Check this option if you want to enable latest Comments."
+msgstr "如果要啟用最新評論，請選中此選項。"
+
+msgid "Check this option if you want to enable latest Forum Posts."
+msgstr "如果要啟用最新的論壇帖子，請選中此選項。"
+
+msgid "Check this option if you want to enable latest movie torrents."
+msgstr "如果要啟用最新的電影種子，請選中此選項。"
+
+msgid "Check this option if you want to enable latest torrents banner slider."
+msgstr "如果要啟用最新的torrent橫幅滑塊，請選中此選項。"
+
+msgid "Check this option if you want to enable latest torrents marquee."
+msgstr "如果要啟用最新的種子字幕，請選中此選項。"
+
+msgid "Check this option if you want to enable latest torrents."
+msgstr "如果要啟用最新的種子，請選中此選項。"
+
+msgid "Check this option if you want to enable latest tv torrents."
+msgstr "如果要啟用最新的電視種子，請選中此選項。"
+
+msgid "Check this option if you want to enable staff_picks."
+msgstr "如果要啟用staff_picks，請選中此選項。"
+
+msgid "Check this option if you want to enable the AJAX Chat."
+msgstr "如果要啟用AJAX聊天，請選中此選項。"
+
+msgid "Check this option if you want to enable the Active Birthday Users."
+msgstr "如果要啟用活動生日用戶，請選中此選項。"
+
+msgid "Check this option if you want to enable the Active Irc Users."
+msgstr "如果要啟用活動Irc用戶，請選中此選項。"
+
+msgid "Check this option if you want to enable the Active Poll."
+msgstr "如果要啟用活動輪詢，請選中此選項。"
+
+msgid "Check this option if you want to enable the Active Users visited over 24hours."
+msgstr "如果要啟用24小時內訪問的活動用戶，請選中此選項。"
+
+msgid "Check this option if you want to enable the Active Users."
+msgstr "如果要啟用活動用戶，請選中此選項。"
+
+msgid "Check this option if you want to enable the Advertisements."
+msgstr "如果要啟用廣告，請選中此選項。"
+
+msgid "Check this option if you want to enable the Announcement Block."
+msgstr "如果要啟用公告欄，請選中此選項。"
+
+msgid "Check this option if you want to enable the Christmas Gift."
+msgstr "如果要啟用聖誕節禮物，請選中此選項。"
+
+msgid "Check this option if you want to enable the Cooker."
+msgstr "如果要啟用電磁爐，請選中此選項。"
+
+msgid "Check this option if you want to enable the Donation Progress."
+msgstr "如果要啟用捐贈進度，請選中此選項。"
+
+msgid "Check this option if you want to enable the IE user alert."
+msgstr "如果要啟用IE用戶警報，請選中此選項。"
+
+msgid "Check this option if you want to enable the MOvie of the week."
+msgstr "如果要啟用每週電影，請選中此選項。"
+
+msgid "Check this option if you want to enable the News Block."
+msgstr "如果要啟用新聞阻止，請選中此選項。"
+
+msgid "Check this option if you want to enable the Requests."
+msgstr "如果要啟用請求，請選中此選項。"
+
+msgid "Check this option if you want to enable the Stats."
+msgstr "如果要啟用統計信息，請選中此選項。"
+
+msgid "Check this option if you want to enable the Trivia Game."
+msgstr "如果要啟用Trivia遊戲，請選中此選項。"
+
+msgid "Check this option if you want to enable the torrent freak news."
+msgstr "如果要啟用torrent freak新聞，請選中此選項。"
+
 msgid "Check this to post anonymously"
 msgstr "選中此項以匿名發布"
 
@@ -2295,8 +2216,14 @@ msgstr "廚師"
 msgid "Child Boards"
 msgstr "子板"
 
+msgid "Choose Class"
+msgstr "選擇班級"
+
 msgid "Choose One"
 msgstr "選一個"
+
+msgid "Choose Type"
+msgstr "選擇類型"
 
 #, no-php-format
 msgid "Choose any public non-anonymous proxy that does not use port 80 (e.g. from {0}this{1}, {2}this{3} or {4}this{5}</a> list)."
@@ -2501,6 +2428,9 @@ msgstr "的評論歷史記錄"
 msgid "Comments left for "
 msgstr "還留有評論"
 
+msgid "Comments?"
+msgstr "評論？"
+
 msgid "Commercial"
 msgstr "商業廣告"
 
@@ -2581,6 +2511,9 @@ msgstr "可連接的"
 msgid "Connectable and port?"
 msgstr "可連接和端口？"
 
+msgid "Connectable?"
+msgstr "可連接？"
+
 msgid "Connected"
 msgstr "連接的"
 
@@ -2601,6 +2534,9 @@ msgstr "與管理員聯繫"
 
 msgid "Contact info?"
 msgstr "聯繫信息？"
+
+msgid "Contact?"
+msgstr "聯繫？"
 
 msgid "Contents"
 msgstr "內容"
@@ -2628,6 +2564,10 @@ msgstr "正確的gzip路徑"
 
 msgid "Correct path to the mysqldump file"
 msgstr "mysqldump文件的正確路徑"
+
+#, no-php-format
+msgid "Cost: {0} Karma"
+msgstr "費用：{0}因果報應"
 
 msgid "Could not change email, address already taken or password mismatch."
 msgstr "無法更改電子郵件，地址已被使用或密碼不匹配。"
@@ -2782,10 +2722,13 @@ msgstr "當前正在查看該主題"
 #, no-php-format
 msgid "Currently you have {0} custom box. You may add up to {1} additional mailboxes."
 msgid_plural "Currently you have {0} custom boxes. You may add up to {1}additional mailboxes."
-msgstr[0] ""
+msgstr[0] "Currently you have {0} custom boxes. You may add up to {1}additional mailboxes."
 
 msgid "Custom Title"
 msgstr "自定義標題"
+
+msgid "Custom Title changed to "
+msgstr "自定義標題更改為"
 
 msgid "Custom title"
 msgstr "自定義標題"
@@ -2950,6 +2893,9 @@ msgstr "刪除書籤"
 msgid "Delete Bookmark!"
 msgstr "刪除書籤！"
 
+msgid "Delete Bot Trigger and all Replies"
+msgstr "刪除漫遊器觸發器和所有答复"
+
 msgid "Delete Category"
 msgstr "刪除類別"
 
@@ -2958,6 +2904,9 @@ msgstr "刪除課程"
 
 msgid "Delete Invite"
 msgstr "刪除邀請"
+
+msgid "Delete Offer"
+msgstr "刪除優惠"
 
 msgid "Delete PM"
 msgstr "刪除PM"
@@ -2969,13 +2918,25 @@ msgid "Delete PMs:"
 msgstr "刪除PM："
 
 msgid "Delete Post"
-msgstr ""
+msgstr "刪除帖子"
 
 msgid "Delete Reason"
 msgstr "刪除原因"
 
+msgid "Delete Recipe"
+msgstr "刪除配方"
+
+msgid "Delete Reply"
+msgstr "刪除回覆"
+
+msgid "Delete Request"
+msgstr "刪除請求"
+
 msgid "Delete Selected"
 msgstr "刪除所選"
+
+msgid "Delete Subtitle"
+msgstr "刪除字幕"
 
 msgid "Delete Sure?"
 msgstr "確定要刪除嗎？"
@@ -3041,6 +3002,9 @@ msgstr "刪除洪流=-{0}分"
 
 msgid "Demoted"
 msgstr "降級"
+
+msgid "Demoted from FLS by "
+msgstr "從FLS降級，由"
 
 msgid "Demotion"
 msgstr "降級"
@@ -3218,6 +3182,9 @@ msgstr "不要將任何字段留空"
 msgid "Don't show my username in 'Uploaded By' field in browse."
 msgstr "不要在瀏覽器的“上傳者”字段中顯示我的用戶名。"
 
+msgid "Donate"
+msgstr "捐"
+
 msgid "Donated Status Until"
 msgstr "捐贈狀態，直到"
 
@@ -3267,6 +3234,9 @@ msgstr "加倍下來"
 msgid "Doubleseed slot already in use."
 msgstr "雙子槽已在使用中。"
 
+msgid "Doubleupload"
+msgstr "雙重上傳"
+
 msgid "Down"
 msgstr "下"
 
@@ -3286,15 +3256,19 @@ msgid "Download Torrent"
 msgstr "下載種子文件"
 
 #, no-php-format
+msgid "Download disablement by {0}."
+msgstr "由{0}下載禁用。"
+
+#, no-php-format
 msgid "Download disablement for {0} by {1}."
 msgstr "由{1}下載{0}的禁用功能。"
-
-msgid "Download disablement from "
-msgstr "從下載下載禁用"
 
 #, no-php-format
 msgid "Download disablement status removed by {0}."
 msgstr "下載禁用狀態已由{0}刪除。"
+
+msgid "Download enabled by "
+msgstr "下載啟用者"
 
 msgid "Download link"
 msgstr "下載鏈接"
@@ -3339,6 +3313,10 @@ msgstr "下載洪流=-{0}點"
 
 msgid "Downloading rules -"
 msgstr "下載規則-"
+
+#, no-php-format
+msgid "Downloads disabled by {0}."
+msgstr "下載被{0}禁用。"
 
 msgid "Downloads edited = "
 msgstr "下載已編輯="
@@ -3392,6 +3370,9 @@ msgstr "編輯"
 msgid "Edit / Delete Mail Boxes"
 msgstr "編輯/刪除郵箱"
 
+msgid "Edit Bot Trigger"
+msgstr "編輯機器人觸發"
+
 msgid "Edit Category"
 msgstr "編輯類別"
 
@@ -3420,7 +3401,10 @@ msgid "Edit Poll"
 msgstr "編輯投票"
 
 msgid "Edit Post"
-msgstr ""
+msgstr "編輯帖子"
+
+msgid "Edit Recipe"
+msgstr "編輯配方"
 
 msgid "Edit Reply"
 msgstr "編輯回覆"
@@ -3461,6 +3445,9 @@ msgstr "編輯論壇"
 
 msgid "Edit forum:"
 msgstr "編輯論壇："
+
+msgid "Edit it"
+msgstr "編輯它"
 
 msgid "Edit it!"
 msgstr "編輯它！"
@@ -3596,11 +3583,17 @@ msgstr "啟用AniDb API"
 msgid "Enable Announcement?"
 msgstr "啟用公告？"
 
+msgid "Enable Avatar"
+msgstr "啟用頭像"
+
 msgid "Enable Birthday Users?"
 msgstr "啟用生日用戶？"
 
 msgid "Enable Bluray.com RSS API"
 msgstr "啟用Bluray.com RSS API"
+
+msgid "Enable Bug Message alerts in stdhead"
+msgstr "在stdhead中啟用錯誤消息警報"
 
 msgid "Enable Bug message alerts in stdhead"
 msgstr "在stdhead中啟用錯誤消息警報"
@@ -3650,6 +3643,12 @@ msgstr "啟用最新電影洪流嗎？"
 msgid "Enable Latest TV Torrents?"
 msgstr "啟用最新電視劇嗎？"
 
+msgid "Enable Latest Torrents scroll?"
+msgstr "啟用“最新種子”滾動？"
+
+msgid "Enable Latest Torrents slider?"
+msgstr "啟用“最新種子”滑塊？"
+
 msgid "Enable Latest Torrents?"
 msgstr "啟用最新的Torrent？"
 
@@ -3689,6 +3688,9 @@ msgstr "在導航欄中啟用人員菜單"
 msgid "Enable Staff Picks"
 msgstr "啟用員工選擇"
 
+msgid "Enable Staff Picks?"
+msgstr "啟用員工選拔？"
+
 msgid "Enable The Lottery"
 msgstr "啟用彩票"
 
@@ -3707,8 +3709,14 @@ msgstr "啟用TvMaze API"
 msgid "Enable User Reputation system?"
 msgstr "啟用用戶信譽系統？"
 
+msgid "Enable add reputation link"
+msgstr "啟用添加信譽鏈接"
+
 msgid "Enable avatar"
 msgstr "啟用頭像"
+
+msgid "Enable birthdate and age"
+msgstr "啟用生日和年齡"
 
 msgid "Enable birthday display"
 msgstr "啟用生日顯示"
@@ -3725,6 +3733,9 @@ msgstr "啟用可連接和端口"
 msgid "Enable contact info"
 msgstr "啟用聯繫信息"
 
+msgid "Enable contact infos"
+msgstr "啟用聯繫信息"
+
 msgid "Enable crazyhour alerts in stdhead"
 msgstr "在stdhead中啟用crazyhour警報"
 
@@ -3737,6 +3748,9 @@ msgstr "啟用論壇帖子歷史記錄"
 msgid "Enable freeslots and freeleech"
 msgstr "啟用空閒插槽和空閒狀態"
 
+msgid "Enable freeslots and freeleech status"
+msgstr "啟用空閒插槽和空閒狀態"
+
 msgid "Enable gender"
 msgstr "啟用性別"
 
@@ -3745,6 +3759,15 @@ msgstr "在stdhead中啟用歡樂時光警報"
 
 msgid "Enable invited by"
 msgstr "啟用邀請者"
+
+msgid "Enable invited by list"
+msgstr "啟用列表邀請"
+
+msgid "Enable ip history lists"
+msgstr "啟用IP歷史記錄列表"
+
+msgid "Enable irc online stats"
+msgstr "啟用irc在線統計"
 
 msgid "Enable irc stats"
 msgstr "啟用irc統計信息"
@@ -3758,8 +3781,17 @@ msgstr "在stdhead中啟用業力貢獻狀態警報"
 msgid "Enable message alert block"
 msgstr "啟用消息警報塊"
 
+msgid "Enable message alerts in stdhead"
+msgstr "在stdhead中啟用消息警報"
+
+msgid "Enable online time"
+msgstr "啟用在線時間"
+
 msgid "Enable report user"
 msgstr "啟用報告用戶"
+
+msgid "Enable report users button"
+msgstr "啟用報告用戶按鈕"
 
 msgid "Enable reports alert in stdhead"
 msgstr "在stdhead中啟用報告警報"
@@ -3767,8 +3799,14 @@ msgstr "在stdhead中啟用報告警報"
 msgid "Enable reputation link"
 msgstr "啟用信譽鏈接"
 
+msgid "Enable seed time per torrent average ratio"
+msgstr "啟用每個torrent平均比率的種子時間"
+
 msgid "Enable seedbonus"
 msgstr "啟用種子獎金"
+
+msgid "Enable seeding, leeching, snatched and uploaded torrents"
+msgstr "啟用種子，水浸，搶奪和上傳種子"
 
 msgid "Enable seeding, leeching, snatched, uploaded torrents"
 msgstr "啟用種子，水浸，搶奪，上傳種子"
@@ -3782,11 +3820,20 @@ msgstr "啟用發送消息按鈕"
 msgid "Enable share ratio"
 msgstr "啟用股份比例"
 
+msgid "Enable show friends button"
+msgstr "啟用顯示好友按鈕"
+
 msgid "Enable staff snatched torrents"
 msgstr "使工作人員搶走種子"
 
+msgid "Enable staff snatchlist"
+msgstr "啟用員工搶奪名單"
+
 msgid "Enable the global demotion alert block"
 msgstr "啟用全局降級警報塊"
+
+msgid "Enable the global demotion alerts block in stdhead"
+msgstr "在stdhead中啟用全局降級警報塊"
 
 msgid "Enable torrent comments history"
 msgstr "啟用洪流評論歷史"
@@ -3794,8 +3841,14 @@ msgstr "啟用洪流評論歷史"
 msgid "Enable upload application alerts in stdhead"
 msgstr "在stdhead中啟用上載應用程序警報"
 
+msgid "Enable uploaded and download"
+msgstr "啟用上傳和下載"
+
 msgid "Enable uploaded and downloaded"
 msgstr "啟用上傳和下載"
+
+msgid "Enable user comments"
+msgstr "啟用用戶評論"
 
 msgid "Enable user hits"
 msgstr "啟用用戶點擊"
@@ -3847,6 +3900,15 @@ msgstr "輸入用戶名"
 
 msgid "Enter password again"
 msgstr "再次輸入密碼"
+
+msgid "Enter the <b>Torrent ID:</b>"
+msgstr "輸入<b>種子編號：</b>"
+
+msgid "Enter the <b>amount to contribute</b>"
+msgstr "輸入<b>金額以貢獻</b>"
+
+msgid "Enter the <b>username</b> you would like to send karma to"
+msgstr "輸入您想將業力發送至的<b>用戶名</b>"
 
 msgid "Enter the destination  Topic Id to append to."
 msgstr "輸入要附加到的目標主題ID。"
@@ -3951,6 +4013,9 @@ msgstr "文件編輯日誌"
 msgid "File name is not allowed"
 msgstr "不允許使用文件名"
 
+msgid "File not allowed only .srt , .sub , .vtt or .txt files"
+msgstr "不允許僅.srt，.sub，.vtt或.txt文件的文件"
+
 msgid "File size: "
 msgstr "文件大小："
 
@@ -4046,6 +4111,9 @@ msgstr "洪流？"
 msgid "Flush torrents"
 msgstr "洪流"
 
+msgid "Flush torrents?"
+msgstr "洪流？"
+
 msgid "Flysystem Cache: "
 msgstr "Flysystem緩存："
 
@@ -4110,6 +4178,9 @@ msgstr "論壇帖子"
 msgid "Forum Rights"
 msgstr "論壇權利"
 
+msgid "Forum Subscribe PM"
+msgstr "論壇訂閱PM"
+
 msgid "Forum description"
 msgstr "論壇說明"
 
@@ -4130,6 +4201,9 @@ msgstr "論壇帖子？"
 
 msgid "Forum rank"
 msgstr "論壇等級"
+
+msgid "Forumposts?"
+msgstr "論壇帖子？"
 
 msgid "Forums"
 msgstr "論壇"
@@ -4161,17 +4235,9 @@ msgstr "免費洪流！"
 msgid "Free for 1 day"
 msgstr "1天免費"
 
-msgid "Free for 1 week"
-msgstr "1週免費"
-
-msgid "Free for 2 weeks"
-msgstr "免費2週"
-
-msgid "Free for 4 weeks"
-msgstr "免費4週"
-
-msgid "Free for 8 weeks"
-msgstr "免費8週"
+#, no-php-format
+msgid "Free for {0} day"
+msgstr "{0}天免費"
 
 #, no-php-format
 msgid "Free for {0} week"
@@ -4181,11 +4247,20 @@ msgstr "在{0}週內免費"
 msgid "Free for {0} weeks"
 msgstr "免費{0}週"
 
+msgid "Free stuffs?"
+msgstr "免費的東西？"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech開"
 
+msgid "FreeLeech [ON]"
+msgstr "FreeLeech [開]"
+
 msgid "Freeeslots total adjusted = Yes"
 msgstr "自由職業者總調整額=是"
+
+msgid "Freeleech"
+msgstr "Freeleech"
 
 msgid "Freeleech Manager"
 msgstr "Freeleech經理"
@@ -4211,8 +4286,15 @@ msgstr "Freeleech插槽："
 msgid "Freeleech Status"
 msgstr "自由狀態"
 
-msgid "Freeleech Status from "
-msgstr "自由狀態來自"
+msgid "Freeleech Status enabled by "
+msgstr "Freeleech狀態啟用者"
+
+#, no-php-format
+msgid "Freeleech Status for {0} by {1}."
+msgstr "{0}的{1}的閒話狀態。"
+
+msgid "Freeleech Status removed by "
+msgstr "Freeleech狀態被刪除"
 
 msgid "Freeleech enabled = "
 msgstr "Freeleech已啟用="
@@ -4321,11 +4403,23 @@ msgstr "遊戲可能"
 msgid "Games disabled = "
 msgstr "禁用遊戲="
 
+#, no-php-format
+msgid "Games disablement for {0} by {1}."
+msgstr "{0}被{1}禁用了遊戲。"
+
 msgid "Games possible = No"
 msgstr "可能的遊戲=否"
 
 msgid "Games possible = Yes"
 msgstr "可能的遊戲=是"
+
+#, no-php-format
+msgid "Gaming disablement by {0}."
+msgstr "{0}禁止遊戲。"
+
+#, no-php-format
+msgid "Gaming disablement status removed by {0}"
+msgstr "{0}刪除了遊戲禁用狀態"
 
 msgid "Gender"
 msgstr "性別"
@@ -4383,6 +4477,9 @@ msgstr "獲得額外的免費插槽"
 msgid "Getting extra invites"
 msgstr "獲得更多邀請"
 
+msgid "Give Karma Gift"
+msgstr "給因果報應"
+
 msgid "Giving a gift of karma points to another user"
 msgstr "向其他用戶贈送因果積分"
 
@@ -4394,6 +4491,12 @@ msgstr "全球統計"
 
 msgid "Go Back"
 msgstr "回去"
+
+msgid "Go To First"
+msgstr "首先"
+
+msgid "Go To Last"
+msgstr "轉到最後"
 
 msgid "Go back"
 msgstr "回去"
@@ -4456,6 +4559,9 @@ msgstr "HTML是<b>，不允許</b>。"
 #, no-php-format
 msgid "HTML is not allowed. {0}Click here{1} for information on available tags."
 msgstr "不允許使用HTML。 {0}點擊此處{1}以獲取有關可用標籤的信息。"
+
+msgid "Half Download"
+msgstr "一半下載"
 
 msgid "Happy Log"
 msgstr "快樂日誌"
@@ -4541,6 +4647,18 @@ msgstr "這裡是"
 msgid "Hey"
 msgstr "嘿"
 
+#, no-php-format
+msgid ""
+"Hey\n"
+"We are sorry to announce that you have been robbed by {0}{1}{2}.\n"
+"Now your total reputation is [b]{3}[/b]\n"
+"[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]"
+msgstr ""
+"嘿\n"
+"很遺憾地宣布您被{0} {1} {2}搶劫了。\n"
+"現在您的總聲望是[b] {3} [/ b]\n"
+"[color =＃ff0000]這很正常，您不必擔心，如果您有足夠的加分，就可以搶劫其他人[/ color]"
+
 msgid "Hey its now happy hour!"
 msgstr "嘿，現在是歡樂時光！"
 
@@ -4578,14 +4696,26 @@ msgid "Hey {0}!"
 msgstr "嘿{0}！"
 
 #, no-php-format
+msgid ""
+"Hey {0}:\n"
+"You robbed:\n"
+"{1}\n"
+"Your total reputation is now [b]{2}[/b] but you lost [b]{3}[/b] karma points "
+msgstr ""
+"嘿{0}：\n"
+"你搶了：\n"
+"{1}\n"
+"您的總聲望現在為[b] {2} [/ b]，但您損失了[b] {3} [/ b]業障積分"
+
+#, no-php-format
 msgid "Hey {1}!<br>There is {0} new message for the staff."
 msgid_plural "Hey {1}!<br>There are {0} new messages for the staff."
-msgstr[0] ""
+msgstr[0] "Hey {1}!<br>There are {0} new messages for the staff."
 
 #, no-php-format
 msgid "Hey {1}!<br>{0} new report to be dealt with."
 msgid_plural "Hey {1}!<br>{0} new reports to be dealt with."
-msgstr[0] ""
+msgstr[0] "Hey {1}!<br>{0} new reports to be dealt with."
 
 msgid "Hey! I've seen Power Users with less than 25GB uploaded!"
 msgstr "嘿!我已經看到上傳少於25GB的高級用戶！"
@@ -4638,6 +4768,12 @@ msgstr "隱藏我的圖片"
 msgid "Hide accepted/rejected"
 msgstr "隱藏接受/拒絕"
 
+msgid "Hide current seed and leech"
+msgstr "隱藏當前的種子和水ech"
+
+msgid "Hide from Navbar"
+msgstr "從導航欄隱藏"
+
 msgid "High"
 msgstr "高"
 
@@ -4646,6 +4782,14 @@ msgstr "最高勝率"
 
 msgid "Highly Anonymous"
 msgstr "高度匿名"
+
+#, no-php-format
+msgid "Highspeed Upload disabled by {0}."
+msgstr "高速上傳被{0}禁用。"
+
+#, no-php-format
+msgid "Highspeed Upload enabled by {0}."
+msgstr "{0}啟用了高速上傳。"
 
 msgid "Highspeed Uploader"
 msgstr "高速上傳器"
@@ -4710,6 +4854,9 @@ msgstr "命中率和跑步總數已調整=是"
 msgid "Hit and run!"
 msgstr "快跑！"
 
+msgid "Hit and runs set to "
+msgstr "命中並設置為"
+
 msgid "HitnRun"
 msgstr "HitnRun"
 
@@ -4751,6 +4898,9 @@ msgstr "屋"
 
 msgid "How can I improve my download speed?"
 msgstr "如何提高下載速度？"
+
+msgid "How can we remove a warning that isn't there?"
+msgstr "我們如何刪除不存在的警告？"
 
 msgid "How did you get here?"
 msgstr "你是怎麼來到這裡？"
@@ -4912,6 +5062,9 @@ msgstr "IMDb鏈接"
 
 msgid "IMDb Top 100 Movies"
 msgstr "IMDb百大電影"
+
+msgid "IMDb URL"
+msgstr "IMDb網址"
 
 msgid "IMDb Upcoming Movies"
 msgstr "IMDb即將上映的電影"
@@ -5115,11 +5268,20 @@ msgstr "找不到圖片！"
 msgid "Images Manager"
 msgstr "圖片管理員"
 
+#, no-php-format
+msgid "Immune Status enabled by {0}."
+msgstr "免疫狀態由{0}啟用。"
+
 msgid "Immunity"
 msgstr "免疫"
 
-msgid "Immunity Status from "
-msgstr "來自的免疫狀態"
+#, no-php-format
+msgid "Immunity Status for {0} by {1}."
+msgstr "{0}的{1}的免疫狀態。"
+
+#, no-php-format
+msgid "Immunity Status removed by {0}."
+msgstr "免疫狀態已由{0}刪除。"
 
 msgid "Immunity for"
 msgstr "豁免權"
@@ -5387,6 +5549,9 @@ msgstr "邀請代碼"
 msgid "Invite Tree"
 msgstr "邀請樹"
 
+msgid "Invite amount changed to "
+msgstr "邀請金額更改為"
+
 msgid "Invite rights"
 msgstr "邀請權利"
 
@@ -5417,6 +5582,9 @@ msgstr "邀請大量獎勵-自動系統。\n"
 msgid "Invites added"
 msgstr "邀請已添加"
 
+msgid "Invites allowed changed from "
+msgstr "允許的邀請已從更改為"
+
 msgid "Invites enabled = "
 msgstr "邀請已啟用="
 
@@ -5440,6 +5608,9 @@ msgstr "夏令時有效嗎？"
 
 msgid "Is taken, please try again."
 msgstr "已拍攝，請重試。"
+
+msgid "Is your avatar offensive"
+msgstr "你的頭像進攻嗎"
 
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "這和上面不一樣嗎？否。連接限制了您的客戶端正在與之交談和/或從其下載的對等體的數量。上載限制了客戶端實際上載到的對等體的數量。理想數量通常比連接數量少得多，並且高度取決於您的（物理）連接。"
@@ -5514,6 +5685,9 @@ msgstr "一月"
 msgid "Join Date"
 msgstr "參加日期"
 
+msgid "Join date?"
+msgstr "加入日期？"
+
 msgid "Joined"
 msgstr "已加入"
 
@@ -5547,6 +5721,9 @@ msgstr "業力"
 
 msgid "Karma Bonus Points"
 msgstr "業力獎勵積分"
+
+msgid "Karma Contribution's"
+msgstr "業力貢獻"
 
 msgid "Karma Contributions"
 msgstr "業力貢獻"
@@ -5603,7 +5780,7 @@ msgstr "最後活動"
 #, no-php-format
 msgid "Last Email sent by {1} on {2} - {0} email sent"
 msgid_plural "Last Email sent by {1} on {2} - {0} emails sent"
-msgstr[0] ""
+msgstr[0] "Last Email sent by {1} on {2} - {0} emails sent"
 
 msgid "Last IP"
 msgstr "最後IP"
@@ -6011,6 +6188,9 @@ msgstr "提出要求"
 msgid "Male"
 msgstr "男"
 
+msgid "Manage Images"
+msgstr "管理圖片"
+
 msgid "Manage Polls"
 msgstr "管理投票"
 
@@ -6062,8 +6242,8 @@ msgstr "增加了質量獎勵業力積分-自動系統。\n"
 msgid "Mass Message to All Non Connectable Users"
 msgstr "向所有不可連接用戶發送群發消息"
 
-msgid "Mass Pm"
-msgstr "質量Pm"
+msgid "Mass PM"
+msgstr "質量PM"
 
 msgid "Mass bonus for all or selected members:"
 msgstr "所有或選定成員的大量獎金："
@@ -6082,6 +6262,9 @@ msgstr "匹配的電子郵件"
 
 msgid "Matched IP"
 msgstr "匹配的IP"
+
+msgid "Max file size"
+msgstr "檔案大小上限"
 
 msgid "Maximum File Size"
 msgstr "最大檔案大小"
@@ -6180,7 +6363,7 @@ msgstr "訊息已移動！"
 #, no-php-format
 msgid "Message sent to {0} user"
 msgid_plural "Message sent to {0} users"
-msgstr[0] ""
+msgstr[0] "Message sent to {0} users"
 
 msgid "Message to "
 msgstr "留言給"
@@ -6214,6 +6397,9 @@ msgstr "郵件已發送。"
 
 msgid "Messages weren't sent!"
 msgstr "消息未發送！"
+
+msgid "Min"
+msgstr "敏"
 
 msgid "Min Class"
 msgstr "最低等級"
@@ -6366,6 +6552,9 @@ msgstr "心情編輯"
 msgid "More status variables"
 msgstr "更多狀態變量"
 
+msgid "More than 5"
+msgstr "5以上"
+
 msgid "Most Credit Lost"
 msgstr "損失最多的信用"
 
@@ -6468,6 +6657,9 @@ msgstr "我的ISP使用透明代理。我該怎麼辦？"
 
 msgid "My Offers"
 msgstr "我的優惠"
+
+msgid "My Paranoia"
+msgstr "我的偏執狂"
 
 msgid "My Posts"
 msgstr "我的帖子"
@@ -6593,6 +6785,12 @@ msgstr "新任經理"
 msgid "New Order ID"
 msgstr "新訂單編號"
 
+msgid "New Password"
+msgstr "新密碼"
+
+msgid "New Password Again"
+msgstr "確認新密碼"
+
 msgid "New Posts"
 msgstr "新帖"
 
@@ -6604,7 +6802,10 @@ msgstr "新回覆"
 
 msgid "New Staff Message"
 msgid_plural "New Staff Messages"
-msgstr[0] ""
+msgstr[0] "New Staff Messages"
+
+msgid "New Subtitle"
+msgstr "新字幕"
 
 msgid "New Topic"
 msgstr "新話題"
@@ -6638,7 +6839,7 @@ msgstr "今天的新洪流"
 
 msgid "New Uploader App"
 msgid_plural "New Uploader Apps"
-msgstr[0] ""
+msgstr[0] "New Uploader Apps"
 
 msgid "New Username: "
 msgstr "新用戶名："
@@ -6898,6 +7099,9 @@ msgstr "沒有要緩存的項目"
 msgid "No language other than English in the forums."
 msgstr "論壇中除英語外沒有其他語言。"
 
+msgid "No language selected"
+msgstr "未選擇語言"
+
 msgid "No leech warning Status Set"
 msgstr "未設置水le警告狀態"
 
@@ -7156,6 +7360,9 @@ msgstr "沒有發現"
 msgid "Nothing found!"
 msgstr "沒有發現！"
 
+msgid "Nothing found! Try again with a refined search string."
+msgstr "沒有發現！使用精確的搜索字符串再試一次。"
+
 msgid "Nothing found."
 msgstr "沒有發現。"
 
@@ -7247,6 +7454,9 @@ msgstr "哦，教我如何忘記思考。"
 msgid "OK"
 msgstr "好"
 
+msgid "ON"
+msgstr "上"
+
 msgid "OPEN"
 msgstr "打開"
 
@@ -7267,6 +7477,12 @@ msgstr "進攻頭像"
 
 msgid "Offensive avatar enabled = "
 msgstr "進攻頭像已啟用="
+
+msgid "Offensive avatar set to no by "
+msgstr "進攻頭像設置為否"
+
+msgid "Offensive avatar set to yes by "
+msgstr "進攻頭像設置為"
 
 msgid "Offer"
 msgstr "提供"
@@ -7318,9 +7534,6 @@ msgstr "舊類別名稱"
 msgid "Old School Arcade"
 msgstr "老派拱廊"
 
-msgid "Old School Arcade!"
-msgstr "老派拱廊！"
-
 msgid "On"
 msgstr "上"
 
@@ -7350,6 +7563,12 @@ msgstr "一對一比率僅適用於小於6GB的洪流！"
 
 msgid "Online"
 msgstr "線上"
+
+msgid "Online time?"
+msgstr "上網時間？"
+
+msgid "Only .srt, .sub , .vtt or .txt files are accepted"
+msgstr "僅接受.srt，.sub，.vtt或.txt文件"
 
 msgid "Only Dead"
 msgstr "只有死"
@@ -7525,6 +7744,9 @@ msgstr "下午評論"
 msgid "PM Notification"
 msgstr "下午通知"
 
+msgid "PM Possible"
+msgstr "可能的下午"
+
 msgid "PM Sent Statistics"
 msgstr "PM發送統計"
 
@@ -7533,6 +7755,18 @@ msgstr "已發送給所有不可連接的對等點"
 
 msgid "PM comment"
 msgstr "下午評論"
+
+#, no-php-format
+msgid "PM disablement by {0}."
+msgstr "PM禁用{0}。"
+
+#, no-php-format
+msgid "PM disablement for {0} by {1}."
+msgstr "{0}的PM禁用為{1}。"
+
+#, no-php-format
+msgid "PM disablement status removed by {0}."
+msgstr "PM禁用狀態已由{0}刪除。"
 
 msgid "PM options"
 msgstr "PM選項"
@@ -7567,6 +7801,10 @@ msgstr "偏執狂"
 
 msgid "Paranoia Levels explained"
 msgstr "偏執狂水平解釋"
+
+#, no-php-format
+msgid "Paranoia changed to {0} from {1} by {2}"
+msgstr "偏執狂由{2}從{1}變為{0}"
 
 msgid "Paranoia level changed"
 msgstr "偏執狂水平已更改"
@@ -7636,6 +7874,9 @@ msgstr "同行概述"
 
 msgid "Peers limit adjusted = Yes"
 msgstr "對等限額已調整=是"
+
+msgid "Peers limit set to"
+msgstr "同行限制設置為"
 
 msgid "Peers that are Not Connectable"
 msgstr "不可連接的對等"
@@ -7796,15 +8037,6 @@ msgstr "請使用{0}此表格{1}將重設詳細信息通過電子郵件發送給
 msgid "Plot"
 msgstr "情節"
 
-msgid "Pm"
-msgstr "下午"
-
-msgid "Pm Possible"
-msgstr "可能有Pm"
-
-msgid "Pm disablement from "
-msgstr "Pm禁用自"
-
 msgid "Point"
 msgstr "點"
 
@@ -7813,6 +8045,44 @@ msgstr "點數"
 
 msgid "Points Pool"
 msgstr "積分池"
+
+#, no-php-format
+msgid "Points as gift from {0}."
+msgstr "從{0}獲得積分作為禮物。"
+
+#, no-php-format
+msgid "Points as gift to {0}."
+msgstr "指向{0}作為禮物。"
+
+msgid "Points for  1 Year Parked Profile."
+msgstr "1年停車簡介的積分。"
+
+msgid "Points for 1 month Custom Smilies."
+msgstr "1個月自定義表情符號的積分。"
+
+msgid "Points for 1 month Immunity Status."
+msgstr "1個月免疫狀態積分。"
+
+msgid "Points for 1 month VIP Status."
+msgstr "1個月VIP狀態的積分。"
+
+msgid "Points for 1 to 1 ratio on torrent"
+msgstr "洪流中1：1比例的分數"
+
+msgid "Points for 100 Reputation Points."
+msgstr "100點聲望點數。"
+
+msgid "Points for 14 Days Anonymous Profile."
+msgstr "14天匿名個人資料的積分。"
+
+msgid "Points for removing warning."
+msgstr "刪除警告的要點。"
+
+msgid "Points for user blocks access."
+msgstr "用戶點阻止訪問。"
+
+msgid "Points for user unlocks access."
+msgstr "用戶點解鎖訪問。"
 
 msgid "Political"
 msgstr "政治"
@@ -7915,6 +8185,12 @@ msgstr "發表者"
 msgid "Poster"
 msgstr "海報"
 
+msgid "Posting disabled by "
+msgstr "禁止發布"
+
+msgid "Posting enabled by "
+msgstr "發布者："
+
 msgid "Posting rights"
 msgstr "發布權"
 
@@ -7965,7 +8241,7 @@ msgid "Priority"
 msgstr "優先"
 
 msgid "Private Messages"
-msgstr ""
+msgstr "私人信息"
 
 msgid "Private messages disabled = "
 msgstr "禁止私人消息="
@@ -7988,6 +8264,9 @@ msgstr "輪廓"
 msgid "Profile Views"
 msgstr "個人資料視圖"
 
+msgid "Profile hits?"
+msgstr "個人資料熱門？"
+
 msgid "Profile updated!"
 msgstr "個人資料已更新！"
 
@@ -8000,6 +8279,9 @@ msgstr "晉升"
 #, no-php-format
 msgid "Promoted to 'Uploader' by {0}."
 msgstr "由{0}提升為“上載器”。"
+
+msgid "Promoted to FLS by "
+msgstr "晉升為FLS"
 
 msgid "Promotion Settings"
 msgstr "促銷設置"
@@ -8081,7 +8363,7 @@ msgstr "給洪流評分= {0}分"
 #, no-php-format
 msgid "Rating: {0}. You rate this {1} {2, number} star"
 msgid_plural "Rating: {0}. You rate this {1} {2, number} stars"
-msgstr[0] ""
+msgstr[0] "Rating: {0}. You rate this {1} {2, number} stars"
 
 msgid "Ratio"
 msgstr "比"
@@ -8239,6 +8521,9 @@ msgstr "與你有關"
 msgid "Release Date"
 msgstr "發布日期"
 
+msgid "Release Name"
+msgstr "發布名稱"
+
 msgid "Relevance"
 msgstr "關聯"
 
@@ -8393,6 +8678,9 @@ msgstr "報告失敗！"
 msgid "Report User"
 msgstr "報告用戶"
 
+msgid "Report user?"
+msgstr "報告用戶？"
+
 msgid "Report?"
 msgstr "報告？"
 
@@ -8452,6 +8740,9 @@ msgstr "信譽刪除成功"
 
 msgid "Reputation points"
 msgstr "聲望點"
+
+msgid "Reputation points changed to "
+msgstr "信譽點更改為"
 
 msgid "Reputation points total adjusted"
 msgstr "信譽點總數已調整"
@@ -8557,6 +8848,9 @@ msgstr "結果為帖子"
 msgid "Results in Feed"
 msgstr "Feed中的結果"
 
+msgid "Return to Details"
+msgstr "返回詳情"
+
 msgid "Return to the Games"
 msgstr "回到運動會"
 
@@ -8648,6 +8942,9 @@ msgstr "完整性檢查！"
 msgid "Sanity check"
 msgstr "完整性檢查"
 
+msgid "Sanity check..."
+msgstr "完整性檢查..."
+
 msgid "Save"
 msgstr "救"
 
@@ -8689,6 +8986,9 @@ msgstr "成功保存信譽級別。"
 #, no-php-format
 msgid "Saying thanks = {0} points"
 msgstr "說謝謝= {0}分"
+
+msgid "Scene"
+msgstr "現場"
 
 msgid "Scene Tags..."
 msgstr "場景標籤..."
@@ -8769,6 +9069,9 @@ msgstr "按描述搜索（模糊）"
 msgid "Search by Genre"
 msgstr "按類型搜索"
 
+msgid "Search by IMDb, TMDb, TvMaze ID, ISBN, type"
+msgstr "按IMDb，TMDb，TvMaze ID，ISBN，類型搜索"
+
 msgid "Search by Name"
 msgstr "按名稱搜索"
 
@@ -8792,6 +9095,10 @@ msgstr "搜索："
 
 msgid "Search log"
 msgstr "搜索日誌"
+
+#, no-php-format
+msgid "Search result for <i>'{0}'</i>"
+msgstr "搜索結果為<i>'{0}'</i>"
 
 #, no-php-format
 msgid "Search results for {0}"
@@ -8895,6 +9202,9 @@ msgstr "播種時間比例？"
 msgid "SeedBox"
 msgstr "種子箱"
 
+msgid "Seedbonus amount changed to "
+msgstr "種子獎金金額更改為"
+
 msgid "Seedbonus points total adjusted"
 msgstr "種子獎金積分總計已調整"
 
@@ -8907,8 +9217,8 @@ msgstr "種子用於："
 msgid "Seeder"
 msgstr "播種機"
 
-msgid "Seeder Info (Top 5 Seeders)"
-msgstr "播種者信息（前5個播種者）"
+msgid "Seeder Info: Top 5"
+msgstr "播種者信息：前5名"
 
 msgid "Seeder/Leecher Ratio (%)"
 msgstr "播種者/放牧者比率（％）"
@@ -8977,6 +9287,9 @@ msgstr "選擇此報告的結束日期。選擇月，日和年。所選統計信
 msgid "Select how many PMs you would like to see per page."
 msgstr "選擇您希望每頁查看多少PM。"
 
+msgid "Select how many points you want to send"
+msgstr "選擇您要發送的積分"
+
 msgid "Select one"
 msgstr "選擇一個"
 
@@ -8992,7 +9305,7 @@ msgstr "發送"
 
 #, no-php-format
 msgid "Send <i class=\"{0}\">{1}</i> a PM</i>"
-msgstr ""
+msgstr "發送<i class=\"{0}\"> {1} </i>一個PM </i>"
 
 msgid "Send All not connectable Users A PM"
 msgstr "向所有無法連接的用戶發送PM"
@@ -9243,8 +9556,17 @@ msgstr "顯示已批准"
 msgid "Show Approved Triggers"
 msgstr "顯示批准的觸發器"
 
+msgid "Show Email"
+msgstr "顯示電子郵件"
+
+msgid "Show Friends"
+msgstr "顯示朋友"
+
 msgid "Show Friends?"
 msgstr "顯示朋友？"
+
+msgid "Show PM?"
+msgstr "顯示下午？"
 
 msgid "Show Unapproved"
 msgstr "顯示未批准"
@@ -9260,6 +9582,12 @@ msgstr "查看郵箱時顯示頭像。"
 
 msgid "Show hidden Categories"
 msgstr "顯示隱藏的類別"
+
+msgid "Show in Navbar"
+msgstr "在導航欄中顯示"
+
+msgid "Show in Navbar cannot be empty."
+msgstr "在導航欄中顯示不能為空。"
 
 msgid "Show pm?"
 msgstr "顯示下午？"
@@ -9291,6 +9619,9 @@ msgstr "顯示註冊的用戶數。"
 msgid "Shows a warning if there is a new message for staff"
 msgstr "如果有新消息向員工顯示警告"
 
+msgid "Shows if there is a new message for staff alert in stdhead"
+msgstr "顯示stdhead中是否有新的提醒員工的消息"
+
 msgid "Sick"
 msgstr "生病"
 
@@ -9306,11 +9637,20 @@ msgstr "簽名權"
 msgid "Signature changed"
 msgstr "簽名已更改"
 
+msgid "Signature changed from "
+msgstr "簽名從"
+
 msgid "Signature post enabled = "
 msgstr "簽名帖已啟用="
 
 msgid "Signature rights"
 msgstr "簽名權"
+
+msgid "Signature rights turned off by "
+msgstr "簽名權被關閉"
+
+msgid "Signature rights turned on by "
+msgstr "簽名權由"
 
 msgid "Signup"
 msgstr "註冊"
@@ -9336,17 +9676,9 @@ msgstr "銀洪流！"
 msgid "Silver for 1 day"
 msgstr "1天白銀"
 
-msgid "Silver for 1 week"
-msgstr "白銀1週"
-
-msgid "Silver for 2 weeks"
-msgstr "銀2週"
-
-msgid "Silver for 4 weeks"
-msgstr "銀4週"
-
-msgid "Silver for 8 weeks"
-msgstr "銀牌8週"
+#, no-php-format
+msgid "Silver for {0} day"
+msgstr "{0}天的白銀"
 
 #, no-php-format
 msgid "Silver for {0} week"
@@ -9389,6 +9721,12 @@ msgstr "全站字體比例"
 
 msgid "Site information"
 msgstr "網站信息"
+
+msgid "Site is Offline."
+msgstr "網站離線。"
+
+msgid "Site is Online."
+msgstr "網站在線。"
 
 msgid "Site log"
 msgstr "網站日誌"
@@ -9467,6 +9805,9 @@ msgstr "一些有用的技巧。"
 #, no-php-format
 msgid "Some {0}info{1} about the 'Anatomy of a torrent session'."
 msgstr "關於“洪流會話解剖”的一些{0}信息{1}。"
+
+msgid "Someone Loves you"
+msgstr "有人愛你"
 
 msgid "Someone has already taken that bet"
 msgstr "有人已經下注"
@@ -9674,7 +10015,7 @@ msgstr "員工評語"
 #, no-php-format
 msgid "Staff Flush: {0} flushed {1} torrent for {2}"
 msgid_plural "Staff Flush: {0} flushed {1} torrents for {2}"
-msgstr[0] ""
+msgstr[0] "Staff Flush: {0} flushed {1} torrents for {2}"
 
 msgid "Staff List"
 msgstr "員工名單"
@@ -9710,8 +10051,8 @@ msgid "Staff actions log"
 msgstr "員工行動日誌"
 
 #, no-php-format
-msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where sucessfully cleaned."
-msgstr "員工在{1}沖洗了{0}的鬼流。 {2}個洪流已成功清理。"
+msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully cleaned."
+msgstr "員工在{1}沖洗了{0}的鬼流。 {2}個種子已經成功清理。"
 
 msgid "Staff mass bonus - added freeslots to"
 msgstr "員工大量獎金-向"
@@ -9847,6 +10188,9 @@ msgstr "子論壇"
 msgid "Sub-Forum of?"
 msgstr "分論壇？"
 
+msgid "Subfile"
+msgstr "子檔"
+
 msgid "Subject"
 msgstr "學科"
 
@@ -9890,7 +10234,7 @@ msgid "Subscript"
 msgstr "下標"
 
 msgid "Subscriptions"
-msgstr ""
+msgstr "訂閱內容"
 
 msgid "Subtitle"
 msgstr "字幕"
@@ -9898,8 +10242,17 @@ msgstr "字幕"
 msgid "Subtitle Details"
 msgstr "字幕詳細資料"
 
+msgid "Subtitle Preview"
+msgstr "字幕預覽"
+
 msgid "Subtitles"
 msgstr "字幕"
+
+msgid "Subtracted Download"
+msgstr "減去下載"
+
+msgid "Subtracted Upload"
+msgstr "減去上傳"
 
 msgid "Succesfully Added"
 msgstr "成功添加"
@@ -10180,9 +10533,6 @@ msgstr "PU限制曾經是25GB，當我們將其提高到50GB時我們沒有降�
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "您嘗試使用的促銷不存在或已過期！"
 
-msgid "The Reason:"
-msgstr "原因："
-
 msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
 msgstr "該網址必須以<b> .gif </b>，<b> .jepg a09a4b739f17f17f8z0，<b> .jpg a09a4b739f17f8f0z或<b> .png a09a4"
 
@@ -10223,8 +10573,11 @@ msgstr "新成員的默認類。"
 msgid "The default setting-2 MBs, is currently set to: "
 msgstr "默認設置2 MB，當前設置為："
 
-msgid "The description"
-msgstr "說明"
+msgid "The description cannot be empty."
+msgstr "說明不能為空。"
+
+msgid "The description is too long max 100 chars."
+msgstr "說明太長，最多100個字符。"
 
 msgid "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low."
 msgstr "下載速度主要取決於播種者與抵押者比率（SLR）。下載速度不佳主要是SLR較低的新型且流行的洪流的問題。"
@@ -10232,11 +10585,17 @@ msgstr "下載速度主要取決於播種者與抵押者比率（SLR）。下載
 msgid "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere."
 msgstr "該電子郵件地址必須有效。您將收到一封確認電子郵件，您需要回复該電子郵件。該電子郵件地址不會在任何地方公開顯示。"
 
+msgid "The file can't be empty!"
+msgstr "該文件不能為空！"
+
 msgid "The file was written...wait for redirect"
 msgstr "該文件已寫入...等待重定向"
 
-msgid "The filename"
-msgstr "文件名"
+msgid "The filename cannot be empty."
+msgstr "文件名不能為空。"
+
+msgid "The filename is too long max 80 chars."
+msgstr "文件名太長，最多80個字符。"
 
 #, no-php-format
 msgid "The following characters can be used: {0}. All other characters will be ignored."
@@ -10289,11 +10648,17 @@ msgid "The obscene terms where successfully deleted!"
 msgstr "淫穢條款已成功刪除！"
 
 #, no-php-format
-msgid "The official IRC channel is {0}#pu-239{1}</p>"
-msgstr "官方IRC頻道為{0}＃pu-239 {1} </p>"
+msgid "The official IRC channel is {0}#pu-239{1}"
+msgstr "官方IRC頻道為{0}＃pu-239 {1}"
 
-msgid "The page name"
-msgstr "頁面名稱"
+msgid "The page name cannot be empty."
+msgstr "頁面名稱不能為空。"
+
+msgid "The page name is too long max 80 chars."
+msgstr "頁面名稱太長，最多80個字符。"
+
+msgid "The page name is too short (min 4 chars)."
+msgstr "頁面名稱太短（最少4個字符）。"
 
 #, no-php-format
 msgid "The password for account {0} is now {1}"
@@ -10412,7 +10777,7 @@ msgstr "解決問題的方法包括在防火牆上打開用於傳入連接（與
 #, no-php-format
 msgid "The winner will get {0} added to their seedbonus amount"
 msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] ""
+msgstr[0] "The winners will get {0} added to their seedbonus amount"
 
 #, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
@@ -10424,9 +10789,6 @@ msgstr "{0}跟踪器在查找您的真實IP方面非常聰明，但是它確實�
 
 msgid "Theft summary"
 msgstr "盜竊摘要"
-
-msgid "There"
-msgstr "那裡"
 
 msgid "There are a couple of things that you can try on your end to improve your speed:"
 msgstr "您可以嘗試一些方法來提高速度："
@@ -10488,6 +10850,10 @@ msgstr "沒有報告的錯誤:)。"
 
 msgid "There are no requests."
 msgstr "沒有任何要求。"
+
+#, no-php-format
+msgid "There are no subtitles, go {0}here{1} and start uploading."
+msgstr "沒有字幕，請轉到{0}此處{1}，然後開始上傳。"
 
 msgid "There are no torrents needing leechers right now."
 msgstr "現在沒有洪流需要水耕者。"
@@ -10557,22 +10923,27 @@ msgstr "沒有任何烹飪"
 #, no-php-format
 msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
-msgstr[0] ""
+msgstr[0] "There are {0} Birthdays Today"
+
+#, no-php-format
+msgid "There is {0} error in the form."
+msgid_plural "There are {0} errors in the form."
+msgstr[0] "There are {0} errors in the form."
 
 #, no-php-format
 msgid "There is {0} new bug!"
 msgid_plural "There are {0} new bugs!"
-msgstr[0] ""
+msgstr[0] "There are {0} new bugs!"
 
 #, no-php-format
 msgid "There is {0} new bug. Please check it."
 msgid_plural "There is {0} new bugs. Please check them."
-msgstr[0] ""
+msgstr[0] "There is {0} new bugs. Please check them."
 
 #, no-php-format
 msgid "There is {0} peer currently on the tracker"
 msgid_plural "There are {0} peers currently on the tracker"
-msgstr[0] ""
+msgstr[0] "There are {0} peers currently on the tracker"
 
 msgid "There may be three reasons for this:"
 msgstr "可能有以下三個原因："
@@ -10622,7 +10993,7 @@ msgstr "出問題了！"
 #, no-php-format
 msgid "There will be {0} winner, picked at random."
 msgid_plural "There will be {0} winners, picked at random."
-msgstr[0] ""
+msgstr[0] "There will be {0} winners, picked at random."
 
 #, no-php-format
 msgid "There's a further message that causes the torrent to be removed from the user's profile, namely {0}. This is usually sent when stopping in the middle of a download, e.g. by pressing 'Cancel'."
@@ -10659,10 +11030,16 @@ msgstr "該MySQL服務器已在{0}上運行。它始於{1}"
 msgid "This Year"
 msgstr "今年"
 
+msgid "This account has been Un-suspended by "
+msgstr "此帳戶已被以下用戶取消暫停"
+
 msgid "This account has been disabled"
 msgstr "此帳戶已被禁用"
 
 msgid "This account has been suspended"
+msgstr "此帳戶已被暫停"
+
+msgid "This account has been suspended by "
 msgstr "此帳戶已被暫停"
 
 msgid "This account is currently on the"
@@ -10772,7 +11149,7 @@ msgstr "該成員的妄想設置處於錫紙帽級別！！！"
 #, no-php-format
 msgid "This message was set to the following class: {1}"
 msgid_plural "This message was set to the following classes: {1}"
-msgstr[0] ""
+msgstr[0] "This message was set to the following classes: {1}"
 
 msgid "This offer has been approved."
 msgstr "此報價已被批准。"
@@ -10856,7 +11233,7 @@ msgstr "該用戶不接受PM。"
 #, no-php-format
 msgid "This user has earlier used {1}{0}{2} different IP address"
 msgid_plural "This user has earlier used {1}{0}{2} different IP addresses"
-msgstr[0] ""
+msgstr[0] "This user has earlier used {1}{0}{2} different IP addresses"
 
 msgid "This user has had no profile views yet."
 msgstr "該用戶還沒有個人資料視圖。"
@@ -11100,6 +11477,9 @@ msgstr "激流年齡組2"
 msgid "Torrent Age Group 3 Over"
 msgstr "激流年齡組3以上"
 
+msgid "Torrent Catalof"
+msgstr "激流卡塔洛夫"
+
 msgid "Torrent Clients"
 msgstr "洪流客戶"
 
@@ -11130,11 +11510,18 @@ msgstr "洪流所有者通知"
 msgid "Torrent Pass"
 msgstr "激流"
 
+#, no-php-format
+msgid "Torrent Pass {0} reset to {1}."
+msgstr "Torrent Pass {0}重置為{1}。"
+
 msgid "Torrent Size"
 msgstr "種子大小"
 
 msgid "Torrent Stats"
 msgstr "洪流統計"
+
+msgid "Torrent comment PM"
+msgstr "洪流評論下午"
 
 msgid "Torrent comments?"
 msgstr "洪流評論？"
@@ -11142,6 +11529,9 @@ msgstr "洪流評論？"
 #, no-php-format
 msgid "Torrent deleted<br>{0}"
 msgstr "洪流刪除了<br> {0}"
+
+msgid "Torrent deletion PM"
+msgstr "種子刪除PM"
 
 msgid "Torrent does not exist"
 msgstr "洪流不存在"
@@ -11233,8 +11623,14 @@ msgstr "激流上傳於"
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "28天后，洪流將自動刪除。"
 
+msgid "Torrents blocks?"
+msgstr "洪流塊？"
+
 msgid "Torrents limit adjusted = Yes"
 msgstr "洪流限制已調整=是"
+
+msgid "Torrents limit set to"
+msgstr "洪流限制設置為"
 
 msgid "Torrents per page"
 msgstr "每頁洪流"
@@ -11280,6 +11676,9 @@ msgstr "跟踪路由"
 
 msgid "Traceroute!"
 msgstr "追踪路線！"
+
+msgid "Trade"
+msgstr "貿易方式"
 
 msgid "Trade your achievement points for random gifts."
 msgstr "用成就點數換取隨機禮物。"
@@ -11460,7 +11859,7 @@ msgstr "強調"
 
 #, no-php-format
 msgid "Unfriend <i class=\"{0}\">{1}</i>"
-msgstr ""
+msgstr "取消好友<i class=\"{0}\"> {1} </i>"
 
 msgid "Unknow Browser"
 msgstr "未知瀏覽器"
@@ -11599,6 +11998,9 @@ msgstr "可以上傳"
 msgid "Upload Torrent"
 msgstr "上傳種子"
 
+msgid "Upload a Subtitle"
+msgstr "上載字幕"
+
 msgid "Upload a Torrent"
 msgstr "上載種子"
 
@@ -11609,11 +12011,19 @@ msgid "Upload credit"
 msgstr "上傳積分"
 
 #, no-php-format
+msgid "Upload disablement by {0}."
+msgstr "由{0}上傳禁用。"
+
+#, no-php-format
 msgid "Upload disablement for {0} by {1}."
 msgstr "由{1}上載{0}的禁用功能。"
 
 msgid "Upload disablement from "
 msgstr "從上傳禁止"
+
+#, no-php-format
+msgid "Upload disablement status removed by {0}"
+msgstr "上傳禁用狀態已被{0}刪除"
 
 msgid "Upload failed to save image."
 msgstr "上傳失敗，無法保存圖像。"
@@ -11623,6 +12033,9 @@ msgstr "上傳失敗！"
 
 msgid "Upload from URL"
 msgstr "從網址上傳"
+
+msgid "Upload it"
+msgstr "上載"
 
 msgid "Uploaded"
 msgstr "已上傳"
@@ -11679,9 +12092,6 @@ msgstr "啟用上傳=是"
 msgid "Upped by"
 msgstr "上載者"
 
-msgid "Upper"
-msgstr "上"
-
 msgid "Upspeed"
 msgstr "加速"
 
@@ -11703,6 +12113,9 @@ msgstr "使用草稿："
 
 msgid "Use Prize Fund (No, uses default pot of all users)."
 msgstr "使用獎金基金（否，使用所有用戶的默認底池）。"
+
+msgid "Use a descriptive name for your subtitle"
+msgstr "為字幕使用描述性名稱"
 
 msgid "Use gzip compression"
 msgstr "使用gzip壓縮"
@@ -11804,6 +12217,9 @@ msgstr "用戶帳戶{0}）{1}）所有種子上的Freeleech已由{2}刪除"
 msgid "User class"
 msgstr "用戶類別"
 
+msgid "User comments?"
+msgstr "用戶評論？"
+
 msgid "User immuntiy"
 msgstr "使用者免疫"
 
@@ -11814,7 +12230,7 @@ msgid "User information"
 msgstr "用戶信息"
 
 msgid "User is Anonymous"
-msgstr ""
+msgstr "用戶是匿名的"
 
 msgid "User name"
 msgstr "用戶名"
@@ -11830,6 +12246,9 @@ msgstr "用戶統計"
 
 msgid "User status?"
 msgstr "用戶狀態？"
+
+msgid "User traffic?"
+msgstr "用戶流量？"
 
 msgid "User unlocks"
 msgstr "用戶解鎖"
@@ -12019,8 +12438,14 @@ msgstr "查看原圖"
 msgid "View Recipes in the Oven"
 msgstr "在烤箱中查看食譜"
 
+msgid "View Replies"
+msgstr "查看回复"
+
 msgid "View Reputation Comments"
 msgstr "查看信譽評論"
+
+msgid "View Signatures"
+msgstr "查看簽名"
 
 msgid "View Site Settings"
 msgstr "查看網站設置"
@@ -12031,11 +12456,17 @@ msgstr "查看員工留言"
 msgid "View application"
 msgstr "查看申請"
 
+msgid "View avatars"
+msgstr "查看頭像"
+
 msgid "View bought tickets"
 msgstr "查看已購買的門票"
 
 msgid "View comments"
 msgstr "查看評論"
+
+msgid "View offensive avatars"
+msgstr "查看進攻頭像"
 
 msgid "View sharemarks"
 msgstr "查看共享標記"
@@ -12077,6 +12508,9 @@ msgstr "工作印（WP）"
 msgid "Wait time adjusted = Yes"
 msgstr "調整等待時間=是"
 
+msgid "Wait time set to"
+msgstr "等待時間設置為"
+
 msgid "Wall"
 msgstr "壁"
 
@@ -12105,6 +12539,9 @@ msgstr "警告"
 
 msgid "Warning :"
 msgstr "警告 ："
+
+msgid "Warning removed by - Bribe with Karma."
+msgstr "警告被刪除-賄賂因果報應。"
 
 #, no-php-format
 msgid "Warning: There are no images in the directory {0}, please upload one."
@@ -12149,7 +12586,7 @@ msgstr "我們不能有空上傳！"
 #, no-php-format
 msgid "We currently have {0} snatched torrent"
 msgid_plural "We currently have {0} snatched torrents"
-msgstr[0] ""
+msgstr[0] "We currently have {0} snatched torrents"
 
 msgid "Wears a tin-foil hat"
 msgstr "戴錫紙帽子"
@@ -12422,7 +12859,7 @@ msgstr "伊克斯"
 msgid "You MUST enter a reason for this report! Use your back button and fill in the reason"
 msgstr "您必須輸入此報告的原因！使用後退按鈕並填寫原因"
 
-msgid "You MUST read this message before you delete it!!!  "
+msgid "You MUST read this message before you delete it!!!"
 msgstr "您必須先閱讀此消息，然後再將其刪除！！！"
 
 #, no-php-format
@@ -12435,7 +12872,7 @@ msgstr "您已經對此洪流提出了意見。"
 #, no-php-format
 msgid "You already have {0} open bet. Wait until it is completed before you start another."
 msgid_plural "You already have {0} open bets. Wait until they are completed before you start another."
-msgstr[0] ""
+msgstr[0] "You already have {0} open bets. Wait until they are completed before you start another."
 
 msgid "You already received your gift!"
 msgstr "您已經收到了禮物！"
@@ -12519,7 +12956,7 @@ msgstr "你們兩個都有"
 #, no-php-format
 msgid "You bought {0} ticket."
 msgid_plural "You bought {0} tickets."
-msgstr[0] ""
+msgstr[0] "You bought {0} tickets."
 
 msgid "You can add comments to users (for other mods and admins to read)."
 msgstr "您可以向用戶添加評論（供其他mod和管理員閱讀）。"
@@ -12530,7 +12967,7 @@ msgstr "您可以添加自己的消息，該消息將顯示在要轉發的PM上�
 #, no-php-format
 msgid "You can buy another {0} ticket if you get get more bonus points."
 msgid_plural "You can buy another {0} tickets if you get get more bonus points."
-msgstr[0] ""
+msgstr[0] "You can buy another {0} tickets if you get get more bonus points."
 
 msgid "You can contact site staff with your request on irc"
 msgstr "您可以在irc上與您的要求聯繫站點工作人員"
@@ -12582,6 +13019,9 @@ msgstr "您無法在自己的洪流中添加感謝"
 
 msgid "You can't add yourself."
 msgstr "您無法添加自己。"
+
+msgid "You can't approve your replies!."
+msgstr "您無法批准您的回复！"
 
 msgid "You can't approve your reply."
 msgstr "您無法批准您的回复。"
@@ -12663,6 +13103,10 @@ msgstr "您沒有正確的憑據在這裡！"
 msgid "You dont have the credentials to lock."
 msgstr "您沒有要鎖定的憑據。"
 
+#, no-php-format
+msgid "You flushed the {0} cache"
+msgstr "您刷新了{0}緩存"
+
 msgid "You forgot to fill some data"
 msgstr "您忘記填寫一些數據"
 
@@ -12695,6 +13139,10 @@ msgstr "您已經投票，無法更改投票"
 msgid "You have been given"
 msgstr "你被賦予了"
 
+#, no-php-format
+msgid "You have been given a gift of {0} Karma points by {1}"
+msgstr "{1}為您提供了{0}點業力點的禮物"
+
 msgid "You have been given.gift"
 msgstr "你被給予了禮物"
 
@@ -12714,8 +13162,9 @@ msgstr ""
 "        如果您不認識此人，請忽略此電子郵件。請不要回复。 <br>\n"
 "        這是一個私人網站，您必須先同意規則，然後才能輸入："
 
-msgid "You have been set as a high speed uploader by "
-msgstr "您已被設置為高速上傳器"
+#, no-php-format
+msgid "You have been set as a high speed uploader by {0}. You can now upload torrents using highspeeds without being flagged as a cheater."
+msgstr "{0}已將您設置為高速上傳器。您現在可以使用高速上傳種子，而不會被標記為作弊者。"
 
 #, no-php-format
 msgid "You have been {0} to {1} by {2}"
@@ -12731,7 +13180,7 @@ msgstr "您貢獻了提供的總賞金中的{0} / {1}"
 #, no-php-format
 msgid "You have enough points for {0} ticket."
 msgid_plural "You have enough points for {0} tickets."
-msgstr[0] ""
+msgstr[0] "You have enough points for {0} tickets."
 
 msgid "You have exceeded the maximum number of IPs allowed"
 msgstr "您已經超過了允許的IP數量上限"
@@ -12781,14 +13230,51 @@ msgstr "您已收到有關洪流{0} {1} {2}的評論。"
 msgid "You have received donor status from {0}"
 msgstr "您已從{0}獲得捐贈者身份"
 
-msgid "You have received immunity Status from "
-msgstr "您已收到來自的免疫狀態"
+#, no-php-format
+msgid "You have received immunity Status from {0}."
+msgstr "您已收到來自{0}的免疫狀態。"
 
 msgid "You have received leechwarn Status from "
 msgstr "您已收到來自的leechwarn狀態"
 
 msgid "You have received warned Status from "
 msgstr "您已收到來自的警告狀態"
+
+#, no-php-format
+msgid "You have received {0} AJAX Chat disablement from {1}"
+msgstr "您已從{1}收到{0} AJAX聊天禁用"
+
+#, no-php-format
+msgid "You have received {0} Avatar disablement from {1}."
+msgstr "您已從{1}收到{0}頭像禁用功能。"
+
+#, no-php-format
+msgid "You have received {0} Download disablement from {1}."
+msgstr "您已從{1}收到{0}下載禁用。"
+
+#, no-php-format
+msgid "You have received {0} Freeleech Status from {1}."
+msgstr "您已收到{1}的{0}自由狀態。"
+
+#, no-php-format
+msgid "You have received {0} Immunity Status from {1}."
+msgstr "您已收到{1}的{0}免疫狀態。"
+
+#, no-php-format
+msgid "You have received {0} PM disablement from {1}."
+msgstr "您已從{1}收到{0} PM禁用。"
+
+#, no-php-format
+msgid "You have received {0} games disablement from {1}."
+msgstr "您已從{1}收到{0}個遊戲禁用信息。"
+
+#, no-php-format
+msgid "You have received {0} leechwarn Status from {1}."
+msgstr "您已收到來自{1}的{0} leechwarn狀態。"
+
+#, no-php-format
+msgid "You have received {0} warned Status from {1}."
+msgstr "您已收到來自{1}的{0}警告狀態。"
 
 msgid "You have snatched this torrent but not completed downloading"
 msgstr "您已經搶奪了該種子，但尚未完成下載"
@@ -12820,17 +13306,17 @@ msgstr "您已投票支持此請求。"
 #, no-php-format
 msgid "You have {0} Reputation Point."
 msgid_plural "You have {0} Reputation Points."
-msgstr[0] ""
+msgstr[0] "You have {0} Reputation Points."
 
 #, no-php-format
 msgid "You have {0} new message"
 msgid_plural "You have {0} new messages"
-msgstr[0] ""
+msgstr[0] "You have {0} new messages"
 
 #, no-php-format
 msgid "You have {0} unread message in your inbox"
 msgid_plural "You have {0} unread messages in your inbox"
-msgstr[0] ""
+msgstr[0] "You have {0} unread messages in your inbox"
 
 msgid "You haven't uploaded any torrents yet."
 msgstr "您尚未上傳任何種子。"
@@ -12931,7 +13417,7 @@ msgstr "您需要先上傳清理文件！"
 #, no-php-format
 msgid "You now have {0} ticket!"
 msgid_plural "You now have {0} tickets!"
-msgstr[0] ""
+msgstr[0] "You now have {0} tickets!"
 
 msgid "You oppose this request."
 msgstr "您反對這一要求。"
@@ -12943,7 +13429,7 @@ msgstr "您擁有的票號：{0}"
 #, no-php-format
 msgid "You reached your limit. The max is {0} ticket."
 msgid_plural "You reached your limit. The max is {0} tickets."
-msgstr[0] ""
+msgstr[0] "You reached your limit. The max is {0} tickets."
 
 msgid "You should optimize this query."
 msgstr "您應該優化此查詢。"
@@ -12988,17 +13474,21 @@ msgstr "您不是所有者！"
 msgid "You're not the owner! How did that happen?"
 msgstr "您不是所有者！那是怎麼發生的？"
 
-msgid "Your AJAX Chat rights have been disabled by "
-msgstr "您的AJAX聊天權限已被禁止"
+#, no-php-format
+msgid "Your AJAX Chat rights have been disabled by {0}"
+msgstr "您的AJAX聊天權限已被{0}禁用"
 
-msgid "Your AJAX Chat rights have been restored by "
-msgstr "您的AJAX聊天權限已通過恢復"
+#, no-php-format
+msgid "Your AJAX Chat rights have been restored by {0}"
+msgstr "您的AJAX聊天權限已由{0}恢復"
 
-msgid "Your Avatar rights have been disabled by "
-msgstr "您的頭像權利已被禁止"
+#, no-php-format
+msgid "Your Avatar rights have been disabled by {0}."
+msgstr "您的頭像權限已被{0}禁用。"
 
-msgid "Your Avatar rights have been restored by "
-msgstr "您的頭像權利已通過恢復"
+#, no-php-format
+msgid "Your Avatar rights have been restored by {0}."
+msgstr "您的頭像權限已由{0}恢復。"
 
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
@@ -13008,11 +13498,15 @@ msgstr "您的下載權限已被{0}禁用"
 msgid "Your Downloading rights have been restored by {0}"
 msgstr "您的下載權限已由{0}恢復"
 
-msgid "Your Downloads have been enabled by "
-msgstr "您的下載已通過啟用"
+#, no-php-format
+msgid "Your Downloads have been enabled by {0}."
+msgstr "您的下載已通過{0}啟用。"
 
 msgid "Your Freeleech Status has been removed by "
 msgstr "您的Freeleech狀態已被刪除"
+
+msgid "Your IMDb link is invalid"
+msgstr "您的IMDb鏈接無效"
 
 #, no-php-format
 msgid "Your IP is: {0}"
@@ -13021,18 +13515,19 @@ msgstr "您的IP為：{0}"
 msgid "Your ISP blocks the site's address"
 msgstr "您的ISP阻止了該站點的地址"
 
-msgid "Your Immunity Status has been removed by "
-msgstr "您的免疫狀態已被刪除"
+#, no-php-format
+msgid "Your Immunity Status has been removed by {0}."
+msgstr "您的免疫狀態已被{0}刪除。"
 
 #, no-php-format
 msgid "Your Opponent is: {0}"
 msgstr "您的對手是：{0}"
 
-msgid "Your Pm rights have been disabled by "
-msgstr "您的Pm權限已被禁止"
+msgid "Your PM rights have been disabled by "
+msgstr "您的PM權限已被禁用"
 
-msgid "Your Pm rights have been restored by "
-msgstr "您的Pm權利已通過恢復"
+msgid "Your PM rights have been restored by "
+msgstr "您的PM權限已通過恢復"
 
 msgid "Your Posting rights have been given back by "
 msgstr "您的發布權已由"
@@ -13065,8 +13560,9 @@ msgstr "您的用戶名已更改為"
 msgid "Your account at "
 msgstr "您在的帳戶"
 
-msgid "Your account has been suspended by "
-msgstr "您的帳戶已被暫停"
+#, no-php-format
+msgid "Your account has been suspended by {0}."
+msgstr "您的帳戶已被{0}暫停。"
 
 #, no-php-format
 msgid ""
@@ -13097,6 +13593,10 @@ msgstr "您的帳戶已被暫停，您只能將PM轉發給員工！"
 
 msgid "Your application has successfully been sent to the staff."
 msgstr "您的申請已成功發送給工作人員。"
+
+#, no-php-format
+msgid "Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure."
+msgstr "您即將刪除字幕<b> {0} </b>，如果確定，請單擊{1}此處{2}。"
 
 msgid "Your avatar has been set to not offensive by "
 msgstr "您的化身已被設置為不冒犯"
@@ -13140,8 +13640,9 @@ msgstr "您的下載權限已被刪除。"
 msgid "Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as {0}NetLimiter{1}"
 msgstr "您的下載速度始終是有限的。如果您是快速洪流的伙伴，那麼幾乎可以肯定會飽和您的下載帶寬，並且您的瀏覽會受到影響。目前，沒有允許您限制下載速度的客戶端，只有上傳。您將必須使用第三方解決方案，例如{0} NetLimiter {1}"
 
-msgid "Your downloading ability has been disabled by "
-msgstr "您的下載功能已被禁止"
+#, no-php-format
+msgid "Your downloading ability has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "您的下載功能已被{0}禁用。請原因PM {1}。"
 
 #, no-php-format
 msgid "Your email has been changed to {0}"
@@ -13152,6 +13653,9 @@ msgstr "您的電子郵件已被確認"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "連接失敗可能是由於多種原因。"
+
+msgid "Your file is too big."
+msgstr "您的文件太大。"
 
 msgid "Your friends"
 msgstr "你的朋友們"
@@ -13172,8 +13676,9 @@ msgstr "您的遊戲權利已通過恢復"
 msgid "Your high score was {0} and you ranked #{1}."
 msgstr "您的最高分是{0}，而您排名＃{1}。"
 
-msgid "Your highspeed upload setting has been disabled by "
-msgstr "您的高速上傳設置已被禁止"
+#, no-php-format
+msgid "Your highspeed upload setting has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "您的高速上傳設置已被{0}禁用。請原因PM {1}。"
 
 msgid "Your identity has been confirmed."
 msgstr "您的身份已被確認。"
@@ -13233,6 +13738,9 @@ msgstr "您在{0}您的個人資料{1}上的聲譽是{2} <br>總計：{3}分。"
 msgid "Your requests list is empty."
 msgstr "您的請求列表為空。"
 
+msgid "Your shit list is empty. "
+msgstr "您的狗屎清單是空的。"
+
 msgid "Your text here"
 msgstr "在這輸入文字"
 
@@ -13254,8 +13762,9 @@ msgstr "您的用戶名是："
 msgid "Your vote"
 msgstr "你的票"
 
-msgid "Your warned Status has been removed by "
-msgstr "您的警告狀態已被刪除"
+#, no-php-format
+msgid "Your warned Status has been removed by {0}"
+msgstr "您的警告狀態已被{0}刪除"
 
 msgid "Youtube"
 msgstr "優酷"
@@ -13530,13 +14039,10 @@ msgstr "由{0}於{1}"
 #, no-php-format
 msgid "by {1} within the last {0} day"
 msgid_plural "by {1} within the last {0} days"
-msgstr[0] ""
+msgstr[0] "by {1} within the last {0} days"
 
 msgid "bytes "
 msgstr "個字節"
-
-msgid "cannot be empty"
-msgstr "不能為空"
 
 msgid "card count"
 msgstr "卡數"
@@ -13592,7 +14098,7 @@ msgstr "已確認"
 #, no-php-format
 msgid "contains {0} message"
 msgid_plural "contains {0} messages"
-msgstr[0] ""
+msgstr[0] "contains {0} messages"
 
 msgid "database"
 msgstr "數據庫"
@@ -13669,6 +14175,9 @@ msgstr "等於"
 msgid "es"
 msgstr "es"
 
+msgid "expand"
+msgstr "擴大"
+
 msgid "expand even more"
 msgstr "擴大更多"
 
@@ -13677,6 +14186,9 @@ msgstr "展開樹"
 
 msgid "expense"
 msgstr "費用"
+
+msgid "false"
+msgstr "假"
 
 msgid "file info not found, empty filename in torrent file?"
 msgstr "找不到文件信息，種子文件中的文件名是否為空？"
@@ -13717,19 +14229,19 @@ msgstr ""
 msgid "freeslot"
 msgstr "自由槽"
 
+msgid "freeslots amount changed to "
+msgstr "自由插槽數量更改為"
+
 #, php-format
 msgid "from the past {0} day."
 msgid_plural "from the past {0} days."
-msgstr[0] ""
+msgstr[0] "from the past {0} days."
 
 msgid "from watched users"
 msgstr "來自觀察到的用戶"
 
 msgid "fwd"
 msgstr "前輪驅動"
-
-msgid "games disablement from "
-msgstr "的遊戲禁用"
 
 msgid "go back to where you were?"
 msgstr "回到你原來的地方？"
@@ -13751,6 +14263,9 @@ msgstr "已存入您的帳戶"
 
 msgid "has been promoted to Uploader by"
 msgstr "已由提升為上載者"
+
+msgid "has been suspended by "
+msgstr "已被暫停"
 
 msgid "has had a new post"
 msgstr "有一個新帖子"
@@ -13798,9 +14313,6 @@ msgstr "在"
 msgid "in Forum"
 msgstr "在論壇中"
 
-msgid "in the form"
-msgstr "形式"
-
 msgid "in the recycle-bin"
 msgstr "在回收站"
 
@@ -13814,17 +14326,17 @@ msgstr "在{0}中的{1}（{2}）中"
 #, no-php-format
 msgid "in {0} day"
 msgid_plural "in {0} days"
-msgstr[0] ""
+msgstr[0] "in {0} days"
 
 #, no-php-format
 msgid "in {0} month"
 msgid_plural "in {0} months"
-msgstr[0] ""
+msgstr[0] "in {0} months"
 
 #, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
-msgstr[0] ""
+msgstr[0] "in {0} weeks"
 
 msgid "include a proper NFO"
 msgstr "包括適當的NFO"
@@ -13887,12 +14399,6 @@ msgstr "是結果"
 msgid "is the winner and not"
 msgstr "是贏家而不是"
 
-msgid "is too long"
-msgstr "太長"
-
-msgid "is too short (min 4 chars)"
-msgstr "太短（最少4個字符）"
-
 msgid "joined: "
 msgstr "加盟："
 
@@ -13914,8 +14420,17 @@ msgstr "倒數最後十個帖子"
 msgid "last unread post in this thread"
 msgstr "該線程中最後未讀的帖子"
 
-msgid "leechwarn Status from "
-msgstr "leechwarn狀態從"
+#, no-php-format
+msgid "leechwarn Status enabled by {0}."
+msgstr "leechwarn狀態由{0}啟用。"
+
+#, no-php-format
+msgid "leechwarn Status for {0} by {1}."
+msgstr "{1}的{0}的leechwarn狀態。"
+
+#, no-php-format
+msgid "leechwarn Status removed by {0}."
+msgstr "leechwarn狀態已被{0}刪除。"
 
 msgid "less than one minute"
 msgstr "不到一分鐘"
@@ -13928,12 +14443,6 @@ msgstr "登錄以使用此功能！"
 
 msgid "match"
 msgstr "比賽"
-
-msgid "max 100 chars"
-msgstr "最多100個字符"
-
-msgid "max 80 chars"
-msgstr "最多80個字符"
 
 msgid "means the user is seeding."
 msgstr "表示用戶正在播種。"
@@ -13985,6 +14494,9 @@ msgstr "沒有"
 
 msgid "no files"
 msgstr "沒有文件"
+
+msgid "no hit and runners at the moment..."
+msgstr "目前沒有任何攻擊和跑步者..."
 
 msgid "no information"
 msgstr "無信息"
@@ -14053,6 +14565,9 @@ msgstr "孤兒"
 
 msgid "out of 10, 1 being not so shitty, 10 being really shitty... Please select one."
 msgstr "10人中，有1人不那麼卑鄙，有10人真的很卑鄙...請選擇一個。"
+
+msgid "p2p"
+msgstr "2"
 
 msgid "pDL(MB)"
 msgstr "pDL（兆字節）"
@@ -14167,8 +14682,14 @@ msgstr "選擇要添加的邀請數量。"
 msgid "select parent forum if sub-forum"
 msgstr "如果子論壇選擇父論壇"
 
+msgid "selected"
+msgstr "已選"
+
 msgid "send a PM to this evil toad"
 msgstr "向這個邪惡的蟾蜍發送PM"
+
+msgid "shittiest at the top "
+msgstr "最胖的在頂部"
 
 msgid "short of making that bet"
 msgstr "沒能打賭"
@@ -14191,6 +14712,13 @@ msgstr "顯示已禁用的點擊和運行"
 msgid "showing first"
 msgstr "首先顯示"
 
+msgid "shrink"
+msgstr "收縮"
+
+#, no-php-format
+msgid "skype changed to {0} from {1} by {2}"
+msgstr "skype由{2}由{1}更改為{0}"
+
 msgid "sorry, no member was found"
 msgstr "對不起，沒有找到會員"
 
@@ -14202,6 +14730,9 @@ msgstr "員工"
 
 msgid "successfully backed-up the database."
 msgstr "成功備份數據庫。"
+
+msgid "successfully deleted"
+msgstr "成功刪除"
 
 msgid "system messages"
 msgstr "系統消息"
@@ -14248,10 +14779,16 @@ msgstr "總計-"
 #, php-format
 msgid "total - {0} user"
 msgid_plural "total - {0} users"
-msgstr[0] ""
+msgstr[0] "total - {0} users"
 
 msgid "total file size and number of pieces do not match"
 msgstr "文件總大小和件數不匹配"
+
+msgid "true"
+msgstr "真正"
+
+msgid "uglify.php failed"
+msgstr "uglify.php失敗"
 
 msgid "unique users that are not connectable."
 msgstr "無法連接的唯一身份用戶。"
@@ -14295,8 +14832,17 @@ msgstr "查看最新到最舊的帖子"
 msgid "view posts from oldest to newest"
 msgstr "查看從最舊到最新的帖子"
 
-msgid "warned Status from "
-msgstr "警告狀態來自"
+#, no-php-format
+msgid "warned Status enabled by {0}."
+msgstr "警告狀態由{0}啟用。"
+
+#, no-php-format
+msgid "warned Status for {0} by {1}."
+msgstr "由{1}警告{0}的狀態。"
+
+#, no-php-format
+msgid "warned Status removed by {0}."
+msgstr "警告狀態已被{0}刪除。"
 
 msgid "warned users"
 msgstr "警告用戶"
@@ -14306,6 +14852,10 @@ msgstr "在開門期間被註冊"
 
 msgid "watched user list"
 msgstr "看過的用戶列表"
+
+#, no-php-format
+msgid "website changed to {0} from {1} by {2}"
+msgstr "網站由{2}由{1}更改為{0}"
 
 msgid "week"
 msgstr "週"
@@ -14370,11 +14920,6 @@ msgid "your total uploaded of {0}GB implies a delay of {1} hours. Even if your t
 msgstr "您總共上傳了{0} GB，意味著延遲了{1}小時。即使您的上傳總數為{2} GB"
 
 #, no-php-format
-msgid "{0, number) Member removed from the list"
-msgid_plural "{0, number) Members removed from the list"
-msgstr[0] ""
-
-#, no-php-format
 msgid "{0} (ID: #{1})"
 msgstr "{0}（ID：＃{1}）"
 
@@ -14425,11 +14970,15 @@ msgstr "{0}-上載者角色已被{1}刪除\n"
 #, no-php-format
 msgid "{0} Active User"
 msgid_plural "{0} Active Users"
-msgstr[0] ""
+msgstr[0] "{0} Active Users"
 
 #, no-php-format
 msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0}將{1}添加到{2}監視的用戶列表{4}中。"
+
+#, no-php-format
+msgid "{0} Arcade Top Scores!"
+msgstr "{0}商場最高分！"
 
 #, no-php-format
 msgid "{0} Days"
@@ -14448,13 +14997,30 @@ msgid "{0} Invitation"
 msgstr "{0}邀請"
 
 #, no-php-format
+msgid "{0} Invite for {1} Freeslots."
+msgstr "{0}邀請參加{1} Freeslots。"
+
+#, no-php-format
+msgid "{0} Invite for {1} Karma."
+msgstr "{0}邀請{1}業力。"
+
+#, no-php-format
+msgid "{0} Invites for {1} Karma."
+msgstr "{0}邀請{1}業力。"
+
+#, no-php-format
 msgid "{0} Lottery"
 msgstr "{0}彩票"
 
 #, no-php-format
+msgid "{0} Member removed from the list"
+msgid_plural "{0} Members removed from the list"
+msgstr[0] "{0} Members removed from the list"
+
+#, no-php-format
 msgid "{0} Member visited during the last 24 hours"
 msgid_plural "{0} Members visited during the last 24 hours"
-msgstr[0] ""
+msgstr[0] "{0} Members visited during the last 24 hours"
 
 #, no-php-format
 msgid "{0} Months"
@@ -14463,7 +15029,7 @@ msgstr "{0}個月"
 #, no-php-format
 msgid "{0} New Report"
 msgid_plural "{0} New Reports"
-msgstr[0] ""
+msgstr[0] "{0} New Reports"
 
 #, no-php-format
 msgid "{0} Old School Arcade!"
@@ -14472,25 +15038,41 @@ msgstr "{0}老派拱廊！"
 #, php-format
 msgid "{0} Page"
 msgid_plural "{0} Pages"
-msgstr[0] ""
+msgstr[0] "{0} Pages"
 
 #, no-php-format
 msgid "{0} Point Available."
 msgid_plural "{0} Points Available."
-msgstr[0] ""
+msgstr[0] "{0} Points Available."
 
 #, no-php-format
 msgid "{0} Point spent."
 msgid_plural "{0} Points spent."
-msgstr[0] ""
+msgstr[0] "{0} Points spent."
+
+#, no-php-format
+msgid "{0} Points for Freeslots."
+msgstr "{0}分用於免費插槽。"
 
 #, no-php-format
 msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
 msgstr "{0}種子的種子時間修復點：{1} => {2}"
 
 #, no-php-format
+msgid "{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
+msgstr "{0}自定義標題點。舊標題為“ {1}”，新標題為“ {2}”。"
+
+#, no-php-format
+msgid "{0} Points to Reanimate torrent: {1}."
+msgstr "{0}指向復活種子：{1}。"
+
+#, no-php-format
 msgid "{0} Records"
 msgstr "{0}條記錄"
+
+#, no-php-format
+msgid "{0} Registration"
+msgstr "{0}註冊"
 
 #, no-php-format
 msgid "{0} Reset Password Request"
@@ -14511,20 +15093,20 @@ msgstr "{0}最小允許下注為100 MB！"
 #, no-php-format
 msgid "{0} Ticket"
 msgid_plural "{0} Tickets"
-msgstr[0] ""
+msgstr[0] "{0} Tickets"
 
 #, no-php-format
 msgid "{0} Torrent On Deathrow"
 msgid_plural "{0} Torrents On Deathrow"
-msgstr[0] ""
+msgstr[0] "{0} Torrents On Deathrow"
 
 #, no-php-format
 msgid "{0} Unread PM"
 msgid_plural "{0} Unread PM's"
-msgstr[0] ""
+msgstr[0] "{0} Unread PM's"
 
 #, no-php-format
-msgid "{0} You bought {1} Freeslots for  {2} Karma."
+msgid "{0} You bought {1} Freeslots for {2} Karma."
 msgstr "{0}您以{2} Karma購買了{1} Freeslots。"
 
 #, no-php-format
@@ -14570,7 +15152,7 @@ msgstr "{0}個帳戶的無效時間超過{1}天。"
 #, no-php-format
 msgid "{0} achievement earned."
 msgid_plural "{0} achievements earned."
-msgstr[0] ""
+msgstr[0] "{0} achievements earned."
 
 #, no-php-format
 msgid "{0} and lost"
@@ -14585,9 +15167,13 @@ msgid "{0} and won"
 msgstr "{0}並贏了"
 
 #, no-php-format
+msgid "{0} bytes added."
+msgstr "添加了{0}個字節。"
+
+#, no-php-format
 msgid "{0} day"
 msgid_plural "{0} days"
-msgstr[0] ""
+msgstr[0] "{0} days"
 
 #, no-php-format
 msgid "{0} file"
@@ -14596,16 +15182,20 @@ msgstr "{0}個文件"
 #, no-php-format
 msgid "{0} flushed {1} torrent."
 msgid_plural "{0} flushed {1} torrents."
-msgstr[0] ""
+msgstr[0] "{0} flushed {1} torrents."
 
 #, no-php-format
-msgid "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgid_plural "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgstr[0] ""
+msgid "{0} ghost torrent was successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgstr[0] "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
 msgstr "{0}已加倍下注，因此將下注加倍到{1}。"
+
+#, no-php-format
+msgid "{0} has accessed the {1}"
+msgstr "{0}已訪問{1}"
 
 #, no-php-format
 msgid "{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
@@ -14621,7 +15211,7 @@ msgstr "{0}沒有命中率！"
 
 #, no-php-format
 msgid "{0} has no posts to look at!"
-msgstr ""
+msgstr "{0}沒有帖子可看！"
 
 #, no-php-format
 msgid "{0} has tried to login using invalid data. "
@@ -14634,7 +15224,7 @@ msgstr "{0}嘗試使用無效數據重設密碼。"
 #, no-php-format
 msgid "{0} hour"
 msgid_plural "{0} hours"
-msgstr[0] ""
+msgstr[0] "{0} hours"
 
 #, no-php-format
 msgid "{0} is not currently a supported locale."
@@ -14655,12 +15245,16 @@ msgstr "{0}位於腹地的專用服務器上。目前，我們每月的運行費
 #, no-php-format
 msgid "{0} member just wanted to see the results"
 msgid_plural "{0} members just wanted to see the results"
-msgstr[0] ""
+msgstr[0] "{0} members just wanted to see the results"
 
 #, no-php-format
 msgid "{0} month ago"
 msgid_plural "{0} months ago"
-msgstr[0] ""
+msgstr[0] "{0} months ago"
+
+#, no-php-format
+msgid "{0} out of 10"
+msgstr "{0}之10"
 
 #, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
@@ -14675,9 +15269,21 @@ msgid "{0} set by {1}<br>"
 msgstr "{0}由{1}設置<br>"
 
 #, no-php-format
+msgid "{0} staff page"
+msgstr "{0}員工頁面"
+
+#, no-php-format
 msgid "{0} time"
 msgid_plural "{0} times"
-msgstr[0] ""
+msgstr[0] "{0} times"
+
+#, no-php-format
+msgid "{0} to {1}"
+msgstr "{0}至{1}"
+
+#, no-php-format
+msgid "{0} to {1} by {2}."
+msgstr "由{2}從{0}到{1}。"
 
 #, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
@@ -14686,40 +15292,45 @@ msgstr "{0}上載功勞以獲取對種子的比率固定：{1} => {2}"
 #, no-php-format
 msgid "{0} uploader application to be dealt with."
 msgid_plural "{0} uploader applications to be dealt with."
-msgstr[0] ""
+msgstr[0] "{0} uploader applications to be dealt with."
 
 #, no-php-format
 msgid "{0} user HnR's warning removed"
 msgid_plural "{0} users HnR's warning removed"
-msgstr[0] ""
+msgstr[0] "{0} users HnR's warning removed"
 
 #, php-format
 msgid "{0} user disabled"
 msgid_plural "{0} users disabled"
-msgstr[0] ""
+msgstr[0] "{0} users disabled"
 
 #, no-php-format
 msgid "{0} user disabled!"
 msgid_plural "{0} users disabled!"
-msgstr[0] ""
+msgstr[0] "{0} users disabled!"
 
 #, no-php-format
 msgid "{0} user unwarned."
 msgid_plural "{0} users unwarned."
-msgstr[0] ""
+msgstr[0] "{0} users unwarned."
 
 #, no-php-format
 msgid "{0} view offensive avatar by {1}, {2}\n"
 msgstr "{0}通過{1}，{2}查看進攻頭像\n"
 
 #, no-php-format
+msgid "{0} was deleted."
+msgstr "{0}已被刪除。"
+
+#, no-php-format
 msgid "{0} week"
-msgstr "{0}週"
+msgid_plural "{0} weeks"
+msgstr[0] "{0} weeks"
 
 #, no-php-format
 msgid "{0} week ago"
 msgid_plural "{0} weeks ago"
-msgstr[0] ""
+msgstr[0] "{0} weeks ago"
 
 #, no-php-format
 msgid "{0} weeks"
@@ -14732,7 +15343,7 @@ msgstr "{0}，ID：{1}個報告已發送。"
 #, no-php-format
 msgid "{0} year ago"
 msgid_plural "{0} years ago"
-msgstr[0] ""
+msgstr[0] "{0} years ago"
 
 #, no-php-format
 msgid "{0}'s Entertainment"
@@ -14745,6 +15356,10 @@ msgstr "{0}的菜單"
 #, no-php-format
 msgid "{0}'s Mood"
 msgstr "{0}的心情"
+
+#, no-php-format
+msgid "{0}'s Panel"
+msgstr "{0}的面板"
 
 #, no-php-format
 msgid "{0}: Modded Torrents"
@@ -14797,14 +15412,14 @@ msgstr "{0}並贏了"
 #, no-php-format
 msgid "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
 msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
-msgstr[0] ""
+msgstr[0] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 
 #, no-php-format
 msgid "{1} was hit {0} time in {2} seconds"
 msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] ""
+msgstr[0] "{1} was hit {0} times in {2} seconds"
 
 #, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
-msgstr[0] ""
+msgstr[0] "{1}: Modded Torrents from {0} days ago"

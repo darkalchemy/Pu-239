@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['delete']) && $_POST[
                 }
             }
             $image->delete_image($item['url']);
-            $session->set('is-success', $item['url'] . ' was deleted.');
+            $session->set('is-success', _fe('{0} was deleted.', $item['url']));
         }
     }
 }
@@ -62,21 +62,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['terms'])) {
     }
 }
 if (!empty($images)) {
-    $heading = "
+    $heading = '
         <tr>
-            <th>Preview</th>
-            <th class='has-text-centered'>Type</th>
-            <th class='has-text-centered'>IMDb</th>
-            <th class='has-text-centered'>TMDb</th>
-            <th class='has-text-centered'>TvMaze ID</th>
-            <th class='has-text-centered'>ISBN</th>
-            <th class='has-text-centered'>Lang</th>
-            <th class='has-text-centeredtooltipper' title='If image has been fetched and is in your filesystem'>Fetched</th>
-            <th class='has-text-centered tooltipper' title='If IMDb or TMDb not empty, when it was updated'>Updated</th>
-            <th class='has-text-centered tooltipper' title='If IMDb or TMDb is empty, the last time we looked it up'>Checked</th>
-            <th class='has-text-centered tooltipper' title='Select All'><input type='checkbox' id='checkThemAll'></th>
-            <th class='has-text-centered tooltipper' title='Ignore'>Ignore</th>
-        </tr>";
+            <th>' . ('Preview') . "</th>
+            <th class='has-text-centered'>" . ('Type') . "</th>
+            <th class='has-text-centered'>" . ('IMDb') . "</th>
+            <th class='has-text-centered'>" . ('TMDb') . "</th>
+            <th class='has-text-centered'>" . ('TvMaze ID') . "</th>
+            <th class='has-text-centered'>" . ('ISBN') . "</th>
+            <th class='has-text-centered'>" . ('Language') . "</th>
+            <th class='has-text-centered tooltipper' title='" . ('If image has been fetched and is in your filesystem') . "'>" . ('Fetched') . "</th>
+            <th class='has-text-centered tooltipper' title='" . ('If IMDb or TMDb not empty, when it was updated') . "'>" . ('Updated') . "</th>
+            <th class='has-text-centered tooltipper' title='" . ('If IMDb or TMDb is empty, the last time we looked it up') . "'>" . ('Checked') . "</th>
+            <th class='has-text-centered tooltipper' title='" . ('Select All') . "'><input type='checkbox' id='checkThemAll'></th>
+            <th class='has-text-centered tooltipper' title='" . ('Ignore') . "'>" . ('Ignore') . '</th>
+        </tr>';
     $body = '';
     foreach ($images as $image) {
         $hash = hash('sha256', $image['url']);
@@ -111,16 +111,16 @@ if (!empty($images)) {
         </tr>';
     }
     $HTMLOUT .= "
-        <h1 class='has-text-centered'>Manage Images</h1>" . ($count > $perpage ? $pager['pagertop'] : '') . "
+        <h1 class='has-text-centered'>" . _('Manage Images') . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='terms' enctype='multipart/form-data' accept-charset='utf-8'>
-            <div class='has-text-centered margin20 tooltipper' title='Search by IMDb, TMDb, TvMaze ID, ISBN, type'>
+            <div class='has-text-centered margin20 tooltipper' title='" . _('Search by IMDb, TMDb, TvMaze ID, ISBN, type') . "'>
                 <input type='text' name='terms' value='$terms'>
-                <input type='submit' class='button is-small' name='search' value='Search'>
+                <input type='submit' class='button is-small' name='search' value='" . _('Search') . "'>
             </div>
         <form>
         <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='checkme' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body, $heading) . "
             <div class='has-text-centered margin20'>
-                <input type='submit' class='button is-small' name='delete' value='Delete'>
+                <input type='submit' class='button is-small' name='delete' value='" . _('Delete') . "'>
             </div>
         <form>" . ($count > $perpage ? $pager['pagerbottom'] : '');
 } else {

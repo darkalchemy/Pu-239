@@ -107,210 +107,11 @@ msgstr ""
 msgid "  Descending"
 msgstr "  aleneva"
 
-msgid " - AJAX Chat disablement by "
-msgstr " - AJAX-keskustelun poistaminen käytöstä"
-
-msgid " - AJAX Chat disablement for"
-msgstr " - AJAX-keskustelun poisto käytöstä"
-
-msgid " - AJAX Chat disablement status removed by "
-msgstr " - AJAX Chat - käytön tilan poistanut"
-
-msgid " - Account Parked by "
-msgstr " - Tilin pysäköi"
-
-msgid " - Account UnParked by "
-msgstr " - Tili unParked by tili"
-
-msgid " - Added Download"
-msgstr " - Lisätty Lataa"
-
-msgid " - Added Upload"
-msgstr " - Lisätty lataus"
-
-msgid " - Avatar changed from "
-msgstr " - Avatar muutettu"
-
-msgid " - Avatar disablement by "
-msgstr " - Avatar käytöstä poistaminen"
-
-msgid " - Avatar disablement for"
-msgstr " - Avatar - käyttö pois päältä"
-
-msgid " - Avatar disablement status removed by "
-msgstr " - Avatarin käytöstä poistamisen tila poistettu"
-
-msgid " - Avatar rights turned off by "
-msgstr " - Avatar-oikeudet on poistettu käytöstä"
-
-msgid " - Avatar rights turned on by "
-msgstr " - Avatar-oikeudet on kytketty päälle"
-
-msgid " - Custom Title changed to "
-msgstr " - Mukautettu otsikko muutettiin muotoon"
-
-msgid " - Demoted from FLS by "
-msgstr " - Torjuttu FLS: ltä"
-
-msgid " - Download disablement by "
-msgstr " Lataa poisto käytöstä"
-
-msgid " - Download enabled by "
-msgstr " Lataus on sallittu"
-
-msgid " - Downloads disabled by "
-msgstr " - Lataukset poistettu käytöstä"
-
-msgid " - Freeleech Status enabled by "
-msgstr " - Freeleech-tila on käytössä"
-
-msgid " - Freeleech Status for"
-msgstr " - Freeleech-tila"
-
-msgid " - Freeleech Status removed by "
-msgstr " - Freeleech-tilan poistanut"
-
-msgid " - Games disablement for"
-msgstr " - Pelien poisto käytöstä"
-
-msgid " - Gaming disablement by "
-msgstr " - Pelin käytöstä poistaminen"
-
-msgid " - Gaming disablement status removed by "
-msgstr " - Pelin käytöstä poistamisen tila poistettu"
-
-msgid " - Highspeed Upload disabled by "
-msgstr " - Nopea lataus on poistettu käytöstä"
-
-msgid " - Highspeed Upload enabled by "
-msgstr " - Nopea lataus käytössä"
-
-msgid " - Hit and runs set to "
-msgstr " - Osuma ja juoksee asetettuun"
-
-msgid " - Immune Status enabled by "
-msgstr " - Immuunitila käytössä"
-
-msgid " - Immunity Status for"
-msgstr " - immuniteetin tila"
-
-msgid " - Immunity Status removed by "
-msgstr " - Immuniteetin tila poistettu"
-
-msgid " - Invite amount changed to "
-msgstr " - Kutsujen määrä muutettiin"
-
-msgid " - Invites allowed changed from "
-msgstr " - Sallitut kutsut on muutettu"
-
-msgid " - Offensive avatar set to no by "
-msgstr " - Loukkaava avataari asetettu nollaan"
-
-msgid " - Offensive avatar set to yes by "
-msgstr " - Loukkaava avatar on kyllä"
-
-#, no-php-format
-msgid " - Paranoia changed to {0} from {1} by {2}"
-msgstr " - Paranoia muutettiin arvoksi {0} arvosta {1} tilalle {2}"
-
-msgid " - Peers limit set to"
-msgstr " - Vertaisarvioksi asetettu"
-
-msgid " - Pm disablement by "
-msgstr " - Pm käytöstä"
-
-msgid " - Pm disablement for"
-msgstr " - Pm käytöstä"
-
-msgid " - Pm disablement status removed by "
-msgstr " - Pm käytöstä poistamisen tila"
-
-msgid " - Posting disabled by "
-msgstr " - Lähettäminen poistettu käytöstä"
-
-msgid " - Posting enabled by "
-msgstr " - Lähettäminen on sallittu"
-
-msgid " - Promoted to FLS by "
-msgstr " - Ylennetty FLS: lle"
-
-msgid " - Reputation points changed to "
-msgstr " - Mainepisteet muutettiin"
-
-msgid " - Seedbonus amount changed to "
-msgstr " - Siemenbonuksen määrä muutettiin arvoon"
-
-msgid " - Signature changed from "
-msgstr " - Allekirjoitus muutettu"
-
-msgid " - Signature rights turned off by "
-msgstr " - Allekirjoitusoikeudet on poistettu käytöstä"
-
-msgid " - Signature rights turned on by "
-msgstr " - Allekirjoitusoikeudet kytketty päälle"
-
-msgid " - Subtracted Download"
-msgstr " - vähennetty lataus"
-
-msgid " - Subtracted Upload"
-msgstr " - Vähennetty lähetys"
-
-msgid " - This account has been Un-suspended by "
-msgstr " - Tili on peruuttanut tämän tilin"
-
-msgid " - This account has been suspended by "
-msgstr " - Tämä tili on jäädytetty"
-
-msgid " - Torrents limit set to"
-msgstr " - Torrenttien raja-arvo on"
-
-msgid " - Upload disablement by "
-msgstr " - Lataa käytöstä poistaminen"
-
-msgid " - Upload disablement status removed by "
-msgstr " - Lähetä käytöstä poistamisen tila, jonka poisti"
-
-msgid " - Wait time set to"
-msgstr " - Odota aika asetettu kohtaan"
-
-msgid " - freeslots amount changed to "
-msgstr " - ilmaisjaksojen määrä muutettiin arvoon"
-
-msgid " - leechwarn Status enabled by "
-msgstr " - leechwarn - tila käytössä"
-
-msgid " - leechwarn Status for"
-msgstr " - harmaanalehden tila"
-
-msgid " - leechwarn Status removed by "
-msgstr " - harmaasähkön tila poistettu"
-
-#, no-php-format
-msgid " - skype changed to {0} from {1} by {2}"
-msgstr " - skype muutettiin arvoksi {0} arvosta {1}, jonka teki {2}"
-
-msgid " - warned Status enabled by "
-msgstr " varoitettu tila käytössä"
-
-msgid " - warned Status for"
-msgstr " - varoitettu tila"
-
-msgid " - warned Status removed by "
-msgstr " varoitettu tila poistettu"
-
-#, no-php-format
-msgid " - website changed to {0} from {1} by {2}"
-msgstr " - verkkosivusto muutettiin arvoksi {0} arvosta {1}, jonka teki {2}"
-
 msgid " = Delete Bookmark |"
 msgstr " = Poista kirjanmerkki |"
 
 msgid " = Download Torrent |"
 msgstr " = Lataa torrentti |"
-
-#, no-php-format
-msgid " Add {0} to your Shit List {1}"
-msgstr " Lisää {0} paskalistatasi {1}"
 
 msgid " Ascending "
 msgstr " nouseva"
@@ -326,9 +127,6 @@ msgstr " DLed klo"
 
 msgid " DLed at: "
 msgstr " DLed klo:"
-
-msgid " Date"
-msgstr " Päivämäärä"
 
 msgid " Days"
 msgstr " päivää"
@@ -381,9 +179,6 @@ msgstr " Yritä noudattaa näitä ohjeita"
 msgid " Read Messages."
 msgstr " Lue viestejä."
 
-msgid " Registration"
-msgstr " Rekisteröinti"
-
 msgid " Seconds "
 msgstr " sekuntia"
 
@@ -405,9 +200,6 @@ msgstr " Varoitettu asti"
 msgid " Whom to promote and why"
 msgstr " Keitä mainostamaan ja miksi"
 
-msgid " Your shit list is empty. "
-msgstr " Passi luettelosi on tyhjä."
-
 msgid " better luck next time..."
 msgstr " parempi onni ensi kerralla..."
 
@@ -423,9 +215,6 @@ msgstr " liikuntarajoitteinen!"
 msgid " does not accept PMs."
 msgstr " ei hyväksy pääministeriä."
 
-msgid " expand"
-msgstr " laajentaa"
-
 msgid " for the reason why."
 msgstr " syystä miksi."
 
@@ -438,9 +227,6 @@ msgstr " on merkitty epätavallisen korkealla latausnopeudella!"
 msgid " has been marked as inactive and will be deleted. If you wish to remain a member at"
 msgstr " on merkitty passiiviseksi ja poistetaan. Jos haluat pysyä jäsenenä"
 
-msgid " has been suspended by "
-msgstr " on keskeyttänyt"
-
 msgid " has blocked PMs from you."
 msgstr " on estänyt sinulta PM: t."
 
@@ -449,12 +235,6 @@ msgstr " ei ole koskaan ollut IRC: ssä!"
 
 msgid " new email is "
 msgstr " uusi sähköposti on"
-
-msgid " no hit and runners at the moment..."
-msgstr " ei osumaa ja juoksijoita tällä hetkellä ..."
-
-msgid " out of 10"
-msgstr " 10: stä"
 
 msgid " peer(s) total"
 msgstr " vertaiset yhteensä"
@@ -471,17 +251,8 @@ msgstr " säännöt rikki:"
 msgid " selected messages."
 msgstr " valitut viestit."
 
-msgid " shittiest at the top "
-msgstr " shittyiest ylhäällä"
-
-msgid " shrink"
-msgstr " kutistua"
-
 msgid " still to go "
 msgstr " vielä mennä"
-
-msgid " successfully deleted"
-msgstr " poistettu onnistuneesti"
 
 msgid " time"
 msgstr " aika"
@@ -503,9 +274,6 @@ msgstr " käyttäjä"
 
 msgid " views"
 msgstr " näkymät"
-
-msgid " week"
-msgstr " viikko"
 
 msgid " you will experience no delay."
 msgstr " et koe viivytystä."
@@ -615,7 +383,7 @@ msgstr "(Meiltä lataamasi tiedostot ovat kuitenkin sinun tekemäsi niin kuin ha
 msgid "(In first place, it's unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.)"
 msgstr "(Ensinnäkin on epätodennäköistä, että Internet-palveluntarjoajasi tekee niin. DNS-nimen resoluutio ja / tai verkko-ongelmat ovat tavallisia syyllisiä.)"
 
-msgid "(Minimum Poster Width should be 400 Px , larger sizes will be scaled.)"
+msgid "(Minimum Poster Width should be 400 px, larger sizes will be scaled.)"
 msgstr "(Julisteen vähimmäisleveyden tulisi olla 400 px, suurempia kokoja skaalataan.)"
 
 msgid "(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)"
@@ -688,12 +456,6 @@ msgstr ""
 
 msgid ". PM them for more information."
 msgstr ". PM heille lisätietoja."
-
-msgid ". Please PM "
-msgstr ". Ole hyvä ja PM"
-
-msgid ". You can now upload torrents using highspeeds without being flagged as a cheater."
-msgstr ". Voit nyt ladata torrentteja nopealla nopeudella ilman, että heidät on huijattu."
 
 msgid ". You can post to forum again."
 msgstr ". Voit lähettää viestin uudelleen foorumiin."
@@ -864,8 +626,17 @@ msgstr "Työnjälki on kopio elokuvasta, jota ei ole vielä valmis. Se voi puutt
 msgid "AJAX Chat disabled = "
 msgstr "AJAX-keskustelu poistettu käytöstä ="
 
-msgid "AJAX Chat disablement from "
-msgstr "AJAX-keskustelun poisto käytöstä"
+#, no-php-format
+msgid "AJAX Chat disablement by {0}."
+msgstr "AJAX-keskustelun poistaminen käytöstä {0} mennessä."
+
+#, no-php-format
+msgid "AJAX Chat disablement for {0} by {1}."
+msgstr "{1} AJAX-keskustelun käytöstä poistaminen {0}."
+
+#, no-php-format
+msgid "AJAX Chat disablement status removed by {0}."
+msgstr "AJAX-keskustelun käytöstä poistamisen tila poistettu {0}."
 
 msgid "AJAX Chat enabled = No"
 msgstr "AJAX-keskustelu käytössä = Ei"
@@ -886,8 +657,15 @@ msgstr "APC (u) osumia: {0}"
 msgid "API"
 msgstr "API"
 
+msgid "API Key"
+msgstr "API-avain"
+
 msgid "APIKey "
 msgstr "apikey"
+
+#, no-php-format
+msgid "APIKey {0} reset to {1}."
+msgstr "APIKey {0} palautetaan arvoon {1}."
 
 msgid "APIs Display Settings"
 msgstr "Sovellusliittymien näyttöasetukset"
@@ -935,11 +713,17 @@ msgstr "Pääsy uusimpiin torrenteihin edellyttää hyvää suhdetta! (Katso lis
 msgid "Account Manager"
 msgstr "Tilin haltija"
 
+msgid "Account Parked by "
+msgstr "Tilin pysäköi"
+
 msgid "Account Suspended!"
 msgstr "Tili jäädytetty!"
 
 msgid "Account Un-Suspended!"
 msgstr "Tiliä ei ole jäädytetty!"
+
+msgid "Account UnParked by "
+msgstr "Tili on poistettu käytöstä"
 
 msgid "Account for "
 msgstr "Tili"
@@ -1073,6 +857,9 @@ msgstr "Lisää uusi kysely"
 msgid "Add New Promotion Rule"
 msgstr "Lisää uusi mainossääntö"
 
+msgid "Add New Reply"
+msgstr "Lisää uusi vastaus"
+
 msgid "Add New Reputation Level"
 msgstr "Lisää uusi maineentaso"
 
@@ -1191,6 +978,10 @@ msgstr "Lisää sana"
 msgid "Add {0} to the Watched Users List"
 msgstr "Lisää {0} tarkkailtujen käyttäjien luetteloon"
 
+#, no-php-format
+msgid "Add {0} to your Shit List {1}"
+msgstr "Lisää {0} paskalistatasi {1}"
+
 msgid "Added"
 msgstr "lisätty"
 
@@ -1199,6 +990,12 @@ msgstr "Lisätty / Lähettäjä"
 
 msgid "Added By"
 msgstr "Lähettäjä"
+
+msgid "Added Download"
+msgstr "Lisätty Lataa"
+
+msgid "Added Upload"
+msgstr "Lisätty Lataa"
 
 msgid "Added by"
 msgstr "Lähettäjä"
@@ -1272,6 +1069,9 @@ msgstr "Kohdista oikea"
 msgid "All (except blocks)"
 msgstr "Kaikki (paitsi lohkot)"
 
+msgid "All CSS and Javascript files processed"
+msgstr "Kaikki CSS- ja Javascript-tiedostot on käsitelty"
+
 msgid "All Comments (Reverse Order)"
 msgstr "Kaikki kommentit (käänteinen järjestys)"
 
@@ -1280,6 +1080,9 @@ msgstr "Kaikki kommentit (käänteisessä järjestyksessä)"
 
 msgid "All Donations"
 msgstr "Kaikki lahjoitukset"
+
+msgid "All Double Upload"
+msgstr "Kaikki kaksoislataukset"
 
 msgid "All Peers Are Connectable!"
 msgstr "Kaikki ikäisensä ovat kytkettävissä!"
@@ -1529,9 +1332,6 @@ msgstr "Mielivaltainen kesto"
 msgid "Arcade"
 msgstr "arkadi"
 
-msgid "Arcade Top Scores!"
-msgstr "Pelihallin huipputulokset!"
-
 msgid "Are all downloads subject to HnR, including incomplete downloads?"
 msgstr "Koskevatko kaikki lataukset HnR: ää, mukaan lukien puutteelliset lataukset?"
 
@@ -1634,8 +1434,15 @@ msgstr "audiona"
 msgid "August"
 msgstr "elokuu"
 
+msgid "Auth"
+msgstr "auth"
+
 msgid "Auth Key "
 msgstr "Auth-avain"
+
+#, no-php-format
+msgid "Auth Key {0} reset to {1}."
+msgstr "Auth-avain {0} palautetaan arvoon {1}."
 
 msgid "Author"
 msgstr "kirjailija"
@@ -1679,11 +1486,29 @@ msgstr "Avatar-URL"
 msgid "Avatar changed"
 msgstr "Avatar muuttui"
 
-msgid "Avatar disablement from "
-msgstr "Avatari poistettu käytöstä"
+msgid "Avatar changed from "
+msgstr "Avatar muutettiin"
+
+#, no-php-format
+msgid "Avatar disablement by {0}."
+msgstr "Avatari poistettu käytöstä {0} mennessä."
+
+#, no-php-format
+msgid "Avatar disablement for {0} by {1}."
+msgstr "Avatar on poistettu käytöstä {0} {1}."
+
+#, no-php-format
+msgid "Avatar disablement status removed by {0}."
+msgstr "Avatarin käytöstä poistamisen tila poistettu {0}."
 
 msgid "Avatar rights enabled = "
 msgstr "Avatar-oikeudet käytössä ="
+
+msgid "Avatar rights turned off by "
+msgstr "Avatar-oikeudet on poistettu käytöstä"
+
+msgid "Avatar rights turned on by "
+msgstr "Avatar-oikeudet on ottanut käyttöön"
 
 msgid "Avatar selection disabled = "
 msgstr "Avatar-valinta pois käytöstä ="
@@ -2068,11 +1893,17 @@ msgstr "selain"
 msgid "Browser and OS detect?"
 msgstr "Selain ja käyttöjärjestelmä havaitsevat?"
 
+msgid "Browser?"
+msgstr "Selain?"
+
 msgid "Browsing was used just as an example, the same would apply to gaming, IMing, etc..."
 msgstr "Selaamista käytettiin vain esimerkkinä, sama koskisi pelaamista, pikaviestintää jne. ..."
 
 msgid "Bug Alert Message"
 msgstr "Vikavaroitusviesti"
+
+msgid "Bug Alert Message?"
+msgstr "Vikavaroitusviesti?"
 
 msgid "Bug Message Alert?"
 msgstr "Vikaviestihälytys?"
@@ -2130,8 +1961,14 @@ msgstr "Pelaamalla blackjackia, saat vedonlyöntiä 10 Gt!"
 msgid "CAM"
 msgstr "CAM"
 
-msgid "CAUTION: This DELETES all messages in AJAX Chat!"
-msgstr "VAROITUS: Tämä POISTA kaikki AJAX Chat -viestit!"
+msgid "CAUTION: This <b>DELETES</b> all messages in AJAX Chat!"
+msgstr "VAROITUS: Tämä <b> POISTA </b> kaikki viestit AJAX Chatissa!"
+
+msgid "CD Number"
+msgstr "CD-numero"
+
+msgid "CD#"
+msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG-lukija"
@@ -2288,6 +2125,90 @@ msgstr "Katso {0} Brianin BitTorrent-usein kysytyt kysymykset ja oppaat. {1}"
 msgid "Check this box to hide the uploader of the torrent"
 msgstr "Valitse tämä ruutu piilottaaksesi torrentin lähettäjän"
 
+msgid "Check this option if you want to enable Disclaimer."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön vastuuvapauslausekkeen."
+
+msgid "Check this option if you want to enable Latest User."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön Viimeisin käyttäjä."
+
+msgid "Check this option if you want to enable latest Comments."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön viimeisimmät kommentit."
+
+msgid "Check this option if you want to enable latest Forum Posts."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat foorumiviestit."
+
+msgid "Check this option if you want to enable latest movie torrents."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat elokuvan torrentit."
+
+msgid "Check this option if you want to enable latest torrents banner slider."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat torrent-banneriliukusäätimen."
+
+msgid "Check this option if you want to enable latest torrents marquee."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat torrentimerkit."
+
+msgid "Check this option if you want to enable latest torrents."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat torrentit."
+
+msgid "Check this option if you want to enable latest tv torrents."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön uusimmat tv-torrentit."
+
+msgid "Check this option if you want to enable staff_picks."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön staff_picks."
+
+msgid "Check this option if you want to enable the AJAX Chat."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa AJAX-keskustelun käyttöön."
+
+msgid "Check this option if you want to enable the Active Birthday Users."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa aktiiviset syntymäpäivän käyttäjät käyttöön."
+
+msgid "Check this option if you want to enable the Active Irc Users."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa aktiiviset Irc-käyttäjät käyttöön."
+
+msgid "Check this option if you want to enable the Active Poll."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa aktiivisen kyselyn käyttöön."
+
+msgid "Check this option if you want to enable the Active Users visited over 24hours."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön aktiiviset käyttäjät, joille on käyty yli 24 tuntia."
+
+msgid "Check this option if you want to enable the Active Users."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa aktiiviset käyttäjät käyttöön."
+
+msgid "Check this option if you want to enable the Advertisements."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa mainokset käyttöön."
+
+msgid "Check this option if you want to enable the Announcement Block."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön ilmoituslohkon."
+
+msgid "Check this option if you want to enable the Christmas Gift."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa joululahjan käyttöön."
+
+msgid "Check this option if you want to enable the Cooker."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa lieden käyttöön."
+
+msgid "Check this option if you want to enable the Donation Progress."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön lahjoitusten etenemisen."
+
+msgid "Check this option if you want to enable the IE user alert."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa IE-käyttäjän hälytyksen käyttöön."
+
+msgid "Check this option if you want to enable the MOvie of the week."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa viikon MOvie-toiminnon käyttöön."
+
+msgid "Check this option if you want to enable the News Block."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa uutislohkon käyttöön."
+
+msgid "Check this option if you want to enable the Requests."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa pyynnöt käyttöön."
+
+msgid "Check this option if you want to enable the Stats."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa tilastot käyttöön."
+
+msgid "Check this option if you want to enable the Trivia Game."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa trivia-pelin käyttöön."
+
+msgid "Check this option if you want to enable the torrent freak news."
+msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön torrent-freak-uutisia."
+
 msgid "Check this to post anonymously"
 msgstr "Valitse tämä lähettääksesi nimettömästi"
 
@@ -2297,8 +2218,14 @@ msgstr "Kokki"
 msgid "Child Boards"
 msgstr "Lasten laudat"
 
+msgid "Choose Class"
+msgstr "Valitse luokka"
+
 msgid "Choose One"
 msgstr "Valitse yksi"
+
+msgid "Choose Type"
+msgstr "Valitse Tyyppi"
 
 #, no-php-format
 msgid "Choose any public non-anonymous proxy that does not use port 80 (e.g. from {0}this{1}, {2}this{3} or {4}this{5}</a> list)."
@@ -2503,6 +2430,9 @@ msgstr "Kommenttien historia"
 msgid "Comments left for "
 msgstr "Kommentit jätetty"
 
+msgid "Comments?"
+msgstr "Kommentteja?"
+
 msgid "Commercial"
 msgstr "kaupallinen"
 
@@ -2583,6 +2513,9 @@ msgstr "yhdistettävissä"
 msgid "Connectable and port?"
 msgstr "Liitettävissä ja portti?"
 
+msgid "Connectable?"
+msgstr "Yhdistettävissä?"
+
 msgid "Connected"
 msgstr "kytketty"
 
@@ -2603,6 +2536,9 @@ msgstr "Ota yhteyttä järjestelmänvalvojaan"
 
 msgid "Contact info?"
 msgstr "Yhteystiedot?"
+
+msgid "Contact?"
+msgstr "Ottaa yhteyttä?"
 
 msgid "Contents"
 msgstr "Sisällys"
@@ -2630,6 +2566,10 @@ msgstr "Oikea polku gzipiin"
 
 msgid "Correct path to the mysqldump file"
 msgstr "Oikea polku mysqldump-tiedostoon"
+
+#, no-php-format
+msgid "Cost: {0} Karma"
+msgstr "Hinta: {0} Karma"
 
 msgid "Could not change email, address already taken or password mismatch."
 msgstr "Sähköpostiosoitetta, jo otettua osoitetta tai salasanan väärinkäyttöä ei voitu muuttaa."
@@ -2789,6 +2729,9 @@ msgstr[1] "Tällä hetkellä sinulla on {0} mukautettua ruutua. Voit lisätä {1
 
 msgid "Custom Title"
 msgstr "Muokattu otsikko"
+
+msgid "Custom Title changed to "
+msgstr "Mukautettu otsikko muutettiin muotoon"
 
 msgid "Custom title"
 msgstr "Muokattu otsikko"
@@ -2953,6 +2896,9 @@ msgstr "Poista kirjanmerkki"
 msgid "Delete Bookmark!"
 msgstr "Poista kirjanmerkki!"
 
+msgid "Delete Bot Trigger and all Replies"
+msgstr "Poista Bot Trigger ja kaikki vastaukset"
+
 msgid "Delete Category"
 msgstr "Poista luokka"
 
@@ -2961,6 +2907,9 @@ msgstr "Poista luokka"
 
 msgid "Delete Invite"
 msgstr "Poista kutsu"
+
+msgid "Delete Offer"
+msgstr "Poista tarjous"
 
 msgid "Delete PM"
 msgstr "Poista PM"
@@ -2977,8 +2926,20 @@ msgstr "Poista viesti"
 msgid "Delete Reason"
 msgstr "Poista syy"
 
+msgid "Delete Recipe"
+msgstr "Poista resepti"
+
+msgid "Delete Reply"
+msgstr "Poista vastaus"
+
+msgid "Delete Request"
+msgstr "Poista pyyntö"
+
 msgid "Delete Selected"
 msgstr "Poista valitut"
+
+msgid "Delete Subtitle"
+msgstr "Poista tekstitys"
 
 msgid "Delete Sure?"
 msgstr "Poistetaanko varmasti?"
@@ -3044,6 +3005,9 @@ msgstr "Torrentin poistaminen = - {0} pistettä"
 
 msgid "Demoted"
 msgstr "alennettu"
+
+msgid "Demoted from FLS by "
+msgstr "Ammattilainen FLS: ltä"
 
 msgid "Demotion"
 msgstr "arvonalennus"
@@ -3221,6 +3185,9 @@ msgstr "Älä jätä kenttää tyhjäksi"
 msgid "Don't show my username in 'Uploaded By' field in browse."
 msgstr "Älä näytä käyttäjänimeäni \"Lähettäjä\" -kentässä selaamassa."
 
+msgid "Donate"
+msgstr "Lahjoittaa"
+
 msgid "Donated Status Until"
 msgstr "Lahjoitettu tila asti"
 
@@ -3270,6 +3237,9 @@ msgstr "Tuplastui"
 msgid "Doubleseed slot already in use."
 msgstr "Tuplasiemen paikka on jo käytössä."
 
+msgid "Doubleupload"
+msgstr "Doubleupload"
+
 msgid "Down"
 msgstr "Alas"
 
@@ -3289,15 +3259,19 @@ msgid "Download Torrent"
 msgstr "Lataa torrent-tiedosto"
 
 #, no-php-format
+msgid "Download disablement by {0}."
+msgstr "Lataa poisto käytöstä {0} mennessä."
+
+#, no-php-format
 msgid "Download disablement for {0} by {1}."
 msgstr "Lataa {0} käytöstä poisto {1}."
-
-msgid "Download disablement from "
-msgstr "Lataa käytöstä"
 
 #, no-php-format
 msgid "Download disablement status removed by {0}."
 msgstr "Lataa käytöstä poistamisen tila, jonka {0} poisti."
+
+msgid "Download enabled by "
+msgstr "Lataus on sallittu"
 
 msgid "Download link"
 msgstr "Lataa linkki"
@@ -3342,6 +3316,10 @@ msgstr "Torrentin lataaminen = - {0} pistettä"
 
 msgid "Downloading rules -"
 msgstr "Lataussäännöt -"
+
+#, no-php-format
+msgid "Downloads disabled by {0}."
+msgstr "Lataukset on poistettu käytöstä {0}."
 
 msgid "Downloads edited = "
 msgstr "Latauksia muokattu ="
@@ -3395,6 +3373,9 @@ msgstr "Muokata"
 msgid "Edit / Delete Mail Boxes"
 msgstr "Muokkaa / poista postilaatikoita"
 
+msgid "Edit Bot Trigger"
+msgstr "Muokkaa Bot Trigger"
+
 msgid "Edit Category"
 msgstr "Muokkaa luokkaa"
 
@@ -3424,6 +3405,9 @@ msgstr "Muokkaa kyselyä"
 
 msgid "Edit Post"
 msgstr "Muokkaa viestiä"
+
+msgid "Edit Recipe"
+msgstr "Muokkaa reseptiä"
 
 msgid "Edit Reply"
 msgstr "Muokkaa vastausta"
@@ -3464,6 +3448,9 @@ msgstr "Muokkaa keskustelua"
 
 msgid "Edit forum:"
 msgstr "Muokkaa foorumia:"
+
+msgid "Edit it"
+msgstr "Muokkaa sitä"
 
 msgid "Edit it!"
 msgstr "Muokkaa sitä!"
@@ -3599,11 +3586,17 @@ msgstr "Ota AniDb-sovellusliittymä käyttöön"
 msgid "Enable Announcement?"
 msgstr "Ota ilmoitus käyttöön?"
 
+msgid "Enable Avatar"
+msgstr "Ota Avatar käyttöön"
+
 msgid "Enable Birthday Users?"
 msgstr "Otako syntymäpäivän käyttäjät käyttöön?"
 
 msgid "Enable Bluray.com RSS API"
 msgstr "Ota käyttöön Bluray.com RSS -sovellusliittymä"
+
+msgid "Enable Bug Message alerts in stdhead"
+msgstr "Ota virhesanomat käyttöön stdheadissä"
 
 msgid "Enable Bug message alerts in stdhead"
 msgstr "Ota virhesanomat käyttöön stdheadissä"
@@ -3653,6 +3646,12 @@ msgstr "Ota käyttöön uusimmat elokuvan torrentit?"
 msgid "Enable Latest TV Torrents?"
 msgstr "Ota käyttöön uusimmat TV-torrentit?"
 
+msgid "Enable Latest Torrents scroll?"
+msgstr "Ota käyttöön Viimeisimmät torrentit -vieritys?"
+
+msgid "Enable Latest Torrents slider?"
+msgstr "Ota käyttöön Viimeisimmät torrentit -liukusäädin?"
+
 msgid "Enable Latest Torrents?"
 msgstr "Ota käyttöön uusimmat torrentit?"
 
@@ -3692,6 +3691,9 @@ msgstr "Ota henkilökuntavalikko käyttöön Navbarissa"
 msgid "Enable Staff Picks"
 msgstr "Ota henkilökunnan valinta käyttöön"
 
+msgid "Enable Staff Picks?"
+msgstr "Ota henkilökunnan valinta käyttöön?"
+
 msgid "Enable The Lottery"
 msgstr "Ota arpajaiset käyttöön"
 
@@ -3710,8 +3712,14 @@ msgstr "Ota TvMaze-sovellusliittymä käyttöön"
 msgid "Enable User Reputation system?"
 msgstr "Ota käyttöön käyttäjän mainejärjestelmä?"
 
+msgid "Enable add reputation link"
+msgstr "Ota maineyhteyden lisääminen käyttöön"
+
 msgid "Enable avatar"
 msgstr "Ota avatar käyttöön"
+
+msgid "Enable birthdate and age"
+msgstr "Ota syntymäaika ja ikä käyttöön"
 
 msgid "Enable birthday display"
 msgstr "Ota syntymäpäivänäyttö käyttöön"
@@ -3728,6 +3736,9 @@ msgstr "Ota liitettävä ja portti käyttöön"
 msgid "Enable contact info"
 msgstr "Ota yhteystiedot käyttöön"
 
+msgid "Enable contact infos"
+msgstr "Ota yhteystiedot käyttöön"
+
 msgid "Enable crazyhour alerts in stdhead"
 msgstr "Ota crazyhour-hälytykset käyttöön stdheadissä"
 
@@ -3740,6 +3751,9 @@ msgstr "Ota foorumiviestien historia käyttöön"
 msgid "Enable freeslots and freeleech"
 msgstr "Ota käyttöön ilmaisjaot ja freeleech"
 
+msgid "Enable freeslots and freeleech status"
+msgstr "Ota vapaamot ja freeleech-tila käyttöön"
+
 msgid "Enable gender"
 msgstr "Ota sukupuoli käyttöön"
 
@@ -3748,6 +3762,15 @@ msgstr "Ota happy hour -hälytykset käyttöön stdheadissä"
 
 msgid "Enable invited by"
 msgstr "Ota käyttöön kutsunut"
+
+msgid "Enable invited by list"
+msgstr "Ota kutsut luettelon avulla"
+
+msgid "Enable ip history lists"
+msgstr "Ota IP-historialuettelot käyttöön"
+
+msgid "Enable irc online stats"
+msgstr "Ota IRC-online-tilastot käyttöön"
 
 msgid "Enable irc stats"
 msgstr "Ota IRC-tilastot käyttöön"
@@ -3761,8 +3784,17 @@ msgstr "Ota karman lisäystilavaroitus käyttöön stdheadissä"
 msgid "Enable message alert block"
 msgstr "Ota viestihälytys käyttöön"
 
+msgid "Enable message alerts in stdhead"
+msgstr "Ota viestihälytykset käyttöön stdheadissä"
+
+msgid "Enable online time"
+msgstr "Ota online-aika käyttöön"
+
 msgid "Enable report user"
 msgstr "Ota raportin käyttäjä käyttöön"
+
+msgid "Enable report users button"
+msgstr "Ota raportin käyttäjät -painike käyttöön"
 
 msgid "Enable reports alert in stdhead"
 msgstr "Ota raporttihälytys käyttöön stdheadissä"
@@ -3770,8 +3802,14 @@ msgstr "Ota raporttihälytys käyttöön stdheadissä"
 msgid "Enable reputation link"
 msgstr "Ota maineyhteys käyttöön"
 
+msgid "Enable seed time per torrent average ratio"
+msgstr "Ota siemenaika torrentin keskiarvoa kohti"
+
 msgid "Enable seedbonus"
 msgstr "Ota siemenbonus käyttöön"
+
+msgid "Enable seeding, leeching, snatched and uploaded torrents"
+msgstr "Ota kylvö, leeching, siepatut ja lähetetyt torrentit käyttöön"
 
 msgid "Enable seeding, leeching, snatched, uploaded torrents"
 msgstr "Ota kylvö, leeching, siepattu, ladatut torrentit"
@@ -3785,11 +3823,20 @@ msgstr "Ota Lähetä viesti -painike käyttöön"
 msgid "Enable share ratio"
 msgstr "Ota osakesuhde käyttöön"
 
+msgid "Enable show friends button"
+msgstr "Ota käyttöön Näytä ystävät -painike"
+
 msgid "Enable staff snatched torrents"
 msgstr "Ota henkilökunta napata torrenteja"
 
+msgid "Enable staff snatchlist"
+msgstr "Ota henkilökunnan sieppausluettelo käyttöön"
+
 msgid "Enable the global demotion alert block"
 msgstr "Ota käyttöön yleinen alennushälytyslohko"
+
+msgid "Enable the global demotion alerts block in stdhead"
+msgstr "Ota käyttöön yleinen alennushälytyslohko stdheadissä"
 
 msgid "Enable torrent comments history"
 msgstr "Ota torrentin kommenttihistoria käyttöön"
@@ -3797,8 +3844,14 @@ msgstr "Ota torrentin kommenttihistoria käyttöön"
 msgid "Enable upload application alerts in stdhead"
 msgstr "Ota käyttöön lataussovelluksen hälytykset stdheadissä"
 
+msgid "Enable uploaded and download"
+msgstr "Ota käyttöön ja lataa"
+
 msgid "Enable uploaded and downloaded"
 msgstr "Ota ladattu ja ladattu käyttöön"
+
+msgid "Enable user comments"
+msgstr "Ota käyttäjän kommentit käyttöön"
 
 msgid "Enable user hits"
 msgstr "Ota käyttäjän osumat käyttöön"
@@ -3850,6 +3903,15 @@ msgstr "Syötä käyttäjätunnus"
 
 msgid "Enter password again"
 msgstr "Kirjoita salasana uudelleen"
+
+msgid "Enter the <b>Torrent ID:</b>"
+msgstr "Kirjoita <b> Torrentin tunnus: </b>"
+
+msgid "Enter the <b>amount to contribute</b>"
+msgstr "Kirjoita <b>-summa maksettavaksi </b>"
+
+msgid "Enter the <b>username</b> you would like to send karma to"
+msgstr "Kirjoita <b> käyttäjänimi </b>, jonka haluat lähettää karma"
 
 msgid "Enter the destination  Topic Id to append to."
 msgstr "Kirjoita liitettävä kohde-tunnus."
@@ -3954,6 +4016,9 @@ msgstr "Tiedoston muokkausloki"
 msgid "File name is not allowed"
 msgstr "Tiedostonimi ei ole sallittu"
 
+msgid "File not allowed only .srt , .sub , .vtt or .txt files"
+msgstr "Tiedosto ei ole sallittu vain .srt-, .sub-, .vtt- tai .txt-tiedostoille"
+
 msgid "File size: "
 msgstr "Tiedoston koko:"
 
@@ -4049,6 +4114,9 @@ msgstr "Huuhtele torrentit?"
 msgid "Flush torrents"
 msgstr "Huuhtele torrentit"
 
+msgid "Flush torrents?"
+msgstr "Huuhtele torrentit?"
+
 msgid "Flysystem Cache: "
 msgstr "Flysystem-välimuisti:"
 
@@ -4113,6 +4181,9 @@ msgstr "Foorumiviestit"
 msgid "Forum Rights"
 msgstr "Foorumin oikeudet"
 
+msgid "Forum Subscribe PM"
+msgstr "Foorumit Tilaa PM"
+
 msgid "Forum description"
 msgstr "Foorumin kuvaus"
 
@@ -4133,6 +4204,9 @@ msgstr "Foorumin viestit?"
 
 msgid "Forum rank"
 msgstr "Foorumin sijoitus"
+
+msgid "Forumposts?"
+msgstr "Forumposts?"
 
 msgid "Forums"
 msgstr "foorumit"
@@ -4164,17 +4238,9 @@ msgstr "Ilmainen Torrent!"
 msgid "Free for 1 day"
 msgstr "Ilmainen 1 päivä"
 
-msgid "Free for 1 week"
-msgstr "Ilmainen 1 viikko"
-
-msgid "Free for 2 weeks"
-msgstr "Ilmainen 2 viikkoa"
-
-msgid "Free for 4 weeks"
-msgstr "Ilmaiseksi 4 viikkoa"
-
-msgid "Free for 8 weeks"
-msgstr "Ilmainen 8 viikkoa"
+#, no-php-format
+msgid "Free for {0} day"
+msgstr "Ilmaiseksi {0} päiväksi"
 
 #, no-php-format
 msgid "Free for {0} week"
@@ -4184,11 +4250,20 @@ msgstr "Ilmaiseksi {0} viikolle"
 msgid "Free for {0} weeks"
 msgstr "Ilmaiseksi {0} viikkoa"
 
+msgid "Free stuffs?"
+msgstr "Ilmaisia tavaroita?"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech päällä"
 
+msgid "FreeLeech [ON]"
+msgstr "FreeLeech [PÄÄLLÄ]"
+
 msgid "Freeeslots total adjusted = Yes"
 msgstr "Vapaakokojen kokonaismäärä oikaistu = Kyllä"
+
+msgid "Freeleech"
+msgstr "Freeleech"
 
 msgid "Freeleech Manager"
 msgstr "Freeleech Manager"
@@ -4214,8 +4289,15 @@ msgstr "Freeleech-hedelmäpelit:"
 msgid "Freeleech Status"
 msgstr "Freeleech-tila"
 
-msgid "Freeleech Status from "
-msgstr "Freeleech-tila alkaen"
+msgid "Freeleech Status enabled by "
+msgstr "Freeleech-tila on käytössä"
+
+#, no-php-format
+msgid "Freeleech Status for {0} by {1}."
+msgstr "{0} Freeleech-tila {{}."
+
+msgid "Freeleech Status removed by "
+msgstr "Freeleech-tilan poistanut"
 
 msgid "Freeleech enabled = "
 msgstr "Freeleech käytössä ="
@@ -4324,11 +4406,23 @@ msgstr "Pelit mahdolliset"
 msgid "Games disabled = "
 msgstr "Pelit poistettu käytöstä ="
 
+#, no-php-format
+msgid "Games disablement for {0} by {1}."
+msgstr "Pelien poisto käytöstä {0} {1}."
+
 msgid "Games possible = No"
 msgstr "Pelit mahdollista = Ei"
 
 msgid "Games possible = Yes"
 msgstr "Pelit mahdollista = Kyllä"
+
+#, no-php-format
+msgid "Gaming disablement by {0}."
+msgstr "Pelin poisto käytöstä {0} mennessä."
+
+#, no-php-format
+msgid "Gaming disablement status removed by {0}"
+msgstr "Pelin käytöstä poistamisen tila poistettu {0}"
 
 msgid "Gender"
 msgstr "sukupuoli"
@@ -4386,6 +4480,9 @@ msgstr "Ylimääräisten ilmaislotosten saaminen"
 msgid "Getting extra invites"
 msgstr "Lisäkutsujen saaminen"
 
+msgid "Give Karma Gift"
+msgstr "Anna Karma-lahja"
+
 msgid "Giving a gift of karma points to another user"
 msgstr "Karman lahjan antaminen osoittaa toiselle käyttäjälle"
 
@@ -4397,6 +4494,12 @@ msgstr "Globaalitilastot"
 
 msgid "Go Back"
 msgstr "Mene takaisin"
+
+msgid "Go To First"
+msgstr "Siirry ensin"
+
+msgid "Go To Last"
+msgstr "Siirry viimeiseen"
 
 msgid "Go back"
 msgstr "Mene takaisin"
@@ -4459,6 +4562,9 @@ msgstr "HTML on <b>, ei </b> sallittu."
 #, no-php-format
 msgid "HTML is not allowed. {0}Click here{1} for information on available tags."
 msgstr "HTML ei ole sallittu. {0} Napsauttamalla tätä {1} saat tietoja käytettävissä olevista tunnisteista."
+
+msgid "Half Download"
+msgstr "Half Download"
 
 msgid "Happy Log"
 msgstr "Hyvää lokia"
@@ -4544,6 +4650,18 @@ msgstr "Tässä on"
 msgid "Hey"
 msgstr "Hei"
 
+#, no-php-format
+msgid ""
+"Hey\n"
+"We are sorry to announce that you have been robbed by {0}{1}{2}.\n"
+"Now your total reputation is [b]{3}[/b]\n"
+"[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]"
+msgstr ""
+"Hei\n"
+"Valitettavasti ilmoitamme, että {0} {1} {2} ovat ryöstäneet teidät.\n"
+"Nyt kokonaismaineesi on [b] {3} [/ b]\n"
+"[color = # ff0000] Tämä on normaalia, ja sinun ei tarvitse huolehtia, jos sinulla on tarpeeksi bonuspisteitä, voit ryöstää muita ihmisiä [/ color]"
+
 msgid "Hey its now happy hour!"
 msgstr "Hei, nyt onnellinen tunti!"
 
@@ -4579,6 +4697,18 @@ msgstr ""
 #, no-php-format
 msgid "Hey {0}!"
 msgstr "Hei {0}!"
+
+#, no-php-format
+msgid ""
+"Hey {0}:\n"
+"You robbed:\n"
+"{1}\n"
+"Your total reputation is now [b]{2}[/b] but you lost [b]{3}[/b] karma points "
+msgstr ""
+"Hei {0}:\n"
+"Ryöstiit:\n"
+"{1}\n"
+"Koko maineesi on nyt [b] {2} [/ b], mutta menetit [b] {3} [/ b] karmapisteet"
 
 #, no-php-format
 msgid "Hey {1}!<br>There is {0} new message for the staff."
@@ -4643,6 +4773,12 @@ msgstr "Piilota omat kuvat"
 msgid "Hide accepted/rejected"
 msgstr "Piilota hyväksytty / hylätty"
 
+msgid "Hide current seed and leech"
+msgstr "Piilota nykyinen siemen ja kaiho"
+
+msgid "Hide from Navbar"
+msgstr "Piilota Navbarista"
+
 msgid "High"
 msgstr "Korkea"
 
@@ -4651,6 +4787,14 @@ msgstr "Korkein voittoprosentti"
 
 msgid "Highly Anonymous"
 msgstr "Erittäin tuntematon"
+
+#, no-php-format
+msgid "Highspeed Upload disabled by {0}."
+msgstr "Nopea lataus on poistettu käytöstä {0}."
+
+#, no-php-format
+msgid "Highspeed Upload enabled by {0}."
+msgstr "Nopea lataus käytössä {0}."
 
 msgid "Highspeed Uploader"
 msgstr "Nopea lähettäjä"
@@ -4715,6 +4859,9 @@ msgstr "Osuma ja suorita kokonaissäädetty = Kyllä"
 msgid "Hit and run!"
 msgstr "Lyö ja juokse!"
 
+msgid "Hit and runs set to "
+msgstr "Hit ja ajaa asetettu"
+
 msgid "HitnRun"
 msgstr "HitnRun"
 
@@ -4756,6 +4903,9 @@ msgstr "Talo"
 
 msgid "How can I improve my download speed?"
 msgstr "Kuinka voin parantaa latausnopeutta?"
+
+msgid "How can we remove a warning that isn't there?"
+msgstr "Kuinka voimme poistaa varoituksen, jota ei ole olemassa?"
 
 msgid "How did you get here?"
 msgstr "Miten pääsit tänne?"
@@ -4917,6 +5067,9 @@ msgstr "IMDb-linkki"
 
 msgid "IMDb Top 100 Movies"
 msgstr "IMDb 100 suosituinta elokuvaa"
+
+msgid "IMDb URL"
+msgstr "IMDb URL"
 
 msgid "IMDb Upcoming Movies"
 msgstr "Tulevat IMDb-elokuvat"
@@ -5120,11 +5273,20 @@ msgstr "Kuvaa ei löytynyt!"
 msgid "Images Manager"
 msgstr "Kuvien hallinta"
 
+#, no-php-format
+msgid "Immune Status enabled by {0}."
+msgstr "Immuunitila aktivoitu {0}."
+
 msgid "Immunity"
 msgstr "immuniteetti"
 
-msgid "Immunity Status from "
-msgstr "Immuniteetti tila alkaen"
+#, no-php-format
+msgid "Immunity Status for {0} by {1}."
+msgstr "{0} immuniteettitila lähettäjältä {1}."
+
+#, no-php-format
+msgid "Immunity Status removed by {0}."
+msgstr "Immuniteettitila poistettu {0}."
 
 msgid "Immunity for"
 msgstr "Immuniteetti"
@@ -5392,6 +5554,9 @@ msgstr "Kutsukoodi"
 msgid "Invite Tree"
 msgstr "Kutsu puu"
 
+msgid "Invite amount changed to "
+msgstr "Kutsujen määrä muutettiin arvoon"
+
 msgid "Invite rights"
 msgstr "Kutsu oikeudet"
 
@@ -5422,6 +5587,9 @@ msgstr "Kutsu joukk Bonus lisätty - AutoSystem.\n"
 msgid "Invites added"
 msgstr "Kutsu lisätty"
 
+msgid "Invites allowed changed from "
+msgstr "Sallitut kutsut on muutettu"
+
 msgid "Invites enabled = "
 msgstr "Kutsut sallittu ="
 
@@ -5445,6 +5613,9 @@ msgstr "Onko kesäaika todella voimassa?"
 
 msgid "Is taken, please try again."
 msgstr "Otetaan, yritä uudelleen."
+
+msgid "Is your avatar offensive"
+msgstr "Onko hahmosi loukkaava"
 
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Eikö tämä ole sama kuin yllä? Ei. Yhteydet rajoittavat vertaiskäyttäjien lukumäärää, jonka kanssa asiakkaasi puhuvat ja / tai lataavat. Lähetykset rajoittavat vertaiskäyttäjien lukumäärää, johon asiakas todella lataa. Ihanteellinen luku on tyypillisesti paljon pienempi kuin yhteyksien lukumäärä, ja riippuu suuresti (fyysisestä) yhteydestäsi."
@@ -5519,6 +5690,9 @@ msgstr "tammikuu"
 msgid "Join Date"
 msgstr "Liittymispäivä"
 
+msgid "Join date?"
+msgstr "Liittymispäivä?"
+
 msgid "Joined"
 msgstr "liittyi"
 
@@ -5552,6 +5726,9 @@ msgstr "karma"
 
 msgid "Karma Bonus Points"
 msgstr "Karman bonuspisteet"
+
+msgid "Karma Contribution's"
+msgstr "Karma-julkaisu"
 
 msgid "Karma Contributions"
 msgstr "Karman kirjoitukset"
@@ -6017,6 +6194,9 @@ msgstr "Pyynnön tekeminen"
 msgid "Male"
 msgstr "Uros"
 
+msgid "Manage Images"
+msgstr "Hallinnoi kuvia"
+
 msgid "Manage Polls"
 msgstr "Hallinnoi kyselyjä"
 
@@ -6068,8 +6248,8 @@ msgstr "Lisäbonus Karma-pisteet lisätty - AutoSystem.\n"
 msgid "Mass Message to All Non Connectable Users"
 msgstr "Joukkoviesti kaikille käyttäjille, joita ei voida liittää"
 
-msgid "Mass Pm"
-msgstr "Mass Pm"
+msgid "Mass PM"
+msgstr "Mass PM"
 
 msgid "Mass bonus for all or selected members:"
 msgstr "Joukkobonus kaikille tai valituille jäsenille:"
@@ -6088,6 +6268,9 @@ msgstr "Hyväksytty sähköposti"
 
 msgid "Matched IP"
 msgstr "Hyväksytty IP"
+
+msgid "Max file size"
+msgstr "Tiedoston enimmäiskoko"
 
 msgid "Maximum File Size"
 msgstr "Tiedoston enimmäiskoko"
@@ -6221,6 +6404,9 @@ msgstr "Viestit lähetetty."
 
 msgid "Messages weren't sent!"
 msgstr "Viestejä ei lähetetty!"
+
+msgid "Min"
+msgstr "min"
 
 msgid "Min Class"
 msgstr "Min luokka"
@@ -6373,6 +6559,9 @@ msgstr "Tunnelma muokattu"
 msgid "More status variables"
 msgstr "Lisää tilamuuttujia"
 
+msgid "More than 5"
+msgstr "Yli 5"
+
 msgid "Most Credit Lost"
 msgstr "Eniten luotonmenetyksiä"
 
@@ -6475,6 +6664,9 @@ msgstr "Internet-palveluntarjoajani käyttää läpinäkyvää välityspalvelint
 
 msgid "My Offers"
 msgstr "Tarjoukseni"
+
+msgid "My Paranoia"
+msgstr "Paranoiani"
 
 msgid "My Posts"
 msgstr "Omat viestit"
@@ -6600,6 +6792,12 @@ msgstr "Uusi johtaja"
 msgid "New Order ID"
 msgstr "Uusi tilaustunnus"
 
+msgid "New Password"
+msgstr "uusi salasana"
+
+msgid "New Password Again"
+msgstr "Uusi salasana uudestaan"
+
 msgid "New Posts"
 msgstr "Uudet viestit"
 
@@ -6613,6 +6811,9 @@ msgid "New Staff Message"
 msgid_plural "New Staff Messages"
 msgstr[0] "Uusi henkilökunnan viesti"
 msgstr[1] "Uudet henkilökunnan viestit"
+
+msgid "New Subtitle"
+msgstr "Uusi tekstitys"
 
 msgid "New Topic"
 msgstr "Uusi aihe"
@@ -6907,6 +7108,9 @@ msgstr "Ei välimuistissa olevia kohteita"
 msgid "No language other than English in the forums."
 msgstr "Foorumilla ei ole muuta kieltä kuin englanti."
 
+msgid "No language selected"
+msgstr "Kieltä ei ole valittu"
+
 msgid "No leech warning Status Set"
 msgstr "Ei kaivosvaroituksen tilaa asetettu"
 
@@ -7165,6 +7369,9 @@ msgstr "Mitään ei löytynyt"
 msgid "Nothing found!"
 msgstr "Mitään ei löytynyt!"
 
+msgid "Nothing found! Try again with a refined search string."
+msgstr "Mitään ei löytynyt! Yritä uudelleen tarkennetulla hakujonolla."
+
 msgid "Nothing found."
 msgstr "Mitään ei löytynyt."
 
@@ -7256,6 +7463,9 @@ msgstr "Opettakaa minulle, kuinka minun pitäisi unohtaa ajatella."
 msgid "OK"
 msgstr "kunnossa"
 
+msgid "ON"
+msgstr "PÄÄLLÄ"
+
 msgid "OPEN"
 msgstr "AVATA"
 
@@ -7276,6 +7486,12 @@ msgstr "Loukkaava Avatar"
 
 msgid "Offensive avatar enabled = "
 msgstr "Loukkaava avataari käytössä ="
+
+msgid "Offensive avatar set to no by "
+msgstr "Loukkaava avataari asetettu ei"
+
+msgid "Offensive avatar set to yes by "
+msgstr "Loukkaava avataari asetettu kyllä -kohtaan"
 
 msgid "Offer"
 msgstr "Tarjous"
@@ -7327,9 +7543,6 @@ msgstr "Vanhan luokan nimi"
 msgid "Old School Arcade"
 msgstr "Vanhan koulun arcade"
 
-msgid "Old School Arcade!"
-msgstr "Vanhan koulun arcade!"
-
 msgid "On"
 msgstr "Päällä"
 
@@ -7359,6 +7572,12 @@ msgstr "Yksi-suhde toimii vain alle 6 Gt: n torrentissa!"
 
 msgid "Online"
 msgstr "Online"
+
+msgid "Online time?"
+msgstr "Online-aika?"
+
+msgid "Only .srt, .sub , .vtt or .txt files are accepted"
+msgstr "Vain .srt-, .sub-, .vtt- tai .txt-tiedostot hyväksytään"
 
 msgid "Only Dead"
 msgstr "Vain kuollut"
@@ -7534,6 +7753,9 @@ msgstr "PM-kommentti"
 msgid "PM Notification"
 msgstr "PM-ilmoitus"
 
+msgid "PM Possible"
+msgstr "PM mahdollista"
+
 msgid "PM Sent Statistics"
 msgstr "PM lähetti tilastot"
 
@@ -7542,6 +7764,18 @@ msgstr "PM Lähetetty kaikille vertaisyhteydelle"
 
 msgid "PM comment"
 msgstr "PM-kommentti"
+
+#, no-php-format
+msgid "PM disablement by {0}."
+msgstr "PM käytöstä poistaminen {0} mennessä."
+
+#, no-php-format
+msgid "PM disablement for {0} by {1}."
+msgstr "PM: n poisto käytöstä {0} {1}."
+
+#, no-php-format
+msgid "PM disablement status removed by {0}."
+msgstr "PM-käytöstä poistamisen tila poistettu {0}."
 
 msgid "PM options"
 msgstr "PM-vaihtoehdot"
@@ -7576,6 +7810,10 @@ msgstr "Vainoharhaisuus"
 
 msgid "Paranoia Levels explained"
 msgstr "Paranoiatasot selitetty"
+
+#, no-php-format
+msgid "Paranoia changed to {0} from {1} by {2}"
+msgstr "Paranoia muutettiin arvoksi {0} arvosta {1}, jonka tekijä on {2}"
 
 msgid "Paranoia level changed"
 msgstr "Paranoian taso muuttui"
@@ -7645,6 +7883,9 @@ msgstr "Vertaisvertailu"
 
 msgid "Peers limit adjusted = Yes"
 msgstr "Vertaisarvio rajoitettu = Kyllä"
+
+msgid "Peers limit set to"
+msgstr "Vertaisvereiden rajaksi asetettu"
 
 msgid "Peers that are Not Connectable"
 msgstr "Vertaiset, joita ei voi yhdistää"
@@ -7805,15 +8046,6 @@ msgstr "Käytä {0} tätä lomaketta {1} saadaksesi nollaustiedot sähköpostits
 msgid "Plot"
 msgstr "juoni"
 
-msgid "Pm"
-msgstr "pm"
-
-msgid "Pm Possible"
-msgstr "Pm mahdollinen"
-
-msgid "Pm disablement from "
-msgstr "Pm käytöstä alkaen"
-
 msgid "Point"
 msgstr "Kohta"
 
@@ -7822,6 +8054,44 @@ msgstr "pistettä"
 
 msgid "Points Pool"
 msgstr "Piste-allas"
+
+#, no-php-format
+msgid "Points as gift from {0}."
+msgstr "Pisteitä lahjaksi {0}."
+
+#, no-php-format
+msgid "Points as gift to {0}."
+msgstr "Pisteet lahjaksi {0}."
+
+msgid "Points for  1 Year Parked Profile."
+msgstr "Pisteitä yhden vuoden pysäköityyn profiiliin."
+
+msgid "Points for 1 month Custom Smilies."
+msgstr "Pisteitä 1 kuukauden mittaisiin hymiöihin."
+
+msgid "Points for 1 month Immunity Status."
+msgstr "Pisteitä yhden kuukauden immuniteettitilasta."
+
+msgid "Points for 1 month VIP Status."
+msgstr "Pisteitä 1 kuukauden VIP-tilasta."
+
+msgid "Points for 1 to 1 ratio on torrent"
+msgstr "Pisteitä suhteessa 1: 1 torrentissa"
+
+msgid "Points for 100 Reputation Points."
+msgstr "Pistettä 100 mainepisteelle."
+
+msgid "Points for 14 Days Anonymous Profile."
+msgstr "Pisteitä 14 päivän tuntemattomasta profiilista."
+
+msgid "Points for removing warning."
+msgstr "Pisteitä varoituksen poistamiseksi."
+
+msgid "Points for user blocks access."
+msgstr "Pisteet käyttäjälle estävät pääsyn."
+
+msgid "Points for user unlocks access."
+msgstr "Pisteet käyttäjälle avaa pääsyn."
 
 msgid "Political"
 msgstr "poliittinen"
@@ -7924,6 +8194,12 @@ msgstr "Lähettänyt"
 msgid "Poster"
 msgstr "Juliste"
 
+msgid "Posting disabled by "
+msgstr "Lähettäminen poistettu käytöstä"
+
+msgid "Posting enabled by "
+msgstr "Lähettäminen on sallittu"
+
 msgid "Posting rights"
 msgstr "Lähettämisoikeudet"
 
@@ -7997,6 +8273,9 @@ msgstr "Profiili"
 msgid "Profile Views"
 msgstr "Profiilinäkymät"
 
+msgid "Profile hits?"
+msgstr "Profiili osumia?"
+
 msgid "Profile updated!"
 msgstr "Profiili päivitetty!"
 
@@ -8009,6 +8288,9 @@ msgstr "Ylennetty"
 #, no-php-format
 msgid "Promoted to 'Uploader' by {0}."
 msgstr "{0} ylensi 'Lähettäjäksi'."
+
+msgid "Promoted to FLS by "
+msgstr "Ylennetty FLS: lle"
 
 msgid "Promotion Settings"
 msgstr "Tarjousasetukset"
@@ -8249,6 +8531,9 @@ msgstr "Liittyy sinuun"
 msgid "Release Date"
 msgstr "Julkaisupäivä"
 
+msgid "Release Name"
+msgstr "Julkaisun nimi"
+
 msgid "Relevance"
 msgstr "Merkityksellisyys"
 
@@ -8403,6 +8688,9 @@ msgstr "Ilmoita epäonnistumisesta!"
 msgid "Report User"
 msgstr "Ilmoita käyttäjä"
 
+msgid "Report user?"
+msgstr "Ilmoita käyttäjä?"
+
 msgid "Report?"
 msgstr "Raportti?"
 
@@ -8462,6 +8750,9 @@ msgstr "Maine poistettu onnistuneesti"
 
 msgid "Reputation points"
 msgstr "Maine"
+
+msgid "Reputation points changed to "
+msgstr "Mainepisteet muutettiin"
 
 msgid "Reputation points total adjusted"
 msgstr "Mainepisteet yhteensä oikaistu"
@@ -8567,6 +8858,9 @@ msgstr "Tulokset viesteinä"
 msgid "Results in Feed"
 msgstr "Tulokset syötteessä"
 
+msgid "Return to Details"
+msgstr "Palaa yksityiskohtiin"
+
 msgid "Return to the Games"
 msgstr "Palaa peleihin"
 
@@ -8658,6 +8952,9 @@ msgstr "Terveellisyys tarkistaa!"
 msgid "Sanity check"
 msgstr "Terveellisyystarkistus"
 
+msgid "Sanity check..."
+msgstr "Terveellisyystarkistus ..."
+
 msgid "Save"
 msgstr "Tallentaa"
 
@@ -8699,6 +8996,9 @@ msgstr "Tallennettu maineen taso onnistuneesti."
 #, no-php-format
 msgid "Saying thanks = {0} points"
 msgstr "Kiitos = {0} pistettä"
+
+msgid "Scene"
+msgstr "Näkymä"
 
 msgid "Scene Tags..."
 msgstr "Kohtauskilvet ..."
@@ -8779,6 +9079,9 @@ msgstr "Haku kuvauksen perusteella (sumea)"
 msgid "Search by Genre"
 msgstr "Haku tyylilajin mukaan"
 
+msgid "Search by IMDb, TMDb, TvMaze ID, ISBN, type"
+msgstr "Haku IMDb, TMDb, TvMaze ID, ISBN, type"
+
 msgid "Search by Name"
 msgstr "Etsi nimen mukaan"
 
@@ -8802,6 +9105,10 @@ msgstr "Etsi:"
 
 msgid "Search log"
 msgstr "Hakuloki"
+
+#, no-php-format
+msgid "Search result for <i>'{0}'</i>"
+msgstr "Hakutulos: <i> '{0}' </i>"
 
 #, no-php-format
 msgid "Search results for {0}"
@@ -8905,6 +9212,9 @@ msgstr "Siemenaika-suhde?"
 msgid "SeedBox"
 msgstr "SEEDBOXia"
 
+msgid "Seedbonus amount changed to "
+msgstr "Siemenbonuksen määrä muutettiin arvoon"
+
 msgid "Seedbonus points total adjusted"
 msgstr "Siemenbonuspisteet yhteensä oikaistu"
 
@@ -8917,8 +9227,8 @@ msgstr "Siemenet:"
 msgid "Seeder"
 msgstr "seeder"
 
-msgid "Seeder Info (Top 5 Seeders)"
-msgstr "Tietoja kylvökoneesta (5 suosituinta kylvölaitetta)"
+msgid "Seeder Info: Top 5"
+msgstr "Kylvötiedot: Top 5"
 
 msgid "Seeder/Leecher Ratio (%)"
 msgstr "Kylvökoneiden / karhottimien suhde (%)"
@@ -8986,6 +9296,9 @@ msgstr "Valitse tämän raportin lopetuspäivä. Valitse kuukausi, päivä ja vu
 
 msgid "Select how many PMs you would like to see per page."
 msgstr "Valitse kuinka monta PM: tä haluaisit nähdä sivua kohden."
+
+msgid "Select how many points you want to send"
+msgstr "Valitse kuinka monta pistettä haluat lähettää"
 
 msgid "Select one"
 msgstr "Valitse yksi"
@@ -9253,8 +9566,17 @@ msgstr "Näytä hyväksytty"
 msgid "Show Approved Triggers"
 msgstr "Näytä hyväksytyt laukaisejat"
 
+msgid "Show Email"
+msgstr "Näytä sähköposti"
+
+msgid "Show Friends"
+msgstr "Näytä ystävät"
+
 msgid "Show Friends?"
 msgstr "Näytä ystävät?"
+
+msgid "Show PM?"
+msgstr "Näytä PM?"
 
 msgid "Show Unapproved"
 msgstr "Näytä hyväksymättä"
@@ -9270,6 +9592,12 @@ msgstr "Näytä avatarit, kun tarkastelet postilaatikoitasi."
 
 msgid "Show hidden Categories"
 msgstr "Näytä piilotetut luokat"
+
+msgid "Show in Navbar"
+msgstr "Näytä Navbarissa"
+
+msgid "Show in Navbar cannot be empty."
+msgstr "Näytä Navbar -palkissa ei voi olla tyhjä."
 
 msgid "Show pm?"
 msgstr "Näytä pm?"
@@ -9301,6 +9629,9 @@ msgstr "Näyttää rekisteröityneiden käyttäjien määrän."
 msgid "Shows a warning if there is a new message for staff"
 msgstr "Näyttää varoituksen, jos henkilöstölle on uusi viesti"
 
+msgid "Shows if there is a new message for staff alert in stdhead"
+msgstr "Näyttää, onko stdheadissä uusi viesti henkilöstöhälytyksestä"
+
 msgid "Sick"
 msgstr "Sairas"
 
@@ -9316,11 +9647,20 @@ msgstr "Allekirjoitusoikeudet"
 msgid "Signature changed"
 msgstr "Allekirjoitus muutettu"
 
+msgid "Signature changed from "
+msgstr "Allekirjoitus muutettu"
+
 msgid "Signature post enabled = "
 msgstr "Allekirjoitusviesti käytössä ="
 
 msgid "Signature rights"
 msgstr "Allekirjoitusoikeudet"
+
+msgid "Signature rights turned off by "
+msgstr "Allekirjoitusoikeudet on poistettu käytöstä"
+
+msgid "Signature rights turned on by "
+msgstr "Allekirjoitusoikeudet otti käyttöön"
 
 msgid "Signup"
 msgstr "Kirjaudu"
@@ -9346,17 +9686,9 @@ msgstr "Hopea Torrent!"
 msgid "Silver for 1 day"
 msgstr "Hopea 1 päivä"
 
-msgid "Silver for 1 week"
-msgstr "Hopea 1 viikko"
-
-msgid "Silver for 2 weeks"
-msgstr "Hopea 2 viikkoa"
-
-msgid "Silver for 4 weeks"
-msgstr "Hopea 4 viikkoa"
-
-msgid "Silver for 8 weeks"
-msgstr "Hopea 8 viikkoa"
+#, no-php-format
+msgid "Silver for {0} day"
+msgstr "Hopea {0} päiväksi"
 
 #, no-php-format
 msgid "Silver for {0} week"
@@ -9399,6 +9731,12 @@ msgstr "Sivuston laaja fonttivaaka"
 
 msgid "Site information"
 msgstr "Sivustoa koskevat tiedot"
+
+msgid "Site is Offline."
+msgstr "Sivusto on offline-tilassa."
+
+msgid "Site is Online."
+msgstr "Sivusto on online-tilassa."
 
 msgid "Site log"
 msgstr "Sivustoloki"
@@ -9477,6 +9815,9 @@ msgstr "Muutamia hyödyllisiä vinkkejä."
 #, no-php-format
 msgid "Some {0}info{1} about the 'Anatomy of a torrent session'."
 msgstr "Jotkut {0} tiedot {1} 'torrentistunnon anatomiasta'."
+
+msgid "Someone Loves you"
+msgstr "Joku rakastaa sinua"
 
 msgid "Someone has already taken that bet"
 msgstr "Joku on jo ottanut vedon"
@@ -9721,8 +10062,8 @@ msgid "Staff actions log"
 msgstr "Henkilöstön toimintaloki"
 
 #, no-php-format
-msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where sucessfully cleaned."
-msgstr "Henkilökunta huuhteli {0}: n haamu-torrentit klo {1}. {2} torrentit puhdistetaan onnistuneesti."
+msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully cleaned."
+msgstr "Henkilökunta huuhteli {0} haamu-torrentit {1}. {2} torrentsia, joissa puhdistus onnistui."
 
 msgid "Staff mass bonus - added freeslots to"
 msgstr "Henkilöstön joukkobonus - lisätty vapaakokouksia"
@@ -9858,6 +10199,9 @@ msgstr "Alifoorumi"
 msgid "Sub-Forum of?"
 msgstr "Alifoorumi?"
 
+msgid "Subfile"
+msgstr "alitiedosto"
+
 msgid "Subject"
 msgstr "aihe"
 
@@ -9909,8 +10253,17 @@ msgstr "alaotsikko"
 msgid "Subtitle Details"
 msgstr "Tekstityksen yksityiskohdat"
 
+msgid "Subtitle Preview"
+msgstr "Tekstityksen esikatselu"
+
 msgid "Subtitles"
 msgstr "tekstitys"
+
+msgid "Subtracted Download"
+msgstr "Vähennetty lataus"
+
+msgid "Subtracted Upload"
+msgstr "Vähennetty lähetys"
 
 msgid "Succesfully Added"
 msgstr "Lisätty onnistuneesti"
@@ -10191,9 +10544,6 @@ msgstr "PU-raja oli aikaisemmin 25 Gt, emmekä polistaneet ketään, kun nossimm
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "Yrittämääsi tarjousta ei ole olemassa tai se on vanhentunut!"
 
-msgid "The Reason:"
-msgstr "Syy:"
-
 msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
 msgstr "URL-osoitteen on päädyttävä <b> .gif </b>, <b> .jepg </b>, <b>."
 
@@ -10234,8 +10584,11 @@ msgstr "Uusien jäsenten oletusluokka."
 msgid "The default setting-2 MBs, is currently set to: "
 msgstr "Oletusasetus - 2 Mt, on tällä hetkellä asetettu:"
 
-msgid "The description"
-msgstr "Kuvaus"
+msgid "The description cannot be empty."
+msgstr "Kuvaus ei voi olla tyhjä."
+
+msgid "The description is too long max 100 chars."
+msgstr "Kuvaus on liian pitkä, enintään 100 merkkiä."
 
 msgid "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low."
 msgstr "Latausnopeus riippuu suurimmaksi osaksi kylvökoneen suhteen (SLR). Huono latausnopeus on pääasiassa ongelma uusissa ja erittäin suosituissa torrentissa, joissa järjestelmäkamera on alhainen."
@@ -10243,11 +10596,17 @@ msgstr "Latausnopeus riippuu suurimmaksi osaksi kylvökoneen suhteen (SLR). Huon
 msgid "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere."
 msgstr "Sähköpostiosoitteen on oltava kelvollinen. Saat vahvistusviestin, johon sinun on vastattava. Sähköpostiosoitetta ei näytetä julkisesti missään."
 
+msgid "The file can't be empty!"
+msgstr "Tiedosto ei voi olla tyhjä!"
+
 msgid "The file was written...wait for redirect"
 msgstr "Tiedosto kirjoitettiin ... odota uudelleenohjausta"
 
-msgid "The filename"
-msgstr "Tiedostonimi"
+msgid "The filename cannot be empty."
+msgstr "Tiedostonimi ei voi olla tyhjä."
+
+msgid "The filename is too long max 80 chars."
+msgstr "Tiedostonimi on liian pitkä, enintään 80 merkkiä."
 
 #, no-php-format
 msgid "The following characters can be used: {0}. All other characters will be ignored."
@@ -10300,11 +10659,17 @@ msgid "The obscene terms where successfully deleted!"
 msgstr "Säädyttömät termit poistettiin onnistuneesti!"
 
 #, no-php-format
-msgid "The official IRC channel is {0}#pu-239{1}</p>"
-msgstr "Virallinen IRC-kanava on {0} # pu-239 {1} </p>"
+msgid "The official IRC channel is {0}#pu-239{1}"
+msgstr "Virallinen IRC-kanava on {0} # pu-239 {1}"
 
-msgid "The page name"
-msgstr "Sivun nimi"
+msgid "The page name cannot be empty."
+msgstr "Sivun nimi ei voi olla tyhjä."
+
+msgid "The page name is too long max 80 chars."
+msgstr "Sivun nimi on liian pitkä, enintään 80 merkkiä."
+
+msgid "The page name is too short (min 4 chars)."
+msgstr "Sivun nimi on liian lyhyt (vähintään 4 merkkiä)."
 
 #, no-php-format
 msgid "The password for account {0} is now {1}"
@@ -10437,9 +10802,6 @@ msgstr "{0} -seuranta on melko fiksu etsimään todellista IP-osoitettasi, mutta
 msgid "Theft summary"
 msgstr "Varkausyhteenveto"
 
-msgid "There"
-msgstr "siellä"
-
 msgid "There are a couple of things that you can try on your end to improve your speed:"
 msgstr "Voit pari asiaa, joita voit kokeilla nopeutesi parantamiseksi:"
 
@@ -10500,6 +10862,10 @@ msgstr "Ei ole ilmoitettu virheitä :)."
 
 msgid "There are no requests."
 msgstr "Ei pyyntöjä."
+
+#, no-php-format
+msgid "There are no subtitles, go {0}here{1} and start uploading."
+msgstr "Tekstityksiä ei ole. Mene {0} tänne {1} ja aloita lataus."
 
 msgid "There are no torrents needing leechers right now."
 msgstr "Ei ole torrentteja, jotka tarvitsevat tutkijoita."
@@ -10571,6 +10937,12 @@ msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Tänään on {0} syntymäpäivä"
 msgstr[1] "Tänään on {0} syntymäpäivää"
+
+#, no-php-format
+msgid "There is {0} error in the form."
+msgid_plural "There are {0} errors in the form."
+msgstr[0] "Lomakkeessa on {0} virhe."
+msgstr[1] "Lomakkeessa on {0} virheitä."
 
 #, no-php-format
 msgid "There is {0} new bug!"
@@ -10676,10 +11048,16 @@ msgstr "Tämä MySQL-palvelin on ollut käynnissä {0}. Se käynnistyi {1}"
 msgid "This Year"
 msgstr "Tämä vuosi"
 
+msgid "This account has been Un-suspended by "
+msgstr "Tili on peruuttanut tämän tilin"
+
 msgid "This account has been disabled"
 msgstr "Tämä tili on poistettu käytöstä"
 
 msgid "This account has been suspended"
+msgstr "Tämä tili on jäädytetty"
+
+msgid "This account has been suspended by "
 msgstr "Tämä tili on jäädytetty"
 
 msgid "This account is currently on the"
@@ -11119,6 +11497,9 @@ msgstr "Torrent-ikäryhmä 2 alle"
 msgid "Torrent Age Group 3 Over"
 msgstr "Torrent-ikäryhmä 3 yli"
 
+msgid "Torrent Catalof"
+msgstr "Torrent Catalof"
+
 msgid "Torrent Clients"
 msgstr "Torrent-asiakkaat"
 
@@ -11149,11 +11530,18 @@ msgstr "Torrentin omistaja ilmoitettu"
 msgid "Torrent Pass"
 msgstr "Torrent Pass"
 
+#, no-php-format
+msgid "Torrent Pass {0} reset to {1}."
+msgstr "Torrent Pass {0} palautetaan arvoon {1}."
+
 msgid "Torrent Size"
 msgstr "Torrentin koko"
 
 msgid "Torrent Stats"
 msgstr "Torrenttilastot"
+
+msgid "Torrent comment PM"
+msgstr "Torrentin kommentti PM"
 
 msgid "Torrent comments?"
 msgstr "Torrentin kommentit?"
@@ -11161,6 +11549,9 @@ msgstr "Torrentin kommentit?"
 #, no-php-format
 msgid "Torrent deleted<br>{0}"
 msgstr "Torrent poistettu <br> {0}"
+
+msgid "Torrent deletion PM"
+msgstr "Torrentin poisto PM"
 
 msgid "Torrent does not exist"
 msgstr "Torrenttia ei ole olemassa"
@@ -11252,8 +11643,14 @@ msgstr "Torrentit ladattu"
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrentit poistetaan automaattisesti 28 päivän kuluttua."
 
+msgid "Torrents blocks?"
+msgstr "Torrentit estää?"
+
 msgid "Torrents limit adjusted = Yes"
 msgstr "Torrenttiraja asetettu = Kyllä"
+
+msgid "Torrents limit set to"
+msgstr "Torrenttien raja-arvo on"
 
 msgid "Torrents per page"
 msgstr "Torrentit / sivu"
@@ -11299,6 +11696,9 @@ msgstr "traceroute"
 
 msgid "Traceroute!"
 msgstr "Traceroute!"
+
+msgid "Trade"
+msgstr "Käydä kauppaa"
 
 msgid "Trade your achievement points for random gifts."
 msgstr "Vaihda saavutuspisteesi satunnaislahjoista."
@@ -11618,6 +12018,9 @@ msgstr "Lataa mahdollinen"
 msgid "Upload Torrent"
 msgstr "Lataa Torrent"
 
+msgid "Upload a Subtitle"
+msgstr "Lataa tekstitys"
+
 msgid "Upload a Torrent"
 msgstr "Lataa torrentti"
 
@@ -11628,11 +12031,19 @@ msgid "Upload credit"
 msgstr "Lataa luotto"
 
 #, no-php-format
+msgid "Upload disablement by {0}."
+msgstr "Lataa käytöstä poistaminen {0} mennessä."
+
+#, no-php-format
 msgid "Upload disablement for {0} by {1}."
 msgstr "Lataa {0} käytöstä poisto {1}."
 
 msgid "Upload disablement from "
 msgstr "Lataa poisto käytöstä"
+
+#, no-php-format
+msgid "Upload disablement status removed by {0}"
+msgstr "Lähetä käytöstä poistamisen tila, jonka {0} poisti"
 
 msgid "Upload failed to save image."
 msgstr "Lähettäminen epäonnistui kuvan tallentamisessa."
@@ -11642,6 +12053,9 @@ msgstr "Lähettäminen epäonnistui!"
 
 msgid "Upload from URL"
 msgstr "Lataa URL-osoitteesta"
+
+msgid "Upload it"
+msgstr "Lataa se"
 
 msgid "Uploaded"
 msgstr "Ladattu"
@@ -11698,9 +12112,6 @@ msgstr "Lähetykset sallittu = Kyllä"
 msgid "Upped by"
 msgstr "Yläosassa"
 
-msgid "Upper"
-msgstr "ylempi"
-
 msgid "Upspeed"
 msgstr "Upspeed"
 
@@ -11722,6 +12133,9 @@ msgstr "Käytä luonnosta:"
 
 msgid "Use Prize Fund (No, uses default pot of all users)."
 msgstr "Käytä palkintorahastoa (Ei, käyttää kaikkien käyttäjien oletuspottia)."
+
+msgid "Use a descriptive name for your subtitle"
+msgstr "Käytä tekstitystä kuvaavaa nimeä"
 
 msgid "Use gzip compression"
 msgstr "Käytä gzip-pakkausta"
@@ -11823,6 +12237,9 @@ msgstr "Käyttäjätili {0}) {1}) Freeleech On All Torrentit on poistettu {2}"
 msgid "User class"
 msgstr "Käyttäjäluokka"
 
+msgid "User comments?"
+msgstr "Käyttäjien kommentit?"
+
 msgid "User immuntiy"
 msgstr "Käyttäjän immuniteetti"
 
@@ -11849,6 +12266,9 @@ msgstr "Käyttäjätilastot"
 
 msgid "User status?"
 msgstr "Käyttäjän tila?"
+
+msgid "User traffic?"
+msgstr "Käyttäjäliikenne?"
 
 msgid "User unlocks"
 msgstr "Käyttäjä avaa lukituksen"
@@ -12038,8 +12458,14 @@ msgstr "Näytä alkuperäinen"
 msgid "View Recipes in the Oven"
 msgstr "Katso reseptejä uunissa"
 
+msgid "View Replies"
+msgstr "Näytä vastaukset"
+
 msgid "View Reputation Comments"
 msgstr "Näytä mainekommentit"
+
+msgid "View Signatures"
+msgstr "Näytä allekirjoitukset"
 
 msgid "View Site Settings"
 msgstr "Näytä sivuston asetukset"
@@ -12050,11 +12476,17 @@ msgstr "Näytä henkilökunnan viestit"
 msgid "View application"
 msgstr "Näytä sovellus"
 
+msgid "View avatars"
+msgstr "Näytä avatarit"
+
 msgid "View bought tickets"
 msgstr "Näytä ostetut liput"
 
 msgid "View comments"
 msgstr "Näytä kommentit"
+
+msgid "View offensive avatars"
+msgstr "Näytä loukkaavat avataarit"
 
 msgid "View sharemarks"
 msgstr "Näytä osakemerkit"
@@ -12096,6 +12528,9 @@ msgstr "TYÖTULOSTUS (WP)"
 msgid "Wait time adjusted = Yes"
 msgstr "Odotaika säädetty = Kyllä"
 
+msgid "Wait time set to"
+msgstr "Odota aika asetettu arvoon"
+
 msgid "Wall"
 msgstr "seinä"
 
@@ -12124,6 +12559,9 @@ msgstr "Varoitus"
 
 msgid "Warning :"
 msgstr "Varoitus :"
+
+msgid "Warning removed by - Bribe with Karma."
+msgstr "Varoitus poistettu - lahju Karman kanssa."
 
 #, no-php-format
 msgid "Warning: There are no images in the directory {0}, please upload one."
@@ -12442,8 +12880,8 @@ msgstr "Yikes"
 msgid "You MUST enter a reason for this report! Use your back button and fill in the reason"
 msgstr "Sinun on kirjoitettava syy tähän raporttiin! Käytä takaisin-painiketta ja kirjoita syy"
 
-msgid "You MUST read this message before you delete it!!!  "
-msgstr "Sinun on luettava tämä viesti ennen kuin poistat sen !!!"
+msgid "You MUST read this message before you delete it!!!"
+msgstr "Sinun on luettava tämä viesti ennen sen poistamista !!!"
 
 #, no-php-format
 msgid "You MUST read {0}this message{1} before you delete it!"
@@ -12606,6 +13044,9 @@ msgstr "Et voi lisätä kiitosta omasta torrentistasi"
 msgid "You can't add yourself."
 msgstr "Et voi lisätä itseäsi."
 
+msgid "You can't approve your replies!."
+msgstr "Et voi hyväksyä vastauksiasi !."
+
 msgid "You can't approve your reply."
 msgstr "Et voi hyväksyä vastaustasi."
 
@@ -12686,6 +13127,10 @@ msgstr "Sinulla ei ole oikeita valtuustietoja ollaksesi täällä!"
 msgid "You dont have the credentials to lock."
 msgstr "Sinulla ei ole lukittavia käyttöoikeustietoja."
 
+#, no-php-format
+msgid "You flushed the {0} cache"
+msgstr "Huuhtelet {0} välimuistin"
+
 msgid "You forgot to fill some data"
 msgstr "Unohdit täyttää joitain tietoja"
 
@@ -12718,6 +13163,10 @@ msgstr "Olet jo äänestänyt, et voi muuttaa äänestystä"
 msgid "You have been given"
 msgstr "Sinulle on annettu"
 
+#, no-php-format
+msgid "You have been given a gift of {0} Karma points by {1}"
+msgstr "{1} sinulle on annettu lahja {0} Karma-pisteitä"
+
 msgid "You have been given.gift"
 msgstr "Sinulle on annettu lahja"
 
@@ -12737,8 +13186,9 @@ msgstr ""
 "        Jos et tunne tätä henkilöä, ohita tämä sähköpostiosoite. Älä vastaa. <br>\n"
 "        Tämä on yksityinen sivusto, ja sinun on hyväksyttävä säännöt ennen sisäänpääsyä:"
 
-msgid "You have been set as a high speed uploader by "
-msgstr "Olet asettanut sinut nopeaa lähettäjää"
+#, no-php-format
+msgid "You have been set as a high speed uploader by {0}. You can now upload torrents using highspeeds without being flagged as a cheater."
+msgstr "{0} on asettanut sinut nopeaksi lähettäjäksi. Voit nyt ladata torrentteja nopealla nopeudella ilman, että heidät on huijattu."
 
 #, no-php-format
 msgid "You have been {0} to {1} by {2}"
@@ -12805,14 +13255,51 @@ msgstr "Olet saanut kommentin torrentistasi {0} {1} {2}."
 msgid "You have received donor status from {0}"
 msgstr "Olet saanut lahjoittajan tilan {0}"
 
-msgid "You have received immunity Status from "
-msgstr "Olet saanut koskemattomuuden tilan osoitteesta"
+#, no-php-format
+msgid "You have received immunity Status from {0}."
+msgstr "Olet saanut koskemattomuuden tilan {0}."
 
 msgid "You have received leechwarn Status from "
 msgstr "Olet saanut leechwarn Status -sivulta"
 
 msgid "You have received warned Status from "
 msgstr "Olet saanut varoitetun tilan osoitteesta"
+
+#, no-php-format
+msgid "You have received {0} AJAX Chat disablement from {1}"
+msgstr "Olet saanut {0} AJAX-keskustelun käytöstä osoitteesta {1}"
+
+#, no-php-format
+msgid "You have received {0} Avatar disablement from {1}."
+msgstr "Olet saanut {0} Avatar-käytöstä käytöstä {1}."
+
+#, no-php-format
+msgid "You have received {0} Download disablement from {1}."
+msgstr "Olet saanut {0} latauksen poiston käytöstä osoitteesta {1}."
+
+#, no-php-format
+msgid "You have received {0} Freeleech Status from {1}."
+msgstr "Olet saanut {0} Freeleech Status -sivulta {1}."
+
+#, no-php-format
+msgid "You have received {0} Immunity Status from {1}."
+msgstr "Olet saanut {0} immuniteettitilan {1}."
+
+#, no-php-format
+msgid "You have received {0} PM disablement from {1}."
+msgstr "Olet saanut {0} PM-käytöstä {1}."
+
+#, no-php-format
+msgid "You have received {0} games disablement from {1}."
+msgstr "Olet saanut {0} pelien käytöstä poistamisen {1}."
+
+#, no-php-format
+msgid "You have received {0} leechwarn Status from {1}."
+msgstr "Olet saanut {0} leechwarn Status -sivulta {1}."
+
+#, no-php-format
+msgid "You have received {0} warned Status from {1}."
+msgstr "Olet saanut {0} varoitetun tilan {1}."
 
 msgid "You have snatched this torrent but not completed downloading"
 msgstr "Olet napauttanut tämän torrentin, mutta et ole ladannut loppuun"
@@ -13017,17 +13504,21 @@ msgstr "Et ole omistaja!"
 msgid "You're not the owner! How did that happen?"
 msgstr "Et ole omistaja! Miten se tapahtui?"
 
-msgid "Your AJAX Chat rights have been disabled by "
-msgstr "AJAX Chat -oikeutesi on poistettu käytöstä"
+#, no-php-format
+msgid "Your AJAX Chat rights have been disabled by {0}"
+msgstr "{0} AJAX-chat-oikeutesi on poistettu käytöstä"
 
-msgid "Your AJAX Chat rights have been restored by "
-msgstr "AJAX Chat -oikeutesi on palautettu"
+#, no-php-format
+msgid "Your AJAX Chat rights have been restored by {0}"
+msgstr "{0} AJAX Chat -oikeutesi on palautettu"
 
-msgid "Your Avatar rights have been disabled by "
-msgstr "Avatar-oikeutesi on poistettu käytöstä"
+#, no-php-format
+msgid "Your Avatar rights have been disabled by {0}."
+msgstr "Avatar-oikeutesi on poistettu käytöstä {0}."
 
-msgid "Your Avatar rights have been restored by "
-msgstr "Avatar-oikeutesi on palautettu"
+#, no-php-format
+msgid "Your Avatar rights have been restored by {0}."
+msgstr "Avatar-oikeutesi on palautettu {0}."
 
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
@@ -13037,11 +13528,15 @@ msgstr "Latausoikeutesi on poistettu käytöstä {0}"
 msgid "Your Downloading rights have been restored by {0}"
 msgstr "Latausoikeudet on palautettu {0}"
 
-msgid "Your Downloads have been enabled by "
-msgstr "Latauksesi on ottanut käyttöön"
+#, no-php-format
+msgid "Your Downloads have been enabled by {0}."
+msgstr "Latauksesi on otettu käyttöön {0}."
 
 msgid "Your Freeleech Status has been removed by "
 msgstr "Freeleech-tila on poistunut"
+
+msgid "Your IMDb link is invalid"
+msgstr "IMDb-linkkisi on virheellinen"
 
 #, no-php-format
 msgid "Your IP is: {0}"
@@ -13050,18 +13545,19 @@ msgstr "IP-osoitteesi on: {0}"
 msgid "Your ISP blocks the site's address"
 msgstr "Internet-palveluntarjoajasi estää sivuston osoitteen"
 
-msgid "Your Immunity Status has been removed by "
-msgstr "Immuniteettitilasi on poistunut"
+#, no-php-format
+msgid "Your Immunity Status has been removed by {0}."
+msgstr "Immuniteettitilasi on poistettu {0}."
 
 #, no-php-format
 msgid "Your Opponent is: {0}"
 msgstr "Vastustajasi on: {0}"
 
-msgid "Your Pm rights have been disabled by "
-msgstr "Pm-oikeutesi on poistettu käytöstä"
+msgid "Your PM rights have been disabled by "
+msgstr "PM: n oikeudet on poistettu käytöstä"
 
-msgid "Your Pm rights have been restored by "
-msgstr "Pm-oikeutesi on palautettu"
+msgid "Your PM rights have been restored by "
+msgstr "PM on palauttanut PM-oikeutesi"
 
 msgid "Your Posting rights have been given back by "
 msgstr "Lähettäjäoikeutesi on antanut takaisin"
@@ -13094,8 +13590,9 @@ msgstr "Käyttäjätunnuksesi on muuttunut"
 msgid "Your account at "
 msgstr "Tilisi osoitteessa"
 
-msgid "Your account has been suspended by "
-msgstr "Tilisi on jäädytetty"
+#, no-php-format
+msgid "Your account has been suspended by {0}."
+msgstr "Tilisi on jäädytetty {0}."
 
 #, no-php-format
 msgid ""
@@ -13126,6 +13623,10 @@ msgstr "Tilisi on jäädytetty, voit edelleen välittää PM-henkilöstöä henk
 
 msgid "Your application has successfully been sent to the staff."
 msgstr "Hakemuksesi on lähetetty onnistuneesti henkilöstölle."
+
+#, no-php-format
+msgid "Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure."
+msgstr "Olet poistamassa tekstityksen <b> {0} </b>, napsauta {1} täällä {2}, jos olet varma."
 
 msgid "Your avatar has been set to not offensive by "
 msgstr "Avatarisi on asetettu olemaan loukkaamaton"
@@ -13169,8 +13670,9 @@ msgstr "Latausoikeutesi on poistettu."
 msgid "Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as {0}NetLimiter{1}"
 msgstr "Latausnopeutesi on aina rajallinen. Jos olet vertaansa nopea torrentti, se lähes varmasti kyllästää latauskaistanleveyttä ja selaaminen kärsii. Tällä hetkellä yksikään asiakas, joka ei salli sinun rajoittaa latausnopeutta, on vain lataus. Sinun on käytettävä kolmannen osapuolen ratkaisua, kuten {0} NetLimiter {1}."
 
-msgid "Your downloading ability has been disabled by "
-msgstr "Latausvalmiutesi on poistettu käytöstä"
+#, no-php-format
+msgid "Your downloading ability has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Latausvalmiutesi on poistettu käytöstä {0}. Ole hyvä ja ilmoita PM {1} syystä."
 
 #, no-php-format
 msgid "Your email has been changed to {0}"
@@ -13181,6 +13683,9 @@ msgstr "Sähköpostiosoitteesi on vahvistettu"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Yhteyden epäonnistuminen voi johtua useista syistä."
+
+msgid "Your file is too big."
+msgstr "Tiedostosi on liian suuri."
 
 msgid "Your friends"
 msgstr "Ystäväsi"
@@ -13201,8 +13706,9 @@ msgstr "Pelioikeutesi on palautettu"
 msgid "Your high score was {0} and you ranked #{1}."
 msgstr "Korkein pistemäärä oli {0} ja sijoitit sijalle {1}."
 
-msgid "Your highspeed upload setting has been disabled by "
-msgstr "Nopean latauksen asetus on poistettu käytöstä"
+#, no-php-format
+msgid "Your highspeed upload setting has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Nopea lähetysasetuksesi on poistettu käytöstä {0}. Ole hyvä ja ilmoita PM {1} syystä."
 
 msgid "Your identity has been confirmed."
 msgstr "Henkilöllisyytesi on vahvistettu."
@@ -13262,6 +13768,9 @@ msgstr "Maineesi {0} profiilissasi {1} on {2} <br> Yhteensä: {3} pistettä."
 msgid "Your requests list is empty."
 msgstr "Pyyntöluettelosi on tyhjä."
 
+msgid "Your shit list is empty. "
+msgstr "Passi luettelosi on tyhjä."
+
 msgid "Your text here"
 msgstr "Sinun tekstisi tähän"
 
@@ -13283,8 +13792,9 @@ msgstr "Käyttäjätunnuksesi on:"
 msgid "Your vote"
 msgstr "Äänestys"
 
-msgid "Your warned Status has been removed by "
-msgstr "Varoitettu tila on poistettu"
+#, no-php-format
+msgid "Your warned Status has been removed by {0}"
+msgstr "Varoitettu tila on poistettu {0}"
 
 msgid "Youtube"
 msgstr "youtube"
@@ -13565,9 +14075,6 @@ msgstr[1] "mennessä {1} viimeisen {0} päivän aikana"
 msgid "bytes "
 msgstr "tavua"
 
-msgid "cannot be empty"
-msgstr "ei voi olla tyhjä"
-
 msgid "card count"
 msgstr "kortin lukumäärä"
 
@@ -13700,6 +14207,9 @@ msgstr "yhtä suuri"
 msgid "es"
 msgstr "es"
 
+msgid "expand"
+msgstr "laajentaa"
+
 msgid "expand even more"
 msgstr "laajenna vielä enemmän"
 
@@ -13708,6 +14218,9 @@ msgstr "laajenna puuta"
 
 msgid "expense"
 msgstr "kulu"
+
+msgid "false"
+msgstr "väärä"
 
 msgid "file info not found, empty filename in torrent file?"
 msgstr "tiedoston tietoja ei löydy, tyhjä tiedostonimi torrent-tiedostossa?"
@@ -13748,6 +14261,9 @@ msgstr ""
 msgid "freeslot"
 msgstr "freeslot"
 
+msgid "freeslots amount changed to "
+msgstr "ilmaislotosten määrä muutettiin arvoon"
+
 #, php-format
 msgid "from the past {0} day."
 msgid_plural "from the past {0} days."
@@ -13759,9 +14275,6 @@ msgstr "seurattavilta käyttäjiltä"
 
 msgid "fwd"
 msgstr "fwd"
-
-msgid "games disablement from "
-msgstr "pelien käytöstä poistaminen alkaen"
 
 msgid "go back to where you were?"
 msgstr "palata takaisin missä olit?"
@@ -13783,6 +14296,9 @@ msgstr "on hyvitetty tilillesi"
 
 msgid "has been promoted to Uploader by"
 msgstr "on ylentänyt lähettäjälle"
+
+msgid "has been suspended by "
+msgstr "on keskeyttänyt"
 
 msgid "has had a new post"
 msgstr "on saanut uuden viestin"
@@ -13829,9 +14345,6 @@ msgstr "sisään"
 
 msgid "in Forum"
 msgstr "foorumissa"
-
-msgid "in the form"
-msgstr "Muodossa"
 
 msgid "in the recycle-bin"
 msgstr "roskakorissa"
@@ -13922,12 +14435,6 @@ msgstr "on tulos"
 msgid "is the winner and not"
 msgstr "on voittaja eikä"
 
-msgid "is too long"
-msgstr "on liian pitkä"
-
-msgid "is too short (min 4 chars)"
-msgstr "on liian lyhyt (vähintään 4 merkkiä)"
-
 msgid "joined: "
 msgstr "liittynyt:"
 
@@ -13949,8 +14456,17 @@ msgstr "viimeiset kymmenen viestiä käänteisessä järjestyksessä"
 msgid "last unread post in this thread"
 msgstr "viimeinen lukematon viesti tässä säikeessä"
 
-msgid "leechwarn Status from "
-msgstr "leechwarn-tila alkaen"
+#, no-php-format
+msgid "leechwarn Status enabled by {0}."
+msgstr "leechwarn-tila käytössä {0}."
+
+#, no-php-format
+msgid "leechwarn Status for {0} by {1}."
+msgstr "leechwarn-tila {0}: lle {1}."
+
+#, no-php-format
+msgid "leechwarn Status removed by {0}."
+msgstr "leechwarn-tila poistettu {0}."
 
 msgid "less than one minute"
 msgstr "alle minuutti"
@@ -13963,12 +14479,6 @@ msgstr "kirjaudu sisään käyttääksesi tätä ominaisuutta!"
 
 msgid "match"
 msgstr "ottelu"
-
-msgid "max 100 chars"
-msgstr "enintään 100 merkkiä"
-
-msgid "max 80 chars"
-msgstr "enintään 80 merkkiä"
 
 msgid "means the user is seeding."
 msgstr "tarkoittaa, että käyttäjä siemenee."
@@ -14020,6 +14530,9 @@ msgstr "ei"
 
 msgid "no files"
 msgstr "ei tiedostoja"
+
+msgid "no hit and runners at the moment..."
+msgstr "ei osumaa ja juoksijoita tällä hetkellä ..."
 
 msgid "no information"
 msgstr "Ei tietoja"
@@ -14088,6 +14601,9 @@ msgstr "orvoksi"
 
 msgid "out of 10, 1 being not so shitty, 10 being really shitty... Please select one."
 msgstr "10: stä, 1 ei ole niin paskaa, 10 - todella paskaa ... - Valitse yksi."
+
+msgid "p2p"
+msgstr "p2p"
 
 msgid "pDL(MB)"
 msgstr "pDL (MB)"
@@ -14202,8 +14718,14 @@ msgstr "valitse lisättävien kutsujen määrä."
 msgid "select parent forum if sub-forum"
 msgstr "valitse vanhemmat foorumi, jos alifoorumi"
 
+msgid "selected"
+msgstr "valittu"
+
 msgid "send a PM to this evil toad"
 msgstr "lähetä pääministeri tähän pahaan rupikonnaan"
+
+msgid "shittiest at the top "
+msgstr "shittyiest ylhäällä"
 
 msgid "short of making that bet"
 msgstr "lyhyt tekemään vetoa"
@@ -14226,6 +14748,13 @@ msgstr "näytä estetty osuma ja juoksee"
 msgid "showing first"
 msgstr "näyttää ensin"
 
+msgid "shrink"
+msgstr "kutistua"
+
+#, no-php-format
+msgid "skype changed to {0} from {1} by {2}"
+msgstr "skype muutettiin arvoksi {0} arvosta {1}, jonka teki {2}"
+
 msgid "sorry, no member was found"
 msgstr "anteeksi, jäsentä ei löytynyt"
 
@@ -14237,6 +14766,9 @@ msgstr "henkilöstö"
 
 msgid "successfully backed-up the database."
 msgstr "varmuuskopioi tietokanta onnistuneesti."
+
+msgid "successfully deleted"
+msgstr "poistettu onnistuneesti"
 
 msgid "system messages"
 msgstr "järjestelmäviestit"
@@ -14289,6 +14821,12 @@ msgstr[1] "yhteensä - {0} käyttäjää"
 msgid "total file size and number of pieces do not match"
 msgstr "tiedoston koko ja kappalemäärä eivät vastaa toisiaan"
 
+msgid "true"
+msgstr "totta"
+
+msgid "uglify.php failed"
+msgstr "Uglify.php epäonnistui"
+
 msgid "unique users that are not connectable."
 msgstr "yksilölliset käyttäjät, joita ei voi liittää toisiinsa."
 
@@ -14331,8 +14869,17 @@ msgstr "Näytä viestit uusimmasta vanhimpaan"
 msgid "view posts from oldest to newest"
 msgstr "Näytä viestit vanhimmista uusimpiin"
 
-msgid "warned Status from "
-msgstr "varoitettu tila alkaen"
+#, no-php-format
+msgid "warned Status enabled by {0}."
+msgstr "varoitettu Tila käytössä {0}."
+
+#, no-php-format
+msgid "warned Status for {0} by {1}."
+msgstr "varoitti tilan {0} lähettäjältä {1}."
+
+#, no-php-format
+msgid "warned Status removed by {0}."
+msgstr "varoitettu tila poistettu {0}."
 
 msgid "warned users"
 msgstr "varoitti käyttäjiä"
@@ -14342,6 +14889,10 @@ msgstr "rekisteröitiin avoimien ovien aikana"
 
 msgid "watched user list"
 msgstr "seurattu käyttäjäluettelo"
+
+#, no-php-format
+msgid "website changed to {0} from {1} by {2}"
+msgstr "verkkosivusto muutettiin arvoksi {0} arvosta {1}, jonka teki {2}"
 
 msgid "week"
 msgstr "viikko"
@@ -14406,12 +14957,6 @@ msgid "your total uploaded of {0}GB implies a delay of {1} hours. Even if your t
 msgstr "ladattu kokonaismäärä {0} Gt tarkoittaa {1} tunnin viivettä. Vaikka koko ladattu summa on {2} Gt"
 
 #, no-php-format
-msgid "{0, number) Member removed from the list"
-msgid_plural "{0, number) Members removed from the list"
-msgstr[0] "{0, numero) Jäsen poistettu luettelosta"
-msgstr[1] "{0, numero) Jäsenet poistettiin luettelosta"
-
-#, no-php-format
 msgid "{0} (ID: #{1})"
 msgstr "{0} (tunnus: # {1})"
 
@@ -14470,6 +15015,10 @@ msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Lisätty {1} {2} tarkkailtujen käyttäjien luetteloon {4}."
 
 #, no-php-format
+msgid "{0} Arcade Top Scores!"
+msgstr "{0} Pelihallin huipputulokset!"
+
+#, no-php-format
 msgid "{0} Days"
 msgstr "{0} päivää"
 
@@ -14486,8 +15035,26 @@ msgid "{0} Invitation"
 msgstr "{0} Kutsu"
 
 #, no-php-format
+msgid "{0} Invite for {1} Freeslots."
+msgstr "{0} Kutsu {1} vapaamäärään."
+
+#, no-php-format
+msgid "{0} Invite for {1} Karma."
+msgstr "{0} Kutsu {1} Karmaan."
+
+#, no-php-format
+msgid "{0} Invites for {1} Karma."
+msgstr "{0} Kutsu {1} Karmalle."
+
+#, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Lotto"
+
+#, no-php-format
+msgid "{0} Member removed from the list"
+msgid_plural "{0} Members removed from the list"
+msgstr[0] "{0} jäsen poistettu luettelosta"
+msgstr[1] "{0} jäsenet poistettiin luettelosta"
 
 #, no-php-format
 msgid "{0} Member visited during the last 24 hours"
@@ -14528,12 +15095,28 @@ msgstr[0] "{0} käytetty piste."
 msgstr[1] "{0} käytettyjä pisteitä."
 
 #, no-php-format
+msgid "{0} Points for Freeslots."
+msgstr "{0} Pisteitä ilmaiskierroille."
+
+#, no-php-format
 msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
 msgstr "{0} Pisteitä siemenajan korjaamiseksi torrentissa: {1} => {2}"
 
 #, no-php-format
+msgid "{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
+msgstr "{0} pistettä mukautetulle nimikkeelle. Vanha nimike oli '' {1} '' uusi otsikko on '' {2} ''."
+
+#, no-php-format
+msgid "{0} Points to Reanimate torrent: {1}."
+msgstr "{0} osoittaa torrentin elvyttämiseen: {1}."
+
+#, no-php-format
 msgid "{0} Records"
 msgstr "{0} Tietueet"
+
+#, no-php-format
+msgid "{0} Registration"
+msgstr "{0} Rekisteröinti"
 
 #, no-php-format
 msgid "{0} Reset Password Request"
@@ -14570,7 +15153,7 @@ msgstr[0] "{0} Lukematon PM"
 msgstr[1] "{0} Lukemattomat PM: t"
 
 #, no-php-format
-msgid "{0} You bought {1} Freeslots for  {2} Karma."
+msgid "{0} You bought {1} Freeslots for {2} Karma."
 msgstr "{0} Ostit {1} Freeslotsia {2} Karmalle."
 
 #, no-php-format
@@ -14632,6 +15215,10 @@ msgid "{0} and won"
 msgstr "{0} ja voitti"
 
 #, no-php-format
+msgid "{0} bytes added."
+msgstr "{0} tavua lisätty."
+
+#, no-php-format
 msgid "{0} day"
 msgid_plural "{0} days"
 msgstr[0] "{0} päivä"
@@ -14648,14 +15235,18 @@ msgstr[0] "{0} huuhteli {1} torrenttia."
 msgstr[1] "{0} huuhteli {1} torrenttia."
 
 #, no-php-format
-msgid "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgid_plural "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgstr[0] "{0} haamu torrent puhdistettiin onnistuneesti. Voit nyt käynnistää torrentit uudelleen, seurantalaite on päivitetty."
-msgstr[1] "{0} aavepiirit olivat puhdistettu onnistuneesti. Voit nyt käynnistää torrentit uudelleen, seurantalaite on päivitetty."
+msgid "{0} ghost torrent was successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgstr[0] "{0} ghost torrent puhdistettiin onnistuneesti. Voit nyt käynnistää torrentit uudelleen, seurantalaite on päivitetty."
+msgstr[1] "{0} haamu torrentit puhdistettiin onnistuneesti. Voit nyt käynnistää torrentit uudelleen, seurantalaite on päivitetty."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
 msgstr "{0} on kaksinkertaistunut, kaksinkertaistaen vedon {1}."
+
+#, no-php-format
+msgid "{0} has accessed the {1}"
+msgstr "{0} on käyttänyt {1}"
 
 #, no-php-format
 msgid "{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
@@ -14716,6 +15307,10 @@ msgstr[0] "{0} kuukausi sitten"
 msgstr[1] "{0} kuukautta sitten"
 
 #, no-php-format
+msgid "{0} out of 10"
+msgstr "{0} 10: stä"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} 10: stä shittyness-asteikolla"
 
@@ -14728,10 +15323,22 @@ msgid "{0} set by {1}<br>"
 msgstr "{0} asettaa {1} <br>"
 
 #, no-php-format
+msgid "{0} staff page"
+msgstr "{0} henkilöstösivu"
+
+#, no-php-format
 msgid "{0} time"
 msgid_plural "{0} times"
 msgstr[0] "{0} aika"
 msgstr[1] "{0} kertaa"
+
+#, no-php-format
+msgid "{0} to {1}"
+msgstr "{0} - {1}"
+
+#, no-php-format
+msgid "{0} to {1} by {2}."
+msgstr "{0} - {1} kirjoittanut: {2}."
 
 #, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
@@ -14772,8 +15379,14 @@ msgid "{0} view offensive avatar by {1}, {2}\n"
 msgstr "{0} tarkastele loukkaavaa avataria kirjoittanut: {1}, {2}\n"
 
 #, no-php-format
+msgid "{0} was deleted."
+msgstr "{0} poistettiin."
+
+#, no-php-format
 msgid "{0} week"
-msgstr "{0} viikko"
+msgid_plural "{0} weeks"
+msgstr[0] "{0} viikko"
+msgstr[1] "{0} viikkoa"
 
 #, no-php-format
 msgid "{0} week ago"
@@ -14806,6 +15419,10 @@ msgstr "{0} -valikko"
 #, no-php-format
 msgid "{0}'s Mood"
 msgstr "{0} mieliala"
+
+#, no-php-format
+msgid "{0}'s Panel"
+msgstr "{0} -paneeli"
 
 #, no-php-format
 msgid "{0}: Modded Torrents"

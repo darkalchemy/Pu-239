@@ -288,7 +288,7 @@ while ($i <= 50) {
 }
 $invites_drop_down .= '</select>' . _('select amount of invites to add.') . '';
 
-$subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : _('Mass Pm');
+$subject = isset($_POST['subject']) ? htmlsafechars($_POST['subject']) : _('Mass PM');
 $body = isset($_POST['body']) ? htmlsafechars($_POST['body']) : _('Your text here');
 $pm_drop_down = '
                 <table class="w-100">
@@ -314,7 +314,7 @@ $drop_down = '
         <option value="karma">' . _('Karma Points') . '</option>
         <option value="freeslots">' . _('Free Leech Slots') . '</option>
         <option value="invite">' . _('Invites') . '</option>
-        <option value="pm">' . _('Pm') . '</option>
+        <option value="pm">' . _('PM') . '</option>
         <option value="">' . _('Reset bonus type') . '</option>
         </select>';
 

@@ -11,7 +11,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 $HTMLOUT = "
-        <h1 class='has-text-centered'>{$site_config['site']['name']} " . _('Arcade Top Scores!') . "</h1>
+        <h1 class='has-text-centered'>" . _fe('{0} Arcade Top Scores!', $site_config['site']['name']) . "</h1>
         <div class='bottom10 has-text-centered'>
             <div>" . _fe('Top Scores Earn {0} Karma Points', $site_config['arcade']['top_score_points']) . "</div>
             <div class='level-center top10'>

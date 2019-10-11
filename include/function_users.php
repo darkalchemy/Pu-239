@@ -491,31 +491,31 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                                 <span class='level-right " . get_user_class_name((int) $users_data['class'], true) . "'>" . get_user_class_name((int) $users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Last Seen: </span>
+                                <span class='level-left'>" . ('Last Seen') . ": </span>
                                 <span class='level-right'>" . get_date((int) $users_data['last_access'], (date('Ymd') == date('Ymd', $users_data['last_access']) ? 'TIME' : 'FORM'), 1, 0) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Uploaded: </span>
+                                <span class='level-left'>" . ('Uploaded') . ": </span>
                                 <span class='level-right'>" . mksize($users_data['uploaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Downloaded: </span>
+                                <span class='level-left'>" . ('Downloaded') . ": </span>
                                 <span class='level-right'>" . mksize($users_data['downloaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Karma: </span>
+                                <span class='level-left'>" . ('Karma') . ": </span>
                                 <span class='level-right'>" . number_format((float) $users_data['seedbonus']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Seeding: </span>
+                                <span class='level-left'>" . ('Seeding') . ": </span>
                                 <span class='level-right'>" . number_format($peers['yes']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Leeching: </span>
+                                <span class='level-left'>" . ('Leeching') . ": </span>
                                 <span class='level-right'>" . number_format($peers['no']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>Achievments: </span>
+                                <span class='level-left'>" . ('Achievments') . ": </span>
                                 <span class='level-right'>" . number_format($achpoints) . '</span>
                             </span>
                         </span>

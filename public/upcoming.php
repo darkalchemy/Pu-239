@@ -227,7 +227,7 @@ if (!empty($add_new)) {
                 $poster = !empty($recipe['poster']) ? $recipe['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
                 $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$recipe['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$recipe['name']}' class='tooltip-poster'>";
             }
-            $chef = "<span class='" . get_user_class_name($recipe['class'], true) . "'>" . $recipe['username'] . '</span>';
+            $chef = format_username($recipe['userid']);
             $plot = $torrent->get_plot($imdb_id);
             if (!empty($plot)) {
                 $stripped = strip_tags($plot);
@@ -256,8 +256,8 @@ if (!empty($add_new)) {
                             </div>
                         </td>' . ($has_access ? "
                         <td class='has-text-centered'>" . ($has_full_access ? "
-                            <a href='{$_SERVER['PHP_SELF']}?action=edit_recipe&amp;id={$recipe['id']}'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
-                            <a href='{$_SERVER['PHP_SELF']}?action=delete_recipe&amp;id={$recipe['id']}'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '
+                            <a href='{$_SERVER['PHP_SELF']}?action=edit_recipe&amp;id={$recipe['id']}' class='tooltipper' title='" . _('Edit Recipe') . "'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
+                            <a href='{$_SERVER['PHP_SELF']}?action=delete_recipe&amp;id={$recipe['id']}' class='tooltipper' title='" . _('Delete Recipe') . "'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '
                         </td>' : '') . '
                     </tr>';
         }

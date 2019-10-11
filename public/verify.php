@@ -59,7 +59,7 @@ $body = "
                     </div>
                 </div>
                 <div class='has-text-centered'>
-                    <input id='login' type='submit' value='Verify' class='button is-small'>
+                    <input id='login' type='submit' value='" . ('Verify') . "' class='button is-small'>
                 </div>";
 
 $HTMLOUT .= main_div($body, '', 'padding20') . '

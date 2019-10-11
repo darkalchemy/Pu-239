@@ -758,7 +758,7 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
 
     if ($viewer['class'] >= UC_STAFF) {
         $sendpmpos = $user['sendpmpos'] != 1;
-        $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . '>' . _('Pm Possible') . "</td>
+        $HTMLOUT .= "<tr><td class='rowhead'" . (!$sendpmpos ? ' rowspan="2"' : '') . '>' . _('PM Possible') . "</td>
                <td class='level-left'>" . ($sendpmpos ? "<input name='sendpmpos' value='42' type='checkbox' class='right5'>" . _('Remove pm disablement') . '' : _('No disablement Status Set')) . '</td>';
         if ($sendpmpos) {
             if ($user['sendpmpos'] == 0) {

@@ -180,13 +180,13 @@ if ($action === 'avatar') {
                                         </td>
                                     </tr>';
     }
-    $HTMLOUT .= tr('Is your avatar offensive', '
+    $HTMLOUT .= tr(_('Is your avatar offensive'), '
                                             <input type="radio" name="offensive_avatar" ' . ($user['offensive_avatar'] === 'yes' ? 'checked' : '') . ' value="yes"> ' . _('Yes') . '
                                             <input type="radio" name="offensive_avatar" ' . ($user['offensive_avatar'] === 'no' ? 'checked' : '') . ' value="no"> ' . _('No'), 1);
-    $HTMLOUT .= tr('View offensive avatars', '
+    $HTMLOUT .= tr(_('View offensive avatars'), '
                                             <input type="radio" name="view_offensive_avatar" ' . ($user['view_offensive_avatar'] === 'yes' ? 'checked' : '') . ' value="yes"> ' . _('Yes') . '
                                             <input type="radio" name="view_offensive_avatar" ' . ($user['view_offensive_avatar'] === 'no' ? 'checked' : '') . ' value="no"> ' . _('No'), 1);
-    $HTMLOUT .= tr('View avatars', '
+    $HTMLOUT .= tr(_('View avatars'), '
                                             <input type="radio" name="avatars" ' . ($user['avatars'] === 'yes' ? 'checked' : '') . ' value="yes"> ' . _('Yes (Low bandwidth user may want to disable this)') . '
                                             <input type="radio" name="avatars" ' . ($user['avatars'] === 'no' ? 'checked' : '') . ' value="no"> ' . _('No'), 1);
     $HTMLOUT .= "
@@ -213,10 +213,10 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>';
-    $HTMLOUT .= tr('View Signatures', '
+    $HTMLOUT .= tr(_('View Signatures'), '
                                             <input type="radio" name="signatures" ' . ($user['signatures'] === 'yes' ? 'checked' : '') . ' value="yes"> ' . _('Yes') . '
                                             <input type="radio" name="signatures" ' . ($user['signatures'] !== 'yes' ? 'checked' : '') . ' value="no"> ' . _('No'), 1);
-    $HTMLOUT .= tr('Signature', '
+    $HTMLOUT .= tr(_('Signature'), '
                                             <textarea name="signature" class="w-100" rows="4">' . format_comment((string) $user['signature']) . '</textarea><br>' . _('Must ne an image url.'), 1);
     $HTMLOUT .= tr(_('Info'), "
                                             <textarea name='info' class='w-100' rows='4'>" . format_comment((string) $user['info']) . '</textarea><br>' . _fe('Displayed on your public page. May contain {0}BBcode{1}.', "<a href='{$site_config['paths']['baseurl']}/tags.php' target='_new'>", '</a>'), 1);
@@ -259,9 +259,9 @@ if ($action === 'avatar') {
         header('Location: ' . $_SERVER['REQUEST_URI']);
         die();
     }
-    $HTMLOUT .= tr('Torrent Pass' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_torrent_pass' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($user['torrent_pass']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is used for downloading and seeding torrents, in your torrent client and your rss reader.') . '</div>', 1);
-    $HTMLOUT .= tr('Auth' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_auth_key' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['auth']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is only used by an upload script, msg any staff member for the details.') . '</div>', 1);
-    $HTMLOUT .= tr('API Key' . "<div class='has-text-centered top10'><a href='{$_SERVER['PHP_SELF']}?action=reset_api_key' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['apikey']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet).') . '</div>', 1);
+    $HTMLOUT .= tr("<div class='has-text-centered top10'><div class='bottom10'>" . _('Torrent Pass') . "</div><a href='{$_SERVER['PHP_SELF']}?action=reset_torrent_pass' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="torrent_pass"  value="' . htmlsafechars($user['torrent_pass']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is used for downloading and seeding torrents, in your torrent client and your rss reader.') . '</div>', 1);
+    $HTMLOUT .= tr("<div class='has-text-centered top10'><div class='bottom10'>" . _('Auth') . "</div><a href='{$_SERVER['PHP_SELF']}?action=reset_auth_key' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['auth']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is only used by an upload script, msg any staff member for the details.') . '</div>', 1);
+    $HTMLOUT .= tr("<div class='has-text-centered top10'><div class='bottom10'>" . _('API Key') . "</div><a href='{$_SERVER['PHP_SELF']}?action=reset_api_key' class='button is-small'>" . _('Reset') . '</a></div>', '<input type="text" class="w-100" name="auth"  value="' . htmlsafechars($user['apikey']) . '" readonly onClick="this.select();"><div class="left10 top10">' . _('This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet).') . '</div>', 1);
     $HTMLOUT .= '
                                 </tbody>
                             </table>
@@ -279,10 +279,10 @@ if ($action === 'avatar') {
                                     </tr>
                                 </thead>
                                 <tbody>';
-    $HTMLOUT .= tr('<img width="16" src="' . $site_config['paths']['images_baseurl'] . 'forums/skype.png" alt="Icq" class="tooltipper right10" title="Skype"> Skype ', '
+    $HTMLOUT .= tr('<img width="16" src="' . $site_config['paths']['images_baseurl'] . 'forums/skype.png" alt="Icq" class="tooltipper right10" title="' . _('Skype') . '">' . _('Skype'), '
                                             <input type="text" class="w-100" name="skype"  value="' . htmlsafechars((string) $user['skype']) . '">
                                             <p class="top10 bottom10">' . _('Click your username, then Share profile, then Copy to clipboard. Then paste the link here.') . '</p>', 1);
-    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="www" width="16px" height="16px"> Website ', '
+    $HTMLOUT .= tr('<img src="' . $site_config['paths']['images_baseurl'] . 'forums/www.gif" alt="www" class="tooltipper right10" title="' . _('Website') . '" width="16px" height="16px">' . _('Website'), '
                                             <input type="text" class="w-100" name="website"  value="' . htmlsafechars((string) $user['website']) . '">', 1);
     $HTMLOUT .= "
                                     <tr>
@@ -468,11 +468,11 @@ if ($action === 'avatar') {
         $HTMLOUT .= tr(_('Anonymous'), "
                                         <input type='checkbox' name='anonymous' " . ($user['anonymous_until'] > TIME_NOW ? 'checked' : '') . '> ' . _('(Anonymous Status - check to protect your profile!)'), 1);
     }
-    $HTMLOUT .= tr('Hide current seed and leech', "
+    $HTMLOUT .= tr(_('Hide current seed and leech'), "
                                         <input type='radio' name='hidecur' " . ($user['hidecur'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                         <input type='radio' name='hidecur' " . ($user['hidecur'] === 'no' ? 'checked' : '') . " value='no'> " . _('No'), 1);
     if (has_access($user['class'], UC_MIN, '')) {
-        $HTMLOUT .= tr('My Paranoia', "
+        $HTMLOUT .= tr(_('My Paranoia'), "
                                         <select name='paranoia'>
                                             <option value='0' " . ($user['paranoia'] == 0 ? 'selected' : '') . '>' . _("I'm totally relaxed") . "</option>
                                             <option value='1' " . ($user['paranoia'] == 1 ? 'selected' : '') . '>' . _('I feel sort of relaxed') . "</option>
@@ -515,13 +515,13 @@ if ($action === 'avatar') {
                                 <tr>
                                     <td colspan='2'>" . _('<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address.') . '</td>
                                 </tr>';
-    $HTMLOUT .= tr('Show Email', '
+    $HTMLOUT .= tr(_('Show Email'), '
                                         <input type="radio" name="show_email" ' . ($user['show_email'] === 'yes' ? 'checked' : '') . ' value="yes"> ' . _('Yes') . '
                                         <input type="radio" name="show_email" ' . ($user['show_email'] === 'no' ? 'checked' : '') . ' value="no"> ' . _('No') . '
                                         <p>' . _('Do you wish to have your email address visible on the forums?') . '</p>', 1);
     $HTMLOUT .= tr(_('Change password'), "
-                                        <input type='password' name='password' id='password' class='w-100' autocomplete='on' minlength='8'> 
-                                        <input type='password' name='confirm_password' id='confirm_password' class='w-100 top10' autocomplete='on' minlength='8'> 
+                                        <input type='password' name='password' id='password' class='w-100' autocomplete='on' minlength='8' placeholder='" . _('New Password') . "'> 
+                                        <input type='password' name='confirm_password' id='confirm_password' class='w-100 top10' autocomplete='on' minlength='8' placeholder='" . _('New Password Again') . "'> 
                                         <p class='top20 bottom10'>" . _('You must enter your current password.') . "</p>
                                         <input type='password' name='current_pass' class='w-100' placeholder='" . _('Current Password') . "'>", 1);
     $HTMLOUT .= "
@@ -694,7 +694,7 @@ if ($action === 'avatar') {
     } else {
         $birthday = $user['birthday'];
     }
-    $HTMLOUT .= tr('Birthday', $birthday, 1);
+    $HTMLOUT .= tr(_('Birthday'), $birthday, 1);
 
     $HTMLOUT .= "
                                     <tr>
@@ -739,17 +739,17 @@ if ($action === 'avatar') {
                                             <input type='checkbox' name='deletepms' " . ($user['deletepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Delete PM on reply")') . '', 1);
         $HTMLOUT .= tr(_('Save PMs'), "
                                             <input type='checkbox' name='savepms' " . ($user['savepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Save PM to Sentbox")') . '', 1);
-        $HTMLOUT .= tr('Forum Subscribe PM', "
+        $HTMLOUT .= tr(_('Forum Subscribe PM'), "
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'no' ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When someone posts in a subscribed thread, you will be PMed.'), 1);
 
         $pm_on_delete = ($user['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE;
-        $HTMLOUT .= tr('Torrent deletion PM', "
+        $HTMLOUT .= tr(_('Torrent deletion PM'), "
                                             <input type='radio' name='pm_on_delete' " . ($pm_on_delete ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='pm_on_delete' " . (!$pm_on_delete ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are deleted, you will be PMed.'), 1);
 
         $commentpm = ($user['opt2'] & user_options_2::COMMENTPM) === user_options_2::COMMENTPM;
-        $HTMLOUT .= tr('Torrent comment PM', "
+        $HTMLOUT .= tr(_('Torrent comment PM'), "
                                             <input type='radio' name='commentpm' " . ($commentpm ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='commentpm' " . (!$commentpm ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are commented on, you will be PMed.'), 1);
         $HTMLOUT .= "

@@ -277,7 +277,7 @@ foreach ($valid_search as $search) {
                 $query->where('t.rating <= ?', (float) $_GET['sre']);
             }
             if ($search === 'si') {
-                $imdb = preg_match('/(tt\d{7})/', $cleaned, $match);
+                $imdb = preg_match('/(tt\d{7,8})/', $cleaned, $match);
                 if (!empty($match[1])) {
                     $count->where('t.imdb_id = ?', $match[1]);
                     $query->where('t.imdb_id = ?', $match[1]);
