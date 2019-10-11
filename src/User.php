@@ -253,7 +253,7 @@ class User
                         strip_tags($values['email']),
                         getip(),
                         $url,
-                    ], doc_head($this->site_config['site']['name'] . _(' Registration')));
+                    ], doc_head(_fe('{0} Registration', $this->site_config['site']['name'])));
                     send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} " . _('user registration confirmation'), $body, strip_tags($body));
                     $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
                 });

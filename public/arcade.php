@@ -17,7 +17,7 @@ if ($user['class'] < $site_config['allowed']['play']) {
 
 $HTMLOUT = "
             <div class='has-text-centered'>
-                <h1>{$site_config['site']['name']} " . _('Old School Arcade!') . '</h1>
+                <h1>" . _fe('{0} Old School Arcade!', $site_config['site']['name']) . '</h1>
                 <span>' . _fe('Top Scores Earn {0} Karma Points', $site_config['arcade']['top_score_points']) . "</span>
                 <div class='level-center top10'>
                     <a class='is-link' href='{$site_config['paths']['baseurl']}/arcade_top_scores.php'>" . _('Top Scores') . '</a>

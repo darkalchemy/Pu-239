@@ -59,7 +59,7 @@ $data = array_merge($_POST, $_GET);
 $action = isset($data['action']) ? htmlsafechars($data['action']) : null;
 $id = isset($data['id']) ? (int) $data['id'] : 0;
 $tool = !empty($data['tool']) ? $data['tool'] : null;
-write_info("{$user['username']} has accessed the " . (empty($tool) ? 'staffpanel' : "$tool staff page"));
+write_info(_fe('{0} has accessed the {1}', $user['username'], empty($tool) ? 'staffpanel' : _fe('{0} staff page', $tool)));
 $staff_tools = [
     'modtask' => 'modtask',
     'iphistory' => 'iphistory',
@@ -122,7 +122,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         }
     } elseif ($action === 'flush' && has_access($user['class'], UC_SYSOP, 'coder')) {
         $cache->flushDB();
-        $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+        $session->set('is-success', _fe('You flushed the {0} cache', ucfirst($site_config['cache']['driver'])));
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
     } elseif ($action === 'uglify' && has_access($user['class'], UC_SYSOP, 'coder')) {
@@ -130,11 +130,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $result = run_uglify();
         toggle_site_status(false);
         if ($result) {
-            $session->set('is-success', 'All CSS and Javascript files processed');
+            $session->set('is-success', _('All CSS and Javascript files processed'));
             $cache->flushDB();
-            $session->set('is-success', 'You flushed the ' . ucfirst($site_config['cache']['driver']) . ' cache');
+            $session->set('is-success', _fe('You flushed the {0} cache', ucfirst($site_config['cache']['driver'])));
         } else {
-            $session->set('is-warning', 'uglify.php failed');
+            $session->set('is-warning', _('uglify.php failed'));
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
@@ -147,9 +147,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         die();
     } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
         if (toggle_site_status($site_config['site']['online'])) {
-            $session->set('is-success', 'Site is Online.');
+            $session->set('is-success', _('Site is Online.'));
         } else {
-            $session->set('is-success', 'Site is Offline.');
+            $session->set('is-success', _('Site is Offline.'));
         }
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
@@ -183,16 +183,16 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors = [];
             if (empty($page_name)) {
-                $errors[] = _('The page name') . ' ' . _('cannot be empty') . '.';
+                $errors[] = _('The page name cannot be empty.');
             }
             if (empty($file_name)) {
-                $errors[] = _('The filename') . ' ' . _('cannot be empty') . '.';
+                $errors[] = _('The filename cannot be empty.');
             }
             if (empty($description)) {
-                $errors[] = _('The description') . ' ' . _('cannot be empty') . '.';
+                $errors[] = _('The description cannot be empty.');
             }
             if (!isset($navbar)) {
-                $errors[] = 'Show in Navbar ' . _('cannot be empty') . '.';
+                $errors[] = _('Show in Navbar cannot be empty.');
             }
             if (!in_array((int) $_POST['av_class'], $staff_classes)) {
                 $errors[] = _('The selected class is not a valid staff class.');
@@ -201,16 +201,16 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $errors[] = _('Inexistent php file.');
             }
             if (!empty($page_name) && strlen($page_name) < 4) {
-                $errors[] = _('The page name') . ' ' . _('is too short (min 4 chars)') . '.';
+                $errors[] = _('The page name is too short (min 4 chars).');
             }
             if (!empty($page_name) && strlen($page_name) > 80) {
-                $errors[] = _('The page name') . ' ' . _('is too long') . ' (' . _('max 80 chars') . ').';
+                $errors[] = _('The page name is too long max 80 chars.');
             }
             if (!empty($file_name) && strlen($file_name) > 80) {
-                $errors[] = _('The filename') . ' ' . _('is too long') . ' (' . _('max 80 chars') . ').';
+                $errors[] = _('The filename is too long max 80 chars.');
             }
             if (strlen($description) > 100) {
-                $errors[] = _('The description') . ' ' . _('is too long') . ' (' . _('max 100 chars') . ').';
+                $errors[] = _('The description is too long max 100 chars.');
             }
             if (empty($errors)) {
                 if ($action === 'add') {
@@ -279,8 +279,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             }
         }
         if (!empty($errors)) {
-            $HTMLOUT .= stdmsg(_('There') . ' ' . (count($errors) > 1 ? 'are' : 'is') . ' ' . count($errors) . ' error' . (count($errors) > 1 ? 's' : '') . ' ' . _('in the form') . '.', '<b>' . implode('<br>', $errors) . '</b>');
-            $HTMLOUT .= '<br>';
+            $HTMLOUT .= stdmsg(_pfe('There is {0} error in the form.', 'There are {0} errors in the form.', count($errors)), '<b>' . implode('<br>', $errors) . '</b>');
         }
         $HTMLOUT .= "<form method='post' action='{$_SERVER['PHP_SELF']}' enctype='multipart/form-data' accept-charset='utf-8'>
     <input type='hidden' name='action' value='{$action}'>";
@@ -320,13 +319,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 </tr>
                 <tr>
                     <td class='rowhead'>
-                        Show in Navbar
+                        " . _('Show in Navbar') . "
                     </td>
                     <td>
-                        <input name='navbar' value='1' type='radio' " . ($navbar == 1 ? 'checked' : '') . "><span class='left5'>Yes</span><br>
-                        <input name='navbar' value='0' type='radio' " . ($navbar == 0 ? 'checked' : '') . "><span class='left5'>No</span>
+                        <input name='navbar' value='1' type='radio' " . ($navbar == 1 ? 'checked' : '') . "><span class='left5'>" . _('Yes') . "</span><br>
+                        <input name='navbar' value='0' type='radio' " . ($navbar == 0 ? 'checked' : '') . "><span class='left5'>" . _('No') . '</span>
                     </td>
-                </tr>";
+                </tr>';
 
         $types = [
             'user',
@@ -340,10 +339,10 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     <td class='rowhead'>" . _('Type Of Tool') . "</td>
                     <td>
                         <select name='type' required>
-                            <option value=''>Choose Type</option>";
+                            <option value=''>" . _('Choose Type') . '</option>';
         foreach ($types as $this_type) {
             $body .= '
-                            <option value="' . $this_type . '" ' . ($type === $this_type ? 'selected' : '') . '>' . ucfirst($this_type) . '</option>';
+                            <option value="' . $this_type . '" ' . _($type === $this_type ? 'selected' : '') . '>' . ucfirst($this_type) . '</option>';
         }
         $body .= "
                         </select>
@@ -355,7 +354,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         </td>
                     <td>
                         <select name='av_class' required>
-                            <option value=''>Choose Class</option>";
+                            <option value=''>" . _('Choose Class') . '</option>';
         $maxclass = UC_MAX;
         for ($class = UC_STAFF; $class <= $maxclass; ++$class) {
             $body .= '
@@ -391,7 +390,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         <a href='{$_SERVER['PHP_SELF']}?action=add' class='tooltipper' title='" . _('Add A New Page') . "'>" . _('Add A New Page') . "</a>
                     </li>
                     <li class='margin10'>
-                        <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='" . _('CAUTION: This DELETES all messages in AJAX Chat!') . "'>" . _('Clear Chat') . "</a>
+                        <a href='{$_SERVER['PHP_SELF']}?action=clear_ajaxchat' class='tooltipper' title='" . _('CAUTION: This <b>DELETES</b> all messages in AJAX Chat!') . "'>" . _('Clear Chat') . "</a>
                     </li>
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=uglify' class='tooltipper' title='" . _('Uglify') . "'>" . _('Uglify') . "</a>
@@ -424,7 +423,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             $header = "
                     <tr>
                         <th class='w-50'>" . _('Page name') . "</th>
-                        <th><div class='has-text-centered'>Show in Navbar</div></th>
+                        <th><div class='has-text-centered'>" . _('Show in Navbar') . "</div></th>
                         <th><div class='has-text-centered'>" . _('Added by') . "</div></th>
                         <th><div class='has-text-centered'>" . _('Date added') . '</div></th>';
             if ($user['class'] >= UC_MAX) {
@@ -440,11 +439,11 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 if (!in_array($arr['av_class'], $unique_classes)) {
                     $unique_classes[] = $arr['av_class'];
                     $table = "
-            <h1 class='has-text-centered text-shadow " . get_user_class_name((int) $arr['av_class'], true) . "'>" . get_user_class_name((int) $arr['av_class']) . "'s Panel</h1>";
+            <h1 class='has-text-centered text-shadow " . get_user_class_name((int) $arr['av_class'], true) . "'>" . _fe("{0}'s Panel", get_user_class_name((int) $arr['av_class'])) . '</h1>';
                 }
                 $show_in_nav = $arr['navbar'] == 1 ? '
-                <span class="has-text-success show_in_navbar tooltipper" title="Hide from Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">true</span>' : '
-                <span class="has-text-info show_in_navbar tooltipper" title="Show in Navbar" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">false</span>';
+                <span class="has-text-success show_in_navbar tooltipper" title="' . _('Hide from Navbar') . '" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">' . _('true') . '</span>' : '
+                <span class="has-text-info show_in_navbar tooltipper" title="' . _('Show in Navbar') . '" data-show="' . $arr['navbar'] . '" data-id="' . $arr['id'] . '">' . _('false') . '</span>';
                 $body .= "
                     <tr>
                         <td>

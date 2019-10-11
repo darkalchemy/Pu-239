@@ -21,20 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'upload' || $action === 'edit') {
         $langs = isset($_POST['language']) ? htmlsafechars($_POST['language']) : '';
         if (empty($langs)) {
-            stderr('Upload failed', 'No language selected');
+            stderr(_('Error'), _('No language selected'));
         }
         $releasename = isset($_POST['releasename']) ? htmlsafechars($_POST['releasename']) : '';
         if (empty($releasename)) {
-            stderr('Upload failed', 'Use a descriptive name for your subtitle');
+            stderr(_('Error'), _('Use a descriptive name for your subtitle'));
         }
         $url = strip_tags(isset($_POST['imdb']) ? trim($_POST['imdb']) : '');
         $imdb = '';
         if (!empty($url)) {
-            preg_match('/(tt\d{7})/i', $url, $imdb);
+            preg_match('/(tt\d{7,8})/i', $url, $imdb);
             $imdb = !empty($imdb[1]) ? 'https://www.imdb.com/title/' . $imdb[1] : '';
         }
         if (empty($imdb)) {
-            stderr('Upload failed', 'Your IMDb link is invalid');
+            stderr(_('Error'), _('Your IMDb link is invalid'));
         }
         $comment = isset($_POST['comment']) ? htmlsafechars($_POST['comment']) : '';
         $poster = isset($_POST['poster']) ? htmlsafechars($_POST['poster']) : '';
@@ -43,10 +43,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($action === 'upload') {
             $file = $_FILES['sub'];
             if (!isset($file)) {
-                stderr('Upload failed', "The file can't be empty!");
+                stderr(_('Error'), _("The file can't be empty!"));
             }
             if ($file['size'] > $site_config['subtitles']['max_size']) {
-                stderr('Upload failed', 'Your file is too big.');
+                stderr(_('Error'), _('Your file is too big.'));
             }
             $fname = $file['name'];
             $temp_name = $file['tmp_name'];
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'vtt',
             ];
             if (!in_array($ext, $allowed)) {
-                stderr('Upload failed', 'File not allowed only .srt , .sub , .vtt or .txt files');
+                stderr(_('Error'), _('File not allowed only .srt , .sub , .vtt or .txt files'));
             }
             $new_name = md5((string) TIME_NOW);
             $filename = "$new_name.$ext";
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               ->where('id = ?', $id)
                               ->fetch();
                 if (empty($arr)) {
-                    stderr('Sorry', 'There is no subtitle with that id');
+                    stderr(_('Error'), _('Invalid ID'));
                 }
                 if ($user['id'] != $arr['owner'] && $user['class'] < UC_STAFF) {
                     stderr(_('Error'), _("You're not the owner!"));
@@ -140,28 +140,28 @@ if ($mode === 'upload' || $mode === 'edit') {
                           ->where('id = ?', $id)
                           ->fetch();
             if (empty($arr)) {
-                stderr('Sorry', 'There is no subtitle with that id');
+                stderr(_('Error'), _('Invalid ID'));
             }
         }
     }
     $HTMLOUT .= "
-    <h1 class='has-text-centered'>" . ($mode === 'upload' ? 'New Subtitle' : 'Edit Subtitle</h1><h2 class="has-text-centered">' . htmlsafechars($arr['name'])) . "</h1>
+    <h2 class='has-text-centered'>" . ($mode === 'upload' ? _('New Subtitle') . '</h2>' : _('Edit Subtitle') . '</h1><h2 class="has-text-centered">' . format_comment($arr['name']) . '</h2>') . "
     <form method='post' action='subtitles.php' enctype='multipart/form-data' accept-charset='utf-8'>";
     $body = '';
     if ($mode === 'upload') {
         $body .= "
         <tr>
             <td colspan='2'>
-                <span class='has-text-danger'><b>Only .srt, .sub , .vtt or .txt files are accepted<br>Max file size: " . mksize($site_config['subtitles']['max_size']) . '</b></span>
+                <span class='has-text-danger'><b>" . _('Only .srt, .sub , .vtt or .txt files are accepted') . '<br>' . _('Max file size') . ': ' . mksize($site_config['subtitles']['max_size']) . '</b></span>
             </td>
         </tr>';
     }
     $body .= "
         <tr>
-            <td class='rowhead'>Language</td>
+            <td class='rowhead'>" . _('Language') . "</td>
             <td>
                 <select name='language' class='w-25' required>
-                    <option value=''>- Select -</option>";
+                    <option value=''>" . _('Select') . '</option>';
     foreach ($subs as $sub) {
         $body .= "
                     <option value='{$sub['id']}' " . ($mode === 'edit' && $arr['lang'] == $sub['id'] ? 'selected' : '') . ">{$sub['name']}</option>";
@@ -171,21 +171,21 @@ if ($mode === 'upload' || $mode === 'edit') {
             </td>
         </tr>
         <tr>
-            <td class='rowhead'>Release Name</td>
+            <td class='rowhead'>" . _('Release Name') . "</td>
             <td>
                 <input type='text' name='releasename' value='" . ($mode === 'edit' ? $arr['name'] : '') . "'  placeholder='Avatar.2009.EXTENDED.1080p.BluRay.x264-BestHD' class='w-100' required>
             </td>
         </tr>
         <tr>
-            <td class='rowhead'>IMDB link</td>
+            <td class='rowhead'>" . _('IMDb URL') . "</td>
             <td>
-                <input type='text' name='imdb' value='" . ($mode === 'edit' ? $arr['imdb'] : '') . "' placeholder='https://www.imdb.com/title/tt0499549/' class='w-100' pattern='.*[tt\d{7}]/' required>
+                <input type='text' name='imdb' value='" . ($mode === 'edit' ? $arr['imdb'] : '') . "' placeholder='https://www.imdb.com/title/tt0499549/' class='w-100' pattern='.*[tt\d{7,8}]/' required>
             </td>
         </tr>";
     if ($mode === 'upload') {
         $body .= "
         <tr>
-            <td class='rowhead'>SubFile</td>
+            <td class='rowhead'>" . _('Subfile') . "</td>
             <td>
                 <input type='file' name='sub' required>
             </td>
@@ -193,22 +193,22 @@ if ($mode === 'upload' || $mode === 'edit') {
     }
     $body .= "
         <tr>
-            <td class='rowhead'>Poster</td>
+            <td class='rowhead'>" . _('Poster') . "</td>
             <td>
                 <input type='text' name='poster' value='" . ($mode === 'edit' ? $arr['poster'] : '') . "' placeholder='https://m.media-amazon.com/images/M/MV5BMTYwOTEwNjAzMl5BMl5BanBnXkFtZTcwODc5MTUwMw@@._V1_.jpg' class='w-100' required>
             </td>
         </tr>
         <tr>
-            <td class='rowhead'>Comments</td>
+            <td class='rowhead'>" . _('Comments') . "</td>
             <td>
                 <textarea rows='5' name='comment' title='Any specific details about this subtitle we need to know' class='w-100 tooltipper'>" . ($mode === 'edit' ? htmlsafechars($arr['comment']) : '') . "</textarea>
             </td>
         </tr>
         <tr>
-            <td class='rowhead'>FPS</td>
+            <td class='rowhead'>" . _('FPS') . "</td>
             <td>
                 <select name='fps' class='w-25'>
-                    <option value='0'>- Select -</option>
+                    <option value='0'>" . _('Select') . "</option>
                     <option value='23.976' " . ($mode === 'edit' && $arr['fps'] == '23.976' ? 'selected' : '') . ">23.976</option>
                     <option value='23.980' " . ($mode === 'edit' && $arr['fps'] == '23.980' ? 'selected' : '') . ">23.980</option>
                     <option value='24.000' " . ($mode === 'edit' && $arr['fps'] == '24.000' ? 'selected' : '') . ">24.000</option>
@@ -219,10 +219,10 @@ if ($mode === 'upload' || $mode === 'edit') {
             </td>
         </tr>
         <tr>
-            <td class='rowhead'>CD Number</td>
+            <td class='rowhead'>" . _('CD Number') . "</td>
             <td>
                 <select name='cd' class='w-25'>
-                    <option value='0'>- Select -</option>
+                    <option value='0'>" . _('Select') . "</option>
                     <option value='1' " . ($mode === 'edit' && $arr['cds'] == '1' ? 'selected' : '') . ">1CD</option>
                     <option value='2' " . ($mode === 'edit' && $arr['cds'] == '2' ? 'selected' : '') . ">2CD</option>
                     <option value='3' " . ($mode === 'edit' && $arr['cds'] == '3' ? 'selected' : '') . ">3CD</option>
@@ -236,11 +236,11 @@ if ($mode === 'upload' || $mode === 'edit') {
             <td colspan='2' class='colhead has-text-centered'>";
     if ($mode == 'upload') {
         $body .= "
-                <input type='submit' value='Upload it' class='button is-small'>
+                <input type='submit' value='" . _('Upload it') . "' class='button is-small'>
                 <input type='hidden' name='action' value='upload'>";
     } else {
         $body .= "
-                <input type='submit' value='Edit it' class='button is-small'>
+                <input type='submit' value='" . _('Edit it') . "' class='button is-small'>
                 <input type='hidden' name='action' value='edit'>
                 <input type='hidden' name='id' value='" . $arr['id'] . "'>";
     }
@@ -264,11 +264,11 @@ if ($mode === 'upload' || $mode === 'edit') {
                       ->where('id = ?', $id)
                       ->fetch();
         if (empty($arr)) {
-            stderr('Sorry', 'There is no subtitle with that id');
+            stderr(_('Error'), _('Invalid ID'));
         }
         $sure = (isset($_GET['sure']) && $_GET['sure'] === 'yes') ? 'yes' : 'no';
         if ($sure === 'no') {
-            stderr('Sanity check...', 'Your are about to delete subtitile <b>' . htmlsafechars($arr['name']) . "</b> . Click <a href='subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>here</a> if you are sure.", null);
+            stderr(_('Sanity check...'), _fe('Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure.', format_comment($arr['name']) . "<a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=delete&amp;id=$id&amp;sure=yes'>", '</a>'));
         } else {
             $fluent->deleteFrom('subtitles')
                    ->where('id = ?', $id)
@@ -287,7 +287,7 @@ if ($mode === 'upload' || $mode === 'edit') {
                       ->where('s.id = ?', $id)
                       ->fetch();
         if (empty($arr)) {
-            stderr('Sorry', 'There is no subtitle with that id');
+            stderr(_('Error'), _('Invalid ID'));
         }
         $langs = '<b>Unknown</b>';
         foreach ($subs as $sub) {
@@ -303,30 +303,30 @@ if ($mode === 'upload' || $mode === 'edit') {
         $body = '
         <tr><td>Name : <b>' . htmlsafechars($arr['name']) . "</b></td></tr>
         <tr><td>IMDb : <a href='" . htmlsafechars($arr['imdb']) . "' target='_blank'>" . htmlsafechars($arr['imdb']) . "</a></td></tr>
-        <tr><td><span class='level-left'>Language: {$langs}</span></td></tr>";
+        <tr><td><span class='level-left'>" . _('Language') . ": {$langs}</span></td></tr>";
         if (!empty($arr['comment'])) {
             $body .= '
-        <tr><td><fieldset><legend><b>Comment</b></legend> ' . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
+        <tr><td><fieldset><legend><b>' . _('Comment') . '</b></legend> ' . htmlsafechars($arr['comment']) . '</fieldset></td></tr>';
         }
         $body .= '
-        <tr><td>FPS : <b>' . ($arr['fps'] == 0 ? 'Unknown' : htmlsafechars($arr['fps'])) . '</b></td></tr>
-        <tr><td>Cd# : <b>' . ($arr['cds'] == 0 ? 'Unknown' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</b></td></tr>
+        <tr><td>FPS : <b>' . ($arr['fps'] == 0 ? _('Unknown') : htmlsafechars($arr['fps'])) . '</b></td></tr>
+        <tr><td>Cd# : <b>' . ($arr['cds'] == 0 ? _('Unknown') : ($arr['cds'] == 255 ? _('More than 5') : $arr['cds'])) . '</b></td></tr>
         <tr><td>Hits : <b>' . $arr['hits'] . '</b></td></tr>
         <tr>
             <td>Uploader : ' . format_username($arr['owner']);
         if ($arr['owner'] == $user['id'] || $user['class'] > UC_STAFF) {
             $body .= "
-                <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>
+                <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='" . _('Edit Subtitle') . "' class='tooltipper'>
                     <i class='icon icon-edit' aria-hidden='true'></i>
                 </a>
-                <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='Delete Sub' class='tooltipper'>
+                <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='" . _('Delete Subtitle') . "' class='tooltipper'>
                     <i class='icon icon-trash-empty has-text-danger' aria-hidden='true'></i>
                 </a>";
         }
         $body .= '
             </td>
         </tr>
-        <tr><td>Added : <b>' . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
+        <tr><td>' . _('Added') . ': <b>' . get_date($arr['added'], 'LONG', 0, 1) . '</b></td></tr>';
         $HTMLOUT .= "
         <div class='level-center'>
             $image" . main_table($body) . "
@@ -334,11 +334,11 @@ if ($mode === 'upload' || $mode === 'edit') {
         <div class='level-center-center'>
             <form action='downloadsub.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
                 <input type='hidden' name='sid' value='" . $arr['id'] . "'>
-                <input type='submit' value='Download' class='button is-small margin20'>
+                <input type='submit' value='" . _('Download') . "' class='button is-small margin20'>
                 <input type='hidden' name='action' value='download'>
             </form>
-            <a href='subtitles.php?mode=preview&id={$arr['id']}' class='button is-small margin20'>Preview</a>
-        </div>";
+            <a href='subtitles.php?mode=preview&id={$arr['id']}' class='button is-small margin20'>" . _('Preview') . '</a>
+        </div>';
         $title = _('Subtitle Details');
         $breadcrumbs = [
             "<a href='{$site_config['paths']['baseurl']}/browse.php'>" . _('Browse Torrents') . '</a>',
@@ -355,16 +355,16 @@ if ($mode === 'upload' || $mode === 'edit') {
                       ->where('id = ?', $id)
                       ->fetch();
         if (empty($arr)) {
-            stderr('Sorry', 'There is no subtitle with that id');
+            stderr(_('Error'), _('Invalid ID'));
         }
         $file = UPLOADSUB_DIR . $arr['filename'];
         $content = file_get_contents($file);
         $fileContent = substr(strip_tags($content), 0, 1000);
         $HTMLOUT = "
     <ul class='bg-06 level-center'>
-        <li class='margin10'><a href='subtitles.php?mode=details&amp;id={$id}'>Return to Details</a></li>
+        <li class='margin10'><a href='subtitles.php?mode=details&amp;id={$id}'>" . _('Return to Details') . "</a></li>
     </ul>
-    <h1 class='has-text-centered'>Subtitle Preview</h1>" . main_div("
+    <h1 class='has-text-centered'>" . _('Subtitle Preview') . '</h1>' . main_div("
     <div class='pre padding20'>" . $fileContent . '</div>');
         $title = ('Subtitle Preview');
         $breadcrumbs = [
@@ -392,9 +392,9 @@ if ($mode === 'upload' || $mode === 'edit') {
     }
     $link = ($s && $w ? "s=$s&amp;w=$w&amp;" : '');
     $count = $count->fetch('count');
-    $title = empty($s) ? 'Search' : "Search result for <i>'" . htmlsafechars($s) . "'</i>";
+    $title = empty($s) ? _('Search') : _fe("Search result for <i>'{0}'</i>", format_comment($s));
     if ($count === 0 && !$s && !$w) {
-        stdmsg('', 'There is no subtitle, go <a href="subtitles.php?mode=upload">here</a> and start uploading.');
+        stdmsg(_('Error'), _fe('There are no subtitles, go {0}here{1} and start uploading.', '<a href="' . $site_config['paths']['baseurl'] . '/subtitles.php?mode=upload">', '</a>'));
     }
     $perpage = 15;
     $pager = pager($perpage, $count, 'subtitles.php?' . $link);
@@ -404,7 +404,7 @@ if ($mode === 'upload' || $mode === 'edit') {
                      ->fetchAll();
     $HTMLOUT .= "
     <ul class='bg-06 level-center'>
-        <li class='margin10'><a href='subtitles.php?mode=upload'>Upload a Subtitle</a></li>
+        <li class='margin10'><a href='subtitles.php?mode=upload'>" . _('Upload a Subtitle') . "</a></li>
     </ul>
     <div class='has-text-centered'>
         <h1>$title</h1>";
@@ -413,21 +413,21 @@ if ($mode === 'upload' || $mode === 'edit') {
             <div class='has-text-centered'>
                 <input class='w-50 top20' value='" . $s . "' name='s' type='text'>
                 <select name='w'>
-                    <option value='name' " . ($w === 'name' ? 'selected' : '') . ">Name</option>
-                    <option value='imdb' " . ($w === 'imdb' ? 'selected' : '') . ">IMDb</option>
-                    <option value='comment' " . ($w === 'comment' ? 'selected' : '') . ">Comments</option>
+                    <option value='name' " . ($w === 'name' ? 'selected' : '') . '>' . _('Name') . "</option>
+                    <option value='imdb' " . ($w === 'imdb' ? 'selected' : '') . '>' . _('IMDb') . "</option>
+                    <option value='comment' " . ($w === 'comment' ? 'selected' : '') . '>' . _('Comments') . "</option>
                 </select>
             </div>
             <div class='has-text-centered'>
-                <input type='submit' value='Search' class='button is-small margin20'>
+                <input type='submit' value='" . _('Search') . "' class='button is-small margin20'>
             </div>
         </form>";
 
     if ($count === 0) {
         $body .= "
         <div class='has-text-centered padding20'>
-            Nothing found! Try again with a refined search string.
-        </div>";
+            " . _('Nothing found! Try again with a refined search string.') . '
+        </div>';
     }
     $HTMLOUT .= '
     </div>' . main_div($body);
@@ -439,20 +439,20 @@ if ($mode === 'upload' || $mode === 'edit') {
         }
         $heading = '
     <tr>
-        <th>Lang</th>
-        <th>Name</th>
-        <th>IMDb</th>
-        <th>Added</th>
-        <th>Hits</th>
-        <th>FPS</th>
-        <th>CD#</th>
-        <th>Tools</th>
-        <th>Upper</th>
+        <th>' . _('Language') . '</th>
+        <th>' . _('Name') . '</th>
+        <th>' . _('IMDb') . '</th>
+        <th>' . _('Added') . '</th>
+        <th>' . _('Hits') . '</th>
+        <th>' . _('FPS') . '</th>
+        <th>' . _('CD#') . '</th>
+        <th>' . _('Tools') . '</th>
+        <th>' . _('Uploader') . '</th>
     </tr>';
 
         $body = '';
         foreach ($select as $arr) {
-            $langs = '<b>Unknown</b>';
+            $langs = '<b>' . _('Unknown') . '</b>';
             foreach ($subs as $sub) {
                 if ($sub['id'] == $arr['lang']) {
                     $langs = "<img src='{$site_config['paths']['images_baseurl']}/{$sub['pic']}' alt='{$sub['name']}' class='tooltipper left10' title='{$sub['name']}'>";
@@ -462,7 +462,7 @@ if ($mode === 'upload' || $mode === 'edit') {
             $body .= "
     <tr>
         <td class='has-text-centered'>{$langs}</td>
-        <td><a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=details&amp;id=" . $arr['id'] . "'>" . htmlsafechars($arr['name']) . "</a></td>
+        <td><a href='{$site_config['paths']['baseurl']}/subtitles.php?mode=details&amp;id=" . $arr['id'] . "'>" . format_comment($arr['name']) . "</a></td>
         <td class='has-text-centered'>
             <a href='" . htmlsafechars($arr['imdb']) . "'  target='_blank'>
                 <img src='{$site_config['paths']['images_baseurl']}imdb.svg' alt='Imdb' title='Imdb' class='tooltipper' width='50px'>
@@ -470,15 +470,15 @@ if ($mode === 'upload' || $mode === 'edit') {
         </td>
         <td class='has-text-centered'>" . get_date((int) $arr['added'], 'LONG', 0, 1) . "</td>
         <td class='has-text-centered'>" . $arr['hits'] . "</td>
-        <td class='has-text-centered'>" . ($arr['fps'] === 0 ? '-' : htmlsafechars($arr['fps'])) . "</td>
-        <td class='has-text-centered'>" . ($arr['cds'] === 0 ? '-' : ($arr['cds'] == 255 ? 'More than 5 ' : $arr['cds'])) . '</td>';
+        <td class='has-text-centered'>" . ($arr['fps'] === 0 ? '-' : format_comment($arr['fps'])) . "</td>
+        <td class='has-text-centered'>" . ($arr['cds'] === 0 ? '-' : ($arr['cds'] == 255 ? _('More than 5') : $arr['cds'])) . '</td>';
             if ($arr['owner'] == $user['id'] || $user['class'] > UC_STAFF) {
                 $body .= "
         <td class='has-text-centered'>
-            <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='Edit Sub' class='tooltipper'>
+            <a href='subtitles.php?mode=edit&amp;id=" . $arr['id'] . "' title='" . _('Edit Subtitle') . "' class='tooltipper'>
                 <i class='icon icon-edit' aria-hidden='true'></i>
             </a>
-            <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='Delete Sub' class='tooltipper'>
+            <a href='subtitles.php?mode=delete&amp;id=" . $arr['id'] . "' title='" . _('Delete Subtitle') . "' class='tooltipper'>
                 <i class='icon icon-trash-empty has-text-danger' aria-hidden='true'></i>
             </a>
         </td>";

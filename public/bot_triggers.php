@@ -170,7 +170,7 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
 				<div class='padding20 level-center-center'>
 				    <input type='text' name='add_reply' class='w-50 right5'>
 				    <input type='hidden' name='id' value='{$data['id']}'>
-				    <input type='submit' value='Add New Reply' class='button is-small left5'>
+				    <input type='submit' value='" . _('Add New Reply') . "' class='button is-small left5'>
 				</div>
 			</form>", 'has-text-centered');
     } elseif ($action === 'edit_trigger') {
@@ -328,22 +328,22 @@ if (empty($triggers)) {
         $body .= "
 					<tr>
 						<td>					
-						    <a href='{$_SERVER['PHP_SELF']}?action=view_replies&amp;id={$post_id}' class='tooltipper' title='View Replies'>{$trigger['phrase']}</a>							
+						    <a href='{$_SERVER['PHP_SELF']}?action=view_replies&amp;id={$post_id}' class='tooltipper' title='" . _('View Replies') . "s'>{$trigger['phrase']}</a>							
 						</td>
 						<td class='has-text-centered'>" . format_username($trigger['userid']) . "</td>
 						<td class='has-text-centered'>$approved</td>" . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
 						<td class='has-text-centered'>
 						    <a href='{$_SERVER['PHP_SELF']}?action=edit_trigger&amp;id={$post_id}'>
-                                <i class='icon-edit icon has-text-info tooltipper' aria-hidden='true' title='Edit Bot Trigger'></i>
+                                <i class='icon-edit icon has-text-info tooltipper' aria-hidden='true' title='" . _('Edit Bot Trigger') . "'></i>
                             </a>
                             <a href='{$_SERVER['PHP_SELF']}?action=delete_trigger&amp;id={$post_id}'>
-                                <i class='icon-trash-empty icon has-text-danger tooltipper' aria-hidden='true' title='Delete Bot Trigger and Replies'></i>
+                                <i class='icon-trash-empty icon has-text-danger tooltipper' aria-hidden='true' title='" . _('Delete Bot Trigger and all Replies') . "'></i>
                             </a>
                         </td>" : '') . "
 						<td class='has-text-centered'>
-						    <a href='{$_SERVER['PHP_SELF']}?action=add_reply&amp;id={$post_id}' class='button is-small'>Add Reply</a>
+						    <a href='{$_SERVER['PHP_SELF']}?action=add_reply&amp;id={$post_id}' class='button is-small'>" . _('Add Reply') . '</a>
                         </td>
-					</tr>";
+					</tr>';
         if (!empty($replies)) {
             $inner_heading = '
                         <tr>
@@ -360,8 +360,8 @@ if (empty($triggers)) {
                 $approve = $reply['userid'] != $user['id'] ? "
                                 <form method='post' action='{$_SERVER['PHP_SELF']}'>
                                     <input type='hidden' name='id' value='{$post_id}'>
-                                    <input type='submit' name='approve_reply' value='Approve'>
-                                </form>" : "You can't approve your replies!.";
+                                    <input type='submit' name='approve_reply' value='" . _('Approve') . "'>
+                                </form>" : _("You can't approve your replies!.");
                 $inner_body .= "
                         <tr>
                             <td>{$reply['reply']}</td>
@@ -369,10 +369,10 @@ if (empty($triggers)) {
                             <td class='has-text-centered'>" . (!empty($reply['approved_by']) ? format_username($reply['approved_by']) : $approve) . '</td>' . (has_access($user['class'], UC_ADMINISTRATOR, 'coder') ? "
 						    <td class='has-text-centered'>
 						        <a href='{$_SERVER['PHP_SELF']}?action=edit_reply&amp;reply_id={$reply['id']}&amp;id={$post_id}'>
-                                    <i class='icon-edit icon has-text-info tooltipper' aria-hidden='true' title='Edit Reply'></i>
+                                    <i class='icon-edit icon has-text-info tooltipper' aria-hidden='true' title='" . _('Edit Reply') . "'></i>
                                 </a>
                                 <a href='{$_SERVER['PHP_SELF']}?action=delete_reply&amp;reply_id={$reply['id']}&amp;id={$post_id}'>
-                                    <i class='icon-trash-empty icon has-text-danger tooltipper' aria-hidden='true' title='Delete Reply'></i>
+                                    <i class='icon-trash-empty icon has-text-danger tooltipper' aria-hidden='true' title='" . _('Delete Reply') . "'></i>
                                 </a>
                             </td>" : '') . '
                         </tr>';

@@ -45,11 +45,11 @@ switch ($action2) {
         $level_of_shittyness .= '<select name="shittyness"><option value="0">' . _('level of shittyness') . '</option>';
         $i = 1;
         while ($i <= 10) {
-            $level_of_shittyness .= '<option value="' . $i . '">' . $i . '' . _(' out of 10') . '</option>';
+            $level_of_shittyness .= '<option value="' . $i . '">' . _fe('{0} out of 10', $i) . '</option>';
             ++$i;
         }
         $level_of_shittyness .= '</select>';
-        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . _fe(' Add {0} to your Shit List {1}', htmlsafechars($arr_name['username']), '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">') . '</h1>
+        $HTMLOUT .= '<h1><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">' . _fe('Add {0} to your Shit List {1}', htmlsafechars($arr_name['username']), '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*">') . '</h1>
       <form method="post" action="staffpanel.php?tool=shit_list&amp;action=shit_list&amp;action2=add" accept-charset="utf-8">
    <table>
    <tr>
@@ -125,14 +125,14 @@ $HTMLOUT .= $message . '
    <table class="table table-bordered">
    <tr>
      <td class="colhead" colspan="4">
-     <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _(' shittiest at the top ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "></td>
+     <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _('shittiest at the top ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * "></td>
    </tr>';
 $i = 1;
 if (mysqli_num_rows($res) == 0) {
     $HTMLOUT .= '
    <tr>
       <td colspan="4">
-      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _(' Your shit list is empty. ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></td>
+      <img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt=" * ">' . _('Your shit list is empty. ') . '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="*"></td>
    </tr>';
 } else {
     while ($shit_list = mysqli_fetch_array($res)) {

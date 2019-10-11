@@ -21,10 +21,10 @@ global $container, $site_config;
  * @param int    $char
  * @param string $link
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed|string|string[]|null
  */
@@ -39,10 +39,10 @@ function readMore(string $text, int $char, string $link)
  * @param array $array
  * @param int   $class
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -177,7 +177,7 @@ foreach ($tids as $tid) {
 }
 
 $htmlout = "
-    <h1 class='has-text-centered'>Torrent Catalog</h1>";
+    <h1 class='has-text-centered'>" . _('Torrent Catalof') . '</h1>';
 $div = "
     <h2 class='has-text-centered'>" . _('Search') . "</h2>
     <form  action='" . $_SERVER['PHP_SELF'] . "' method='get' class='has-text-centered' enctype='multipart/form-data' accept-charset='utf-8'>
@@ -214,7 +214,7 @@ if (!empty($rows)) {
         $div = "
         <div class='columns'>
             <div class='column is-2 has-text-centered'>
-                <div class='bottom10'>" . _('Upper') . ": $uploader</div>
+                <div class='bottom10'>" . _('Uploader') . ": $uploader</div>
                 <div>" . ($row['poster'] ? "
                     <img src='" . url_proxy($row['poster'], true, 250) . "' alt='Poster' class='tooltip-poster'>
                 </div>" : "
@@ -254,7 +254,7 @@ if (!empty($rows)) {
             </div>
         </div>
         <div class='w-100'>
-            <h2 class='has-text-centered'>" . _('Seeder Info (Top 5 Seeders)') . '</h2>
+            <h2 class='has-text-centered'>" . _('Seeder Info: Top 5') . '</h2>
             ' . (isset($peers[$row['id']]) ? peer_list($peers[$row['id']], $user['class']) : main_div("
             <p class='has-text-centered'>" . _('No information to show') . '</p>', '', 'padding20')) . '
         </div>';

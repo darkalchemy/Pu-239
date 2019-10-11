@@ -8,15 +8,17 @@ html {
 
 body {
     font: 85%/1.5 system-ui;
-    line-height: 125%;
+    line-height: 150%;
     margin: auto;
     padding: 0;
     height: 100%;
     width: auto;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
     background: no-repeat center center fixed;
+    scroll-behavior: smooth;
+    text-rendering: optimizeSpeed;
+    vertical-align: middle;
 }
 
 ::-webkit-scrollbar-track {
@@ -1021,10 +1023,10 @@ p + p {
     height: 110px;
 }
 
-.body-overlay {
+#body-overlay {
     width: 100vw;
-    height: 100%;
     background-size: cover;
+    min-height: 100vh;
 }
 
 option.head {
@@ -1168,7 +1170,7 @@ body.background-16 {
 }
 
 .anonymous {
-    background: rgba(63,63,63, .5);
+    background: rgba(63, 63, 63, .5);
     border-radius: .3125em;
 }
 
@@ -1416,6 +1418,7 @@ ul li ul li {
     .page-wrapper {
         margin-left: .625em;
         margin-right: .625em;
+        min-height: 100vh;
     }
 
     .img-polaroid {
@@ -1475,5 +1478,15 @@ ul li ul li {
 
     #pm_count {
         display: none;
+    }
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }

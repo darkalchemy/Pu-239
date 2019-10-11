@@ -8,19 +8,19 @@ if ($user) {
     if (!empty($free) && $free['modifier'] != 0) {
         switch ($free['modifier']) {
             case 1:
-                $mode = 'All Torrents Free';
+                $mode = _('All Torrents Free');
                 break;
 
             case 2:
-                $mode = 'All Double Upload';
+                $mode = _('All Double Upload');
                 break;
 
             case 3:
-                $mode = 'All Torrents Free and Double Upload';
+                $mode = _('All Torrents Free and Double Upload');
                 break;
 
             case 4:
-                $mode = 'All Torrents Silver';
+                $mode = _('All Torrents Silver');
                 break;
 
             default:

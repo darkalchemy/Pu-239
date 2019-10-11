@@ -164,21 +164,21 @@ if ($halfdownload['enabled'] === 'yes') {
 
 if ($freeleech['enabled'] === 'yes') {
     if ($freeleech_enabled) {
-        $fstatus = "<span class='is-success'> ON </span>";
+        $fstatus = "<span class='is-success'> " . _('ON') . ' </span>';
     } else {
         $fstatus = $font_color_fl . '';
     }
 }
 if ($doubleupload['enabled'] === 'yes') {
     if ($double_upload_enabled) {
-        $dstatus = "<span class='is-success'> ON </span>";
+        $dstatus = "<span class='is-success'> " . _('ON') . ' </span>';
     } else {
         $dstatus = $font_color_du . '';
     }
 }
 if ($halfdownload['enabled'] === 'yes') {
     if ($half_down_enabled) {
-        $hstatus = "<span class='is-success'> ON </span>";
+        $hstatus = "<span class='is-success'> " . _('ON') . ' </span>';
     } else {
         $hstatus = $font_color_hd . '';
     }
@@ -187,18 +187,18 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
     $htmlout .= "
         <li>
             <a href='{$site_config['paths']['baseurl']}/mybonus.php'>
-                <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>Karma Contribution's</span>
+                <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#karma_tooltip'>" . _("Karma Contribution's") . "</span>
                 <div class='tooltip_templates'>
                     <div id='karma_tooltip' class='margin20'>
                         <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                            Karma Contribution's
-                        </div>";
+                            " . ("Karma Contribution's") . '
+                        </div>';
     if ($freeleech['enabled'] === 'yes') {
         $htmlout .= "
                         <div class='level is-marginless'>
-                            <span>Freeleech</span><span class='left10'> [ ";
+                            <span>" . _('Freeleech') . "</span><span class='left10'> [ ";
         if ($freeleech_enabled) {
-            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date((int) $freeleech_start_time, 'DATE') . ' - ' . get_date((int) $freeleech_end_time, 'DATE');
+            $htmlout .= "<span class='has-text-success'> " . _('ON') . ' </span>' . get_date((int) $freeleech_start_time, 'DATE') . ' - ' . get_date((int) $freeleech_end_time, 'DATE');
         } else {
             $htmlout .= $fstatus;
         }
@@ -209,9 +209,9 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
     if ($doubleupload['enabled'] === 'yes') {
         $htmlout .= "
                         <div class='level is-marginless'>
-                            <span>DoubleUpload</span><span class='left10'> [ ";
+                            <span>" . _('Doubleupload') . "</span><span class='left10'> [ ";
         if ($double_upload_enabled) {
-            $htmlout .= "<span class='has-text-success'> ON </span>" . get_date((int) $double_upload_start_time, 'DATE') . ' - ' . get_date((int) $double_upload_end_time, 'DATE');
+            $htmlout .= "<span class='has-text-success'> " . _('ON') . ' </span>' . get_date((int) $double_upload_start_time, 'DATE') . ' - ' . get_date((int) $double_upload_end_time, 'DATE');
         } else {
             $htmlout .= $dstatus;
         }
@@ -222,9 +222,9 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
     if ($halfdownload['enabled'] === 'yes') {
         $htmlout .= "
                         <div class='level is-marginless'>
-                            <span>Half Download</span><span class='left10'> [ ";
+                            <span>" . _('Half Download') . "</span><span class='left10'> [ ";
         if ($half_down_enabled) {
-            $htmlout .= '<span class="has-text-success"> ON</span> ' . get_date((int) $half_down_start_time, 'DATE') . ' - ' . get_date((int) $half_down_end_time, 'DATE');
+            $htmlout .= "<span class='has-text-success'> " . _('ON') . ' </span>' . get_date((int) $half_down_start_time, 'DATE') . ' - ' . get_date((int) $half_down_end_time, 'DATE');
         } else {
             $htmlout .= $hstatus;
         }

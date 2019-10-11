@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <th class='w-10 has-text-centered'>Mailbox</th>
                 <th class='w-50'>" . _('Subject') . "</th>
                 <th class='w-10 has-text-centered'>" . _('Sender') . "</th>
-                <th class='w-10 has-text-centered'>" . _(' Date') . "</th>
+                <th class='w-10 has-text-centered'>" . _('Date') . "</th>
                 <th class='w-1 has-text-centered'><input type='checkbox' id='checkThemAll' class='tooltipper' title='" . _('Select All') . "'></th>
             </tr>";
 
@@ -208,7 +208,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <td colspan='2'>$sender</td>
             </tr>
             <tr>
-                <td class='w-10'>" . _(' Date') . "</td>
+                <td class='w-10'>" . _('Date') . "</td>
                 <td colspan='2'>$date</td>
             </tr>", null, null, 'bottom20');
         }

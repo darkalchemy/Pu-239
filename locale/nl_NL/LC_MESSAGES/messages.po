@@ -107,210 +107,11 @@ msgstr ""
 msgid "  Descending"
 msgstr "  Aflopend"
 
-msgid " - AJAX Chat disablement by "
-msgstr " - AJAX Chat uitgeschakeld door"
-
-msgid " - AJAX Chat disablement for"
-msgstr " - AJAX Chat uitschakelen voor"
-
-msgid " - AJAX Chat disablement status removed by "
-msgstr " - AJAX Chat-uitschakelingsstatus verwijderd door"
-
-msgid " - Account Parked by "
-msgstr " - Account geparkeerd door"
-
-msgid " - Account UnParked by "
-msgstr " - Account verwijderd door"
-
-msgid " - Added Download"
-msgstr " - Download toegevoegd"
-
-msgid " - Added Upload"
-msgstr " - Upload toegevoegd"
-
-msgid " - Avatar changed from "
-msgstr " - Avatar gewijzigd van"
-
-msgid " - Avatar disablement by "
-msgstr " - Avatar uitschakelen door"
-
-msgid " - Avatar disablement for"
-msgstr " - Avatar uitschakeling voor"
-
-msgid " - Avatar disablement status removed by "
-msgstr " - Avatar uitschakelingsstatus verwijderd door"
-
-msgid " - Avatar rights turned off by "
-msgstr " - Avatarrechten uitgeschakeld door"
-
-msgid " - Avatar rights turned on by "
-msgstr " - Avatarrechten ingeschakeld door"
-
-msgid " - Custom Title changed to "
-msgstr " - Aangepaste titel gewijzigd in"
-
-msgid " - Demoted from FLS by "
-msgstr " - Gedegradeerd van FLS door"
-
-msgid " - Download disablement by "
-msgstr " - Download uitschakeling door"
-
-msgid " - Download enabled by "
-msgstr " - Download ingeschakeld door"
-
-msgid " - Downloads disabled by "
-msgstr " - Downloads uitgeschakeld door"
-
-msgid " - Freeleech Status enabled by "
-msgstr " - Freeleech Status ingeschakeld door"
-
-msgid " - Freeleech Status for"
-msgstr " - Freeleech-status voor"
-
-msgid " - Freeleech Status removed by "
-msgstr " - Freeleech-status verwijderd door"
-
-msgid " - Games disablement for"
-msgstr " - Games uitgeschakeld voor"
-
-msgid " - Gaming disablement by "
-msgstr " - Gaming uitgeschakeld door"
-
-msgid " - Gaming disablement status removed by "
-msgstr " - Uitschakelingsstatus voor games verwijderd door"
-
-msgid " - Highspeed Upload disabled by "
-msgstr " - Highspeed Upload uitgeschakeld door"
-
-msgid " - Highspeed Upload enabled by "
-msgstr " - Highspeed Upload ingeschakeld door"
-
-msgid " - Hit and runs set to "
-msgstr " - Hit en loopt ingesteld op"
-
-msgid " - Immune Status enabled by "
-msgstr " - Immuunstatus ingeschakeld door"
-
-msgid " - Immunity Status for"
-msgstr " - Immuniteitsstatus voor"
-
-msgid " - Immunity Status removed by "
-msgstr " - Immuniteitsstatus verwijderd door"
-
-msgid " - Invite amount changed to "
-msgstr " - Uitnodigingsbedrag gewijzigd in"
-
-msgid " - Invites allowed changed from "
-msgstr " - Uitnodigingen toegestaan gewijzigd van"
-
-msgid " - Offensive avatar set to no by "
-msgstr " - Aanstootgevende avatar ingesteld op nee door"
-
-msgid " - Offensive avatar set to yes by "
-msgstr " - Aanstootgevende avatar ingesteld op Ja door"
-
-#, no-php-format
-msgid " - Paranoia changed to {0} from {1} by {2}"
-msgstr " - Paranoia gewijzigd in {0} van {1} door {2}"
-
-msgid " - Peers limit set to"
-msgstr " - Peers-limiet ingesteld op"
-
-msgid " - Pm disablement by "
-msgstr " - Pm arbeidsongeschiktheid door"
-
-msgid " - Pm disablement for"
-msgstr " - Pm invaliditeit voor"
-
-msgid " - Pm disablement status removed by "
-msgstr " - Pm-uitschakelingsstatus verwijderd door"
-
-msgid " - Posting disabled by "
-msgstr " - Plaatsen uitgeschakeld door"
-
-msgid " - Posting enabled by "
-msgstr " - Posten ingeschakeld door"
-
-msgid " - Promoted to FLS by "
-msgstr " - Gepromoveerd tot FLS door"
-
-msgid " - Reputation points changed to "
-msgstr " - Reputatiepunten gewijzigd in"
-
-msgid " - Seedbonus amount changed to "
-msgstr " - Seedbonus bedrag gewijzigd in"
-
-msgid " - Signature changed from "
-msgstr " - Handtekening gewijzigd van"
-
-msgid " - Signature rights turned off by "
-msgstr " - Handtekeningrechten uitgeschakeld door"
-
-msgid " - Signature rights turned on by "
-msgstr " - Handtekeningrechten ingeschakeld door"
-
-msgid " - Subtracted Download"
-msgstr " - Afgetrokken download"
-
-msgid " - Subtracted Upload"
-msgstr " - Afgetrokken upload"
-
-msgid " - This account has been Un-suspended by "
-msgstr " - Dit account is opgeschort door"
-
-msgid " - This account has been suspended by "
-msgstr " - Dit account is opgeschort door"
-
-msgid " - Torrents limit set to"
-msgstr " - Torrentslimiet ingesteld op"
-
-msgid " - Upload disablement by "
-msgstr " - Upload uitschakeling door"
-
-msgid " - Upload disablement status removed by "
-msgstr " - Upload uitgeschakeld status verwijderd door"
-
-msgid " - Wait time set to"
-msgstr " - Wachttijd ingesteld op"
-
-msgid " - freeslots amount changed to "
-msgstr " - aantal freeslots gewijzigd in"
-
-msgid " - leechwarn Status enabled by "
-msgstr " - leechwarn Status ingeschakeld door"
-
-msgid " - leechwarn Status for"
-msgstr " - leechwarn Status voor"
-
-msgid " - leechwarn Status removed by "
-msgstr " - leechwarn Status verwijderd door"
-
-#, no-php-format
-msgid " - skype changed to {0} from {1} by {2}"
-msgstr " - skype gewijzigd in {0} van {1} door {2}"
-
-msgid " - warned Status enabled by "
-msgstr " - gewaarschuwd Status ingeschakeld door"
-
-msgid " - warned Status for"
-msgstr " - waarschuwde Status voor"
-
-msgid " - warned Status removed by "
-msgstr " - gewaarschuwd Status verwijderd door"
-
-#, no-php-format
-msgid " - website changed to {0} from {1} by {2}"
-msgstr " - website gewijzigd in {0} van {1} door {2}"
-
 msgid " = Delete Bookmark |"
 msgstr " = Verwijder bladwijzer |"
 
 msgid " = Download Torrent |"
 msgstr " = Download Torrent |"
-
-#, no-php-format
-msgid " Add {0} to your Shit List {1}"
-msgstr " Voeg {0} toe aan je Shit List {1}"
 
 msgid " Ascending "
 msgstr " oplopend"
@@ -326,9 +127,6 @@ msgstr " DLed op"
 
 msgid " DLed at: "
 msgstr " DLed op:"
-
-msgid " Date"
-msgstr " Datum"
 
 msgid " Days"
 msgstr " dagen"
@@ -381,9 +179,6 @@ msgstr " Probeer deze richtlijnen te volgen"
 msgid " Read Messages."
 msgstr " Lees berichten."
 
-msgid " Registration"
-msgstr " registratie"
-
 msgid " Seconds "
 msgstr " seconden"
 
@@ -405,9 +200,6 @@ msgstr " Waarschuwde tot"
 msgid " Whom to promote and why"
 msgstr " Wie te promoten en waarom"
 
-msgid " Your shit list is empty. "
-msgstr " Je shitlijst is leeg."
-
 msgid " better luck next time..."
 msgstr " volgende keer beter..."
 
@@ -423,9 +215,6 @@ msgstr " gehandicapt!"
 msgid " does not accept PMs."
 msgstr " accepteert geen PM's."
 
-msgid " expand"
-msgstr " uitbreiden"
-
 msgid " for the reason why."
 msgstr " om de reden waarom."
 
@@ -438,9 +227,6 @@ msgstr " is gemarkeerd met een abnormaal hoge uploadsnelheid!"
 msgid " has been marked as inactive and will be deleted. If you wish to remain a member at"
 msgstr " is gemarkeerd als inactief en wordt verwijderd. Als je lid wilt blijven bij"
 
-msgid " has been suspended by "
-msgstr " is geschorst door"
-
 msgid " has blocked PMs from you."
 msgstr " heeft PM's voor u geblokkeerd."
 
@@ -449,12 +235,6 @@ msgstr " is nog nooit op IRC geweest!"
 
 msgid " new email is "
 msgstr " nieuwe e-mail is"
-
-msgid " no hit and runners at the moment..."
-msgstr " momenteel geen hit en lopers ..."
-
-msgid " out of 10"
-msgstr " van de 10"
 
 msgid " peer(s) total"
 msgstr " peer (s) totaal"
@@ -471,17 +251,8 @@ msgstr " regels overtreden:"
 msgid " selected messages."
 msgstr " geselecteerde berichten."
 
-msgid " shittiest at the top "
-msgstr " shittiest bovenaan"
-
-msgid " shrink"
-msgstr " krimpen"
-
 msgid " still to go "
 msgstr " nog te gaan"
-
-msgid " successfully deleted"
-msgstr " succesvol verwijderd"
 
 msgid " time"
 msgstr " tijd"
@@ -503,9 +274,6 @@ msgstr " gebruiker"
 
 msgid " views"
 msgstr " keer bekeken"
-
-msgid " week"
-msgstr " week"
 
 msgid " you will experience no delay."
 msgstr " je zult geen vertraging ervaren."
@@ -615,8 +383,8 @@ msgstr "(De bestanden die u van ons downloadt, zijn echter van u om te doen wat 
 msgid "(In first place, it's unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.)"
 msgstr "(In de eerste plaats is het onwaarschijnlijk dat uw ISP dit doet. DNS-naamomzetting en / of netwerkproblemen zijn de gebruikelijke boosdoeners.)"
 
-msgid "(Minimum Poster Width should be 400 Px , larger sizes will be scaled.)"
-msgstr "(Minimale posterbreedte moet 400 Px zijn, grotere formaten worden geschaald.)"
+msgid "(Minimum Poster Width should be 400 px, larger sizes will be scaled.)"
+msgstr "(Minimale posterbreedte moet 400 px zijn, grotere formaten worden geschaald.)"
 
 msgid "(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)"
 msgstr "(Sidenote onderzoeken: zorg ervoor dat je niet vergeet dat je niet van de lage snelheid genoot. Zaad zodat anderen niet hetzelfde zullen verdragen.)"
@@ -688,12 +456,6 @@ msgstr ""
 
 msgid ". PM them for more information."
 msgstr ". PM ze voor meer informatie."
-
-msgid ". Please PM "
-msgstr ". Alsjeblieft PM"
-
-msgid ". You can now upload torrents using highspeeds without being flagged as a cheater."
-msgstr ". Je kunt nu torrents uploaden met hoge snelheden zonder als cheater te worden gemarkeerd."
 
 msgid ". You can post to forum again."
 msgstr ". Je kunt opnieuw posten op het forum."
@@ -864,8 +626,17 @@ msgstr "Een werkafdruk is een kopie van de film die nog niet is afgemaakt. Er ku
 msgid "AJAX Chat disabled = "
 msgstr "AJAX Chat uitgeschakeld ="
 
-msgid "AJAX Chat disablement from "
-msgstr "AJAX Chat uitschakelen van"
+#, no-php-format
+msgid "AJAX Chat disablement by {0}."
+msgstr "AJAX Chat uitgeschakeld door {0}."
+
+#, no-php-format
+msgid "AJAX Chat disablement for {0} by {1}."
+msgstr "AJAX Chat-uitschakeling voor {0} door {1}."
+
+#, no-php-format
+msgid "AJAX Chat disablement status removed by {0}."
+msgstr "AJAX Chat-uitschakelingsstatus verwijderd door {0}."
 
 msgid "AJAX Chat enabled = No"
 msgstr "AJAX Chat ingeschakeld = Nee"
@@ -886,8 +657,15 @@ msgstr "APC (u) hits: {0}"
 msgid "API"
 msgstr "API"
 
+msgid "API Key"
+msgstr "API sleutel"
+
 msgid "APIKey "
 msgstr "API sleutel"
+
+#, no-php-format
+msgid "APIKey {0} reset to {1}."
+msgstr "APIKey {0} gereset naar {1}."
 
 msgid "APIs Display Settings"
 msgstr "API's Weergave-instellingen"
@@ -935,11 +713,17 @@ msgstr "Toegang tot de nieuwste torrents is afhankelijk van een goede verhouding
 msgid "Account Manager"
 msgstr "Account Manager"
 
+msgid "Account Parked by "
+msgstr "Account geparkeerd door"
+
 msgid "Account Suspended!"
 msgstr "Account opgeschort!"
 
 msgid "Account Un-Suspended!"
 msgstr "Account niet opgeschort!"
+
+msgid "Account UnParked by "
+msgstr "Account UnParked door"
 
 msgid "Account for "
 msgstr "Account voor"
@@ -1073,6 +857,9 @@ msgstr "Nieuwe peiling toevoegen"
 msgid "Add New Promotion Rule"
 msgstr "Nieuwe promotieregel toevoegen"
 
+msgid "Add New Reply"
+msgstr "Nieuw antwoord toevoegen"
+
 msgid "Add New Reputation Level"
 msgstr "Nieuw reputatieniveau toevoegen"
 
@@ -1191,6 +978,10 @@ msgstr "Woord toevoegen"
 msgid "Add {0} to the Watched Users List"
 msgstr "Voeg {0} toe aan de Bewaakte gebruikerslijst"
 
+#, no-php-format
+msgid "Add {0} to your Shit List {1}"
+msgstr "Voeg {0} toe aan je Shit List {1}"
+
 msgid "Added"
 msgstr "Toegevoegd"
 
@@ -1199,6 +990,12 @@ msgstr "Toegevoegd door"
 
 msgid "Added By"
 msgstr "Toegevoegd door"
+
+msgid "Added Download"
+msgstr "Download toegevoegd"
+
+msgid "Added Upload"
+msgstr "Upload toegevoegd"
 
 msgid "Added by"
 msgstr "Toegevoegd door"
@@ -1272,6 +1069,9 @@ msgstr "Rechts uitlijnen"
 msgid "All (except blocks)"
 msgstr "Alles (behalve blokken)"
 
+msgid "All CSS and Javascript files processed"
+msgstr "Alle CSS- en Javascript-bestanden verwerkt"
+
 msgid "All Comments (Reverse Order)"
 msgstr "Alle opmerkingen (omgekeerde volgorde)"
 
@@ -1280,6 +1080,9 @@ msgstr "Alle opmerkingen (in omgekeerde volgorde)"
 
 msgid "All Donations"
 msgstr "Alle donaties"
+
+msgid "All Double Upload"
+msgstr "Alles dubbel uploaden"
 
 msgid "All Peers Are Connectable!"
 msgstr "Alle leeftijdsgenoten kunnen worden verbonden!"
@@ -1529,9 +1332,6 @@ msgstr "Willekeurige duur"
 msgid "Arcade"
 msgstr "zuilengang"
 
-msgid "Arcade Top Scores!"
-msgstr "Arcade Topscores!"
-
 msgid "Are all downloads subject to HnR, including incomplete downloads?"
 msgstr "Zijn alle downloads onderworpen aan HnR, inclusief onvolledige downloads?"
 
@@ -1634,8 +1434,15 @@ msgstr "audio"
 msgid "August"
 msgstr "augustus"
 
+msgid "Auth"
+msgstr "Auth"
+
 msgid "Auth Key "
 msgstr "Inlogcode"
+
+#, no-php-format
+msgid "Auth Key {0} reset to {1}."
+msgstr "Auth Key {0} gereset naar {1}."
 
 msgid "Author"
 msgstr "Auteur"
@@ -1679,11 +1486,29 @@ msgstr "Avatar URL"
 msgid "Avatar changed"
 msgstr "Avatar gewijzigd"
 
-msgid "Avatar disablement from "
-msgstr "Avatar uitschakelen van"
+msgid "Avatar changed from "
+msgstr "Avatar is gewijzigd van"
+
+#, no-php-format
+msgid "Avatar disablement by {0}."
+msgstr "Avatar uitgeschakeld door {0}."
+
+#, no-php-format
+msgid "Avatar disablement for {0} by {1}."
+msgstr "Avatar uitgeschakeld voor {0} door {1}."
+
+#, no-php-format
+msgid "Avatar disablement status removed by {0}."
+msgstr "Avatar uitschakelingsstatus verwijderd door {0}."
 
 msgid "Avatar rights enabled = "
 msgstr "Avatarrechten ingeschakeld ="
+
+msgid "Avatar rights turned off by "
+msgstr "Avatarrechten uitgeschakeld door"
+
+msgid "Avatar rights turned on by "
+msgstr "Avatarrechten ingeschakeld door"
 
 msgid "Avatar selection disabled = "
 msgstr "Avatar selectie uitgeschakeld ="
@@ -2068,11 +1893,17 @@ msgstr "browser"
 msgid "Browser and OS detect?"
 msgstr "Browser en OS detecteren?"
 
+msgid "Browser?"
+msgstr "Browser?"
+
 msgid "Browsing was used just as an example, the same would apply to gaming, IMing, etc..."
 msgstr "Browsen werd alleen als voorbeeld gebruikt, hetzelfde zou gelden voor gamen, IMing, enz ..."
 
 msgid "Bug Alert Message"
 msgstr "Bug Alert bericht"
+
+msgid "Bug Alert Message?"
+msgstr "Bug Alert bericht?"
 
 msgid "Bug Message Alert?"
 msgstr "Foutmeldingen"
@@ -2130,8 +1961,14 @@ msgstr "Door blackjack te spelen, zet u 10GB uploadtegoed in!"
 msgid "CAM"
 msgstr "cAM"
 
-msgid "CAUTION: This DELETES all messages in AJAX Chat!"
-msgstr "VOORZICHTIG: hiermee worden alle berichten in AJAX Chat verwijderd!"
+msgid "CAUTION: This <b>DELETES</b> all messages in AJAX Chat!"
+msgstr "LET OP: Deze <b> VERWIJDERT </b> alle berichten in AJAX Chat!"
+
+msgid "CD Number"
+msgstr "CD nummer"
+
+msgid "CD#"
+msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG Reader"
@@ -2288,6 +2125,90 @@ msgstr "Bekijk {0} Brian's BitTorrent FAQ en gids. {1}"
 msgid "Check this box to hide the uploader of the torrent"
 msgstr "Vink dit vakje aan om de uploader van de torrent te verbergen"
 
+msgid "Check this option if you want to enable Disclaimer."
+msgstr "Schakel deze optie in als u Disclaimer wilt inschakelen."
+
+msgid "Check this option if you want to enable Latest User."
+msgstr "Schakel deze optie in als u Laatste gebruiker wilt inschakelen."
+
+msgid "Check this option if you want to enable latest Comments."
+msgstr "Vink deze optie aan als u de nieuwste opmerkingen wilt inschakelen."
+
+msgid "Check this option if you want to enable latest Forum Posts."
+msgstr "Vink deze optie aan als u de nieuwste forumberichten wilt inschakelen."
+
+msgid "Check this option if you want to enable latest movie torrents."
+msgstr "Vink deze optie aan als u de nieuwste filmtorrents wilt inschakelen."
+
+msgid "Check this option if you want to enable latest torrents banner slider."
+msgstr "Vink deze optie aan als u de nieuwste torrents banner-schuifregelaar wilt inschakelen."
+
+msgid "Check this option if you want to enable latest torrents marquee."
+msgstr "Vink deze optie aan als u het nieuwste torrents-selectiekader wilt inschakelen."
+
+msgid "Check this option if you want to enable latest torrents."
+msgstr "Schakel deze optie in als u de nieuwste torrents wilt inschakelen."
+
+msgid "Check this option if you want to enable latest tv torrents."
+msgstr "Schakel deze optie in als u de nieuwste tv-torrents wilt inschakelen."
+
+msgid "Check this option if you want to enable staff_picks."
+msgstr "Vink deze optie aan als u staff_picks wilt inschakelen."
+
+msgid "Check this option if you want to enable the AJAX Chat."
+msgstr "Schakel deze optie in als u de AJAX Chat wilt inschakelen."
+
+msgid "Check this option if you want to enable the Active Birthday Users."
+msgstr "Schakel deze optie in als u de actieve gebruikers van de verjaardag wilt inschakelen."
+
+msgid "Check this option if you want to enable the Active Irc Users."
+msgstr "Schakel deze optie in als u de actieve Irc-gebruikers wilt inschakelen."
+
+msgid "Check this option if you want to enable the Active Poll."
+msgstr "Schakel deze optie in als u de actieve peiling wilt inschakelen."
+
+msgid "Check this option if you want to enable the Active Users visited over 24hours."
+msgstr "Vink deze optie aan als u de actieve gebruikers die gedurende 24 uur zijn bezocht wilt inschakelen."
+
+msgid "Check this option if you want to enable the Active Users."
+msgstr "Schakel deze optie in als u de actieve gebruikers wilt inschakelen."
+
+msgid "Check this option if you want to enable the Advertisements."
+msgstr "Vink deze optie aan als u de advertenties wilt inschakelen."
+
+msgid "Check this option if you want to enable the Announcement Block."
+msgstr "Schakel deze optie in als u het aankondigingsblok wilt inschakelen."
+
+msgid "Check this option if you want to enable the Christmas Gift."
+msgstr "Vink deze optie aan als u het kerstcadeau wilt inschakelen."
+
+msgid "Check this option if you want to enable the Cooker."
+msgstr "Schakel deze optie in als u het fornuis wilt inschakelen."
+
+msgid "Check this option if you want to enable the Donation Progress."
+msgstr "Vink deze optie aan als u de donatievoortgang wilt inschakelen."
+
+msgid "Check this option if you want to enable the IE user alert."
+msgstr "Vink deze optie aan als u de IE-gebruikerswaarschuwing wilt inschakelen."
+
+msgid "Check this option if you want to enable the MOvie of the week."
+msgstr "Vink deze optie aan als u de MOvie van de week wilt inschakelen."
+
+msgid "Check this option if you want to enable the News Block."
+msgstr "Schakel deze optie in als u het nieuwsblok wilt inschakelen."
+
+msgid "Check this option if you want to enable the Requests."
+msgstr "Vink deze optie aan als u de aanvragen wilt inschakelen."
+
+msgid "Check this option if you want to enable the Stats."
+msgstr "Schakel deze optie in als u de statistieken wilt inschakelen."
+
+msgid "Check this option if you want to enable the Trivia Game."
+msgstr "Vink deze optie aan als je de Trivia Game wilt inschakelen."
+
+msgid "Check this option if you want to enable the torrent freak news."
+msgstr "Vink deze optie aan als je het torrent-freaknieuws wilt inschakelen."
+
 msgid "Check this to post anonymously"
 msgstr "Vink dit aan om anoniem te posten"
 
@@ -2297,8 +2218,14 @@ msgstr "Chef"
 msgid "Child Boards"
 msgstr "Kinderborden"
 
+msgid "Choose Class"
+msgstr "Kies klasse"
+
 msgid "Choose One"
 msgstr "Kies er een"
+
+msgid "Choose Type"
+msgstr "Kies Type"
 
 #, no-php-format
 msgid "Choose any public non-anonymous proxy that does not use port 80 (e.g. from {0}this{1}, {2}this{3} or {4}this{5}</a> list)."
@@ -2503,6 +2430,9 @@ msgstr "Opmerkingen geschiedenis voor"
 msgid "Comments left for "
 msgstr "Opmerkingen over voor"
 
+msgid "Comments?"
+msgstr "Opmerkingen?"
+
 msgid "Commercial"
 msgstr "Reclame"
 
@@ -2583,6 +2513,9 @@ msgstr "aansluitbaar"
 msgid "Connectable and port?"
 msgstr "Aansluitbaar en poort?"
 
+msgid "Connectable?"
+msgstr "Aan te sluiten?"
+
 msgid "Connected"
 msgstr "Verbonden"
 
@@ -2603,6 +2536,9 @@ msgstr "Neem contact op met een beheerder"
 
 msgid "Contact info?"
 msgstr "Contact informatie?"
+
+msgid "Contact?"
+msgstr "Contact?"
 
 msgid "Contents"
 msgstr "Inhoud"
@@ -2630,6 +2566,10 @@ msgstr "Correct pad naar gzip"
 
 msgid "Correct path to the mysqldump file"
 msgstr "Correct pad naar het mysqldump-bestand"
+
+#, no-php-format
+msgid "Cost: {0} Karma"
+msgstr "Kosten: {0} Karma"
 
 msgid "Could not change email, address already taken or password mismatch."
 msgstr "Kan e-mailadres, reeds ingenomen adres of wachtwoord niet veranderen."
@@ -2789,6 +2729,9 @@ msgstr[1] "Momenteel hebt u {0} aangepaste vakken. U kunt maximaal {1} extra mai
 
 msgid "Custom Title"
 msgstr "Aangepaste titel"
+
+msgid "Custom Title changed to "
+msgstr "Aangepaste titel gewijzigd in"
 
 msgid "Custom title"
 msgstr "Aangepaste titel"
@@ -2953,6 +2896,9 @@ msgstr "Bladwijzer verwijderen"
 msgid "Delete Bookmark!"
 msgstr "Bladwijzer verwijderen!"
 
+msgid "Delete Bot Trigger and all Replies"
+msgstr "Verwijder Bot Trigger en alle antwoorden"
+
 msgid "Delete Category"
 msgstr "Categorie verwijderen"
 
@@ -2961,6 +2907,9 @@ msgstr "Klasse verwijderen"
 
 msgid "Delete Invite"
 msgstr "Uitnodiging verwijderen"
+
+msgid "Delete Offer"
+msgstr "Aanbieding verwijderen"
 
 msgid "Delete PM"
 msgstr "PM verwijderen"
@@ -2977,8 +2926,20 @@ msgstr "Verwijder gepost bericht"
 msgid "Delete Reason"
 msgstr "Reden verwijderen"
 
+msgid "Delete Recipe"
+msgstr "Recept verwijderen"
+
+msgid "Delete Reply"
+msgstr "Antwoord verwijderen"
+
+msgid "Delete Request"
+msgstr "Verwijder verzoek"
+
 msgid "Delete Selected"
 msgstr "Verwijder geselecteerde"
+
+msgid "Delete Subtitle"
+msgstr "Ondertitel verwijderen"
 
 msgid "Delete Sure?"
 msgstr "Zeker verwijderen?"
@@ -3044,6 +3005,9 @@ msgstr "Torrent verwijderen = - {0} punten"
 
 msgid "Demoted"
 msgstr "gedegradeerd"
+
+msgid "Demoted from FLS by "
+msgstr "Gedegradeerd van FLS door"
 
 msgid "Demotion"
 msgstr "Degradatie"
@@ -3221,6 +3185,9 @@ msgstr "Laat geen enkel veld leeg"
 msgid "Don't show my username in 'Uploaded By' field in browse."
 msgstr "Mijn gebruikersnaam niet weergeven in het veld 'Geupload door' in bladeren."
 
+msgid "Donate"
+msgstr "schenken"
+
 msgid "Donated Status Until"
 msgstr "Gedoneerde status tot"
 
@@ -3270,6 +3237,9 @@ msgstr "Verdubbeld naar beneden"
 msgid "Doubleseed slot already in use."
 msgstr "Dubbelzetslot al in gebruik."
 
+msgid "Doubleupload"
+msgstr "Doubleupload"
+
 msgid "Down"
 msgstr "naar beneden"
 
@@ -3289,15 +3259,19 @@ msgid "Download Torrent"
 msgstr "Torrent downloaden"
 
 #, no-php-format
+msgid "Download disablement by {0}."
+msgstr "Download uitschakeling door {0}."
+
+#, no-php-format
 msgid "Download disablement for {0} by {1}."
 msgstr "Download uitschakeling voor {0} voor {1}."
-
-msgid "Download disablement from "
-msgstr "Uitschakeling downloaden van"
 
 #, no-php-format
 msgid "Download disablement status removed by {0}."
 msgstr "Download uitschakelingsstatus verwijderd door {0}."
+
+msgid "Download enabled by "
+msgstr "Downloaden ingeschakeld door"
 
 msgid "Download link"
 msgstr "Download link"
@@ -3342,6 +3316,10 @@ msgstr "Een torrent downloaden = - {0} punten"
 
 msgid "Downloading rules -"
 msgstr "Regels downloaden -"
+
+#, no-php-format
+msgid "Downloads disabled by {0}."
+msgstr "Downloads uitgeschakeld door {0}."
 
 msgid "Downloads edited = "
 msgstr "Downloads bewerkt ="
@@ -3395,6 +3373,9 @@ msgstr "Bewerk"
 msgid "Edit / Delete Mail Boxes"
 msgstr "Postvakken bewerken / verwijderen"
 
+msgid "Edit Bot Trigger"
+msgstr "Bottrigger bewerken"
+
 msgid "Edit Category"
 msgstr "Categorie bewerken"
 
@@ -3424,6 +3405,9 @@ msgstr "Poll bewerken"
 
 msgid "Edit Post"
 msgstr "Bericht bewerken"
+
+msgid "Edit Recipe"
+msgstr "Recept bewerken"
 
 msgid "Edit Reply"
 msgstr "Antwoord bewerken"
@@ -3464,6 +3448,9 @@ msgstr "Forum bewerken"
 
 msgid "Edit forum:"
 msgstr "Forum bewerken:"
+
+msgid "Edit it"
+msgstr "Verander het"
 
 msgid "Edit it!"
 msgstr "Verander het!"
@@ -3599,11 +3586,17 @@ msgstr "Schakel de AniDb API in"
 msgid "Enable Announcement?"
 msgstr "Aankondiging inschakelen?"
 
+msgid "Enable Avatar"
+msgstr "Schakel Avatar in"
+
 msgid "Enable Birthday Users?"
 msgstr "Verjaardagsgebruikers inschakelen?"
 
 msgid "Enable Bluray.com RSS API"
 msgstr "Schakel Bluray.com RSS API in"
+
+msgid "Enable Bug Message alerts in stdhead"
+msgstr "Schakel foutmeldingen in stdhead in"
 
 msgid "Enable Bug message alerts in stdhead"
 msgstr "Schakel foutmeldingen in stdhead in"
@@ -3653,6 +3646,12 @@ msgstr "Nieuwste filmtorrents inschakelen?"
 msgid "Enable Latest TV Torrents?"
 msgstr "Nieuwste tv-torrents inschakelen?"
 
+msgid "Enable Latest Torrents scroll?"
+msgstr "Nieuwste torrents scrollen inschakelen?"
+
+msgid "Enable Latest Torrents slider?"
+msgstr "De nieuwste Torrents-schuifregelaar inschakelen?"
+
 msgid "Enable Latest Torrents?"
 msgstr "Laatste torrents inschakelen?"
 
@@ -3692,6 +3691,9 @@ msgstr "Personeelsmenu inschakelen in de Navbar"
 msgid "Enable Staff Picks"
 msgstr "Personeelskeuze inschakelen"
 
+msgid "Enable Staff Picks?"
+msgstr "Personeelskeuze inschakelen?"
+
 msgid "Enable The Lottery"
 msgstr "Schakel de loterij in"
 
@@ -3710,8 +3712,14 @@ msgstr "Schakel TvMaze API in"
 msgid "Enable User Reputation system?"
 msgstr "Gebruikersreputatiesysteem inschakelen?"
 
+msgid "Enable add reputation link"
+msgstr "Schakel reputatielink toevoegen in"
+
 msgid "Enable avatar"
 msgstr "Activeer avatar"
+
+msgid "Enable birthdate and age"
+msgstr "Geboortedatum en leeftijd inschakelen"
 
 msgid "Enable birthday display"
 msgstr "Verjaardagsweergave inschakelen"
@@ -3728,6 +3736,9 @@ msgstr "Schakel aansluitbaar en poort in"
 msgid "Enable contact info"
 msgstr "Contactinformatie inschakelen"
 
+msgid "Enable contact infos"
+msgstr "Contactinformatie inschakelen"
+
 msgid "Enable crazyhour alerts in stdhead"
 msgstr "Schakel crazyhour-meldingen in stdhead in"
 
@@ -3740,6 +3751,9 @@ msgstr "Schakel de geschiedenis van forumberichten in"
 msgid "Enable freeslots and freeleech"
 msgstr "Freeslots en freeleech inschakelen"
 
+msgid "Enable freeslots and freeleech status"
+msgstr "Freeslots en freeleech-status inschakelen"
+
 msgid "Enable gender"
 msgstr "Geslacht inschakelen"
 
@@ -3748,6 +3762,15 @@ msgstr "Schakel happy hour-meldingen in stdhead in"
 
 msgid "Enable invited by"
 msgstr "Inschakelen uitgenodigd door"
+
+msgid "Enable invited by list"
+msgstr "Op uitnodiging per lijst inschakelen"
+
+msgid "Enable ip history lists"
+msgstr "Schakel lijsten met ip-geschiedenis in"
+
+msgid "Enable irc online stats"
+msgstr "Schakel irc online statistieken in"
 
 msgid "Enable irc stats"
 msgstr "Schakel IRC-statistieken in"
@@ -3761,8 +3784,17 @@ msgstr "Activeer karma contributie status alert in stdhead"
 msgid "Enable message alert block"
 msgstr "Schakel waarschuwingsblok in"
 
+msgid "Enable message alerts in stdhead"
+msgstr "Schakel berichtmeldingen in stdhead in"
+
+msgid "Enable online time"
+msgstr "Schakel online tijd in"
+
 msgid "Enable report user"
 msgstr "Schakel rapportgebruiker in"
+
+msgid "Enable report users button"
+msgstr "Knop Rapportgebruikers inschakelen"
 
 msgid "Enable reports alert in stdhead"
 msgstr "Schakel meldingen in stdhead in"
@@ -3770,8 +3802,14 @@ msgstr "Schakel meldingen in stdhead in"
 msgid "Enable reputation link"
 msgstr "Schakel reputatielink in"
 
+msgid "Enable seed time per torrent average ratio"
+msgstr "Schakel seed-tijd per torrentgemiddelde in"
+
 msgid "Enable seedbonus"
 msgstr "Schakel seedbonus in"
+
+msgid "Enable seeding, leeching, snatched and uploaded torrents"
+msgstr "Schakel seeding, leeching, grissen en geüploade torrents in"
 
 msgid "Enable seeding, leeching, snatched, uploaded torrents"
 msgstr "Schakel seeding, leeching, grissen, geüploade torrents in"
@@ -3785,11 +3823,20 @@ msgstr "Knop Bericht verzenden inschakelen"
 msgid "Enable share ratio"
 msgstr "Schakel aandelenratio in"
 
+msgid "Enable show friends button"
+msgstr "Knop Show vrienden inschakelen"
+
 msgid "Enable staff snatched torrents"
 msgstr "Personeel inschakelen trok torrents"
 
+msgid "Enable staff snatchlist"
+msgstr "Schakel personeelsnatchlijst in"
+
 msgid "Enable the global demotion alert block"
 msgstr "Schakel het waarschuwingsblok voor wereldwijde demotie in"
+
+msgid "Enable the global demotion alerts block in stdhead"
+msgstr "Schakel het blok algemene demotie-meldingen in stdhead in"
 
 msgid "Enable torrent comments history"
 msgstr "Schakel torrent reacties geschiedenis in"
@@ -3797,8 +3844,14 @@ msgstr "Schakel torrent reacties geschiedenis in"
 msgid "Enable upload application alerts in stdhead"
 msgstr "Schakel upload applicatie meldingen in stdhead in"
 
+msgid "Enable uploaded and download"
+msgstr "Schakel geüpload en downloaden in"
+
 msgid "Enable uploaded and downloaded"
 msgstr "Schakel geüpload en gedownload in"
+
+msgid "Enable user comments"
+msgstr "Gebruikersreacties inschakelen"
 
 msgid "Enable user hits"
 msgstr "Gebruikershits inschakelen"
@@ -3850,6 +3903,15 @@ msgstr "Vul je gebruikersnaam in"
 
 msgid "Enter password again"
 msgstr "voer het wachtwoord opnieuw in"
+
+msgid "Enter the <b>Torrent ID:</b>"
+msgstr "Voer de <b> Torrent ID in: </b>"
+
+msgid "Enter the <b>amount to contribute</b>"
+msgstr "Voer het bedrag <b> in om bij te dragen </b>"
+
+msgid "Enter the <b>username</b> you would like to send karma to"
+msgstr "Voer de <b> gebruikersnaam </b> in waarnaar u karma wilt sturen naar"
 
 msgid "Enter the destination  Topic Id to append to."
 msgstr "Voer de bestemmingsonderwerp-ID in waaraan u wilt toevoegen."
@@ -3954,6 +4016,9 @@ msgstr "Bestand bewerkingslogboek"
 msgid "File name is not allowed"
 msgstr "Bestandsnaam is niet toegestaan"
 
+msgid "File not allowed only .srt , .sub , .vtt or .txt files"
+msgstr "Bestand niet alleen .srt-, .sub-, .vtt- of .txt-bestanden toegestaan"
+
 msgid "File size: "
 msgstr "Bestandsgrootte:"
 
@@ -4049,6 +4114,9 @@ msgstr "Torrents spoelen?"
 msgid "Flush torrents"
 msgstr "Spoel torrents"
 
+msgid "Flush torrents?"
+msgstr "Torrents spoelen?"
+
 msgid "Flysystem Cache: "
 msgstr "Flysystem Cache:"
 
@@ -4113,6 +4181,9 @@ msgstr "Forumberichten"
 msgid "Forum Rights"
 msgstr "Forumrechten"
 
+msgid "Forum Subscribe PM"
+msgstr "Forum Abonneren PM"
+
 msgid "Forum description"
 msgstr "Forum beschrijving"
 
@@ -4133,6 +4204,9 @@ msgstr "Forumberichten?"
 
 msgid "Forum rank"
 msgstr "Forum rang"
+
+msgid "Forumposts?"
+msgstr "Forumposts?"
 
 msgid "Forums"
 msgstr "Forums"
@@ -4164,17 +4238,9 @@ msgstr "Gratis Torrent!"
 msgid "Free for 1 day"
 msgstr "Gratis voor 1 dag"
 
-msgid "Free for 1 week"
-msgstr "Gratis voor 1 week"
-
-msgid "Free for 2 weeks"
-msgstr "Gratis voor 2 weken"
-
-msgid "Free for 4 weeks"
-msgstr "Gratis gedurende 4 weken"
-
-msgid "Free for 8 weeks"
-msgstr "Gratis voor 8 weken"
+#, no-php-format
+msgid "Free for {0} day"
+msgstr "Gratis voor {0} dag"
 
 #, no-php-format
 msgid "Free for {0} week"
@@ -4184,11 +4250,20 @@ msgstr "Gratis voor {0} week"
 msgid "Free for {0} weeks"
 msgstr "Gratis voor {0} weken"
 
+msgid "Free stuffs?"
+msgstr "Gratis spullen?"
+
 msgid "FreeLeech ON"
 msgstr "FreeLeech AAN"
 
+msgid "FreeLeech [ON]"
+msgstr "FreeLeech [ON]"
+
 msgid "Freeeslots total adjusted = Yes"
 msgstr "Freeeslots totaal aangepast = Ja"
+
+msgid "Freeleech"
+msgstr "Freeleech"
 
 msgid "Freeleech Manager"
 msgstr "Freeleech Manager"
@@ -4214,8 +4289,15 @@ msgstr "Freeleech slots:"
 msgid "Freeleech Status"
 msgstr "Freeleech-status"
 
-msgid "Freeleech Status from "
-msgstr "Freeleech Status vanaf"
+msgid "Freeleech Status enabled by "
+msgstr "Freeleech Status ingeschakeld door"
+
+#, no-php-format
+msgid "Freeleech Status for {0} by {1}."
+msgstr "Freeleech-status voor {0} van {1}."
+
+msgid "Freeleech Status removed by "
+msgstr "Freeleech Status verwijderd door"
 
 msgid "Freeleech enabled = "
 msgstr "Freeleech ingeschakeld ="
@@ -4324,11 +4406,23 @@ msgstr "Games mogelijk"
 msgid "Games disabled = "
 msgstr "Games uitgeschakeld ="
 
+#, no-php-format
+msgid "Games disablement for {0} by {1}."
+msgstr "Games uitgeschakeld voor {0} tegen {1}."
+
 msgid "Games possible = No"
 msgstr "Games mogelijk = Nee"
 
 msgid "Games possible = Yes"
 msgstr "Games mogelijk = Ja"
+
+#, no-php-format
+msgid "Gaming disablement by {0}."
+msgstr "Speluitschakeling met {0}."
+
+#, no-php-format
+msgid "Gaming disablement status removed by {0}"
+msgstr "Speluitschakelingsstatus verwijderd door {0}"
 
 msgid "Gender"
 msgstr "Geslacht"
@@ -4386,6 +4480,9 @@ msgstr "Extra freeslots krijgen"
 msgid "Getting extra invites"
 msgstr "Extra uitnodigingen ontvangen"
 
+msgid "Give Karma Gift"
+msgstr "Geef Karma cadeau"
+
 msgid "Giving a gift of karma points to another user"
 msgstr "Een karma cadeau geven aan een andere gebruiker"
 
@@ -4397,6 +4494,12 @@ msgstr "Wereldwijde statistieken"
 
 msgid "Go Back"
 msgstr "Ga terug"
+
+msgid "Go To First"
+msgstr "Ga eerst"
+
+msgid "Go To Last"
+msgstr "Ga naar het laatst"
 
 msgid "Go back"
 msgstr "Ga terug"
@@ -4459,6 +4562,9 @@ msgstr "HTML is <b> niet </b> toegestaan."
 #, no-php-format
 msgid "HTML is not allowed. {0}Click here{1} for information on available tags."
 msgstr "HTML is niet toegestaan. {0} Klik hier {1} voor informatie over beschikbare tags."
+
+msgid "Half Download"
+msgstr "Halve download"
 
 msgid "Happy Log"
 msgstr "Gelukkig logboek"
@@ -4544,6 +4650,18 @@ msgstr "Hier is de"
 msgid "Hey"
 msgstr "Hallo"
 
+#, no-php-format
+msgid ""
+"Hey\n"
+"We are sorry to announce that you have been robbed by {0}{1}{2}.\n"
+"Now your total reputation is [b]{3}[/b]\n"
+"[color=#ff0000]This is normal and you should not worry, if you have enough bonus points you can rob other people[/color]"
+msgstr ""
+"Hallo\n"
+"Het spijt ons om aan te kondigen dat u bent beroofd door {0} {1} {2}.\n"
+"Uw totale reputatie is nu [b] {3} [/ b]\n"
+"[color = # ff0000] Dit is normaal en u hoeft zich geen zorgen te maken, als u genoeg bonuspunten heeft, kunt u andere mensen beroven [/ color]"
+
 msgid "Hey its now happy hour!"
 msgstr "Hey het is nu een happy hour!"
 
@@ -4579,6 +4697,18 @@ msgstr ""
 #, no-php-format
 msgid "Hey {0}!"
 msgstr "Hallo {0}!"
+
+#, no-php-format
+msgid ""
+"Hey {0}:\n"
+"You robbed:\n"
+"{1}\n"
+"Your total reputation is now [b]{2}[/b] but you lost [b]{3}[/b] karma points "
+msgstr ""
+"Hallo {0}:\n"
+"Je hebt beroofd:\n"
+"{1}\n"
+"Je totale reputatie is nu [b] {2} [/ b] maar je bent [b] {3} [/ b] karmapunten kwijt"
 
 #, no-php-format
 msgid "Hey {1}!<br>There is {0} new message for the staff."
@@ -4643,6 +4773,12 @@ msgstr "Mijn afbeeldingen verbergen"
 msgid "Hide accepted/rejected"
 msgstr "Verberg geaccepteerd / afgewezen"
 
+msgid "Hide current seed and leech"
+msgstr "Huidig zaad en bloedzuiger verbergen"
+
+msgid "Hide from Navbar"
+msgstr "Verbergen voor Navbar"
+
 msgid "High"
 msgstr "hoog"
 
@@ -4651,6 +4787,14 @@ msgstr "Hoogste winstpercentage"
 
 msgid "Highly Anonymous"
 msgstr "Sterk anoniem"
+
+#, no-php-format
+msgid "Highspeed Upload disabled by {0}."
+msgstr "Snelle upload uitgeschakeld door {0}."
+
+#, no-php-format
+msgid "Highspeed Upload enabled by {0}."
+msgstr "Highspeed Upload ingeschakeld door {0}."
 
 msgid "Highspeed Uploader"
 msgstr "Snelle uploader"
@@ -4715,6 +4859,9 @@ msgstr "Hit en run totaal aangepast = Ja"
 msgid "Hit and run!"
 msgstr "Raak en ren!"
 
+msgid "Hit and runs set to "
+msgstr "Hit en loopt ingesteld op"
+
 msgid "HitnRun"
 msgstr "HitnRun"
 
@@ -4756,6 +4903,9 @@ msgstr "Huis"
 
 msgid "How can I improve my download speed?"
 msgstr "Hoe kan ik mijn downloadsnelheid verbeteren?"
+
+msgid "How can we remove a warning that isn't there?"
+msgstr "Hoe kunnen we een waarschuwing verwijderen die er niet is?"
 
 msgid "How did you get here?"
 msgstr "Hoe ben je hier gekomen?"
@@ -4917,6 +5067,9 @@ msgstr "IMDb-link"
 
 msgid "IMDb Top 100 Movies"
 msgstr "IMDb Top 100-films"
+
+msgid "IMDb URL"
+msgstr "IMDb URL"
 
 msgid "IMDb Upcoming Movies"
 msgstr "IMDb Aankomende films"
@@ -5120,11 +5273,20 @@ msgstr "Afbeelding niet gevonden!"
 msgid "Images Manager"
 msgstr "Afbeeldingenmanager"
 
+#, no-php-format
+msgid "Immune Status enabled by {0}."
+msgstr "Immuunstatus ingeschakeld door {0}."
+
 msgid "Immunity"
 msgstr "Immuniteit"
 
-msgid "Immunity Status from "
-msgstr "Immuniteitsstatus van"
+#, no-php-format
+msgid "Immunity Status for {0} by {1}."
+msgstr "Immuniteitsstatus voor {0} tegen {1}."
+
+#, no-php-format
+msgid "Immunity Status removed by {0}."
+msgstr "Immuniteitsstatus verwijderd door {0}."
 
 msgid "Immunity for"
 msgstr "Immuniteit voor"
@@ -5392,6 +5554,9 @@ msgstr "Uitnodigingscode"
 msgid "Invite Tree"
 msgstr "Boom uitnodigen"
 
+msgid "Invite amount changed to "
+msgstr "Uitnodigingsbedrag gewijzigd in"
+
 msgid "Invite rights"
 msgstr "Rechten uitnodigen"
 
@@ -5422,6 +5587,9 @@ msgstr "Nodigt Mass Bonus uit toegevoegd - AutoSystem.\n"
 msgid "Invites added"
 msgstr "Uitnodigingen toegevoegd"
 
+msgid "Invites allowed changed from "
+msgstr "Uitnodigingen toegestaan gewijzigd van"
+
 msgid "Invites enabled = "
 msgstr "Uitnodigingen ingeschakeld ="
 
@@ -5445,6 +5613,9 @@ msgstr "Is de zomertijd van kracht?"
 
 msgid "Is taken, please try again."
 msgstr "Is in gebruik, probeer het opnieuw."
+
+msgid "Is your avatar offensive"
+msgstr "Is je avatar aanstootgevend"
 
 msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr "Is dit niet hetzelfde als hierboven? Nee. Verbindingen beperken het aantal peers waarmee uw klant spreekt en / of downloadt. Uploads beperken het aantal peers waarnaar uw klant daadwerkelijk uploadt. Het ideale aantal is meestal veel lager dan het aantal verbindingen en sterk afhankelijk van uw (fysieke) verbinding."
@@ -5519,6 +5690,9 @@ msgstr "januari"
 msgid "Join Date"
 msgstr "Aanmeldingsdatum"
 
+msgid "Join date?"
+msgstr "Aanmelddatum?"
+
 msgid "Joined"
 msgstr "Geregistreerd"
 
@@ -5552,6 +5726,9 @@ msgstr "Karma"
 
 msgid "Karma Bonus Points"
 msgstr "Karma bonuspunten"
+
+msgid "Karma Contribution's"
+msgstr "Karma-bijdrage"
 
 msgid "Karma Contributions"
 msgstr "Karma-bijdragen"
@@ -6017,6 +6194,9 @@ msgstr "Een verzoek doen"
 msgid "Male"
 msgstr "Mannetje"
 
+msgid "Manage Images"
+msgstr "Afbeeldingen beheren"
+
 msgid "Manage Polls"
 msgstr "Polls beheren"
 
@@ -6068,8 +6248,8 @@ msgstr "Massa Bonus Karma Punten toegevoegd - AutoSystem.\n"
 msgid "Mass Message to All Non Connectable Users"
 msgstr "Massabericht aan alle niet-verbonden gebruikers"
 
-msgid "Mass Pm"
-msgstr "Massa Pm"
+msgid "Mass PM"
+msgstr "Massa PM"
 
 msgid "Mass bonus for all or selected members:"
 msgstr "Massabonus voor alle of geselecteerde leden:"
@@ -6088,6 +6268,9 @@ msgstr "Overeenkomende e-mail"
 
 msgid "Matched IP"
 msgstr "Overeenkomende IP"
+
+msgid "Max file size"
+msgstr "Max bestandsgrootte"
 
 msgid "Maximum File Size"
 msgstr "Maximale bestandsgrootte"
@@ -6221,6 +6404,9 @@ msgstr "Verzonden berichten."
 
 msgid "Messages weren't sent!"
 msgstr "Berichten zijn niet verzonden!"
+
+msgid "Min"
+msgstr "min"
 
 msgid "Min Class"
 msgstr "Min Klasse"
@@ -6373,6 +6559,9 @@ msgstr "Stemming bewerkt"
 msgid "More status variables"
 msgstr "Meer statusvariabelen"
 
+msgid "More than 5"
+msgstr "Meer dan 5"
+
 msgid "Most Credit Lost"
 msgstr "Meest krediet verloren"
 
@@ -6475,6 +6664,9 @@ msgstr "Mijn ISP gebruikt een transparante proxy. Wat moet ik doen?"
 
 msgid "My Offers"
 msgstr "Mijn aanbiedingen"
+
+msgid "My Paranoia"
+msgstr "Mijn paranoia"
 
 msgid "My Posts"
 msgstr "Mijn posts"
@@ -6600,6 +6792,12 @@ msgstr "Nieuwe manager"
 msgid "New Order ID"
 msgstr "Nieuwe order-ID"
 
+msgid "New Password"
+msgstr "nieuw paswoord"
+
+msgid "New Password Again"
+msgstr "Nieuw wachtwoord opnieuw"
+
 msgid "New Posts"
 msgstr "Nieuwe berichten"
 
@@ -6613,6 +6811,9 @@ msgid "New Staff Message"
 msgid_plural "New Staff Messages"
 msgstr[0] "Nieuw personeelsboodschap"
 msgstr[1] "Nieuwe personeelsboodschappen"
+
+msgid "New Subtitle"
+msgstr "Nieuwe ondertitel"
 
 msgid "New Topic"
 msgstr "Nieuw onderwerp"
@@ -6907,6 +7108,9 @@ msgstr "Geen items om te cachen"
 msgid "No language other than English in the forums."
 msgstr "Geen andere taal dan Engels op de forums."
 
+msgid "No language selected"
+msgstr "Geen taal geselecteerd"
+
 msgid "No leech warning Status Set"
 msgstr "Geen bloedzuigerwaarschuwing Status Set"
 
@@ -7165,6 +7369,9 @@ msgstr "Niets gevonden"
 msgid "Nothing found!"
 msgstr "Niets gevonden!"
 
+msgid "Nothing found! Try again with a refined search string."
+msgstr "Niets gevonden! Probeer het opnieuw met een verfijnde zoekreeks."
+
 msgid "Nothing found."
 msgstr "Niets gevonden."
 
@@ -7256,6 +7463,9 @@ msgstr "O leer mij hoe ik moet vergeten te denken."
 msgid "OK"
 msgstr "OK"
 
+msgid "ON"
+msgstr "AAN"
+
 msgid "OPEN"
 msgstr "OPEN"
 
@@ -7276,6 +7486,12 @@ msgstr "Aanstootgevende avatar"
 
 msgid "Offensive avatar enabled = "
 msgstr "Aanstootgevende avatar ingeschakeld ="
+
+msgid "Offensive avatar set to no by "
+msgstr "Aanstootgevende avatar ingesteld op Nee door"
+
+msgid "Offensive avatar set to yes by "
+msgstr "Aanstootgevende avatar ingesteld op Ja door"
 
 msgid "Offer"
 msgstr "Aanbod"
@@ -7327,9 +7543,6 @@ msgstr "Naam oude categorie"
 msgid "Old School Arcade"
 msgstr "Old School Arcade"
 
-msgid "Old School Arcade!"
-msgstr "Old School Arcade!"
-
 msgid "On"
 msgstr "Aan"
 
@@ -7359,6 +7572,12 @@ msgstr "Een-op-een ratio werkt alleen bij torrents kleiner dan 6 GB!"
 
 msgid "Online"
 msgstr "Online"
+
+msgid "Online time?"
+msgstr "Online tijd?"
+
+msgid "Only .srt, .sub , .vtt or .txt files are accepted"
+msgstr "Alleen .srt-, .sub-, .vtt- of .txt-bestanden worden geaccepteerd"
 
 msgid "Only Dead"
 msgstr "Alleen dood"
@@ -7534,6 +7753,9 @@ msgstr "PM-opmerking"
 msgid "PM Notification"
 msgstr "PM-melding"
 
+msgid "PM Possible"
+msgstr "PM mogelijk"
+
 msgid "PM Sent Statistics"
 msgstr "PM verzonden statistieken"
 
@@ -7542,6 +7764,18 @@ msgstr "PM Verzonden naar alle niet-verbindbare peers"
 
 msgid "PM comment"
 msgstr "PM-opmerking"
+
+#, no-php-format
+msgid "PM disablement by {0}."
+msgstr "PM uitgeschakeld door {0}."
+
+#, no-php-format
+msgid "PM disablement for {0} by {1}."
+msgstr "PM-uitschakeling voor {0} tegen {1}."
+
+#, no-php-format
+msgid "PM disablement status removed by {0}."
+msgstr "PM-uitschakelingsstatus verwijderd door {0}."
 
 msgid "PM options"
 msgstr "PM-opties"
@@ -7576,6 +7810,10 @@ msgstr "Paranoia"
 
 msgid "Paranoia Levels explained"
 msgstr "Paranoia-niveaus uitgelegd"
+
+#, no-php-format
+msgid "Paranoia changed to {0} from {1} by {2}"
+msgstr "Paranoia is gewijzigd in {0} van {1} door {2}"
 
 msgid "Paranoia level changed"
 msgstr "Paranoia niveau veranderd"
@@ -7645,6 +7883,9 @@ msgstr "Peers Overzicht"
 
 msgid "Peers limit adjusted = Yes"
 msgstr "Peers-limiet aangepast = Ja"
+
+msgid "Peers limit set to"
+msgstr "Peers limit ingesteld op"
 
 msgid "Peers that are Not Connectable"
 msgstr "Peers die niet kunnen worden verbonden"
@@ -7805,15 +8046,6 @@ msgstr "Gebruik {0} dit formulier {1} om de reset-gegevens naar u te e-mailen."
 msgid "Plot"
 msgstr "Verhaal"
 
-msgid "Pm"
-msgstr "P.m"
-
-msgid "Pm Possible"
-msgstr "Pm mogelijk"
-
-msgid "Pm disablement from "
-msgstr "Pm uitschakelen van"
-
 msgid "Point"
 msgstr "Punt"
 
@@ -7822,6 +8054,44 @@ msgstr "punten"
 
 msgid "Points Pool"
 msgstr "Punten pool"
+
+#, no-php-format
+msgid "Points as gift from {0}."
+msgstr "Punten als cadeau van {0}."
+
+#, no-php-format
+msgid "Points as gift to {0}."
+msgstr "Punten als geschenk aan {0}."
+
+msgid "Points for  1 Year Parked Profile."
+msgstr "Punten voor 1 jaar geparkeerd profiel."
+
+msgid "Points for 1 month Custom Smilies."
+msgstr "Punten voor 1 maand Custom Smilies."
+
+msgid "Points for 1 month Immunity Status."
+msgstr "Punten voor 1 maand Immuniteitsstatus."
+
+msgid "Points for 1 month VIP Status."
+msgstr "Punten voor 1 maand VIP-status."
+
+msgid "Points for 1 to 1 ratio on torrent"
+msgstr "Punten voor 1 op 1 ratio op torrent"
+
+msgid "Points for 100 Reputation Points."
+msgstr "Punten voor 100 reputatiepunten."
+
+msgid "Points for 14 Days Anonymous Profile."
+msgstr "Punten voor 14 dagen anoniem profiel."
+
+msgid "Points for removing warning."
+msgstr "Punten voor het verwijderen van waarschuwing."
+
+msgid "Points for user blocks access."
+msgstr "Punten voor gebruiker blokkeren toegang."
+
+msgid "Points for user unlocks access."
+msgstr "Punten voor gebruiker ontgrendelt toegang."
 
 msgid "Political"
 msgstr "politiek"
@@ -7924,6 +8194,12 @@ msgstr "Gepost door"
 msgid "Poster"
 msgstr "Poster"
 
+msgid "Posting disabled by "
+msgstr "Posten uitgeschakeld door"
+
+msgid "Posting enabled by "
+msgstr "Posten ingeschakeld door"
+
 msgid "Posting rights"
 msgstr "Posten van rechten"
 
@@ -7997,6 +8273,9 @@ msgstr "Profiel"
 msgid "Profile Views"
 msgstr "Profielweergaven"
 
+msgid "Profile hits?"
+msgstr "Profiel hits?"
+
 msgid "Profile updated!"
 msgstr "Profiel geüpdatet!"
 
@@ -8009,6 +8288,9 @@ msgstr "gepromoveerd"
 #, no-php-format
 msgid "Promoted to 'Uploader' by {0}."
 msgstr "Gepromoveerd tot 'Uploader' door {0}."
+
+msgid "Promoted to FLS by "
+msgstr "Gepromoveerd tot FLS door"
 
 msgid "Promotion Settings"
 msgstr "Promotie-instellingen"
@@ -8249,6 +8531,9 @@ msgstr "Aan jou gerelateerd"
 msgid "Release Date"
 msgstr "Publicatiedatum"
 
+msgid "Release Name"
+msgstr "Naam vrijgeven"
+
 msgid "Relevance"
 msgstr "Relevantie"
 
@@ -8403,6 +8688,9 @@ msgstr "Mislukking melden!"
 msgid "Report User"
 msgstr "Rapporteer gebruiker"
 
+msgid "Report user?"
+msgstr "Rapporteer gebruiker?"
+
 msgid "Report?"
 msgstr "Verslag doen van?"
 
@@ -8462,6 +8750,9 @@ msgstr "Reputatie succesvol verwijderd"
 
 msgid "Reputation points"
 msgstr "Reputatiepunten"
+
+msgid "Reputation points changed to "
+msgstr "Reputatiepunten gewijzigd in"
 
 msgid "Reputation points total adjusted"
 msgstr "Reputatiepunten totaal aangepast"
@@ -8567,6 +8858,9 @@ msgstr "Resultaten als berichten"
 msgid "Results in Feed"
 msgstr "Resultaten in feed"
 
+msgid "Return to Details"
+msgstr "Terug naar details"
+
 msgid "Return to the Games"
 msgstr "Keer terug naar de spellen"
 
@@ -8658,6 +8952,9 @@ msgstr "Sanity Check!"
 msgid "Sanity check"
 msgstr "Sanity check"
 
+msgid "Sanity check..."
+msgstr "Sanity check ..."
+
 msgid "Save"
 msgstr "Opslaan"
 
@@ -8699,6 +8996,9 @@ msgstr "Met succes opgeslagen reputatieniveau."
 #, no-php-format
 msgid "Saying thanks = {0} points"
 msgstr "Zeggen bedankt = {0} punten"
+
+msgid "Scene"
+msgstr "Tafereel"
 
 msgid "Scene Tags..."
 msgstr "Scènetags ..."
@@ -8779,6 +9079,9 @@ msgstr "Zoeken op omschrijving (fuzzy)"
 msgid "Search by Genre"
 msgstr "Zoeken op genre"
 
+msgid "Search by IMDb, TMDb, TvMaze ID, ISBN, type"
+msgstr "Zoeken op IMDb, TMDb, TvMaze ID, ISBN, type"
+
 msgid "Search by Name"
 msgstr "Zoek op naam"
 
@@ -8802,6 +9105,10 @@ msgstr "Zoek in:"
 
 msgid "Search log"
 msgstr "Zoeklogboek"
+
+#, no-php-format
+msgid "Search result for <i>'{0}'</i>"
+msgstr "Zoekresultaat voor <i> '{0}' </i>"
 
 #, no-php-format
 msgid "Search results for {0}"
@@ -8905,6 +9212,9 @@ msgstr "Zaadtijdverhouding?"
 msgid "SeedBox"
 msgstr "seedbox"
 
+msgid "Seedbonus amount changed to "
+msgstr "Seedbonus bedrag gewijzigd in"
+
 msgid "Seedbonus points total adjusted"
 msgstr "Seedbonus-punten totaal aangepast"
 
@@ -8917,8 +9227,8 @@ msgstr "Geplaatst voor:"
 msgid "Seeder"
 msgstr "Zaaimachine"
 
-msgid "Seeder Info (Top 5 Seeders)"
-msgstr "Zaaimachine-info (Top 5 zaaimachines)"
+msgid "Seeder Info: Top 5"
+msgstr "Zaaimachine-info: Top 5"
 
 msgid "Seeder/Leecher Ratio (%)"
 msgstr "Seeder / Leecher Ratio (%)"
@@ -8986,6 +9296,9 @@ msgstr "Selecteer een einddatum voor dit rapport. Selecteer een maand, dag en ja
 
 msgid "Select how many PMs you would like to see per page."
 msgstr "Selecteer hoeveel PM's u per pagina wilt zien."
+
+msgid "Select how many points you want to send"
+msgstr "Selecteer hoeveel punten u wilt verzenden"
 
 msgid "Select one"
 msgstr "Kies een"
@@ -9253,8 +9566,17 @@ msgstr "Goedgekeurd weergeven"
 msgid "Show Approved Triggers"
 msgstr "Goedgekeurde triggers weergeven"
 
+msgid "Show Email"
+msgstr "Toon e-mail"
+
+msgid "Show Friends"
+msgstr "Laat vrienden zien"
+
 msgid "Show Friends?"
 msgstr "Vrienden tonen?"
+
+msgid "Show PM?"
+msgstr "PM weergeven?"
 
 msgid "Show Unapproved"
 msgstr "Niet-goedgekeurd weergeven"
@@ -9270,6 +9592,12 @@ msgstr "Toon avatars bij het bekijken van uw mailboxen."
 
 msgid "Show hidden Categories"
 msgstr "Verborgen categorieën weergeven"
+
+msgid "Show in Navbar"
+msgstr "Weergeven in Navbar"
+
+msgid "Show in Navbar cannot be empty."
+msgstr "Weergeven in Navbar kan niet leeg zijn."
 
 msgid "Show pm?"
 msgstr "Show pm?"
@@ -9301,6 +9629,9 @@ msgstr "Toont het aantal geregistreerde gebruikers."
 msgid "Shows a warning if there is a new message for staff"
 msgstr "Toont een waarschuwing als er een nieuw bericht is voor het personeel"
 
+msgid "Shows if there is a new message for staff alert in stdhead"
+msgstr "Geeft aan of er een nieuw bericht is voor personeelsmelding in stdhead"
+
 msgid "Sick"
 msgstr "Ziek"
 
@@ -9316,11 +9647,20 @@ msgstr "Handtekening rechten"
 msgid "Signature changed"
 msgstr "Handtekening gewijzigd"
 
+msgid "Signature changed from "
+msgstr "Handtekening gewijzigd van"
+
 msgid "Signature post enabled = "
 msgstr "Handtekening geplaatst ingeschakeld ="
 
 msgid "Signature rights"
 msgstr "Handtekening rechten"
+
+msgid "Signature rights turned off by "
+msgstr "Handtekeningrechten uitgeschakeld door"
+
+msgid "Signature rights turned on by "
+msgstr "Handtekeningrechten ingeschakeld door"
 
 msgid "Signup"
 msgstr "Aanmelden"
@@ -9346,17 +9686,9 @@ msgstr "Zilveren torrent!"
 msgid "Silver for 1 day"
 msgstr "Zilver voor 1 dag"
 
-msgid "Silver for 1 week"
-msgstr "Zilver voor 1 week"
-
-msgid "Silver for 2 weeks"
-msgstr "Zilver gedurende 2 weken"
-
-msgid "Silver for 4 weeks"
-msgstr "Zilver gedurende 4 weken"
-
-msgid "Silver for 8 weeks"
-msgstr "Zilver gedurende 8 weken"
+#, no-php-format
+msgid "Silver for {0} day"
+msgstr "Zilver voor {0} dag"
 
 #, no-php-format
 msgid "Silver for {0} week"
@@ -9399,6 +9731,12 @@ msgstr "Site Wide Font Scale"
 
 msgid "Site information"
 msgstr "Site Informatie"
+
+msgid "Site is Offline."
+msgstr "Site is offline."
+
+msgid "Site is Online."
+msgstr "Site is online."
 
 msgid "Site log"
 msgstr "Sitelogboek"
@@ -9477,6 +9815,9 @@ msgstr "Enkele nuttige tips."
 #, no-php-format
 msgid "Some {0}info{1} about the 'Anatomy of a torrent session'."
 msgstr "Sommige {0} info {1} over de 'Anatomie van een torrent-sessie'."
+
+msgid "Someone Loves you"
+msgstr "Iemand houdt van je"
 
 msgid "Someone has already taken that bet"
 msgstr "Iemand heeft die weddenschap al aangenomen"
@@ -9721,8 +10062,8 @@ msgid "Staff actions log"
 msgstr "Personeel acties logboek"
 
 #, no-php-format
-msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where sucessfully cleaned."
-msgstr "Het personeel spoelde de spookstromen van {0} op {1}. {2} torrents werden met succes schoongemaakt."
+msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully cleaned."
+msgstr "Het personeel spoelde de spookstromen van {0} op {1}. {2} torrents zijn succesvol opgeschoond."
 
 msgid "Staff mass bonus - added freeslots to"
 msgstr "Massa-bonus voor personeel - gratis slots toegevoegd"
@@ -9858,6 +10199,9 @@ msgstr "Subforum van"
 msgid "Sub-Forum of?"
 msgstr "Subforum van?"
 
+msgid "Subfile"
+msgstr "deelbestand"
+
 msgid "Subject"
 msgstr "Onderwerpen"
 
@@ -9909,8 +10253,17 @@ msgstr "subtitel"
 msgid "Subtitle Details"
 msgstr "Ondertitelingsdetails"
 
+msgid "Subtitle Preview"
+msgstr "Ondertitelingsvoorbeeld"
+
 msgid "Subtitles"
 msgstr "Ondertitels"
+
+msgid "Subtracted Download"
+msgstr "Afgetrokken download"
+
+msgid "Subtracted Upload"
+msgstr "Afgetrokken upload"
 
 msgid "Succesfully Added"
 msgstr "Succesvol toegevoegd"
@@ -10191,9 +10544,6 @@ msgstr "De PU-limiet was 25 GB en we hebben niemand gedegradeerd toen we deze ve
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "De promotie die je hebt geprobeerd te gebruiken, bestaat niet of is verlopen!"
 
-msgid "The Reason:"
-msgstr "De reden:"
-
 msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
 msgstr "De URL moet eindigen op <b> .gif </b>, <b> .jepg </b>, <b> .jpg </b> of a0aee83365pfzfzf"
 
@@ -10234,8 +10584,11 @@ msgstr "De standaardklasse van nieuwe leden."
 msgid "The default setting-2 MBs, is currently set to: "
 msgstr "De standaardinstelling van 2 MB is momenteel ingesteld op:"
 
-msgid "The description"
-msgstr "De omschrijving"
+msgid "The description cannot be empty."
+msgstr "De beschrijving mag niet leeg zijn."
+
+msgid "The description is too long max 100 chars."
+msgstr "De beschrijving is te lang max 100 tekens."
 
 msgid "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low."
 msgstr "De downloadsnelheid hangt meestal af van de seeder-tot-leecher ratio (SLR). Slechte downloadsnelheid is vooral een probleem met nieuwe en zeer populaire torrents waarbij de SLR laag is."
@@ -10243,11 +10596,17 @@ msgstr "De downloadsnelheid hangt meestal af van de seeder-tot-leecher ratio (SL
 msgid "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere."
 msgstr "Het e-mailadres moet geldig zijn. U ontvangt een bevestigingsmail waarop u moet reageren. Het e-mailadres wordt nergens openbaar weergegeven."
 
+msgid "The file can't be empty!"
+msgstr "Het bestand mag niet leeg zijn!"
+
 msgid "The file was written...wait for redirect"
 msgstr "Het bestand is geschreven ... wacht op omleiding"
 
-msgid "The filename"
-msgstr "De bestandsnaam"
+msgid "The filename cannot be empty."
+msgstr "De bestandsnaam mag niet leeg zijn."
+
+msgid "The filename is too long max 80 chars."
+msgstr "De bestandsnaam is te lang max. 80 tekens."
 
 #, no-php-format
 msgid "The following characters can be used: {0}. All other characters will be ignored."
@@ -10300,11 +10659,17 @@ msgid "The obscene terms where successfully deleted!"
 msgstr "De obscene voorwaarden zijn succesvol verwijderd!"
 
 #, no-php-format
-msgid "The official IRC channel is {0}#pu-239{1}</p>"
-msgstr "Het officiële IRC-kanaal is {0} # pu-239 {1} </p>"
+msgid "The official IRC channel is {0}#pu-239{1}"
+msgstr "Het officiële IRC-kanaal is {0} # pu-239 {1}"
 
-msgid "The page name"
-msgstr "De paginanaam"
+msgid "The page name cannot be empty."
+msgstr "De paginanaam mag niet leeg zijn."
+
+msgid "The page name is too long max 80 chars."
+msgstr "De paginanaam is te lang maximaal 80 tekens."
+
+msgid "The page name is too short (min 4 chars)."
+msgstr "De paginanaam is te kort (min. 4 tekens)."
 
 #, no-php-format
 msgid "The password for account {0} is now {1}"
@@ -10437,9 +10802,6 @@ msgstr "De {0} tracker is redelijk slim in het vinden van uw echte IP, maar heef
 msgid "Theft summary"
 msgstr "Diefstal samenvatting"
 
-msgid "There"
-msgstr "Daar"
-
 msgid "There are a couple of things that you can try on your end to improve your speed:"
 msgstr "Er zijn een aantal dingen die je kunt proberen om je snelheid te verbeteren:"
 
@@ -10500,6 +10862,10 @@ msgstr "Er zijn geen bugs gemeld :)."
 
 msgid "There are no requests."
 msgstr "Er zijn geen verzoeken."
+
+#, no-php-format
+msgid "There are no subtitles, go {0}here{1} and start uploading."
+msgstr "Er zijn geen ondertitels, ga {0} hier {1} en begin met uploaden."
 
 msgid "There are no torrents needing leechers right now."
 msgstr "Er zijn op dit moment geen torrents die leechers nodig hebben."
@@ -10571,6 +10937,12 @@ msgid "There is {0} Birthday Today"
 msgid_plural "There are {0} Birthdays Today"
 msgstr[0] "Er is {0} verjaardag vandaag"
 msgstr[1] "Er zijn {0} verjaardagen vandaag"
+
+#, no-php-format
+msgid "There is {0} error in the form."
+msgid_plural "There are {0} errors in the form."
+msgstr[0] "Er is een {0} fout in het formulier."
+msgstr[1] "Er zijn {0} fouten in het formulier."
 
 #, no-php-format
 msgid "There is {0} new bug!"
@@ -10676,11 +11048,17 @@ msgstr "Deze MySQL-server is actief voor {0}. Het is gestart op {1}"
 msgid "This Year"
 msgstr "Dit jaar"
 
+msgid "This account has been Un-suspended by "
+msgstr "Dit account is opgeschort door"
+
 msgid "This account has been disabled"
 msgstr "Dit account werd uitgeschakeld"
 
 msgid "This account has been suspended"
 msgstr "Dit account is geschorst"
+
+msgid "This account has been suspended by "
+msgstr "Dit account is opgeschort door"
 
 msgid "This account is currently on the"
 msgstr "Dit account staat momenteel op de"
@@ -11119,6 +11497,9 @@ msgstr "Torrent Age Group 2 Under"
 msgid "Torrent Age Group 3 Over"
 msgstr "Torrent Age Group 3 Over"
 
+msgid "Torrent Catalof"
+msgstr "Torrent Catalof"
+
 msgid "Torrent Clients"
 msgstr "Torrent-klanten"
 
@@ -11149,11 +11530,18 @@ msgstr "Torrent-eigenaar aangemeld"
 msgid "Torrent Pass"
 msgstr "Torrentpas"
 
+#, no-php-format
+msgid "Torrent Pass {0} reset to {1}."
+msgstr "Torrent Pass {0} gereset naar {1}."
+
 msgid "Torrent Size"
 msgstr "Torrent-grootte"
 
 msgid "Torrent Stats"
 msgstr "Torrentstatistieken"
+
+msgid "Torrent comment PM"
+msgstr "Torrent reactie PM"
 
 msgid "Torrent comments?"
 msgstr "Torrent opmerkingen?"
@@ -11161,6 +11549,9 @@ msgstr "Torrent opmerkingen?"
 #, no-php-format
 msgid "Torrent deleted<br>{0}"
 msgstr "Torrent heeft <br> {0} verwijderd"
+
+msgid "Torrent deletion PM"
+msgstr "Torrent verwijdering PM"
 
 msgid "Torrent does not exist"
 msgstr "Torrent bestaat niet"
@@ -11252,8 +11643,14 @@ msgstr "Torrents geüpload op"
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrents worden na 28 dagen automatisch verwijderd."
 
+msgid "Torrents blocks?"
+msgstr "Torrents blokken?"
+
 msgid "Torrents limit adjusted = Yes"
 msgstr "Torrentslimiet aangepast = Ja"
+
+msgid "Torrents limit set to"
+msgstr "Torrentslimiet ingesteld op"
 
 msgid "Torrents per page"
 msgstr "Torrents per pagina"
@@ -11299,6 +11696,9 @@ msgstr "traceroute"
 
 msgid "Traceroute!"
 msgstr "Traceroute!"
+
+msgid "Trade"
+msgstr "Handel"
 
 msgid "Trade your achievement points for random gifts."
 msgstr "Ruil je prestatiepunten in voor willekeurige geschenken."
@@ -11618,6 +12018,9 @@ msgstr "Upload mogelijk"
 msgid "Upload Torrent"
 msgstr "Torrent uploaden"
 
+msgid "Upload a Subtitle"
+msgstr "Upload een ondertitel"
+
 msgid "Upload a Torrent"
 msgstr "Upload een torrent"
 
@@ -11628,11 +12031,19 @@ msgid "Upload credit"
 msgstr "Upload tegoed"
 
 #, no-php-format
+msgid "Upload disablement by {0}."
+msgstr "Upload uitschakeling door {0}."
+
+#, no-php-format
 msgid "Upload disablement for {0} by {1}."
 msgstr "Upload uitschakeling voor {0} voor {1}."
 
 msgid "Upload disablement from "
 msgstr "Upload uitschakelen van"
+
+#, no-php-format
+msgid "Upload disablement status removed by {0}"
+msgstr "Upload uitschakelingsstatus verwijderd door {0}"
 
 msgid "Upload failed to save image."
 msgstr "Uploaden kan afbeelding niet opslaan."
@@ -11642,6 +12053,9 @@ msgstr "Upload mislukt!"
 
 msgid "Upload from URL"
 msgstr "Uploaden vanaf URL"
+
+msgid "Upload it"
+msgstr "Upload het"
 
 msgid "Uploaded"
 msgstr "geüpload"
@@ -11698,9 +12112,6 @@ msgstr "Uploads ingeschakeld = Ja"
 msgid "Upped by"
 msgstr "Verbeterd door"
 
-msgid "Upper"
-msgstr "Bovenste"
-
 msgid "Upspeed"
 msgstr "Upspeed"
 
@@ -11722,6 +12133,9 @@ msgstr "Gebruik diepgang:"
 
 msgid "Use Prize Fund (No, uses default pot of all users)."
 msgstr "Gebruik prijzenfonds (Nee, gebruikt standaardpot van alle gebruikers)."
+
+msgid "Use a descriptive name for your subtitle"
+msgstr "Gebruik een beschrijvende naam voor uw ondertiteling"
 
 msgid "Use gzip compression"
 msgstr "Gebruik gzip-compressie"
@@ -11823,6 +12237,9 @@ msgstr "Gebruikersaccount {0}) {1}) Freeleech On All Torrents zijn verwijderd do
 msgid "User class"
 msgstr "Gebruikersklasse"
 
+msgid "User comments?"
+msgstr "Opmerkingen van gebruikers?"
+
 msgid "User immuntiy"
 msgstr "Gebruiker immuntiy"
 
@@ -11849,6 +12266,9 @@ msgstr "Gebruiker statistieken"
 
 msgid "User status?"
 msgstr "Gebruikers status?"
+
+msgid "User traffic?"
+msgstr "Gebruikersverkeer?"
 
 msgid "User unlocks"
 msgstr "Gebruiker ontgrendelt"
@@ -12038,8 +12458,14 @@ msgstr "Bekijk origineel"
 msgid "View Recipes in the Oven"
 msgstr "Bekijk recepten in de oven"
 
+msgid "View Replies"
+msgstr "Antwoorden bekijken"
+
 msgid "View Reputation Comments"
 msgstr "Bekijk reputatie-opmerkingen"
+
+msgid "View Signatures"
+msgstr "Bekijk handtekeningen"
 
 msgid "View Site Settings"
 msgstr "Bekijk site-instellingen"
@@ -12050,11 +12476,17 @@ msgstr "Bekijk personeelsboodschappen"
 msgid "View application"
 msgstr "Bekijk applicatie"
 
+msgid "View avatars"
+msgstr "Bekijk avatars"
+
 msgid "View bought tickets"
 msgstr "Bekijk gekochte tickets"
 
 msgid "View comments"
 msgstr "Bekijk de reacties"
+
+msgid "View offensive avatars"
+msgstr "Bekijk aanstootgevende avatars"
 
 msgid "View sharemarks"
 msgstr "Bekijk markeringen"
@@ -12096,6 +12528,9 @@ msgstr "WORKPRINT (WP)"
 msgid "Wait time adjusted = Yes"
 msgstr "Wachttijd aangepast = Ja"
 
+msgid "Wait time set to"
+msgstr "Wachttijd ingesteld op"
+
 msgid "Wall"
 msgstr "Muur"
 
@@ -12124,6 +12559,9 @@ msgstr "Waarschuwing"
 
 msgid "Warning :"
 msgstr "Waarschuwing:"
+
+msgid "Warning removed by - Bribe with Karma."
+msgstr "Waarschuwing verwijderd door - Omkopen met Karma."
 
 #, no-php-format
 msgid "Warning: There are no images in the directory {0}, please upload one."
@@ -12442,7 +12880,7 @@ msgstr "Yikes"
 msgid "You MUST enter a reason for this report! Use your back button and fill in the reason"
 msgstr "U MOET een reden voor dit rapport opgeven! Gebruik je terugknop en vul de reden in"
 
-msgid "You MUST read this message before you delete it!!!  "
+msgid "You MUST read this message before you delete it!!!"
 msgstr "U MOET dit bericht lezen voordat u het verwijdert !!!"
 
 #, no-php-format
@@ -12606,6 +13044,9 @@ msgstr "Je kunt geen bedankje toevoegen aan je eigen torrent"
 msgid "You can't add yourself."
 msgstr "Je kunt jezelf niet toevoegen."
 
+msgid "You can't approve your replies!."
+msgstr "U kunt uw antwoorden niet goedkeuren !."
+
 msgid "You can't approve your reply."
 msgstr "U kunt uw antwoord niet goedkeuren."
 
@@ -12686,6 +13127,10 @@ msgstr "Je hebt niet de juiste gegevens om hier te zijn!"
 msgid "You dont have the credentials to lock."
 msgstr "U hoeft de inloggegevens niet te vergrendelen."
 
+#, no-php-format
+msgid "You flushed the {0} cache"
+msgstr "U hebt de cache {0} leeggemaakt"
+
 msgid "You forgot to fill some data"
 msgstr "U bent vergeten enkele gegevens in te vullen"
 
@@ -12718,6 +13163,10 @@ msgstr "U heeft al gestemd, u kunt uw stem niet wijzigen"
 msgid "You have been given"
 msgstr "Je hebt gekregen"
 
+#, no-php-format
+msgid "You have been given a gift of {0} Karma points by {1}"
+msgstr "Je hebt {0} Karma-punten gekregen van {1}"
+
 msgid "You have been given.gift"
 msgstr "Je hebt gekregen. Cadeau"
 
@@ -12737,8 +13186,9 @@ msgstr ""
 "        Negeer deze e-mail als u deze persoon niet kent. Alstublieft niet beantwoorden. <br>\n"
 "        Dit is een privé-site en u moet akkoord gaan met de regels voordat u kunt deelnemen:"
 
-msgid "You have been set as a high speed uploader by "
-msgstr "Je bent ingesteld als een snelle uploader door"
+#, no-php-format
+msgid "You have been set as a high speed uploader by {0}. You can now upload torrents using highspeeds without being flagged as a cheater."
+msgstr "U bent door {0} ingesteld als een snelle uploader. Je kunt nu torrents uploaden met hoge snelheden zonder als cheater te worden gemarkeerd."
 
 #, no-php-format
 msgid "You have been {0} to {1} by {2}"
@@ -12805,14 +13255,51 @@ msgstr "Je hebt een reactie ontvangen op je torrent {0} {1} {2}."
 msgid "You have received donor status from {0}"
 msgstr "U heeft de donorstatus ontvangen van {0}"
 
-msgid "You have received immunity Status from "
-msgstr "U hebt immuniteitsstatus ontvangen van"
+#, no-php-format
+msgid "You have received immunity Status from {0}."
+msgstr "U heeft immuniteitsstatus ontvangen van {0}."
 
 msgid "You have received leechwarn Status from "
 msgstr "U hebt leechwarn Status ontvangen van"
 
 msgid "You have received warned Status from "
 msgstr "U heeft een status ontvangen van"
+
+#, no-php-format
+msgid "You have received {0} AJAX Chat disablement from {1}"
+msgstr "U heeft {0} AJAX Chat-uitschakeling van {1} ontvangen"
+
+#, no-php-format
+msgid "You have received {0} Avatar disablement from {1}."
+msgstr "Je hebt {0} Avatar uitgeschakeld van {1}."
+
+#, no-php-format
+msgid "You have received {0} Download disablement from {1}."
+msgstr "U heeft {0} Download uitschakelen van {1} ontvangen."
+
+#, no-php-format
+msgid "You have received {0} Freeleech Status from {1}."
+msgstr "U heeft {0} Freeleech Status van {1} ontvangen."
+
+#, no-php-format
+msgid "You have received {0} Immunity Status from {1}."
+msgstr "U heeft {0} Immuniteitsstatus ontvangen van {1}."
+
+#, no-php-format
+msgid "You have received {0} PM disablement from {1}."
+msgstr "U heeft {0} PM-uitschakeling ontvangen van {1}."
+
+#, no-php-format
+msgid "You have received {0} games disablement from {1}."
+msgstr "Je hebt {0} games uitgeschakeld van {1} ontvangen."
+
+#, no-php-format
+msgid "You have received {0} leechwarn Status from {1}."
+msgstr "U heeft {0} leechwarn Status van {1} ontvangen."
+
+#, no-php-format
+msgid "You have received {0} warned Status from {1}."
+msgstr "U heeft {0} status van {1} ontvangen."
 
 msgid "You have snatched this torrent but not completed downloading"
 msgstr "Je hebt deze torrent weggehaald maar het downloaden is niet voltooid"
@@ -13017,17 +13504,21 @@ msgstr "Jij bent niet de eigenaar!"
 msgid "You're not the owner! How did that happen?"
 msgstr "Jij bent niet de eigenaar! Hoe is dat gebeurt?"
 
-msgid "Your AJAX Chat rights have been disabled by "
-msgstr "Uw AJAX-chatrechten zijn uitgeschakeld door"
+#, no-php-format
+msgid "Your AJAX Chat rights have been disabled by {0}"
+msgstr "Uw AJAX-chatrechten zijn uitgeschakeld door {0}"
 
-msgid "Your AJAX Chat rights have been restored by "
-msgstr "Uw AJAX-chatrechten zijn hersteld door"
+#, no-php-format
+msgid "Your AJAX Chat rights have been restored by {0}"
+msgstr "Uw AJAX-chatrechten zijn hersteld door {0}"
 
-msgid "Your Avatar rights have been disabled by "
-msgstr "Je avatarrechten zijn uitgeschakeld door"
+#, no-php-format
+msgid "Your Avatar rights have been disabled by {0}."
+msgstr "Je avatarrechten zijn uitgeschakeld door {0}."
 
-msgid "Your Avatar rights have been restored by "
-msgstr "Je avatarrechten zijn hersteld door"
+#, no-php-format
+msgid "Your Avatar rights have been restored by {0}."
+msgstr "Je avatarrechten zijn hersteld door {0}."
 
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
@@ -13037,11 +13528,15 @@ msgstr "Uw downloadrechten zijn uitgeschakeld door {0}"
 msgid "Your Downloading rights have been restored by {0}"
 msgstr "Uw downloadrechten zijn hersteld door {0}"
 
-msgid "Your Downloads have been enabled by "
-msgstr "Uw downloads zijn ingeschakeld door"
+#, no-php-format
+msgid "Your Downloads have been enabled by {0}."
+msgstr "Uw downloads zijn ingeschakeld door {0}."
 
 msgid "Your Freeleech Status has been removed by "
 msgstr "Uw Freeleech-status is verwijderd door"
+
+msgid "Your IMDb link is invalid"
+msgstr "Uw IMDb-link is ongeldig"
 
 #, no-php-format
 msgid "Your IP is: {0}"
@@ -13050,18 +13545,19 @@ msgstr "Uw IP is: {0}"
 msgid "Your ISP blocks the site's address"
 msgstr "Uw ISP blokkeert het adres van de site"
 
-msgid "Your Immunity Status has been removed by "
-msgstr "Uw immuniteitsstatus is verwijderd door"
+#, no-php-format
+msgid "Your Immunity Status has been removed by {0}."
+msgstr "Uw immuniteitsstatus is verwijderd door {0}."
 
 #, no-php-format
 msgid "Your Opponent is: {0}"
 msgstr "Je tegenstander is: {0}"
 
-msgid "Your Pm rights have been disabled by "
-msgstr "Uw Pm-rechten zijn uitgeschakeld door"
+msgid "Your PM rights have been disabled by "
+msgstr "Je PM-rechten zijn uitgeschakeld door"
 
-msgid "Your Pm rights have been restored by "
-msgstr "Uw Pm-rechten zijn hersteld door"
+msgid "Your PM rights have been restored by "
+msgstr "Uw PM-rechten zijn hersteld door"
 
 msgid "Your Posting rights have been given back by "
 msgstr "Uw plaatsingsrechten zijn teruggegeven door"
@@ -13094,8 +13590,9 @@ msgstr "Je gebruikersnaam is gewijzigd in"
 msgid "Your account at "
 msgstr "Uw account op"
 
-msgid "Your account has been suspended by "
-msgstr "Uw account is opgeschort door"
+#, no-php-format
+msgid "Your account has been suspended by {0}."
+msgstr "Uw account is opgeschort door {0}."
 
 #, no-php-format
 msgid ""
@@ -13126,6 +13623,10 @@ msgstr "Uw account is opgeschort, u mag alleen PM's doorsturen naar personeel!"
 
 msgid "Your application has successfully been sent to the staff."
 msgstr "Uw aanvraag is succesvol verzonden naar het personeel."
+
+#, no-php-format
+msgid "Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure."
+msgstr "U staat op het punt de ondertitels te verwijderen <b> {0} </b>, klik {1} hier {2} als u het zeker weet."
 
 msgid "Your avatar has been set to not offensive by "
 msgstr "Je avatar is ingesteld op niet aanstootgevend door"
@@ -13169,8 +13670,9 @@ msgstr "Uw downloadrechten zijn verwijderd."
 msgid "Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as {0}NetLimiter{1}"
 msgstr "Uw downloadsnelheid is altijd eindig. Als je een peer in een snelle torrent bent, zal het vrijwel zeker je downloadbandbreedte verzadigen en zal je browsen lijden. Op dit moment is er geen client waarmee u de downloadsnelheid kunt beperken, alleen de upload. U moet een oplossing van derden gebruiken, zoals {0} NetLimiter {1}"
 
-msgid "Your downloading ability has been disabled by "
-msgstr "Je downloadmogelijkheid is uitgeschakeld door"
+#, no-php-format
+msgid "Your downloading ability has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Uw downloadcapaciteit is uitgeschakeld door {0}. Stuur PM {1} om de reden waarom."
 
 #, no-php-format
 msgid "Your email has been changed to {0}"
@@ -13181,6 +13683,9 @@ msgstr "Je email is bevestigd"
 
 msgid "Your failure to connect may be due to several reasons."
 msgstr "Als u geen verbinding kunt maken, kan dit verschillende oorzaken hebben."
+
+msgid "Your file is too big."
+msgstr "Je bestand is te groot."
 
 msgid "Your friends"
 msgstr "Je vrienden"
@@ -13201,8 +13706,9 @@ msgstr "Je spelrechten zijn hersteld door"
 msgid "Your high score was {0} and you ranked #{1}."
 msgstr "Je hoogste score was {0} en je rangschikte # {1}."
 
-msgid "Your highspeed upload setting has been disabled by "
-msgstr "Je instelling voor hoge snelheid upload is uitgeschakeld door"
+#, no-php-format
+msgid "Your highspeed upload setting has been disabled by {0}. Please PM {1} for the reason why."
+msgstr "Uw instelling voor hoge snelheid upload is uitgeschakeld door {0}. Stuur PM {1} om de reden waarom."
 
 msgid "Your identity has been confirmed."
 msgstr "Je identiteit is bevestigd."
@@ -13262,6 +13768,9 @@ msgstr "Je reputatie op {0} je profiel {1} is {2} <br> Totaal: {3} punten."
 msgid "Your requests list is empty."
 msgstr "Uw lijst met aanvragen is leeg."
 
+msgid "Your shit list is empty. "
+msgstr "Je shitlijst is leeg."
+
 msgid "Your text here"
 msgstr "Jouw tekst hier"
 
@@ -13283,8 +13792,9 @@ msgstr "Jouw gebruikersnaam is:"
 msgid "Your vote"
 msgstr "Jouw stem"
 
-msgid "Your warned Status has been removed by "
-msgstr "Uw gewaarschuwde status is verwijderd door"
+#, no-php-format
+msgid "Your warned Status has been removed by {0}"
+msgstr "Uw gewaarschuwde status is verwijderd door {0}"
 
 msgid "Youtube"
 msgstr "Youtube"
@@ -13565,9 +14075,6 @@ msgstr[1] "uiterlijk {1} in de afgelopen {0} dagen"
 msgid "bytes "
 msgstr "bytes"
 
-msgid "cannot be empty"
-msgstr "kan niet leeg zijn"
-
 msgid "card count"
 msgstr "aantal kaarten"
 
@@ -13700,6 +14207,9 @@ msgstr "Gelijk"
 msgid "es"
 msgstr "es"
 
+msgid "expand"
+msgstr "uitbreiden"
+
 msgid "expand even more"
 msgstr "nog meer uitbreiden"
 
@@ -13708,6 +14218,9 @@ msgstr "boom uitbreiden"
 
 msgid "expense"
 msgstr "kosten"
+
+msgid "false"
+msgstr "vals"
 
 msgid "file info not found, empty filename in torrent file?"
 msgstr "bestandsinfo niet gevonden, lege bestandsnaam in torrent-bestand?"
@@ -13748,6 +14261,9 @@ msgstr ""
 msgid "freeslot"
 msgstr "vrije plaats"
 
+msgid "freeslots amount changed to "
+msgstr "aantal freeslots gewijzigd in"
+
 #, php-format
 msgid "from the past {0} day."
 msgid_plural "from the past {0} days."
@@ -13759,9 +14275,6 @@ msgstr "van bekeken gebruikers"
 
 msgid "fwd"
 msgstr "fwd"
-
-msgid "games disablement from "
-msgstr "games uitschakelen van"
 
 msgid "go back to where you were?"
 msgstr "teruggaan naar waar je was?"
@@ -13783,6 +14296,9 @@ msgstr "is bijgeschreven op uw account"
 
 msgid "has been promoted to Uploader by"
 msgstr "is gepromoveerd tot Uploader door"
+
+msgid "has been suspended by "
+msgstr "is geschorst door"
 
 msgid "has had a new post"
 msgstr "heeft een nieuw bericht gehad"
@@ -13829,9 +14345,6 @@ msgstr "in"
 
 msgid "in Forum"
 msgstr "in Forum"
-
-msgid "in the form"
-msgstr "in de vorm"
 
 msgid "in the recycle-bin"
 msgstr "in de prullenbak"
@@ -13922,12 +14435,6 @@ msgstr "is het resultaat"
 msgid "is the winner and not"
 msgstr "is de winnaar en niet"
 
-msgid "is too long"
-msgstr "is te lang"
-
-msgid "is too short (min 4 chars)"
-msgstr "is te kort (min. 4 tekens)"
-
 msgid "joined: "
 msgstr "toegetreden:"
 
@@ -13949,8 +14456,17 @@ msgstr "laatste tien berichten in omgekeerde volgorde"
 msgid "last unread post in this thread"
 msgstr "laatste ongelezen bericht in deze thread"
 
-msgid "leechwarn Status from "
-msgstr "leechwarn Status van"
+#, no-php-format
+msgid "leechwarn Status enabled by {0}."
+msgstr "leechwarn Status ingeschakeld door {0}."
+
+#, no-php-format
+msgid "leechwarn Status for {0} by {1}."
+msgstr "leechwarn Status voor {0} door {1}."
+
+#, no-php-format
+msgid "leechwarn Status removed by {0}."
+msgstr "leechwarn Status verwijderd door {0}."
 
 msgid "less than one minute"
 msgstr "minder dan een minuut"
@@ -13963,12 +14479,6 @@ msgstr "log in om deze functie te gebruiken!"
 
 msgid "match"
 msgstr "bij elkaar passen"
-
-msgid "max 100 chars"
-msgstr "max. 100 tekens"
-
-msgid "max 80 chars"
-msgstr "max. 80 tekens"
 
 msgid "means the user is seeding."
 msgstr "betekent dat de gebruiker zaait."
@@ -14020,6 +14530,9 @@ msgstr "Nee"
 
 msgid "no files"
 msgstr "geen bestanden"
+
+msgid "no hit and runners at the moment..."
+msgstr "momenteel geen hit en lopers ..."
 
 msgid "no information"
 msgstr "geen informatie"
@@ -14088,6 +14601,9 @@ msgstr "verweesd"
 
 msgid "out of 10, 1 being not so shitty, 10 being really shitty... Please select one."
 msgstr "van de 10, 1 is niet zo slecht, 10 is echt slecht ... Selecteer er een."
+
+msgid "p2p"
+msgstr "p2p"
 
 msgid "pDL(MB)"
 msgstr "pDL (MB)"
@@ -14202,8 +14718,14 @@ msgstr "selecteer het aantal uitnodigingen om toe te voegen."
 msgid "select parent forum if sub-forum"
 msgstr "selecteer ouderforum als subforum"
 
+msgid "selected"
+msgstr "geselecteerd"
+
 msgid "send a PM to this evil toad"
 msgstr "stuur een PM naar deze slechte pad"
+
+msgid "shittiest at the top "
+msgstr "shittiest bovenaan"
 
 msgid "short of making that bet"
 msgstr "kort van die weddenschap"
@@ -14226,6 +14748,13 @@ msgstr "toon uitgeschakeld hit en loopt"
 msgid "showing first"
 msgstr "eerst laten zien"
 
+msgid "shrink"
+msgstr "krimpen"
+
+#, no-php-format
+msgid "skype changed to {0} from {1} by {2}"
+msgstr "skype gewijzigd in {0} van {1} door {2}"
+
 msgid "sorry, no member was found"
 msgstr "sorry, er is geen lid gevonden"
 
@@ -14237,6 +14766,9 @@ msgstr "personeel"
 
 msgid "successfully backed-up the database."
 msgstr "met succes een back-up van de database gemaakt."
+
+msgid "successfully deleted"
+msgstr "succesvol verwijderd"
 
 msgid "system messages"
 msgstr "systeem berichten"
@@ -14289,6 +14821,12 @@ msgstr[1] "totaal - {0} gebruikers"
 msgid "total file size and number of pieces do not match"
 msgstr "totale bestandsgrootte en aantal stukken komen niet overeen"
 
+msgid "true"
+msgstr "waar"
+
+msgid "uglify.php failed"
+msgstr "uglify.php is mislukt"
+
 msgid "unique users that are not connectable."
 msgstr "unieke gebruikers die niet kunnen worden verbonden."
 
@@ -14331,8 +14869,17 @@ msgstr "bekijk berichten van nieuwste naar oudste"
 msgid "view posts from oldest to newest"
 msgstr "bekijk berichten van oudste naar nieuwste"
 
-msgid "warned Status from "
-msgstr "waarschuwde Status van"
+#, no-php-format
+msgid "warned Status enabled by {0}."
+msgstr "gewaarschuwd Status ingeschakeld door {0}."
+
+#, no-php-format
+msgid "warned Status for {0} by {1}."
+msgstr "waarschuwde Status voor {0} door {1}."
+
+#, no-php-format
+msgid "warned Status removed by {0}."
+msgstr "gewaarschuwd Status verwijderd door {0}."
 
 msgid "warned users"
 msgstr "waarschuwde gebruikers"
@@ -14342,6 +14889,10 @@ msgstr "werd geregistreerd tijdens open deuren"
 
 msgid "watched user list"
 msgstr "bekeken gebruikerslijst"
+
+#, no-php-format
+msgid "website changed to {0} from {1} by {2}"
+msgstr "website gewijzigd in {0} van {1} door {2}"
 
 msgid "week"
 msgstr "week"
@@ -14406,12 +14957,6 @@ msgid "your total uploaded of {0}GB implies a delay of {1} hours. Even if your t
 msgstr "je totale upload van {0} GB betekent een vertraging van {1} uur. Zelfs als uw totaal is geüpload in {2} GB"
 
 #, no-php-format
-msgid "{0, number) Member removed from the list"
-msgid_plural "{0, number) Members removed from the list"
-msgstr[0] "{0, nummer) Lid verwijderd van de lijst"
-msgstr[1] "{0, aantal) Leden verwijderd van de lijst"
-
-#, no-php-format
 msgid "{0} (ID: #{1})"
 msgstr "{0} (ID: # {1})"
 
@@ -14470,6 +15015,10 @@ msgid "{0} Added {1} to the {2} watched users list{4}."
 msgstr "{0} Toegevoegd {1} aan de {2} bekeken gebruikerslijst {4}."
 
 #, no-php-format
+msgid "{0} Arcade Top Scores!"
+msgstr "{0} Topscores van arcade!"
+
+#, no-php-format
 msgid "{0} Days"
 msgstr "{0} dagen"
 
@@ -14486,8 +15035,26 @@ msgid "{0} Invitation"
 msgstr "{0} Uitnodiging"
 
 #, no-php-format
+msgid "{0} Invite for {1} Freeslots."
+msgstr "{0} Nodig uit voor {1} Freeslots."
+
+#, no-php-format
+msgid "{0} Invite for {1} Karma."
+msgstr "{0} Nodig uit voor {1} Karma."
+
+#, no-php-format
+msgid "{0} Invites for {1} Karma."
+msgstr "{0} Uitnodigingen voor {1} Karma."
+
+#, no-php-format
 msgid "{0} Lottery"
 msgstr "{0} Loterij"
+
+#, no-php-format
+msgid "{0} Member removed from the list"
+msgid_plural "{0} Members removed from the list"
+msgstr[0] "{0} Lid verwijderd uit de lijst"
+msgstr[1] "{0} Leden verwijderd uit de lijst"
 
 #, no-php-format
 msgid "{0} Member visited during the last 24 hours"
@@ -14528,12 +15095,28 @@ msgstr[0] "{0} Punt besteed."
 msgstr[1] "{0} Punten besteed."
 
 #, no-php-format
+msgid "{0} Points for Freeslots."
+msgstr "{0} Punten voor freeslots."
+
+#, no-php-format
 msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
 msgstr "{0} Punten voor een seedtime fix op torrent: {1} => {2}"
 
 #, no-php-format
+msgid "{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
+msgstr "{0} Punten voor aangepaste titel. Oude titel was '' {1} '' 'nieuwe titel is' '{2}' '."
+
+#, no-php-format
+msgid "{0} Points to Reanimate torrent: {1}."
+msgstr "{0} Punten om torrent te reanimeren: {1}."
+
+#, no-php-format
 msgid "{0} Records"
 msgstr "{0} Records"
+
+#, no-php-format
+msgid "{0} Registration"
+msgstr "{0} Registratie"
 
 #, no-php-format
 msgid "{0} Reset Password Request"
@@ -14570,7 +15153,7 @@ msgstr[0] "{0} Ongelezen PM"
 msgstr[1] "{0} Ongelezen PM's"
 
 #, no-php-format
-msgid "{0} You bought {1} Freeslots for  {2} Karma."
+msgid "{0} You bought {1} Freeslots for {2} Karma."
 msgstr "{0} U hebt {1} Freeslots gekocht voor {2} Karma."
 
 #, no-php-format
@@ -14632,6 +15215,10 @@ msgid "{0} and won"
 msgstr "{0} en won"
 
 #, no-php-format
+msgid "{0} bytes added."
+msgstr "{0} bytes toegevoegd."
+
+#, no-php-format
 msgid "{0} day"
 msgid_plural "{0} days"
 msgstr[0] "{0} dag"
@@ -14648,14 +15235,18 @@ msgstr[0] "{0} gespoeld {1} torrent."
 msgstr[1] "{0} gespoeld {1} torrents."
 
 #, no-php-format
-msgid "{0} ghost torrent was sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
-msgid_plural "{0} ghost torrents were sucessfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid "{0} ghost torrent was successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
 msgstr[0] "{0} ghost torrent is succesvol opgeschoond. Je kunt nu je torrents opnieuw opstarten, de tracker is bijgewerkt."
-msgstr[1] "{0} spookstromen werden met succes schoongemaakt. Je kunt nu je torrents opnieuw opstarten, de tracker is bijgewerkt."
+msgstr[1] "{0} ghost torrents zijn succesvol opgeschoond. Je kunt nu je torrents opnieuw opstarten, de tracker is bijgewerkt."
 
 #, no-php-format
 msgid "{0} has Doubled Down, thereby doubling the bet to {1}."
 msgstr "{0} is verdubbeld en verdubbelt daarmee de inzet tot {1}."
+
+#, no-php-format
+msgid "{0} has accessed the {1}"
+msgstr "{0} heeft toegang verkregen tot {1}"
 
 #, no-php-format
 msgid "{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
@@ -14716,6 +15307,10 @@ msgstr[0] "{0} maand geleden"
 msgstr[1] "{0} maanden geleden"
 
 #, no-php-format
+msgid "{0} out of 10"
+msgstr "{0} uit 10"
+
+#, no-php-format
 msgid "{0} out of 10 on the shittyness scale"
 msgstr "{0} van de 10 op de shittyness-schaal"
 
@@ -14728,10 +15323,22 @@ msgid "{0} set by {1}<br>"
 msgstr "{0} ingesteld door {1} <br>"
 
 #, no-php-format
+msgid "{0} staff page"
+msgstr "{0} personeelspagina"
+
+#, no-php-format
 msgid "{0} time"
 msgid_plural "{0} times"
 msgstr[0] "{0} tijd"
 msgstr[1] "{0} keer"
+
+#, no-php-format
+msgid "{0} to {1}"
+msgstr "{0} tot {1}"
+
+#, no-php-format
+msgid "{0} to {1} by {2}."
+msgstr "{0} tot {1} tegen {2}."
 
 #, no-php-format
 msgid "{0} upload credit for a ratio fix on torrent: {1} => {2}"
@@ -14772,8 +15379,14 @@ msgid "{0} view offensive avatar by {1}, {2}\n"
 msgstr "{0} bekijk aanstootgevende avatar door {1}, {2}\n"
 
 #, no-php-format
+msgid "{0} was deleted."
+msgstr "{0} is verwijderd."
+
+#, no-php-format
 msgid "{0} week"
-msgstr "{0} week"
+msgid_plural "{0} weeks"
+msgstr[0] "{0} week"
+msgstr[1] "{0} weken"
 
 #, no-php-format
 msgid "{0} week ago"
@@ -14806,6 +15419,10 @@ msgstr "Het menu van {0}"
 #, no-php-format
 msgid "{0}'s Mood"
 msgstr "De stemming van {0}"
+
+#, no-php-format
+msgid "{0}'s Panel"
+msgstr "{0} paneel"
 
 #, no-php-format
 msgid "{0}: Modded Torrents"

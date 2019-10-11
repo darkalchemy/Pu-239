@@ -82,6 +82,6 @@ function birthday_update($data)
     $text = " Run time: $run_time seconds";
     echo $text . "\n";
     if ($data['clean_log']) {
-        write_log("Birthday Cleanup: Pm'd' " . $count . ' member(s) and awarded a birthday prize' . $text);
+        write_log("Birthday Cleanup: PM'd' " . $count . ' member(s) and awarded a birthday prize' . $text);
     }
 }

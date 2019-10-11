@@ -269,7 +269,7 @@ if (empty($res)) {
         $ratio = "<span class='tooltipper' title='{$ratio_details}'>{$user_ratio}</span>";
         $last_seen = get_anonymous((int) $friend['id']) ? _('User is Anonymous') : "<span class='tooltipper' title='" . _fe('Last seen: {0}', get_date($friend['last_access'], 'LONG')) . "'>" . get_date($friend['last_access'], 'LONG') . '</span>';
         $delete = "<span class='button is-small'><a href='{$site_config['paths']['baseurl']}/friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid=" . $friend['id'] . "' class='has-text-black tooltipper' title='" . _fe('Unfriend <i class="{0}">{1}</i>', get_user_class_name($friend['class'], true), $friend['username']) . "'>" . _('Remove') . '</a></span>';
-        $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black tooltipper' title='" . _fe('Send <i class="{0}">{1}</i> a PM</i>', get_user_class_name($friend['class'], true), $friend['username']) . "'>" . _('Send PM') . '</a></span>';
+        $pm_link = " <span class='button is-small'><a href='{$site_config['paths']['baseurl']}/messages.php?action=send_message&amp;receiver=" . $friend['id'] . "' class='has-text-black tooltipper' title='" . _fe('Send <i class="{0}">{1}</i> a PM</i>', get_user_class_name($friend['class'], true), $friend['username']) . "'>" . _('PM') . '</a></span>';
         $avatar = get_avatar($friend);
         $friends .= "
             <div class='masonry-item-clean flex-vertical comments h-100'>

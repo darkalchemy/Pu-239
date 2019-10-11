@@ -41,7 +41,7 @@ $HTMLOUT .= "
         <td class="colhead"><b>' . _('Torrent') . '</b></td>
         <td class="colhead"><b>' . _('Times') . '</b></td>
         <td class="colhead"><b>' . _('Stats') . '</b></td>
-        <td class="colhead">' . _('Actions') . '</td>' : '<tr><td><div class="padding20">' . _(' no hit and runners at the moment...') . '</div></td>') . '</tr>';
+        <td class="colhead">' . _('Actions') . '</td>' : '<tr><td><div class="padding20">' . _('no hit and runners at the moment...') . '</div></td>') . '</tr>';
 while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     $Xbt_Seed = $hit_and_run_arr['seeder'] !== 'yes';
     $Uid_ID = (int) $hit_and_run_arr['userid'];

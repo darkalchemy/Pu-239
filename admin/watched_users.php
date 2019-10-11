@@ -64,7 +64,7 @@ if (isset($_GET['remove'])) {
     } else {
         write_log('[b]' . $CURUSER['username'] . '[/b] ' . _('Removed:') . '<br>' . $removed_log . ' <br>' . _('from watched users') . '');
     }
-    $H1_thingie = '<h1 class="has-text-centered">' . _pfe('{0, number) Member removed from the list', '{0, number) Members removed from the list', $count) . '</h1>';
+    $H1_thingie = '<h1 class="has-text-centered">' . _pfe('{0} Member removed from the list', '{0} Members removed from the list', $count) . '</h1>';
 }
 //=== to add members to the watched user list... all staff!
 if (isset($_GET['add'])) {

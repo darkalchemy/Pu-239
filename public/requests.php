@@ -515,7 +515,7 @@ if (!empty($edit_form)) {
                 $poster = !empty($request['poster']) ? $request['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
                 $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$request['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='" . _('Poster') . "' class='tooltip-poster'>";
             }
-            $chef = "<span class='" . get_user_class_name($request['class'], true) . "'>" . $request['username'] . '</span>';
+            $chef = format_username($request['userid']);
             $plot = $torrent->get_plot($imdb_id);
             if (!empty($plot)) {
                 $stripped = strip_tags($plot);
@@ -549,8 +549,8 @@ if (!empty($edit_form)) {
                             </div>
                         </td>' . ($has_access ? "
                         <td class='has-text-centered'>" . ($has_full_access ? "
-                            <a href='{$_SERVER['PHP_SELF']}?action=edit_request&amp;id={$request['id']}'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
-                            <a href='{$_SERVER['PHP_SELF']}?action=delete_request&amp;id={$request['id']}'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '
+                            <a href='{$_SERVER['PHP_SELF']}?action=edit_request&amp;id={$request['id']}' class='tooltipper' title='" . _('Edit Request') . "'><i class='icon-edit icon has-text-info' aria-hidden='true'></i></a>
+                            <a href='{$_SERVER['PHP_SELF']}?action=delete_request&amp;id={$request['id']}' class='tooltipper' title='" . _('Delete Request') . "'><i class='icon-trash-empty icon has-text-danger' aria-hidden='true'></i></a>" : '') . '
                         </td>' : '') . '
                     </tr>';
         }
