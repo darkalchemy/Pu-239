@@ -1,6 +1,6 @@
-# Pu-239 v0.61
+# Pu-239 v0.62
 
-![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.61)
+![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.62)
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
@@ -149,20 +149,20 @@ php bin/validate_images.php
   * Coder : Has access to the site, very similar to that of a Sysop
   * Forum Mod : Can moderate forum posts
   * Torrent Mod : Can moderate torrents and their descriptions
-  * Internal : Can and is required to post to the Cooker
-  * Uploader : Can and is required to upload to the site
+  * Internal : Required to post to the Cooker
+  * Uploader : Required to upload to the site
 
 
 #### Making Changes
-After updating composer, npm, changing anything inside the config folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
+After updating composer, npm, changing anything inside the config or app folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
 ```sudo rm -rf /dev/shm/php-di```
  
 #### API's 
-Fanart.tv API provides posters, backgrounds and banners and needs a [Project API Key](https://fanart.tv/get-an-api-key).  
-TMDb API allows upcoming movies and posters and needs an [API Key](https://developers.themoviedb.org/3/getting-started/introduction).  
-Google API allows up to 1000 api hits instead of 100 per day, [API Key](https://cloud.google.com/docs/authentication/api-keys?visit_id=637040083471322830-1883548699&rd=1) is optional.  
-IMDb API allow movies and tv lookup, no key needed.  
-TVMaze allows tv lookup and posters, no key needed.  
+Fanart.tv API provides posters, backgrounds and banners. A [Project API Key](https://fanart.tv/get-an-api-key) is required.  
+TMDb API allows upcoming movies and posters. An [API Key](https://developers.themoviedb.org/3/getting-started/introduction) is required.  
+Google API allows up to 1000 api hits instead of 100 per day. An [API Key](https://cloud.google.com/docs/authentication/api-keys?visit_id=637040083471322830-1883548699&rd=1) is optional.  
+IMDb API allow movies and tv lookup. No API Key necessary.  
+TVMaze allows tv lookup and posters. No API Key necessary.  
 API keys are set in the Staff Panel -> Site Settings.  
 
 #### Making Changes to css/js files  
@@ -171,15 +171,15 @@ Make any edits or changes to the files in templates and scripts folder, then to 
 
 #### Production Mode
 Production creates minified javascript and css files when running uglify.php.  
-After changing the setting 'production' you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
+After changing the setting 'PRODUCTION', you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
 ```config/define.php define('PRODUCTION', false);```  
 This also creates a cache for php-di, significantly improving its performance.
 
 #### Cache Engines  
-memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. memory cache is only for testing and is not a real cache as it expires at the end of the request. Trivia can not run while using the memory cache. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
+memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. memory cache is only for testing and is not a real cache as it expires at the end of the request. Trivia will not run while using the memory cache. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
 
 #### Image Proxy:  
-An image proxy for hot linked images is built in and enabled by default, disable/enable in config/main.php. This allows for browser image caching and images with http when site is https.  
+An image proxy for hot linked images is built in and enabled by default, disable/enable in Staff Panel -> Site Settings. This allows for browser image caching and keeps from breaking https security with http images.  
 ```$site_config['site']['image_proxy'] = true;```
 
 #### CLI Scripts
@@ -187,7 +187,7 @@ An image proxy for hot linked images is built in and enabled by default, disable
   * import_tables.php : can import any table listed as an argument or imports trivia and tvmaze by default
   * install.php : installs/reinstalls the site
   * jobby.php : runs all of the sites cleanup scripts through cron
-  * optimize_resize_images.php : creates an optimized version and multiple sizes of each image in the images table, this is done automatically during cleanup, 50 images per run
+  * optimize_resize_images.php : creates an optimized version and multiple sizes of each image in the images table, this is done automatically during cleanup
   * remove_altered_images.php : removes every image that is not in the images table
   * remove_torrents.php : removes all torrents, truncates tables and removes all traces of all torrents
   * set_perms.php : ensures all files have correct the user:owner and permissions set, also removes the DI_CACHE_DIR directory
@@ -200,7 +200,7 @@ An image proxy for hot linked images is built in and enabled by default, disable
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
 
 #### Translations:
-This project uses gettext to manage text strings. This has been translated into 17 languages, translated by Google Translate. Unfortunately, it is not yet 100%. There are still quite a few hard coded strings left here and there.  
+This project uses gettext to manage text strings. This has been translated into 16 languages, using Google Translate. Unfortunately, it is not yet 100%. There are still quite a few hard coded strings left here and there.  
 If you would like to see a specific translation or assist with a current translation, please join us at [Transifex](https://www.transifex.com/pu-239/).  
 [Transifex](https://www.transifex.com/pu-239/) was kind enough to provide this project with a free open source license.
 
