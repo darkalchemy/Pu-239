@@ -68,23 +68,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $fluent->deleteFrom('site_config')
                        ->where('id = ?', $id)
                        ->execute();
-                $session->set('is-success', "$parentname " . _('Deleted') . '');
+                $session->set('is-success', "$parentname " . _('Deleted'));
             }
         } elseif ($id === 'Add') {
-            if (isset($item)) {
+            if (isset($item) && $item !== '') {
                 $set['value'] = implode('|', $item) . '|' . $value;
                 $fluent->update('site_config')
                        ->set($set)
                        ->where('parent = ?', $parent)
                        ->where('name = ?', $name)
                        ->execute();
-                $session->set('is-success', "$parentname " . _('Updated') . '');
+                $session->set('is-success', "$parentname " . _('Updated'));
             } else {
                 if (!isset($item)) {
                     $fluent->insertInto('site_config')
                            ->values($set)
                            ->execute();
-                    $session->set('is-success', "$parentname " . _('Added') . '');
+                    $session->set('is-success', "$parentname " . _('Added'));
                 }
             }
         } else {
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                               ->where('id = ?', $id)
                               ->execute();
             if ($results) {
-                $session->set('is-success', "$parentname " . _('Updated') . '');
+                $session->set('is-success', "$parentname " . _('Updated'));
             }
         }
     }
