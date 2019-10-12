@@ -126,9 +126,11 @@ php bin/import_tables.php
 cd Pu-239
 git pull
 
-# compare /config/config.php with /config/config_example.php for changes
+# compare config/config.php with config/config_example.php for changes
 # check CHANGELOG for anything that neds to be done first
 # check to see if there are any database updates, from the staff panel or php bin/update_db.php
+# personally, I just run 'php bin/update_db.php complete' and it runs all of the queries, until complete or 1 fails
+php bin/update_db.php complete
 
 # update dependancies:
 composer install (production mode add: --no-dev)
