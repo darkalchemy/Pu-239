@@ -58,7 +58,6 @@ if (isset($data['action'])) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validator = $container->get(Validator::class);
-    dd($_POST);
     $validation = $validator->validate($_POST, [
         'type' => 'required|numeric',
         'name' => 'required|regex:/[A-Za-z0-9\:_\-\s]/',
