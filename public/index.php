@@ -343,10 +343,10 @@ foreach ($below_columns as $item) {
  */
 function wrap_it($item, $data)
 {
-    $class = $item === 'tfreak_feed' ? '' : 'portlet';
+    $class = $item === 'tfreak_feed' ? '' : "class='portlet'";
     if (!empty($data)) {
         return "
-    <div class='$class' id='" . strtolower($item) . "_'>{$data}
+    <div $class id='" . strtolower($item) . "_'>{$data}
     </div>";
     }
 
@@ -354,7 +354,5 @@ function wrap_it($item, $data)
 }
 
 $title = _('Home');
-$breadcrumbs = [
-    "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
-];
+$breadcrumbs = [];
 echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);

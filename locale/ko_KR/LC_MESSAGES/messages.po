@@ -952,6 +952,9 @@ msgstr "설문 조사 추가"
 msgid "Add poll to topic"
 msgstr "주제에 설문 조사 추가"
 
+msgid "Add reputation"
+msgstr "평판 추가"
+
 msgid "Add response for"
 msgstr "에 대한 응답 추가"
 
@@ -1978,6 +1981,9 @@ msgstr "닫힘 => {0}"
 msgid "CPU usage."
 msgstr "CPU 사용량."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "캐시가 없거나 길이가 0입니다"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "ISP의 프록시를 우회 할 수 있습니까?"
 
@@ -2209,6 +2215,9 @@ msgstr "토런트 괴물 뉴스를 활성화하려면이 옵션을 확인하십�
 
 msgid "Check this to post anonymously"
 msgstr "익명으로 게시하려면 이것을 확인하십시오"
+
+msgid "Checked"
+msgstr "확인"
 
 msgid "Chef"
 msgstr "요리사"
@@ -3901,6 +3910,9 @@ msgstr "사용자 이름을 입력하십시오"
 msgid "Enter password again"
 msgstr "비밀번호를 다시 입력하십시오"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "원하는 <b> 특별 타이틀 </b>을 입력하십시오."
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "<b> 토런트 ID를 입력하십시오 : </b>"
 
@@ -4006,6 +4018,9 @@ msgstr "이월"
 
 msgid "Female"
 msgstr "여자"
+
+msgid "Fetched"
+msgstr "가져 오는 중"
 
 msgid "File Edit Log"
 msgstr "파일 편집 로그"
@@ -5136,6 +5151,12 @@ msgstr "생각"
 msgid "Idle"
 msgstr "게으른"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "IMDb 또는 TMDb가 비어 있으면 마지막으로 찾아 볼 때"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "IMDb 또는 TMDb가 비어 있지 않은 경우 업데이트시"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "그룹이 불량 추출을 해제하면 문제 해결을 위해 재 포장을 해제합니다."
 
@@ -5147,6 +5168,9 @@ msgstr "현재 거머리 / 파종중인 급류가 프로필에 표시되지 않�
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "어떤 이유로 (예 : pc 크래시 또는 고정 된 클라이언트) 클라이언트가 부적절하게 종료하고 다시 시작하면 새로운 peer_id가 생겨 새로운 토런트로 표시됩니다. 이전 항목은 'event = completed'또는 'event = stopped'를받지 않으며 추적기 시간이 초과 될 때까지 나열됩니다. 그냥 무시하면 결국 사라질 것입니다."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "이미지를 가져 와서 파일 시스템에있는 경우"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "빨간색이면 최적화가 필요할 것입니다! <p> InnoDB 테이블 최적화는 일반적으로 필요하지 않습니다. </p>"
@@ -5244,6 +5268,9 @@ msgstr "메시지를 삭제하려면 {0} 메인 페이지 {1}에서 메시지를
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "ISP가 포트 80을 통한 HTTP 트래픽 만 허용하거나 일반적인 프록시 포트를 차단하는 경우 {0} socks {1}과 같은 것을 사용해야하며이 FAQ의 범위를 벗어납니다."
 
+msgid "Ignore"
+msgstr "무시"
+
 msgid "Ignore this problem"
 msgstr "이 문제를 무시하십시오"
 
@@ -5258,6 +5285,12 @@ msgstr "이미지 (alt.1)"
 
 msgid "Image (alt. 2)"
 msgstr "이미지 (alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "이미지가 무시되고 표시되지 않습니다"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "이미지가 무시되지 않고 표시됩니다"
 
 msgid "Image is too small"
 msgstr "이미지가 너무 작습니다"
@@ -5719,6 +5752,9 @@ msgstr "정당화"
 msgid "Karma"
 msgstr "업"
 
+msgid "Karma Bonus Point's System"
+msgstr "카르마 보너스 포인트 시스템"
+
 msgid "Karma Bonus Points"
 msgstr "카르마 보너스 포인트"
 
@@ -5881,6 +5917,9 @@ msgstr "필요로하는 거머리"
 
 msgid "Leechers:"
 msgstr "거머리 :"
+
+msgid "Leeching"
+msgstr "거머리"
 
 msgid "Leechtime"
 msgstr "거머리"
@@ -8063,17 +8102,26 @@ msgstr "1 개월 맞춤 스마일 포인트"
 msgid "Points for 1 month Immunity Status."
 msgstr "1 개월 면역 상태에 대한 포인트."
 
+msgid "Points for 1 month King Status."
+msgstr "1 개월 킹 등급 포인트."
+
 msgid "Points for 1 month VIP Status."
 msgstr "1 개월 VIP 상태에 대한 포인트."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "급류에 대한 1 : 1 비율의 포인트"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "1 년 프리 리치 상태 포인트."
+
 msgid "Points for 100 Reputation Points."
 msgstr "명성 포인트 100 점."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "14 일 익명 프로파일에 대한 포인트."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "2 주간 해적 + 프리 리치 상태."
 
 msgid "Points for removing warning."
 msgstr "경고 제거 요령."
@@ -8711,6 +8759,9 @@ msgstr "평판 포인트 팩터"
 msgid "Reputation Points"
 msgstr "평판 포인트"
 
+msgid "Reputation Power"
+msgstr "명성 파워"
+
 msgid "Reputation Powers"
 msgstr "명성 파워"
 
@@ -8755,6 +8806,9 @@ msgstr "명성의 병변이 너무 짧습니다!"
 
 msgid "Reputation system is offline."
 msgstr "평판 시스템이 오프라인입니다."
+
+msgid "Reputation: Offline"
+msgstr "명성 : 오프라인"
 
 msgid "Reputation?"
 msgstr "평판?"
@@ -9391,6 +9445,9 @@ msgstr "새 비밀번호 설정"
 
 msgid "Set answered"
 msgstr "답변 설정"
+
+msgid "Set offline by admin setting"
+msgstr "관리자 설정으로 오프라인 설정"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "AJAX Chat을 활성화하려면이 옵션을 'On'으로 설정하십시오."
@@ -11770,6 +11827,9 @@ msgstr "{0} ProxyJudge {1}을 (를) 사용해보십시오. 실행중인 서버�
 msgid "TvMaze API"
 msgstr "TVMaze API"
 
+msgid "TvMaze ID"
+msgstr "TV 메이즈 ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix는 아이들을위한 것입니다. 멍청한 응용 프로그램을 하나 이상 확인하십시오 ... 아무것도 삭제할 수 없습니다!"
 
@@ -11938,6 +11998,10 @@ msgstr "까지"
 
 msgid "Until "
 msgstr "까지"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "{0}까지"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

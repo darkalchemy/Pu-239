@@ -952,6 +952,9 @@ msgstr "在添加投票"
 msgid "Add poll to topic"
 msgstr "将民意调查添加到主题"
 
+msgid "Add reputation"
+msgstr "增加声誉"
+
 msgid "Add response for"
 msgstr "添加针对"
 
@@ -1978,6 +1981,9 @@ msgstr "已关闭=> {0}"
 msgid "CPU usage."
 msgstr "CPU使用率。"
 
+msgid "Cache doesn't exist or zero length"
+msgstr "缓存不存在或长度为零"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "我可以绕过ISP的代理吗？"
 
@@ -2209,6 +2215,9 @@ msgstr "如果要启用torrent freak新闻，请选中此选项。"
 
 msgid "Check this to post anonymously"
 msgstr "选中此项以匿名发布"
+
+msgid "Checked"
+msgstr "已检查"
 
 msgid "Chef"
 msgstr "厨师"
@@ -3901,6 +3910,9 @@ msgstr "输入用户名"
 msgid "Enter password again"
 msgstr "再次输入密码"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "输入您想要的<b>特殊标题</b>"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "输入<b>种子编号：</b>"
 
@@ -4006,6 +4018,9 @@ msgstr "二月"
 
 msgid "Female"
 msgstr "女"
+
+msgid "Fetched"
+msgstr "已取得"
 
 msgid "File Edit Log"
 msgstr "文件编辑日志"
@@ -5136,6 +5151,12 @@ msgstr "理念"
 msgid "Idle"
 msgstr "闲"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "如果IMDb或TMDb为空，那么我们上一次查找它"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "如果IMDb或TMDb不为空，则更新时间"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "如果一个小组发布了一个糟糕的撕裂，他们将发布一个Repack来解决问题。"
 
@@ -5147,6 +5168,9 @@ msgstr "如果您的个人资料中未列出您当前正在使用的种子/种�
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "如果由于某种原因（例如计算机崩溃或客户端冻结），您的客户端退出异常并重新启动，它将有一个新的peer_id，因此将显示为新的Torrent。旧的将永远不会收到“事件=已完成”或“事件=已停止”的消息，并将一直列出直到跟踪器超时。只要忽略它，它最终就会消失。"
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "如果图像已被获取并且在文件系统中"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "如果为红色，则可能需要优化！通常不需要优化InnoDB表。<p> </p>"
@@ -5244,6 +5268,9 @@ msgstr "如果还希望删除消息，则可以从{0}主页{1}进行删除。"
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "如果您的ISP仅允许通过端口80的HTTP通信或阻止普通的代理端口，那么您将需要使用{0}袜子{1}之类的东西，这不在本FAQ的范围内。"
 
+msgid "Ignore"
+msgstr "忽视"
+
 msgid "Ignore this problem"
 msgstr "忽略这个问题"
 
@@ -5258,6 +5285,12 @@ msgstr "图片（高度1）"
 
 msgid "Image (alt. 2)"
 msgstr "图片（替代2）"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "图像被忽略，将不会显示"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "图片将被忽略并显示"
 
 msgid "Image is too small"
 msgstr "图片太小"
@@ -5719,6 +5752,9 @@ msgstr "有道理"
 msgid "Karma"
 msgstr "业力"
 
+msgid "Karma Bonus Point's System"
+msgstr "业力加分点的系统"
+
 msgid "Karma Bonus Points"
 msgstr "业力奖励积分"
 
@@ -5881,6 +5917,9 @@ msgstr "需要的水cher"
 
 msgid "Leechers:"
 msgstr "水虫："
+
+msgid "Leeching"
+msgstr "抽水"
 
 msgid "Leechtime"
 msgstr "水ch时间"
@@ -8063,17 +8102,26 @@ msgstr "1个月自定义表情符号的积分。"
 msgid "Points for 1 month Immunity Status."
 msgstr "1个月免疫状态积分。"
 
+msgid "Points for 1 month King Status."
+msgstr "1个月国王身份的积分。"
+
 msgid "Points for 1 month VIP Status."
 msgstr "1个月VIP状态的积分。"
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "洪流中1：1比例的分数"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "1年Freeleech状态的积分。"
+
 msgid "Points for 100 Reputation Points."
 msgstr "100点声望点数。"
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "14天匿名个人资料的积分。"
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "2周海盗+自由状态的积分。"
 
 msgid "Points for removing warning."
 msgstr "删除警告的要点。"
@@ -8711,6 +8759,9 @@ msgstr "信誉点因子"
 msgid "Reputation Points"
 msgstr "声望点"
 
+msgid "Reputation Power"
+msgstr "声誉力量"
+
 msgid "Reputation Powers"
 msgstr "声誉力量"
 
@@ -8755,6 +8806,9 @@ msgstr "名誉提升太短了！"
 
 msgid "Reputation system is offline."
 msgstr "信誉系统离线。"
+
+msgid "Reputation: Offline"
+msgstr "声望：离线"
 
 msgid "Reputation?"
 msgstr "声誉？"
@@ -9391,6 +9445,9 @@ msgstr "设置新密码"
 
 msgid "Set answered"
 msgstr "设置答案"
+
+msgid "Set offline by admin setting"
+msgstr "通过管理员设置离线设置"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "如果要启用AJAX聊天，请将此选项设置为“开”。"
@@ -11770,6 +11827,9 @@ msgstr "尝试{0} ProxyJudge {1}。它列出了正在运行的服务器从您那
 msgid "TvMaze API"
 msgstr "TvMaze API"
 
+msgid "TvMaze ID"
+msgstr "电视迷宫ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix是给孩子的。.检查至少一个愚蠢的应用程序...您什么也不能删除！"
 
@@ -11938,6 +11998,10 @@ msgstr "直到"
 
 msgid "Until "
 msgstr "直到"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "直到{0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

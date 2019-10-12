@@ -953,6 +953,9 @@ msgstr "Lägg till enkät i"
 msgid "Add poll to topic"
 msgstr "Lägg till enkät till ämnet"
 
+msgid "Add reputation"
+msgstr "Lägg till rykte"
+
 msgid "Add response for"
 msgstr "Lägg till svar för"
 
@@ -1980,6 +1983,9 @@ msgstr "STÄNGD => {0}"
 msgid "CPU usage."
 msgstr "CPU-användning."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "Cache finns inte eller noll längd"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Kan jag kringgå ISP: s proxy?"
 
@@ -2211,6 +2217,9 @@ msgstr "Markera det här alternativet om du vill aktivera torrentfreaknyheterna.
 
 msgid "Check this to post anonymously"
 msgstr "Kontrollera detta för att skriva anonymt"
+
+msgid "Checked"
+msgstr "Kontrollerade"
 
 msgid "Chef"
 msgstr "Kock"
@@ -3904,6 +3913,9 @@ msgstr "Skriv in ditt användarnamn"
 msgid "Enter password again"
 msgstr "Ange lösenord igen"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Ange den <b> specialtitel </b> som du vill ha"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Ange <b> Torrent ID: </b>"
 
@@ -4009,6 +4021,9 @@ msgstr "februari"
 
 msgid "Female"
 msgstr "Kvinna"
+
+msgid "Fetched"
+msgstr "hämtade"
 
 msgid "File Edit Log"
 msgstr "File Edit Log"
@@ -5141,6 +5156,12 @@ msgstr "Aning"
 msgid "Idle"
 msgstr "På tomgång"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "Om IMDb eller TMDb är tom, sista gången vi letade upp det"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "Om IMDb eller TMDb inte är tom, när den uppdaterades"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "Om en grupp släpper en dålig rippa släpper de en omförpackning som löser problemen."
 
@@ -5152,6 +5173,9 @@ msgstr "Om en torrent som du för närvarande iglar / sådd inte listas i din pr
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "Om din klient av någon anledning (t.ex. pc-krasch eller fryst klient) lämnar felaktigt och du startar om den kommer den att ha en ny peer_id, så den kommer att visas som en ny torrent. Den gamla kommer aldrig att få en \"händelse = fullbordad\" eller \"händelse = stoppad\" och kommer att listas förrän någon tracker-timeout. Bara ignorera det, det kommer så småningom att försvinna."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "Om bilden har hämtats och finns i ditt filsystem"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "Om den är röd måste den antagligen optimeras! <p> Optimering av InnoDB-tabeller behövs vanligtvis inte. </p>"
@@ -5249,6 +5273,9 @@ msgstr "Om du också vill ta bort meddelandena kan du göra det från {0} starts
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "Om din ISP endast tillåter HTTP-trafik genom port 80 eller blockerar de vanliga proxyportarna måste du använda något som {0} strumpor {1} och det ligger utanför denna FAQ."
 
+msgid "Ignore"
+msgstr "Ignorera"
+
 msgid "Ignore this problem"
 msgstr "Ignorera det här problemet"
 
@@ -5263,6 +5290,12 @@ msgstr "Bild (alt. 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Bild (alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "Bilden ignoreras och visas inte"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "Bilden ignoreras INTE och kommer att visas"
 
 msgid "Image is too small"
 msgstr "Bilden är för liten"
@@ -5724,6 +5757,9 @@ msgstr "motiverade"
 msgid "Karma"
 msgstr "Karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Karma Bonus Points system"
+
 msgid "Karma Bonus Points"
 msgstr "Karma bonuspoäng"
 
@@ -5887,6 +5923,9 @@ msgstr "Läkare i nöd"
 
 msgid "Leechers:"
 msgstr "leechers:"
+
+msgid "Leeching"
+msgstr "utlakning"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8072,17 +8111,26 @@ msgstr "Poäng för 1 månad anpassade Smilies."
 msgid "Points for 1 month Immunity Status."
 msgstr "Poäng för en månad Immunitetsstatus."
 
+msgid "Points for 1 month King Status."
+msgstr "Poäng för 1 månad King Status."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Poäng för en månad VIP-status."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Poäng för 1 till 1 förhållande på torrent"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Poäng för 1 års Freeleech-status."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Poäng för 100 ryktepoäng."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Poäng för 14 dagars anonym profil."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Poäng under 2 veckor Pirate + freeleech Status."
 
 msgid "Points for removing warning."
 msgstr "Poäng för att ta bort varning."
@@ -8721,6 +8769,9 @@ msgstr "Reputationspunktfaktor"
 msgid "Reputation Points"
 msgstr "Reputationspoäng"
 
+msgid "Reputation Power"
+msgstr "Reputation Power"
+
 msgid "Reputation Powers"
 msgstr "Reputation Powers"
 
@@ -8765,6 +8816,9 @@ msgstr "Reputationsreasion är för kort!"
 
 msgid "Reputation system is offline."
 msgstr "Omdömningssystemet är offline."
+
+msgid "Reputation: Offline"
+msgstr "Rykte: Offline"
 
 msgid "Reputation?"
 msgstr "Rykte?"
@@ -9401,6 +9455,9 @@ msgstr "Ställ in nytt lösenord"
 
 msgid "Set answered"
 msgstr "Set besvarat"
+
+msgid "Set offline by admin setting"
+msgstr "Ställ in offline av admininställningen"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Ställ in detta alternativ till 'På' om du vill aktivera AJAX Chat."
@@ -11790,6 +11847,9 @@ msgstr "Prova {0} ProxyJudge {1}. Den visar HTTP-rubriker som servern där den k
 msgid "TvMaze API"
 msgstr "TvMaze API"
 
+msgid "TvMaze ID"
+msgstr "TvMaze ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix är för barn .. Kontrollera minst en anspråk dum ... Du kan inte radera ingenting!"
 
@@ -11958,6 +12018,10 @@ msgstr "Fram tills"
 
 msgid "Until "
 msgstr "Fram tills"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "Till {0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

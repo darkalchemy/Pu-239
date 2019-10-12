@@ -155,8 +155,8 @@ if ($user['class'] >= UC_STAFF) {
     <option value='255'>" . _('Unlimited') . '</option>
     </select>'), 1);
     if ($row['free'] != 0) {
-        $HTMLOUT .= tr(_('Free Leech Duration'), ($row['free'] != 1 ? 'Until ' . get_date((int) $row['free'], 'DATE') . '
-         (' . mkprettytime($row['free'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
+        $HTMLOUT .= tr(_('Free Leech Duration'), ($row['free'] != 1 ? _fe('Until {0}', get_date((int) $row['free'], 'DATE')) . '
+         (' . mkprettytime($row['free'] - TIME_NOW) . ' to go)' : _('Unlimited')), 1);
     }
     $HTMLOUT .= tr('Silver torrent ', ($row['silver'] != 0 ? "<input type='checkbox' name='slvr' value='1'>" . _('Remove Silver torrent') : "
     <select name='half_length'>
@@ -169,8 +169,8 @@ if ($user['class'] >= UC_STAFF) {
     <option value='255'>" . _('Unlimited') . '</option>
     </select>'), 1);
     if ($row['silver'] != 0) {
-        $HTMLOUT .= tr(_('Silver Torrent Duration'), ($row['silver'] != 1 ? 'Until ' . get_date((int) $row['silver'], 'DATE') . '
-         (' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)' : 'Unlimited'), 1);
+        $HTMLOUT .= tr(_('Silver Torrent Duration'), ($row['silver'] != 1 ? _fe('Until {0}', get_date((int) $row['silver'], 'DATE')) . '
+         (' . mkprettytime($row['silver'] - TIME_NOW) . ' to go)' : _('Unlimited')), 1);
     }
 }
 

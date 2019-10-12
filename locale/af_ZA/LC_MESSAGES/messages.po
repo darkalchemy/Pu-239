@@ -953,6 +953,9 @@ msgstr "Voeg peiling by"
 msgid "Add poll to topic"
 msgstr "Voeg peiling by die onderwerp"
 
+msgid "Add reputation"
+msgstr "Voeg reputasie by"
+
 msgid "Add response for"
 msgstr "Voeg antwoord by vir"
 
@@ -1980,6 +1983,9 @@ msgstr "GESLUIT => {0}"
 msgid "CPU usage."
 msgstr "CPU-gebruik."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "Cache bestaan nie of 'n nul lengte nie"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Kan ek die proxy van my ISP omseil?"
 
@@ -2211,6 +2217,9 @@ msgstr "Merk hierdie opsie as u die torrent-freak-nuus wil aktiveer."
 
 msgid "Check this to post anonymously"
 msgstr "Gaan dit na om anoniem te plaas"
+
+msgid "Checked"
+msgstr "nagegaan"
 
 msgid "Chef"
 msgstr "Chef"
@@ -3904,6 +3913,9 @@ msgstr "Voer gebruikersnaam in"
 msgid "Enter password again"
 msgstr "Voer wagwoord weer in"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Voer die <b> Spesiale titel </b> in wat u graag wil hê"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Voer die <b> Torrent ID in: </b>"
 
@@ -4009,6 +4021,9 @@ msgstr "Februarie"
 
 msgid "Female"
 msgstr "vroulike"
+
+msgid "Fetched"
+msgstr "vergesog"
 
 msgid "File Edit Log"
 msgstr "Lêer wysig log"
@@ -5141,6 +5156,12 @@ msgstr "idee"
 msgid "Idle"
 msgstr "idle"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "As IMDb of TMDb leeg is, is dit die laaste keer dat ons dit opgespoor het"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "As IMDb of TMDb nie leeg is nie, wanneer dit opgedateer is"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "As 'n groep 'n slegte rip vrystel, los hulle 'n herverpakking aan wat die probleme sal oplos."
 
@@ -5152,6 +5173,9 @@ msgstr "As 'n torrent wat u tans besig hou / saai nie op u profiel verskyn nie, 
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "As u kliënt om een of ander rede (bv. Rekenaarstorting of bevrore kliënt) onbehoorlik verlaat en u dit weer begin, sal dit 'n nuwe peer_id hê, sodat dit as 'n nuwe torrent sal verskyn. Die ou een sal nooit 'n 'gebeurtenis = voltooid' of 'gebeurtenis = gestop' ontvang nie en sal gelys word tot 'n tydsverloop van die spoorsnyer. Ignoreer dit net, dit sal uiteindelik verdwyn."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "As die prentjie in u lêersisteem gehaal is"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "As dit rooi is, moet dit waarskynlik geoptimaliseer word! <p> Optimalisering van InnoDB-tabelle is gewoonlik nie nodig nie. </p>"
@@ -5249,6 +5273,9 @@ msgstr "As u ook die boodskappe wil uitvee, kan u dit vanaf die {0} hoofblad {1}
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "As u ISP net HTTP-verkeer via poort 80 toelaat of die gewone proxy-poorte blokkeer, moet u iets soos {0} sokkies {1} gebruik, en dit val buite die omvang van hierdie FAQ."
 
+msgid "Ignore"
+msgstr "ignoreer"
+
 msgid "Ignore this problem"
 msgstr "Ignoreer hierdie probleem"
 
@@ -5263,6 +5290,12 @@ msgstr "Beeld (alt. 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Beeld (alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "Die prentjie word geïgnoreer en sal nie vertoon word nie"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "Die prent word NIE geïgnoreer nie en sal vertoon word"
 
 msgid "Image is too small"
 msgstr "Beeld is te klein"
@@ -5724,6 +5757,9 @@ msgstr "Geregverdigde"
 msgid "Karma"
 msgstr "karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Karma Bonuspunt se stelsel"
+
 msgid "Karma Bonus Points"
 msgstr "Karma-bonuspunte"
 
@@ -5887,6 +5923,9 @@ msgstr "Leechers in nood"
 
 msgid "Leechers:"
 msgstr "Leechers:"
+
+msgid "Leeching"
+msgstr "leeching"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8072,17 +8111,26 @@ msgstr "Punte vir 1 maand Custom Smilies."
 msgid "Points for 1 month Immunity Status."
 msgstr "Punte vir immuniteitstatus van 1 maand."
 
+msgid "Points for 1 month King Status."
+msgstr "Punte vir 1 maand King Status."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Punte vir 'n VIP-status van 1 maand."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Punte vir 1 tot 1 verhouding op torrent"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Punte vir 1 jaar vryskutstatus."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Punte vir 100 reputasiepunte."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Punte vir anonieme profiel van 14 dae."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Punte vir 2 weke seerower + vryskutstatus."
 
 msgid "Points for removing warning."
 msgstr "Punte vir die verwydering van waarskuwing."
@@ -8721,6 +8769,9 @@ msgstr "Reputasiepuntfaktor"
 msgid "Reputation Points"
 msgstr "Reputasiepunte"
 
+msgid "Reputation Power"
+msgstr "Reputasiekrag"
+
 msgid "Reputation Powers"
 msgstr "Reputasiemagte"
 
@@ -8765,6 +8816,9 @@ msgstr "Die reputasie van die reputasie is te kort!"
 
 msgid "Reputation system is offline."
 msgstr "Reputasiestelsel is vanlyn."
+
+msgid "Reputation: Offline"
+msgstr "Reputasie: Vanlyn"
 
 msgid "Reputation?"
 msgstr "Reputasie?"
@@ -9401,6 +9455,9 @@ msgstr "Stel 'n nuwe wagwoord in"
 
 msgid "Set answered"
 msgstr "Stel beantwoord"
+
+msgid "Set offline by admin setting"
+msgstr "Stel vanlyn af deur admininstelling"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Stel hierdie opsie op 'Aan' as u AJAX Chat wil aktiveer."
@@ -11790,6 +11847,9 @@ msgstr "Probeer {0} ProxyJudge {1}. Dit bevat 'n lys van die HTTP-opskrifte wat 
 msgid "TvMaze API"
 msgstr "TvMaze API"
 
+msgid "TvMaze ID"
+msgstr "TvMaze ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix is vir kinders .. Gaan ten minste een aansoek dom aan ... U kan niks uitvee nie!"
 
@@ -11958,6 +12018,10 @@ msgstr "totdat"
 
 msgid "Until "
 msgstr "totdat"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "Tot {0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."
