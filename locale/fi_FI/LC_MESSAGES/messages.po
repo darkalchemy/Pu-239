@@ -953,6 +953,9 @@ msgstr "Lisää kysely sisään"
 msgid "Add poll to topic"
 msgstr "Lisää kysely aiheeseen"
 
+msgid "Add reputation"
+msgstr "Lisää mainetta"
+
 msgid "Add response for"
 msgstr "Lisää vastaus"
 
@@ -1980,6 +1983,9 @@ msgstr "SULJETTU => {0}"
 msgid "CPU usage."
 msgstr "Prosessorin käyttö."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "Välimuistia ei ole tai nolla pituus"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Voinko ohittaa palveluntarjoajan välityspalvelimen?"
 
@@ -2211,6 +2217,9 @@ msgstr "Valitse tämä vaihtoehto, jos haluat ottaa käyttöön torrent-freak-uu
 
 msgid "Check this to post anonymously"
 msgstr "Valitse tämä lähettääksesi nimettömästi"
+
+msgid "Checked"
+msgstr "tarkistettu"
 
 msgid "Chef"
 msgstr "Kokki"
@@ -3904,6 +3913,9 @@ msgstr "Syötä käyttäjätunnus"
 msgid "Enter password again"
 msgstr "Kirjoita salasana uudelleen"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Kirjoita erityinen otsikko <b> </b>, jonka haluat"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Kirjoita <b> Torrentin tunnus: </b>"
 
@@ -4009,6 +4021,9 @@ msgstr "helmikuu"
 
 msgid "Female"
 msgstr "Nainen"
+
+msgid "Fetched"
+msgstr "haettu"
 
 msgid "File Edit Log"
 msgstr "Tiedoston muokkausloki"
@@ -5141,6 +5156,12 @@ msgstr "idea"
 msgid "Idle"
 msgstr "tyhjäkäynti"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "Jos IMDb tai TMDb on tyhjä, etsimme sitä viimeksi"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "Jos IMDb tai TMDb ei ole tyhjä, kun se päivitettiin"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "Jos ryhmä julkaisee virheellisen kopion, se vapauttaa uudelleenpakkauksen, joka korjaa ongelmat."
 
@@ -5152,6 +5173,9 @@ msgstr "Jos torrentia, jota parhaillaan leetsit / siemenet, ei ole luettelossa p
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "Jos asiakas jostakin syystä (esim. Tietokonekaatuminen tai jäädytetty asiakas) poistuu virheellisesti ja käynnistät sen uudelleen, sillä on uusi peer_id, joten se näytetään uudella torrentilla. Vanha ei koskaan saa 'tapahtuma = valmis' tai 'tapahtuma = pysäytetty' ja luetellaan, kunnes joku jäljittimen aikakatkaisuun. Ohita vain se, se lopulta katoaa."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "Jos kuva on haettu ja se on tiedostojärjestelmässäsi"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "Jos se on punainen, se todennäköisesti tarvitsee optimointia! <p> InnoDB-taulukoiden optimointia ei yleensä tarvita. </p>"
@@ -5249,6 +5273,9 @@ msgstr "Jos haluat poistaa myös viestit, voit tehdä sen {0} pääsivulta {1}."
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "Jos palveluntarjoajasi sallii vain HTTP-liikenteen portin 80 kautta tai estää tavalliset välityspalvelinportit, sinun on käytettävä jotain, kuten {0} sukkia {1}, ja tämä ei kuulu tämän UKK: n piiriin."
 
+msgid "Ignore"
+msgstr "Jättää huomiotta"
+
 msgid "Ignore this problem"
 msgstr "Ohita tämä ongelma"
 
@@ -5263,6 +5290,12 @@ msgstr "Kuva (Alt. 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Kuva (Alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "Kuva ohitetaan eikä sitä näytetä"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "Kuvaa EI EI sivuuteta ja se tulee näkyviin"
 
 msgid "Image is too small"
 msgstr "Kuva on liian pieni"
@@ -5724,6 +5757,9 @@ msgstr "Oikeutettu"
 msgid "Karma"
 msgstr "karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Karma Bonuspisteen järjestelmä"
+
 msgid "Karma Bonus Points"
 msgstr "Karman bonuspisteet"
 
@@ -5887,6 +5923,9 @@ msgstr "Tarvetta etsijöille"
 
 msgid "Leechers:"
 msgstr "Leechers:"
+
+msgid "Leeching"
+msgstr "leeching"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8072,17 +8111,26 @@ msgstr "Pisteitä 1 kuukauden mittaisiin hymiöihin."
 msgid "Points for 1 month Immunity Status."
 msgstr "Pisteitä yhden kuukauden immuniteettitilasta."
 
+msgid "Points for 1 month King Status."
+msgstr "Pisteitä 1 kuukauden kuninkaan tilalle."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Pisteitä 1 kuukauden VIP-tilasta."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Pisteitä suhteessa 1: 1 torrentissa"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Pisteitä yhden vuoden Freeleech-tilasta."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Pistettä 100 mainepisteelle."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Pisteitä 14 päivän tuntemattomasta profiilista."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Osoittaa 2 viikkoa Pirate + freeleech Status."
 
 msgid "Points for removing warning."
 msgstr "Pisteitä varoituksen poistamiseksi."
@@ -8721,6 +8769,9 @@ msgstr "Mainekohtainen tekijä"
 msgid "Reputation Points"
 msgstr "Mainepisteet"
 
+msgid "Reputation Power"
+msgstr "Mainevoima"
+
 msgid "Reputation Powers"
 msgstr "Maine"
 
@@ -8765,6 +8816,9 @@ msgstr "Maineen vahvistus on liian lyhyt!"
 
 msgid "Reputation system is offline."
 msgstr "Mainejärjestelmä on offline-tilassa."
+
+msgid "Reputation: Offline"
+msgstr "Maine: Offline"
 
 msgid "Reputation?"
 msgstr "Maine?"
@@ -9401,6 +9455,9 @@ msgstr "Aseta uusi salasana"
 
 msgid "Set answered"
 msgstr "Asetettu vastasi"
+
+msgid "Set offline by admin setting"
+msgstr "Aseta offline-tilassa järjestelmänvalvojan asetuksella"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Aseta tämä vaihtoehto 'Päälle', jos haluat ottaa AJAX-keskustelun käyttöön."
@@ -11790,6 +11847,9 @@ msgstr "Kokeile {0} ProxyJudge {1}. Se luettelee HTTP-otsikot, jotka palvelin, j
 msgid "TvMaze API"
 msgstr "TvMaze-sovellusliittymä"
 
+msgid "TvMaze ID"
+msgstr "TvMaze ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix on tarkoitettu lapsille .. Tarkista ainakin yksi tyhmä sovellus ... Et voi poistaa mitään!"
 
@@ -11958,6 +12018,10 @@ msgstr "Siihen asti kun"
 
 msgid "Until "
 msgstr "Siihen asti kun"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "{0} asti"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

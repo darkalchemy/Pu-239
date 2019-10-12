@@ -954,6 +954,9 @@ msgstr "Adăugați sondaj în"
 msgid "Add poll to topic"
 msgstr "Adăugați sondaj la subiect"
 
+msgid "Add reputation"
+msgstr "Adăugați reputație"
+
 msgid "Add response for"
 msgstr "Adăugați răspuns pentru"
 
@@ -1982,6 +1985,9 @@ msgstr "ÎNCHIS => {0}"
 msgid "CPU usage."
 msgstr "Utilizarea procesorului."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "Cache-ul nu există sau lungimea zero"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Pot ocoli proxy-ul meu ISP?"
 
@@ -2213,6 +2219,9 @@ msgstr "Verificați această opțiune dacă doriți să activați știrile freak
 
 msgid "Check this to post anonymously"
 msgstr "Verificați acest lucru pentru a posta anonim"
+
+msgid "Checked"
+msgstr "verificat"
 
 msgid "Chef"
 msgstr "bucătar-șef"
@@ -3907,6 +3916,9 @@ msgstr "Introduceti numele de utilizator"
 msgid "Enter password again"
 msgstr "Introduceți din nou parola"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Introduceți <b> Titlul special </b> pe care doriți să îl aveți"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Introduceți codul torrent <b>: </b>"
 
@@ -4012,6 +4024,9 @@ msgstr "februarie"
 
 msgid "Female"
 msgstr "Femeie"
+
+msgid "Fetched"
+msgstr "exagerata"
 
 msgid "File Edit Log"
 msgstr "Fișier Editare jurnal"
@@ -5146,6 +5161,12 @@ msgstr "Idee"
 msgid "Idle"
 msgstr "Inactiv"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "Dacă IMDb sau TMDb sunt goale, ultima dată am privit-o"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "Dacă IMDb sau TMDb nu sunt goale, când a fost actualizat"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "Dacă un grup eliberează o extragere proastă, va lansa o reambalare care va rezolva problemele."
 
@@ -5157,6 +5178,9 @@ msgstr "Dacă un torent pe care îl pui în momentul de față / însămânțare
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "Dacă dintr-un anumit motiv (de exemplu, pc crash sau client înghețat) clientul tău iese în mod necorespunzător și îl reporniți, acesta va avea un nou peer_id, deci va apărea ca un nou torrent. Vechiul nu va primi niciodată „eveniment = finalizat” sau „eveniment = oprit” și va fi listat până la un timp de urmărire. Doar ignorați-o, în cele din urmă va dispărea."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "Dacă imaginea a fost preluată și este în sistemul dvs. de fișiere"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "Dacă este Roșu, probabil că are nevoie de optimizare! <p> Optimizarea tabelelor InnoDB nu este de obicei necesară. </p>"
@@ -5254,6 +5278,9 @@ msgstr "Dacă doriți și să ștergeți mesajele, puteți face asta din {0} pag
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "Dacă ISP-ul dvs. permite doar trafic HTTP prin portul 80 sau blochează porturile proxy obișnuite, atunci va trebui să folosiți ceva de genul {0} șosete {1} și care nu se află în sfera de aplicare a acestei întrebări frecvente."
 
+msgid "Ignore"
+msgstr "Ignora"
+
 msgid "Ignore this problem"
 msgstr "Ignorați această problemă"
 
@@ -5268,6 +5295,12 @@ msgstr "Imagine (alt 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Imagine (alt 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "Imaginea este ignorată și nu va fi afișată"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "Imaginea NU este ignorată și va fi afișată"
 
 msgid "Image is too small"
 msgstr "Imaginea este prea mică"
@@ -5729,6 +5762,9 @@ msgstr "justificat"
 msgid "Karma"
 msgstr "Karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Sistemul Karma Bonus Point"
+
 msgid "Karma Bonus Points"
 msgstr "Puncte Bonus Karma"
 
@@ -5893,6 +5929,9 @@ msgstr "Praznicii în nevoi"
 
 msgid "Leechers:"
 msgstr "leecheri:"
+
+msgid "Leeching"
+msgstr "leeching"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8081,17 +8120,26 @@ msgstr "Puncte pentru 1 lună Zâmbete personalizate."
 msgid "Points for 1 month Immunity Status."
 msgstr "Puncte pentru statutul de imunitate de o lună."
 
+msgid "Points for 1 month King Status."
+msgstr "Puncte pentru 1 lună statut de rege."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Puncte pentru statutul VIP de o lună."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Puncte pentru raportul 1 la 1 pe torrent"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Puncte pentru 1 an Freeleech Status."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Puncte pentru 100 de puncte de reputație."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Puncte pentru profil anonim de 14 zile."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Puncte timp de 2 săptămâni Pirate + Freeleech Status."
 
 msgid "Points for removing warning."
 msgstr "Puncte pentru eliminarea avertismentului."
@@ -8731,6 +8779,9 @@ msgstr "Factorul punctului de reputație"
 msgid "Reputation Points"
 msgstr "Puncte de reputație"
 
+msgid "Reputation Power"
+msgstr "Putere de reputație"
+
 msgid "Reputation Powers"
 msgstr "Puteri de reputație"
 
@@ -8775,6 +8826,9 @@ msgstr "Reasionarea reputației este prea scurtă!"
 
 msgid "Reputation system is offline."
 msgstr "Sistemul de reputație este offline."
+
+msgid "Reputation: Offline"
+msgstr "Reputație: Offline"
 
 msgid "Reputation?"
 msgstr "Reputatie?"
@@ -9411,6 +9465,9 @@ msgstr "Setați parolă nouă"
 
 msgid "Set answered"
 msgstr "Set a răspuns"
+
+msgid "Set offline by admin setting"
+msgstr "Setați offline prin setare admin"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Setați această opțiune pe „On” dacă doriți să activați AJAX Chat."
@@ -11810,6 +11867,9 @@ msgstr "Încercați {0} ProxyJudge {1}. Listează anteturile HTTP pe care server
 msgid "TvMaze API"
 msgstr "API-ul TvMaze"
 
+msgid "TvMaze ID"
+msgstr "ID TvMaze"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix sunt pentru copii .. Verificați cel puțin o aplicație stupidă ... Nu puteți șterge nimic!"
 
@@ -11978,6 +12038,10 @@ msgstr "Pana cand"
 
 msgid "Until "
 msgstr "Pana cand"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "Până la {0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

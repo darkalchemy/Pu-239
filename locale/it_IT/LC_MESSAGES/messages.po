@@ -953,6 +953,9 @@ msgstr "Aggiungi sondaggio"
 msgid "Add poll to topic"
 msgstr "Aggiungi sondaggio all'argomento"
 
+msgid "Add reputation"
+msgstr "Aggiungi reputazione"
+
 msgid "Add response for"
 msgstr "Aggiungi risposta per"
 
@@ -1980,6 +1983,9 @@ msgstr "CHIUSO => {0}"
 msgid "CPU usage."
 msgstr "Uso della CPU."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "La cache non esiste o lunghezza zero"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Posso bypassare il proxy del mio ISP?"
 
@@ -2211,6 +2217,9 @@ msgstr "Seleziona questa opzione se vuoi abilitare le notizie da maniaco del tor
 
 msgid "Check this to post anonymously"
 msgstr "Controlla questo per pubblicare in modo anonimo"
+
+msgid "Checked"
+msgstr "verificato"
 
 msgid "Chef"
 msgstr "capocuoco"
@@ -3904,6 +3913,9 @@ msgstr "Inserire username"
 msgid "Enter password again"
 msgstr "Inserisci di nuovo la password"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Inserisci il titolo speciale <b> </b> che desideri avere"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Inserisci <b> ID torrent: </b>"
 
@@ -4009,6 +4021,9 @@ msgstr "febbraio"
 
 msgid "Female"
 msgstr "Femmina"
+
+msgid "Fetched"
+msgstr "fetched"
 
 msgid "File Edit Log"
 msgstr "Registro modifica file"
@@ -5141,6 +5156,12 @@ msgstr "Idea"
 msgid "Idle"
 msgstr "Inattivo"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "Se IMDb o TMDb sono vuoti, l'ultima volta che l'abbiamo cercato"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "Se IMDb o TMDb non sono vuoti, quando è stato aggiornato"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "Se un gruppo rilascia un brutto strappo, rilascerà un Repack che risolverà i problemi."
 
@@ -5152,6 +5173,9 @@ msgstr "Se un torrent che stai attualmente facendo sanguisuga / seeding non è e
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "Se per qualche motivo (es. Crash del PC o client bloccato) il tuo client esce in modo errato e lo riavvii, avrà un nuovo peer_id, quindi verrà mostrato come nuovo torrent. Il vecchio non riceverà mai un 'evento = completato' o 'evento = fermato' e verrà elencato fino al timeout del tracker. Basta ignorarlo, alla fine andrà via."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "Se l'immagine è stata recuperata ed è nel tuo filesystem"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "Se è rosso, probabilmente ha bisogno di essere ottimizzato! <p> L'ottimizzazione delle tabelle InnoDB non è in genere necessaria. </p>"
@@ -5249,6 +5273,9 @@ msgstr "Se desideri eliminare anche i messaggi, puoi farlo dalla {0} pagina prin
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "Se il tuo ISP consente solo il traffico HTTP attraverso la porta 80 o blocca le normali porte proxy, dovrai utilizzare qualcosa come {0} socks {1} e questo non rientra nell'ambito di queste FAQ."
 
+msgid "Ignore"
+msgstr "Ignorare"
+
 msgid "Ignore this problem"
 msgstr "Ignora questo problema"
 
@@ -5263,6 +5290,12 @@ msgstr "Immagine (alt. 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Immagine (alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "L'immagine è ignorata e non verrà visualizzata"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "L'immagine NON viene ignorata e verrà visualizzata"
 
 msgid "Image is too small"
 msgstr "L'immagine è troppo piccola"
@@ -5724,6 +5757,9 @@ msgstr "giustificato"
 msgid "Karma"
 msgstr "Karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Sistema di punti bonus Karma"
+
 msgid "Karma Bonus Points"
 msgstr "Punti bonus Karma"
 
@@ -5887,6 +5923,9 @@ msgstr "Sanguisughe nel bisogno"
 
 msgid "Leechers:"
 msgstr "Sanguisughe:"
+
+msgid "Leeching"
+msgstr "leeching"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8072,17 +8111,26 @@ msgstr "Punti per faccine personalizzate di 1 mese."
 msgid "Points for 1 month Immunity Status."
 msgstr "Punti per 1 mese di stato di immunità."
 
+msgid "Points for 1 month King Status."
+msgstr "Punti per 1 mese di status re."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Punti per 1 mese di stato VIP."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Punti per rapporto 1 a 1 su torrent"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Punti per 1 anno di stato Freeleech."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Punti per 100 punti reputazione."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Punti per 14 giorni di profilo anonimo."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Punti per 2 settimane Stato pirata + freeleech."
 
 msgid "Points for removing warning."
 msgstr "Punti per la rimozione di avviso."
@@ -8721,6 +8769,9 @@ msgstr "Fattore del punto di reputazione"
 msgid "Reputation Points"
 msgstr "Punti di reputazione"
 
+msgid "Reputation Power"
+msgstr "Potere di reputazione"
+
 msgid "Reputation Powers"
 msgstr "Poteri di reputazione"
 
@@ -8765,6 +8816,9 @@ msgstr "La reazione alla reputazione è troppo breve!"
 
 msgid "Reputation system is offline."
 msgstr "Il sistema di reputazione non è in linea."
+
+msgid "Reputation: Offline"
+msgstr "Reputazione: offline"
 
 msgid "Reputation?"
 msgstr "Reputazione?"
@@ -9401,6 +9455,9 @@ msgstr "Imposta nuova password"
 
 msgid "Set answered"
 msgstr "Risposto"
+
+msgid "Set offline by admin setting"
+msgstr "Imposta offline per impostazione amministratore"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Impostare questa opzione su \"Attivo\" se si desidera abilitare la chat AJAX."
@@ -11790,6 +11847,9 @@ msgstr "Prova {0} ProxyJudge {1}. Elenca le intestazioni HTTP che il server su c
 msgid "TvMaze API"
 msgstr "API TvMaze"
 
+msgid "TvMaze ID"
+msgstr "ID TvMaze"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix sono per bambini .. Controlla almeno un'applicazione stupida ... Non puoi cancellare nulla!"
 
@@ -11958,6 +12018,10 @@ msgstr "Fino a"
 
 msgid "Until "
 msgstr "Fino a"
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "Fino a {0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

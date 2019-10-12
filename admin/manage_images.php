@@ -64,18 +64,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['terms'])) {
 if (!empty($images)) {
     $heading = '
         <tr>
-            <th>' . ('Preview') . "</th>
-            <th class='has-text-centered'>" . ('Type') . "</th>
-            <th class='has-text-centered'>" . ('IMDb') . "</th>
-            <th class='has-text-centered'>" . ('TMDb') . "</th>
-            <th class='has-text-centered'>" . ('TvMaze ID') . "</th>
-            <th class='has-text-centered'>" . ('ISBN') . "</th>
-            <th class='has-text-centered'>" . ('Language') . "</th>
-            <th class='has-text-centered tooltipper' title='" . ('If image has been fetched and is in your filesystem') . "'>" . ('Fetched') . "</th>
-            <th class='has-text-centered tooltipper' title='" . ('If IMDb or TMDb not empty, when it was updated') . "'>" . ('Updated') . "</th>
-            <th class='has-text-centered tooltipper' title='" . ('If IMDb or TMDb is empty, the last time we looked it up') . "'>" . ('Checked') . "</th>
-            <th class='has-text-centered tooltipper' title='" . ('Select All') . "'><input type='checkbox' id='checkThemAll'></th>
-            <th class='has-text-centered tooltipper' title='" . ('Ignore') . "'>" . ('Ignore') . '</th>
+            <th>' . _('Preview') . "</th>
+            <th class='has-text-centered'>" . _('Type') . "</th>
+            <th class='has-text-centered'>" . _('IMDb') . "</th>
+            <th class='has-text-centered'>" . _('TMDb') . "</th>
+            <th class='has-text-centered'>" . _('TvMaze ID') . "</th>
+            <th class='has-text-centered'>" . _('ISBN') . "</th>
+            <th class='has-text-centered'>" . _('Language') . "</th>
+            <th class='has-text-centered tooltipper' title='" . _('If image has been fetched and is in your filesystem') . "'>" . _('Fetched') . "</th>
+            <th class='has-text-centered tooltipper' title='" . _('If IMDb or TMDb not empty, when it was updated') . "'>" . _('Updated') . "</th>
+            <th class='has-text-centered tooltipper' title='" . _('If IMDb or TMDb is empty, the last time we looked it up') . "'>" . _('Checked') . "</th>
+            <th class='has-text-centered tooltipper' title='" . _('Select All') . "'><input type='checkbox' id='checkThemAll'></th>
+            <th class='has-text-centered tooltipper' title='" . _('Ignore') . "'>" . _('Ignore') . '</th>
         </tr>';
     $body = '';
     foreach ($images as $image) {
@@ -86,7 +86,7 @@ if (!empty($images)) {
         <tr>
             <td class='has-text-centered'>
                 <a href='{$image['url']}' class='tooltipper' title='<span class=\"has-text-success\">Hash: </span>{$hash}<br><span class=\"has-text-success\">Size: </span>{$size}<br><span class=\"has-text-success\">Dims: </span>{$dims[0]}x{$dims[1]}'>
-                    <img src='" . url_proxy($image['url'], true, 250) . "' alt='Poster' class='img-responsive'>
+                    <img src='" . url_proxy($image['url'], true, 250) . "' alt='" . _('Poster') . "' class='img-responsive'>
                 </a>
             </td>
             <td class='has-text-centered'>{$image['type']}</td>
@@ -106,7 +106,7 @@ if (!empty($images)) {
                 <input type='checkbox' name='images[]' value='{$image['url']}'>
             </td>
             <td class='has-text-centered w-10'>
-                <div data-id='{$image['url']}' data-pick='{$image['ignore']}' class='ignore-image tooltipper button is-small' title='" . ($image['ignore'] === 1 ? 'Image is Ignored and will not be displayed' : 'Image is NOT Ignored and will be displayed') . "'>" . ($image['ignore'] === 1 ? 'Ignored' : 'Ignore') . '</div>
+                <div data-id='{$image['url']}' data-pick='{$image['ignore']}' class='ignore-image tooltipper button is-small' title='" . ($image['ignore'] === 1 ? _('Image is Ignored and will not be displayed') : _('Image is NOT Ignored and will be displayed')) . "'>" . ($image['ignore'] === 1 ? _('Ignored') : _('Ignore')) . '</div>
             </td>
         </tr>';
     }
@@ -114,7 +114,7 @@ if (!empty($images)) {
         <h1 class='has-text-centered'>" . _('Manage Images') . '</h1>' . ($count > $perpage ? $pager['pagertop'] : '') . "
         <form action='{$_SERVER['PHP_SELF']}?tool=manage_images' method='post' name='terms' enctype='multipart/form-data' accept-charset='utf-8'>
             <div class='has-text-centered margin20 tooltipper' title='" . _('Search by IMDb, TMDb, TvMaze ID, ISBN, type') . "'>
-                <input type='text' name='terms' value='$terms'>
+                <input type='text' name='terms' value='$terms' placeholder='" . _('Search by IMDb, TMDb, TvMaze ID, ISBN, type') . "'>
                 <input type='submit' class='button is-small' name='search' value='" . _('Search') . "'>
             </div>
         <form>

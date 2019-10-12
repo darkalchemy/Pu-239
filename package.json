@@ -1,6 +1,6 @@
 {
     "name": "pu239",
-    "version": "0.7.0",
+    "version": "0.62",
     "description": "Pu-239: A torrent tracker",
     "main": "index.js",
     "keywords": [],

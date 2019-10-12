@@ -141,7 +141,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $set = [
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 365 * 86400 : $user['free_switch'] + 365 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -157,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 30 * 86400 : $user['free_switch'] + 30 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'pirate' => $user['pirate'] === 0 ? $dt + 14 * 86400 : $user['king'] + 14 * 86400,
                     'free_switch' => $user['free_switch'] === 0 ? $dt + 14 * 86400 : $user['free_switch'] + 14 * 86400,
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . ('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
                 ];
                 if ($users_class->update($set, $user['id'])) {
                     $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
@@ -579,7 +579,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $HTMLOUT = "
     <div class='portlet'>
-        <div class='has-text-centered size_6 top20 bottom20'>" . ("Karma Bonus Point's System") . '</div>';
+        <div class='has-text-centered size_6 top20 bottom20'>" . _("Karma Bonus Point's System") . '</div>';
 $HTMLOUT .= $fl_header . "
             <div class='has-text-centered top20'>
                 <span class='size_5'>" . _fe('Exchange your {0}{1}{2} Karma Bonus Points for goodies!', "<span class='has-text-primary'>", number_format((float) $user['seedbonus']), '</span>') . "</span>
@@ -610,7 +610,7 @@ foreach ($options as $gets) {
         case $gets['id'] === 5:
             $additional_text = "
                     <div class='top20 has-text-centered'>
-                        <label for='title'>" . ('Enter the <b>Special Title</b> you would like to have') . ":</label>
+                        <label for='title'>" . _('Enter the <b>Special Title</b> you would like to have') . ":</label>
                         <input type='text' id='title' name='title' class='w-100' maxlength='30' value='" . (!empty($user['title']) ? format_comment($user['title']) : '') . "' required>
                     </div>";
             break;

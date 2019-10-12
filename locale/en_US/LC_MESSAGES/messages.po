@@ -949,6 +949,9 @@ msgstr "Add poll in"
 msgid "Add poll to topic"
 msgstr "Add poll to topic"
 
+msgid "Add reputation"
+msgstr "Add reputation"
+
 msgid "Add response for"
 msgstr "Add response for"
 
@@ -1976,6 +1979,9 @@ msgstr "CLOSED => {0}"
 msgid "CPU usage."
 msgstr "CPU usage."
 
+msgid "Cache doesn't exist or zero length"
+msgstr "Cache doesn't exist or zero length"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Can I bypass my ISP's proxy?"
 
@@ -2207,6 +2213,9 @@ msgstr "Check this option if you want to enable the torrent freak news."
 
 msgid "Check this to post anonymously"
 msgstr "Check this to post anonymously"
+
+msgid "Checked"
+msgstr "Checked"
 
 msgid "Chef"
 msgstr "Chef"
@@ -3900,6 +3909,9 @@ msgstr "Enter Username"
 msgid "Enter password again"
 msgstr "Enter password again"
 
+msgid "Enter the <b>Special Title</b> you would like to have"
+msgstr "Enter the <b>Special Title</b> you would like to have"
+
 msgid "Enter the <b>Torrent ID:</b>"
 msgstr "Enter the <b>Torrent ID:</b>"
 
@@ -4005,6 +4017,9 @@ msgstr "February"
 
 msgid "Female"
 msgstr "Female"
+
+msgid "Fetched"
+msgstr "Fetched"
 
 msgid "File Edit Log"
 msgstr "File Edit Log"
@@ -5137,6 +5152,12 @@ msgstr "Idea"
 msgid "Idle"
 msgstr "Idle"
 
+msgid "If IMDb or TMDb is empty, the last time we looked it up"
+msgstr "If IMDb or TMDb is empty, the last time we looked it up"
+
+msgid "If IMDb or TMDb not empty, when it was updated"
+msgstr "If IMDb or TMDb not empty, when it was updated"
+
 msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr "If a group releases a bad rip, they will release a Repack which will fix the problems."
 
@@ -5148,6 +5169,9 @@ msgstr "If a torrent you are currently leeching/seeding is not listed on your pr
 
 msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
+
+msgid "If image has been fetched and is in your filesystem"
+msgstr "If image has been fetched and is in your filesystem"
 
 msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
@@ -5245,6 +5269,9 @@ msgstr "If you wish to delete the messages as well, you can do that from the {0}
 msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 
+msgid "Ignore"
+msgstr "Ignore"
+
 msgid "Ignore this problem"
 msgstr "Ignore this problem"
 
@@ -5259,6 +5286,12 @@ msgstr "Image (alt. 1)"
 
 msgid "Image (alt. 2)"
 msgstr "Image (alt. 2)"
+
+msgid "Image is Ignored and will not be displayed"
+msgstr "Image is Ignored and will not be displayed"
+
+msgid "Image is NOT Ignored and will be displayed"
+msgstr "Image is NOT Ignored and will be displayed"
 
 msgid "Image is too small"
 msgstr "Image is too small"
@@ -5720,6 +5753,9 @@ msgstr "Justified"
 msgid "Karma"
 msgstr "Karma"
 
+msgid "Karma Bonus Point's System"
+msgstr "Karma Bonus Point's System"
+
 msgid "Karma Bonus Points"
 msgstr "Karma Bonus Points"
 
@@ -5883,6 +5919,9 @@ msgstr "Leechers in Need"
 
 msgid "Leechers:"
 msgstr "Leechers:"
+
+msgid "Leeching"
+msgstr "Leeching"
 
 msgid "Leechtime"
 msgstr "Leechtime"
@@ -8068,17 +8107,26 @@ msgstr "Points for 1 month Custom Smilies."
 msgid "Points for 1 month Immunity Status."
 msgstr "Points for 1 month Immunity Status."
 
+msgid "Points for 1 month King Status."
+msgstr "Points for 1 month King Status."
+
 msgid "Points for 1 month VIP Status."
 msgstr "Points for 1 month VIP Status."
 
 msgid "Points for 1 to 1 ratio on torrent"
 msgstr "Points for 1 to 1 ratio on torrent"
 
+msgid "Points for 1 year Freeleech Status."
+msgstr "Points for 1 year Freeleech Status."
+
 msgid "Points for 100 Reputation Points."
 msgstr "Points for 100 Reputation Points."
 
 msgid "Points for 14 Days Anonymous Profile."
 msgstr "Points for 14 Days Anonymous Profile."
+
+msgid "Points for 2 weeks Pirate + freeleech Status."
+msgstr "Points for 2 weeks Pirate + freeleech Status."
 
 msgid "Points for removing warning."
 msgstr "Points for removing warning."
@@ -8717,6 +8765,9 @@ msgstr "Reputation Point Factor"
 msgid "Reputation Points"
 msgstr "Reputation Points"
 
+msgid "Reputation Power"
+msgstr "Reputation Power"
+
 msgid "Reputation Powers"
 msgstr "Reputation Powers"
 
@@ -8761,6 +8812,9 @@ msgstr "Reputation reasion is too short!"
 
 msgid "Reputation system is offline."
 msgstr "Reputation system is offline."
+
+msgid "Reputation: Offline"
+msgstr "Reputation: Offline"
 
 msgid "Reputation?"
 msgstr "Reputation?"
@@ -9397,6 +9451,9 @@ msgstr "Set New Password"
 
 msgid "Set answered"
 msgstr "Set answered"
+
+msgid "Set offline by admin setting"
+msgstr "Set offline by admin setting"
 
 msgid "Set this option to 'On' if you want to enable AJAX Chat."
 msgstr "Set this option to 'On' if you want to enable AJAX Chat."
@@ -11786,6 +11843,9 @@ msgstr "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it
 msgid "TvMaze API"
 msgstr "TvMaze API"
 
+msgid "TvMaze ID"
+msgstr "TvMaze ID"
+
 msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 
@@ -11954,6 +12014,10 @@ msgstr "Until"
 
 msgid "Until "
 msgstr "Until "
+
+#, no-php-format
+msgid "Until {0}"
+msgstr "Until {0}"
 
 #, no-php-format
 msgid "Until {0} ({1} to go)."

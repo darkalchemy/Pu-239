@@ -25,7 +25,7 @@ require_once INCL_DIR . 'function_bbcode.php';
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  */
-function autoshout(string $msg, int $channel = 0, int $ttl = 7200)
+function autoshout(string $msg, int $channel = 0, int $ttl = 3600)
 {
     global $container, $site_config;
 
@@ -71,10 +71,10 @@ function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, 
         $image = placeholder_image();
 
         if (!isset($reputations) || !is_array($reputations) || count($reputations) < 1) {
-            return '<span title="Cache doesn\'t exist or zero length" class="tooltipper">Reputation: Offline</span>';
+            return '<span title="' . _("Cache doesn't exist or zero length") . '" class="tooltipper">' . _('Reputation: Offline') . '</span>';
         }
         $user['g_rep_hide'] = isset($user['g_rep_hide']) ? $user['g_rep_hide'] : 0;
-        $user['username'] = $anonymous || $user['anonymous_until'] > TIME_NOW ? 'Anonymous' : $user['username'];
+        $user['username'] = get_anonymous((int) $user['id']) ? get_anonymous_name() : $user['username'];
         $max_rep = max(array_keys($reputations));
         if ($user['reputation'] >= $max_rep) {
             $user_reputation = $reputations[$max_rep];
@@ -133,24 +133,24 @@ function get_reputation(array $user, string $mode = '', bool $rep_is_on = true, 
             $rep_level = isset($user_reputation) ? $user_reputation : 'rep_undefined';
 
             for ($i = 0; $i <= $rep_bar; ++$i) {
-                $posneg .= "<span title='Reputation Power $rep_power<br> " . format_comment($user['username']) . " $rep_level' class='tooltipper'>";
+                $posneg .= "<span title='" . _('Reputation Power') . " $rep_power<br> " . format_comment($user['username']) . " $rep_level' class='tooltipper'>";
                 if ($i >= 5) {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img_2}.gif' alt=\"Reputation Power $rep_power " . format_comment($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img_2}.gif' alt='" . _('Reputation Power') . " $rep_power " . format_comment($user['username']) . " $rep_level' class='lazy'>";
                 } else {
-                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img}.gif' alt=\"Reputation Power $rep_power " . format_comment($user['username']) . " $rep_level\" class='lazy'>";
+                    $posneg .= "<img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}rep/reputation_{$rep_img}.gif' alt='" . _('Reputation Power') . " $rep_power " . format_comment($user['username']) . " $rep_level' class='lazy'>";
                 }
                 $posneg .= '</span>';
             }
         }
 
         if (!empty($mode)) {
-            return '<div>Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['paths']['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='Add reputation: " . format_comment($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-success'></i></a></span>";
+            return '<div>Rep: ' . $posneg . "</div><span><a href='javascript:;' onclick=\"PopUp('{$site_config['paths']['baseurl']}/reputation.php?pid=" . ($post_id != 0 ? (int) $post_id : (int) $user['id']) . '&amp;locale=' . $mode . "','Reputation',400,300,1,1);\" title='" . _('Add reputation') . ': ' . format_comment($user['username']) . "' class='tooltipper'><i class='icon-ok icon has-text-success'></i></a></span>";
         } else {
             return ' ' . $posneg;
         }
     }
 
-    return '<span title="Set offline by admin setting" class="tooltipper">Rep System Offline</span>';
+    return '<span title="' . _('Set offline by admin setting') . '" class="tooltipper">' . _('Reputation: Offline') . '</span>';
 }
 
 /**
@@ -162,62 +162,43 @@ function get_ratio_color(float $ratio)
 {
     if ($ratio < 0.1) {
         return '#ff0000';
-    }
-    if ($ratio < 0.2) {
+    } elseif ($ratio < 0.2) {
         return '#ee0000';
-    }
-    if ($ratio < 0.3) {
+    } elseif ($ratio < 0.3) {
         return '#dd0000';
-    }
-    if ($ratio < 0.4) {
+    } elseif ($ratio < 0.4) {
         return '#cc0000';
-    }
-    if ($ratio < 0.5) {
+    } elseif ($ratio < 0.5) {
         return '#bb0000';
-    }
-    if ($ratio < 0.6) {
+    } elseif ($ratio < 0.6) {
         return '#aa0000';
-    }
-    if ($ratio < 0.7) {
+    } elseif ($ratio < 0.7) {
         return '#990000';
-    }
-    if ($ratio < 0.8) {
+    } elseif ($ratio < 0.8) {
         return '#880000';
-    }
-    if ($ratio < 0.9) {
+    } elseif ($ratio < 0.9) {
         return '#770000';
-    }
-    if ($ratio < 1) {
+    } elseif ($ratio < 1) {
         return '#660000';
-    }
-    if ($ratio >= 1.0 && $ratio < 2.0) {
+    } elseif ($ratio < 2) {
         return '#006600';
-    }
-    if ($ratio >= 2.0 && $ratio < 3.0) {
+    } elseif ($ratio < 3) {
         return '#007700';
-    }
-    if ($ratio >= 3.0 && $ratio < 4.0) {
+    } elseif ($ratio < 4) {
         return '#008800';
-    }
-    if ($ratio >= 4.0 && $ratio < 5.0) {
+    } elseif ($ratio < 5) {
         return '#009900';
-    }
-    if ($ratio >= 5.0 && $ratio < 6.0) {
+    } elseif ($ratio < 6) {
         return '#00aa00';
-    }
-    if ($ratio >= 6.0 && $ratio < 7.0) {
+    } elseif ($ratio < 7) {
         return '#00bb00';
-    }
-    if ($ratio >= 7.0 && $ratio < 8.0) {
+    } elseif ($ratio < 8) {
         return '#00cc00';
-    }
-    if ($ratio >= 8.0 && $ratio < 9.0) {
+    } elseif ($ratio < 9) {
         return '#00dd00';
-    }
-    if ($ratio >= 9.0 && $ratio < 10.0) {
+    } elseif ($ratio < 10) {
         return '#00ee00';
-    }
-    if ($ratio >= 10) {
+    } elseif ($ratio >= 10) {
         return '#00ff00';
     }
 
@@ -233,77 +214,53 @@ function get_slr_color(float $ratio)
 {
     if ($ratio < 0.025) {
         return '#ff0000';
-    }
-    if ($ratio < 0.05) {
+    } elseif ($ratio < 0.05) {
         return '#ee0000';
-    }
-    if ($ratio < 0.075) {
+    } elseif ($ratio < 0.075) {
         return '#dd0000';
-    }
-    if ($ratio < 0.1) {
+    } elseif ($ratio < 0.1) {
         return '#cc0000';
-    }
-    if ($ratio < 0.125) {
+    } elseif ($ratio < 0.125) {
         return '#bb0000';
-    }
-    if ($ratio < 0.15) {
+    } elseif ($ratio < 0.15) {
         return '#aa0000';
-    }
-    if ($ratio < 0.175) {
+    } elseif ($ratio < 0.175) {
         return '#990000';
-    }
-    if ($ratio < 0.2) {
+    } elseif ($ratio < 0.2) {
         return '#880000';
-    }
-    if ($ratio < 0.225) {
+    } elseif ($ratio < 0.225) {
         return '#770000';
-    }
-    if ($ratio < 0.25) {
+    } elseif ($ratio < 0.25) {
         return '#660000';
-    }
-    if ($ratio < 0.275) {
+    } elseif ($ratio < 0.275) {
         return '#550000';
-    }
-    if ($ratio < 0.3) {
+    } elseif ($ratio < 0.3) {
         return '#440000';
-    }
-    if ($ratio < 0.325) {
+    } elseif ($ratio < 0.325) {
         return '#330000';
-    }
-    if ($ratio < 0.35) {
+    } elseif ($ratio < 0.35) {
         return '#220000';
-    }
-    if ($ratio < 0.375) {
+    } elseif ($ratio < 0.375) {
         return '#110000';
-    }
-    if ($ratio >= 1.0 && $ratio < 2.0) {
+    } elseif ($ratio < 2) {
         return '#006600';
-    }
-    if ($ratio >= 2.0 && $ratio < 3.0) {
+    } elseif ($ratio < 3) {
         return '#007700';
-    }
-    if ($ratio >= 3.0 && $ratio < 4.0) {
+    } elseif ($ratio < 4) {
         return '#008800';
-    }
-    if ($ratio >= 4.0 && $ratio < 5.0) {
+    } elseif ($ratio < 5) {
         return '#009900';
-    }
-    if ($ratio >= 5.0 && $ratio < 6.0) {
+    } elseif ($ratio < 6) {
         return '#00aa00';
-    }
-    if ($ratio >= 6.0 && $ratio < 7.0) {
+    } elseif ($ratio < 7) {
         return '#00bb00';
-    }
-    if ($ratio >= 7.0 && $ratio < 8.0) {
+    } elseif ($ratio < 8) {
         return '#00cc00';
-    }
-    if ($ratio >= 8.0 && $ratio < 9.0) {
+    } elseif ($ratio < 9) {
         return '#00dd00';
-    }
-    if ($ratio >= 9.0 && $ratio < 10.0) {
+    } elseif ($ratio < 10) {
         return '#00ee00';
-    }
-    if ($ratio >= 10) {
+    } elseif ($ratio >= 10) {
         return '#00ff00';
     }
 
@@ -313,8 +270,8 @@ function get_slr_color(float $ratio)
 /**
  * @param float $ratio_to_check
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string|null
  */
@@ -325,31 +282,31 @@ function ratio_image_machine(float $ratio_to_check)
     $image = placeholder_image();
     switch ($ratio_to_check) {
         case $ratio_to_check >= 5:
-            return '<span class="tooltipper" title="Yay"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/yay.gif" alt="Yay" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Yay') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/yay.gif" alt="Yay" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 4:
-            return '<span class="tooltipper" title="Pimp"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/pimp.gif" alt="Pimp" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Pimp') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/pimp.gif" alt="Pimp" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 3:
-            return '<span class="tooltipper" title="W00t"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/w00t.gif" alt="W00t" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('W00t') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/w00t.gif" alt="W00t" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 2:
-            return '<span class="tooltipper" title="Grin"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/grin.gif" alt="Grin" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Grin') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/grin.gif" alt="Grin" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 1.5:
-            return '<span class="tooltipper" title="Evo"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/evo.gif" alt="Evo" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Evo') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/evo.gif" alt="Evo" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 1:
-            return '<span class="tooltipper" title="Smile"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/smile1.gif" alt="Smile" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Smile') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/smile1.gif" alt="Smile" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 0.5:
-            return '<span class="tooltipper" title="Blank"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/noexpression.gif" alt="Blank" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Blank') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/noexpression.gif" alt="Blank" class="lazy emoticon"></span>';
 
         case $ratio_to_check >= 0.25:
-            return '<span class="tooltipper" title="Cry"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/cry.gif" alt="Cry" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Cry') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/cry.gif" alt="Cry" class="lazy emoticon"></span>';
 
         case $ratio_to_check < 0.25:
-            return '<span class="tooltipper" title="Shit"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Shit') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" class="lazy emoticon"></span>';
     }
 
     return null;
@@ -456,8 +413,8 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
  * @param bool $tag
  * @param bool $comma
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -491,31 +448,31 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                                 <span class='level-right " . get_user_class_name((int) $users_data['class'], true) . "'>" . get_user_class_name((int) $users_data['class'], false) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Last Seen') . ": </span>
+                                <span class='level-left'>" . _('Last Seen') . ": </span>
                                 <span class='level-right'>" . get_date((int) $users_data['last_access'], (date('Ymd') == date('Ymd', $users_data['last_access']) ? 'TIME' : 'FORM'), 1, 0) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Uploaded') . ": </span>
+                                <span class='level-left'>" . _('Uploaded') . ": </span>
                                 <span class='level-right'>" . mksize($users_data['uploaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Downloaded') . ": </span>
+                                <span class='level-left'>" . _('Downloaded') . ": </span>
                                 <span class='level-right'>" . mksize($users_data['downloaded']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Karma') . ": </span>
+                                <span class='level-left'>" . _('Karma') . ": </span>
                                 <span class='level-right'>" . number_format((float) $users_data['seedbonus']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Seeding') . ": </span>
+                                <span class='level-left'>" . _('Seeding') . ": </span>
                                 <span class='level-right'>" . number_format($peers['yes']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Leeching') . ": </span>
+                                <span class='level-left'>" . _('Leeching') . ": </span>
                                 <span class='level-right'>" . number_format($peers['no']) . "</span>
                             </span>
                             <span class='level is-marginless'>
-                                <span class='level-left'>" . ('Achievments') . ": </span>
+                                <span class='level-left'>" . _('Achievements') . ": </span>
                                 <span class='level-right'>" . number_format($achpoints) . '</span>
                             </span>
                         </span>
@@ -533,17 +490,17 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     if ($icons != false) {
         require_once INCL_DIR . 'function_html.php';
         $image = placeholder_image();
-        $str .= $users_data['donor'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Donor"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'star.png" alt="Donor"></span>' : '';
-        $str .= $users_data['king'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="King"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'king.png" alt="King"></span>' : '';
-        $str .= $users_data['pirate'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="Pirate"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'pirate.png" alt="Pirate"></span>' : '';
-        $str .= $users_data['warned'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertred.png" alt="Warned"></span>' : '';
-        $str .= $users_data['leechwarn'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Leech Warned"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertblue.png" alt="Leech Warned"></span>' : '';
-        $str .= $users_data['status'] > 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="Disabled"></span>' : '';
-        $str .= $users_data['status'] === 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Parked"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="Parked"></span>' : '';
-        $str .= $users_data['downloadpos'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Download Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'downloadpos.gif" alt="Download Disabled"></span>' : '';
-        $str .= $users_data['chatpost'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="Shout Disabled"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'warned.png" alt="No Chat"></span>' : '';
+        $str .= $users_data['donor'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Donor') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'star.png" alt="' . ('Donor') . '"></span>' : '';
+        $str .= $users_data['king'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('King') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'king.png" alt="' . ('King') . '"></span>' : '';
+        $str .= $users_data['pirate'] >= TIME_NOW ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Pirate') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'pirate.png" alt="' . ('Pirate') . '"></span>' : '';
+        $str .= $users_data['warned'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Warned') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertred.png" alt="' . ('Warned') . '"></span>' : '';
+        $str .= $users_data['leechwarn'] >= 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Leech Warned') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'alertblue.png" alt="' . ('Leech Warned') . '"></span>' : '';
+        $str .= $users_data['status'] > 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Disabled') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="' . ('Disabled') . '"></span>' : '';
+        $str .= $users_data['status'] === 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Parked') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'disabled.gif" alt="' . ('Parked') . '"></span>' : '';
+        $str .= $users_data['downloadpos'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Download Disabled') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'downloadpos.gif" alt="' . ('Download Disabled') . '"></span>' : '';
+        $str .= $users_data['chatpost'] != 1 ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Shout Disabled') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'warned.png" alt="' . ('No Chat') . '"></span>' : '';
         if (Christmas()) {
-            $str .= isset($users_data['gotgift']) && $users_data['gotgift'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="Has Claimed a Christmas Gift"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'gift.png" alt="Christmas Gift"></span>' : '';
+            $str .= isset($users_data['gotgift']) && $users_data['gotgift'] === 'yes' ? '<span' . ($tooltipper ? ' class="tooltipper" title="' . ('Has Claimed a Christmas Gift') . '"' : '') . '><img class="lazy icon left5" src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'gift.png" alt="' . ('Christmas Gift') . '"></span>' : '';
         }
     }
 
@@ -599,8 +556,8 @@ function member_ratio(?float $up, ?float $down)
  * @param float|null $up
  * @param float|null $down
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -619,28 +576,28 @@ function get_user_ratio_image(?float $up, ?float $down)
             return '';
 
         case $ratio < 0.6:
-            return '<span class="tooltipper" title="Bad ratio :("><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Bad ratio :("  class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Bad Ratio') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="' . ('Bad Ratio') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 0.7:
-            return '<span class="tooltipper" title="Could be better"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/weep.gif" alt="Could be better" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Could be better') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/weep.gif" alt="' . ('Could be better') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 0.8:
-            return '<span class="tooltipper" title="Getting there!"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/cry.gif" alt="Getting there!" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Getting there!') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/cry.gif" alt="' . ('Getting there!') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 1.5:
-            return '<span class="tooltipper" title=" Good Ratio :)"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/smile1.gif" alt=" Good Ratio :)" title=" Good Ratio :)" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Good Ratio') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/smile1.gif" alt="' . ('Good Ratio') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 2.0:
-            return '<span class="tooltipper" title="Great Ratio :)"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/grin.gif" alt="Great Ratio :)" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Great Ratio') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/grin.gif" alt="' . ('Great Ratio') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 3.0:
-            return '<span class="tooltipper" title="Wow! :D"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/w00t.gif" alt="Wow! :D" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Wow!') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/w00t.gif" alt="' . ('Wow!') . '" class="lazy emoticon"></span>';
 
         case $ratio <= 4.0:
-            return '<span class="tooltipper" title="Fa-boo Ratio!"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/pimp.gif" alt="Fa-boo Ratio!" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Fabulous Ratio!') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/pimp.gif" alt="' . ('Fabulous Ratio!') . '" class="lazy emoticon"></span>';
 
         case $ratio > 4.0:
-            return '<span class="tooltipper" title="Great ratio :-D"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/yahoo.gif" alt="Great ratio :-D" class="lazy emoticon"></span>';
+            return '<span class="tooltipper" title="' . ('Awesome Ratio!') . '"><img src="' . $image . '" data-src="' . $site_config['paths']['images_baseurl'] . 'smilies/yahoo.gif" alt="' . ('Awesome Ratio') . '" class="lazy emoticon"></span>';
     }
 
     return '';
@@ -649,10 +606,10 @@ function get_user_ratio_image(?float $up, ?float $down)
 /**
  * @param $avatar
  *
- * @throws InvalidManipulation
  * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws InvalidManipulation
  *
  * @return bool|mixed|string|null
  */
@@ -751,9 +708,9 @@ function make_dir(string $dir, int $octal)
 /**
  * @param int $userid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */

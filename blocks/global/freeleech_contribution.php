@@ -191,7 +191,7 @@ if ($freeleech['enabled'] === 'yes' || $halfdownload['enabled'] === 'yes' || $do
                 <div class='tooltip_templates'>
                     <div id='karma_tooltip' class='margin20'>
                         <div class='size_6 has-text-centered has-text-success has-text-weight-bold bottom10'>
-                            " . ("Karma Contribution's") . '
+                            " . _("Karma Contribution's") . '
                         </div>';
     if ($freeleech['enabled'] === 'yes') {
         $htmlout .= "
