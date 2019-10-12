@@ -58,6 +58,7 @@ if (isset($data['action'])) {
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $validator = $container->get(Validator::class);
+    dd($_POST);
     $validation = $validator->validate($_POST, [
         'type' => 'required|numeric',
         'name' => 'required|regex:/[A-Za-z0-9\:_\-\s]/',
@@ -118,7 +119,7 @@ $form = "
                     <div class='column is-one-quarter has-text-left'>" . _('Poster') . "</div>
                     <div class='column'>
                         <input type='url' id='image_url' placeholder='" . _('External Image URL') . "' class='w-100' onchange=\"return grab_url(event)\" value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
-                        <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden'>
+                        <input type='url' id='poster' maxlength='255' name='poster' class='w-100 is-hidden' value='" . (!empty($post_data['poster']) ? htmlsafechars($post_data['poster']) : '') . "'>
                         <div class='poster_container has-text-centered'></div>
                         <div id='droppable' class='droppable bg-03 top20'>
                             <span id='comment'>" . _('Drop images or click here to select images.') . "</span>
@@ -134,11 +135,11 @@ $form = "
                     <div class='column'>
                         <select name='status' class='w-100' required>
                             <option value='' disabled selected>" . _('Select Status') . "</option>
-                            <option value='sourcing' " . (!empty($post_data['status']) && $post_data['status'] === 'sourcing' ? 'selected' : '') . ">Sourcing</option>
-                            <option value='ftping' " . (!empty($post_data['status']) && $post_data['status'] === 'ftping' ? 'selected' : '') . ">FTPing</option>
-                            <option value='encoding' " . (!empty($post_data['status']) && $post_data['status'] === 'encoding' ? 'selected' : '') . ">Encoding</option>
-                            <option value='remuxing' " . (!empty($post_data['status']) && $post_data['status'] === 'remuxing' ? 'selected' : '') . ">Remuxing</option>
-                            <option value='uploaded' " . (!empty($post_data['status']) && $post_data['status'] === 'uploaded' ? 'selected' : '') . ">Uploaded</option>
+                            <option value='sourcing' " . (!empty($post_data['status']) && $post_data['status'] === 'sourcing' ? 'selected' : '') . ">" . _('Sourcing') . "</option>
+                            <option value='ftping' " . (!empty($post_data['status']) && $post_data['status'] === 'ftping' ? 'selected' : '') . ">" . _('FTPing') . "</option>
+                            <option value='encoding' " . (!empty($post_data['status']) && $post_data['status'] === 'encoding' ? 'selected' : '') . ">" . _('Encoding') . "</option>
+                            <option value='remuxing' " . (!empty($post_data['status']) && $post_data['status'] === 'remuxing' ? 'selected' : '') . ">" . _('Remuxing') . "</option>
+                            <option value='uploaded' " . (!empty($post_data['status']) && $post_data['status'] === 'uploaded' ? 'selected' : '') . ">" . _('Uploaded') . "</option>
                         </select>
                     </div>
                 </div>
@@ -161,7 +162,7 @@ if ($has_access) {
             <h2 class='has-text-centered'>Add Recipe</h2>
             <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=add_recipe' enctype='multipart/form-data' accept-charset='utf-8'>$form
                 <div class='has-text-centered'>
-                    <input type='submit' value='Add' class='button is-small'>
+                    <input type='submit' value='" . _('Add') . "' class='button is-small'>
                 </div>
             </form>";
         $add_new = main_div($add_new, 'has-text-centered w-75 min-350', 'padding20');
@@ -171,7 +172,7 @@ if ($has_access) {
             <form class='form-inline table-wrapper' method='post' action='{$_SERVER['PHP_SELF']}?action=edit_recipe' enctype='multipart/form-data' accept-charset='utf-8'>$form
                 <div class='has-text-centered'>
                     <input type='hidden' name='id' value='{$id}'>
-                    <input type='submit' value='Update' class='button is-small'>
+                    <input type='submit' value='" . _('Update') . "' class='button is-small'>
                 </div>
             </form>";
         $update = main_div($update, 'has-text-centered w-75 min-350', 'padding20');
@@ -225,7 +226,7 @@ if (!empty($add_new)) {
                 $background = $images_class->find_images($imdb_id, $type = 'background');
                 $background = !empty($background) ? "style='background-image: url({$background});'" : '';
                 $poster = !empty($recipe['poster']) ? $recipe['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
-                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$recipe['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$recipe['name']}' class='tooltip-poster'>";
+                $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='" . ('Poster') . "' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$recipe['name']}' class='tooltip-poster'>";
             }
             $chef = format_username($recipe['userid']);
             $plot = $torrent->get_plot($imdb_id);
