@@ -2,7 +2,7 @@ var check1flag = 'false';
 var check2flag = 'false';
 
 function check1(field) {
-    if (check1flag == 'false') {
+    if (check1flag === 'false') {
         for (i = 0; i < field.length; i++) {
             field[i].checked = true;
         }
@@ -18,7 +18,7 @@ function check1(field) {
 }
 
 function check2(field) {
-    if (check2flag == 'false') {
+    if (check2flag === 'false') {
         for (i = 0; i < field.length; i++) {
             field[i].checked = true;
         }

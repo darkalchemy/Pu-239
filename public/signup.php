@@ -15,15 +15,16 @@ require_once INCL_DIR . 'function_html.php';
 global $container, $site_config;
 
 $title = 'Join ' . $site_config['site']['name'];
-get_template();
 $session = $container->get(Session::class);
 $fluent = $container->get(Database::class);
 $auth = $container->get(Auth::class);
 if ($auth->isLoggedIn()) {
     $auth->logOutEverywhere();
     $auth->destroySession();
+    header('Location: ' . $site_config['paths']['baseurl'] . $_SERVER['REQUEST_URI']);
+    die();
 }
-
+get_template();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $container->get(User::class);
     $validator = $container->get(Validator::class);
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                   ->where('code = ?', $invite_code)
                                   ->where('status = "Pending"')
                                   ->fetch('sender');
-                $msg = "Hey there [you]! :wave:\nIt seems that someone you invited to {$site_config['site']['name']} has arrived! :clap2:\n\ncheers\n";
+                $msg = "Hey there [you]! :wave:\nYour invitation to " . htmlsafechars($post['username']) . " has been accepted! :clap2:\n\ncheers\n";
                 $subject = 'Someone you invited has arrived!';
                 $msgs_buffer[] = [
                     'receiver' => $inviter,
@@ -185,7 +186,8 @@ if (!empty($email)) {
 } else {
     $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' value='{$signup_vars['email']}' autocomplete='on' required>
                    <div id='emailcheck'></div>" . ($site_config['signup']['email_confirm'] ? "
-                    <div class='alt_bordered top10 padding10'>" . _('Username') . '</div>' : '');
+                   <div class='alt_bordered top10 padding10'>" . _('Username') . '</div>' : '');
+    $email_form = "<input type='email' name='email' id='email' class='w-100' onblur='check_email();' value='{$signup_vars['email']}' autocomplete='on' required>";
 }
 $email = !empty($email) ? $email : (!empty($signup_vars['email']) ? $signup_vars['email'] : '');
 $body = "          
@@ -194,19 +196,19 @@ $body = "
                 <div class='column is-one-quarter has-text-left'>" . _('Desired Username') . "</div>
                 <div class='column'>
                     <input type='text' name='username' id='username' class='w-100' onblur='check_name();' value='{$signup_vars['username']}' autocomplete='on' required pattern='[\p{L}\p{N}_-]{3,64}'>
-                    <div id='namecheck'></div>
                 </div>
             </div>
+            <div id='namecheck'></div>
             <div class='columns level'>                    
                 <div class='column is-one-quarter has-text-left'>" . _('Pick a Password') . "</div>
                 <div class='column'>
-                    <input type='password' id='password' name='password' class='w-100' autocomplete='on' required minlength='8'>
+                    <input type='password' id='password' name='password' class='w-100' autocomplete='on' required minlength='8' aria-autocomplete='list'>
                 </div>
             </div>
             <div class='columns level'>                    
                 <div class='column is-one-quarter has-text-left'>" . _('Enter password again') . "</div>
                 <div class='column'>
-                    <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' required minlength='8'>
+                    <input type='password' id='confirm_password' name='confirm_password' class='w-100' autocomplete='on' required minlength='8' aria-autocomplete='list'>
                 </div>
             </div>
             <div class='columns level'>                    
@@ -214,8 +216,9 @@ $body = "
                 <div class='column'>
                     $email_form
                 </div>
-            </div>
-            <div class='has-text-centered'>{$invite}{$promo}
+            </div>" . (empty($email) ? "
+            <div id='emailcheck'></div>" : '') . "
+            <div class='has-text-centered top20'>{$invite}{$promo}
                 <input id='submit' type='submit' value='" . _('Signup') . "' class='button is-small' disabled>
             </div>";
 $HTMLOUT .= main_div($body, '', 'padding20') . '

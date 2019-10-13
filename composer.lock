@@ -111,24 +111,24 @@
         },
         {
             "name": "biblys/isbn",
-            "version": "2.1.1",
+            "version": "2.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/biblys/isbn.git",
-                "reference": "e1ee3ad5c21124dddbed7108342cf3c1e9ee95e1"
+                "reference": "130d3e5a5cb8f43018504b16e9f23c067b4ebdd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/biblys/isbn/zipball/e1ee3ad5c21124dddbed7108342cf3c1e9ee95e1",
-                "reference": "e1ee3ad5c21124dddbed7108342cf3c1e9ee95e1",
+                "url": "https://api.github.com/repos/biblys/isbn/zipball/130d3e5a5cb8f43018504b16e9f23c067b4ebdd1",
+                "reference": "130d3e5a5cb8f43018504b16e9f23c067b4ebdd1",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.1.0"
             },
             "require-dev": {
                 "guzzlehttp/guzzle": "^6.2",
-                "phpunit/phpunit": "^8.3"
+                "phpunit/phpunit": "^7.1 || ^8.3"
             },
             "type": "library",
             "autoload": {
@@ -153,7 +153,7 @@
                 "book",
                 "ean"
             ],
-            "time": "2019-08-17T00:00:00+00:00"
+            "time": "2019-10-13T00:00:00+00:00"
         },
         {
             "name": "blocktrail/cryptojs-aes-php",

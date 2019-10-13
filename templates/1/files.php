@@ -63,7 +63,7 @@ function get_file_name($file)
         case 'sceditor_js':
             return "{$site_config['paths']['baseurl']}/js/1/sceditor_05ee9408.js";
         case 'cheaters_js':
-            return "{$site_config['paths']['baseurl']}/js/1/cheaters_88e84984.js";
+            return "{$site_config['paths']['baseurl']}/js/1/cheaters_e83d6a3b.js";
         case 'user_search_js':
             return "{$site_config['paths']['baseurl']}/js/1/user_search_79ba3068.js";
         case 'lightbox_js':
@@ -77,7 +77,7 @@ function get_file_name($file)
         case 'checkport_js':
             return "{$site_config['paths']['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':
-            return "{$site_config['paths']['baseurl']}/js/1/check_username_534a3b9e.js";
+            return "{$site_config['paths']['baseurl']}/js/1/check_username_0c29ca53.js";
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':

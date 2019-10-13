@@ -235,25 +235,37 @@ class User
         return $userid;
     }
 
+    /**
+     * @param array $values
+     *
+     * @throws AuthError
+     * @throws DependencyException
+     * @throws Exception
+     * @throws InvalidManipulation
+     * @throws NotFoundException
+     * @throws NotLoggedInException
+     * @throws UnbegunTransaction
+     * @throws \Exception
+     *
+     * @return bool|int
+     */
     public function add(array $values)
     {
-        // TODO
         $userid = false;
         try {
-            if ($this->site_config['signup']['email_confirm'] && !isset($values['send_email'])) {
+            if ($this->site_config['mail']['smtp_enable'] && $this->site_config['signup']['email_confirm'] && !isset($values['send_email'])) {
                 $userid = $this->auth->registerWithUniqueUsername(strip_tags(trim($values['email'])), strip_tags(trim($values['password'])), strip_tags(trim($values['username'])), function ($selector, $token) use ($values) {
-                    $url = $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token);
-                    $body = str_replace([
-                        '<#SITENAME#>',
-                        '<#USEREMAIL#>',
-                        '<#IP_ADDRESS#>',
-                        '<#REG_LINK#>',
-                    ], [
-                        $this->site_config['site']['name'],
-                        strip_tags($values['email']),
-                        getip(),
-                        $url,
-                    ], doc_head(_fe('{0} Registration', $this->site_config['site']['name'])));
+                    $body = doc_head(_fe('{0} Registration', $this->site_config['site']['name'], false));
+                    $body .= _fe('
+</head>
+<body>
+    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>
+    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>
+    <p>To confirm your user registration, you have to follow this link:</p>
+    <p>{3}</p>
+    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>
+</body>
+</html>', $this->site_config['site']['name'], strip_tags($values['email']), getip(), $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token), "<a href='{$this->site_config['paths']['baseurl']}/rules.php'>", '</a>', "<a href='{$this->site_config['paths']['baseurl']}/faq.php'>");
                     send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} " . _('user registration confirmation'), $body, strip_tags($body));
                     $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
                 });
@@ -557,7 +569,8 @@ class User
     {
         try {
             $this->auth->forgotPassword($email, function ($selector, $token) use ($email) {
-                $body = doc_head(_fe('{0} Reset Password Request', $this->site_config['site']['name'])) . _fe('
+                $body = doc_head(_fe('{0} Reset Password Request', $this->site_config['site']['name'], false));
+                $body .= _fe('
 </head>
 <body>
 <p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>
@@ -565,12 +578,12 @@ class User
 <p>If you did not do this, you can ignore this email. Please do not reply.</p>
 <p>Should you wish to confirm this request, please follow this link:</p>
 <br>
-<p><b>{2}/recover.php?selector={3}&token={4}</b></p>
+<p><b>{2}</b></p>
 <br>
 <p>After you do this, you will be able to log with the new password.</p>
-<p>--{5}</p>
+<p>--{3}</p>
 </body>
-</html>', $email, getip(), $this->site_config['paths']['baseurl'], urlencode($selector), urlencode($token), $this->site_config['site']['name']);
+</html>', $email, getip(), "{$this->site_config['paths']['baseurl']}/recover.php?selector=" . urlencode($selector) . '&token=' . urlencode($token), $this->site_config['site']['name']);
                 send_mail($email, "{$this->site_config['site']['name']} " . _('password reset confirmation'), $body, strip_tags($body));
             });
             stderr(_('Success'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));
