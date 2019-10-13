@@ -1,8 +1,8 @@
 function check_email() {
-    wantemail = document.getElementById('email').value;
+    var wantemail = document.getElementById('email').value;
     var url = '../ajax/emailcheck.php?wantemail=' + encodeURI(wantemail);
     try {
-        request = new ActiveXObject('Msxml2.XMLHTTP');
+        var request = new ActiveXObject('Msxml2.XMLHTTP');
     } catch (e) {
         try {
             request = new ActiveXObject('Microsoft.XMLHTTP');

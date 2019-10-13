@@ -20,7 +20,7 @@ function inactive_update($data)
     $time_start = microtime(true);
     $user_class = $container->get(User::class);
 
-    $unconfirmed = TIME_NOW - (2 * 86400); //unconfrimed more 48 hours
+    $unconfirmed = TIME_NOW - (1 * 86400); //unconfrimed more 24 hours
     $inactive = TIME_NOW - (180 * 86400); // inactive more than 6 months
     $parked = TIME_NOW - (365 * 86400); // parked more than 1 year
     $users = $user_class->get_inactives($unconfirmed, $inactive, $parked, UC_STAFF);

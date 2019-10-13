@@ -134,11 +134,11 @@ $form = "
                     <div class='column'>
                         <select name='status' class='w-100' required>
                             <option value='' disabled selected>" . _('Select Status') . "</option>
-                            <option value='sourcing' " . (!empty($post_data['status']) && $post_data['status'] === 'sourcing' ? 'selected' : '') . ">" . _('Sourcing') . "</option>
-                            <option value='ftping' " . (!empty($post_data['status']) && $post_data['status'] === 'ftping' ? 'selected' : '') . ">" . _('FTPing') . "</option>
-                            <option value='encoding' " . (!empty($post_data['status']) && $post_data['status'] === 'encoding' ? 'selected' : '') . ">" . _('Encoding') . "</option>
-                            <option value='remuxing' " . (!empty($post_data['status']) && $post_data['status'] === 'remuxing' ? 'selected' : '') . ">" . _('Remuxing') . "</option>
-                            <option value='uploaded' " . (!empty($post_data['status']) && $post_data['status'] === 'uploaded' ? 'selected' : '') . ">" . _('Uploaded') . "</option>
+                            <option value='sourcing' " . (!empty($post_data['status']) && $post_data['status'] === 'sourcing' ? 'selected' : '') . '>' . _('Sourcing') . "</option>
+                            <option value='ftping' " . (!empty($post_data['status']) && $post_data['status'] === 'ftping' ? 'selected' : '') . '>' . _('FTPing') . "</option>
+                            <option value='encoding' " . (!empty($post_data['status']) && $post_data['status'] === 'encoding' ? 'selected' : '') . '>' . _('Encoding') . "</option>
+                            <option value='remuxing' " . (!empty($post_data['status']) && $post_data['status'] === 'remuxing' ? 'selected' : '') . '>' . _('Remuxing') . "</option>
+                            <option value='uploaded' " . (!empty($post_data['status']) && $post_data['status'] === 'uploaded' ? 'selected' : '') . '>' . _('Uploaded') . "</option>
                         </select>
                     </div>
                 </div>

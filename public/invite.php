@@ -271,7 +271,7 @@ if ($do === 'view_page') {
                     <input type='hidden' name='code' value='" . htmlsafechars($fetch['code']) . "'>
                     <input type='hidden' name='secret' value='{$fetch['id']}'>
                     <input type='hidden' name='id' value='{$id}'>
-                    <input type='submit' value='" . _('Send email') . " class='button is-small'>
+                    <input type='submit' value='" . _('Send Email') . "' class='button is-small'>
                 </div>
             </form>
         </div>";
@@ -374,14 +374,12 @@ function get_body(string $title, string $inviter, string $email, int $secret, st
         This is a private site and you must agree to the rules before you can enter:', $site_config['site']['name'], $inviter, $inviter, $email) . '
     </p>
     <p>' . _fe('{0}User Agreement{1}', "<a href='{$site_config['paths']['baseurl']}/useragreement.php'>", '</a>') . '</p>
-    <p>' . _fe('{0}Rules{1}', "<a href='{$site_config['paths']['baseurl']}/rules.php'>", '</a>') . '</p>
-    <p>' . _fe('{0}FAQ{1}', "<a href='{$site_config['paths']['baseurl']}/faq.php'>", '</a>') . '</p>
     <hr>
     <p>' . _fe('{0}Confirm your invitation{1}', "<a href='{$site_config['paths']['baseurl']}/signup.php?id={$secret}&code=$invite'>", '</a>') . '</p>
     <hr>
     <p>
         ' . _fe('After you do this, {0} may need to confirm your account.<br>
-        We urge you to read the RULES and FAQ before you start using {1}.', $inviter, $site_config['site']['name']) . '
+        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}.', $inviter, "<a href='{$site_config['paths']['baseurl']}/rules.php'>", '</a>', "<a href='{$site_config['paths']['baseurl']}/faq.php'>", '</a>', $site_config['site']['name']) . '
     </p>
 </body>
 </html>';

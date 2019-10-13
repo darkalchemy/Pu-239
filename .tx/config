@@ -1,0 +1,10 @@
+[main]
+host = https://www.transifex.com
+
+[pu-239-source-code.messages-po]
+file_filter = locale/<lang>/LC_MESSAGES/messages.po
+minimum_perc = 0
+source_file = locale/en_US/LC_MESSAGES/messages.po
+source_lang = en_US
+type = PO
+

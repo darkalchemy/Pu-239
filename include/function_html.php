@@ -367,8 +367,8 @@ function clear_image_cache()
 /**
  * @param int $size
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|Image|mixed|string
  */
@@ -408,17 +408,18 @@ function validate_url($url)
 
 /**
  * @param string $title
+ * @param bool   $hidden
  *
  * @return string
  */
-function doc_head(string $title)
+function doc_head(string $title, bool $hidden = true)
 {
     global $site_config;
 
     return "<!doctype html>
 <html lang='en-US'>
-<head>
-    <style>html{visibility: hidden;opacity:0;}</style>
+<head>" . ($hidden ? '
+    <style>html{visibility: hidden;opacity:0;}</style>' : '') . "
     <meta property='og:title' content='{$title}'>
     <title>{$title}</title>
     <meta charset='utf-8'>
@@ -478,9 +479,9 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -504,9 +505,9 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed
  */
@@ -535,9 +536,9 @@ function validate_promo(string $code, bool $full)
 /**
  * @param array $classes
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */

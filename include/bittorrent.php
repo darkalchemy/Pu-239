@@ -1043,7 +1043,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     ]);
     if ($validation->fails()) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username too long or too short') . '</div> 3 - 64 characters';
+            echo "<div class='has-text-danger bottom20'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username too long or too short') . '</div> 3 - 64 characters';
             die();
         } else {
             stderr(_('Error'), _('Username too long or too short'));
@@ -1051,7 +1051,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     }
     if (!preg_match("/^[\p{L}\p{M}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Invalid characters users.') . '</div>';
+            echo "<div class='has-text-danger'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Invalid characters users.') . '</div>';
             die();
         }
 
@@ -1059,7 +1059,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     }
     if (preg_match('/' . urldecode($username) . '/i', strtolower(implode('|', $site_config['site']['badwords'])))) {
         if ($ajax) {
-            echo "<div class='has-text-danger margin10'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username not allowed.') . '</div>';
+            echo "<div class='has-text-danger bottom20'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Username not allowed.') . '</div>';
             die();
         }
 
@@ -1069,14 +1069,14 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
         $user = $container->get(User::class);
         if ($user->get_count_by_username(htmlsafechars($username))) {
             if ($ajax) {
-                echo "<div class='has-text-danger tooltipper margin10' title='" . _('Username is not Available') . "'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _fe('Sorry... Username - {0} is already in use.', format_comment($_GET['wantusername'])) . '</div>';
+                echo "<div class='has-text-danger tooltipper bottom20' title='" . _('Username is not Available') . "'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _fe('Sorry... Username - {0} is already in use.', format_comment($_GET['wantusername'])) . '</div>';
                 die();
             }
 
             return false;
         } else {
             if ($ajax) {
-                echo "<div class='has-text-success tooltipper margin10' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . '</b></div>';
+                echo "<div class='has-text-success tooltipper bottom20' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . '</b></div>';
                 die();
             }
         }
