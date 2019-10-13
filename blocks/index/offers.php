@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Image;
 use Pu239\Offer;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
@@ -35,6 +36,7 @@ if (!empty($offered) && is_array($offered)) {
         preg_match('#(tt\d{7,8})#', $offer['url'], $match);
         if (!empty($match[1])) {
             $imdb_id = $match[1];
+            $iamges_class = $container->get(Image::class);
             $background = $images_class->find_images($imdb_id, $type = 'background');
             $background = !empty($background) ? "style='background-image: url({$background});'" : '';
             $poster = !empty($offer['poster']) ? $offer['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
