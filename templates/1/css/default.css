@@ -657,10 +657,21 @@ textarea {
     display: none;
 }
 
+.notification-wrapper {
+    position: absolute;
+    top: 45px;
+    z-index: 99;
+    left: 0;
+    right: 0;
+}
+
 .notification {
     border-radius: .3125em;
 }
 
+.notification:not(:last-child) {
+    margin-bottom: 1em !important;
+}
 
 .notification.is-info,
 .notification.is-link {
