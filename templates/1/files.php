@@ -77,7 +77,7 @@ function get_file_name($file)
         case 'checkport_js':
             return "{$site_config['paths']['baseurl']}/js/1/checkport_a540ce2b.js";
         case 'check_username_js':
-            return "{$site_config['paths']['baseurl']}/js/1/check_username_0c29ca53.js";
+            return "{$site_config['paths']['baseurl']}/js/1/check_username_ea4478c0.js";
         case 'check_password_js':
             return "{$site_config['paths']['baseurl']}/js/1/check_password_a147515e.js";
         case 'upload_js':

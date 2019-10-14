@@ -2,7 +2,7 @@ function check_name() {
     var wantusername = document.getElementById('username').value;
     var url = '../ajax/namecheck.php?wantusername=' + encodeURI(wantusername);
     try {
-        var request = new ActiveXObject('Msxml2.XMLHTTP');
+        request = new ActiveXObject('Msxml2.XMLHTTP');
     } catch (e) {
         try {
             request = new ActiveXObject('Microsoft.XMLHTTP');

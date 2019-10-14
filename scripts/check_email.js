@@ -2,7 +2,7 @@ function check_email() {
     var wantemail = document.getElementById('email').value;
     var url = '../ajax/emailcheck.php?wantemail=' + encodeURI(wantemail);
     try {
-        var request = new ActiveXObject('Msxml2.XMLHTTP');
+        request = new ActiveXObject('Msxml2.XMLHTTP');
     } catch (e) {
         try {
             request = new ActiveXObject('Microsoft.XMLHTTP');
