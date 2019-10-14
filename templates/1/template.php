@@ -165,7 +165,7 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
         //dd($curuser);
     }
     if ($BLOCKS['global_flash_messages_on']) {
-        $flash = "
+        $htmlout .= "
                 <div class='notification-wrapper'>";
         foreach ($site_config['site']['notifications'] as $notif) {
             $messages = $session->get($notif);
@@ -173,7 +173,7 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
                 foreach ($messages as $message) {
                     $show[] = $message;
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
-                    $flash .= "
+                    $htmlout .= "
                     <div class='notification $notif has-text-centered size_5 is-marginless'>
                         <button class='delete'>&nbsp;</button>$message
                     </div>";
@@ -181,9 +181,8 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
             }
             $session->unset($notif);
         }
-        $flash .= '
+        $htmlout .= '
                 </div>';
-        $htmlout .= !empty($messages) ? $flash : '';
     }
 
     return $htmlout;
