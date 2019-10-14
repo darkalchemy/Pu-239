@@ -250,9 +250,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                         'av_class' => (int) $_POST['av_class'],
                     ];
                     $res = $fluent->update('staffpanel')
-                           ->set($set)
-                           ->where('id=?', $id)
-                           ->execute();
+                                  ->set($set)
+                                  ->where('id=?', $id)
+                                  ->execute();
                     $cache->delete('av_class_');
                     $classes = $fluent->from('class_config')
                                       ->select(null)
