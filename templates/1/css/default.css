@@ -658,9 +658,9 @@ textarea {
 }
 
 .notification-wrapper {
-    position: absolute;
-    top: 45px;
-    z-index: 99;
+    position: fixed;
+    top: 0;
+    z-index: 99999;
     left: 0;
     right: 0;
 }
@@ -670,7 +670,7 @@ textarea {
 }
 
 .notification:not(:last-child) {
-    margin-bottom: 1em !important;
+    margin-bottom: 5px !important;
 }
 
 .notification.is-info,
