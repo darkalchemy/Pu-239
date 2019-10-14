@@ -76,9 +76,9 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
  */
@@ -105,9 +105,9 @@ function getip()
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
  */
@@ -153,12 +153,12 @@ function get_category_icons()
 }
 
 /**
- * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws AuthError
  *
  * @return mixed
  */
@@ -212,9 +212,9 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -427,8 +427,8 @@ function write_log($text)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return int
  */
@@ -446,9 +446,9 @@ function get_userid()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return float|int
  */
@@ -710,12 +710,12 @@ function force_logout(int $userid)
 /**
  * @param string $type
  *
- * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws NotLoggedInException
  *
  * @return bool|mixed|User
  */
@@ -784,8 +784,8 @@ function check_user_status(string $type = 'browse')
  * @param int         $class
  * @param string|null $role
  *
- * @throws NotFoundException
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool
  */
@@ -849,9 +849,9 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool
  */
@@ -928,9 +928,9 @@ function array_msort(array $array, array $cols)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
  */
@@ -1195,9 +1195,9 @@ function get_show_name(string $name)
 /**
  * @param string $name
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1238,9 +1238,9 @@ function get_show_id(string $name)
 /**
  * @param string $imdbid
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed|null
  */
@@ -1274,9 +1274,9 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return false|mixed|string
  */
@@ -1344,9 +1344,9 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
  */
@@ -1375,9 +1375,9 @@ function insert_update_ip(string $type, int $userid)
  * @param bool|null $fresh
  * @param bool|null $async
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
  */
@@ -1430,9 +1430,9 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 /**
  * @param bool $details
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
  */
@@ -1500,9 +1500,9 @@ function get_body_image(bool $details)
 }
 
 /**
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return bool|mixed
  */

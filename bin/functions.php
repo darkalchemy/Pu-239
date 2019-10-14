@@ -6,11 +6,12 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Session;
 
 /**
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return array
  */
@@ -36,9 +37,9 @@ function get_styles()
  * @param array $styles
  * @param bool  $create
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return array
  */
@@ -156,9 +157,9 @@ function cleanup(string $group)
 /**
  * @param bool $before
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return int
  */
@@ -189,6 +190,10 @@ function toggle_site_status(bool $before)
            ->execute();
     if (!$before) {
         clear_di_cache();
+    }
+    if (!$online) {
+        $session = $container->get(Session::class);
+        $session->unset('is-danger');
     }
     $cache->set('site_settings_', false);
 
