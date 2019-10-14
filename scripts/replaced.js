@@ -273,15 +273,13 @@ $(function () {
             });
         });
     }
-    var notification = $('.notification');
+    var notification = $('.notification-wrapper');
     if (notification.length) {
         setTimeout(function () {
-            notification.fadeTo(animate_duration, .01, function () {
-                notification.slideUp(125, function () {
-                    notification.remove();
-                });
+            notification.slideUp(animate_duration, function () {
+                notification.remove();
             });
-        }, 15e3);
+        }, 10000);
     }
     let accordion = $('#accordion');
     if (accordion.length) {
