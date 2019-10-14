@@ -165,20 +165,25 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
         //dd($curuser);
     }
     if ($BLOCKS['global_flash_messages_on']) {
+        $flash = "
+                <div class='notification-wrapper'>";
         foreach ($site_config['site']['notifications'] as $notif) {
             $messages = $session->get($notif);
             if (!empty($messages)) {
                 foreach ($messages as $message) {
                     $show[] = $message;
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
-                    $htmlout .= "
-                    <div class='notification $notif has-text-centered size_6'>
+                    $flash .= "
+                    <div class='notification $notif has-text-centered size_5 is-marginless'>
                         <button class='delete'>&nbsp;</button>$message
                     </div>";
                 }
             }
             $session->unset($notif);
         }
+        $flash .= '
+                </div>';
+        $htmlout .= !empty($messages) ? $flash : '';
     }
 
     return $htmlout;
@@ -187,10 +192,10 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
 /**
  * @param array $stdfoot
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return string
  */
@@ -441,10 +446,10 @@ function StatusBar()
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return string
  */
