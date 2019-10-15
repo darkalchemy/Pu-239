@@ -191,10 +191,10 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
 /**
  * @param array $stdfoot
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return string
  */
@@ -300,7 +300,7 @@ function stdfoot(array $stdfoot = [])
     if ($CURUSER) {
         $sql_version = _('Database');
         $php_version = '';
-        if ($CURUSER['class'] >= UC_STAFF) {
+        if (has_access($CURUSER['class'], UC_STAFF, 'coder')) {
             $sql_version = $cache->get('sql_version_');
             if ($sql_version === false || is_null($sql_version)) {
                 $pdo = $container->get(PDO::class);
@@ -321,7 +321,7 @@ function stdfoot(array $stdfoot = [])
                             " . _fe('PHP Peak Memory {0} in {1} seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
                         </p>
                         <p class='is-marginless'>
-                            " . _pfe('{1} was hit {0} time in {2} seconds', '{1} was hit {0} times in {2} seconds', $queries, $sql_version, $querytime) . '
+                            " . $sql_version . ' ' . _pfe('was hit {0} time', 'was hit {0} times', $queries) . (has_access($CURUSER['class'], UC_STAFF, 'coder') ? ' ' . _pfe('in {0} second', 'in {0} seconds', $querytime) : '') . '
                         </p>
                         ' . ($debug ? "
                         <p class='is-marginless'>
@@ -445,10 +445,10 @@ function StatusBar()
 }
 
 /**
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return string
  */
