@@ -51,8 +51,7 @@ if ($site_config['poll']['forced'] && !empty($poll_data['pid']) && empty($poll_d
         get_file_name('scroll_to_poll_js'),
     ]);
 }
-$above_columns = [//    'glide',
-];
+$above_columns = [];
 $below_columns = [
     'disclaimer',
 ];
