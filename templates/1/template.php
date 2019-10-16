@@ -70,7 +70,6 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
 </head>
 <body class='background-16 skin-2'>
     <div id='body-overlay'>
-    <div id='container'></div>
         <div class='$class'>";
     global $BLOCKS;
 
@@ -438,7 +437,7 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='left10 level-item'>
                         <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left10 right20 has-text-info tooltipper' onclick='hide_by_id()' title='" . _('Click to show the background image') . "'>{$clock}</div>
+                        <div id='clock' class='left10 right10 has-text-info tooltipper' onclick='hide_by_id()' title='" . _('Click to show the background image') . "'>{$clock}</div>
                     </div>";
 
     return $StatusBar;

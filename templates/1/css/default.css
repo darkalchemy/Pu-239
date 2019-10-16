@@ -18,7 +18,6 @@ body {
     background: no-repeat center center fixed;
     scroll-behavior: smooth;
     text-rendering: optimizeSpeed;
-    vertical-align: middle;
 }
 
 ::-webkit-scrollbar-track {
@@ -1035,7 +1034,7 @@ p + p {
 }
 
 #body-overlay {
-    width: 100vw;
+    width: 100%;
     background-size: cover;
     min-height: 100vh;
 }
