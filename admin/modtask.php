@@ -567,7 +567,7 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $update['reputation'] = $reputation;
         $useredit[] = _('Reputation points total adjusted');
     }
-    if ((isset($_POST['addcomment'])) && ($addcomment = trim($_POST['addcomment']))) {
+    if ((isset($post['addcomment'])) && ($addcomment = trim($post['addcomment']))) {
         $modcomment = get_date($dt, 'DATE', 1) . ' - ' . $addcomment . ' - ' . $CURUSER['username'] . ".\n" . $modcomment;
     }
     if ((isset($post['avatar'])) && (($avatar = $post['avatar']) !== $user['avatar'])) {
