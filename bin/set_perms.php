@@ -70,7 +70,7 @@ $chmod_folders = [
 ];
 
 cleanup($group);
-chmod(ROOT_DIR, 0774);
+chmod(ROOT_DIR, 0775);
 $i = 1;
 
 foreach ($paths as $path) {
@@ -84,15 +84,15 @@ foreach ($paths as $path) {
                     chown($name, $user);
                 }
                 chgrp($name, $group);
-                chmod($name, 0774);
+                chmod($name, 0775);
                 ++$i;
             } elseif (!is_dir($name) && !preg_match('#' . implode('|', $excludes) . '#', realpath($name) . '/')) {
                 if (basename($name) === 'i18n.sh') {
                     chown($name, $group);
-                    chmod($name, 0774);
+                    chmod($name, 0775);
                 } elseif (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
-                    chmod($name, 0774);
+                    chmod($name, 0775);
                 } else {
                     chmod($name, 0664);
                 }
