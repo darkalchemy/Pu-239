@@ -4,7 +4,7 @@
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.14.2 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
 1. Update to PHP 7.3 - default settings
@@ -127,7 +127,7 @@ cd Pu-239
 git pull
 
 # compare config/config.php with config/config_example.php for changes
-# check CHANGELOG for anything that neds to be done first
+# check CHANGELOG for anything that needs to be done first
 # check to see if there are any database updates, from the staff panel or php bin/update_db.php
 # personally, I just run 'php bin/update_db.php complete' and it runs all of the queries, until complete or 1 fails
 php bin/update_db.php complete
