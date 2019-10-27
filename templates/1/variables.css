@@ -7,6 +7,6 @@
     --default-radius:           .625em;
     --default-radius-mobile:    .3125em;
     --default-padding:          .5em;
-    --default-page-width-px:    0;
-    --default-page-width:       calc(100% - var(--default-page-width-px) - var(--default-page-width-px));
+    --default-page-width-width: 0;
+    --default-page-width:       calc(100% - var(--default-page-width-width) - var(--default-page-width-width));
 }

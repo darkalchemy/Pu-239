@@ -720,8 +720,8 @@ textarea {
     position: fixed;
     top:      0;
     z-index:  99999;
-    left:     var(--default-page-width-px);
-    right:    var(--default-page-width-px);
+    left:     var(--default-page-width-width);
+    right:    var(--default-page-width-width);
 }
 
 .notification {
@@ -1522,9 +1522,18 @@ ul li ul li {
     }
 
     .page-wrapper {
-        margin-left:  var(--default-radius);
-        margin-right: var(--default-radius);
-        min-height:   100vh;
+        min-height: 100vh;
+    }
+
+    .spacer,
+    .page-wrapper {
+        margin: 0;
+        width:  100%;
+    }
+
+    .notification-wrapper {
+        left:  0;
+        right: 0;
     }
 
     .img-polaroid {
