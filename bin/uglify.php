@@ -582,23 +582,27 @@ function get_default_border($folder)
     if (can_delete(SCRIPTS_DIR . 'replaced.js', false)) {
         preg_match('#--main-bdr-color: (.*);#', $contents, $match);
         if (!empty($match[1])) {
-            passthru("sed -i \"s/timerColor:.*$/timerColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
-            passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$match[1]}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+            $var = trim($match[1]);
+            passthru("sed -i \"s/timerColor:.*$/timerColor: '{$var}',/g\" " . SCRIPTS_DIR . 'replaced.js');
+            passthru("sed -i \"s/timerBarStrokeColor:.*$/timerBarStrokeColor: '{$var}',/g\" " . SCRIPTS_DIR . 'replaced.js');
         }
     }
     if (can_delete(TEMPLATE_DIR . "{$folder}/default.scss", false)) {
         preg_match('#--default-text-color: (.*);#', $contents, $match);
         if (!empty($match[1])) {
-            passthru("sed -i \"s/primary:.*$/primary: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+            $var = trim($match[1]);
+            passthru("sed -i \"s/primary:.*$/primary: {$var};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
         }
         preg_match('#--default-link-color: (.*);#', $contents, $match);
         if (!empty($match[1])) {
-            passthru("sed -i \"s/link:.*$/link: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+            $var = trim($match[1]);
+            passthru("sed -i \"s/link:.*$/link: {$var};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
         }
 
         preg_match('#--default-link-hover-color: (.*);#', $contents, $match);
         if (!empty($match[1])) {
-            passthru("sed -i \"s/link-hover:.*$/link-hover: {$match[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
+            $var = trim($match[1]);
+            passthru("sed -i \"s/link-hover:.*$/link-hover: {$var[1]};/g\" " . TEMPLATE_DIR . "{$folder}/default.scss");
         }
     }
     can_delete(BIN_DIR . 'pu239.css', true);
