@@ -670,7 +670,7 @@ if ($action === 'avatar') {
     $HTMLOUT .= tr(_('AJAX Chat height'), "
                                             <input type='text' class='w-100' name='ajaxchat_height' value='{$user['ajaxchat_height']}'> " . _('(0 = use default setting)') . '', 1);
     $HTMLOUT .= tr(_('Site Wide Font Scale'), "
-                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> " . _fe('100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size.', '100%', '50%'), 1);
+                                            <input type='number' class='w-100' name='fontsize' value='{$user['font_size']}' min='50' max='150'> " . _fe('100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size.', '100%', '50%'), 1);
     $HTMLOUT .= tr(_('Gender'), "
                                             <div class='level'>
                                                 <span>
