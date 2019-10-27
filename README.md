@@ -4,6 +4,27 @@
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
+This is a torrent tracker written in PHP. Also included is a realtime chat(AJAX Chat), Private Messaging System, Message Boards(Forums), Arcade, Lottery and Casino.  
+The primary goal of this project is to give the site owner a means to create a community around sharing torrents, with the hopes of encouraging and engaging the userbase to participate in the discussion.  
+
+## Table of Contents
+* [Goals](#goals)
+* [Before Installing](#prior-to-install)
+* [Installing](#to-install)
+* [Updating](#to-update)
+* [User Roles](#user-roles)
+* [Making Changes](#making-changes)
+* [API's](#apis)
+* [Production Mode](#production-mode)
+* [Cache Engines](#cache-engines)  
+* [Image Proxy](#image-proxy)  
+* [CLI Scripts](#cli-scripts)
+* [Notes](#notes) 
+* [Translations](#translations)
+* [Credits](#credits)  
+* [Patrons](#patrons)
+* [Wiki](https://github.com/darkalchemy/Pu-239/wiki)
+
 ##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
@@ -29,14 +50,14 @@ MySQL 5.6 is required. MySQL 8.0 recommended.
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
 [NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.12.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
-A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process. (Not tested recently)     
+A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)  
-There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
-
-##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.  
+If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177).  
+There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do.  
+  
 #### Prior to install:
+##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.
 ```
 # required apps
 jpegoptim, optipng, pngquant, gifsicle, imagemagick
@@ -147,7 +168,7 @@ php bin/import_tables.php
 php bin/validate_images.php
 ```
 
-#### User Roles
+#### User Roles:
   * Coder : Has access to the site, very similar to that of a Sysop
   * Forum Mod : Can moderate forum posts
   * Torrent Mod : Can moderate torrents and their descriptions
@@ -155,11 +176,15 @@ php bin/validate_images.php
   * Uploader : Required to upload to the site
 
 
-#### Making Changes
+#### Making Changes:
 After updating composer, npm, changing anything inside the config or app folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
 ```sudo rm -rf /dev/shm/php-di```
+
+#### Making Changes to css/js files:
+Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:  
+```php bin/uglify.php```
  
-#### API's 
+#### API's:
 Fanart.tv API provides posters, backgrounds and banners. A [Project API Key](https://fanart.tv/get-an-api-key) is required.  
 TMDb API allows upcoming movies and posters. An [API Key](https://developers.themoviedb.org/3/getting-started/introduction) is required.  
 Google API allows up to 1000 api hits instead of 100 per day. An [API Key](https://cloud.google.com/docs/authentication/api-keys?visit_id=637040083471322830-1883548699&rd=1) is optional.  
@@ -167,24 +192,20 @@ IMDb API allow movies and tv lookup. No API Key necessary.
 TVMaze allows tv lookup and posters. No API Key necessary.  
 API keys are set in the Staff Panel -> Site Settings.  
 
-#### Making Changes to css/js files  
-Make any edits or changes to the files in templates and scripts folder, then to concatenate, minify and gzip the files for use, run:  
-```php bin/uglify.php```
-
-#### Production Mode
+#### Production Mode:
 Production creates minified javascript and css files when running uglify.php.  
 After changing the setting 'PRODUCTION', you will need to run ```php bin/uglify.php``` to concatenate, minify and gzip the files for use.  
 ```config/define.php define('PRODUCTION', false);```  
 This also creates a cache for php-di, significantly improving its performance.
 
-#### Cache Engines  
+#### Cache Engines:
 memory, couchbase, apcu, memcached, redis or file. 'memory' is set as the default and is set in the config.php file. memory cache is only for testing and is not a real cache as it expires at the end of the request. Trivia will not run while using the memory cache. In order to use any cache engine besides 'file' and 'memory', you must first install the appropriate driver and php extensions.
 
-#### Image Proxy:  
+#### Image Proxy:
 An image proxy for hot linked images is built in and enabled by default, disable/enable in Staff Panel -> Site Settings. This allows for browser image caching and keeps from breaking https security with http images.  
 ```$site_config['site']['image_proxy'] = true;```
 
-#### CLI Scripts
+#### CLI Scripts:
   * clear_cache.php : clears the entire cache that is currenlty in use
   * import_tables.php : can import any table listed as an argument or imports trivia and tvmaze by default
   * install.php : installs/reinstalls the site
@@ -209,5 +230,5 @@ If you would like to see a specific translation or assist with a current transla
 #### Credits:  
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
-#### Patrons
+#### Patrons:
 Nico, Ben9, superlarsen, suiziide
