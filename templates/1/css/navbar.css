@@ -1,8 +1,8 @@
 header#navbar {
     position: fixed;
     top: 0;
-    left: var(--default-page-width-px);
-    right: var(--default-page-width-px);
+    left: var(--default-page-width-width);
+    right: var(--default-page-width-width);
     z-index: 100;
     height: 40px;
     transition: top .35s;
