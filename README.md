@@ -4,6 +4,9 @@
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
+This is a torrent tracker written in PHP. Also included is a realtime chat(AJAX Chat), Private Messaging System, Message Boards(Forums), Arcade, Lottery and Casino.  
+The primary goal of this project is to give the site owner a means to create a community around sharing torrents, with the hopes of encouraging and engaging the userbase to participate in the discussion.  
+
 ## Table of Contents
 * [Goals](#goals)
 * [Before Installing](#prior-to-install)
@@ -47,11 +50,11 @@ MySQL 5.6 is required. MySQL 8.0 recommended.
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
 [NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.12.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
-A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process. (Not tested recently)     
+A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)  
-There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do. :)  
+If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177).  
+There is a demo site available at [Pu-239](https://pu-239.pw:59595). It's a bit slow, but it's all I can do.  
   
 #### Prior to install:
 ##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.
