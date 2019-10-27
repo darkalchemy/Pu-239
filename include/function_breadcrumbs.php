@@ -12,7 +12,6 @@ function breadcrumbs(array $breadcrumbs)
     global $site_config;
 
     $crumbs = "
-                <div class='bottom20'>
                     <nav class='breadcrumb round5' aria-label='breadcrumbs'>
                         <ul>
                             <li><a href='{$site_config['paths']['baseurl']}'>" . _('Home') . '</a></li>';
@@ -24,8 +23,7 @@ function breadcrumbs(array $breadcrumbs)
     }
     $crumbs .= '
                         </ul>
-                    </nav>
-                </div>';
+                    </nav>';
 
     return $crumbs;
 }

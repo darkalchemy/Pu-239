@@ -1,6 +1,12 @@
 :root {
-    --main-bdr-color: #0f0;
-    --default-text-color: #add8e6;
-    --default-link-color: #fcffc2;
+    --main-bdr-color:           #0f0;
+    --default-text-color:       #add8e6;
+    --default-link-color:       #fcffc2;
     --default-link-hover-color: #fff;
+    --default-margin:           .125em;
+    --default-radius:           .625em;
+    --default-radius-mobile:    .3125em;
+    --default-padding:          .5em;
+    --default-page-width-px:    0;
+    --default-page-width:       calc(100% - var(--default-page-width-px) - var(--default-page-width-px));
 }

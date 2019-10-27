@@ -92,6 +92,7 @@ foreach ($paths as $path) {
                     chmod($name, 0774);
                 } elseif (preg_match('#' . IMAGES_DIR . '|' . NFO_DIR . '|' . CACHE_DIR . '|' . IMDB_CACHE_DIR . '#', realpath($name) . '/')) {
                     chown($name, $group);
+                    chgrp($name, $group);
                     chmod($name, 0774);
                 } else {
                     chmod($name, 0664);

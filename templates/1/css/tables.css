@@ -28,8 +28,8 @@ table {
 .table > tbody > tr > td,
 .table > thead > tr > th,
 .table-bordered {
-    -webkit-margin-start: .125em;
-    -webkit-margin-end: .125em;
+    -webkit-margin-start: var(--default-margin);
+    -webkit-margin-end: var(--default-margin);
 }
 
 .table > tbody > tr > td,
@@ -71,8 +71,8 @@ table {
     border-collapse: separate;
     border-left: 0;
     border-right: 0;
-    border-radius: .625em;
-    padding: .75em;
+    border-radius: var(--default-radius);
+    padding: var(--default-padding);
 }
 
 .table-bordered > tbody > tr > td,
@@ -82,22 +82,22 @@ table {
 
 .table-bordered > tbody:first-child > tr:first-child > td:first-child,
 .table-bordered > thead:first-child > tr:first-child > th:first-child {
-    border-top-left-radius: .625em;
+    border-top-left-radius: var(--default-radius);
 }
 
 .table-bordered > tbody:first-child > tr:first-child > td:last-child,
 .table-bordered > thead:first-child > tr:first-child > th:last-child {
-    border-top-right-radius: .625em;
+    border-top-right-radius: var(--default-radius);
 }
 
 .table-bordered > tbody:last-child > tr:last-child > td:first-child,
 .table-bordered > thead:last-child > tr:last-child > th:first-child {
-    border-bottom-left-radius: .625em;
+    border-bottom-left-radius: var(--default-radius);
 }
 
 .table-bordered > tbody:last-child > tr:last-child > td:last-child,
 .table-bordered > thead:last-child > tr:last-child > th:last-child {
-    border-bottom-right-radius: .625em;
+    border-bottom-right-radius: var(--default-radius);
 }
 
 .table-striped > tbody > tr:nth-child(odd) > td:not(.card-background):not(.has-text-warning),
@@ -106,7 +106,7 @@ table {
 }
 
 .table > tbody > tr:not(.no_hover):hover > td {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, .95);
     transition: all .35s ease-in-out;
 }
 
@@ -122,4 +122,10 @@ table {
 .table > thead > tr,
 .table > tbody > tr {
     height: 25px;
+}
+
+@media (max-width: 767px) {
+    .table-bordered {
+        border-radius: var(--default-radius-mobile);
+    }
 }

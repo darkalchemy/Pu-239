@@ -41,8 +41,13 @@ require_once CACHE_DIR . 'block_settings_cache.php';
 require_once INCL_DIR . 'function_translate.php';
 
 if (!PRODUCTION) {
-    $pu239_version = new SebastianBergmann\Version('0.62', ROOT_DIR);
-    $site_config['sourcecode']['version'] = $pu239_version->getVersion();
+    $file = ROOT_DIR . 'package.json';
+    $site_config['sourcecode']['version'] = 'Pu-239';
+    if (file_exists($file)) {
+        $contents = json_decode(file_get_contents($file), true);
+        $pu239_version = new SebastianBergmann\Version($contents['version'], ROOT_DIR);
+        $site_config['sourcecode']['version'] = $pu239_version->getVersion();
+    }
 }
 $load = sys_getloadavg();
 $cache = $container->get(Cache::class);

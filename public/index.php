@@ -285,7 +285,7 @@ foreach ($above_columns as $item) {
 
 $middle = 'is-8-desktop';
 $HTMLOUT .= "
-<div id='parallax' class='columns is-desktop is-variable is-0-mobile is-0-tablet is-1-desktop'>";
+<div id='parallax' class='columns is-desktop is-variable is-0-mobile is-0-tablet is-1-desktop bottom20'>";
 if (!empty($left_column)) {
     $middle = 'is-6-desktop';
     $HTMLOUT .= "
@@ -331,7 +331,8 @@ $HTMLOUT .= '
 </div>';
 
 foreach ($below_columns as $item) {
-    $HTMLOUT .= wrap_it($item, ${$item});
+    $HTMLOUT .= "
+    <div class='top20'>" . wrap_it($item, ${$item}) . '</div>';
 }
 
 /**
@@ -340,7 +341,7 @@ foreach ($below_columns as $item) {
  *
  * @return string
  */
-function wrap_it($item, $data)
+function wrap_it(string $item, string $data)
 {
     $class = $item === 'tfreak_feed' ? '' : "class='portlet'";
     if (!empty($data)) {

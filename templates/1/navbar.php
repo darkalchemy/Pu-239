@@ -141,20 +141,16 @@ function navbar()
 }
 
 /**
- * @param $value
+ * @param array $value
  *
  * @return string
  */
-function make_link($value)
+function make_link(array $value)
 {
     global $site_config;
 
-    $link = "
-                            <li>
-                                <a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . _($value['page_name']) . '</a>
-                            </li>';
-
-    return $link;
+    return "
+                            <li><a href='{$site_config['paths']['baseurl']}/" . htmlsafechars($value['file_name']) . "'>" . _($value['page_name']) . '</a></li>';
 }
 
 /**
@@ -219,16 +215,26 @@ function staff_panel()
             }
         }
         ksort($panels);
+        $values = [
+            'file_name' => 'staffpanel.php',
+            'page_name' => _('Staff Panel'),
+        ];
+        $link = make_link($values);
         foreach ($panels as $key => $value) {
             $panel .= "
-                <li>
+                <li class='staff-wide'>
                     <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>[" . substr($key, 1) . "]</a>
-                    <ul class='ddFade ddFadeFast'>" . make_link([
-                'file_name' => 'staffpanel.php',
-                'page_name' => _('Staff Panel'),
-            ]) . implode('', $value) . '
+                    <ul class='ddFade ddFadeFast'>{$link}" . implode('', $value) . '
                     </ul>
                 </li>';
+            if (substr($key, 1) === 'Settings') {
+                $panel .= "
+                <li class='staff-narrow'>
+                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>" . _('Staff Panel') . "</a>
+                    <ul class='ddFade ddFadeFast'>{$link}" . implode('', $value) . '
+                    </ul>
+                </li>';
+            }
         }
     }
 

@@ -240,7 +240,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             if (!empty($bio['realname'])) {
                 $realname = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Real Name:</span>
+                                                            <span class='size_4 has-text-primary'>" . _('Real Name') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$bio['realname']}</span>
@@ -250,7 +250,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 $birthdate = date('F j, Y', strtotime($bio['birthday']));
                 $birthday = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Birthdate:</span>
+                                                            <span class='size_4 has-text-primary'>" . _('Birthdate') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$birthdate}</span>
@@ -260,7 +260,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 $died = date('F j, Y', strtotime($bio['died']));
                 $died = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Died On:</span>
+                                                            <span class='size_4 has-text-primary'>" . _('Deceased') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$died}</span>
@@ -269,7 +269,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
             if (!empty($bio['birthplace'])) {
                 $birthplace = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Birth Place:</span>
+                                                            <span class='size_4 has-text-primary'>" . _('Birth Place') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$bio['birth_place']}</span>
@@ -280,7 +280,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 $text = strlen($stripped) > 500 ? substr($stripped, 0, 500) . '...' : $stripped;
                 $history = "
                                                         <div class='column padding5 is-4'>
-                                                            <span class='size_4 has-text-primary'>Bio:</span>
+                                                            <span class='size_4 has-text-primary'>" . _('Biography') . ":</span>
                                                         </div>
                                                         <div class='column padding5 is-8'>
                                                             <span class='size_4'>{$text}</span>
@@ -308,13 +308,13 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                                                             <div>
                                                                 <div class='columns is-multiline'>
                                                                     <div class='column padding5 is-4'>
-                                                                        <span class='size_4 has-text-primary'>Name:</span>
+                                                                        <span class='size_4 has-text-primary'>" . _('Name') . ":</span>
                                                                     </div>
                                                                     <div class='column padding5 is-8'>
                                                                         <span class='size_4'>{$pp['name']}</span>
                                                                     </div>
                                                                     <div class='column padding5 is-4'>
-                                                                        <span class='size_4 has-text-primary'>Role:</span>
+                                                                        <span class='size_4 has-text-primary'>" . _('Role') . ":</span>
                                                                     </div>
                                                                     <div class='column padding5 is-8'>
                                                                         <span class='size_4'>{$pp['role']}</span>
@@ -337,19 +337,19 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
     foreach ($imdb as $foo => $boo) {
         if (!empty($imdb_data[$foo])) {
             if (!is_array($imdb_data[$foo])) {
-                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$imdbid}' class='tooltipper' title='Browse by IMDb'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
+                $imdb_data[$foo] = $boo === 'Title' ? "<a href='{$site_config['paths']['baseurl']}/browse.php?si={$imdbid}' class='tooltipper' title='" . _('Browse by IMDb') . "'>{$imdb_data[$foo]}</a>" : $imdb_data[$foo];
                 if ($boo === 'Rating') {
                     $percent = $imdb_data['rating'] * 10;
                     $imdb_data[$foo] = "
                         <div class='level-left'>
                             <div class='right5'>{$imdb_data['rating']}</div>
-                            <div class='star-ratings-css tooltipper' title='{$percent}% out of {$imdb_data['votes']} votes!'>
+                            <div class='star-ratings-css tooltipper' title='" . _fe("{0}% out of {1} votes!", $percent, $imdb_data['votes']) . "'>
                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
                         </div>";
                 } elseif ($boo === 'Year') {
-                    $year = 'Search by year: ' . $imdb_data['year'];
+                    $year = _('Search by year') . ': ' . $imdb_data['year'];
                     $imdb_data[$foo] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sys={$imdb_data['year']}&amp;sye={$imdb_data['year']}' target='_blank' class='tooltipper' title='$year'>{$imdb_data['year']}</a>";
                 } elseif ($boo === 'MPAA') {
                     if (empty($imdb_data['mpaa_reason']) && !empty($imdb_data['mpaa']['United States'])) {
@@ -364,13 +364,14 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                         <div class='column padding5'>{$imdb_data[$foo]}</div>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                'director',
-                'writing',
-                'producer',
-                'composer',
-                'cast',
-                'trailers',
-            ])) {
+                    'director',
+                    'writing',
+                    'producer',
+                    'composer',
+                    'cast',
+                    'trailers',
+                ])
+            ) {
                 foreach ($imdb_data[$foo] as $pp) {
                     if ($foo === 'cast' && !empty($cast)) {
                         $imdb_tmp[] = "<div class='level-left is-wrapped'>" . implode(' ', $cast) . '</div>';
@@ -385,7 +386,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                 }
             } elseif ($foo === 'genres') {
                 foreach ($imdb_data[$foo] as $genre) {
-                    $genre_title = 'Search by genre: ' . ucwords($genre);
+                    $genre_title = _('Search by genre') . ': ' . ucwords($genre);
                     $imdb_tmp[] = "<a href='{$site_config['paths']['baseurl']}/browse.php?sg=" . urlencode(strtolower($genre)) . "' target='_blank' class='tooltipper' title='$genre_title'>" . ucwords($genre) . '</a>';
                 }
             }
@@ -552,37 +553,37 @@ function get_imdb_info_short($imdb_id)
                                     <div class='padding20 is-8 bg-09 round10 h-100'>
                                         <div class='columns is-multiline'>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Title: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Title') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span>" . htmlsafechars($imdb_data['title']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>MPAA: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('MPAA') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span class='size_4'>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Critics: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Critics') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span class='size_4'>" . htmlsafechars($imdb_data['critics']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Rating: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Rating') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span class='size_4'>" . htmlsafechars($imdb_data['rating']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Votes: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Votes') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span class='size_4'>" . $imdb_data['vote_count'] . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
-                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>Overview: </span>
+                                                <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Overview') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
                                                 <span class='size_4'>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
@@ -787,12 +788,12 @@ function get_imdb_person($person_id)
         if (!empty($person->bio())) {
             $data = $person->bio();
             $imdb_person['bio'] = str_replace([
-                '<br />',
-                'href="',
-            ], [
-                '<br>',
-                'href="' . $site_config['site']['anonymizer_url'],
-            ], $data[0]['desc']);
+                                                  '<br />',
+                                                  'href="',
+                                              ], [
+                                                  '<br>',
+                                                  'href="' . $site_config['site']['anonymizer_url'],
+                                              ], $data[0]['desc']);
         }
 
         if (!empty($person->died())) {

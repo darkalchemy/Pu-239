@@ -13,21 +13,21 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_e2ce56e7.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_d01f07dd.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_9d8737c4.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_c60277cc.css";
         case 'index_css':
             return "{$site_config['paths']['baseurl']}/css/1/index_64c2c5b0.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_2f4ef440.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_60c7e674.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_8df16acf.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_026653c5.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_09448b75.css";
         case 'last_css':
             return "{$site_config['paths']['baseurl']}/css/1/last_33d8c190.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_af533bcc.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_25b44a73.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_0bfe5b0c.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_84b0af7a.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_e83d6a3b.js";
         case 'user_search_js':

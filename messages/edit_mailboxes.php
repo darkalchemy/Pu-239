@@ -26,7 +26,7 @@ if (isset($_POST['action2'])) {
     $action2 = isset($_POST['action2']) ? strip_tags($_POST['action2']) : '';
     $worked = $deleted = '';
     if (!in_array($action2, $good_actions)) {
-        stderr(_('Error'), _("His wit's as thick as a Tewkesbury mustard."));
+        stderr(_('Error'), _('Invalid action.'));
     }
 
     switch ($action2) {
@@ -204,7 +204,7 @@ if (!empty($boxes)) {
 $per_page_drop_down = '<select name="change_pm_number">';
 $i = 20;
 while ($i <= ($maxbox > 200 ? 200 : $maxbox)) {
-    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . _('%d PMs per page', $i) . '</option>';
+    $per_page_drop_down .= '<option class="body" value="' . $i . '" ' . ($CURUSER['pms_per_page'] == $i ? 'selected' : '') . '>' . $i . _fe('{0} PMs per page', $i) . '</option>';
     $i = ($i < 100 ? $i = $i + 10 : $i = $i + 25);
 }
 $per_page_drop_down .= '</select>';
@@ -218,13 +218,13 @@ if (!empty($category_set)) {
             $image = !empty($a['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
                     <span class='left10'>
                         <a href='{$site_config['paths']['baseurl']}/browse.php?c{$a['id']}'>
-                            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . htmlsafechars($a['image']) . "' alt='" . htmlsafechars($a['name']) . "'>
+                            <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . format_comment($a['image']) . "' alt='" . format_comment($a['name']) . "'>
                         </a>
                     </span>" : "
-                    <span class='left10'>" . htmlsafechars($a['name']) . '</span>';
+                    <span class='left10'>" . format_comment($a['name']) . '</span>';
 
             $categories .= "
-                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . htmlsafechars($a['name']) . "'>
+                <span class='margin10 bordered level-center bg-02 tooltipper' title='" . format_comment($a['name']) . "'>
                     <input name='cat{$a['id']}' type='checkbox' " . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], "[cat{$a['id']}]") !== false ? 'checked' : '') . " value='yes'>$image
                 </span>";
         } else {
@@ -292,7 +292,7 @@ $HTMLOUT .= main_table('
         ' . $per_page_drop_down . ' [ ' . _('Select how many PMs you would like to see per page.') . ' ]</td>
     </tr>
     <tr>
-        <td><span>' . _('Avatars:') . '</span></td>
+        <td><span>' . _('Avatars') . ':</span></td>
         <td>
         <select name="show_pm_avatar">
         <option value="yes" ' . ($show_pm_avatar ? 'selected' : '') . '>' . _('show avatars on view mailbox') . '</option>
@@ -307,15 +307,15 @@ $HTMLOUT .= main_table('
         <input type="radio" name="acceptpms" ' . ($CURUSER['acceptpms'] === 'no' ? 'checked' : '') . ' value="no">' . _('Staff only') . '</td>
     </tr>
     <tr>
-        <td><span>' . _('Save PMs:') . '</span></td>
+        <td><span>' . _('Save PMs') . ':</span></td>
         <td><input type="checkbox" name="save_pms" ' . ($CURUSER['savepms'] === 'yes' ? 'checked' : '') . ' value="yes"> [' . _("Default for 'Save PM to Sentbox'") . ' ] </td>
     </tr>
     <tr>
-        <td><span>' . _('Delete PMs:') . '</span></td>
+        <td><span>' . _('Delete PMs') . ':</span></td>
         <td><input type="checkbox" name="deletepms" ' . ($CURUSER['deletepms'] === 'yes' ? 'checked' : '') . ' value="yes"> [ ' . _("Default for 'Delete PM on reply'") . ' ] </td>
     </tr>
     <tr>
-        <td><span>' . _('Email notification:') . '</span></td>
+        <td><span>' . _('Email notification') . '"</span></td>
         <td><input type="checkbox" name="pmnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[pm]') !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when I have received a PM') . '</td>
     </tr>
     <tr>
@@ -323,7 +323,7 @@ $HTMLOUT .= main_table('
         <td><input type="checkbox" name="emailnotif" ' . (!empty($CURUSER['notifs']) && strpos($CURUSER['notifs'], '[email]') !== false ? 'checked' : '') . '  value="yes">' . _('Notify me when a torrent is uploaded in one of my default browsing categories.') . '</td>
     </tr>
     <tr>
-        <td><span>' . _('Categories:') . '</span></td>
+        <td><span>' . _('Categories') . ':</span></td>
         <td><a class="is-link"  title="' . _('Click for more info') . '" id="cat_open">' . _('show / hide categories') . '</a>[ ' . _('for torrent notifications') . ']
         <div id="defcat" class="is_hidden">' . _('Your default categories can be changed here as well.') . '<br>' . $categories . '</div></td>
     </tr>

@@ -25,6 +25,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
+ * @throws Exception
  *
  * @return string
  */
@@ -33,7 +34,6 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
     global $container, $site_config;
 
     $curuser = check_user_status('login');
-
     $session = $container->get(Session::class);
     require_once INCL_DIR . 'function_bbcode.php';
     require_once INCL_DIR . 'function_breadcrumbs.php';
@@ -74,9 +74,8 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
     global $BLOCKS;
 
     if (!empty($curuser['id'])) {
-        $htmlout .= navbar();
-        $htmlout .= "
-        <div id='inner-page-wrapper'>";
+        $htmlout .= navbar() . "
+            <div id='inner-page-wrapper'>";
         if (empty($site_config['banners']['video'])) {
             if (empty($site_config['banners']['image'])) {
                 $banner = "
@@ -89,31 +88,29 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
                     <img src='" . $site_config['paths']['images_baseurl'] . $site_config['banners']['image'][array_rand($site_config['banners']['image'])] . "' class='w-100'>";
             }
             $htmlout .= "
-            <div id='logo' class='logo columns level is-marginless bg-04'>
-                <div class='column is-paddingless'>
-                    $banner
-                </div>
-            </div>";
+                <div id='logo' class='logo columns level is-marginless bg-04'>
+                    <div class='column is-paddingless'>{$banner}</div>
+                </div>";
         } else {
             $banner = $site_config['banners']['video'][array_rand($site_config['banners']['video'])];
             $htmlout .= "
-            <div id='base_contents_video'>
-                <div class='base_header_video'>
-                    <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['paths']['images_baseurl']}banner.png'>
-                        <source src='{$site_config['paths']['images_baseurl']}{$banner}.mp4' type='video/mp4'>
-                        <source src='{$site_config['paths']['images_baseurl']}{$banner}.webm' type='video/webm'>
-                        <img src='{$site_config['paths']['images_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo'>
-                    </video>
-                </div>
-            </div>";
+                <div id='base_contents_video'>
+                    <div class='base_header_video'>
+                        <video class='object-fit-video' loop muted autoplay playsinline poster='{$site_config['paths']['images_baseurl']}banner.png'>
+                            <source src='{$site_config['paths']['images_baseurl']}{$banner}.mp4' type='video/mp4'>
+                            <source src='{$site_config['paths']['images_baseurl']}{$banner}.webm' type='video/webm'>
+                            <img src='{$site_config['paths']['images_baseurl']}banner.png' title='Your browser does not support the <video> tag' alt='Logo'>
+                        </video>
+                    </div>
+                </div>";
         }
 
         if (!empty($curuser['id'])) {
             $htmlout .= platform_menu();
             $htmlout .= "
-            <div id='base_globelmessage'>
-                <div class='top5 bottom5'>
-                    <ul class='level-center tags'>";
+                <div id='base_globelmessage'>
+                    <div class='top5 bottom5'>
+                        <ul class='level-center tags'>";
 
             if ($curuser['blocks']['global_stdhead'] & block_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {
                 require_once BLOCK_DIR . 'global/report.php';
@@ -148,24 +145,23 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
             require_once BLOCK_DIR . 'global/lottery.php';
 
             $htmlout .= '
-                    </ul>
-                </div>
-            </div>';
+                        </ul>
+                    </div>
+                </div>';
         }
     }
 
     $htmlout .= "
-        <div id='base_content' class='bg-05'>
-            <div class='inner-wrapper bg-04'>";
+                <div id='base_content' class='bg-05'>
+                    <div class='inner-wrapper bg-04'>
+                        <div class='content-wrapper bg-02'>";
 
     if (!empty($curuser['id'])) {
         $htmlout .= breadcrumbs($breadcrumbs);
-    } else {
-        //dd($curuser);
     }
     if ($BLOCKS['global_flash_messages_on']) {
         $htmlout .= "
-                <div class='notification-wrapper'>";
+                            <div class='notification-wrapper'>";
         foreach ($site_config['site']['notifications'] as $notif) {
             $messages = $session->get($notif);
             if (!empty($messages)) {
@@ -173,15 +169,15 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
                     $show[] = $message;
                     $message = !is_array($message) ? format_comment($message) : "<a href='{$message['link']}'>" . format_comment($message['message']) . '</a>';
                     $htmlout .= "
-                    <div class='notification $notif has-text-centered size_5 is-marginless'>
-                        <button class='delete'>&nbsp;</button>$message
-                    </div>";
+                                <div class='notification $notif has-text-centered size_5 is-marginless'>
+                                    <button class='delete'>&nbsp;</button>$message
+                                </div>";
                 }
             }
             $session->unset($notif);
         }
         $htmlout .= '
-                </div>';
+                            </div>';
     }
 
     return $htmlout;
@@ -211,14 +207,13 @@ function stdfoot(array $stdfoot = [])
     $queries = !empty($query_stats) ? count($query_stats) : 0;
     $seconds = microtime(true) - $starttime;
     $r_seconds = round($seconds, 5);
-    if ($CURUSER['class'] >= UC_STAFF && $debug) {
+    if (isset($CURUSER) && has_access($CURUSER['class'], UC_STAFF, 'coder') && $debug) {
         $querytime = $querytime === null ? 0 : $querytime;
         if ($site_config['cache']['driver'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
             if ($stats) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
-                $header = _fe('APC(u) Hits: {0}', $stats['Hits']);
-                $header = _('APC(u) Hits: ') . "{$stats['Hits']}" . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . _(' Memory: ') . mksize($stats['mem_size']);
+                $header = _('APC(u) Hits: ') . $stats['Hits'] . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . _(' Memory: ') . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = $container->get(Redis::class);
@@ -243,7 +238,7 @@ function stdfoot(array $stdfoot = [])
             }
         } elseif ($site_config['cache']['driver'] === 'file') {
             $files_info = GetDirectorySize($site_config['files']['path'], true, true);
-            $header = _('Flysystem Cache: ') . "{$site_config['files']['path']} Count: {$files_info[1]} " . _('File size: ') . " {$files_info[0]}";
+            $header = _('Flysystem Cache') . ": {$site_config['files']['path']} " . _('Count') . ": {$files_info[1]} " . _('File size') . ": {$files_info[0]}";
         } elseif ($site_config['cache']['driver'] === 'memory') {
             $header = _('Memory Cache: Nothing cached beyond the current request');
         } elseif ($site_config['cache']['driver'] === 'couchbase') {
@@ -251,33 +246,33 @@ function stdfoot(array $stdfoot = [])
         }
         if (!empty($query_stats)) {
             $htmlfoot .= "
-                <div class='portlet top20'>
-                    <a id='queries-hash'></a>
-                    <div id='queries' class='box'>";
+                            <div class='portlet top20'>
+                                <a id='queries-hash'></a>
+                                <div id='queries' class='box'>";
             $heading = "
-                            <tr>
-                                <th class='w-10'>" . _('ID') . "</th>
-                                <th class='w-10'>" . _('Query Time') . "</th>
-                                <th class='min-350'>" . _('Query String') . "</th>
-                                <th class='min-150'>" . _('Parameters') . '</th>
-                            </tr>';
+                                <tr>
+                                    <th class='w-10'>" . _('ID') . "</th>
+                                    <th class='w-10'>" . _('Query Time') . "</th>
+                                    <th class='min-350'>" . _('Query String') . "</th>
+                                    <th class='min-150'>" . _('Parameters') . '</th>
+                                </tr>';
             $body = '';
             foreach ($query_stats as $key => $value) {
                 $params = implode("\n", $value['params']);
                 $querytime += $value['seconds'];
                 $body .= '
-                            <tr>
-                                <td>' . ($key + 1) . '</td>
-                                <td>' . ($value['seconds'] > 0.01 ? "<span class='thas-text-danger tooltipper' title='" . _('You should optimize this query.') . "'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='" . _('Query does not appear to need optimizing.') . "'>" . $value['seconds'] . '</span>') . "</td>
-                                <td>
-                                    <div class='text-justify'>" . format_comment($value['query'], false, false, false) . '</div>
-                                </td>
-                                <td>' . format_comment($params, false, false, false) . '</td>
-                            </tr>';
+                                <tr>
+                                    <td>' . ($key + 1) . '</td>
+                                    <td>' . ($value['seconds'] > 0.01 ? "<span class='has-text-danger tooltipper' title='" . _('You should optimize this query.') . "'>" . $value['seconds'] . '</span>' : "<span class='is-success tooltipper' title='" . _('Query does not appear to need optimizing.') . "'>" . $value['seconds'] . '</span>') . "</td>
+                                    <td>
+                                        <div class='text-justify'>" . format_comment($value['query'], false, false, false) . '</div>
+                                    </td>
+                                    <td>' . format_comment($params, false, false, false) . '</td>
+                                </tr>';
             }
             $htmlfoot .= main_table($body, $heading) . '
-                    </div>
-                </div>';
+                                </div>
+                            </div>';
         }
     }
     $cache->delete('query_stats_' . $session_id);
@@ -293,9 +288,7 @@ function stdfoot(array $stdfoot = [])
         $now = get_date((int) TIME_NOW, 'WITH_SEC', 1, 0);
     }
     $htmlfoot .= '
-                </div>
-            </div>';
-
+                        </div>';
     if ($CURUSER) {
         $sql_version = _('Database');
         $php_version = '';
@@ -313,35 +306,35 @@ function stdfoot(array $stdfoot = [])
             $php_version = show_php_version();
         }
         $htmlfoot .= "
-            <div class='site-debug bg-05 round10 top20 bottom20'>
-                <div class='level bordered bg-04'>
-                    <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>
-                            " . _fe('PHP Peak Memory {0} in {1} seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
-                        </p>
-                        <p class='is-marginless'>
-                            " . $sql_version . ' ' . _pfe('was hit {0} time', 'was hit {0} times', $queries) . (has_access($CURUSER['class'], UC_STAFF, 'coder') ? ' ' . _pfe('in {0} second', 'in {0} seconds', $querytime) : '') . '
-                        </p>
-                        ' . ($debug ? "
-                        <p class='is-marginless'>
-                            $header
-                        </p>
-                        <p class='is-marginless'>
-                            $uptime
-                        </p>" : '') . "
-                    </div>
-                    <div class='size_4 top10 bottom10'>
-                        <p class='is-marginless'>" . _fe('Server Time: {0}', $now) . "</p>
-                        <p class='is-marginless'>" . _fe('Powered By: {0}', "<a href='" . url_proxy('https://github.com/darkalchemy/Pu-239', false) . "' target='_blank'>{$site_config['sourcecode']['name']}</a>") . "</p>
-                        <p class='is-marginless'>" . _fe('Using Valid CSS3, HTML5 & PHP {0}', $php_version) . "</p>
+                            <div class='bg-00 round10 top20'>" . main_div("
+                                <div class='level-wide portlet'>
+                                    <div class='size_4 padding20'>
+                                        <p class='is-marginless'>
+                                            " . _fe('PHP Peak Memory {0} in {1} seconds', mksize(memory_get_peak_usage()), $r_seconds) . "
+                                        </p>
+                                        <p class='is-marginless'>
+                                            " . $sql_version . ' ' . _pfe('was hit {0} time', 'was hit {0} times', $queries) . (has_access($CURUSER['class'], UC_STAFF, 'coder') ? ' ' . _pfe('in {0} second', 'in {0} seconds', $querytime) : '') . '
+                                        </p>
+                                        ' . ($debug ? "
+                                        <p class='is-marginless'>
+                                            $header
+                                        </p>
+                                        <p class='is-marginless'>
+                                            $uptime
+                                        </p>" : '') . "
+                                    </div>
+                                    <div class='size_4 padding20'>
+                                        <p class='is-marginless'>" . _fe('Server Time: {0}', $now) . "</p>
+                                        <p class='is-marginless'>" . _fe('Powered By: {0}', "<a href='" . url_proxy('https://github.com/darkalchemy/Pu-239', false) . "' target='_blank'>{$site_config['sourcecode']['name']}</a>") . "</p>
+                                        <p class='is-marginless'>" . _fe('Using Valid CSS3, HTML5 & PHP {0}', $php_version) . '</p>
+                                    </div>
+                                </div>', 'bg-05') . '
+                            </div>';
+    }
+    $htmlfoot .= '
                     </div>
                 </div>
-            </div>
-            <div id='control_panel'>
-                <a href='#' id='control_label'></a>
-            </div>
-        </div>";
-    }
+            </div>';
     $pages = [
         'details.php',
         'requests.php',
@@ -358,38 +351,38 @@ function stdfoot(array $stdfoot = [])
     $height = !empty($CURUSER['ajaxchat_height']) ? $CURUSER['ajaxchat_height'] . 'px' : '600px';
     $use_12_hour = $use_12_hour ? 'yes' : 'no';
     $htmlfoot .= "
-    </div>
-    <a href='#' class='back-to-top'>
-        <i class='icon-angle-circled-up responsive-icon'></i>
-    </a>
-    <script>
-        $bg_image;
-        var is_12_hour = '{$use_12_hour}';
-        var chat_height = '$height';
-    </script>";
+            <a href='#' class='back-to-top'>
+                <i class='icon-angle-circled-up responsive-icon'></i>
+            </a>
+            <script>
+                $bg_image;
+                var is_12_hour = '{$use_12_hour}';
+                var chat_height = '$height';
+            </script>";
 
     $htmlfoot .= "
-    <script src='" . get_file_name('jquery_js') . "'></script>
-    <script src='" . get_file_name('lightbox_js') . "'></script>
-    <script src='" . get_file_name('tooltipster_js') . "'></script>
-    <script src='" . get_file_name('cookieconsent_js') . "'></script>
-    <script src='" . get_file_name('vendor_js') . "'></script>
-    <script src='" . get_file_name('main_js') . "'></script>";
+            <script src='" . get_file_name('jquery_js') . "'></script>
+            <script src='" . get_file_name('lightbox_js') . "'></script>
+            <script src='" . get_file_name('tooltipster_js') . "'></script>
+            <script src='" . get_file_name('cookieconsent_js') . "'></script>
+            <script src='" . get_file_name('vendor_js') . "'></script>
+            <script src='" . get_file_name('main_js') . "'></script>";
 
     if (!empty($stdfoot['js'])) {
         foreach ($stdfoot['js'] as $JS) {
             if (!empty($JS)) {
                 $htmlfoot .= "
-    <script src='{$JS}'></script>";
+            <script src='{$JS}'></script>";
             }
         }
     }
-    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 85;
+    $font_size = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] : 80;
 
     $htmlfoot .= "
-    <script>document.body.style.fontSize = '{$font_size}%';</script>
-    <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
-</div>
+            <script>document.body.style.fontSize = '{$font_size}%';</script>
+            <link rel='stylesheet' href='" . get_file_name('last_css') . "'>
+        </div>
+    </div>
 </body>
 </html>";
 
@@ -397,26 +390,22 @@ function stdfoot(array $stdfoot = [])
 }
 
 /**
- * @param      $heading
- * @param      $text
- * @param null $outer_class
- * @param null $inner_class
+ * @param string      $heading
+ * @param string      $text
+ * @param string|null $outer_class
+ * @param string|null $inner_class
  *
- * @return string
+ * @return string|void
  */
-function stdmsg($heading, $text, $outer_class = null, $inner_class = null)
+function stdmsg(string $heading, string $text, ?string $outer_class = null, ?string $inner_class = null)
 {
     require_once INCL_DIR . 'function_html.php';
 
-    $htmlout = '';
-    if ($heading) {
-        $htmlout .= "
-                <h2>$heading</h2>";
-    }
-    $htmlout .= "
-                <p>$text</p>";
-
-    $htmlout = "<div class='padding20'>$htmlout</div>";
+    $htmlout = "
+        <div class='padding20'>" . (!empty($heading) ? "
+            <h2>$heading</h2>" : '') . "
+            <p>$text</p>
+        </div>";
 
     return main_div($htmlout, $outer_class, $inner_class);
 }
@@ -430,7 +419,7 @@ function StatusBar()
 {
     global $CURUSER;
 
-    if (!$CURUSER) {
+    if (empty($CURUSER)) {
         return '';
     }
     $StatusBar = $clock = '';
@@ -531,7 +520,7 @@ function platform_menu()
                         <ul class='level-left size_3 left10'>" . (PRODUCTION ? $buttons : "
                             <li>
                                 <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>
-                                    Pu-239 v{$site_config['sourcecode']['version']}
+                                    Pu-239 {$site_config['sourcecode']['version']}
                                 </a>
                             </li>") . "
                         </ul>
@@ -540,8 +529,8 @@ function platform_menu()
                         <ul class='level-center'>
                             <li>
                                 <form action='{$site_config['paths']['baseurl']}/browse.php'>
-                                    <div class='search round5 middle bg-light has-text-centered'>
-                                        <input type='text' name='sn' placeholder='" . _('Search') . "' class='bg-none has-text-black has-text-centered' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
+                                    <div class='search round5 middle bg-light'>
+                                        <input type='text' name='sn' id='search-title' placeholder='&#xe811; " . _('Search') . "' class='fontello-fonts bg-none has-text-black' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
                                     </div>
                                 </form>
                             </li>
