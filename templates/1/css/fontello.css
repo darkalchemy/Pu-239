@@ -1,13 +1,13 @@
 @font-face {
     font-family: 'fontello';
-    src: url('../../fonts/fontello.eot?23403914');
-    src: url('../../fonts/fontello.eot?23403914#iefix') format('embedded-opentype'),
-    url('../../fonts/fontello.woff2?23403914') format('woff2'),
-    url('../../fonts/fontello.woff?23403914') format('woff'),
-    url('../../fonts/fontello.ttf?23403914') format('truetype'),
-    url('../../fonts/fontello.svg?23403914#fontello') format('svg');
+    src:         url('../../fonts/fontello.eot?44252153');
+    src:         url('../../fonts/fontello.eot?44252153#iefix') format('embedded-opentype'),
+                 url('../../fonts/fontello.woff2?44252153') format('woff2'),
+                 url('../../fonts/fontello.woff?44252153') format('woff'),
+                 url('../../fonts/fontello.ttf?44252153') format('truetype'),
+                 url('../../fonts/fontello.svg?44252153#fontello') format('svg');
     font-weight: normal;
-    font-style: normal;
+    font-style:  normal;
 }
 
 /* Chrome hack: SVG is rendered more smooth in Windozze. 100% magic, uncomment if you need it. */
@@ -16,40 +16,40 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontello';
-    src: url('../../fonts/fontello.svg?23403914#fontello') format('svg');
+    src: url('../../fonts/fontello.svg?44252153#fontello') format('svg');
   }
 }
 */
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "fontello";
-    font-style: normal;
-    font-weight: normal;
-    speak: none;
+    font-family:             "fontello";
+    font-style:              normal;
+    font-weight:             normal;
+    speak:                   none;
 
-    display: inline-block;
-    text-decoration: inherit;
-    width: 1em;
-    margin-right: .2em;
-    text-align: center;
+    display:                 inline-block;
+    text-decoration:         inherit;
+    width:                   1em;
+    margin-right:            .2em;
+    text-align:              center;
     /* opacity: .8; */
 
     /* For safety - reset parent styles, that can break glyph codes*/
-    font-variant: normal;
-    text-transform: none;
+    font-variant:            normal;
+    text-transform:          none;
 
     /* fix buttons height, for twitter bootstrap */
-    line-height: 1em;
+    line-height:             1em;
 
     /* Animation center compensation - margins should be symmetric */
     /* remove if not needed */
-    margin-left: .2em;
+    margin-left:             .2em;
 
     /* you can be more comfortable with increased icons size */
     /* font-size: 120%; */
 
     /* Font smoothing. That was taken from TWBS */
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing:  antialiased;
     -moz-osx-font-smoothing: grayscale;
 
     /* Uncomment for 3D effect */

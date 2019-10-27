@@ -39,13 +39,13 @@ $forum_posts .= "
             <table class='table table-bordered table-striped'>
                 <thead>
                     <tr>
-                        <th class='w-50 min-350'>" . _('Latest Posts') . "</th>
-                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>" . _('Replies') . "</th>
-                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left'>" . _('Views') . "</th>
-                        <th class='w-1 has-text-centered has-no-border-left'>" . _('Last Post') . '</th>
+                        <th class='w-50 min-350'>" . _('Latest Forum Posts') . "</th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('Replies') . "'><i class='icon-commenting-o icon has-text-info' aria-hidden='true'></i></th>
+                        <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('Views') . "'><i class='icon-ok-circled2 icon has-text-success' aria-hidden='true'></i></th>
+                        <th class='w-1 has-text-centered has-no-border-left tooltipper' title='" . _('Last Post') . "'><i class='icon-calendar icon' aria-hidden='true'></i></th>
                     </tr>
                 </thead>
-                <tbody>';
+                <tbody>";
 if (!empty($topics) && is_array($topics)) {
     foreach ($topics as $topicarr) {
         $topicid = (int) $topicarr['id'];

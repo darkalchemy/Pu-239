@@ -19,14 +19,14 @@ $posted_comments .= "
                 <table class='table table-bordered table-striped'>
                     <thead>
                         <tr>
-                            <th class='w-1 has-text-centered w-10'>" . _('Type') . "</th>
-                            <th class='w-50 min-150'>" . _('Latest Comments') . "</th>
-                            <th class='w-1 has-text-centered'>" . _('User') . "</th>
-                            <th class='w-1 has-text-centered'>" . _('When') . "</th>
-                            <th class='w-1 has-text-centered'>" . _('Likes') . '</th>
+                            <th class='w-1 has-text-centered w-10 has-no-border-right'>" . _('Type') . "</th>
+                            <th class='w-50 min-150 has-no-border-right has-no-border-left'>" . _('Latest Comments') . "</th>
+                            <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('User') . "'><i class='icon-user icon has-text-info' aria-hidden='true'></i></th>
+                            <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('When') . "'><i class='icon-calendar icon' aria-hidden='true'></i></th>
+                            <th class='w-1 has-text-centered has-no-border-left tooltipper' title='" . _('Likes') . "'><i class='icon-thumbs-up icon has-text-success' aria-hidden='true'></i></th>
                         </tr>
                     </thead>
-                    <tbody>';
+                    <tbody>";
 
 $images_class = $container->get(Image::class);
 $users_class = $container->get(User::class);
