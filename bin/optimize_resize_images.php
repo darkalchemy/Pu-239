@@ -25,6 +25,7 @@ $photos = $fluent->from('person')
                  ->select(null)
                  ->select('photo AS url')
                  ->where('photo IS NOT NULL')
+                 ->where('updated + 604800 < ?', TIME_NOW)
                  ->fetchAll();
 
 $images = array_merge($images, $photos);

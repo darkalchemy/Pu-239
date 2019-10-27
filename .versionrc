@@ -1,0 +1,3 @@
+{
+  "compareUrlFormat": "{{host}}/{{owner}}/{{repository}}/compared/{{previousTag}}...{{currentTag}}"
+}
