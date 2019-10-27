@@ -5,7 +5,7 @@ html {
 input, select, textarea, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3, #content #inputFieldContainer, #loginContent input {
     border-radius: .3125em;
-    border: 0;
+    border:        0;
 }
 
 #content #inputFieldContainer {
@@ -13,9 +13,9 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #inputFieldContainer #inputField {
-    border: 0;
+    border:  0;
     padding: 8px 12px;
-    width: calc(100% - 24px);
+    width:   calc(100% - 24px);
 }
 
 #content #inputFieldContainer #inputField:focus {
@@ -31,17 +31,17 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #errorContainer {
-    font-size: 2em;
+    font-size:   2em;
     text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
 
 .ajax-chat {
     height: 100%;
-    color: var(--default-text-color);
+    color:  var(--default-text-color);
 }
 
 .ajax-chat h1, .ajax-chat h3 {
-    color: #e2e9db;
+    color:       #e2e9db;
     text-shadow: 1px 1px 2px #191919;
 }
 
@@ -62,28 +62,28 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #chatList:after, #content #chatList:before {
-    content: '';
-    display: block;
-    position: absolute;
+    content:       '';
+    display:       block;
+    position:      absolute;
     border-radius: .3125em;
 }
 
 #content #chatList:before {
-    top: 17px;
-    left: 0;
-    width: 0;
+    top:    17px;
+    left:   0;
+    width:  0;
     height: 98%;
 }
 
 #content #chatList:after {
-    top: 0;
-    left: 17px;
-    width: 98%;
+    top:    0;
+    left:   17px;
+    width:  98%;
     height: 0;
 }
 
 #content #onlineListContainer #onlineList div {
-    margin: 0 1px 1px 1px;
+    margin:     0 1px 1px 1px;
     background: none;
 }
 
@@ -101,7 +101,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #bbCodeContainer {
-    border: 0;
+    border:       0;
     padding-left: 0;
 }
 
@@ -126,19 +126,19 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 .ajax-chat .popup, .ajax-chat #content .popup#colorCodesContainer {
-    border: 0;
+    border:  0;
     padding: 5px;
 }
 
 #content #colorCodesContainer a {
     border-radius: .625em;
-    margin: 5px;
-    border: 0;
+    margin:        5px;
+    border:        0;
 }
 
 #content #optionsContainer input.button {
-    border: 0;
-    padding: 0;
+    border:       0;
+    padding:      0;
     margin-right: 5px;
 }
 
@@ -148,7 +148,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content .rowEven, #helpList dl:nth-child(even), #settingsList dl:nth-child(even) {
     background-color: rgba(0, 0, 0, .3);
-    border: 1px solid rgba(255, 255, 255, .1);
+    border:           1px solid rgba(255, 255, 255, .1);
 }
 
 #content .rowOdd, #helpList dl:nth-child(odd), #settingsList dl:nth-child(odd) {
@@ -156,12 +156,12 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content .rowEven:hover, #helpList dl:nth-child(even):hover, #settingsList dl:nth-child(even):hover {
-    border: 1px solid rgba(255, 255, 255, .1);
+    border:     1px solid rgba(255, 255, 255, .1);
     transition: all 0.35s ease-in-out;
 }
 
 #content .rowOdd:hover, #helpList dl:nth-child(odd):hover, #settingsList dl:nth-child(odd):hover {
-    border: 1px solid rgba(255, 255, 255, .1);
+    border:     1px solid rgba(255, 255, 255, .1);
     transition: all 0.35s ease-in-out;
 }
 
@@ -179,39 +179,39 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
-    font-size: .7em;
+    font-size:   .7em;
 }
 
 #content #chatList div.monospace {
-    font-family: "Lucida Console", Monaco, monospace;
-    tab-size: 4;
+    font-family:             "Lucida Console", Monaco, monospace;
+    tab-size:                4;
     -moz-osx-font-smoothing: auto;
-    -webkit-font-smoothing: antialiased;
-    white-space: pre-wrap;
+    -webkit-font-smoothing:  antialiased;
+    white-space:             pre-wrap;
 }
 
 input[type=button] {
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    align-items: center;
-    border: 1px solid rgb(255, 255, 255);
-    box-shadow: none;
-    display: inline-flex;
-    height: 2.25em;
-    line-height: 1.5;
-    padding: calc(0.375em - 1px) calc(0.625em - 1px);
-    position: relative;
-    vertical-align: top;
+    -moz-appearance:       none;
+    -webkit-appearance:    none;
+    align-items:           center;
+    border:                1px solid rgb(255, 255, 255);
+    box-shadow:            none;
+    display:               inline-flex;
+    height:                2.25em;
+    line-height:           1.5;
+    padding:               calc(0.375em - 1px) calc(0.625em - 1px);
+    position:              relative;
+    vertical-align:        top;
     -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    user-select: none;
-    color: #363636;
-    cursor: pointer;
-    justify-content: center;
-    text-align: center;
-    white-space: nowrap;
-    border-radius: .125em;
-    font-size: 0.75rem;
+    -webkit-user-select:   none;
+    user-select:           none;
+    color:                 #363636;
+    cursor:                pointer;
+    justify-content:       center;
+    text-align:            center;
+    white-space:           nowrap;
+    border-radius:         .125em;
+    font-size:             0.75rem;
 }
 
 input[type=button]:hover {
@@ -219,38 +219,39 @@ input[type=button]:hover {
 }
 
 input[type=button]:active {
-    outline: none;
+    outline:      none;
     border-color: #4a4a4a;
 }
 
 .text-center {
-    text-align: center;
-    margin-left: auto;
+    text-align:   center;
+    margin-left:  auto;
     margin-right: auto;
 }
 
 ::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 .5em rgba(0, 0, 0, .1);
-    border-radius: .3125em;
-    background-color: rgba(0, 0, 0, .1);
+    border-radius:      .3125em;
+    background-color:   rgba(0, 0, 0, .1);
 }
 
 ::-webkit-scrollbar {
-    width: 1em;
+    width:            .625em;
+    height:           .625em;
     background-color: rgba(255, 255, 255, .1);
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-    border-top: 1px solid var(--main-bdr-color);
+    border-top:    1px solid var(--main-bdr-color);
     border-bottom: 1px solid var(--main-bdr-color);
     border-radius: .3125em;
-    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
+    background:    rgba(0, 0, 0, .1) -webkit-linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 
 ::-webkit-scrollbar-thumb:vertical {
-    border-left: 1px solid var(--main-bdr-color);
-    border-right: 1px solid var(--main-bdr-color);
+    border-left:   1px solid var(--main-bdr-color);
+    border-right:  1px solid var(--main-bdr-color);
     border-radius: .625em;
-    background: rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
+    background:    rgba(0, 0, 0, .1) -webkit-linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 25%, transparent 100%, rgba(0, 0, 0, 1) 75%, transparent);
 }
 
