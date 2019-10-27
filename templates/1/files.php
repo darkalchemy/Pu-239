@@ -13,7 +13,7 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_d0516d1e.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_0d323377.css";
         case 'chat_css_uranium':
             return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_73f03df8.css";
         case 'index_css':
