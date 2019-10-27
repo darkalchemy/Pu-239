@@ -4756,4 +4756,18 @@ KEY `expires` (`expires`)
         'query' => 'DROP TABLE `tmp_data`',
         'flush' => false,
     ],
+    [
+        'id' => 1572123786,
+        'info' => 'update users font size',
+        'date' => '26 Oct, 2019',
+        'query' => 'UPDATE `users` SET `font_size` = 80 WHERE `font_size` = 85',
+        'flush' => true,
+    ],
+    [
+        'id' => 1572123787,
+        'info' => 'Drop column',
+        'date' => '26 Oct, 2019',
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `font_size` tinyint(3) unsigned NOT NULL DEFAULT 80',
+        'flush' => false,
+    ],
 ];
