@@ -22,7 +22,7 @@ $posted_comments .= "
                             <th class='w-1 has-text-centered w-10 has-no-border-right'>" . _('Type') . "</th>
                             <th class='w-50 min-150 has-no-border-right has-no-border-left'>" . _('Latest Comments') . "</th>
                             <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('User') . "'><i class='icon-user icon has-text-info' aria-hidden='true'></i></th>
-                            <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('When') . "'><i class='icon-calendar icon' aria-hidden='true'></i></th>
+                            <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('Posted') . "'><i class='icon-calendar icon' aria-hidden='true'></i></th>
                             <th class='w-1 has-text-centered has-no-border-left tooltipper' title='" . _('Likes') . "'><i class='icon-thumbs-up icon has-text-success' aria-hidden='true'></i></th>
                         </tr>
                     </thead>

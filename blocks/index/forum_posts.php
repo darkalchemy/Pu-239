@@ -42,7 +42,7 @@ $forum_posts .= "
                         <th class='w-50 min-350'>" . _('Latest Forum Posts') . "</th>
                         <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('Replies') . "'><i class='icon-commenting-o icon has-text-info' aria-hidden='true'></i></th>
                         <th class='w-1 has-text-centered has-no-border-right has-no-border-left tooltipper' title='" . _('Views') . "'><i class='icon-ok-circled2 icon has-text-success' aria-hidden='true'></i></th>
-                        <th class='w-1 has-text-centered has-no-border-left tooltipper' title='" . _('Last Post') . "'><i class='icon-calendar icon' aria-hidden='true'></i></th>
+                        <th class='w-1 has-text-centered has-no-border-left tooltipper' title='" . _('Last Poster') . "'><i class='icon-user icon' aria-hidden='true'></i></th>
                     </tr>
                 </thead>
                 <tbody>";
@@ -80,25 +80,25 @@ if (!empty($topics) && is_array($topics)) {
         $added = get_date((int) $topicarr['added'], '', 0, 1);
         if ($topicarr['pan'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
-                $username = (!empty($topicarr['puser_id']) ? '<i>' . _('Anonymous') . '</i>' : '<i>' . _('Unknown') . '</i>');
+                $username = !empty($topicarr['puser_id']) ? '<i>' . _('Anonymous') . '</i>' : '<i>' . _('Unknown') . '</i>';
             } else {
-                $username = (!empty($topicarr['puser_id']) ? '<i>' . _('Anonymous') . '</i>[ ' . format_username((int) $topicarr['puser_id']) . ' ]' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>");
+                $username = !empty($topicarr['puser_id']) ? '<i>' . _('Anonymous') . '</i>[ ' . format_username((int) $topicarr['puser_id']) . ' ]' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>";
             }
         } else {
-            $username = (!empty($topicarr['puser_id']) ? format_username((int) $topicarr['puser_id']) : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>");
+            $username = !empty($topicarr['puser_id']) ? format_username((int) $topicarr['puser_id']) : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>";
         }
         if ($topicarr['tan'] === '1') {
             if ($CURUSER['class'] < UC_STAFF && $topicarr['tuser_id'] != $CURUSER['id']) {
-                $author = (!empty($topicarr['tuser_id']) ? '<i>' . _('Anonymous') . '</i>' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . '</i>'));
+                $author = !empty($topicarr['tuser_id']) ? '<i>' . _('Anonymous') . '</i>' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . '</i>');
             } else {
-                $author = (!empty($topicarr['tuser_id']) ? '<i>' . _('Anonymous') . '</i><br>[ ' . format_username((int) $topicarr['tuser_id']) . ' ]' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>"));
+                $author = !empty($topicarr['tuser_id']) ? '<i>' . _('Anonymous') . '</i><br>[ ' . format_username((int) $topicarr['tuser_id']) . ' ]' : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>");
             }
         } else {
-            $author = (!empty($topicarr['tuser_id']) ? format_username((int) $topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>"));
+            $author = !empty($topicarr['tuser_id']) ? format_username((int) $topicarr['tuser_id']) : ($topicarr['tuser_id'] == '0' ? '<i>System</i>' : '<i>' . _('Unknown') . " [{$topicarr['tuser_id']}]</i>");
         }
-        $staffimg = ($topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['paths']['images_baseurl'] . "staff.png' alt='Staff forum' class='tooltipper' title='Staff Forum'>" : '');
-        $stickyimg = ($topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "sticky.gif' alt='" . _('Sticky') . "' class='tooltipper right5 left5' title='" . _('Sticky Topic') . "'>" : '');
-        $lockedimg = ($topicarr['locked'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "forumicons/locked.gif' alt='" . _('Locked') . "' class='tooltipper right5' title='" . _('Locked Topic') . "'>" : '');
+        $staffimg = $topicarr['min_class_read'] >= UC_STAFF ? "<img src='" . $site_config['paths']['images_baseurl'] . "staff.png' alt='Staff forum' class='tooltipper' title='Staff Forum'>" : '';
+        $stickyimg = $topicarr['sticky'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "sticky.gif' alt='" . _('Sticky') . "' class='tooltipper right5 left5' title='" . _('Sticky Topic') . "'>" : '';
+        $lockedimg = $topicarr['locked'] === 'yes' ? "<img src='" . $site_config['paths']['images_baseurl'] . "forumicons/locked.gif' alt='" . _('Locked') . "' class='tooltipper right5' title='" . _('Locked Topic') . "'>" : '';
         $topic_name = "<div class='level-left'>{$lockedimg}{$stickyimg}<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&amp;topic_id=$topicid&amp;page=last#" . (int) $topicarr['last_post'] . "'><span class='torrent-name'>" . format_comment($topicarr['topic_name']) . "</span></a>{$staffimg}{$menu}</div><span class='size_3'>" . _fe('in {0} by {1} ({2})', "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_forum&amp;forum_id=" . (int) $topicarr['forum_id'] . "'>" . format_comment($topicarr['name']) . '</a>', $author, $added) . '</span>';
         $forum_posts .= "
                     <tr>
