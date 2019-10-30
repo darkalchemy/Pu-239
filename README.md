@@ -33,7 +33,7 @@ The primary goal of this project is to give the site owner a means to create a c
 3. Remove merged bootstrap
 4. Update jquery
 5. Update all javascript files to remove jquery dependency
-6. Merge, mininify and gzip css/js files to reduce size and requests(not as important if http2 is enabled)
+6. Merge, minify and gzip css/js files to reduce size and requests(not as important if http2 is enabled)
 7. Replace manual concat/gzip of css/js file with uglifyjs
 8. Optimize all images for web
 9. Remove js from head and relocate to body - Mostly done
@@ -50,7 +50,7 @@ MySQL 5.6 is required. MySQL 8.0 recommended.
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
 [NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.12.0.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
-A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jumpstart the installation process.     
+A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jump start the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177).  
@@ -84,7 +84,7 @@ git clone https://github.com/darkalchemy/Pu-239.git
 # move into the install folder
 cd Pu-239
 
-# install dependancies
+# install dependencies
 composer install -a
 npm install
 
@@ -153,7 +153,7 @@ git pull
 # personally, I just run 'php bin/update_db.php complete' and it runs all of the queries, until complete or 1 fails
 php bin/update_db.php complete
 
-# update dependancies:
+# update dependencies:
 composer install (production mode add: --no-dev)
 npm install
 sudo rm -rf /dev/shm/php-di
@@ -169,12 +169,11 @@ php bin/validate_images.php
 ```
 
 #### User Roles:
-  * Coder : Has access to the site, very similar to that of a Sysop
-  * Forum Mod : Can moderate forum posts
-  * Torrent Mod : Can moderate torrents and their descriptions
-  * Internal : Required to post to the Cooker
-  * Uploader : Required to upload to the site
-
+ * Coder : Has access to the site, very similar to that of a Sysop
+ * Forum Mod : Can moderate forum posts
+ * Torrent Mod : Can moderate torrents and their descriptions
+ * Internal : Required to post to the Cooker
+ * Uploader : Required to upload to the site
 
 #### Making Changes:
 After updating composer, npm, changing anything inside the config or app folder, changing anything inside the staffpanel, you must delete the php-di cache. If you have set PRODUCTION = true.    
@@ -206,9 +205,9 @@ An image proxy for hot linked images is built in and enabled by default, disable
 ```$site_config['site']['image_proxy'] = true;```
 
 #### CLI Scripts:
-  * clear_cache.php : clears the entire cache that is currenlty in use
+  * clear_cache.php : clears the entire cache that is currently in use
   * import_tables.php : can import any table listed as an argument or imports trivia and tvmaze by default
-  * install.php : installs/reinstalls the site
+  * install.php : installs/re-installs the site
   * jobby.php : runs all of the sites cleanup scripts through cron
   * optimize_resize_images.php : creates an optimized version and multiple sizes of each image in the images table, this is done automatically during cleanup
   * remove_altered_images.php : removes every image that is not in the images table
@@ -216,8 +215,8 @@ An image proxy for hot linked images is built in and enabled by default, disable
   * set_perms.php : ensures all files have correct the user:owner and permissions set, also removes the DI_CACHE_DIR directory
   * uglify.php : generates the needed js/css files seen in public/js and public/css, also removes the DI_CACHE_DIR directory
   * update_db.php : updates the database to the current schema 
-  * usersfix.php : adds users to userblocks and userachiev tables, usually not needed
-  * validate_images.php : verfies the images in public/images/proxy/ are valid images, removes those that may be invalid
+  * usersfix.php : adds users to userblocks and usersachiev tables, usually not needed
+  * validate_images.php : verifies the images in public/images/proxy/ are valid images, removes those that may be invalid
 
 #### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
