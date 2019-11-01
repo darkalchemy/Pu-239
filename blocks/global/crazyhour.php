@@ -120,8 +120,8 @@ function crazyhour()
                     <div class='has-text-centered is-primary'>
                         " . _('All torrents are FREE') . '<br>
                         ' . _('and triple upload credit!') . '<br>
-                        ' . _('starts in %s', mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW)) . '<br>
-                        ' . _('at %s', get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1)) . '
+                        ' . _fe('starts in {0}', mkprettytime($crazyhour['crazyhour']['var'] - 3600 - TIME_NOW)) . '<br>
+                        ' . _fe('at {0}', get_date((int) $crazyhour['crazyhour']['var'] + ($CURUSER['time_offset'] - 3600), 'TIME', 1)) . '
                     </div>
                 </div>
             </div>
