@@ -61,7 +61,7 @@ if (!$row || !is_file($fn) || !is_readable($fn)) {
     $multiplier = happyHour('multiplier');
     happyLog($user['id'], $id, $multiplier);
     $values = [
-        ';userid' => $user['id'],
+        'userid' => $user['id'],
         'torrentid' => $id,
         'multiplier' => $multiplier,
     ];
