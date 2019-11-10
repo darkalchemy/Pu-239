@@ -137,7 +137,6 @@ $HTMLOUT .= tr(_('Visible'), "<input type='checkbox' name='visible' " . (($row['
 if ($user['class'] >= UC_STAFF) {
     $HTMLOUT .= tr(_('Banned'), "<input type='checkbox' name='banned' " . (($row['banned']) === 'yes' ? 'checked' : '') . " value='1'> " . _('Banned') . '', 1);
 }
-$HTMLOUT .= tr(_('Recommend Torrent'), "<input type='radio' name='recommended' " . (($row['recommended'] === 'yes') ? 'checked' : '') . " value='yes' class='right5'>Yes!<input type='radio' name='recommended' " . ($row['recommended'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No!<br><span class='size_3'>" . _('If you want to recommend this torrent check this box!') . '</span>', 1);
 $auth = $container->get(Auth::class);
 if ($auth->hasRole(Roles::UPLOADER)) {
     $HTMLOUT .= tr('Nuked', "<input type='radio' name='nuked' " . ($row['nuked'] === 'yes' ? 'checked' : '') . " value='yes' class='right5'>Yes <input type='radio' name='nuked' " . ($row['nuked'] === 'no' ? 'checked' : '') . " value='no' class='right5'>No", 1);
