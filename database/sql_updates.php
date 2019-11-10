@@ -4770,4 +4770,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `users` MODIFY COLUMN `font_size` tinyint(3) unsigned NOT NULL DEFAULT 80',
         'flush' => false,
     ],
+    [
+        'id' => 1573404446,
+        'info' => 'Drop column',
+        'date' => '10 Nov, 2019',
+        'query' => 'ALTER TABLE `torrents` DROP COLUMN `recommended`',
+        'flush' => false,
+    ],
 ];
