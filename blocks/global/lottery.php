@@ -23,9 +23,9 @@ if ($user) {
         $htmlout .= "
     <li>
         <a href='{$site_config['paths']['baseurl']}/lottery.php'>
-            <b class='button tag is-success is-small dt-tooltipper-large' data-tooltip-content='#lottery_tooltip'>
+            <span class='button tag is-success dt-tooltipper-large' data-tooltip-content='#lottery_tooltip'>
                 " . _('Lottery in Progress') . "
-            </b>
+            </span>
             <div class='tooltip_templates'>
                 <div id='lottery_tooltip' class='margin20'>
                     <div>
