@@ -4777,4 +4777,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `torrents` DROP COLUMN `recommended`',
         'flush' => false,
     ],
+    [
+        'id' => 1573711235,
+        'info' => 'Add index',
+        'date' => '14 Nov, 2019',
+        'query' => "ALTER TABLE `images` ADD INDEX `type_imdb` (`type`, `imdb_id`)",
+        'flush' => false,
+    ],
 ];
