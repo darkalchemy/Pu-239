@@ -31,9 +31,9 @@ if (!mysqli_num_rows($qs)) {
 } else {
     $header = '
     <tr>
-      <th>Username</th>
-      <th>tickets</th>
-      <th>seedbonus</th>
+      <th>' . _('Username') . '</th>
+      <th>' . _('tickets') . '</th>
+      <th>' . _('seedbonus') . '</th>
     </tr>';
     while ($ar = mysqli_fetch_assoc($qs)) {
         $body .= '

@@ -31,6 +31,7 @@ class FailedLogin
     }
 
     /**
+     *
      * @param string $ip
      *
      * @throws Exception

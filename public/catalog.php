@@ -17,6 +17,7 @@ $user = check_user_status();
 global $container, $site_config;
 
 /**
+ *
  * @param string $text
  * @param int    $char
  * @param string $link
@@ -36,6 +37,7 @@ function readMore(string $text, int $char, string $link)
 }
 
 /**
+ *
  * @param array $array
  * @param int   $class
  *

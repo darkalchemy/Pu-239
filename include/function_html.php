@@ -137,13 +137,13 @@ function insert_smilies_frame()
 }
 
 /**
- * @param string      $body
- * @param string|null $header
- * @param string|null $class
- * @param string|null $wrapper_class
- * @param string|null $striped
- * @param string|null $id
- * @param bool|null   $wrapper
+ * @param string  $body
+ * @param ?string $header
+ * @param ?string $class
+ * @param ?string $wrapper_class
+ * @param ?string $striped
+ * @param ?string $id
+ * @param ?bool   $wrapper
  *
  * @return string
  */
@@ -169,8 +169,8 @@ function main_table(string $body, ?string $header = null, ?string $class = null,
 }
 
 /**
- * @param string      $table
- * @param string|null $wrapper_class
+ * @param string  $table
+ * @param ?string $wrapper_class
  *
  * @return string
  */
@@ -365,6 +365,7 @@ function clear_image_cache()
 }
 
 /**
+ *
  * @param int $size
  *
  * @throws DependencyException
@@ -476,6 +477,7 @@ function send_mail($email, $subject, $html, $plain)
 }
 
 /**
+ *
  * @param int    $id
  * @param string $code
  *
@@ -502,6 +504,7 @@ function validate_invite(int $id, string $code)
 }
 
 /**
+ *
  * @param string $code
  * @param bool   $full
  *
@@ -534,6 +537,7 @@ function validate_promo(string $code, bool $full)
 }
 
 /**
+ *
  * @param array $classes
  *
  * @throws NotFoundException

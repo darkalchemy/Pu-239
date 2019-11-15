@@ -48,6 +48,7 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 3600)
 }
 
 /**
+ *
  * @param array  $user
  * @param string $mode
  * @param bool   $rep_is_on
@@ -268,6 +269,7 @@ function get_slr_color(float $ratio)
 }
 
 /**
+ *
  * @param float $ratio_to_check
  *
  * @throws DependencyException
@@ -407,11 +409,11 @@ function min_class(int $minclass = UC_MIN, int $maxclass = UC_MAX)
 }
 
 /**
- * @param int  $user_id
  * @param bool $icons
  * @param bool $tooltipper
  * @param bool $tag
  * @param bool $comma
+ * @param int  $user_id
  *
  * @throws Exception
  * @throws \Envms\FluentPDO\Exception
@@ -522,8 +524,8 @@ function is_valid_id(int $id)
 }
 
 /**
- * @param float|null $up
- * @param float|null $down
+ * @param ?float $up
+ * @param ?float $down
  *
  * @return string
  */
@@ -553,8 +555,9 @@ function member_ratio(?float $up, ?float $down)
 }
 
 /**
- * @param float|null $up
- * @param float|null $down
+ *
+ * @param ?float $up
+ * @param ?float $down
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -706,6 +709,7 @@ function make_dir(string $dir, int $octal)
 }
 
 /**
+ *
  * @param int $userid
  *
  * @throws NotFoundException

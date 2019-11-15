@@ -27,6 +27,7 @@ class Topic
     }
 
     /**
+     *
      * @param int $topic_id
      *
      * @throws Exception

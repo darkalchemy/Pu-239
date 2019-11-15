@@ -43,6 +43,7 @@ class Comment
     }
 
     /**
+     *
      * @param int $tid
      * @param int $count
      * @param int $perpage
@@ -136,6 +137,7 @@ class Comment
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
@@ -154,6 +156,7 @@ class Comment
     }
 
     /**
+     *
      * @param array $set
      * @param int   $id
      *
@@ -174,6 +177,7 @@ class Comment
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -190,6 +194,7 @@ class Comment
     }
 
     /**
+     *
      * @param string $column
      * @param int    $id
      *
@@ -214,6 +219,7 @@ class Comment
     }
 
     /**
+     *
      * @param int $commentid
      *
      * @throws Exception

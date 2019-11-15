@@ -199,6 +199,7 @@ function torrent_tooltip($text, $id, $block_id, $name, $poster, $uploader, $adde
 }
 
 /**
+ *
  * @param array $data
  *
  * @throws InvalidManipulation
@@ -256,6 +257,7 @@ function torrent_tooltip_wrapper(array $data)
 }
 
 /**
+ *
  * @param string $url
  * @param string $block_id
  * @param string $text

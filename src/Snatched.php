@@ -38,6 +38,7 @@ class Snatched
     }
 
     /**
+     *
      * @param int $userid
      * @param int $tid
      *
@@ -102,6 +103,7 @@ class Snatched
     }
 
     /**
+     *
      * @param array $set
      * @param int   $id
      *
@@ -132,6 +134,7 @@ class Snatched
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -149,6 +152,7 @@ class Snatched
     }
 
     /**
+     *
      * @param array $hnr
      *
      * @throws Exception

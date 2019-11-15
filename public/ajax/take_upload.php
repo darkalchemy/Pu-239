@@ -54,7 +54,7 @@ for ($i = 0; $i < $_POST['nbr_files']; ++$i) {
         echo json_encode(['msg' => _('Upload failed to save image.')]);
         die();
     }
-    $image_proxy->optimize_image($path, null, null, false);
+    $image_proxy->optimize_image($path, '', false);
     $images[] = "{$site_config['paths']['baseurl']}/img.php?{$pathlink}";
 }
 

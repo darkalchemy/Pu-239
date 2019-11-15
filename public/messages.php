@@ -194,6 +194,7 @@ switch ($action) {
 }
 
 /**
+ *
  * @param int $box
  * @param int $userid
  *
@@ -242,6 +243,7 @@ function get_all_boxes(int $box, int $userid)
 }
 
 /**
+ *
  * @param int $mailbox
  * @param int $userid
  *

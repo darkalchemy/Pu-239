@@ -79,6 +79,7 @@ class PollVoter
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -108,6 +109,7 @@ class PollVoter
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception

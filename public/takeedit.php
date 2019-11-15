@@ -166,7 +166,7 @@ if (in_array($category, $site_config['categories']['movie']) || in_array($catego
 if (($sticky = (!empty($_POST['sticky']) ? 'yes' : 'no')) != $fetch_assoc['sticky']) {
     $updateset[] = 'sticky = ' . sqlesc($sticky);
     if ($sticky === 'yes') {
-        sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid=' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
+        sql_query('UPDATE usersachiev SET stickyup = stickyup + 1 WHERE userid = ' . sqlesc($fetch_assoc['owner'])) or sqlerr(__FILE__, __LINE__);
     }
 }
 

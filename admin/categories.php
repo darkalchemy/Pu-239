@@ -546,6 +546,7 @@ function build_table(array $data, string $parent_name)
 }
 
 /**
+ *
  * @param array $cat
  *
  * @throws NotFoundException
@@ -652,6 +653,7 @@ function set_ordered(array $params)
 }
 
 /**
+ *
  * @param array $cat
  *
  * @throws NotFoundException
@@ -700,6 +702,7 @@ function get_images(array $cat)
 }
 
 /**
+ *
  * @param int $id
  *
  * @throws NotFoundException

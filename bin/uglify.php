@@ -610,6 +610,7 @@ function get_default_border($folder)
 }
 
 /**
+ *
  * @param string $file
  * @param bool   $delete
  *

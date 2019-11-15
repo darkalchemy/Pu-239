@@ -45,5 +45,5 @@ $in_use = (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['free_s
 (' . mkprettytime($isfree['expires'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['free_switch'] != 0 || $isfree['yep']) ? '</span>' : '') . '';
 
 if (!empty($in_use)) {
-    $title .= "<div class='round10 padding20 bg-00 bottom20 level-center'>$in_use</div>";
+    $title = (!empty($title) ? $title : '') . "<div class='round10 padding20 bg-00 bottom20 level-center'>$in_use</div>";
 }

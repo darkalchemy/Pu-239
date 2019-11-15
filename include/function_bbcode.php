@@ -179,10 +179,11 @@ function format_urls($s)
 }
 
 /**
- * @param string|null $text
- * @param bool        $strip_html
- * @param bool        $urls
- * @param bool        $images
+ *
+ * @param ?string $text
+ * @param bool    $strip_html
+ * @param bool    $urls
+ * @param bool    $images
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -415,14 +416,14 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
     }
     $show_image = $images ? 'img-responsive' : 'is_hidden';
     if (stripos($s, '[img') !== false) {
-        $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
-        $s = preg_replace("/\[img width=(\d+|auto) height=(\d+|auto)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
-        $s = preg_replace("/\[img width=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="\\1" height="auto" class="' . $show_image . '"></a>', $s);
-        $s = preg_replace("/\[img height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="" width="auto" height="\\1" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img=(\d+)x(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="image" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img width=(\d+|auto) height=(\d+|auto)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\3" data-lightbox="details"><img src="\\3" alt="image" width="\\1" height="\\2" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img width=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="image" width="\\1" height="auto" class="' . $show_image . '"></a>', $s);
+        $s = preg_replace("/\[img height=(\d+)](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", '<a href="\\2" data-lightbox="details"><img src="\\2" alt="image" width="auto" height="\\1" class="' . $show_image . '"></a>', $s);
         // [img=image services with or without extension
-        $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='' class='" . $show_image . "'></a>", $s);
+        $s = preg_replace("/\[img=(https?:\/\/[^[^\s'\"<>]*)\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='image' class='" . $show_image . "'></a>", $s);
         // [img]image services with or without extension
-        $s = preg_replace("/\[img\](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='' class='" . $show_image . "'></a>", $s);
+        $s = preg_replace("/\[img\](https?:\/\/[^[^\s'\"<>]*)\[\/img\]/i", "<a href='\\1' data-lightbox='details'><img src='\\1' alt='image' class='" . $show_image . "'></a>", $s);
 
         preg_match_all('/<img.*?src=["|\'](.*?)["|\'](.*?)>/s', $s, $matches);
         $i = 0;
@@ -431,6 +432,7 @@ function format_comment(?string $text, bool $strip_html = true, bool $urls = tru
             $width = isset($dimensions[1]) && $dimensions[1] !== 'auto' ? (int) $dimensions[1] : null;
             $height = isset($dimensions[2]) && $dimensions[2] !== 'auto' ? (int) $dimensions[2] : null;
             $s = str_replace($match, url_proxy($match, true, $width, $height), $s);
+            $s = preg_replace("#\s*(width|height)=['\"](auto|\d+)['\"]\s*#", '', $s);
         }
         // [img] proxied local images
         $s = preg_replace("#\[img\](.*" . preg_quote($site_config['paths']['images_baseurl']) . "proxy/.*)\[/img\]#i", '<img src="' . $image . '" data-src="\\1" alt="" class="lazy"></a>', $s);

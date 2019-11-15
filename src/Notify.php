@@ -27,6 +27,7 @@ class Notify
     }
 
     /**
+     *
      * @param int $upcomingid
      * @param int $userid
      *
@@ -49,6 +50,7 @@ class Notify
     }
 
     /**
+     *
      * @param int $upcomingid
      * @param int $userid
      *
@@ -70,10 +72,6 @@ class Notify
         return $id;
     }
 
-    /**
-     * @param int $upcomingid
-     * @param int $userid
-     */
     public function delete_cache(int $upcomingid, int $userid)
     {
         $this->cache->delete('usernotify_' . $userid);
@@ -82,6 +80,7 @@ class Notify
     }
 
     /**
+     *
      * @param int $upcomingid
      *
      * @throws Exception

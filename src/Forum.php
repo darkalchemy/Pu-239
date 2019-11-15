@@ -32,6 +32,7 @@ class Forum
     }
 
     /**
+     *
      * @param int $forum_id
      *
      * @throws Exception
@@ -48,6 +49,7 @@ class Forum
     }
 
     /**
+     *
      * @param array $set
      * @param int   $forum_id
      *
@@ -66,6 +68,7 @@ class Forum
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -82,6 +85,7 @@ class Forum
     }
 
     /**
+     *
      * @param int $forum_id
      *
      * @throws Exception

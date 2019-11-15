@@ -45,6 +45,7 @@ class Message
     }
 
     /**
+     *
      * @param array $values
      * @param bool  $send_email
      *
@@ -98,6 +99,7 @@ class Message
     }
 
     /**
+     *
      * @param int $receiver
      * @param int $sender
      *
@@ -119,6 +121,7 @@ class Message
     }
 
     /**
+     *
      * @param int $id
      * @param int $userid
      *
@@ -139,6 +142,7 @@ class Message
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
@@ -155,6 +159,7 @@ class Message
     }
 
     /**
+     *
      * @param array $set
      * @param int   $id
      *
@@ -189,6 +194,7 @@ class Message
     }
 
     /**
+     *
      * @param int  $userid
      * @param int  $location
      * @param bool $unread
@@ -228,6 +234,7 @@ class Message
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -251,6 +258,7 @@ class Message
     }
 
     /**
+     *
      * @param int $dt
      *
      * @throws Exception
@@ -295,6 +303,7 @@ class Message
     }
 
     /**
+     *
      * @param int    $userid
      * @param int    $location
      * @param int    $limit

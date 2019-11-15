@@ -31,6 +31,7 @@ class HappyLog
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -49,6 +50,7 @@ class HappyLog
     }
 
     /**
+     *
      * @param int   $userid
      * @param array $limit
      *

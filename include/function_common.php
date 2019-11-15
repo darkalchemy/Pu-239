@@ -21,6 +21,7 @@ function validip($ip)
 }
 
 /**
+ *
  * @param int    $date
  * @param string $method
  * @param int    $norelative

@@ -43,6 +43,7 @@ class Poll
     }
 
     /**
+     *
      * @param array $set
      * @param int   $poll_id
      *
@@ -63,6 +64,7 @@ class Poll
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -81,6 +83,7 @@ class Poll
     }
 
     /**
+     *
      * @param int $poll_id
      *
      * @throws Exception
@@ -101,6 +104,7 @@ class Poll
     }
 
     /**
+     *
      * @param int $limit
      *
      * @throws Exception

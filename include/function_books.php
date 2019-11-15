@@ -15,10 +15,11 @@ use Scriptotek\GoogleBooks\GoogleBooks;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @param string|null $isbn
- * @param string|null $name
- * @param int|null    $tid
- * @param string|null $poster
+ *
+ * @param ?string $isbn
+ * @param ?string $name
+ * @param ?int    $tid
+ * @param ?string $poster
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -82,6 +83,7 @@ function get_book_info(?string $isbn, ?string $name, ?int $tid, ?string $poster)
 }
 
 /**
+ *
  * @param array $ebook
  * @param int   $api_hits
  *
@@ -206,8 +208,9 @@ function format_ebook_html(array $ebook, int $api_hits)
 }
 
 /**
- * @param string|null $isbn
- * @param string|null $name
+ *
+ * @param ?string $isbn
+ * @param ?string $name
  *
  * @throws DependencyException
  * @throws NotFoundException

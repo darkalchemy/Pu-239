@@ -8,6 +8,7 @@ use Pu239\Cache;
 use Pu239\User;
 
 /**
+ *
  * @param int $userid
  *
  * @throws NotFoundException

@@ -53,6 +53,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param int $upcomingid
      *
      * @throws Exception
@@ -74,6 +75,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param bool $all
      * @param bool $show_hidden
      *
@@ -99,6 +101,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -115,6 +118,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param int  $id
      * @param bool $staff
      * @param int  $userid
@@ -136,6 +140,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param array $set
      * @param int   $upcomingid
      *
@@ -154,6 +159,7 @@ class Upcoming
     }
 
     /**
+     *
      * @param int    $limit
      * @param int    $offset
      * @param string $orderby

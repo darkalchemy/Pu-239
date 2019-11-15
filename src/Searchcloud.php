@@ -31,6 +31,7 @@ class Searchcloud
     }
 
     /**
+     *
      * @param array $limit
      *
      * @throws Exception

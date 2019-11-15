@@ -990,6 +990,7 @@ class AJAXChat
     }
 
     /**
+     *
      * @param string $userName
      *
      * @throws \Envms\FluentPDO\Exception

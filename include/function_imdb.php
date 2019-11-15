@@ -21,11 +21,12 @@ use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @param string      $imdb_id
- * @param bool        $title
- * @param bool        $data_only
- * @param int|null    $tid
- * @param string|null $poster
+ *
+ * @param string  $imdb_id
+ * @param bool    $title
+ * @param bool    $data_only
+ * @param ?int    $tid
+ * @param ?string $poster
  *
  * @throws InvalidManipulation
  * @throws UnbegunTransaction
@@ -343,7 +344,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                     $imdb_data[$foo] = "
                         <div class='level-left'>
                             <div class='right5'>{$imdb_data['rating']}</div>
-                            <div class='star-ratings-css tooltipper' title='" . _fe("{0}% out of {1} votes!", $percent, $imdb_data['votes']) . "'>
+                            <div class='star-ratings-css tooltipper' title='" . _fe('{0}% out of {1} votes!', $percent, $imdb_data['votes']) . "'>
                                 <div class='star-ratings-css-top' style='width: {$percent}%'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                                 <div class='star-ratings-css-bottom'><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
                             </div>
@@ -364,13 +365,13 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
                         <div class='column padding5'>{$imdb_data[$foo]}</div>
                     </div>";
             } elseif (is_array($imdb_data[$foo]) && in_array($foo, [
-                    'director',
-                    'writing',
-                    'producer',
-                    'composer',
-                    'cast',
-                    'trailers',
-                ])
+                'director',
+                'writing',
+                'producer',
+                'composer',
+                'cast',
+                'trailers',
+            ])
             ) {
                 foreach ($imdb_data[$foo] as $pp) {
                     if ($foo === 'cast' && !empty($cast)) {
@@ -670,6 +671,7 @@ function get_upcoming()
 }
 
 /**
+ *
  * @param string $imdb_id
  *
  * @throws NotFoundException
@@ -788,12 +790,12 @@ function get_imdb_person($person_id)
         if (!empty($person->bio())) {
             $data = $person->bio();
             $imdb_person['bio'] = str_replace([
-                                                  '<br />',
-                                                  'href="',
-                                              ], [
-                                                  '<br>',
-                                                  'href="' . $site_config['site']['anonymizer_url'],
-                                              ], $data[0]['desc']);
+                '<br />',
+                'href="',
+            ], [
+                '<br>',
+                'href="' . $site_config['site']['anonymizer_url'],
+            ], $data[0]['desc']);
         }
 
         if (!empty($person->died())) {
@@ -835,6 +837,7 @@ function get_imdb_person($person_id)
 }
 
 /**
+ *
  * @param int $count
  *
  * @throws InvalidManipulation
@@ -920,6 +923,7 @@ function get_in_theaters()
 }
 
 /**
+ *
  * @param int $count
  *
  * @throws InvalidManipulation
@@ -963,6 +967,7 @@ function movies_by_release_date(int $count)
 }
 
 /**
+ *
  * @param int $count
  *
  * @throws InvalidManipulation
@@ -1003,6 +1008,7 @@ function get_top_tvshows(int $count)
 }
 
 /**
+ *
  * @param int $count
  *
  * @throws NotFoundException
@@ -1038,6 +1044,7 @@ function get_top_anime(int $count)
 }
 
 /**
+ *
  * @param int $count
  *
  * @throws NotFoundException

@@ -31,6 +31,7 @@ class Coin
     }
 
     /**
+     *
      * @param int $tid
      *
      * @throws Exception

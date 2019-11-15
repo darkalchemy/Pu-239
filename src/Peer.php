@@ -40,6 +40,7 @@ class Peer
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -85,6 +86,7 @@ class Peer
     }
 
     /**
+     *
      * @param int $tid
      *
      * @throws Exception
@@ -120,6 +122,7 @@ class Peer
     }
 
     /**
+     *
      * @param int    $limit
      * @param int    $offset
      * @param string $orderby
@@ -162,6 +165,7 @@ class Peer
     }
 
     /**
+     *
      * @param int    $tid
      * @param int    $userid
      * @param string $peer_id
@@ -202,6 +206,7 @@ class Peer
     }
 
     /**
+     *
      * @param int    $pid
      * @param int    $tid
      * @param string $info_hash
@@ -228,6 +233,7 @@ class Peer
     }
 
     /**
+     *
      * @param array $values
      * @param array $update
      *
@@ -246,6 +252,7 @@ class Peer
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception

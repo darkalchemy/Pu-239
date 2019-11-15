@@ -107,6 +107,7 @@ function crazyhour_announce()
 }
 
 /**
+ *
  * @param int $torrentid
  * @param int $userid
  *
@@ -143,6 +144,7 @@ function get_happy(int $torrentid, int $userid)
 }
 
 /**
+ *
  * @param int $torrentid
  * @param int $userid
  *

@@ -73,7 +73,7 @@ function tvmaze_update($data)
 }
 
 /**
- * @param      $param
+ * @param $param
  * @param bool $int
  *
  * @return mixed|string

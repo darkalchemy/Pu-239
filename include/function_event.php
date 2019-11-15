@@ -70,6 +70,7 @@ function update_event(int $expires, int $new_expires)
 }
 
 /**
+ *
  * @param bool $all
  *
  * @throws \Envms\FluentPDO\Exception

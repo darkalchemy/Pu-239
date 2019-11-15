@@ -213,6 +213,7 @@ function get_template()
 }
 
 /**
+ *
  * @param int    $userid
  * @param string $key
  * @param bool   $clear
@@ -255,7 +256,7 @@ function unesc($x)
 }
 
 /**
- * @param        $bytes
+ * @param $bytes
  * @param int    $decimals
  * @param string $system
  *
@@ -380,11 +381,11 @@ function searchfield($s)
 }
 
 /**
- * @param             $heading
- * @param             $text
- * @param string|null $outer_class
- * @param string|null $inner_class
- * @param array       $breadcrumbs
+ * @param $heading
+ * @param $text
+ * @param ?string $outer_class
+ * @param ?string $inner_class
+ * @param array   $breadcrumbs
  *
  * @throws AuthError
  * @throws DependencyException
@@ -496,7 +497,7 @@ function ratingpic($num)
 }
 
 /**
- * @param     $txt
+ * @param $txt
  * @param int $len
  *
  * @return string
@@ -713,6 +714,7 @@ function force_logout(int $userid)
 }
 
 /**
+ *
  * @param string $type
  *
  * @throws UnbegunTransaction
@@ -785,9 +787,10 @@ function check_user_status(string $type = 'browse')
 }
 
 /**
- * @param int         $userclass
- * @param int         $class
- * @param string|null $role
+ *
+ * @param int     $userclass
+ * @param int     $class
+ * @param ?string $role
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -1021,6 +1024,7 @@ function plural(int $int)
 }
 
 /**
+ *
  * @param string $username
  * @param bool   $ajax
  * @param bool   $in_use
@@ -1137,11 +1141,12 @@ function get_anonymous_name()
 }
 
 /**
- * @param string   $url
- * @param bool     $image
- * @param int|null $width
- * @param int|null $height
- * @param int|null $quality
+ *
+ * @param string $url
+ * @param bool   $image
+ * @param ?int   $width
+ * @param ?int   $height
+ * @param ?int   $quality
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -1153,7 +1158,11 @@ function get_anonymous_name()
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
     global $container, $site_config;
-    if (empty($url) || stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) {
+
+    if (empty($url)) {
+        return $url;
+    }
+    if ((stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) && stripos($url, 'logo') === false) {
         if (stripos($url, 'img.php') === false) {
             return $url;
         }
@@ -1198,6 +1207,7 @@ function get_show_name(string $name)
 }
 
 /**
+ *
  * @param string $name
  *
  * @throws NotFoundException
@@ -1241,6 +1251,7 @@ function get_show_id(string $name)
 }
 
 /**
+ *
  * @param string $imdbid
  *
  * @throws NotFoundException
@@ -1346,6 +1357,7 @@ function formatQuery($query)
 }
 
 /**
+ *
  * @param string $type
  * @param int    $userid
  *
@@ -1376,9 +1388,10 @@ function insert_update_ip(string $type, int $userid)
 }
 
 /**
- * @param string    $url
- * @param bool|null $fresh
- * @param bool|null $async
+ *
+ * @param string $url
+ * @param ?bool  $fresh
+ * @param ?bool  $async
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -1433,6 +1446,7 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 }
 
 /**
+ *
  * @param bool $details
  *
  * @throws DependencyException

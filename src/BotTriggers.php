@@ -27,6 +27,7 @@ class BotTriggers
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -49,6 +50,7 @@ class BotTriggers
     }
 
     /**
+     *
      * @param array $set
      * @param int   $id
      *
@@ -105,6 +107,7 @@ class BotTriggers
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
@@ -122,6 +125,7 @@ class BotTriggers
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
