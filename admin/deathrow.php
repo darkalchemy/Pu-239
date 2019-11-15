@@ -41,6 +41,7 @@ function calctime($val)
 }
 
 /**
+ *
  * @param array $tids
  *
  * @throws DependencyException

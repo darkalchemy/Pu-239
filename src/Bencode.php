@@ -9,8 +9,6 @@ class Bencode
 {
     /**
      * @param $data
-     *
-     * @return string
      */
     public static function encode($data): string
     {

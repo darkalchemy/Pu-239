@@ -140,6 +140,7 @@ function update_database(array $argv, array $sql_updates, bool $all)
 }
 
 /**
+ *
  * @param array $argv
  * @param array $sql_updates
  * @param bool  $all

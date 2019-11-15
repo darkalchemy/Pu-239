@@ -7,6 +7,7 @@ use DI\NotFoundException;
 use Rakit\Validation\Validator;
 
 /**
+ *
  * @param string $partial_url
  *
  * @throws NotFoundException

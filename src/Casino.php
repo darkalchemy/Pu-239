@@ -41,6 +41,7 @@ class Casino
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -61,6 +62,7 @@ class Casino
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception

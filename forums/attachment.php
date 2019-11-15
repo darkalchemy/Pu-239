@@ -7,6 +7,7 @@ use DI\NotFoundException;
 use Pu239\Database;
 
 /**
+ *
  * @param int $post_id
  *
  * @throws DependencyException

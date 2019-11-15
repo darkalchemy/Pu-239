@@ -24,6 +24,7 @@ class CasinoBets
     }
 
     /**
+     *
      * @param string $username
      *
      * @throws Exception
@@ -44,6 +45,7 @@ class CasinoBets
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
@@ -60,6 +62,7 @@ class CasinoBets
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -117,6 +120,7 @@ class CasinoBets
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception

@@ -9,10 +9,11 @@ require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_fanart.php';
 
 /**
- * @param string   $media
- * @param string   $imdb
- * @param string   $type
- * @param int|null $season
+ *
+ * @param string $media
+ * @param string $imdb
+ * @param string $type
+ * @param ?int   $season
  *
  * @throws DependencyException
  * @throws NotFoundException

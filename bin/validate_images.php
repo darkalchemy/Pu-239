@@ -8,6 +8,7 @@ use Pu239\ImageProxy;
 require_once __DIR__ . '/../include/bittorrent.php';
 global $container, $site_config;
 
+set_time_limit(18000);
 if (!isset($argv[1]) || ($argv[1] !== 'validate' && $argv[1] !== 'optimize' && $argv[1] !== 'purge')) {
     die("This script can validate, optimize and delete all images found in public/images/proxy\n\nTo run:\n{$argv[0]} [purge|validate|optimize]\n\n");
 }
@@ -18,18 +19,32 @@ foreach ($argv as $arg) {
 }
 if ($purge) {
     $fluent = $container->get(Database::class);
-    $urls = $fluent->from('images')
-                   ->select('null')
-                   ->select('url');
+    $images = $fluent->from('images')
+                     ->select('null')
+                     ->select('url')
+                     ->select('type')
+                     ->fetchAll();
+    $photos = $fluent->from('person')
+                     ->select('null')
+                     ->select('photo AS url')
+                     ->where('photo IS NOT null')
+                     ->fetchAll();
     $hashes = [];
+    $urls = array_merge($images, $photos);
     foreach ($urls as $url) {
         $hashes[] = hash('sha256', $url['url']);
+        if (empty($url['type'])) {
+            $url['type'] = 'person';
+        }
         if ($url['type'] === 'poster') {
             $hashes[] = hash('sha256', $url['url'] . '_converted_' . '20');
             $hashes[] = hash('sha256', $url['url'] . '_450');
             $hashes[] = hash('sha256', $url['url'] . '_250');
         } elseif ($url['type'] === 'banner') {
             $hashes[] = hash('sha256', $url['url'] . '_1000');
+        } elseif ($url['type'] === 'person') {
+            $hashes[] = hash('sha256', $url['url'] . '_250');
+            $hashes[] = hash('sha256', $url['url'] . '_110');
         }
     }
 }
@@ -57,7 +72,7 @@ foreach ($paths as $path) {
             unlink($name);
         }
         if ($optimize) {
-            $image_proxy->optimize_image($name);
+            $image_proxy->optimize_image($name, '', true);
         }
         ++$o;
     }

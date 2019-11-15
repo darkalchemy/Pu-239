@@ -34,6 +34,7 @@ class IP
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -87,6 +88,7 @@ class IP
     }
 
     /**
+     *
      * @param string $ip
      *
      * @throws Exception
@@ -131,6 +133,7 @@ class IP
     }
 
     /**
+     *
      * @param int    $userid
      * @param int    $days
      * @param string $type

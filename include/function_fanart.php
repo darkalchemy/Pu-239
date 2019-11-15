@@ -100,6 +100,7 @@ function getTVImagesByTVDb($thetvdb_id, $type = 'showbackground', $season = 0)
 }
 
 /**
+ *
  * @param string $id
  * @param bool   $store
  * @param string $type

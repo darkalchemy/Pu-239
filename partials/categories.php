@@ -71,6 +71,7 @@ $main_div .= "
 $HTMLOUT .= main_div($main_div, 'bottom20');
 
 /**
+ *
  * @param array  $cat
  * @param string $parent
  * @param string $cat_name
@@ -124,6 +125,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
 }
 
 /**
+ *
  * @param int $user_cat
  *
  * @throws DependencyException

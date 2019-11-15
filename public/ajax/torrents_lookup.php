@@ -96,6 +96,7 @@ echo json_encode(['fail' => 'invalid']);
 die();
 
 /**
+ *
  * @param int $userid
  *
  * @throws DependencyException
@@ -158,6 +159,7 @@ function get_uploaded(int $userid)
 }
 
 /**
+ *
  * @param int $userid
  *
  * @throws DependencyException
@@ -210,6 +212,7 @@ function get_seeding(int $userid)
 }
 
 /**
+ *
  * @param int $userid
  *
  * @throws DependencyException
@@ -262,6 +265,7 @@ function get_leeching(int $userid)
 }
 
 /**
+ *
  * @param int $userid
  *
  * @throws DependencyException
@@ -302,6 +306,7 @@ function get_snatched(int $userid)
 }
 
 /**
+ *
  * @param int $userid
  *
  * @throws DependencyException
@@ -459,6 +464,7 @@ function snatchtable(array $torrents)
 }
 
 /**
+ *
  * @param array $torrents
  * @param int   $userid
  *

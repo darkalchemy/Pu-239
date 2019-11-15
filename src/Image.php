@@ -86,6 +86,7 @@ class Image
     }
 
     /**
+     *
      * @param string $imdb
      * @param string $type
      *
@@ -122,6 +123,7 @@ class Image
     }
 
     /**
+     *
      * @param int $limit
      * @param int $offset
      *
@@ -138,6 +140,7 @@ class Image
     }
 
     /**
+     *
      * @param string $url
      *
      * @throws Exception
@@ -177,6 +180,7 @@ class Image
     }
 
     /**
+     *
      * @param string $terms
      *
      * @throws Exception
@@ -217,6 +221,7 @@ class Image
     }
 
     /**
+     *
      * @param string $terms
      * @param int    $limit
      * @param int    $offset

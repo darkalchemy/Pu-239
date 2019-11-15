@@ -614,8 +614,8 @@ function redirect($url, $text, $time = 2)
 }
 
 /**
- * @param array $now_date
  * @param int   $i
+ * @param array $now_date
  *
  * @return string
  */

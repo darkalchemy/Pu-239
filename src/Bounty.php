@@ -125,6 +125,7 @@ class Bounty
     }
 
     /**
+     *
      * @param int $requestid
      *
      * @throws Exception

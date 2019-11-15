@@ -27,6 +27,7 @@ class Bookmark
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception

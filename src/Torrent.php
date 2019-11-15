@@ -105,6 +105,7 @@ class Torrent
     }
 
     /**
+     *
      * @param array $items
      * @param int   $tid
      *
@@ -142,6 +143,7 @@ class Torrent
     }
 
     /**
+     *
      * @param int  $tid
      * @param bool $fresh
      *
@@ -188,6 +190,7 @@ class Torrent
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -208,6 +211,7 @@ class Torrent
     }
 
     /**
+     *
      * @param int $userid
      *
      * @throws Exception
@@ -227,6 +231,7 @@ class Torrent
     }
 
     /**
+     *
      * @param string $visible
      *
      * @throws Exception
@@ -283,6 +288,7 @@ class Torrent
     }
 
     /**
+     *
      * @param array $set
      * @param int   $tid
      * @param bool  $seeders
@@ -317,10 +323,11 @@ class Torrent
     }
 
     /**
+     *
      * @param string   $infohash
-     * @param int|null $tid
-     * @param int|null $owner
-     * @param int|null $added
+     * @param null|int $tid
+     * @param null|int $owner
+     * @param null|int $added
      *
      * @throws UnbegunTransaction
      * @throws Exception
@@ -380,6 +387,7 @@ class Torrent
     }
 
     /**
+     *
      * @param string $info_hash
      *
      * @throws Exception
@@ -429,6 +437,7 @@ class Torrent
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -758,6 +767,7 @@ class Torrent
     }
 
     /**
+     *
      * @param array $categories
      *
      * @throws Exception
@@ -912,6 +922,7 @@ class Torrent
     }
 
     /**
+     *
      * @param string $imdb
      *
      * @throws Exception
@@ -942,6 +953,7 @@ class Torrent
     }
 
     /**
+     *
      * @param int $torrentid
      *
      * @throws InvalidManipulation

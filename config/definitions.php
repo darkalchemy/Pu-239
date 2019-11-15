@@ -6,6 +6,7 @@ use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
 use Delight\I18n\Codes;
 use Delight\I18n\I18n;
+use function DI\autowire;
 use Imdb\Config;
 use Jobby\Jobby;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -59,7 +60,6 @@ use Scriptotek\GoogleBooks\GoogleBooks;
 use SlashTrace\EventHandler\DebugHandler;
 use SlashTrace\Sentry\SentryHandler;
 use SlashTrace\SlashTrace;
-use function DI\autowire;
 
 return [
     Ach_bonus::class => autowire(),

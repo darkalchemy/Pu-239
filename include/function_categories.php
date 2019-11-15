@@ -8,6 +8,7 @@ use Pu239\Cache;
 use Pu239\Database;
 
 /**
+ *
  * @param bool $grouped
  *
  * @throws DependencyException
@@ -65,6 +66,7 @@ function genrelist(bool $grouped)
 }
 
 /**
+ *
  * @param int $catid
  *
  * @throws \Envms\FluentPDO\Exception

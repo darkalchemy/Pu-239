@@ -29,6 +29,7 @@ $do = isset($_POST['action']) ? htmlsafechars($_POST['action']) : (isset($_GET['
 $ajax = isset($_POST['ajax']) && $_POST['ajax'] == 1 ? true : false;
 
 /**
+ *
  * @param int  $uid
  * @param int  $tid
  * @param bool $ajax

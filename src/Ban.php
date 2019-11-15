@@ -32,6 +32,7 @@ class Ban
     }
 
     /**
+     *
      * @param string $ip
      *
      * @throws Exception
@@ -51,6 +52,7 @@ class Ban
     }
 
     /**
+     *
      * @param string $ip
      *
      * @throws Exception
@@ -70,6 +72,7 @@ class Ban
     }
 
     /**
+     *
      * @param string $ip
      *
      * @throws Exception

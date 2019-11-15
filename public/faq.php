@@ -537,9 +537,9 @@ $byratio = 0;
 $byul = 0;
 
 /**
+ * @param bool $color
  * @param int  $up
  * @param int  $down
- * @param bool $color
  *
  * @return string
  */

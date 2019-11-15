@@ -82,7 +82,7 @@ if (!file_exists($path)) {
     die();
 }
 $image_proxy = $container->get(ImageProxy::class);
-$image_proxy->optimize_image($path, null, null, false);
+$image_proxy->optimize_image($path, '', false);
 $image = "{$site_config['paths']['baseurl']}/img.php?{$pathlink}";
 
 if (!empty($image)) {

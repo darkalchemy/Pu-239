@@ -37,6 +37,7 @@ class Offer
     }
 
     /**
+     *
      * @param bool $all
      * @param bool $show_hidden
      *
@@ -62,6 +63,7 @@ class Offer
     }
 
     /**
+     *
      * @param int    $limit
      * @param int    $offset
      * @param string $orderby
@@ -114,6 +116,7 @@ class Offer
     }
 
     /**
+     *
      * @param int  $offerid
      * @param bool $is_staff
      *
@@ -157,6 +160,7 @@ class Offer
     }
 
     /**
+     *
      * @param array $set
      * @param int   $offerid
      *
@@ -175,6 +179,7 @@ class Offer
     }
 
     /**
+     *
      * @param int  $id
      * @param bool $staff
      * @param int  $userid
@@ -196,6 +201,7 @@ class Offer
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception

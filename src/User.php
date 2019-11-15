@@ -71,6 +71,7 @@ class User
     }
 
     /**
+     *
      * @param string $username
      *
      * @throws Exception
@@ -94,6 +95,7 @@ class User
     }
 
     /**
+     *
      * @param string $username
      *
      * @throws Exception
@@ -125,6 +127,7 @@ class User
     }
 
     /**
+     *
      * @param string $item
      * @param int    $userid
      *
@@ -140,6 +143,7 @@ class User
     }
 
     /**
+     *
      * @param int  $userid
      * @param bool $fresh
      *
@@ -189,6 +193,7 @@ class User
     }
 
     /**
+     *
      * @param array $items
      * @param array $where
      *
@@ -212,6 +217,7 @@ class User
     }
 
     /**
+     *
      * @param string $bot
      * @param string $torrent_pass
      * @param string $auth
@@ -236,6 +242,7 @@ class User
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws AuthError
@@ -327,6 +334,7 @@ class User
     }
 
     /**
+     *
      * @param array $set
      * @param int   $userid
      * @param bool  $persist
@@ -400,6 +408,7 @@ class User
     }
 
     /**
+     *
      * @param int $category
      *
      * @throws Exception
@@ -478,6 +487,7 @@ class User
     }
 
     /**
+     *
      * @param string $email
      * @param string $password
      * @param int    $remember
@@ -518,6 +528,7 @@ class User
     }
 
     /**
+     *
      * @param array $post
      * @param bool  $return
      *
@@ -651,6 +662,7 @@ class User
     }
 
     /**
+     *
      * @param int $registered
      * @param int $last_access
      * @param int $parked

@@ -19,10 +19,11 @@ use Spatie\ImageOptimizer\OptimizerChainFactory;
 class ImageProxy
 {
     /**
-     * @param string   $url
-     * @param int|null $width
-     * @param int|null $height
-     * @param int|null $quality
+     *
+     * @param string $url
+     * @param ?int   $width
+     * @param ?int   $height
+     * @param ?int   $quality
      *
      * @throws DependencyException
      * @throws InvalidManipulation
@@ -47,20 +48,20 @@ class ImageProxy
         if (!file_exists($path) && !$this->store_image($url, $path)) {
             return false;
         }
-
         if (!empty($quality)) {
             $hash = $this->convert_image($url, $path, $quality);
-        } elseif ($width || $height) {
-            $hash = $this->resize_image($path, $width, $height);
+        } elseif (!empty($width) || !empty($height)) {
+            $hash = $this->resize_image($url, false, $width, $height);
         }
 
         $this->set_permissions($path);
-        $this->set_permissions($hash);
+        $this->set_permissions(PROXY_IMAGES_DIR . $hash);
 
         return $hash;
     }
 
     /**
+     *
      * @param string $url
      * @param string $path
      *
@@ -169,9 +170,7 @@ class ImageProxy
 
         if (!file_exists($path)) {
             return false;
-        }
-
-        if (file_exists($new_path)) {
+        } elseif (file_exists($new_path)) {
             return $hash;
         }
 
@@ -193,62 +192,69 @@ class ImageProxy
     }
 
     /**
-     * @param string   $path
-     * @param int|null $width
-     * @param int|null $height
+     *
+     * @param string   $url
+     * @param bool     $debug
+     * @param null|int $width
+     * @param null|int $height
+     *
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool|string
      */
-    protected function resize_image(string $path, int $width = null, int $height = null)
+    protected function resize_image(string $url, bool $debug, int $width = null, int $height = null)
     {
-        $manager = new ImageManager(['driver' => 'imagick']);
-        $hash = hash('sha256', $path . (!empty($width) ? "_$width" : '') . (!empty($height) ? "_$height" : ''));
+        $hash = hash('sha256', $url . (!empty($width) ? "_$width" : '') . (!empty($height) ? "_$height" : ''));
         $new_path = PROXY_IMAGES_DIR . $hash;
-
         if (file_exists($new_path)) {
             return $hash;
         }
-        try {
-            $image = $manager->make($path)
-                             ->resize($width, $height, function ($constraint) {
-                                 $constraint->aspectRatio();
-                                 $constraint->upsize();
-                             });
-        } catch (Exception $e) {
-            echo 'Message: ' . $e->getMessage() . "\n";
+        $this->store_image($url, $new_path);
+        if (!empty($width) || !empty($height)) {
+            try {
+                $image = Image::load($new_path);
+                if (!empty($width)) {
+                    $image->width($width);
+                }
+                if (!empty($height)) {
+                    $image->height($height);
+                }
+                $image->save($new_path);
+            } catch (Exception $e) {
+                echo 'Message: ' . $e->getMessage() . "\n";
 
-            return false;
+                return false;
+            }
         }
-        $image->save($new_path);
-        $this->optimize($new_path, false, false);
+        $this->optimize($new_path, false, $debug);
 
         return $hash;
     }
 
     /**
+     *
      * @param string   $path
-     * @param int|null $width
-     * @param int|null $height
+     * @param string   $url
      * @param bool     $debug
+     * @param null|int $width
+     * @param null|int $height
+     *
+     * @throws DependencyException
+     * @throws NotFoundException
+     * @throws \Envms\FluentPDO\Exception
      *
      * @return bool
      */
-    public function optimize_image(string $path, int $width = null, int $height = null, bool $debug = true)
+    public function optimize_image(string $path, string $url, bool $debug, int $width = null, int $height = null)
     {
-        $manager = new ImageManager(['driver' => 'imagick']);
-
-        if (!file_exists($path)) {
-            return false;
+        if (!empty($width) || !empty($height)) {
+            $hash = $this->resize_image($url, $debug, $width, $height);
+            $path = PROXY_IMAGES_DIR . $hash;
+        } else {
+            $this->optimize($path, false, $debug);
         }
-        if ($width || $height) {
-            $image = $manager->make($path)
-                             ->resize($width, $height, function ($constraint) {
-                                 $constraint->aspectRatio();
-                                 $constraint->upsize();
-                             });
-            $image->save($path);
-        }
-        $this->optimize($path, false, $debug);
         $this->set_permissions($path);
 
         return true;

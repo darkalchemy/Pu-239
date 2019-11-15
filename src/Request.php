@@ -37,6 +37,7 @@ class Request
     }
 
     /**
+     *
      * @param bool $all
      * @param bool $show_hidden
      *
@@ -62,6 +63,7 @@ class Request
     }
 
     /**
+     *
      * @param int    $limit
      * @param int    $offset
      * @param string $orderby
@@ -123,6 +125,7 @@ class Request
     }
 
     /**
+     *
      * @param int  $requestid
      * @param bool $is_staff
      * @param int  $userid
@@ -180,6 +183,7 @@ class Request
     }
 
     /**
+     *
      * @param array $set
      * @param int   $requestid
      *
@@ -198,6 +202,7 @@ class Request
     }
 
     /**
+     *
      * @param int  $id
      * @param bool $staff
      * @param int  $userid
@@ -219,6 +224,7 @@ class Request
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception

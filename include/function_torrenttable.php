@@ -52,6 +52,7 @@ function readMore($text, $char, $link)
 }
 
 /**
+ *
  * @param array  $res
  * @param array  $curuser
  * @param string $variant

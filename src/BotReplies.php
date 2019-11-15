@@ -28,6 +28,7 @@ class BotReplies
     }
 
     /**
+     *
      * @param array $values
      *
      * @throws Exception
@@ -50,6 +51,7 @@ class BotReplies
     }
 
     /**
+     *
      * @param array $set
      * @param int   $id
      *
@@ -89,6 +91,7 @@ class BotReplies
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception
@@ -106,6 +109,7 @@ class BotReplies
     }
 
     /**
+     *
      * @param int $id
      *
      * @throws Exception

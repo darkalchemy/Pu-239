@@ -13,6 +13,7 @@ use Pu239\Session;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
+ *
  * @param string $title
  * @param array  $stdhead
  * @param string $class
@@ -184,6 +185,7 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
 }
 
 /**
+ *
  * @param array $stdfoot
  *
  * @throws NotFoundException
@@ -390,10 +392,10 @@ function stdfoot(array $stdfoot = [])
 }
 
 /**
- * @param string      $heading
- * @param string      $text
- * @param string|null $outer_class
- * @param string|null $inner_class
+ * @param string  $heading
+ * @param string  $text
+ * @param ?string $outer_class
+ * @param ?string $inner_class
  *
  * @return string|void
  */

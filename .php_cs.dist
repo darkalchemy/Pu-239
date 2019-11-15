@@ -6,7 +6,6 @@ $config = PhpCsFixer\Config::create()
     ->setRules([
         '@PSR1'                               => true,
         '@PSR2'                               => true,
-        '@Symfony'                            => true,
         'psr4'                                => true,
         'align_multiline_comment'             => true,
         'array_indentation'                   => true,

@@ -34,6 +34,7 @@ function get_styles()
 }
 
 /**
+ *
  * @param array $styles
  * @param bool  $create
  *
@@ -128,9 +129,6 @@ function get_username()
     return get_webserver_user();
 }
 
-/**
- * @param string $group
- */
 function cleanup(string $group)
 {
     global $site_config;
@@ -155,6 +153,7 @@ function cleanup(string $group)
 }
 
 /**
+ *
  * @param bool $before
  *
  * @throws NotFoundException
