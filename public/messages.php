@@ -263,21 +263,23 @@ function insertJumpTo(int $mailbox, int $userid)
     if ($insertJumpTo === false || is_null($insertJumpTo)) {
         $res = sql_query('SELECT boxnumber,name FROM pmboxes WHERE userid=' . sqlesc($userid) . ' ORDER BY boxnumber') or sqlerr(__FILE__, __LINE__);
         $insertJumpTo = '
-            <form action="messages.php" method="get" accept-charset="utf-8">
-                <input type="hidden" name="action" value="view_mailbox">
-                <label for="box" class="right10">' . _('Jump to:') . '</label>
-                <select id="box" name="box" onchange="location=this.options[this.selectedIndex].value;">
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox === 1 ? 'selected' : '') . '>' . _('Inbox') . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox === -1 ? 'selected' : '') . '>' . _('Sentbox') . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox === -2 ? 'selected' : '') . '>' . _('Drafts') . '</option>
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . _('Deleted') . '</option>';
+            <div class="has-text-centered">
+                <form action="messages.php" method="get" accept-charset="utf-8">
+                    <input type="hidden" name="action" value="view_mailbox">
+                    <label for="box" class="right10">' . _('Jump to:') . '</label>
+                    <select id="box" name="box" onchange="location=this.options[this.selectedIndex].value;">
+                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=1" ' . ($mailbox === 1 ? 'selected' : '') . '>' . _('Inbox') . '</option>
+                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-1" ' . ($mailbox === -1 ? 'selected' : '') . '>' . _('Sentbox') . '</option>
+                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=-2" ' . ($mailbox === -2 ? 'selected' : '') . '>' . _('Drafts') . '</option>
+                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=0" ' . ($mailbox === 0 ? 'selected' : '') . '>' . _('Deleted') . '</option>';
         while ($row = mysqli_fetch_assoc($res)) {
             $insertJumpTo .= '
-                    <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ($mailbox === (int) $row['boxnumber'] ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
+                        <option value="' . $site_config['paths']['baseurl'] . '/messages.php?action=view_mailbox&amp;box=' . (int) $row['boxnumber'] . '" ' . ($mailbox === (int) $row['boxnumber'] ? 'selected' : '') . '>' . htmlsafechars($row['name']) . '</option>';
         }
         $insertJumpTo .= '
-                </select>
-            </form>';
+                    </select>
+                </form>
+            </div>';
         $cache->set('insertJumpTo_' . $userid, $insertJumpTo, $site_config['expires']['insertJumpTo']);
     }
 
@@ -290,4 +292,4 @@ if (empty($breadcrumbs)) {
         "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
     ];
 }
-echo stdhead($title, $stdhead, 'page-wrapper has-text-centered', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
