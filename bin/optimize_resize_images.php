@@ -36,8 +36,8 @@ $photos = $fluent->from('person')
                  ->select('photo AS url')
                  ->where('photo IS NOT NULL')
                  ->where('updated + 604800 < ?', TIME_NOW)
-                 //->limit($limit)
-                 //->offset($offset)
+                 ->limit($limit)
+                 ->offset($offset)
                  ->fetchAll();
 
 $count += process_images($photos, 'person');
