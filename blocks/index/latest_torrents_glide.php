@@ -2,12 +2,18 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
 use Pu239\Torrent;
 
 global $container, $site_config, $CURUSER;
 
-$torrent = $container->get(Torrent::class);
-$sliding_torrents = $torrent->get_latest_slider();
+$cache = $container->get(Cache::class);
+$torrents = $cache->get('torrent_slider_block_');
+if ($torrents === false || is_null($torrents)) {
+    $torrent = $container->get(Torrent::class);
+    $sliding_torrents = $torrent->get_latest_slider();
+    $cache->set('torrent_slider_block_', $torrents, 300);
+}
 
 if (!empty($sliding_torrents)) {
     shuffle($sliding_torrents);

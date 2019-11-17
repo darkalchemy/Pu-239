@@ -7,21 +7,35 @@ global $container;
 
 set_time_limit(18000);
 $start = microtime(true);
-for($i = 1; $i<=10; $i++) {
+$childs = [];
+for ($i = 1; $i <= 10; $i++) {
     $pid = pcntl_fork();
 
-    if($pid == -1) {
-        exit("Error forking...\n");
-    } else if($pid == 0) {
+    if ($pid == -1) {
+        die("Error forking...\n");
+    }
+    if ($pid) {
+        echo "PID $pid started\n";
+        $childs[] = $pid;
+    } else {
         $limit = 50;
-        $offset = $i ===  1 ? 0 : ($i - 1) * $limit;
-        echo "Starting thread $i\n";
+        $offset = $i === 1 ? 0 : ($i - 1) * $limit;
         exec('php ' . BIN_DIR . "optimize_resize_images.php $limit $offset");
         exit();
     }
 }
 
-while(pcntl_waitpid(0, $status) != -1);
+while (count($childs) > 0) {
+    foreach ($childs as $key => $pid) {
+        $res = pcntl_waitpid($pid, $status, WNOHANG);
+        if ($res == -1 || $res > 0) {
+            echo "PID $pid exited, " . count($childs) - 1 . " remaining\n";
+            unset($childs[$key]);
+        }
+    }
+
+    sleep(5);
+}
 
 $end = microtime(true);
 $run = $end - $start;
