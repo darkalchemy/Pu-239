@@ -531,7 +531,7 @@ $HTMLOUT .= "{$new_button}";
 if ($count) {
     $HTMLOUT .= ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagertop']}</div>" : '') . "
-            <div class='table-wrapper top20'>" . torrenttable($query, $user, 'index') . '</div>' . ($count > $torrentsperpage ? "
+            <div class='table-wrapper top20'>" . torrenttable($query, $user) . '</div>' . ($count > $torrentsperpage ? "
         <div class='top20'>{$pager['pagerbottom']}</div>" : '');
 } else {
     if (isset($cleansearchstr)) {

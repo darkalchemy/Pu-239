@@ -49,7 +49,6 @@ function get_date(int $date, string $method, int $norelative = 1, int $full_rela
     $use_12_hour = !empty($user['use_12_hour']) ? $user['use_12_hour'] : $site_config['site']['use_12_hour'];
     $time_string = $use_12_hour ? 'g:i:s a' : 'H:i:s';
     $time_string_without_seconds = $use_12_hour ? 'g:i a' : 'H:i';
-
     $time_options = [
         'JOINED' => $site_config['time']['joined'],
         'SHORT' => $site_config['time']['short'] . ' ' . $time_string,
@@ -188,4 +187,25 @@ function calc_time_difference(int $diff, bool $full)
     }
 
     return _('The time has passed.');
+}
+
+/**
+ * @param int $timestamp
+ *
+ * @return mixed
+ */
+function get_week_day(int $timestamp)
+{
+    $day_of_week = (int) date('w', $timestamp);
+    $weekdays = [
+        _('Sunday'),
+        _('Monday'),
+        _('Tuesday'),
+        _('Wednesday'),
+        _('Thursday'),
+        _('Friday'),
+        _('Saturday'),
+    ];
+
+    return $weekdays[$day_of_week];
 }
