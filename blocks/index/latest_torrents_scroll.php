@@ -2,13 +2,18 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
 use Pu239\Torrent;
 
-global $container,  $site_config, $CURUSER;
+global $container, $site_config, $CURUSER;
 
-$torrent = $container->get(Torrent::class);
-$torrents = $torrent->get_latest_scroller();
-
+$cache = $container->get(Cache::class);
+$torrents = $cache->get('torrent_scroller_block_');
+if ($torrents === false || is_null($torrents)) {
+    $torrent = $container->get(Torrent::class);
+    $torrents = $torrent->get_latest_scroller();
+    $cache->set('torrent_scroller_block_', $torrents, 300);
+}
 if (!empty($torrents)) {
     shuffle($torrents);
     $torrents_scroller .= "
