@@ -4784,4 +4784,18 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `images` ADD INDEX `type_imdb` (`type`, `imdb_id`)",
         'flush' => false,
     ],
+    [
+        'id' => 1573966751,
+        'info' => 'Update to user_blocks',
+        'date' => '16 Nov, 2019',
+        'query' => 'UPDATE `user_blocks` SET `index_page` = 1073741823 WHERE `index_page` = 134217727',
+        'flush' => false,
+    ],
+    [
+        'id' => 1573966752,
+        'info' => 'Update user_blocks',
+        'date' => '16 Nov, 2019',
+        'query' => 'ALTER TABLE `user_blocks` MODIFY `index_page` int(10) unsigned NOT NULL DEFAULT 1073741823',
+        'flush' => false,
+    ],
 ];
