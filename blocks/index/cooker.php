@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Pu239\Image;
+use Pu239\Torrent;
 use Pu239\Upcoming;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
@@ -11,6 +12,7 @@ global $container, $site_config;
 
 $cooker_class = $container->get(Upcoming::class);
 $recipes = $cooker_class->get_all($site_config['latest']['recipes_limit'], 0, 'expected', false, false, true, (bool) $user['hidden']);
+$torrent_class = $container->get(Torrent::class);
 $cooker .= "
     <a id='cooker-hash'></a>
     <div id='cooker' class='box'>
@@ -36,14 +38,14 @@ if (!empty($recipes) && is_array($recipes)) {
         preg_match('#(tt\d{7,8})#', $recipe['url'], $match);
         if (!empty($match[1])) {
             $imdb_id = $match[1];
-            $iamges_class = $container->get(Image::class);
+            $images_class = $container->get(Image::class);
             $background = $images_class->find_images($imdb_id, $type = 'background');
             $background = !empty($background) ? "style='background-image: url({$background});'" : '';
             $poster = !empty($recipe['poster']) ? $recipe['poster'] : $images_class->find_images($imdb_id, $type = 'poster');
             $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$recipe['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$recipe['name']}' class='tooltip-poster'>";
         }
         $chef = "<span class='" . get_user_class_name($recipe['class'], true) . "'>" . $recipe['username'] . '</span>';
-        $plot = $torrent->get_plot($imdb_id);
+        $plot = $torrent_class->get_plot($imdb_id);
         if (!empty($plot)) {
             $stripped = strip_tags($plot);
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
