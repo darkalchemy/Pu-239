@@ -288,6 +288,7 @@ function images_update()
                 url_proxy($image['url'], true, 450);
                 url_proxy($image['url'], true, 250);
                 url_proxy($image['url'], true, 100);
+                url_proxy($image['url'], true, null, 300);
                 url_proxy($image['url'], true, 250, null, 20);
             } elseif ($image['type'] === 'banner') {
                 url_proxy($image['url'], true, 1000, 185);

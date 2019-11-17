@@ -40,6 +40,8 @@ if ($purge) {
             $hashes[] = hash('sha256', $url['url'] . '_converted_' . '20');
             $hashes[] = hash('sha256', $url['url'] . '_450');
             $hashes[] = hash('sha256', $url['url'] . '_250');
+            $hashes[] = hash('sha256', $url['url'] . '_100');
+            $hashes[] = hash('sha256', $url['url'] . '_300');
         } elseif ($url['type'] === 'banner') {
             $hashes[] = hash('sha256', $url['url'] . '_1000');
         } elseif ($url['type'] === 'person') {

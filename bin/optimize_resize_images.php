@@ -95,6 +95,12 @@ function process_images(array $images, string $table)
                 $run4 = $end4 - $start4;
                 echo 'w100q100: ' . $run4 . "\n\n";
 
+                $start5 = microtime(true);
+                url_proxy($image['url'], true, null, 300);
+                $end5 = microtime(true);
+                $run5 = $end5 - $start5;
+                echo 'h300q100: ' . $run5 . "\n\n";
+
                 $start3 = microtime(true);
                 url_proxy($image['url'], true, 250, null, 20);
                 $end3 = microtime(true);
