@@ -37,6 +37,7 @@ function torrenttable(array $torrents, array $curuser)
 
     $session = $container->get(Session::class);
     $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
+    $is_free = get_events_data();
     $sorts = get_sorts();
 
     $heading = "
@@ -66,7 +67,6 @@ function torrenttable(array $torrents, array $curuser)
         $bookmark = get_bookmark($torrent);
         $subtitles = get_subtitles($torrent, $lookup);
         $audios = get_audios($torrent, $lookup);
-        $is_free = get_events_data();
         $torrent['free'] = $torrent['free'] < $is_free['free'] ? $is_free['free'] : $torrent['free'];
         $torrent['doubletorrent'] = $torrent['doubletorrent'] < $is_free['double'] ? $is_free['double'] : $torrent['doubletorrent'];
         $torrent['silver'] = $torrent['silver'] < $is_free['silver'] ? $is_free['silver'] : $torrent['silver'];
