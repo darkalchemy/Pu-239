@@ -55,7 +55,7 @@ if (isset($data['action'])) {
             $cid = isset($data['cid']) ? (int) $data['cid'] : 0;
             $tid = isset($data['tid']) ? (int) $data['tid'] : 0;
             $comment = $comment_class->get_comment_by_id($cid);
-            if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'formum_mod') || $user['id'] === $comment['user'])) {
+            if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'forum_mod') || $user['id'] === $comment['user'])) {
                 if ($comment_class->delete($cid)) {
                     $update = [
                         'comments' => new Literal('comments - 1'),
@@ -196,7 +196,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $values = [
             'text' => htmlsafechars($_POST['body']),
         ];
-        if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'formum_mod') || $user['id'] === $comment['user'])) {
+        if (!empty($comment) && (has_access($user['class'], UC_STAFF, 'forum_mod') || $user['id'] === $comment['user'])) {
             if ($comment_class->update($values, $cid)) {
                 $session->set('is-success', _('Comment Updated'));
             } else {
