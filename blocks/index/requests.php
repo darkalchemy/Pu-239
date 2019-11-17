@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Image;
 use Pu239\Request;
+use Pu239\Torrent;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
 $user = check_user_status();
@@ -11,6 +12,7 @@ global $container, $site_config;
 
 $request_class = $container->get(Request::class);
 $requested = $request_class->get_all($site_config['latest']['requests_limit'], 0, 'added', false, false, (bool) $user['hidden'], $user['id']);
+$torrent_class = $container->get(Torrent::class);
 $requests .= "
     <a id='requests-hash'></a>
     <div id='requests' class='box'>
@@ -43,7 +45,7 @@ if (!empty($requested) && is_array($requested)) {
             $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$request['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$request['name']}' class='tooltip-poster'>";
         }
         $chef = "<span class='" . get_user_class_name($request['class'], true) . "'>" . $request['username'] . '</span>';
-        $plot = $torrent->get_plot($imdb_id);
+        $plot = $torrent_class->get_plot($imdb_id);
         if (!empty($plot)) {
             $stripped = strip_tags($plot);
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
