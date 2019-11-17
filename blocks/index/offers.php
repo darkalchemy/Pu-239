@@ -11,6 +11,7 @@ global $container, $site_config;
 
 $offer_class = $container->get(Offer::class);
 $offered = $offer_class->get_all($site_config['latest']['offers_limit'], 0, 'added', false, false, (bool) $user['hidden']);
+$torrent_class = $container->get(Torrent::class);
 $offers .= "
     <a id='offers-hash'></a>
     <div id='offers' class='box'>
@@ -43,7 +44,7 @@ if (!empty($offered) && is_array($offered)) {
             $poster = empty($poster) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' alt='Poster for {$offer['name']}' class='tooltip-poster'>" : "<img src='" . url_proxy($poster, true, 250) . "' alt='Poster for {$offer['name']}' class='tooltip-poster'>";
         }
         $chef = "<span class='" . get_user_class_name($offer['class'], true) . "'>" . $offer['username'] . '</span>';
-        $plot = $torrent->get_plot($imdb_id);
+        $plot = $torrent_class->get_plot($imdb_id);
         if (!empty($plot)) {
             $stripped = strip_tags($plot);
             $plot = strlen($stripped) > 500 ? substr($plot, 0, 500) . '...' : $stripped;
