@@ -41,7 +41,7 @@ if (!$user) {
 }
 
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
+$usessl = $session->get('scheme') === 'https' || $site_config['site']['https_only'] === true ? 'https' : 'http';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {

@@ -335,6 +335,10 @@ span {
     word-break: normal;
 }
 
+span.is-wrapped {
+    word-break: break-word;
+}
+
 #base_content {
     border-radius: var(--default-radius);
     padding:       1.25em;
@@ -587,6 +591,12 @@ textarea {
     border-radius: var(--default-radius);
 }
 
+.img-torrent {
+    width:         100px;
+    height:        auto;
+    border-radius: 5px;
+}
+
 .portlet.is-fluid {
     margin-left:  0 !important;
     margin-right: 0 !important;
@@ -626,7 +636,8 @@ textarea {
 .level-center,
 .level-center-center,
 .level-wide {
-    display: flex;
+    display:       flex;
+    margin-bottom: 0 !important;
 }
 
 .level-right li:not(:first-child) {
@@ -1413,8 +1424,12 @@ ul li ul li {
     font-style:  normal;
 }
 
-.column {
-    padding-bottom: 0 !important;
+.column.no-pad {
+    padding:        0 !important;
+}
+
+.line-border {
+    border: 1px solid white;
 }
 
 @keyframes marquee {
@@ -1587,6 +1602,11 @@ ul li ul li {
 
     .flex-grid .col:not(:last-child) {
         margin-bottom: 1.25em;
+    }
+
+    .has-text-centered-mobile {
+        margin-left:  auto;
+        margin-right: auto;
     }
 }
 

@@ -493,7 +493,8 @@ function ratingpic($num)
         return null;
     }
 
-    return "<img src='{$site_config['paths']['images_baseurl']}/{$r}.gif' alt='Rating: $num / 5' title='Users have rated this: $num / 5' class='tooltipper'>";
+    $num = number_format($num, 1);
+    return "<img src='{$site_config['paths']['images_baseurl']}{$r}.gif' alt='Rating: $num / 5' title='Users have rated this: $num / 5' class='tooltipper'>";
 }
 
 /**
