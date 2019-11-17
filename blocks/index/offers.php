@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Image;
 use Pu239\Offer;
+use Pu239\Torrent;
 
 require_once INCL_DIR . 'function_torrent_hover.php';
 $user = check_user_status();
