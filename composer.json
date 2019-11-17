@@ -16,6 +16,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-mysqli": "*",
+        "ext-pcntl": "*",
         "ext-pdo": "*",
         "ext-posix": "*",
         "ext-readline": "*",

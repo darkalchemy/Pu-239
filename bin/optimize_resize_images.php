@@ -13,6 +13,9 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 require_once __DIR__ . '/../include/bittorrent.php';
 global $container;
 
+$limit = isset($argv[1]) && is_numeric($argv[1]) ? $argv[1] : 500;
+$offset = isset($argv[2]) && is_numeric($argv[2]) ? $argv[2] : 0;
+$count = 0;
 set_time_limit(18000);
 $image_proxy = $container->get(ImageProxy::class);
 $path = IMAGES_DIR . 'proxy/';
@@ -23,15 +26,20 @@ $images = $fluent->from('images')
                  ->select('type')
                  ->where('fetched = "no"')
                  ->orderBy('added DESC')
+                 ->limit($limit)
+                 ->offset($offset)
                  ->fetchAll();
-$count = process_images($images, 'images');
+$count += process_images($images, 'images');
 
 $photos = $fluent->from('person')
                  ->select(null)
                  ->select('photo AS url')
                  ->where('photo IS NOT NULL')
                  ->where('updated + 604800 < ?', TIME_NOW)
+                 //->limit($limit)
+                 //->offset($offset)
                  ->fetchAll();
+
 $count += process_images($photos, 'person');
 
 /**
