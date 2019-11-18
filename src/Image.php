@@ -103,6 +103,7 @@ class Image
                                    ->select('url')
                                    ->where('type = ?', $type)
                                    ->where('imdb_id = ?', $imdb)
+                                   ->where('fetched = "yes"')
                                    ->fetchAll();
 
             if (!empty($images)) {
@@ -199,7 +200,8 @@ class Image
                 'poster',
                 'banner',
                 'background',
-            ])) {
+            ])
+            ) {
                 $count = $count->where('type = :type', [':type' => $term]);
             } else {
                 if (is_numeric($term)) {
@@ -240,7 +242,8 @@ class Image
                 'poster',
                 'banner',
                 'background',
-            ])) {
+            ])
+            ) {
                 $query = $query->where('type = :type', [':type' => $term]);
             } else {
                 if (is_numeric($term)) {

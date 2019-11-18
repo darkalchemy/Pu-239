@@ -309,13 +309,13 @@ class Torrent
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
             if ($seeders) {
                 $this->cache->deleteMulti([
-                    'scroller_torrents_',
-                    'slider_torrents_',
-                    'latest_torrents_',
-                    'top_torrents_',
-                    'motw_',
-                    'staff_picks_',
-                ]);
+                                              'scroller_torrents_',
+                                              'slider_torrents_',
+                                              'latest_torrents_',
+                                              'top_torrents_',
+                                              'motw_',
+                                              'staff_picks_',
+                                          ]);
             }
         }
 
@@ -348,26 +348,26 @@ class Torrent
         if (!empty($tid) && !empty($owner)) {
             $key = 'torrent_hash_' . bin2hex($infohash);
             $this->cache->deleteMulti([
-                $key,
-                'peers_' . $owner,
-                'coin_points_' . $tid,
-                'latest_comments_',
-                'top_torrents_',
-                'latest_torrents_',
-                'latest_torrents_' . implode('_', $this->site_config['categories']['movie']),
-                'latest_torrents_' . implode('_', $this->site_config['categories']['tv']),
-                'scroller_torrents_',
-                'torrent_details_' . $tid,
-                'latest_torrents_',
-                'slider_torrents_',
-                'torrent_poster_count_',
-                'torrent_banner_count_',
-                'backgrounds_',
-                'get_torrent_count_',
-                'torrent_descr_' . $tid,
-                'staff_picks_',
-                'motw_',
-            ]);
+                                          $key,
+                                          'peers_' . $owner,
+                                          'coin_points_' . $tid,
+                                          'latest_comments_',
+                                          'top_torrents_',
+                                          'latest_torrents_',
+                                          'latest_torrents_' . implode('_', $this->site_config['categories']['movie']),
+                                          'latest_torrents_' . implode('_', $this->site_config['categories']['tv']),
+                                          'scroller_torrents_',
+                                          'torrent_details_' . $tid,
+                                          'latest_torrents_',
+                                          'slider_torrents_',
+                                          'torrent_poster_count_',
+                                          'torrent_banner_count_',
+                                          'backgrounds_',
+                                          'get_torrent_count_',
+                                          'torrent_descr_' . $tid,
+                                          'staff_picks_',
+                                          'motw_',
+                                      ]);
         }
 
         if ($added > TIME_NOW - (14 * 86400)) {
@@ -597,6 +597,7 @@ class Torrent
                                             ->select(null)
                                             ->select('url')
                                             ->where('type = "banner"')
+                                            ->where('fetched = "yes"')
                                             ->where('imdb_id = ?', $torrent['imdb_id'])
                                             ->fetchAll();
                     if (!empty($banners)) {
