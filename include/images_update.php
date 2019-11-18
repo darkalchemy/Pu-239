@@ -276,6 +276,15 @@ function images_update()
                      ->limit(50)
                      ->fetchAll();
 
+    if (empty($images)) {
+        $images = $fluent->from('images')
+                         ->select(null)
+                         ->select('url')
+                         ->select('type')
+                         ->orderBy('added DESC')
+                         ->limit(500)
+                         ->fetchAll();
+    }
     $values = [];
     echo 'Fetching, resizing and optimizing ' . count($images) . "\n";
     foreach ($images as $image) {
@@ -473,6 +482,15 @@ function images_update()
                       ->limit(50)
                       ->fetchAll();
 
+    if (empty($persons)) {
+        $persons = $fluent->from('person')
+                          ->select(null)
+                          ->select('imdb_id')
+                          ->select('photo')
+                          ->orderBy('added DESC')
+                          ->limit(500)
+                          ->fetchAll();
+    }
     foreach ($persons as $person) {
         get_imdb_person($person['imdb_id']);
     }
