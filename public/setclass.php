@@ -2,6 +2,7 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
 use Pu239\Database;
 use Pu239\User;
 
@@ -27,6 +28,8 @@ if (isset($_GET['action']) && htmlsafechars($_GET['action']) === 'editclass') {
     $fluent->deleteFrom('ajax_chat_online')
            ->where('userID = ?', $user['id'])
            ->execute();
+    $cache = $container->get(Cache::class);
+    $cache->delete('chat_users_list_');
     header("Location: {$site_config['paths']['baseurl']}/" . $returnto);
     die();
 }
