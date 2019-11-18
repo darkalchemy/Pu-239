@@ -53,6 +53,7 @@ function torrenttable(array $torrents, array $curuser)
         $lookup = get_lookup();
         $catinfo = get_cat_info($torrent, $lookup);
         $new = $torrent['added'] >= $curuser['last_browse'] ? "<span class='tag is-danger'>" . _('New') . "!</span>" : '';
+        $sticky = $torrent['sticky'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}sticky.gif' class='tooltipper icon' alt='" . _('Sticky') . "' title='" . _('Sticky') . "'>" : '';
         $poster = get_poster($torrent);
         $uploader = get_uploader($torrent);
         $uploaded = get_week_day($torrent['added']) . ', ' . get_date($torrent['added'], 'LONG', 1, 0);
@@ -92,7 +93,7 @@ function torrenttable(array $torrents, array $curuser)
                 <div class='top10 bottom10'>
                     <div class='bg-06 round5 padding10 level-wide'>
                         <div class='level level-left w-75'>{$staff_pick}{$title}</div>
-                        <div>{$new}</div>
+                        <div>{$new}{$sticky}</div>
                     </div>
                     <div class='columns is-marginless is-paddingless'>
                         <div class='column no-pad is-1 has-text-centered-mobile'>
@@ -313,8 +314,6 @@ function get_icons($row)
     global $site_config;
 
     $icons = [];
-    $icons[] = $row['sticky'] === 'yes' ? "
-        <img src='{$site_config['paths']['images_baseurl']}sticky.gif' class='tooltipper icon' alt='" . _('Sticky') . "' title='" . _('Sticky') . "'>" : '';
     $title = "
         <div class=\"size_5 has-text-centered has-text-success\">" . _('VIP') . "</div>" . _('This torrent is for VIP users only!');
     $icons[] = $row['vip'] == 1 ? "
