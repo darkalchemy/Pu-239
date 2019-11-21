@@ -366,24 +366,26 @@ function clear_image_cache()
 
 /**
  *
- * @param int $size
+ * @param int    $width
+ * @param int    $height
+ * @param string $color
  *
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return bool|Image|mixed|string
  */
-function placeholder_image(int $size = 10)
+function placeholder_image(int $width = 10, int $height = 10, string $color = '#7d7e7d')
 {
     global $container;
 
     $cache = $container->get(Cache::class);
-    $image = $cache->get('placeholder_image_' . $size);
+    $image = $cache->get('placeholder_image_' . $width . '_' . $height . '_' . $color);
     if ($image === false || is_null($image)) {
         $image_proxy = new ImageProxy();
-        $image = $image_proxy->create_image($size, $size, '#7d7e7d');
+        $image = $image_proxy->create_image($width, $height, $color);
         $image = 'data:image/jpeg;charset=utf-8;base64,' . base64_encode((string) $image);
-        $cache->set('placeholder_image_' . $size, $image, 0);
+        $cache->set('placeholder_image_' . $width . '_' . $height . '_' . $color, $image, 0);
     }
 
     return $image;

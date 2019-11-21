@@ -39,6 +39,7 @@ function torrenttable(array $torrents, array $curuser)
     $scheme = $session->get('scheme') === 'http' ? '' : '&amp;ssl=1';
     $is_free = get_events_data();
     $sorts = get_sorts();
+    $image = placeholder_image(100, 150);
 
     $heading = "
         <tr>
@@ -54,7 +55,7 @@ function torrenttable(array $torrents, array $curuser)
         $catinfo = get_cat_info($torrent, $lookup);
         $new = $torrent['added'] >= $curuser['last_browse'] ? "<span class='tag is-danger'>" . _('New') . "!</span>" : '';
         $sticky = $torrent['sticky'] === 'yes' ? "<img src='{$site_config['paths']['images_baseurl']}sticky.gif' class='tooltipper icon' alt='" . _('Sticky') . "' title='" . _('Sticky') . "'>" : '';
-        $poster = get_poster($torrent);
+        $poster = get_poster($torrent, $image);
         $uploader = get_uploader($torrent);
         $uploaded = get_week_day($torrent['added']) . ', ' . get_date($torrent['added'], 'LONG', 1, 0);
         $title = "<a href='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}'><span class='is-wrapped'>" . format_comment($torrent['name']) . "</span></a>";
@@ -520,6 +521,7 @@ function get_bookmark($row)
 
 /**
  * @param $row
+ * @param mixed $image
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -528,7 +530,7 @@ function get_bookmark($row)
  *
  * @return string
  */
-function get_poster($row)
+function get_poster($row, $image)
 {
     global $container, $site_config;
 
@@ -536,7 +538,7 @@ function get_poster($row)
         $image_class = $container->get(Image::class);
         $row['poster'] = $image_class->find_images($row['imdb_id'], 'poster');
     }
-    $poster = empty($row['poster']) ? "<img src='{$site_config['paths']['images_baseurl']}noposter.png' class='img-torrent' alt='" . _('Poster') . "'>" : "<img src='" . url_proxy($row['poster'], true, 100) . "' class='img-torrent' alt='" . _('Poster') . "'>";
+    $poster = empty($row['poster']) ? "<img src='$image' data-src='{$site_config['paths']['images_baseurl']}noposter.png' class='img-torrent' alt='" . _('Poster') . "'>" : "<img src='" . url_proxy($row['poster'], true, 100) . "' class='img-torrent' alt='" . _('Poster') . "'>";
 
     return $poster;
 }
