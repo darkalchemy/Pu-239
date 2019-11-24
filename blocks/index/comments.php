@@ -52,7 +52,7 @@ foreach ($comments as $comment) {
                             <td class='has-text-centered'>$caticon</td>
                             <td>";
     $block_id = "comment_id_{$comment['comment_id']}";
-    $posted_comments .= torrent_tooltip(format_comment($comment['text']), $comment['id'], $block_id, $comment['name'], $comment['poster'], $uploader, $added, $comment['size'], $comment['seeders'], $comment['leechers'], $comment['imdb_id'], $comment['rating'], $comment['year'], $comment['subtitles'], $comment['audios'], $comment['genre'], false, $comment['comment_id']);
+    $posted_comments .= torrent_tooltip(format_comment($comment['text']), $comment['id'], $block_id, $comment['name'], $comment['poster'], $uploader, (int) $comment['added'], $comment['size'], $comment['seeders'], $comment['leechers'], $comment['imdb_id'], $comment['rating'], $comment['year'], $comment['subtitles'], $comment['audios'], $comment['genre'], false, $comment['comment_id']);
     $posted_comments .= "
                             <td class='has-text-centered'>$formatted</td>
                             <td class='has-text-centered'>" . get_date((int) $added, 'LONG') . "</td>
