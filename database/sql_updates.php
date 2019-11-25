@@ -4798,4 +4798,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `user_blocks` MODIFY `index_page` int(10) unsigned NOT NULL DEFAULT 1073741823',
         'flush' => false,
     ],
+    [
+        'id' => 1574642811,
+        'info' => 'Add index',
+        'date' => '24 Nov, 2019',
+        'query' => 'ALTER TABLE `categories` ADD INDEX `hidden` (`hidden`)',
+        'flush' => false,
+    ],
 ];
