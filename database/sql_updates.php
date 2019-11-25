@@ -4805,4 +4805,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `categories` ADD INDEX `hidden` (`hidden`)',
         'flush' => false,
     ],
+    [
+        'id' => 1574642812,
+        'info' => 'Change index',
+        'date' => '24 Nov, 2019',
+        'query' => 'ALTER TABLE `freeslots` ADD INDEX `torrentid_userid` (`torrentid`, `userid`)',
+        'flush' => false,
+    ],
 ];
