@@ -166,14 +166,14 @@ if (isset($_GET['vip'])) {
 }
 if (isset($_GET['unsnatched']) && $_GET['unsnatched'] == 1) {
     $count->where('s.to_go IS NULL')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
+          ->leftJoin('snatched AS s ON t.id = s.torrentid AND s.userid = ?', $user['id']);
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id'])
+          ->leftJoin('snatched AS s ON t.id = s.torrentid AND s.userid = ?', $user['id'])
           ->having('to_go = -1');
     $addparam .= 'unsnatched=1&amp;';
 } else {
     $query->select('IF(s.to_go IS NOT NULL, (t.size - s.to_go) / t.size, -1) AS to_go')
-          ->leftJoin('snatched AS s on s.torrentid = t.id AND s.userid = ?', $user['id']);
+          ->leftJoin('snatched AS s ON t.id = s.torrentid AND s.userid = ?', $user['id']);
 }
 
 $cats = [];
