@@ -64,7 +64,9 @@ $excludes = [
     ROOT_DIR . '.git/',
     ROOT_DIR . '.idea/',
 ];
-
+if (isset($argv[1]) && $argv[1] === 'quick') {
+    $excludes[] = PROXY_IMAGES_DIR;
+}
 $chmod_folders = [
     VENDOR_DIR,
 ];
