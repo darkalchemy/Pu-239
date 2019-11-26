@@ -14,9 +14,7 @@ require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_common.php';
 
 // utorrent 2.2.1 sends cookie header, to allow utorrent to work with this tracker you must not block if cookie header is set
-if (PRODUCTION && (/*isset($_SERVER['HTTP_COOKIE']) || */
-        isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET'])
-)) {
+if (PRODUCTION && (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET']))) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 
@@ -25,16 +23,18 @@ $no_peer_id = '';
 $torrent_updateset = $snatched_values = $user_updateset = [];
 global $container, $site_config;
 
-foreach ([
-    'torrent_pass',
-    'info_hash',
-    'peer_id',
-    'port',
-    'downloaded',
-    'uploaded',
-    'left',
-    'compact',
-] as $x) {
+foreach (
+    [
+        'torrent_pass',
+        'info_hash',
+        'peer_id',
+        'port',
+        'downloaded',
+        'uploaded',
+        'left',
+        'compact',
+    ] as $x
+) {
     if (!isset($_GET[$x])) {
         err("Missing key: $x");
     }
@@ -73,11 +73,7 @@ $clientip = isset($_GET['ip']) && validip($_GET['ip']) ? $_GET['ip'] : $realip;
 if ($clientip === '127.0.0.1') {
     $ip = $clientip = $realip = '10.0.0.93';
 }
-foreach ([
-    'num want',
-    'numwant',
-    'num_want',
-] as $x) {
+foreach (['num want', 'numwant', 'num_want'] as $x) {
     if (isset($_GET[$x])) {
         $num = (int) $_GET[$x];
         $rsize = $num > 0 && $num < $rsize ? $num : $rsize;
@@ -101,14 +97,14 @@ $seeder = $left === 0 ? 'yes' : 'no';
 $torrents_class = $container->get(Torrent::class);
 $torrent = $torrents_class->get_torrent_from_hash($info_hash);
 if (!$torrent) {
-    err('torrent not registered with this tracker');
+    err('torrent is not registered with this tracker');
 }
 $users_class = $container->get(User::class);
 $user = $users_class->get_user_from_torrent_pass($torrent_pass);
 $peer_class = $container->get(Peer::class);
 if (empty($event) || $event !== 'stopped') {
     if (empty($user) || empty($user['id'])) {
-        err('Invalid torrent_pass. Please redownload the torrent from ' . $site_config['paths']['baseurl']);
+        err('Invalid torrent_pass. Please re-download the torrent from ' . $site_config['paths']['baseurl']);
     } elseif ($user['status'] === 5) {
         err("Permission denied, you're account has been suspended");
     } elseif ($user['status'] === 2) {
@@ -326,7 +322,7 @@ if ($upthis > 0 || $downthis > 0) {
             $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
         }
     }
-    if ($upthis > 0) {
+    if ($site_config['announce']['incomplete_seed'] && $upthis > 0) {
         if (!$crazyhour_on) {
             $user_updateset['uploaded'] = $user['uploaded'] + ($torrent['doubleslot'] != 0 || $isdouble ? ($upthis * 2) : $upthis);
         } else {

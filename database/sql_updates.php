@@ -4812,4 +4812,11 @@ KEY `expires` (`expires`)
         'query' => 'ALTER TABLE `freeslots` ADD INDEX `torrentid_userid` (`torrentid`, `userid`)',
         'flush' => false,
     ],
+    [
+        'id' => 1574726473,
+        'info' => 'Add incomplete_seed to site_config',
+        'date' => '25 Nov, 2019',
+        'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('announce', 'incomplete_seed', 'bool', true, 'Upload credit earned for incomplete downloads.')",
+        'flush' => true,
+    ],
 ];
