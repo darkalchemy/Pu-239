@@ -322,7 +322,7 @@ if ($upthis > 0 || $downthis > 0) {
             $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
         }
     }
-    if ($site_config['announce']['incomplete_seed'] && $upthis > 0) {
+    if (($site_config['announce']['incomplete_seed'] || $seeder === 'yes') && $upthis > 0) {
         if (!$crazyhour_on) {
             $user_updateset['uploaded'] = $user['uploaded'] + ($torrent['doubleslot'] != 0 || $isdouble ? ($upthis * 2) : $upthis);
         } else {
@@ -362,8 +362,10 @@ if ($event === 'completed' || ($event === 'started' && $left === 0)) {
     $snatched_values['finished'] = 'yes';
 }
 if (!empty($snatched)) {
-    $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
-    $snatched_values['real_uploaded'] = $snatched['real_uploaded'] + $real_uploaded;
+    if ($site_config['announce']['incomplete_seed'] || $seeder === 'yes') {
+        $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
+        $snatched_values['real_uploaded'] = $snatched['real_uploaded'] + $real_uploaded;
+    }
     $snatched_values['downloaded'] = $snatched['downloaded'] + ($ratio_free ? 0 : $downthis);
     $snatched_values['real_downloaded'] = $snatched['real_downloaded'] + ($ratio_free ? 0 : $real_downloaded);
     if (isset($self)) {
