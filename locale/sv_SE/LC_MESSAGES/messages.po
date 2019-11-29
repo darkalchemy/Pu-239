@@ -54,15 +54,39 @@ msgid ""
 "\n"
 "</head>\n"
 "<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+" </head>\n"
+" <body>\n"
+"     <p> Du har begärt ett nytt användarkonto på {0} och du har angett den här adressen ({1}) som användarkontakt. </p>\n"
+"     <p> Om du inte gjorde det, ignorera detta e-postmeddelande. Personen som skrev in din e-postadress hade IP-adressen {2}. Svara inte. </p>\n"
+"     <p> För att bekräfta din användarregistrering måste du följa denna länk: </p>\n"
+"     <p> {3} </p>\n"
+"     <p> När du har gjort det kommer du att kunna använda ditt nya konto. Om du inte gör det kommer ditt konto att raderas inom 24 timmar. Vi uppmanar dig att läsa {4} REGLER {5} och {6} FAQ {5} innan du börjar använda {0}. </p>\n"
+" </body>\n"
+" </html>"
+
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
 "<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
 "<p>The request originated from {1}.</p>\n"
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 msgstr ""
@@ -74,10 +98,10 @@ msgstr ""
 " <p> Om du inte gjorde det kan du ignorera det här e-postmeddelandet. Svara inte. </p>\n"
 " <p> Om du vill bekräfta denna begäran, följ denna länk: </p>\n"
 " <br>\n"
-" <p> <b> {2} /recover.php?selector= {3} & token = {4} </b> </p>\n"
+" <p> <b> {2} </b> </p>\n"
 " <br>\n"
 " <p> När du har gjort det kommer du att kunna logga in med det nya lösenordet. </p>\n"
-" <p> - {5} </p>\n"
+" <p> - {3} </p>\n"
 " </body>\n"
 " </html>"
 
@@ -476,7 +500,7 @@ msgid "0-byte NFO"
 msgstr "0-byte NFO"
 
 #, no-php-format
-msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
 msgstr "100 = {0} font skalning <br> 50 = {1} font skalning <br> Detta åsidosätter standardtypstorleken."
 
 msgid "1st Post Preview"
@@ -498,12 +522,12 @@ msgid ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -523,11 +547,11 @@ msgstr ""
 " </head>\n"
 " <body>\n"
 " <p> Du har begärt att din användarprofil (användarnamn <#USERNAME#>) på <#SITENAME#> ska uppdateras med den här e-postadressen (<#USEREMAIL#>) som användarkontakt. </p>\n"
-" <p> Om du inte gjorde det, vänligen ignorera det här e-postmeddelandet och ingenting kommer att ändras. Personen som skrev in din e-postadress hade IP-adressen <#IP_ADDRESS#>. Var god och svara ej på detta mail. </p>\n"
+" <p> Om du inte gjorde detta, vänligen ignorera detta e-postmeddelande och ingenting kommer att ändras. Personen som skrev in din e-postadress hade IP-adressen <#IP_ADDRESS#>. Var god och svara ej på detta mail. </p>\n"
 " <br>\n"
-" <p> Följ den här länken för att slutföra uppdateringen av din användarprofil: </p >\n"
+" <p> Följ den här länken för att slutföra uppdateringen av din användarprofil: </p>\n"
 " <p> <#CHANGE_LINK#> </p>\n"
-" <p> Din nya e-postadress kommer att visas i din profil när du har gjort det. Annars kommer din profil att förbli oförändrad. </p >\n"
+" <p> Din nya e-postadress kommer att visas i din profil när du har gjort det. Annars kommer din profil att förbli oförändrad. </p>\n"
 " <p> - <#SITENAME#> </p>\n"
 " </body>\n"
 " </html>"
@@ -649,10 +673,6 @@ msgstr "AJAX Chatthöjd"
 
 msgid "APC(u) Hits: "
 msgstr "APC (u) Träffar:"
-
-#, no-php-format
-msgid "APC(u) Hits: {0}"
-msgstr "APC (u) Träffar: {0}"
 
 msgid "API"
 msgstr "API"
@@ -1055,10 +1075,10 @@ msgstr "Äventyr"
 #, no-php-format
 msgid ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 msgstr ""
 "När du har gjort det kan {0} behöva bekräfta ditt konto. <br>\n"
-"        Vi uppmanar dig att läsa REGLER och FAQ innan du börjar använda {1}."
+"        Vi uppmanar dig att läsa {1} REGLER {2} och {3} FAQ {4} innan du börjar använda {5}."
 
 msgid "Age"
 msgstr "Ålder"
@@ -1519,6 +1539,9 @@ msgstr "Avatarval inaktiverat ="
 msgid "Avatar?"
 msgstr "Avatar?"
 
+msgid "Avatars"
+msgstr "Avatars"
+
 msgid "Avatars possible = No"
 msgstr "Avatarer möjligt = Nej"
 
@@ -1527,9 +1550,6 @@ msgstr "Avatarer möjligt = Ja"
 
 msgid "Avatars settings changed!"
 msgstr "Avatars-inställningarna ändrades!"
-
-msgid "Avatars:"
-msgstr "avatarer:"
 
 msgid "Avg Row Length"
 msgstr "Genomsnittlig radlängd"
@@ -1688,6 +1708,15 @@ msgstr "Satsa på ett nummer"
 
 msgid "Bet on color"
 msgstr "Satsa på färg"
+
+msgid "Biography"
+msgstr "Biografi"
+
+msgid "Birth Place"
+msgstr "Födelseort"
+
+msgid "Birthdate"
+msgstr "Födelsedatum"
 
 msgid "Birthday"
 msgstr "Födelsedag"
@@ -1881,6 +1910,9 @@ msgstr "Om du bryter mot dessa regler kan du bli förbjuden!"
 msgid "Browse Torrents"
 msgstr "Bläddra i Torrenter"
 
+msgid "Browse by IMDb"
+msgstr "Bläddra efter IMDb"
+
 msgid "Browse default<br>categories"
 msgstr "Bläddra i standardkategorierna <br>"
 
@@ -1919,6 +1951,9 @@ msgstr "Bugs"
 
 msgid "Bump a torrent"
 msgstr "Stoppa en torrent"
+
+msgid "Bumped"
+msgstr "Bumped"
 
 msgid "Burning"
 msgstr "Brinnande"
@@ -1975,6 +2010,9 @@ msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG Reader"
+
+msgid "CHECKED"
+msgstr "KONTROLLERADE"
 
 #, no-php-format
 msgid "CLOSED => {0}"
@@ -2040,11 +2078,11 @@ msgstr "Kattnamn"
 msgid "Catalog"
 msgstr "Katalog"
 
+msgid "Categories"
+msgstr "kategorier"
+
 msgid "Categories as images"
 msgstr "Kategorier som bilder"
-
-msgid "Categories:"
-msgstr "kategorier:"
 
 msgid "Category"
 msgstr "Kategori"
@@ -2506,6 +2544,10 @@ msgid "Congratulations!"
 msgstr "Grattis!"
 
 #, no-php-format
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+msgstr "Grattis, du har vunnit: {0}. Detta har lagts till din totala mängd seedbonus. Tack för att du spelade Lotteri."
+
+#, no-php-format
 msgid "Congratulations, you have just won ''{0}''"
 msgstr "Grattis, du har precis vunnit '' {0} ''"
 
@@ -2660,6 +2702,9 @@ msgstr "poäng:"
 
 msgid "Crime"
 msgstr "Brottslighet"
+
+msgid "Critics"
+msgstr "Kritik"
 
 msgid "Cry"
 msgstr "Gråta"
@@ -2863,6 +2908,9 @@ msgstr "Dödsdömda"
 msgid "Debug Info"
 msgstr "Felsöknings information"
 
+msgid "Deceased"
+msgstr "Den avlidne"
+
 msgid "December"
 msgstr "december"
 
@@ -2925,9 +2973,6 @@ msgstr "Radera PM"
 
 msgid "Delete PMs"
 msgstr "Radera PM"
-
-msgid "Delete PMs:"
-msgstr "Ta bort PM:"
 
 msgid "Delete Post"
 msgstr "Radera inlägg"
@@ -3240,6 +3285,12 @@ msgstr "Donatorstatus inställd av {0}"
 msgid "Donors"
 msgstr "donatorer"
 
+msgid "Double Upload Slot"
+msgstr "Dubbel uppladdningslucka"
+
+msgid "Double Upload Slot in Use"
+msgstr "Dubbel uppladdningslucka som används"
+
 msgid "Doubled Down"
 msgstr "Fördubblats"
 
@@ -3548,8 +3599,8 @@ msgstr "E-postförbud {0} togs bort av {1}"
 msgid "Email has not been verified."
 msgstr "E-postmeddelandet har inte verifierats."
 
-msgid "Email notification:"
-msgstr "E-postmeddelande:"
+msgid "Email notification"
+msgstr "E-postmeddelande"
 
 #, no-php-format
 msgid "Email: {0} is unavailable."
@@ -3961,8 +4012,8 @@ msgstr "Händelse"
 msgid "Every torrent downloaded in the happy hour is free"
 msgstr "Varje torrent som laddas ner i happy hour är gratis"
 
-msgid "Example:"
-msgstr "Exempel:"
+msgid "Example"
+msgstr "Exempel"
 
 #, no-php-format
 msgid "Exchange your {0}{1}{2} Karma Bonus Points for goodies!"
@@ -4004,6 +4055,9 @@ msgstr "FPS"
 msgid "FREE Status "
 msgstr "GRATIS status"
 
+msgid "FTPing"
+msgstr "FTPing"
+
 msgid "Failed Attempts"
 msgstr "Misslyckade försök"
 
@@ -4034,8 +4088,8 @@ msgstr "Filnamn är inte tillåtet"
 msgid "File not allowed only .srt , .sub , .vtt or .txt files"
 msgstr "Filen tillåts inte bara .srt-, .sub-, .vtt- eller .txt-filer"
 
-msgid "File size: "
-msgstr "Filstorlek:"
+msgid "File size"
+msgstr "Filstorlek"
 
 msgid "File types supported"
 msgstr "Filtyper som stöds"
@@ -4132,8 +4186,8 @@ msgstr "Spola torrenter"
 msgid "Flush torrents?"
 msgstr "Spola torrenter?"
 
-msgid "Flysystem Cache: "
-msgstr "Flysystem-cache:"
+msgid "Flysystem Cache"
+msgstr "Flysystem-cache"
 
 msgid "Folder Exists?"
 msgstr "Mapp finns?"
@@ -4244,8 +4298,17 @@ msgstr "Gratis Leech Slots"
 msgid "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 msgstr "Gratis Leech Slots Mass Bonus tillagd - AutoSystem.\n"
 
+msgid "Free Slot"
+msgstr "Gratis spelautomat"
+
+msgid "Free Slot in Use"
+msgstr "Gratis spelautomat i användning"
+
 msgid "Free Slots added"
 msgstr "Gratis slots lagt till"
+
+msgid "Free Torrent"
+msgstr "Gratis Torrent"
 
 msgid "Free Torrent!"
 msgstr "Gratis Torrent!"
@@ -4340,6 +4403,9 @@ msgstr "Freeleech?"
 
 msgid "Freeslots and Freeleech?"
 msgstr "Freeslots och Freeleech?"
+
+msgid "Friday"
+msgstr "fredag"
 
 msgid "Friend was added successfully."
 msgstr "Vän lades till."
@@ -4518,9 +4584,6 @@ msgstr "Gå till sista"
 
 msgid "Go back"
 msgstr "Gå tillbaka"
-
-msgid "Go to My Bookmarks"
-msgstr "Gå till Mina bokmärken"
 
 msgid "Go to the last post in this thread"
 msgstr "Gå till det sista inlägget i den här tråden"
@@ -4822,9 +4885,6 @@ msgstr "Hastighetsuppladdningsstatus."
 
 msgid "Hip Hop"
 msgstr "Hiphop"
-
-msgid "His wit's as thick as a Tewkesbury mustard."
-msgstr "Hans vidd är lika tjock som en Tewkesbury senap."
 
 msgid "Historical"
 msgstr "Historisk"
@@ -5234,9 +5294,6 @@ msgstr "Om du känner att avbrottet är felaktigt, vänligen kontakta en anstäl
 msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr "Om du har någon användare som får ett rykte som överskrider din lägsta negativa nivå kommer denna fras att användas för dem. Om du inte vill använda den här frasen, se till att du anger ett negativt rykte som är större än den största poängen (negativ) som en användare på ditt forum har."
 
-msgid "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-msgstr "Om du har laddat ner denna torrent, visar den din slutförda procentsats, annars visar -."
-
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr "Om du har glömt ditt lösenord kan du hämta det på"
 
@@ -5252,9 +5309,6 @@ msgstr "Om du sparar tillräckligt med dem, kan du byta in dem för godbitar som
 #, no-php-format
 msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr "Om du tror att du kan matcha dessa kriterier tveka inte att {0} kontakta {1} en av administratörerna."
-
-msgid "If you want to recommend this torrent check this box!"
-msgstr "Om du vill rekommendera denna torrent markerar du den här rutan!"
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr "Om du vill byta namn på ämnet måste du ange ett namn!"
@@ -5833,6 +5887,9 @@ msgstr "Senaste inlägget"
 msgid "Last Post by"
 msgstr "Senaste inlägget av"
 
+msgid "Last Poster"
+msgstr "Sista affischen"
+
 msgid "Last Seen"
 msgstr "Senast sedd"
 
@@ -5891,8 +5948,8 @@ msgstr "Senaste artikeln:"
 msgid "Latest Comments"
 msgstr "Senaste kommentarer"
 
-msgid "Latest Posts"
-msgstr "Senaste inläggen"
+msgid "Latest Forum Posts"
+msgstr "Senaste foruminlägg"
 
 msgid "Leech Warn removed"
 msgstr "Leech Warn bort"
@@ -6079,6 +6136,9 @@ msgstr "Lotteri"
 msgid "Lottery Config"
 msgstr "Lottery Config"
 
+msgid "Lottery Config Closed"
+msgstr "Lottery Config stängt"
+
 msgid "Lottery Configuration"
 msgstr "Lotterikonfiguration"
 
@@ -6090,9 +6150,6 @@ msgstr "Lotter"
 
 msgid "Lottery Winners Info"
 msgstr "Lottery Winners Info"
-
-msgid "Lottery configuration closed"
-msgstr "Lotterikonfiguration stängd"
 
 msgid "Lottery configuration was saved!"
 msgstr "Lotterikonfigurationen sparades!"
@@ -6127,6 +6184,9 @@ msgstr "Låga förhållanden kan leda till allvarliga konsekvenser, inklusive f�
 
 msgid "MB"
 msgstr "MB"
+
+msgid "MPAA"
+msgstr "MPAA"
 
 msgid "MS Linedraw"
 msgstr "MS Linedraw"
@@ -6577,6 +6637,9 @@ msgstr "Ändrad."
 msgid "Modify"
 msgstr "Ändra"
 
+msgid "Monday"
+msgstr "måndag"
+
 msgid "Month"
 msgstr "Månad"
 
@@ -6806,6 +6869,9 @@ msgstr "Negativ"
 
 msgid "Never"
 msgstr "Aldrig"
+
+msgid "New"
+msgstr "Ny"
 
 msgid "New Announcement"
 msgstr "Ny tillkännagivande"
@@ -7770,6 +7836,9 @@ msgstr "Översikt"
 msgid "Owner"
 msgstr "Ägare"
 
+msgid "P2P"
+msgstr "P2P"
+
 msgid "PHP Info"
 msgstr "PHP Info"
 
@@ -8353,11 +8422,11 @@ msgstr "offentlig"
 msgid "Puke"
 msgstr "Spy"
 
+msgid "Purchasable shows how many tickets you can afford to purchase."
+msgstr "Köpbar visar hur många biljetter du har råd att köpa."
+
 msgid "Purchaseable"
 msgstr "Purchaseable"
-
-msgid "Purchaseable shows how many tickets you can afford to purchase."
-msgstr "Köpbar visar hur många biljetter du har råd att köpa."
 
 msgid "Q2 - "
 msgstr "Q2 -"
@@ -8454,6 +8523,9 @@ msgstr "Ratiofri tracker i kraft"
 msgid "Ratio:"
 msgstr "Förhållande:"
 
+msgid "Re-Animated Torrent"
+msgstr "Återanimerad Torrent"
+
 msgid "Re-pay!"
 msgstr "Re-betala!"
 
@@ -8483,6 +8555,9 @@ msgstr "Läs: Användare"
 
 msgid "Readable backup folder"
 msgstr "Läsbar reservmapp"
+
+msgid "Real Name"
+msgstr "Riktiga namn"
 
 msgid "Reality"
 msgstr "Verklighet"
@@ -8521,9 +8596,6 @@ msgstr "Recept: {0} Uppdaterat"
 
 msgid "Recipes"
 msgstr "recept"
-
-msgid "Recommend Torrent"
-msgstr "Rekommendera Torrent"
 
 msgid "Recover"
 msgstr "Ta igen sig"
@@ -8588,8 +8660,8 @@ msgstr "Relevans"
 msgid "Remaining"
 msgstr "Återstående"
 
-msgid "Remarks:"
-msgstr "Anmärkningar:"
+msgid "Remarks"
+msgstr "Anmärkningar"
 
 msgid "Remember Me?"
 msgstr "Kom ihåg mig?"
@@ -8668,6 +8740,9 @@ msgstr "Borttagen från tittade användare av"
 
 msgid "Removed:"
 msgstr "Tog bort:"
+
+msgid "Remuxing"
+msgstr "Remuxing"
 
 msgid "Rename"
 msgstr "Döp om"
@@ -8900,9 +8975,6 @@ msgstr "Resultat"
 msgid "Result Sorting"
 msgstr "Resultat Sortering"
 
-msgid "Result:"
-msgstr "Resultat:"
-
 msgid "Results as list"
 msgstr "Resultat som lista"
 
@@ -8929,6 +9001,9 @@ msgstr "Återgå ändringar"
 
 msgid "Rock"
 msgstr "Sten"
+
+msgid "Role"
+msgstr "Roll"
 
 msgid "Role Added"
 msgstr "Roll tillagd"
@@ -9009,6 +9084,9 @@ msgstr "Sanitetskontroll"
 msgid "Sanity check..."
 msgstr "Sanitetskontroll ..."
 
+msgid "Saturday"
+msgstr "lördag"
+
 msgid "Save"
 msgstr "Spara"
 
@@ -9026,9 +9104,6 @@ msgstr "Spara PM"
 
 msgid "Save PMs"
 msgstr "Spara PM"
-
-msgid "Save PMs:"
-msgstr "Spara PM:"
 
 msgid "Save as Draft"
 msgstr "Spara som utkast"
@@ -9147,6 +9222,12 @@ msgstr "Sök efter undertexter"
 
 msgid "Search by Uploader"
 msgstr "Sök efter uppladdare"
+
+msgid "Search by genre"
+msgstr "Sök efter genre"
+
+msgid "Search by year"
+msgstr "Sök efter år"
 
 msgid "Search for a torrent"
 msgstr "Sök efter en torrent"
@@ -10028,15 +10109,6 @@ msgstr "Sortera"
 msgid "Sort By"
 msgstr "Sortera efter"
 
-msgid "Sort By: "
-msgstr "Sortera efter:"
-
-msgid "Sort By: Added"
-msgstr "Sortera efter: Tillagd"
-
-msgid "Sort By: Name"
-msgstr "Sortera efter namn"
-
 msgid "Sort by newest posts first"
 msgstr "Sortera efter nyaste inlägg först"
 
@@ -10051,6 +10123,9 @@ msgstr "Typ av avslappnad"
 
 msgid "Sorted Yer connectable"
 msgstr "Sorterad Yer-anslutningsbar"
+
+msgid "Sourcing"
+msgstr "sourcing"
 
 msgid "Speed"
 msgstr "Fart"
@@ -10369,6 +10444,9 @@ msgstr "Uppladdad!"
 msgid "Summary"
 msgstr "Sammanfattning"
 
+msgid "Sunday"
+msgstr "söndag"
+
 msgid "Super User"
 msgstr "Superanvändare"
 
@@ -10399,8 +10477,8 @@ msgstr "Spänning"
 msgid "Suspicion"
 msgstr "Misstanke"
 
-msgid "Syntax:"
-msgstr "Syntax:"
+msgid "Syntax"
+msgstr "Syntax"
 
 msgid "SysOp"
 msgstr "SysOp"
@@ -10601,11 +10679,8 @@ msgstr "PU-gränsen var tidigare 25 GB och vi sänkte inte någon när vi höjde
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "Kampanjen du har försökt använda existerar inte eller har gått ut!"
 
-msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "Webbadressen måste avslutas med <b> .gif </b>, <b> .jepg </b>, <b> .jpg a09a4b739f17f8z9707 a07 a09"
-
-msgid "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "Webbadressen måste avslutas med <b> .gif </b>, <b> .jpeg </b>, <b> .jpg a09a4b739f17f8z9a07 a7a07"
+msgid "The URL must be an image of type gif, jpeg or png."
+msgstr "Webbadressen måste vara en bild av typen gif, jpeg eller png."
 
 msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr "Vinnarna kommer att tillkännages när lotteriet har stängt och lagt ut på hemsidan."
@@ -10625,6 +10700,9 @@ msgstr "Ansökan avslogs framgångsrikt. Användaren har fått ett PM-meddelande
 msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr "Botten kommer att svara på triggerfrasen genom att välja ett av dessa svar, slumpmässigt."
 
+msgid "The change will take effect as soon as the new email address has been confirmed"
+msgstr "Ändringen träder i kraft så snart den nya e-postadressen har bekräftats"
+
 msgid "The comment has been deleted"
 msgstr "Kommentaren har tagits bort"
 
@@ -10632,8 +10710,8 @@ msgid "The comment has been updated"
 msgstr "Kommentaren har uppdaterats"
 
 #, no-php-format
-msgid "The competiton will end: {0}"
-msgstr "Tävlingen slutar: {0}"
+msgid "The competition will end: {0}"
+msgstr "Tävlingen avslutas: {0}"
 
 msgid "The default class of new members."
 msgstr "Standardklassen för nya medlemmar."
@@ -10843,18 +10921,18 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "Sättet att lösa problemet innebär att öppna portarna som används för inkommande anslutningar (samma intervall som du definierade i din klient) på brandväggen och / eller konfigurera din NAT-server för att använda en grundform av NAT för det området i stället för NAPT (den faktiska processen skiljer sig mycket mellan olika routermodeller. Kontrollera din routerdokumentation och / eller supportforum. Du hittar också mycket information om ämnet på {0} PortForward {1})."
 
 #, no-php-format
-msgid "The winner will get {0} added to their seedbonus amount"
-msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "Vinnaren kommer att läggas till {0} till sitt seedbonusbelopp"
-msgstr[1] "Vinnarna kommer att läggas till {0} till sitt seedbonusbelopp"
-
-#, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr "{0} har börjat! Skaffa dina biljetter nu. Potten är {1} och varje biljett är bara {2} {3}."
 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "Spåraren {0} är ganska smart när du hittar din riktiga IP, men den behöver proxy för att skicka HTTP-rubriken HTTP_X_FORWARDED_FOR. Om din ISP: s proxy inte gör det som händer är att spåraren tolkar proxyens IP-adress som klientens IP-adress. Så när du loggar in och spåraren försöker ansluta till din klient för att se om du är NAT / brandvägg kommer den faktiskt att försöka ansluta till proxy på porten som din klient rapporterar att använda för inkommande anslutningar. Naturligtvis lyssnar inte proxyn på den porten, anslutningen misslyckas och spåraren tror att du är NAT / brandväggad."
+
+#, no-php-format
+msgid "The {0} winner will get {1} added to their seedbonus amount."
+msgid_plural "The {0} winners will get {1} added to their seedbonus amount."
+msgstr[0] "Vinnaren {0} kommer att läggas till {1} till sitt seedbonusbelopp."
+msgstr[1] "Vinnarna {0} kommer att läggas till {1} till sitt seedbonusbelopp."
 
 msgid "Theft summary"
 msgstr "Stöldöversikt"
@@ -10932,6 +11010,9 @@ msgstr "Det finns inga torrenter som behöver frön just nu."
 
 msgid "There are no torrents."
 msgstr "Det finns inga torrenter."
+
+msgid "There are no valid staff classes."
+msgstr "Det finns inga giltiga personalklasser."
 
 msgid "There are not any cheaters"
 msgstr "Det finns inga fuskare"
@@ -11182,12 +11263,6 @@ msgstr "Detta används endast av automatisk nedladdare, till exempel CouchPotato
 msgid "This is only users that are active on the torrents right now."
 msgstr "Det här är bara användare som är aktiva på torrenterna just nu."
 
-msgid "This is text is [sub]subscript.[/sub]"
-msgstr "Detta är text är [sub] subscript. [/ Sub]"
-
-msgid "This is text is [sup]superscript.[/sup]"
-msgstr "Detta är text är [sup] superscript. [/ Sup]"
-
 msgid "This is the first post in the topic, only Staff can delete topics."
 msgstr "Detta är det första inlägget i ämnet, endast personal kan ta bort ämnen."
 
@@ -11300,8 +11375,11 @@ msgstr "Detta ämne är låst"
 msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr "Denna torrent har redan laddats upp! Använd sökfunktionen innan du laddar upp."
 
-msgid "This torrent is for VIP user only!"
+msgid "This torrent is for VIP users only!"
 msgstr "Denna torrent är endast för VIP-användare!"
+
+msgid "This torrent was Re-Animated!"
+msgstr "Denna torrent blev animerad igen!"
 
 msgid "This user dosen't accept PMs."
 msgstr "Den här användaren accepterar inte PM."
@@ -11347,6 +11425,9 @@ msgstr "Trådikon"
 
 msgid "Thriller"
 msgstr "Thriller"
+
+msgid "Thursday"
+msgstr "torsdag"
 
 msgid "Ticket Amount"
 msgstr "Biljettbelopp"
@@ -11649,6 +11730,10 @@ msgid "Torrent {0} ({1}) was uploaded by {2}"
 msgstr "Torrent {0} ({1}) laddades upp av {2}"
 
 #, no-php-format
+msgid "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+msgstr "Torrent {0} ({2}) har tagits bort. <br> <br> Anledning: {2}"
+
+#, no-php-format
 msgid "Torrent {0} was deleted by {1}"
 msgstr "Torrent {0} raderades av {1}"
 
@@ -11693,9 +11778,6 @@ msgstr "Torrentsstatistik"
 
 msgid "Torrents Uploaded"
 msgstr "Torrenter uppladdade"
-
-msgid "Torrents Uploaded on"
-msgstr "Torrenter laddat upp den"
 
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrenter raderas automatiskt efter 28 dagar."
@@ -11843,6 +11925,9 @@ msgstr "Försök att korrigera eventuella 'av ämnen' snarare än att stänga en
 #, no-php-format
 msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr "Prova {0} ProxyJudge {1}. Den visar HTTP-rubriker som servern där den körs har tagit emot från dig. De relevanta är HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR och REMOTE_ADDR."
+
+msgid "Tuesday"
+msgstr "tisdag"
 
 msgid "TvMaze API"
 msgstr "TvMaze API"
@@ -12129,6 +12214,10 @@ msgstr "Uppladdade Torrenter"
 
 msgid "Uploaded total altered from "
 msgstr "Uppladdat totalt ändrat från"
+
+#, no-php-format
+msgid "Uploaded {0} by {1}"
+msgstr "Uppladdad {0} av {1}"
 
 msgid "Uploader"
 msgstr "Uploader"
@@ -12643,6 +12732,9 @@ msgstr "vattenmärken"
 msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr "Vi kan byta namn på konton. Skapa inte nya. Du kan kontakta anställda med din begäran."
 
+msgid "We can't say if the user is who they claim to be"
+msgstr "Vi kan inte säga om användaren är den de påstår sig vara"
+
 msgid "We can't use a problem text there is less then 20 chars."
 msgstr "Vi kan inte använda en problemtext, det finns mindre än 20 tecken."
 
@@ -12684,6 +12776,9 @@ msgstr "Hemsida"
 
 msgid "Website changed"
 msgstr "Webbplatsen har ändrats"
+
+msgid "Wednesday"
+msgstr "onsdag"
 
 msgid "Weekly"
 msgstr "Varje vecka"
@@ -12772,9 +12867,6 @@ msgstr "Vad är det här ”IOError - [Errno13] Tillstånd nekad” -fel?"
 
 msgid "What's this 'TTL' in the browse page?"
 msgstr "Vad är den här 'TTL' på bläddringssidan?"
-
-msgid "When"
-msgstr "När"
 
 msgid "When Completed"
 msgstr "När du är klar"
@@ -13312,6 +13404,10 @@ msgid "You have received a PM from %s!"
 msgstr "Du har fått en PM från %s!"
 
 #, no-php-format
+msgid "You have received a PM from {0}!"
+msgstr "Du har fått en PM från {0}!"
+
+#, no-php-format
 msgid "You have received a comment on your torrent {0}{1}{2}."
 msgstr "Du har fått en kommentar på din torrent {0} {1} {2}."
 
@@ -13365,8 +13461,8 @@ msgstr "Du har fått {0} leechwarn Status från {1}."
 msgid "You have received {0} warned Status from {1}."
 msgstr "Du har fått {0} varnade status från {1}."
 
-msgid "You have snatched this torrent but not completed downloading"
-msgstr "Du har tagit denna torrent men inte slutfört nedladdningen"
+msgid "You have snatched this torrent but you have not completed downloading"
+msgstr "Du har tagit denna torrent men du har inte slutfört nedladdningen"
 
 msgid "You have successfully deleted the selected accounts!"
 msgstr "Du har raderat de valda kontona!"
@@ -13391,6 +13487,9 @@ msgstr "Du har röstat för detta erbjudande."
 
 msgid "You have voted to support this request."
 msgstr "Du har röstat för att stödja den här begäran."
+
+msgid "You have won the lottery"
+msgstr "Du har vunnit lotteriet"
 
 #, no-php-format
 msgid "You have {0} Reputation Point."
@@ -13465,6 +13564,9 @@ msgstr "Du måste ange en beskrivning eller en Nfo!"
 
 msgid "You must enter a reason to suspend this account!"
 msgstr "Du måste ange en anledning till att stänga av det här kontot!"
+
+msgid "You must enter a username!"
+msgstr "Du måste ange ett användarnamn!"
 
 msgid "You must enter an email address!"
 msgstr "Du måste ange en e-postadress!"
@@ -13879,159 +13981,11 @@ msgstr "[ange användarnamnet för den medlem du vill skicka detta till]"
 msgid "[ {0}% full ]"
 msgstr "[{0}% full]"
 
-msgid ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-msgstr ""
-"[*] Detta är punkt 1\n"
-"[*] Detta är punkt 2"
-
-msgid "[*]<i>Text</i>"
-msgstr "[*] <i> Text </i>"
-
 msgid "[Doubled Down]"
 msgstr "[Fördubblats]"
 
 msgid "[Implicit - Admin]"
 msgstr "[Implicit - Admin]"
-
-msgid "[b]<i>Text</i>[/b]"
-msgstr "[b] <i> Text </i> [/ b]"
-
-msgid "[b]This is bold text.[/b]"
-msgstr "[b] Detta är fet text. [/ b]"
-
-msgid "[center]<i>Text</i>[/center]"
-msgstr "[center] <i> Text </i> [/ center]"
-
-msgid "[center]This is text is centered.[/center]"
-msgstr "[center] Detta är texten är centrerad. [/ center]"
-
-msgid "[code]<i>Text</i>[/code]"
-msgstr "[kod] <i> Text </i> [/ kod]"
-
-msgid "[code]This is code formatted text.[/code]"
-msgstr "[kod] Detta är kodformaterad text. [/ kod]"
-
-msgid "[color=#0000ff]This is blue text.[/color]"
-msgstr "[färg = # 0000ff] Detta är blå text. [/ färg]"
-
-msgid "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-msgstr "[färg = # <i> RGB </i>] <i> Text </i> [/ färg]"
-
-msgid "[color=<i>Color</i>]<i>Text</i>[/color]"
-msgstr "[färg = <i> Färg </i>] <i> Text </i> [/ färg]"
-
-msgid "[color=blue]This is blue text.[/color]"
-msgstr "[färg = blå] Detta är blå text. [/ färg]"
-
-msgid "[font=<i>Font</i>]<i>Text</i>[/font]"
-msgstr "[font = <i> Font </i>] <i> Text </i> [/ font]"
-
-msgid "[font=Impact]Hello world![/font]"
-msgstr "[font = Impact] Hej världen! [/ font]"
-
-msgid "[i]<i>Text</i>[/i]"
-msgstr "[i] <i> Text </i> [/ i]"
-
-msgid "[i]This is italic text.[/i]"
-msgstr "[i] Detta är kursiv text. [/ i]"
-
-msgid "[img=<i>URL</i>]"
-msgstr "[img = <i> URL </i>]"
-
-msgid "[img=http://Pu239.silly/images/logo.png]"
-msgstr "[Img = http: //Pu239.silly/images/logo.png]"
-
-msgid "[img]<i>URL</i>[/img]"
-msgstr "[img] <i> URL </i> [/ img]"
-
-msgid "[img]http://Pu239.silly/images/logo.png[/img]"
-msgstr "[Img] http: //Pu239.silly/images/logo.png [/ img]"
-
-msgid "[justify]<i>Text</i>[/justify]"
-msgstr "[motivera] <i> Text </i> [/ motivera]"
-
-msgid "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-msgstr "[motivera] Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. Detta är texten är motiverad. [/ Motivera]"
-
-msgid "[left]<i>Text</i>[/left]"
-msgstr "[vänster] <i> Text </i> [/ vänster]"
-
-msgid "[left]This is text is left aligned.[/left]"
-msgstr "[vänster] Detta är texten vänsterjusterad. [/ vänster]"
-
-msgid "[pre]<i>Text</i>[/pre]"
-msgstr "[pre] <i> Text </i> [/ pre]"
-
-msgid "[pre]This is preformatted text.[/pre]"
-msgstr "[pre] Detta är förformaterad text. [/ pre]"
-
-msgid "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-msgstr "[offert = <i> Författare </i>] <i> Citat text </i> [/ offert]"
-
-msgid "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote = John Doe] Den snabba bruna räven hoppar över den lata hunden. [/ offert]"
-
-msgid "[quote]<i>Quoted text</i>[/quote]"
-msgstr "[offert] <i> Citat text </i> [/ offert]"
-
-msgid "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[offert] Den snabba bruna räven hoppar över den lata hunden. [/ offert]"
-
-msgid "[right]<i>Text</i>[/right]"
-msgstr "[höger] <i> Text </i> [/ höger]"
-
-msgid "[right]This is text is right aligned.[/right]"
-msgstr "[höger] Det här är texten med högerinriktning. [/ höger]"
-
-msgid "[s]<i>Text</i>[/s]"
-msgstr "[s] <i> Text </i> [/ s]"
-
-msgid "[s]This is text is strikethrough.[/s]"
-msgstr "[s] Det här är text som genomgår. [/ s]"
-
-msgid "[size=4]This is size 4.[/size]"
-msgstr "[storlek = 4] Detta är storlek 4. [/ storlek]"
-
-msgid "[size=<i>n</i>]<i>text</i>[/size]"
-msgstr "[storlek = <i> n </i>] <i> text </i> [/ storlek]"
-
-msgid "[sub]<i>Text</i>[/sub]"
-msgstr "[sub] <i> Text </i> [/ sub]"
-
-msgid "[sup]<i>Text</i>[/sup]"
-msgstr "[sup] <i> Text </i> [/ sup]"
-
-msgid "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-msgstr "[tabell] [tr] [td] <i> Text </i> [/ td] [[td] <i> Text </i> [/ td] [td] <i> Text a0ae647688 [/ td] [[td] <i> Text </i> [/ td] [td] <i> Text </i> [/ td] [/ tr] [tr] [td] a049271e8181f4708 t4708 / td] [td] <i> Text </i> [/ td] [/ tr] [/ tabell]"
-
-msgid "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-msgstr "[Tabellen] [tr] [td] Text [/ td] [td] Text [/ td] [td] Text [/ td] [/ tr] [tr] [td] Text [/ td] [td] Text [ / td] [td] Text [/ td] [/ tr] [tr] [td] Text [/ td] [td] Text [/ td] [td] Text [/ td] [/ tr] [/ table]"
-
-msgid "[u]<i>Text</i>[/u]"
-msgstr "[u] <i> Text </i> [/ u]"
-
-msgid "[u]This is underlined text.[/u]"
-msgstr "[u] Detta är understrykt text. [/ u]"
-
-msgid "[url=<i>URL</i>]<i>Link text</i>[/url]"
-msgstr "[url = <i> URL </i>] <i> Länktext </i> [/ url]"
-
-msgid "[url=http://Pu239.silly/]Crafty[/url]"
-msgstr "[Url = http: //Pu239.silly/] Crafty [/ url]"
-
-msgid "[url]<i>URL</i>[/url]"
-msgstr "[url] <i> URL </i> [/ url]"
-
-msgid "[url]http://Pu239.silly/[/url]"
-msgstr "[Url] http: //Pu239.silly/ [/ url]"
-
-msgid "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-msgstr "[Youtube = https:? //Www.youtube.com/watch v = u22BXhMu4tI]"
-
-msgid "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
-msgstr "[youtube] <i> https://www.youtube.com/watch?v=u22BXhMu4tI </i> [/ youtube]"
 
 msgid "a thread you subscribed to"
 msgstr "en tråd du prenumererade på"
@@ -14087,6 +14041,10 @@ msgstr "som namnet antyder identifierar klienten (s588-delen identifierar Shad0w
 
 msgid "at"
 msgstr "på"
+
+#, no-php-format
+msgid "at {0}"
+msgstr "vid {0}"
 
 msgid "before"
 msgstr "innan"
@@ -14433,6 +14391,12 @@ msgstr[0] "om {0} månad"
 msgstr[1] "om {0} månader"
 
 #, no-php-format
+msgid "in {0} second"
+msgid_plural "in {0} seconds"
+msgstr[0] "om {0} sekund"
+msgstr[1] "om {0} sekunder"
+
+#, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] "om {0} veckan"
@@ -14761,6 +14725,9 @@ msgstr "Sök"
 msgid "search messages by this member only"
 msgstr "sök meddelanden endast av den här medlemmen"
 
+msgid "seedbonus"
+msgstr "seedbonus"
+
 msgid "seeded for"
 msgstr "utsädes för"
 
@@ -14828,6 +14795,10 @@ msgstr "sQL"
 msgid "staff"
 msgstr "personal"
 
+#, no-php-format
+msgid "starts in {0}"
+msgstr "börjar om {0}"
+
 msgid "successfully backed-up the database."
 msgstr "säkerhetskopierat databasen."
 
@@ -14846,6 +14817,9 @@ msgstr "det här ämnet från din olästa lista. För att ta bort allt använder
 msgid "this tree"
 msgstr "detta träd"
 
+msgid "tickets"
+msgstr "biljetter"
+
 msgid "time"
 msgstr "tid"
 
@@ -14860,6 +14834,9 @@ msgstr "för att rensa detta tillkännagivande"
 
 msgid "to delete it or"
 msgstr "för att radera det eller"
+
+msgid "to go"
+msgstr "att gå"
 
 msgid "to go back"
 msgstr "att gå tillbaka"
@@ -14947,6 +14924,12 @@ msgstr "varnar Status borttagen av {0}."
 
 msgid "warned users"
 msgstr "varnade användare"
+
+#, no-php-format
+msgid "was hit {0} time"
+msgid_plural "was hit {0} times"
+msgstr[0] "träffades {0} tid"
+msgstr[1] "träffades {0} gånger"
 
 msgid "was registered during open doors"
 msgstr "registrerades under öppna dörrar"
@@ -15139,6 +15122,10 @@ msgstr[1] "{0} Nya rapporter"
 #, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0} Old School Arcade!"
+
+#, no-php-format
+msgid "{0} PMs per page"
+msgstr "{0} PM per sida"
 
 #, php-format
 msgid "{0} Page"
@@ -15473,6 +15460,10 @@ msgstr[0] "{0} år sedan"
 msgstr[1] "{0} år sedan"
 
 #, no-php-format
+msgid "{0}% out of {1} votes!"
+msgstr "{0}% av {1} röster!"
+
+#, no-php-format
 msgid "{0}'s Entertainment"
 msgstr "{0}: s underhållning"
 
@@ -15501,16 +15492,8 @@ msgid "{0}Confirm your invitation{1}"
 msgstr "{0} Bekräfta din inbjudan {1}"
 
 #, no-php-format
-msgid "{0}FAQ{1}"
-msgstr "{0} FAQ {1}"
-
-#, no-php-format
 msgid "{0}IMDb Url{1}"
 msgstr "{0} IMDb URL {1}"
-
-#, no-php-format
-msgid "{0}Rules{1}"
-msgstr "{0} Regler {1}"
 
 #, no-php-format
 msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
@@ -15543,13 +15526,13 @@ msgstr[0] "{1} har just köpt {2} {0} Lotteri! {3} GOOD LUCK!"
 msgstr[1] "{1} har just köpt {2} {0} Lotteri biljetter! {3} GOOD LUCK!"
 
 #, no-php-format
-msgid "{1} was hit {0} time in {2} seconds"
-msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] "{1} träffades {0} tiden på {2} sekunder"
-msgstr[1] "{1} träffades {0} gånger på {2} sekunder"
-
-#, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
 msgstr[0] "{1}: Modded Torrents från {0} för dagen sedan"
 msgstr[1] "{1}: Modded Torrents från {0} dagar sedan"
+
+#, no-php-format
+msgid "{1}: Modded Torrents from {0}, number day ago"
+msgid_plural "{1}: Modded Torrents from {0}, number days ago"
+msgstr[0] "{1}: Modded Torrents från {0}, antal dagar sedan"
+msgstr[1] "{1}: Modded Torrents från {0}, antal dagar sedan"

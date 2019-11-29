@@ -50,15 +50,39 @@ msgid ""
 "\n"
 "</head>\n"
 "<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+"</head>\n"
+"<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
 "<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
 "<p>The request originated from {1}.</p>\n"
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 msgstr ""
@@ -70,10 +94,10 @@ msgstr ""
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 
@@ -472,8 +496,8 @@ msgid "0-byte NFO"
 msgstr "0-byte NFO"
 
 #, no-php-format
-msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
-msgstr "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
+msgstr "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
 
 msgid "1st Post Preview"
 msgstr "1st Post Preview"
@@ -494,12 +518,12 @@ msgid ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -518,12 +542,12 @@ msgstr ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -645,10 +669,6 @@ msgstr "AJAX Chat height"
 
 msgid "APC(u) Hits: "
 msgstr "APC(u) Hits: "
-
-#, no-php-format
-msgid "APC(u) Hits: {0}"
-msgstr "APC(u) Hits: {0}"
 
 msgid "API"
 msgstr "API"
@@ -1051,10 +1071,10 @@ msgstr "Adventure"
 #, no-php-format
 msgid ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 msgstr ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 
 msgid "Age"
 msgstr "Age"
@@ -1515,6 +1535,9 @@ msgstr "Avatar selection disabled = "
 msgid "Avatar?"
 msgstr "Avatar?"
 
+msgid "Avatars"
+msgstr "Avatars"
+
 msgid "Avatars possible = No"
 msgstr "Avatars possible = No"
 
@@ -1523,9 +1546,6 @@ msgstr "Avatars possible = Yes"
 
 msgid "Avatars settings changed!"
 msgstr "Avatars settings changed!"
-
-msgid "Avatars:"
-msgstr "Avatars:"
 
 msgid "Avg Row Length"
 msgstr "Avg Row Length"
@@ -1684,6 +1704,15 @@ msgstr "Bet on a number"
 
 msgid "Bet on color"
 msgstr "Bet on color"
+
+msgid "Biography"
+msgstr "Biography"
+
+msgid "Birth Place"
+msgstr "Birth Place"
+
+msgid "Birthdate"
+msgstr "Birthdate"
 
 msgid "Birthday"
 msgstr "Birthday"
@@ -1877,6 +1906,9 @@ msgstr "Breaking these rules can and will get you banned!"
 msgid "Browse Torrents"
 msgstr "Browse Torrents"
 
+msgid "Browse by IMDb"
+msgstr "Browse by IMDb"
+
 msgid "Browse default<br>categories"
 msgstr "Browse default<br>categories"
 
@@ -1915,6 +1947,9 @@ msgstr "Bugs"
 
 msgid "Bump a torrent"
 msgstr "Bump a torrent"
+
+msgid "Bumped"
+msgstr "Bumped"
 
 msgid "Burning"
 msgstr "Burning"
@@ -1971,6 +2006,9 @@ msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG Reader"
+
+msgid "CHECKED"
+msgstr "CHECKED"
 
 #, no-php-format
 msgid "CLOSED => {0}"
@@ -2036,11 +2074,11 @@ msgstr "Cat Name"
 msgid "Catalog"
 msgstr "Catalog"
 
+msgid "Categories"
+msgstr "Categories"
+
 msgid "Categories as images"
 msgstr "Categories as images"
-
-msgid "Categories:"
-msgstr "Categories:"
 
 msgid "Category"
 msgstr "Category"
@@ -2502,6 +2540,10 @@ msgid "Congratulations!"
 msgstr "Congratulations!"
 
 #, no-php-format
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+msgstr "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+
+#, no-php-format
 msgid "Congratulations, you have just won ''{0}''"
 msgstr "Congratulations, you have just won ''{0}''"
 
@@ -2656,6 +2698,9 @@ msgstr "Credits:"
 
 msgid "Crime"
 msgstr "Crime"
+
+msgid "Critics"
+msgstr "Critics"
 
 msgid "Cry"
 msgstr "Cry"
@@ -2859,6 +2904,9 @@ msgstr "Deathrow"
 msgid "Debug Info"
 msgstr "Debug Info"
 
+msgid "Deceased"
+msgstr "Deceased"
+
 msgid "December"
 msgstr "December"
 
@@ -2921,9 +2969,6 @@ msgstr "Delete PM"
 
 msgid "Delete PMs"
 msgstr "Delete PMs"
-
-msgid "Delete PMs:"
-msgstr "Delete PMs:"
 
 msgid "Delete Post"
 msgstr "Delete Post"
@@ -3236,6 +3281,12 @@ msgstr "Donor status set by {0}"
 msgid "Donors"
 msgstr "Donors"
 
+msgid "Double Upload Slot"
+msgstr "Double Upload Slot"
+
+msgid "Double Upload Slot in Use"
+msgstr "Double Upload Slot in Use"
+
 msgid "Doubled Down"
 msgstr "Doubled Down"
 
@@ -3544,8 +3595,8 @@ msgstr "Email ban {0} was removed by {1}"
 msgid "Email has not been verified."
 msgstr "Email has not been verified."
 
-msgid "Email notification:"
-msgstr "Email notification:"
+msgid "Email notification"
+msgstr "Email notification"
 
 #, no-php-format
 msgid "Email: {0} is unavailable."
@@ -3957,8 +4008,8 @@ msgstr "Event"
 msgid "Every torrent downloaded in the happy hour is free"
 msgstr "Every torrent downloaded in the happy hour is free"
 
-msgid "Example:"
-msgstr "Example:"
+msgid "Example"
+msgstr "Example"
 
 #, no-php-format
 msgid "Exchange your {0}{1}{2} Karma Bonus Points for goodies!"
@@ -4000,6 +4051,9 @@ msgstr "FPS"
 msgid "FREE Status "
 msgstr "FREE Status "
 
+msgid "FTPing"
+msgstr "FTPing"
+
 msgid "Failed Attempts"
 msgstr "Failed Attempts"
 
@@ -4030,8 +4084,8 @@ msgstr "File name is not allowed"
 msgid "File not allowed only .srt , .sub , .vtt or .txt files"
 msgstr "File not allowed only .srt , .sub , .vtt or .txt files"
 
-msgid "File size: "
-msgstr "File size: "
+msgid "File size"
+msgstr "File size"
 
 msgid "File types supported"
 msgstr "File types supported"
@@ -4128,8 +4182,8 @@ msgstr "Flush torrents"
 msgid "Flush torrents?"
 msgstr "Flush torrents?"
 
-msgid "Flysystem Cache: "
-msgstr "Flysystem Cache: "
+msgid "Flysystem Cache"
+msgstr "Flysystem Cache"
 
 msgid "Folder Exists?"
 msgstr "Folder Exists?"
@@ -4240,8 +4294,17 @@ msgstr "Free Leech Slots"
 msgid "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 msgstr "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 
+msgid "Free Slot"
+msgstr "Free Slot"
+
+msgid "Free Slot in Use"
+msgstr "Free Slot in Use"
+
 msgid "Free Slots added"
 msgstr "Free Slots added"
+
+msgid "Free Torrent"
+msgstr "Free Torrent"
 
 msgid "Free Torrent!"
 msgstr "Free Torrent!"
@@ -4336,6 +4399,9 @@ msgstr "Freeleech?"
 
 msgid "Freeslots and Freeleech?"
 msgstr "Freeslots and Freeleech?"
+
+msgid "Friday"
+msgstr "Friday"
 
 msgid "Friend was added successfully."
 msgstr "Friend was added successfully."
@@ -4514,9 +4580,6 @@ msgstr "Go To Last"
 
 msgid "Go back"
 msgstr "Go back"
-
-msgid "Go to My Bookmarks"
-msgstr "Go to My Bookmarks"
 
 msgid "Go to the last post in this thread"
 msgstr "Go to the last post in this thread"
@@ -4818,9 +4881,6 @@ msgstr "Highspeed uploader status."
 
 msgid "Hip Hop"
 msgstr "Hip Hop"
-
-msgid "His wit's as thick as a Tewkesbury mustard."
-msgstr "His wit's as thick as a Tewkesbury mustard."
 
 msgid "Historical"
 msgstr "Historical"
@@ -5230,9 +5290,6 @@ msgstr "If you feel this suspension is in error, please feel free to contact a s
 msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 
-msgid "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-msgstr "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr "If you have forgotten your password you can retrieve it at"
 
@@ -5248,9 +5305,6 @@ msgstr "If you save up enough of them, you can trade them in for goodies like bo
 #, no-php-format
 msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
-
-msgid "If you want to recommend this torrent check this box!"
-msgstr "If you want to recommend this torrent check this box!"
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr "If you want to rename the topic, you must supply a name!"
@@ -5829,6 +5883,9 @@ msgstr "Last Post"
 msgid "Last Post by"
 msgstr "Last Post by"
 
+msgid "Last Poster"
+msgstr "Last Poster"
+
 msgid "Last Seen"
 msgstr "Last Seen"
 
@@ -5887,8 +5944,8 @@ msgstr "Latest Article:"
 msgid "Latest Comments"
 msgstr "Latest Comments"
 
-msgid "Latest Posts"
-msgstr "Latest Posts"
+msgid "Latest Forum Posts"
+msgstr "Latest Forum Posts"
 
 msgid "Leech Warn removed"
 msgstr "Leech Warn removed"
@@ -6075,6 +6132,9 @@ msgstr "Lottery"
 msgid "Lottery Config"
 msgstr "Lottery Config"
 
+msgid "Lottery Config Closed"
+msgstr "Lottery Config Closed"
+
 msgid "Lottery Configuration"
 msgstr "Lottery Configuration"
 
@@ -6086,9 +6146,6 @@ msgstr "Lottery Tickets"
 
 msgid "Lottery Winners Info"
 msgstr "Lottery Winners Info"
-
-msgid "Lottery configuration closed"
-msgstr "Lottery configuration closed"
 
 msgid "Lottery configuration was saved!"
 msgstr "Lottery configuration was saved!"
@@ -6123,6 +6180,9 @@ msgstr "Low ratios may result in severe consequences, including banning in extre
 
 msgid "MB"
 msgstr "MB"
+
+msgid "MPAA"
+msgstr "MPAA"
 
 msgid "MS Linedraw"
 msgstr "MS Linedraw"
@@ -6573,6 +6633,9 @@ msgstr "Modified."
 msgid "Modify"
 msgstr "Modify"
 
+msgid "Monday"
+msgstr "Monday"
+
 msgid "Month"
 msgstr "Month"
 
@@ -6802,6 +6865,9 @@ msgstr "Negative"
 
 msgid "Never"
 msgstr "Never"
+
+msgid "New"
+msgstr "New"
 
 msgid "New Announcement"
 msgstr "New Announcement"
@@ -7766,6 +7832,9 @@ msgstr "Overview"
 msgid "Owner"
 msgstr "Owner"
 
+msgid "P2P"
+msgstr "P2P"
+
 msgid "PHP Info"
 msgstr "PHP Info"
 
@@ -8349,11 +8418,11 @@ msgstr "Public"
 msgid "Puke"
 msgstr "Puke"
 
+msgid "Purchasable shows how many tickets you can afford to purchase."
+msgstr "Purchasable shows how many tickets you can afford to purchase."
+
 msgid "Purchaseable"
 msgstr "Purchaseable"
-
-msgid "Purchaseable shows how many tickets you can afford to purchase."
-msgstr "Purchaseable shows how many tickets you can afford to purchase."
 
 msgid "Q2 - "
 msgstr "Q2 - "
@@ -8450,6 +8519,9 @@ msgstr "Ratio free tracker in effect"
 msgid "Ratio:"
 msgstr "Ratio:"
 
+msgid "Re-Animated Torrent"
+msgstr "Re-Animated Torrent"
+
 msgid "Re-pay!"
 msgstr "Re-pay!"
 
@@ -8479,6 +8551,9 @@ msgstr "Read: User"
 
 msgid "Readable backup folder"
 msgstr "Readable backup folder"
+
+msgid "Real Name"
+msgstr "Real Name"
 
 msgid "Reality"
 msgstr "Reality"
@@ -8517,9 +8592,6 @@ msgstr "Recipe: {0} Updated"
 
 msgid "Recipes"
 msgstr "Recipes"
-
-msgid "Recommend Torrent"
-msgstr "Recommend Torrent"
 
 msgid "Recover"
 msgstr "Recover"
@@ -8584,8 +8656,8 @@ msgstr "Relevance"
 msgid "Remaining"
 msgstr "Remaining"
 
-msgid "Remarks:"
-msgstr "Remarks:"
+msgid "Remarks"
+msgstr "Remarks"
 
 msgid "Remember Me?"
 msgstr "Remember Me?"
@@ -8664,6 +8736,9 @@ msgstr "Removed from watched users by"
 
 msgid "Removed:"
 msgstr "Removed:"
+
+msgid "Remuxing"
+msgstr "Remuxing"
 
 msgid "Rename"
 msgstr "Rename"
@@ -8896,9 +8971,6 @@ msgstr "Result"
 msgid "Result Sorting"
 msgstr "Result Sorting"
 
-msgid "Result:"
-msgstr "Result:"
-
 msgid "Results as list"
 msgstr "Results as list"
 
@@ -8925,6 +8997,9 @@ msgstr "Revert changes"
 
 msgid "Rock"
 msgstr "Rock"
+
+msgid "Role"
+msgstr "Role"
 
 msgid "Role Added"
 msgstr "Role Added"
@@ -9005,6 +9080,9 @@ msgstr "Sanity check"
 msgid "Sanity check..."
 msgstr "Sanity check..."
 
+msgid "Saturday"
+msgstr "Saturday"
+
 msgid "Save"
 msgstr "Save"
 
@@ -9022,9 +9100,6 @@ msgstr "Save PM "
 
 msgid "Save PMs"
 msgstr "Save PMs"
-
-msgid "Save PMs:"
-msgstr "Save PMs:"
 
 msgid "Save as Draft"
 msgstr "Save as Draft"
@@ -9143,6 +9218,12 @@ msgstr "Search by Subtitle"
 
 msgid "Search by Uploader"
 msgstr "Search by Uploader"
+
+msgid "Search by genre"
+msgstr "Search by genre"
+
+msgid "Search by year"
+msgstr "Search by year"
 
 msgid "Search for a torrent"
 msgstr "Search for a torrent"
@@ -10024,15 +10105,6 @@ msgstr "Sort"
 msgid "Sort By"
 msgstr "Sort By"
 
-msgid "Sort By: "
-msgstr "Sort By: "
-
-msgid "Sort By: Added"
-msgstr "Sort By: Added"
-
-msgid "Sort By: Name"
-msgstr "Sort By: Name"
-
 msgid "Sort by newest posts first"
 msgstr "Sort by newest posts first"
 
@@ -10047,6 +10119,9 @@ msgstr "Sort of relaxed"
 
 msgid "Sorted Yer connectable"
 msgstr "Sorted Yer connectable"
+
+msgid "Sourcing"
+msgstr "Sourcing"
 
 msgid "Speed"
 msgstr "Speed"
@@ -10365,6 +10440,9 @@ msgstr "Successfully uploaded!"
 msgid "Summary"
 msgstr "Summary"
 
+msgid "Sunday"
+msgstr "Sunday"
+
 msgid "Super User"
 msgstr "Super User"
 
@@ -10395,8 +10473,8 @@ msgstr "Suspense"
 msgid "Suspicion"
 msgstr "Suspicion"
 
-msgid "Syntax:"
-msgstr "Syntax:"
+msgid "Syntax"
+msgstr "Syntax"
 
 msgid "SysOp"
 msgstr "SysOp"
@@ -10597,11 +10675,8 @@ msgstr "The PU limit used to be 25GB and we didn't demote anyone when we raised 
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "The Promotion you have attempted to use does not exist or has expired!"
 
-msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-
-msgid "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
+msgid "The URL must be an image of type gif, jpeg or png."
+msgstr "The URL must be an image of type gif, jpeg or png."
 
 msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr "The Winners will be announced once the lottery has closed and posted on the home page."
@@ -10621,6 +10696,9 @@ msgstr "The application was successfully rejected. The user has been sent a PM n
 msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 
+msgid "The change will take effect as soon as the new email address has been confirmed"
+msgstr "The change will take effect as soon as the new email address has been confirmed"
+
 msgid "The comment has been deleted"
 msgstr "The comment has been deleted"
 
@@ -10628,8 +10706,8 @@ msgid "The comment has been updated"
 msgstr "The comment has been updated"
 
 #, no-php-format
-msgid "The competiton will end: {0}"
-msgstr "The competiton will end: {0}"
+msgid "The competition will end: {0}"
+msgstr "The competition will end: {0}"
 
 msgid "The default class of new members."
 msgstr "The default class of new members."
@@ -10839,18 +10917,18 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at {0}PortForward{1})."
 
 #, no-php-format
-msgid "The winner will get {0} added to their seedbonus amount"
-msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "The winner will get {0} added to their seedbonus amount"
-msgstr[1] "The winners will get {0} added to their seedbonus amount"
-
-#, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
+
+#, no-php-format
+msgid "The {0} winner will get {1} added to their seedbonus amount."
+msgid_plural "The {0} winners will get {1} added to their seedbonus amount."
+msgstr[0] "The {0} winner will get {1} added to their seedbonus amount."
+msgstr[1] "The {0} winners will get {1} added to their seedbonus amount."
 
 msgid "Theft summary"
 msgstr "Theft summary"
@@ -10928,6 +11006,9 @@ msgstr "There are no torrents needing seeds right now."
 
 msgid "There are no torrents."
 msgstr "There are no torrents."
+
+msgid "There are no valid staff classes."
+msgstr "There are no valid staff classes."
 
 msgid "There are not any cheaters"
 msgstr "There are not any cheaters"
@@ -11178,12 +11259,6 @@ msgstr "This is only used by auto downloaders, such as CouchPotato, SickRage and
 msgid "This is only users that are active on the torrents right now."
 msgstr "This is only users that are active on the torrents right now."
 
-msgid "This is text is [sub]subscript.[/sub]"
-msgstr "This is text is [sub]subscript.[/sub]"
-
-msgid "This is text is [sup]superscript.[/sup]"
-msgstr "This is text is [sup]superscript.[/sup]"
-
 msgid "This is the first post in the topic, only Staff can delete topics."
 msgstr "This is the first post in the topic, only Staff can delete topics."
 
@@ -11296,8 +11371,11 @@ msgstr "This topic is locked"
 msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr "This torrent has already been uploaded! Please use the search function before uploading."
 
-msgid "This torrent is for VIP user only!"
-msgstr "This torrent is for VIP user only!"
+msgid "This torrent is for VIP users only!"
+msgstr "This torrent is for VIP users only!"
+
+msgid "This torrent was Re-Animated!"
+msgstr "This torrent was Re-Animated!"
 
 msgid "This user dosen't accept PMs."
 msgstr "This user dosen't accept PMs."
@@ -11343,6 +11421,9 @@ msgstr "Thread Icon"
 
 msgid "Thriller"
 msgstr "Thriller"
+
+msgid "Thursday"
+msgstr "Thursday"
 
 msgid "Ticket Amount"
 msgstr "Ticket Amount"
@@ -11645,6 +11726,10 @@ msgid "Torrent {0} ({1}) was uploaded by {2}"
 msgstr "Torrent {0} ({1}) was uploaded by {2}"
 
 #, no-php-format
+msgid "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+msgstr "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+
+#, no-php-format
 msgid "Torrent {0} was deleted by {1}"
 msgstr "Torrent {0} was deleted by {1}"
 
@@ -11689,9 +11774,6 @@ msgstr "Torrents Stats"
 
 msgid "Torrents Uploaded"
 msgstr "Torrents Uploaded"
-
-msgid "Torrents Uploaded on"
-msgstr "Torrents Uploaded on"
 
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrents are automatically deleted after 28 days."
@@ -11839,6 +11921,9 @@ msgstr "Try correcting any 'off topics' rather then closing a thread."
 #, no-php-format
 msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
+
+msgid "Tuesday"
+msgstr "Tuesday"
 
 msgid "TvMaze API"
 msgstr "TvMaze API"
@@ -12125,6 +12210,10 @@ msgstr "Uploaded Torrents"
 
 msgid "Uploaded total altered from "
 msgstr "Uploaded total altered from "
+
+#, no-php-format
+msgid "Uploaded {0} by {1}"
+msgstr "Uploaded {0} by {1}"
 
 msgid "Uploader"
 msgstr "Uploader"
@@ -12639,6 +12728,9 @@ msgstr "Watermarks"
 msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr "We can rename accounts, please do not create new one. You can contact site staff with your request."
 
+msgid "We can't say if the user is who they claim to be"
+msgstr "We can't say if the user is who they claim to be"
+
 msgid "We can't use a problem text there is less then 20 chars."
 msgstr "We can't use a problem text there is less then 20 chars."
 
@@ -12680,6 +12772,9 @@ msgstr "Website"
 
 msgid "Website changed"
 msgstr "Website changed"
+
+msgid "Wednesday"
+msgstr "Wednesday"
 
 msgid "Weekly"
 msgstr "Weekly"
@@ -12768,9 +12863,6 @@ msgstr "What's this 'IOError - [Errno13] Permission denied' error?"
 
 msgid "What's this 'TTL' in the browse page?"
 msgstr "What's this 'TTL' in the browse page?"
-
-msgid "When"
-msgstr "When"
 
 msgid "When Completed"
 msgstr "When Completed"
@@ -13308,6 +13400,10 @@ msgid "You have received a PM from %s!"
 msgstr "You have received a PM from %s!"
 
 #, no-php-format
+msgid "You have received a PM from {0}!"
+msgstr "You have received a PM from {0}!"
+
+#, no-php-format
 msgid "You have received a comment on your torrent {0}{1}{2}."
 msgstr "You have received a comment on your torrent {0}{1}{2}."
 
@@ -13361,8 +13457,8 @@ msgstr "You have received {0} leechwarn Status from {1}."
 msgid "You have received {0} warned Status from {1}."
 msgstr "You have received {0} warned Status from {1}."
 
-msgid "You have snatched this torrent but not completed downloading"
-msgstr "You have snatched this torrent but not completed downloading"
+msgid "You have snatched this torrent but you have not completed downloading"
+msgstr "You have snatched this torrent but you have not completed downloading"
 
 msgid "You have successfully deleted the selected accounts!"
 msgstr "You have successfully deleted the selected accounts!"
@@ -13387,6 +13483,9 @@ msgstr "You have voted in favor of this offer."
 
 msgid "You have voted to support this request."
 msgstr "You have voted to support this request."
+
+msgid "You have won the lottery"
+msgstr "You have won the lottery"
 
 #, no-php-format
 msgid "You have {0} Reputation Point."
@@ -13461,6 +13560,9 @@ msgstr "You must enter a description or a Nfo!"
 
 msgid "You must enter a reason to suspend this account!"
 msgstr "You must enter a reason to suspend this account!"
+
+msgid "You must enter a username!"
+msgstr "You must enter a username!"
 
 msgid "You must enter an email address!"
 msgstr "You must enter an email address!"
@@ -13875,159 +13977,11 @@ msgstr "[ enter the username of the member you would like to send this to ]"
 msgid "[ {0}% full ]"
 msgstr "[ {0}% full ]"
 
-msgid ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-msgstr ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-
-msgid "[*]<i>Text</i>"
-msgstr "[*]<i>Text</i>"
-
 msgid "[Doubled Down]"
 msgstr "[Doubled Down]"
 
 msgid "[Implicit - Admin]"
 msgstr "[Implicit - Admin]"
-
-msgid "[b]<i>Text</i>[/b]"
-msgstr "[b]<i>Text</i>[/b]"
-
-msgid "[b]This is bold text.[/b]"
-msgstr "[b]This is bold text.[/b]"
-
-msgid "[center]<i>Text</i>[/center]"
-msgstr "[center]<i>Text</i>[/center]"
-
-msgid "[center]This is text is centered.[/center]"
-msgstr "[center]This is text is centered.[/center]"
-
-msgid "[code]<i>Text</i>[/code]"
-msgstr "[code]<i>Text</i>[/code]"
-
-msgid "[code]This is code formatted text.[/code]"
-msgstr "[code]This is code formatted text.[/code]"
-
-msgid "[color=#0000ff]This is blue text.[/color]"
-msgstr "[color=#0000ff]This is blue text.[/color]"
-
-msgid "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-msgstr "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-
-msgid "[color=<i>Color</i>]<i>Text</i>[/color]"
-msgstr "[color=<i>Color</i>]<i>Text</i>[/color]"
-
-msgid "[color=blue]This is blue text.[/color]"
-msgstr "[color=blue]This is blue text.[/color]"
-
-msgid "[font=<i>Font</i>]<i>Text</i>[/font]"
-msgstr "[font=<i>Font</i>]<i>Text</i>[/font]"
-
-msgid "[font=Impact]Hello world![/font]"
-msgstr "[font=Impact]Hello world![/font]"
-
-msgid "[i]<i>Text</i>[/i]"
-msgstr "[i]<i>Text</i>[/i]"
-
-msgid "[i]This is italic text.[/i]"
-msgstr "[i]This is italic text.[/i]"
-
-msgid "[img=<i>URL</i>]"
-msgstr "[img=<i>URL</i>]"
-
-msgid "[img=http://Pu239.silly/images/logo.png]"
-msgstr "[img=http://Pu239.silly/images/logo.png]"
-
-msgid "[img]<i>URL</i>[/img]"
-msgstr "[img]<i>URL</i>[/img]"
-
-msgid "[img]http://Pu239.silly/images/logo.png[/img]"
-msgstr "[img]http://Pu239.silly/images/logo.png[/img]"
-
-msgid "[justify]<i>Text</i>[/justify]"
-msgstr "[justify]<i>Text</i>[/justify]"
-
-msgid "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-msgstr "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-
-msgid "[left]<i>Text</i>[/left]"
-msgstr "[left]<i>Text</i>[/left]"
-
-msgid "[left]This is text is left aligned.[/left]"
-msgstr "[left]This is text is left aligned.[/left]"
-
-msgid "[pre]<i>Text</i>[/pre]"
-msgstr "[pre]<i>Text</i>[/pre]"
-
-msgid "[pre]This is preformatted text.[/pre]"
-msgstr "[pre]This is preformatted text.[/pre]"
-
-msgid "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-msgstr "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-
-msgid "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-
-msgid "[quote]<i>Quoted text</i>[/quote]"
-msgstr "[quote]<i>Quoted text</i>[/quote]"
-
-msgid "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-
-msgid "[right]<i>Text</i>[/right]"
-msgstr "[right]<i>Text</i>[/right]"
-
-msgid "[right]This is text is right aligned.[/right]"
-msgstr "[right]This is text is right aligned.[/right]"
-
-msgid "[s]<i>Text</i>[/s]"
-msgstr "[s]<i>Text</i>[/s]"
-
-msgid "[s]This is text is strikethrough.[/s]"
-msgstr "[s]This is text is strikethrough.[/s]"
-
-msgid "[size=4]This is size 4.[/size]"
-msgstr "[size=4]This is size 4.[/size]"
-
-msgid "[size=<i>n</i>]<i>text</i>[/size]"
-msgstr "[size=<i>n</i>]<i>text</i>[/size]"
-
-msgid "[sub]<i>Text</i>[/sub]"
-msgstr "[sub]<i>Text</i>[/sub]"
-
-msgid "[sup]<i>Text</i>[/sup]"
-msgstr "[sup]<i>Text</i>[/sup]"
-
-msgid "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-msgstr "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-
-msgid "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-msgstr "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-
-msgid "[u]<i>Text</i>[/u]"
-msgstr "[u]<i>Text</i>[/u]"
-
-msgid "[u]This is underlined text.[/u]"
-msgstr "[u]This is underlined text.[/u]"
-
-msgid "[url=<i>URL</i>]<i>Link text</i>[/url]"
-msgstr "[url=<i>URL</i>]<i>Link text</i>[/url]"
-
-msgid "[url=http://Pu239.silly/]Crafty[/url]"
-msgstr "[url=http://Pu239.silly/]Crafty[/url]"
-
-msgid "[url]<i>URL</i>[/url]"
-msgstr "[url]<i>URL</i>[/url]"
-
-msgid "[url]http://Pu239.silly/[/url]"
-msgstr "[url]http://Pu239.silly/[/url]"
-
-msgid "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-msgstr "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-
-msgid "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
-msgstr "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
 
 msgid "a thread you subscribed to"
 msgstr "a thread you subscribed to"
@@ -14083,6 +14037,10 @@ msgstr "as the name suggests, identifies the client (the s588 part identifies Sh
 
 msgid "at"
 msgstr "at"
+
+#, no-php-format
+msgid "at {0}"
+msgstr "at {0}"
 
 msgid "before"
 msgstr "before"
@@ -14429,6 +14387,12 @@ msgstr[0] "in {0} month"
 msgstr[1] "in {0} months"
 
 #, no-php-format
+msgid "in {0} second"
+msgid_plural "in {0} seconds"
+msgstr[0] "in {0} second"
+msgstr[1] "in {0} seconds"
+
+#, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] "in {0} week"
@@ -14757,6 +14721,9 @@ msgstr "search"
 msgid "search messages by this member only"
 msgstr "search messages by this member only"
 
+msgid "seedbonus"
+msgstr "seedbonus"
+
 msgid "seeded for"
 msgstr "seeded for"
 
@@ -14824,6 +14791,10 @@ msgstr "sql"
 msgid "staff"
 msgstr "staff"
 
+#, no-php-format
+msgid "starts in {0}"
+msgstr "starts in {0}"
+
 msgid "successfully backed-up the database."
 msgstr "successfully backed-up the database."
 
@@ -14842,6 +14813,9 @@ msgstr "this topic from your unread list. To remove all, use the: Mark All As Re
 msgid "this tree"
 msgstr "this tree"
 
+msgid "tickets"
+msgstr "tickets"
+
 msgid "time"
 msgstr "time"
 
@@ -14856,6 +14830,9 @@ msgstr "to clear this announcement"
 
 msgid "to delete it or"
 msgstr "to delete it or"
+
+msgid "to go"
+msgstr "to go"
 
 msgid "to go back"
 msgstr "to go back"
@@ -14943,6 +14920,12 @@ msgstr "warned Status removed by {0}."
 
 msgid "warned users"
 msgstr "warned users"
+
+#, no-php-format
+msgid "was hit {0} time"
+msgid_plural "was hit {0} times"
+msgstr[0] "was hit {0} time"
+msgstr[1] "was hit {0} times"
 
 msgid "was registered during open doors"
 msgstr "was registered during open doors"
@@ -15135,6 +15118,10 @@ msgstr[1] "{0} New Reports"
 #, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0} Old School Arcade!"
+
+#, no-php-format
+msgid "{0} PMs per page"
+msgstr "{0} PMs per page"
 
 #, php-format
 msgid "{0} Page"
@@ -15469,6 +15456,10 @@ msgstr[0] "{0} year ago"
 msgstr[1] "{0} years ago"
 
 #, no-php-format
+msgid "{0}% out of {1} votes!"
+msgstr "{0}% out of {1} votes!"
+
+#, no-php-format
 msgid "{0}'s Entertainment"
 msgstr "{0}'s Entertainment"
 
@@ -15497,16 +15488,8 @@ msgid "{0}Confirm your invitation{1}"
 msgstr "{0}Confirm your invitation{1}"
 
 #, no-php-format
-msgid "{0}FAQ{1}"
-msgstr "{0}FAQ{1}"
-
-#, no-php-format
 msgid "{0}IMDb Url{1}"
 msgstr "{0}IMDb Url{1}"
-
-#, no-php-format
-msgid "{0}Rules{1}"
-msgstr "{0}Rules{1}"
 
 #, no-php-format
 msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
@@ -15539,13 +15522,13 @@ msgstr[0] "{1} has just bought {2}{0} Lottery Ticket!{3} GOOD LUCK!"
 msgstr[1] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 
 #, no-php-format
-msgid "{1} was hit {0} time in {2} seconds"
-msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] "{1} was hit {0} time in {2} seconds"
-msgstr[1] "{1} was hit {0} times in {2} seconds"
-
-#, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
 msgstr[0] "{1}: Modded Torrents from {0} day ago"
 msgstr[1] "{1}: Modded Torrents from {0} days ago"
+
+#, no-php-format
+msgid "{1}: Modded Torrents from {0}, number day ago"
+msgid_plural "{1}: Modded Torrents from {0}, number days ago"
+msgstr[0] "{1}: Modded Torrents from {0}, number day ago"
+msgstr[1] "{1}: Modded Torrents from {0}, number days ago"
