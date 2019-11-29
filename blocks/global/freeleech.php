@@ -1,8 +1,13 @@
 <?php
 
 declare(strict_types = 1);
-$user = check_user_status();
 
+use Pu239\Cache;
+
+$user = check_user_status();
+global $container;
+
+$cache = $container->get(Cache::class);
 $free = $cache->get('site_events_');
 if ($user) {
     if (!empty($free) && $free['modifier'] != 0) {
