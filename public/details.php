@@ -428,7 +428,7 @@ $coin_users = !empty($coin_users) ? '
 $points .= tr('Karma Points', '
                     <div class="left10">
                         <p>In total ' . $total_coins . ' Karma Points given to this torrent of which ' . $my_points . ' from you</p>
-                        <p>
+                        <span>
                             <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=10">
                                 <img src="' . $site_config['paths']['images_baseurl'] . '10coin.png" alt="10" class="tooltipper" title="10 Points">
                             </a>
@@ -450,7 +450,7 @@ $points .= tr('Karma Points', '
                             <a href="' . $site_config['paths']['baseurl'] . '/coins.php?id=' . $id . '&amp;points=1000">
                                 <img src="' . $site_config['paths']['images_baseurl'] . '1000coin.png" alt="1000" class="tooltipper" title="1000 Points">
                             </a>
-                        </p>
+                        </span>
                         <div>By clicking on the coins you can give Karma Points to the uploader of this torrent.</div>' . $coin_users . '
                     </div>', 1);
 $downl = $user['downloaded'] + $torrent['size'];
@@ -515,7 +515,7 @@ if ($torrent_cache['rep']) {
 $audit .= tr('Report Torrent', "
     <form action='{$site_config['paths']['baseurl']}/report.php?type=Torrent&amp;id=$id' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <div class='level-left'>
-            <input class='button is-small left10' type='submit' name='submit' value='Report This Torrent'>
+            <input class='button is-small left10 details-button' type='submit' name='submit' value='Report This Torrent'>
             <div class='left10'>
                 For breaking the
                 <a href='{$site_config['paths']['baseurl']}/rules.php'>
@@ -526,13 +526,13 @@ $audit .= tr('Report Torrent', "
     </form>", 1);
 
 if ($owned) {
-    $audit .= tr('Edit Torrent', "<a href='$url' class='button is-small left10'>" . _('Edit this torrent') . '</a>', 1);
+    $audit .= tr('Edit Torrent', "<a href='$url' class='button is-small details-button left10'>" . _('Edit this torrent') . '</a>', 1);
 }
 if ($moderator) {
     $audit .= tr('Clear Cache', "
                     <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' name='clear_cache' value={$torrent['id']}>
-                        <input type='submit' class='button is-small left10' value='Clear Cache'>
+                        <input type='submit' class='button is-small details-button left10' value='Clear Cache'>
                     </form>", 1);
 
     $returnto = '';
@@ -546,18 +546,18 @@ if ($moderator) {
                     <div class='bottom10 left10'>
                         <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' enctype='multipart/form-data' accept-charset='utf-8'>
                             <input type='hidden' name='rechecked' value={$torrent['id']}>
-                            <input type='submit' class='button is-small bottom10' value='Re-Check this torrent'>
+                            <input type='submit' class='button is-small details-button bottom10' value='Re-Check this torrent'>
                         </form>
                         <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}' enctype='multipart/form-data' accept-charset='utf-8'>
                             <input type='hidden' name='clearchecked' value={$torrent['id']}>
-                            <input type='submit' class='button is-small' value='Un-Check this torrent'>
+                            <input type='submit' class='button is-small details-button' value='Un-Check this torrent'>
                         </form>
                     </div>", 1);
     } else {
         $audit .= tr('Checked by', "
                     <form method='post' action='{$site_config['paths']['baseurl']}/details.php?id={$torrent['id']}{$returnto}' enctype='multipart/form-data' accept-charset='utf-8'>
                         <input type='hidden' name='checked' value={$torrent['id']}>
-                        <input type='submit' class='button is-small left10' value='Check this torrent'>
+                        <input type='submit' class='button is-small details-button left10' value='Check this torrent'>
                     </form>", 1);
     }
 }
