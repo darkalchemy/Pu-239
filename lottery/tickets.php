@@ -108,11 +108,11 @@ $body = "
                 <ul class='padding20 disc left20'>
                     <li>" . _('Tickets are non-refundable') . '</li>
                     <li>' . _fe('Each ticket costs {0} Karma Bonus Points, which is taken from your seedbonus amount.', number_format((int) $lottery_config['ticket_amount'])) . '</li>
-                    <li>' . _('Purchaseable shows how many tickets you can afford to purchase.') . '</li>
+                    <li>' . _('Purchasable shows how many tickets you can afford to purchase.') . '</li>
                     <li>' . _('You can only buy up to your purchaseable amount.') . '</li>
-                    <li>' . _fe('The competiton will end: {0}', get_date((int) $lottery_config['end_date'], 'LONG')) . '</li>
+                    <li>' . _fe('The competition will end: {0}', get_date((int) $lottery_config['end_date'], 'LONG')) . '</li>
                     <li>' . _pfe('There will be {0} winner, picked at random.', 'There will be {0} winners, picked at random.', $lottery_config['total_winners']) . '</li>
-                    <li>' . _pfe('The winner will get {0} added to their seedbonus amount', 'The winners will get {0} added to their seedbonus amount', number_format($lottery['per_user'])) . '</li>
+                    <li>' . _pfe('The {0} winner will get {1} added to their seedbonus amount.', 'The {0} winners will get {1} added to their seedbonus amount.', $lottery_config['total_winners'], number_format($lottery['per_user'])) . '</li>
                     <li>' . _('The Winners will be announced once the lottery has closed and posted on the home page.') . '</li>';
 if (!$lottery_config['use_prize_fund']) {
     $body .= '
