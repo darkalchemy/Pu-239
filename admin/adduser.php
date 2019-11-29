@@ -37,9 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     } else {
+        $password = bin2hex(random_bytes(12));
         $data = [
             'email' => $post['email'],
-            'password' => bin2hex(random_bytes(12)),
+            'password' => $password,
             'username' => $post['username'],
             'send_email' => false,
         ];
@@ -49,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (empty($userid)) {
             $session->set('is-warning', _('User or email already exists.'));
         } else {
-            stderr(_('Success'), _fe('{0} account created successfully. The password has been set to {1}', format_username($userid), $post['password']));
+            stderr(_('Success'), _fe('{0} account created successfully. The password has been set to {1}', format_username($userid), $password));
         }
     }
 }
