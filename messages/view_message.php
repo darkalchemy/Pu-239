@@ -129,8 +129,8 @@ $body = "
                         <div class='column round10 bg-02 is-2-desktop is-3-tablet is-12-mobile has-text-centered'>
                             {$avatar}<br>" . format_username($message['sender']) . (empty($message['title']) ? '' : "
                             <div class='size_3'>[" . format_comment($message['title']) . ']</div>') . ($message['last_access'] > TIME_NOW - 300 ? "
-                            <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/online.gif' alt='" . _('Online') . "' title='" . _('Online') . "' class='tooltipper icon is-small lazy'>" . _('Online') . '</div>' : "
-                            <div><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/offline.gif' alt='" . _('Offline') . "' title='" . _('Offline') . "' class='tooltipper icon is-small lazy'>" . _('Offline') . '</div>') . '
+                            <div class='level-center-center'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/online.gif' alt='" . _('Online') . "' title='" . _('Online') . "' class='tooltipper icon is-small lazy'>" . _('Online') . '</div>' : "
+                            <div class='level-center-center'><img src='{$image}' data-src='{$site_config['paths']['images_baseurl']}forums/offline.gif' alt='" . _('Offline') . "' title='" . _('Offline') . "' class='tooltipper icon is-small lazy'>" . _('Offline') . '</div>') . '
                             <div>' . _('Karma') . ': ' . number_format((float) $message['seedbonus']) . '</div>' . (!empty($message['website']) ? "
                             <div>
                                 <a href='" . format_comment($message['website']) . "' target='_blank' title='" . _('click to go to website') . "'>
