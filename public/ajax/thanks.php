@@ -61,7 +61,7 @@ function print_list(int $uid, int $tid, bool $ajax)
             'status' => true,
         ]);
     } else {
-        $form = !$hadTh ? "<span class='left10'><form action='{$site_config['paths']['baseurl']}/ajax/thanks.php' method='post'><input type='submit' class='button is-small' name='submit' value='Say thanks'><input type='hidden' name='torrentid' value='{$tid}'><input type='hidden' name='action' value='add'></form></span enctype='multipart/form-data' accept-charset='utf-8'>" : '';
+        $form = !$hadTh ? "<span class='left10'><form action='{$site_config['paths']['baseurl']}/ajax/thanks.php' method='post'><input type='submit' class='button is-small details-button' name='submit' value='Say thanks'><input type='hidden' name='torrentid' value='{$tid}'><input type='hidden' name='action' value='add'></form></span enctype='multipart/form-data' accept-charset='utf-8'>" : '';
         $out = (count($list) > 0 ? implode(', ', $list) : '');
 
         return <<<IFRAME
