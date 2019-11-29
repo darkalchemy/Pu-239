@@ -17,6 +17,7 @@ function breadcrumbs(array $breadcrumbs)
                             <li><a href='{$site_config['paths']['baseurl']}'>" . _('Home') . '</a></li>';
     foreach ($breadcrumbs as $link) {
         if (!empty($link)) {
+            $link = str_replace(",", '', $link);
             $crumbs .= "
                             <li>$link</li>";
         }
