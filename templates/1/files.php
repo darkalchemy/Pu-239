@@ -93,7 +93,7 @@ function get_file_name($file)
         case 'dragndrop_js':
             return "{$site_config['paths']['baseurl']}/js/1/dragndrop_c06ac504.js";
         case 'details_js':
-            return "{$site_config['paths']['baseurl']}/js/1/details_c57f59ed.js";
+            return "{$site_config['paths']['baseurl']}/js/1/details_7c1816bd.js";
         case 'forums_js':
             return "{$site_config['paths']['baseurl']}/js/1/forums_b87eec63.js";
         case 'pollsmanager_js':
