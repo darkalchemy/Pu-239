@@ -114,8 +114,8 @@ if ($data === false || is_null($data)) {
 format_rss($data, $torrent_pass);
 
 /**
- * @param $data
- * @param ?string $torrent_pass
+ * @param             $data
+ * @param string|null $torrent_pass
  *
  * @throws DependencyException
  * @throws InvalidManipulation

@@ -22,18 +22,17 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  *
- * @param string  $imdb_id
- * @param bool    $title
- * @param bool    $data_only
- * @param ?int    $tid
- * @param ?string $poster
+ * @param string      $imdb_id
+ * @param bool        $title
+ * @param bool        $data_only
+ * @param int|null    $tid
+ * @param string|null $poster
  *
- * @throws InvalidManipulation
- * @throws UnbegunTransaction
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
- * @throws Exception
  *
  * @return array|bool|mixed
  */

@@ -194,6 +194,9 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
             if (!isset($navbar)) {
                 $errors[] = _('Show in Navbar cannot be empty.');
             }
+            if (!is_array($staff_classes)) {
+                $errors[] = _('There are no valid staff classes.');
+            }
             if (!in_array((int) $_POST['av_class'], $staff_classes)) {
                 $errors[] = _('The selected class is not a valid staff class.');
             }

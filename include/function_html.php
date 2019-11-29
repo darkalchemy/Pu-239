@@ -137,13 +137,13 @@ function insert_smilies_frame()
 }
 
 /**
- * @param string  $body
- * @param ?string $header
- * @param ?string $class
- * @param ?string $wrapper_class
- * @param ?string $striped
- * @param ?string $id
- * @param ?bool   $wrapper
+ * @param string      $body
+ * @param string|null $header
+ * @param string|null $class
+ * @param string|null $wrapper_class
+ * @param string|null $striped
+ * @param string|null $id
+ * @param bool|null   $wrapper
  *
  * @return string
  */
@@ -169,8 +169,8 @@ function main_table(string $body, ?string $header = null, ?string $class = null,
 }
 
 /**
- * @param string  $table
- * @param ?string $wrapper_class
+ * @param string      $table
+ * @param string|null $wrapper_class
  *
  * @return string
  */

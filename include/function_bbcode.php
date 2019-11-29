@@ -180,10 +180,10 @@ function format_urls($s)
 
 /**
  *
- * @param ?string $text
- * @param bool    $strip_html
- * @param bool    $urls
- * @param bool    $images
+ * @param string|null $text
+ * @param bool        $strip_html
+ * @param bool        $urls
+ * @param bool        $images
  *
  * @throws DependencyException
  * @throws InvalidManipulation

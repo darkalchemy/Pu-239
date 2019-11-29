@@ -53,7 +53,7 @@ $body = '
     </tr>";
 $HTMLOUT .= "
 <h1 class='has-text-centered'>" . _("Reset User's Lost Password") . "</h1>
-<form method='post' action='{$site_config[paths]['baseurl']}/staffpanel.php?tool=reset&amp;action=reset' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body) . '
+<form method='post' action='{$site_config['paths']['baseurl']}/staffpanel.php?tool=reset&amp;action=reset' enctype='multipart/form-data' accept-charset='utf-8'>" . main_table($body) . '
 </form>';
 $title = _('Reset Password');
 $breadcrumbs = [

@@ -213,14 +213,14 @@ function stdfoot(array $stdfoot = [])
         $querytime = $querytime === null ? 0 : $querytime;
         if ($site_config['cache']['driver'] === 'apcu' && extension_loaded('apcu')) {
             $stats = apcu_cache_info();
-            if ($stats) {
+            if (is_array($stats) && !empty($stats)) {
                 $stats['Hits'] = number_format($stats['num_hits'] / ($stats['num_hits'] + $stats['num_misses']) * 100, 3);
                 $header = _('APC(u) Hits: ') . $stats['Hits'] . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['num_entries']) . _(' Memory: ') . mksize($stats['mem_size']);
             }
         } elseif ($site_config['cache']['driver'] === 'redis' && extension_loaded('redis')) {
             $client = $container->get(Redis::class);
             $stats = $client->info();
-            if (!empty($stats)) {
+            if (is_array($stats) && !empty($stats)) {
                 $stats['Hits'] = number_format($stats['keyspace_hits'] / ($stats['keyspace_hits'] + $stats['keyspace_misses']) * 100, 3);
                 $db = 'db' . $site_config['redis']['database'];
                 preg_match('/keys=(\d+)/', $stats[$db], $keys);
@@ -234,7 +234,7 @@ function stdfoot(array $stdfoot = [])
             } else {
                 $stats = !empty($stats["{$site_config['memcached']['socket']}:0"]) ? $stats["{$site_config['memcached']['socket']}:0"] : (!empty($stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"]) ? $stats["{$site_config['memcached']['socket']}:{$site_config['memcached']['port']}"] : null);
             }
-            if ($stats && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
+            if (is_array($stats) && !empty($stats['get_hits']) && !empty($stats['cmd_get'])) {
                 $stats['Hits'] = number_format(($stats['get_hits'] / $stats['cmd_get']) * 100, 3);
                 $header = _('Memcached Hits: ') . $stats['Hits'] . _('% Misses: ') . number_format((100 - $stats['Hits']), 3) . _('% Items: ') . number_format($stats['curr_items']) . _(' Memory: ') . mksize($stats['bytes']);
             }
@@ -392,10 +392,10 @@ function stdfoot(array $stdfoot = [])
 }
 
 /**
- * @param string  $heading
- * @param string  $text
- * @param ?string $outer_class
- * @param ?string $inner_class
+ * @param string      $heading
+ * @param string      $text
+ * @param string|null $outer_class
+ * @param string|null $inner_class
  *
  * @return string|void
  */

@@ -31,6 +31,17 @@ function linkcolor($num)
     return 'pink';
 }
 
+/**
+ * @param array $torrents
+ * @param array $curuser
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
+ */
 function torrenttable(array $torrents, array $curuser)
 {
     global $container, $site_config, $curuser;
@@ -151,6 +162,9 @@ function torrenttable(array $torrents, array $curuser)
     return main_table($body, $heading);
 }
 
+/**
+ * @return array
+ */
 function get_links()
 {
     foreach ($_GET as $key => $var) {
@@ -183,6 +197,9 @@ function get_links()
     return [$oldlink, $link];
 }
 
+/**
+ * @return string
+ */
 function get_sorts()
 {
     $links = get_links();
@@ -220,6 +237,11 @@ function get_sorts()
     return $sorts;
 }
 
+/**
+ * @param $row
+ *
+ * @return string
+ */
 function get_togo($row)
 {
     if ($row['to_go'] == -1) {
@@ -240,6 +262,14 @@ function get_togo($row)
     return $to_go;
 }
 
+/**
+ * @param $row
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string
+ */
 function get_tools($row)
 {
     global $site_config, $curuser;
@@ -283,6 +313,14 @@ function get_tools($row)
     return $links;
 }
 
+/**
+ * @param $row
+ *
+ * @throws DependencyException
+ * @throws NotFoundException
+ *
+ * @return string
+ */
 function get_staff_picks($row)
 {
     global $site_config;
@@ -297,6 +335,11 @@ function get_staff_picks($row)
     return $staff_pick;
 }
 
+/**
+ * @param $row
+ *
+ * @return string
+ */
 function get_imdb_rating($row)
 {
     global $site_config;
@@ -313,6 +356,16 @@ function get_imdb_rating($row)
     return $imdb_info;
 }
 
+/**
+ * @param $row
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
+ */
 function get_icons($row)
 {
     global $site_config;
@@ -368,6 +421,12 @@ function get_icons($row)
     return $icon_string;
 }
 
+/**
+ * @param $row
+ * @param $lookup
+ *
+ * @return string
+ */
 function get_genres($row, $lookup)
 {
     global $site_config;
@@ -549,6 +608,9 @@ function get_poster($row, $image)
     return $poster;
 }
 
+/**
+ * @return array|string
+ */
 function get_lookup()
 {
     $lookup = $oldlink = [];
@@ -568,6 +630,17 @@ function get_lookup()
     return $lookup;
 }
 
+/**
+ * @param $row
+ * @param $lookup
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws \Envms\FluentPDO\Exception
+ *
+ * @return string
+ */
 function get_cat_info($row, $lookup)
 {
     global $site_config;

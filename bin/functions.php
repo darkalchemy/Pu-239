@@ -129,6 +129,9 @@ function get_username()
     return get_webserver_user();
 }
 
+/**
+ * @param string $group
+ */
 function cleanup(string $group)
 {
     global $site_config;

@@ -14,8 +14,12 @@ use Pu239\User;
  *
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function trivia_points_update($data)
 {

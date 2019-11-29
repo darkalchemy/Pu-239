@@ -13,8 +13,12 @@ use Pu239\User;
  *
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
  * @throws \MatthiasMullie\Scrapbook\Exception\UnbegunTransaction
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function pu_update($data)
 {

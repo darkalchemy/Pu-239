@@ -381,11 +381,11 @@ function searchfield($s)
 }
 
 /**
- * @param $heading
- * @param $text
- * @param ?string $outer_class
- * @param ?string $inner_class
- * @param array   $breadcrumbs
+ * @param             $heading
+ * @param             $text
+ * @param string|null $outer_class
+ * @param string|null $inner_class
+ * @param array       $breadcrumbs
  *
  * @throws AuthError
  * @throws DependencyException
@@ -789,9 +789,9 @@ function check_user_status(string $type = 'browse')
 
 /**
  *
- * @param int     $userclass
- * @param int     $class
- * @param ?string $role
+ * @param int         $userclass
+ * @param int         $class
+ * @param string|null $role
  *
  * @throws DependencyException
  * @throws NotFoundException
@@ -1143,11 +1143,11 @@ function get_anonymous_name()
 
 /**
  *
- * @param string $url
- * @param bool   $image
- * @param ?int   $width
- * @param ?int   $height
- * @param ?int   $quality
+ * @param string   $url
+ * @param bool     $image
+ * @param int|null $width
+ * @param int|null $height
+ * @param int|null $quality
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -1390,9 +1390,9 @@ function insert_update_ip(string $type, int $userid)
 
 /**
  *
- * @param string $url
- * @param ?bool  $fresh
- * @param ?bool  $async
+ * @param string    $url
+ * @param bool|null $fresh
+ * @param bool|null $async
  *
  * @throws DependencyException
  * @throws NotFoundException

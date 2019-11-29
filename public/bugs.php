@@ -226,7 +226,8 @@ if ($action === 'viewbug') {
                    ->leftJoin('users AS s ON b.staff = s.id')
                    ->orderBy('b.added DESC')
                    ->limit($pager['pdo']['limit'])
-                   ->offset($pager['pdo']['offset']);
+                   ->offset($pager['pdo']['offset'])
+                   ->fetchAll();
 
     $na_count = $fluent->from('bugs')
                        ->select(null)
@@ -249,8 +250,8 @@ if ($action === 'viewbug') {
         <th>' . _('Staff Comment') . '</th>
     </tr>';
         $body = '';
-        foreach ($bugs as $q1) {
-            switch ($q1['priority']) {
+        foreach ($bugs as $bug) {
+            switch ($bug['priority']) {
                 case 'low':
                     $priority = "<span class='has-text-green'>" . _('Low') . '</span>';
                     break;
@@ -263,7 +264,7 @@ if ($action === 'viewbug') {
                     $priority = "<span class='has-text-danger'><b><u>" . _('Very High') . '</u></b></span>';
                     break;
             }
-            switch ($q1['status']) {
+            switch ($bug['status']) {
                 case 'fixed':
                     $status = "<span class='has-text-green'><b>" . _('Fixed') . '</b></span>';
                     break;
@@ -278,12 +279,12 @@ if ($action === 'viewbug') {
             }
             $body .= "
     <tr>
-        <td class='w-25 min-150'><a href='?action=viewbug&amp;id=" . $q1['id'] . "'>" . format_comment($q1['title']) . '</a></td>
-        <td>' . get_date($q1['added'], 'TINY') . '<br>' . format_username($q1['sender']) . "</td>
+        <td class='w-25 min-150'><a href='?action=viewbug&amp;id=" . $bug['id'] . "'>" . format_comment($bug['title']) . '</a></td>
+        <td>' . get_date($bug['added'], 'TINY') . '<br>' . format_username($bug['sender']) . "</td>
         <td>{$priority}</td>
         <td>{$status}</td>
-        <td>" . ($q1['status'] != 'na' ? format_username($q1['staff']) : '---') . "</td>
-        <td class='w-25 min-350'>" . (!empty($q1['comment']) ? format_comment($q1['comment']) : '---') . '</td>
+        <td>" . ($bug['status'] != 'na' ? format_username($bug['staff']) : '---') . "</td>
+        <td class='w-25 min-350'>" . (!empty($bug['comment']) ? format_comment($bug['comment']) : '---') . '</td>
     </tr>';
         }
         $HTMLOUT .= main_table($body, $heading);

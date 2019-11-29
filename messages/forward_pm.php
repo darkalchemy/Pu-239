@@ -95,7 +95,7 @@ if (strpos($to_user['notifs'], '[pm]') !== false) {
 </body>
 </html>";
 
-    send_mail($to_user['email'], f('You have received a PM from %s!', $username), $body, strip_tags($body));
+    send_mail($to_user['email'], _fe('You have received a PM from {0}!', $username), $body, strip_tags($body));
 }
 header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_mailbox&forwarded=1');
 die();

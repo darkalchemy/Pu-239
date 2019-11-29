@@ -183,6 +183,11 @@ class AJAXChat
         }
     }
 
+    /**
+     * @throws \Envms\FluentPDO\Exception
+     *
+     * @return bool
+     */
     public function canChat()
     {
         $user = $this->_user->getUserFromId($this->getUserID());
@@ -3471,6 +3476,8 @@ class AJAXChat
     /**
      * @param $tag
      * @param $tagContent
+     *
+     * @return null
      */
     public function replaceCustomTemplateTags($tag, $tagContent)
     {

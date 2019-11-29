@@ -524,8 +524,8 @@ function is_valid_id(int $id)
 }
 
 /**
- * @param ?float $up
- * @param ?float $down
+ * @param float|null $up
+ * @param float|null $down
  *
  * @return string
  */
@@ -556,8 +556,8 @@ function member_ratio(?float $up, ?float $down)
 
 /**
  *
- * @param ?float $up
- * @param ?float $down
+ * @param float|null $up
+ * @param float|null $down
  *
  * @throws DependencyException
  * @throws NotFoundException

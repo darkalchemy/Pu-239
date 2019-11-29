@@ -194,13 +194,12 @@ class Comment
     }
 
     /**
-     *
      * @param string $column
      * @param int    $id
      *
      * @throws Exception
      *
-     * @return Select
+     * @return array|bool|Select
      */
     public function get_comment_by_column(string $column, int $id)
     {
