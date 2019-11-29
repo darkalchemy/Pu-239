@@ -13,7 +13,7 @@ if (!$lottery_config['enable']) {
 }
 global $site_config;
 
-$html .= '
+$html = '
     <div class="has-text-centered padding20">
         <h1>' . _fe('{0} Lottery', $site_config['site']['name']) . '</h1>
         <span class="size_4">
