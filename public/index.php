@@ -72,13 +72,13 @@ $center_column = [
     'latest_movies',
     'latest_tv',
     'forum_posts',
-    'site_stats',
     'site_poll',
 ];
 $right_column = [
     'trivia',
     'advertise',
     'site_news',
+    'site_stats',
     'posted_comments',
     'latest_user',
     'birthday_users',
