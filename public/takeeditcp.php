@@ -11,6 +11,12 @@ require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
 
 use Delight\Auth\Auth;
+use Delight\Auth\EmailNotVerifiedException;
+use Delight\Auth\InvalidEmailException;
+use Delight\Auth\InvalidPasswordException;
+use Delight\Auth\NotLoggedInException;
+use Delight\Auth\TooManyRequestsException;
+use Delight\Auth\UserAlreadyExistsException;
 use Pu239\Cache;
 use Pu239\Database;
 use Pu239\Message;
@@ -206,20 +212,20 @@ if ($action === 'avatar') {
     <meta property='og:description' content='{1}'>
 </head>
 <body>
-<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
-<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>
+<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>
+<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>
 <br>
-<p> To complete the update of your user profile, please follow this link:</p >
+<p>To complete the update of your user profile, please follow this link:</p>
 <p><#CHANGE_LINK#></p>
-<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >
+<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>
 <p> --<#SITENAME#></p>
 </body>
 </html>", $site_config['paths']['baseurl'], $site_config['site']['name']));
-                    send_mail($email, "{$site_config['site']['name']} " . _('profile change confirmation') . '', $body, strip_tags($body));
+                    send_mail($email, "{$site_config['site']['name']} " . _('profile change confirmation'), $body, strip_tags($body));
                 });
-                $session->set('is - info', 'The change will take effect as soon as the new email address has been confirmed');
+                $session->set('is-info', _('The change will take effect as soon as the new email address has been confirmed'));
             } else {
-                stderr(_('Error'), 'We can\'t say if the user is who they claim to be');
+                stderr(_('Error'), _("We can't say if the user is who they claim to be"));
             }
         } catch (InvalidEmailException $e) {
             stderr(_('Error'), _('Invalid email address'));

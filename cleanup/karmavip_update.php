@@ -13,8 +13,12 @@ use Pu239\Message;
  *
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
+ * @throws \Envms\FluentPDO\Exception
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function karmavip_update($data)
 {

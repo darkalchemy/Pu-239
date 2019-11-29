@@ -10,10 +10,10 @@ require_once INCL_DIR . 'function_fanart.php';
 
 /**
  *
- * @param string $media
- * @param string $imdb
- * @param string $type
- * @param ?int   $season
+ * @param string   $media
+ * @param string   $imdb
+ * @param string   $type
+ * @param int|null $season
  *
  * @throws DependencyException
  * @throws NotFoundException

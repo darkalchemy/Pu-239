@@ -93,7 +93,7 @@ if (isset($_GET['add'])) {
         }
         //=== all is good, let's enter them \o/
         $watched_user_reason = htmlsafechars($_POST['reason']);
-        $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . _fe('Added to watched users by {0}', $CURUSER[username]) . "\n" . $user['modcomment'];
+        $modcomment = get_date((int) TIME_NOW, 'DATE', 1) . ' - ' . _fe('Added to watched users by {0}', $CURUSER['username']) . "\n" . $user['modcomment'];
         sql_query('UPDATE users SET watched_user = ' . TIME_NOW . ', modcomment = ' . sqlesc($modcomment) . ', watched_user_reason = ' . sqlesc($watched_user_reason) . ' WHERE id=' . sqlesc($member_whos_been_bad)) or sqlerr(__FILE__, __LINE__);
         $cache->update_row('user_' . $member_whos_been_bad, [
             'watched_user' => TIME_NOW,

@@ -106,7 +106,7 @@ if (!empty($music)) {
 } elseif (!empty($apps)) {
     $genre = implode(',', $apps);
 }
-$nfo = '';
+$nfo = $nfofilename = '';
 
 if (!empty($_FILES['nfo']) && !empty($_FILES['nfo']['name'])) {
     $nfofile = $_FILES['nfo'];
@@ -609,6 +609,9 @@ $cache->delete('user_upload_variables_' . $owner_id);
 $session->set('is-success', _('Successfully uploaded!'));
 header("Location: {$site_config['paths']['baseurl']}/details.php?id=$id&uploaded=1");
 
+/**
+ * @param string $why
+ */
 function why_die(string $why)
 {
     if (!empty($_SERVER['HTTP_REFERER'])) {

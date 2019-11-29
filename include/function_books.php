@@ -16,16 +16,16 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
  *
- * @param ?string $isbn
- * @param ?string $name
- * @param ?int    $tid
- * @param ?string $poster
+ * @param string|null $isbn
+ * @param string|null $name
+ * @param int|null    $tid
+ * @param string|null $poster
  *
  * @throws DependencyException
- * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool
  */
@@ -209,8 +209,8 @@ function format_ebook_html(array $ebook, int $api_hits)
 
 /**
  *
- * @param ?string $isbn
- * @param ?string $name
+ * @param string|null $isbn
+ * @param string|null $name
  *
  * @throws DependencyException
  * @throws NotFoundException

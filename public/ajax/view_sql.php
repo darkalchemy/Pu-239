@@ -40,6 +40,8 @@ function adminer_object()
      */
     class AdminerCustomization extends AdminerPlugin
     {
+        private $plugins;
+
         /**
          * AdminerCustomization constructor.
          *

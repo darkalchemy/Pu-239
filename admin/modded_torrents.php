@@ -295,7 +295,7 @@ if (isset($_GET['type']) && in_array($_GET['type'], $modes)) {
                            ->fetchAll();
 
             $text = _pf('from the past {0} day.', 'from the past {0} days.', $_POST['time']);
-            $title = pfe('{1}: Modded Torrents from {0, number day ago', '{1}: Modded Torrents from {0, number days ago', $_POST['time'], $_POST['username']);
+            $title = _pfe('{1}: Modded Torrents from {0}, number day ago', '{1}: Modded Torrents from {0}, number days ago', $_POST['time'], $_POST['username']);
         } elseif ($whom) {
             $data = $fluent->from('torrents AS t')
                            ->select(null)

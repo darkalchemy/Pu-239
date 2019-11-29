@@ -39,6 +39,9 @@ class AJAXChatLanguage
         $this->_strictMode = $strictMode;
     }
 
+    /**
+     * @return null
+     */
     public function getLangCode()
     {
         if (!$this->_langCode) {

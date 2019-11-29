@@ -44,7 +44,7 @@ function prime_caches($data)
         $torrents_class->get_torrent_from_hash($torrent['info_hash']);
         $users_class->getUserFromId($torrent['owner']);
         $peer_class->get_torrent_peers_by_tid($torrent['id']);
-        get_imdb_info($torrent['imdb_id'], true, false);
+        get_imdb_info($torrent['imdb_id'], true, false, null, null);
     }
 
     $time_end = microtime(true);

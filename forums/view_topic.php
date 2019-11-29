@@ -358,7 +358,7 @@ if ($arr['user_likes'] > 0) {
         }
         $cache->set('topics_user_likes_' . $arr['topic_id'], $user_likes, 86400);
     }
-    if ($user_likes) {
+    if (is_array($user_likes) && !empty($user_likes)) {
         foreach ($user_likes as $userid) {
             $likers[] = format_username((int) $userid);
         }
@@ -519,7 +519,7 @@ foreach ($posts as $arr) {
             }
             $cache->set('posts_user_likes_' . $post_id, $user_likes, 86400);
         }
-        if ($user_likes) {
+        if (is_array($user_likes) && !empty($user_likes)) {
             foreach ($user_likes as $userid) {
                 $likers[] = format_username((int) $userid);
             }

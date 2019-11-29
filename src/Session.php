@@ -23,7 +23,7 @@ class Session
     }
 
     /**
-     * @param $value
+     * @param        $value
      * @param string $key
      * @param bool   $use_prefix
      */
@@ -68,6 +68,10 @@ class Session
         }
     }
 
+    /**
+     * @param string      $key
+     * @param string|null $prefix
+     */
     public function unset(string $key, string $prefix = null)
     {
         if ($prefix === null) {

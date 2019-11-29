@@ -54,6 +54,7 @@ $dt = TIME_NOW;
 $session->set('post_request_data', $_POST);
 $data = $_GET;
 $view_all = $add = $edit = $delete = $view = $edit_comment = $add_comment = $post_comment = $add_bounty = $pay_bounty = false;
+$post_data = [];
 if (isset($data['action'])) {
     switch ($data['action']) {
         case 'pay_bounty':

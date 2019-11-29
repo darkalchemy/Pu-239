@@ -20,10 +20,10 @@ class ImageProxy
 {
     /**
      *
-     * @param string $url
-     * @param ?int   $width
-     * @param ?int   $height
-     * @param ?int   $quality
+     * @param string   $url
+     * @param int|null $width
+     * @param int|null $height
+     * @param int|null $quality
      *
      * @throws DependencyException
      * @throws InvalidManipulation

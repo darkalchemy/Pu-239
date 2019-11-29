@@ -13,10 +13,14 @@ use Pu239\Message;
 /**
  * @param $data
  *
- * @throws UnbegunTransaction
  * @throws DependencyException
  * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Delight\Auth\AuthError
+ * @throws \Delight\Auth\NotLoggedInException
  * @throws \Envms\FluentPDO\Exception
+ * @throws \PHPMailer\PHPMailer\Exception
+ * @throws \Spatie\Image\Exceptions\InvalidManipulation
  */
 function warned_update($data)
 {
