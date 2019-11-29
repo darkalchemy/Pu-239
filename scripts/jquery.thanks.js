@@ -12,7 +12,7 @@ function show_thanks(tid) {
         tid: tid,
     }, function (r) {
         if (r.status) {
-            if (!r.hadTh) r.list += '<div class=\'top10 bottom10\'><input type=\'button\' class=\'button is-small\' value=\'Say thanks\' onclick="say_thanks(' + tid + ')" id=\'thanks_button\' /></div>';
+            if (!r.hadTh) r.list += '<div class=\'top10 bottom10\'><input type=\'button\' class=\'button is-small details-button\' value=\'Say thanks\' onclick="say_thanks(' + tid + ')" id=\'thanks_button\' /></div>';
             holder.empty().html(r.list);
         }
     }, 'json');
