@@ -1425,11 +1425,15 @@ ul li ul li {
 }
 
 .column.no-pad {
-    padding:        0 !important;
+    padding: 0 !important;
 }
 
 .line-border {
     border: 1px solid white;
+}
+
+.details-button {
+    width: 150px;
 }
 
 @keyframes marquee {
