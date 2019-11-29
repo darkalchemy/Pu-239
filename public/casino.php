@@ -17,15 +17,6 @@ require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
 global $container, $site_config;
 
-if ($user['class'] < $site_config['allowed']['play']) {
-    stderr(_('Error'), _fe('Sorry, you must be a {0} to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
-} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
-    stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
-    die();
-} elseif ($user['uploaded'] < 1073741824 * 100) {
-    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
-}
-
 //== Config
 $amnt = $nobits = $abcdefgh = 0;
 $maxbetGB = 50;
@@ -59,12 +50,21 @@ $writelog = 1; //== Writes results to log
 $delold = 1; //== Clear bets once finished
 //== End of Config
 
+$min_text = mksize(100 * 1073741824);
+if ($user['class'] < $site_config['allowed']['play']) {
+    stderr(_('Error'), _fe('Sorry, you must be a {0} to play in the casino!', $site_config['class_names'][$site_config['allowed']['play']]), 'bottom20');
+} elseif ($user['game_access'] !== 1 || $user['status'] !== 0) {
+    stderr(_('Error'), _('Your gaming rights have been disabled.'), 'bottom20');
+    die();
+} elseif ($user['uploaded'] < 1073741824 * 100) {
+    stderr('Sorry,', "You must have at least {$min_text} upload credit to play.", 'bottom20');
+}
+
 $fluent = $container->get(Database::class);
 $users_class = $container->get(User::class);
 $casino = $container->get(Casino::class);
 $casino_bets = $container->get(CasinoBets::class);
 $session = $container->get(Session::class);
-$min_text = mksize(100 * 1073741824);
 $hours = 2;
 $dt = TIME_NOW - $hours * 3600;
 $casino->reset_trys($user['id']);

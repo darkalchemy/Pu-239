@@ -7,7 +7,6 @@ use Pu239\Session;
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-
 $list = [
     'ie_user_alert',
     'news_on',
@@ -127,6 +126,7 @@ $HTMLOUT = "
             <div>
                 <div class='level-center'>";
 
+$contents = [];
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Enable IE alert?') . "</div>
                             <div class='slideThree'><#ie_user_alert#></div>
@@ -392,7 +392,6 @@ $HTMLOUT .= "
                 <div class='level-center'>";
 
 $contents = [];
-
 $contents[] = "
                             <div class='w-100 has-text-centered'>" . _('Show Friends?') . "</div>
                             <div class='slideThree'><#userdetails_showfriends_on#></div>

@@ -82,7 +82,7 @@ if ($action === 'takeappdelete') {
            ->where('id = ?', $id)
            ->execute();
     $user_class = $container->get(User::class);
-    $clrbits = 0;
+    $setbits = $clrbits = 0;
     $setbits |= Roles::UPLOADER;
     $update = [
         'roles_mask' => new Literal('((roles_mask | ' . $setbits . ') & ~' . $clrbits . ')'),
