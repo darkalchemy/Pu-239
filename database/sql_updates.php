@@ -4819,4 +4819,18 @@ KEY `expires` (`expires`)
         'query' => "INSERT INTO `site_config` (`parent`, `name`, `type`, `value`, `description`) VALUES ('announce', 'incomplete_seed', 'bool', true, 'Upload credit earned for incomplete downloads.')",
         'flush' => true,
     ],
+    [
+        'id' => 1575062336,
+        'info' => 'update users font size',
+        'date' => '29 Nov, 2019',
+        'query' => 'UPDATE `users` SET `font_size` = 70 WHERE `font_size` = 80',
+        'flush' => true,
+    ],
+    [
+        'id' => 1575062337,
+        'info' => 'Alter column',
+        'date' => '29 Nov, 2019',
+        'query' => 'ALTER TABLE `users` MODIFY COLUMN `font_size` tinyint(3) unsigned NOT NULL DEFAULT 70',
+        'flush' => false,
+    ],
 ];
