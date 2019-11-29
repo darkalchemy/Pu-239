@@ -54,15 +54,39 @@ msgid ""
 "\n"
 "</head>\n"
 "<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+" </head>\n"
+" <body>\n"
+"     <p>您已在{0}上請求了一個新的用戶帳戶，並且已將此地址（{1}）指定為用戶聯繫人。 </p>\n"
+"     <p>如果您沒有這樣做，請忽略此電子郵件。輸入您的電子郵件地址的人的IP地址為{2}。請不要回复。 </p>\n"
+"     要確認您的用戶註冊，您必須點擊以下鏈接：</p>\n"
+"     <p> {3} </p>\n"
+"     <p>完成此操作後，您將可以使用新帳戶。如果您不這樣做，您的帳戶將在24小時內刪除。我們敦促您在開始使用{0}之前先閱讀{4}規則{5}和{6} FAQ {5}。 </p>\n"
+" </body>\n"
+" </html>"
+
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
 "<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
 "<p>The request originated from {1}.</p>\n"
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 msgstr ""
@@ -74,10 +98,10 @@ msgstr ""
 " <p>如果您沒有這樣做，則可以忽略此電子郵件。請不要回复。 </p>\n"
 " 如果您希望確認此請求，請訪問此鏈接：</p>\n"
 " <br>\n"
-" <p> <b> {2} /recover.php?selector= {3}＆token = {4} </b> </p>\n"
+" <p> <b> {2} </b> </p>\n"
 " <br>\n"
 " <p>執行此操作後，您將可以使用新密碼登錄。 </p>\n"
-" <p>-{5} </p>\n"
+" <p>-{3} </p>\n"
 " </body>\n"
 " </html>"
 
@@ -475,7 +499,7 @@ msgid "0-byte NFO"
 msgstr "0字節NFO"
 
 #, no-php-format
-msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
 msgstr "100 = {0}字體縮放<br> 50 = {1}字體縮放<br>這將覆蓋默認字體大小。"
 
 msgid "1st Post Preview"
@@ -497,12 +521,12 @@ msgid ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -521,12 +545,12 @@ msgstr ""
 "     <meta property='og:description' content='{1}'>\n"
 " </head>\n"
 " <body>\n"
-" <p>您已要求使用此電子郵件地址（<#USEREMAIL#>）更新<#SITENAME#>上的用戶個人資料（用戶名<#USERNAME#>）。 </p>\n"
+" <p>您已要求使用此電子郵件地址（<#USEREMAIL#>）更新<#SITENAME#>上的用戶個人資料（用戶名<#USERNAME#>）作為用戶聯繫方式。 </p>\n"
 " <p>如果您沒有這樣做，請忽略此電子郵件，並且什麼都不會改變。輸入您的電子郵件地址的人的IP地址為<#IP_ADDRESS#>。請不要回复這封郵件。 </p>\n"
 " <br>\n"
-" 要完成用戶配置文件的更新，請點擊以下鏈接：</p >\n"
+" 要完成用戶配置文件的更新，請訪問此鏈接：</p>\n"
 " <p> <#CHANGE_LINK#> </p>\n"
-" 完成此操作後，新的電子郵件地址將顯示在您的個人資料中。否則，您的個人資料將保持不變。 </p >\n"
+" 完成後，新的電子郵件地址將顯示在您的個人資料中。否則，您的個人資料將保持不變。 </p>\n"
 " <p>-<#SITENAME#> </p>\n"
 " </body>\n"
 " </html>"
@@ -648,10 +672,6 @@ msgstr "AJAX聊天高度"
 
 msgid "APC(u) Hits: "
 msgstr "APC（u）的點擊數："
-
-#, no-php-format
-msgid "APC(u) Hits: {0}"
-msgstr "APC（u）命中：{0}"
 
 msgid "API"
 msgstr "API"
@@ -1054,10 +1074,10 @@ msgstr "冒險"
 #, no-php-format
 msgid ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 msgstr ""
 "完成此操作後，{0}可能需要確認您的帳戶。 <br>\n"
-"        我們敦促您在開始使用{1}之前閱讀規則和常見問題解答。"
+"        我們敦促您在開始使用{5}之前先閱讀{1}規則{2}和{3} FAQ {4}。"
 
 msgid "Age"
 msgstr "年齡"
@@ -1517,6 +1537,9 @@ msgstr "頭像選擇已禁用="
 msgid "Avatar?"
 msgstr "阿凡達？"
 
+msgid "Avatars"
+msgstr "頭像"
+
 msgid "Avatars possible = No"
 msgstr "可能的頭像=否"
 
@@ -1525,9 +1548,6 @@ msgstr "可能的頭像=是"
 
 msgid "Avatars settings changed!"
 msgstr "頭像設置已更改！"
-
-msgid "Avatars:"
-msgstr "頭像："
 
 msgid "Avg Row Length"
 msgstr "平均行長"
@@ -1686,6 +1706,15 @@ msgstr "投注號碼"
 
 msgid "Bet on color"
 msgstr "下注顏色"
+
+msgid "Biography"
+msgstr "傳"
+
+msgid "Birth Place"
+msgstr "出生地"
+
+msgid "Birthdate"
+msgstr "生日"
 
 msgid "Birthday"
 msgstr "生日"
@@ -1879,6 +1908,9 @@ msgstr "違反這些規則可以而且將會被禁止！"
 msgid "Browse Torrents"
 msgstr "瀏覽洪流"
 
+msgid "Browse by IMDb"
+msgstr "按IMDb瀏覽"
+
 msgid "Browse default<br>categories"
 msgstr "瀏覽默認的<br>類別"
 
@@ -1917,6 +1949,9 @@ msgstr "蟲子"
 
 msgid "Bump a torrent"
 msgstr "激流"
+
+msgid "Bumped"
+msgstr "撞了"
 
 msgid "Burning"
 msgstr "燃燒著"
@@ -1973,6 +2008,9 @@ msgstr "光盤＃"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG閱讀器"
+
+msgid "CHECKED"
+msgstr "已檢查"
 
 #, no-php-format
 msgid "CLOSED => {0}"
@@ -2038,11 +2076,11 @@ msgstr "貓名"
 msgid "Catalog"
 msgstr "目錄"
 
+msgid "Categories"
+msgstr "分類目錄"
+
 msgid "Categories as images"
 msgstr "分類為圖片"
-
-msgid "Categories:"
-msgstr "分類："
 
 msgid "Category"
 msgstr "類別"
@@ -2504,6 +2542,10 @@ msgid "Congratulations!"
 msgstr "恭喜你！"
 
 #, no-php-format
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+msgstr "恭喜，您贏了：{0}。這已添加到您的種子獎金總額中。感謝您玩彩票。"
+
+#, no-php-format
 msgid "Congratulations, you have just won ''{0}''"
 msgstr "恭喜，您剛贏了“ {0}”"
 
@@ -2658,6 +2700,9 @@ msgstr "學分："
 
 msgid "Crime"
 msgstr "犯罪"
+
+msgid "Critics"
+msgstr "評論家"
 
 msgid "Cry"
 msgstr "哭"
@@ -2860,6 +2905,9 @@ msgstr "死囚"
 msgid "Debug Info"
 msgstr "調試信息"
 
+msgid "Deceased"
+msgstr "死者"
+
 msgid "December"
 msgstr "十二月"
 
@@ -2922,9 +2970,6 @@ msgstr "刪除PM"
 
 msgid "Delete PMs"
 msgstr "刪除PM"
-
-msgid "Delete PMs:"
-msgstr "刪除PM："
 
 msgid "Delete Post"
 msgstr "刪除帖子"
@@ -3237,6 +3282,12 @@ msgstr "{0}設置的捐助者狀態"
 msgid "Donors"
 msgstr "捐助者"
 
+msgid "Double Upload Slot"
+msgstr "雙上載廣告位"
+
+msgid "Double Upload Slot in Use"
+msgstr "正在使用雙重上傳廣告位"
+
 msgid "Doubled Down"
 msgstr "加倍下來"
 
@@ -3545,8 +3596,8 @@ msgstr "電子郵件禁令{0}已被{1}刪除"
 msgid "Email has not been verified."
 msgstr "電子郵件尚未驗證。"
 
-msgid "Email notification:"
-msgstr "電子郵件通知："
+msgid "Email notification"
+msgstr "電子郵件通知"
 
 #, no-php-format
 msgid "Email: {0} is unavailable."
@@ -3958,8 +4009,8 @@ msgstr "事件"
 msgid "Every torrent downloaded in the happy hour is free"
 msgstr "在歡樂時光中下載的所有種子都是免費的"
 
-msgid "Example:"
-msgstr "例："
+msgid "Example"
+msgstr "例"
 
 #, no-php-format
 msgid "Exchange your {0}{1}{2} Karma Bonus Points for goodies!"
@@ -4001,6 +4052,9 @@ msgstr "第一人稱射擊"
 msgid "FREE Status "
 msgstr "免費狀態"
 
+msgid "FTPing"
+msgstr "FTP傳輸"
+
 msgid "Failed Attempts"
 msgstr "嘗試失敗"
 
@@ -4031,8 +4085,8 @@ msgstr "不允許使用文件名"
 msgid "File not allowed only .srt , .sub , .vtt or .txt files"
 msgstr "不允許僅.srt，.sub，.vtt或.txt文件的文件"
 
-msgid "File size: "
-msgstr "文件大小："
+msgid "File size"
+msgstr "文件大小"
 
 msgid "File types supported"
 msgstr "支持的文件類型"
@@ -4129,8 +4183,8 @@ msgstr "洪流"
 msgid "Flush torrents?"
 msgstr "洪流？"
 
-msgid "Flysystem Cache: "
-msgstr "Flysystem緩存："
+msgid "Flysystem Cache"
+msgstr "Flysystem快取"
 
 msgid "Folder Exists?"
 msgstr "文件夾存在嗎？"
@@ -4241,8 +4295,17 @@ msgstr "免費水Lee老虎機"
 msgid "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 msgstr "添加了免費的水槽插槽大量獎勵-自動系統。\n"
 
+msgid "Free Slot"
+msgstr "空閒插槽"
+
+msgid "Free Slot in Use"
+msgstr "免費插槽正在使用"
+
 msgid "Free Slots added"
 msgstr "添加免費插槽"
+
+msgid "Free Torrent"
+msgstr "免費洪流"
 
 msgid "Free Torrent!"
 msgstr "免費洪流！"
@@ -4337,6 +4400,9 @@ msgstr "Freeleech？"
 
 msgid "Freeslots and Freeleech?"
 msgstr "Freeslots和Freeleech？"
+
+msgid "Friday"
+msgstr "星期五"
 
 msgid "Friend was added successfully."
 msgstr "朋友已成功添加。"
@@ -4515,9 +4581,6 @@ msgstr "轉到最後"
 
 msgid "Go back"
 msgstr "回去"
-
-msgid "Go to My Bookmarks"
-msgstr "轉到我的書籤"
 
 msgid "Go to the last post in this thread"
 msgstr "轉到該主題中的最後一個帖子"
@@ -4817,9 +4880,6 @@ msgstr "高速上傳器狀態。"
 
 msgid "Hip Hop"
 msgstr "嘻哈（音樂"
-
-msgid "His wit's as thick as a Tewkesbury mustard."
-msgstr "他的機智像特克斯伯里芥末醬一樣厚。"
 
 msgid "Historical"
 msgstr "歷史的"
@@ -5229,9 +5289,6 @@ msgstr "如果您認為此暫停操作有誤，請隨時與工作人員聯繫。
 msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr "如果您有任何用戶獲得的聲譽超過您的最低否定水平，那麼該短語將用於他們。如果您不想使用此短語，請確保設置的負面聲譽大於論壇用戶的最高得分（負面）。"
 
-msgid "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-msgstr "如果您已下載了該種子文件，它將顯示已完成的百分比，否則顯示-。"
-
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr "如果您忘記了密碼，可以在以下位置找回密碼"
 
@@ -5247,9 +5304,6 @@ msgstr "如果您節省了足夠的錢，則可以將它們換成贈品，例如
 #, no-php-format
 msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr "如果您認為可以滿足這些條件，請不要猶豫與{0}聯繫人{1}之一的管理員。"
-
-msgid "If you want to recommend this torrent check this box!"
-msgstr "如果您想推薦此種子，請選中此框！"
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr "如果要重命名主題，則必須提供名稱！"
@@ -5827,6 +5881,9 @@ msgstr "最後發表"
 msgid "Last Post by"
 msgstr "最後發表者"
 
+msgid "Last Poster"
+msgstr "最後的海報"
+
 msgid "Last Seen"
 msgstr "最後一次露面"
 
@@ -5885,8 +5942,8 @@ msgstr "最新文章："
 msgid "Latest Comments"
 msgstr "最新評論"
 
-msgid "Latest Posts"
-msgstr "最新的帖子"
+msgid "Latest Forum Posts"
+msgstr "最新論壇帖子"
 
 msgid "Leech Warn removed"
 msgstr "水ch警告已移除"
@@ -6073,6 +6130,9 @@ msgstr "抽獎"
 msgid "Lottery Config"
 msgstr "彩票配置"
 
+msgid "Lottery Config Closed"
+msgstr "彩票配置已關閉"
+
 msgid "Lottery Configuration"
 msgstr "彩票配置"
 
@@ -6084,9 +6144,6 @@ msgstr "彩票"
 
 msgid "Lottery Winners Info"
 msgstr "彩票中獎者信息"
-
-msgid "Lottery configuration closed"
-msgstr "彩票配置已關閉"
 
 msgid "Lottery configuration was saved!"
 msgstr "彩票配置已保存！"
@@ -6121,6 +6178,9 @@ msgstr "低比率可能導致嚴重後果，包括在極端情況下禁止使用
 
 msgid "MB"
 msgstr "兆字節"
+
+msgid "MPAA"
+msgstr "MPAA"
 
 msgid "MS Linedraw"
 msgstr "MS Linedraw"
@@ -6570,6 +6630,9 @@ msgstr "改性。"
 msgid "Modify"
 msgstr "修改"
 
+msgid "Monday"
+msgstr "星期一"
+
 msgid "Month"
 msgstr "月"
 
@@ -6799,6 +6862,9 @@ msgstr "負"
 
 msgid "Never"
 msgstr "決不"
+
+msgid "New"
+msgstr "新"
 
 msgid "New Announcement"
 msgstr "新公告"
@@ -7761,6 +7827,9 @@ msgstr "總覽"
 msgid "Owner"
 msgstr "所有者"
 
+msgid "P2P"
+msgstr "對等"
+
 msgid "PHP Info"
 msgstr "PHP信息"
 
@@ -8344,11 +8413,11 @@ msgstr "上市"
 msgid "Puke"
 msgstr "普克"
 
+msgid "Purchasable shows how many tickets you can afford to purchase."
+msgstr "可購買顯示您可以負擔多少票。"
+
 msgid "Purchaseable"
 msgstr "可購買的"
-
-msgid "Purchaseable shows how many tickets you can afford to purchase."
-msgstr "“可購買”顯示您有能力購買多少票。"
 
 msgid "Q2 - "
 msgstr "第2季-"
@@ -8444,6 +8513,9 @@ msgstr "有效的無比例跟踪器"
 msgid "Ratio:"
 msgstr "比："
 
+msgid "Re-Animated Torrent"
+msgstr "重生洪流"
+
 msgid "Re-pay!"
 msgstr "償還！"
 
@@ -8473,6 +8545,9 @@ msgstr "閱讀：用戶"
 
 msgid "Readable backup folder"
 msgstr "可讀的備份文件夾"
+
+msgid "Real Name"
+msgstr "真正的名字"
 
 msgid "Reality"
 msgstr "現實"
@@ -8511,9 +8586,6 @@ msgstr "食譜：{0}更新"
 
 msgid "Recipes"
 msgstr "菜譜"
-
-msgid "Recommend Torrent"
-msgstr "推薦洪流"
 
 msgid "Recover"
 msgstr "恢復"
@@ -8578,8 +8650,8 @@ msgstr "關聯"
 msgid "Remaining"
 msgstr "剩餘的"
 
-msgid "Remarks:"
-msgstr "備註："
+msgid "Remarks"
+msgstr "備註"
 
 msgid "Remember Me?"
 msgstr "記住賬號？"
@@ -8658,6 +8730,9 @@ msgstr "已從監視的用戶中刪除"
 
 msgid "Removed:"
 msgstr "已移除："
+
+msgid "Remuxing"
+msgstr "重塑"
 
 msgid "Rename"
 msgstr "改名"
@@ -8890,9 +8965,6 @@ msgstr "結果"
 msgid "Result Sorting"
 msgstr "結果排序"
 
-msgid "Result:"
-msgstr "結果："
-
 msgid "Results as list"
 msgstr "結果如清單"
 
@@ -8919,6 +8991,9 @@ msgstr "還原變更"
 
 msgid "Rock"
 msgstr "岩石"
+
+msgid "Role"
+msgstr "角色"
 
 msgid "Role Added"
 msgstr "角色添加"
@@ -8999,6 +9074,9 @@ msgstr "完整性檢查"
 msgid "Sanity check..."
 msgstr "完整性檢查..."
 
+msgid "Saturday"
+msgstr "星期六"
+
 msgid "Save"
 msgstr "救"
 
@@ -9016,9 +9094,6 @@ msgstr "節省下午"
 
 msgid "Save PMs"
 msgstr "保存PM"
-
-msgid "Save PMs:"
-msgstr "保存PM："
 
 msgid "Save as Draft"
 msgstr "保存為草稿"
@@ -9137,6 +9212,12 @@ msgstr "字幕搜索"
 
 msgid "Search by Uploader"
 msgstr "按上傳者搜索"
+
+msgid "Search by genre"
+msgstr "按類型搜索"
+
+msgid "Search by year"
+msgstr "按年份搜尋"
 
 msgid "Search for a torrent"
 msgstr "搜索種子"
@@ -10018,15 +10099,6 @@ msgstr "分類"
 msgid "Sort By"
 msgstr "排序方式"
 
-msgid "Sort By: "
-msgstr "排序方式："
-
-msgid "Sort By: Added"
-msgstr "排序方式：已添加"
-
-msgid "Sort By: Name"
-msgstr "按名稱分類"
-
 msgid "Sort by newest posts first"
 msgstr "首先按最新帖子排序"
 
@@ -10041,6 +10113,9 @@ msgstr "有點放鬆"
 
 msgid "Sorted Yer connectable"
 msgstr "可排序的可連接"
+
+msgid "Sourcing"
+msgstr "採購"
 
 msgid "Speed"
 msgstr "速度"
@@ -10358,6 +10433,9 @@ msgstr "成功上傳！"
 msgid "Summary"
 msgstr "摘要"
 
+msgid "Sunday"
+msgstr "星期日"
+
 msgid "Super User"
 msgstr "超級用戶"
 
@@ -10388,8 +10466,8 @@ msgstr "懸念"
 msgid "Suspicion"
 msgstr "懷疑"
 
-msgid "Syntax:"
-msgstr "句法："
+msgid "Syntax"
+msgstr "句法"
 
 msgid "SysOp"
 msgstr "SysOp"
@@ -10590,11 +10668,8 @@ msgstr "PU限制曾經是25GB，當我們將其提高到50GB時我們沒有降�
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "您嘗試使用的促銷不存在或已過期！"
 
-msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "該網址必須以<b> .gif </b>，<b> .jepg a09a4b739f17f17f8z0，<b> .jpg a09a4b739f17f8f0z或<b> .png a09a4"
-
-msgid "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "該URL必須以<b> .gif </b>，<b> .jpeg結尾"
+msgid "The URL must be an image of type gif, jpeg or png."
+msgstr "該URL必須是gif，jpeg或png類型的圖像。"
 
 msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr "彩票關閉並在主頁上發布後，將宣布獲獎者。"
@@ -10614,6 +10689,9 @@ msgstr "該申請已被成功拒絕。已向用戶發送PM通知。"
 msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr "機器人將通過隨機選擇這些響應之一來響應觸發短語。"
 
+msgid "The change will take effect as soon as the new email address has been confirmed"
+msgstr "確認新的電子郵件地址後，更改將立即生效"
+
 msgid "The comment has been deleted"
 msgstr "該評論已被刪除"
 
@@ -10621,7 +10699,7 @@ msgid "The comment has been updated"
 msgstr "評論已更新"
 
 #, no-php-format
-msgid "The competiton will end: {0}"
+msgid "The competition will end: {0}"
 msgstr "比賽將結束：{0}"
 
 msgid "The default class of new members."
@@ -10832,17 +10910,17 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "解決問題的方法包括在防火牆上打開用於傳入連接（與您在客戶端中定義的範圍相同）的端口，和/或將NAT服務器配置為對該範圍使用NAT的基本形式，而不是NAPT（實際不同路由器型號之間的處理過程差異很大。請查看路由器文檔和/或支持論壇。有關此主題的更多信息，請訪問{0} PortForward {1}）。"
 
 #, no-php-format
-msgid "The winner will get {0} added to their seedbonus amount"
-msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "The winners will get {0} added to their seedbonus amount"
-
-#, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr "{0}已經開始！立即獲取門票。底池為{1}，每張彩票只有{2} {3}。"
 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "{0}跟踪器在查找您的真實IP方面非常聰明，但是它確實需要代理髮送HTTP標頭HTTP_X_FORWARDED_FOR。如果您的ISP的代理沒有，那麼跟踪器會將代理的IP地址解釋為客戶端的IP地址。因此，當您登錄並且跟踪器嘗試連接到客戶端以查看您是否經過NAT /防火牆時，它實際上會嘗試連接到客戶端報告用於傳入連接的端口上的代理。自然，代理將不會在該端口上偵聽，連接將失敗，並且跟踪器會認為您已被NAT /防火牆隔離。"
+
+#, no-php-format
+msgid "The {0} winner will get {1} added to their seedbonus amount."
+msgid_plural "The {0} winners will get {1} added to their seedbonus amount."
+msgstr[0] "The {0} winners will get {1} added to their seedbonus amount."
 
 msgid "Theft summary"
 msgstr "盜竊摘要"
@@ -10920,6 +10998,9 @@ msgstr "現在沒有洪流需要種子。"
 
 msgid "There are no torrents."
 msgstr "沒有種子。"
+
+msgid "There are no valid staff classes."
+msgstr "沒有有效的員工類別。"
 
 msgid "There are not any cheaters"
 msgstr "沒有任何作弊者"
@@ -11164,12 +11245,6 @@ msgstr "僅自動下載程序（例如CouchPotato，SickRage等）使用此功�
 msgid "This is only users that are active on the torrents right now."
 msgstr "這僅是當前在torrent上處於活動狀態的用戶。"
 
-msgid "This is text is [sub]subscript.[/sub]"
-msgstr "這是文本，是[sub]下標。[/ sub]"
-
-msgid "This is text is [sup]superscript.[/sup]"
-msgstr "這是文字[sup]上標。[/ sup]"
-
 msgid "This is the first post in the topic, only Staff can delete topics."
 msgstr "這是該主題的第一篇帖子，只有Staff可以刪除主題。"
 
@@ -11281,8 +11356,11 @@ msgstr "該主題已鎖定"
 msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr "該種子文件已經上傳！上傳前，請使用搜索功能。"
 
-msgid "This torrent is for VIP user only!"
+msgid "This torrent is for VIP users only!"
 msgstr "這個種子僅適用於VIP用戶！"
+
+msgid "This torrent was Re-Animated!"
+msgstr "這洪流重新動畫！"
 
 msgid "This user dosen't accept PMs."
 msgstr "該用戶不接受PM。"
@@ -11327,6 +11405,9 @@ msgstr "線程圖標"
 
 msgid "Thriller"
 msgstr "驚悚片"
+
+msgid "Thursday"
+msgstr "星期四"
 
 msgid "Ticket Amount"
 msgstr "票額"
@@ -11629,6 +11710,10 @@ msgid "Torrent {0} ({1}) was uploaded by {2}"
 msgstr "{2}上傳了種子{0}（{1}）"
 
 #, no-php-format
+msgid "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+msgstr "種子{0}（{2}）已被刪除。 <br> <br>原因：{2}"
+
+#, no-php-format
 msgid "Torrent {0} was deleted by {1}"
 msgstr "{1}刪除了種子{0}"
 
@@ -11673,9 +11758,6 @@ msgstr "洪流統計"
 
 msgid "Torrents Uploaded"
 msgstr "激流上傳"
-
-msgid "Torrents Uploaded on"
-msgstr "激流上傳於"
 
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "28天后，洪流將自動刪除。"
@@ -11823,6 +11905,9 @@ msgstr "嘗試更正所有“非主題”，而不是關閉線程。"
 #, no-php-format
 msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr "嘗試{0} ProxyJudge {1}。它列出了正在運行的服務器從您那裡收到的HTTP標頭。相關的是HTTP_CLIENT_IP，HTTP_X_FORWARDED_FOR和REMOTE_ADDR。"
+
+msgid "Tuesday"
+msgstr "星期二"
 
 msgid "TvMaze API"
 msgstr "TvMaze API"
@@ -12109,6 +12194,10 @@ msgstr "上傳的洪流"
 
 msgid "Uploaded total altered from "
 msgstr "上載總數由變更為"
+
+#, no-php-format
+msgid "Uploaded {0} by {1}"
+msgstr "由{1}上傳了{0}"
 
 msgid "Uploader"
 msgstr "上載者"
@@ -12623,6 +12712,9 @@ msgstr "水印"
 msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr "我們可以重命名帳戶，請不要創建新帳戶。您可以根據要求與站點工作人員聯繫。"
 
+msgid "We can't say if the user is who they claim to be"
+msgstr "我們不能說用戶是否就是他們聲稱的那個人"
+
 msgid "We can't use a problem text there is less then 20 chars."
 msgstr "我們不能使用少於20個字符的問題文本。"
 
@@ -12663,6 +12755,9 @@ msgstr "網站"
 
 msgid "Website changed"
 msgstr "網站變更"
+
+msgid "Wednesday"
+msgstr "星期三"
 
 msgid "Weekly"
 msgstr "每週"
@@ -12751,9 +12846,6 @@ msgstr "這是什麼“ IOError-[Errno13]權限被拒絕”錯誤？"
 
 msgid "What's this 'TTL' in the browse page?"
 msgstr "瀏覽頁面中的“ TTL”是什麼？"
-
-msgid "When"
-msgstr "什麼時候"
 
 msgid "When Completed"
 msgstr "完成時"
@@ -13287,6 +13379,10 @@ msgid "You have received a PM from %s!"
 msgstr "您已經收到來自%s的PM！"
 
 #, no-php-format
+msgid "You have received a PM from {0}!"
+msgstr "您已收到{0}的PM！"
+
+#, no-php-format
 msgid "You have received a comment on your torrent {0}{1}{2}."
 msgstr "您已收到有關洪流{0} {1} {2}的評論。"
 
@@ -13340,7 +13436,7 @@ msgstr "您已收到來自{1}的{0} leechwarn狀態。"
 msgid "You have received {0} warned Status from {1}."
 msgstr "您已收到來自{1}的{0}警告狀態。"
 
-msgid "You have snatched this torrent but not completed downloading"
+msgid "You have snatched this torrent but you have not completed downloading"
 msgstr "您已經搶奪了該種子，但尚未完成下載"
 
 msgid "You have successfully deleted the selected accounts!"
@@ -13366,6 +13462,9 @@ msgstr "您已對此提議投了贊成票。"
 
 msgid "You have voted to support this request."
 msgstr "您已投票支持此請求。"
+
+msgid "You have won the lottery"
+msgstr "你中了彩票"
 
 #, no-php-format
 msgid "You have {0} Reputation Point."
@@ -13437,6 +13536,9 @@ msgstr "您必須輸入描述或Nfo！"
 
 msgid "You must enter a reason to suspend this account!"
 msgstr "您必須輸入暫停該帳戶的原因！"
+
+msgid "You must enter a username!"
+msgstr "您必須輸入用戶名！"
 
 msgid "You must enter an email address!"
 msgstr "您必須輸入一個電子郵件地址！"
@@ -13849,159 +13951,11 @@ msgstr "[輸入您要發送給的會員的用戶名]"
 msgid "[ {0}% full ]"
 msgstr "[{0}％已滿]"
 
-msgid ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-msgstr ""
-"[*]這是項目1\n"
-"[*]這是項目2"
-
-msgid "[*]<i>Text</i>"
-msgstr "[*] <i>文本</i>"
-
 msgid "[Doubled Down]"
 msgstr "[加倍下注]"
 
 msgid "[Implicit - Admin]"
 msgstr "[隱含-管理員]"
-
-msgid "[b]<i>Text</i>[/b]"
-msgstr "[b] <i>文本</i> [/ b]"
-
-msgid "[b]This is bold text.[/b]"
-msgstr "[b]這是粗體字。[/ b]"
-
-msgid "[center]<i>Text</i>[/center]"
-msgstr "[center] <i>文本</i> [/ center]"
-
-msgid "[center]This is text is centered.[/center]"
-msgstr "[center]這是文本居中。[/ center]"
-
-msgid "[code]<i>Text</i>[/code]"
-msgstr "[代碼] <i>文本</i> [/代碼]"
-
-msgid "[code]This is code formatted text.[/code]"
-msgstr "[code]這是代碼格式的文本。[/ code]"
-
-msgid "[color=#0000ff]This is blue text.[/color]"
-msgstr "[color =＃0000ff]這是藍色文字。[/ color]"
-
-msgid "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-msgstr "[color =＃<i> RGB </i>] <i>文本</i> [/ color]"
-
-msgid "[color=<i>Color</i>]<i>Text</i>[/color]"
-msgstr "[color = <i>顏色</i>] <i>文本</i> [/ color]"
-
-msgid "[color=blue]This is blue text.[/color]"
-msgstr "[color = blue]這是藍色文字。[/ color]"
-
-msgid "[font=<i>Font</i>]<i>Text</i>[/font]"
-msgstr "[font = <i>字體</i>] <i>文本</i> [/ font]"
-
-msgid "[font=Impact]Hello world![/font]"
-msgstr "[font = Impact]世界您好！[/ font]"
-
-msgid "[i]<i>Text</i>[/i]"
-msgstr "[i] <i>文本</i> [/ i]"
-
-msgid "[i]This is italic text.[/i]"
-msgstr "[i]這是斜體文字。[/ i]"
-
-msgid "[img=<i>URL</i>]"
-msgstr "[img = <i> URL </i>]"
-
-msgid "[img=http://Pu239.silly/images/logo.png]"
-msgstr "[img = http：//Pu239.silly/images/logo.png]"
-
-msgid "[img]<i>URL</i>[/img]"
-msgstr "[img] <i> URL </i> [/ img]"
-
-msgid "[img]http://Pu239.silly/images/logo.png[/img]"
-msgstr "[img] http：//Pu239.silly/images/logo.png [/ img]"
-
-msgid "[justify]<i>Text</i>[/justify]"
-msgstr "[justify] <i>文本</i> [/ justify]"
-
-msgid "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-msgstr "[justify]這是文字合理。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是有道理的。這是文字是有道理的。[/ justify]"
-
-msgid "[left]<i>Text</i>[/left]"
-msgstr "[left] <i>文本</i> [/ left]"
-
-msgid "[left]This is text is left aligned.[/left]"
-msgstr "[left]這是文本左對齊。[/ left]"
-
-msgid "[pre]<i>Text</i>[/pre]"
-msgstr "[pre] <i>文本</i> [/ pre]"
-
-msgid "[pre]This is preformatted text.[/pre]"
-msgstr "[pre]這是預格式化的文本。[/ pre]"
-
-msgid "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-msgstr "[quote = <i>作者</i>] <i>引用文本</i> [/ quote]"
-
-msgid "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote = John Doe]快速的褐狐狸跳過了那隻懶狗。[/ quote]"
-
-msgid "[quote]<i>Quoted text</i>[/quote]"
-msgstr "[quote] <i>引用文字</i> [/ quote]"
-
-msgid "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote]快速的棕色狐狸跳過了那隻懶狗。[/ quote]"
-
-msgid "[right]<i>Text</i>[/right]"
-msgstr "[right] <i>文本</i> [/ right]"
-
-msgid "[right]This is text is right aligned.[/right]"
-msgstr "[right]這是文字右對齊。[/ right]"
-
-msgid "[s]<i>Text</i>[/s]"
-msgstr "[s] <i>文本</i> [/ s]"
-
-msgid "[s]This is text is strikethrough.[/s]"
-msgstr "[s]這是文字刪除線。[/ s]"
-
-msgid "[size=4]This is size 4.[/size]"
-msgstr "[size = 4]這是尺寸4。[/ size]"
-
-msgid "[size=<i>n</i>]<i>text</i>[/size]"
-msgstr "[size = <i> n </i>] <i>文本</i> [/ size]"
-
-msgid "[sub]<i>Text</i>[/sub]"
-msgstr "[sub] <i>文本</i> [/ sub]"
-
-msgid "[sup]<i>Text</i>[/sup]"
-msgstr "[sup] <i>文本</i> [/ sup]"
-
-msgid "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-msgstr "[table] [tr] [td] <i>文本</i> [/ td] [[td] <i>文本</i> [/ td] [td] <i>文本</i> [/ td] 271aa00000a / 0d64ea [0tr64tr00 [/ td] [[td] <i>文本</i> [/ td] [td] <i>文本</i> [/ td] [/ tr] [tr] [td] <i>文本</i> [/ td] / td] [td] <i>文本</i> [/ td] [/ tr] [/ table]"
-
-msgid "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-msgstr "[表格] [tr] [td]文字[/ td] [td]文字[/ td] [td]文字[/ td] [/ tr] [tr] [td]文字[/ td] [td]文字[ / td] [td] Text [/ td] [/ tr] [tr] [td] Text [/ td] [td] Text [/ td] [td] Text [/ td] [/ tr] [/ table]"
-
-msgid "[u]<i>Text</i>[/u]"
-msgstr "[u] <i>文本</i> [/ u]"
-
-msgid "[u]This is underlined text.[/u]"
-msgstr "[u]帶下劃線的文字。[/ u]"
-
-msgid "[url=<i>URL</i>]<i>Link text</i>[/url]"
-msgstr "[url = <i> URL </i>] <i>鏈接文本</i> [/ url]"
-
-msgid "[url=http://Pu239.silly/]Crafty[/url]"
-msgstr "[url = http：//Pu239.silly/]工藝[/ url]"
-
-msgid "[url]<i>URL</i>[/url]"
-msgstr "[url] <i> URL </i> [/ url]"
-
-msgid "[url]http://Pu239.silly/[/url]"
-msgstr "[url] http：//Pu239.silly/ [/ url]"
-
-msgid "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-msgstr "[youtube = https：//www.youtube.com/watch？v = u22BXhMu4tI]"
-
-msgid "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
-msgstr "[youtube] <i> https://www.youtube.com/watch?v=u22BXhMu4tI </i> [/ youtube]"
 
 msgid "a thread you subscribed to"
 msgstr "您訂閱的線程"
@@ -14057,6 +14011,10 @@ msgstr "顧名思義，它標識客戶機（s588部分標識Shad0w的5.8.8，其
 
 msgid "at"
 msgstr "在"
+
+#, no-php-format
+msgid "at {0}"
+msgstr "在{0}"
 
 msgid "before"
 msgstr "之前"
@@ -14398,6 +14356,11 @@ msgid_plural "in {0} months"
 msgstr[0] "in {0} months"
 
 #, no-php-format
+msgid "in {0} second"
+msgid_plural "in {0} seconds"
+msgstr[0] "in {0} seconds"
+
+#, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] "in {0} weeks"
@@ -14725,6 +14688,9 @@ msgstr "搜索"
 msgid "search messages by this member only"
 msgstr "僅由該成員搜索消息"
 
+msgid "seedbonus"
+msgstr "種子獎金"
+
 msgid "seeded for"
 msgstr "播種"
 
@@ -14792,6 +14758,10 @@ msgstr "sql"
 msgid "staff"
 msgstr "員工"
 
+#, no-php-format
+msgid "starts in {0}"
+msgstr "從{0}開始"
+
 msgid "successfully backed-up the database."
 msgstr "成功備份數據庫。"
 
@@ -14810,6 +14780,9 @@ msgstr "您未讀清單中的這個主題。要刪除所有內容，請使用上
 msgid "this tree"
 msgstr "這棵樹"
 
+msgid "tickets"
+msgstr "車票"
+
 msgid "time"
 msgstr "時間"
 
@@ -14824,6 +14797,9 @@ msgstr "清除此公告"
 
 msgid "to delete it or"
 msgstr "刪除它或"
+
+msgid "to go"
+msgstr "去"
 
 msgid "to go back"
 msgstr "回去"
@@ -14910,6 +14886,11 @@ msgstr "警告狀態已被{0}刪除。"
 
 msgid "warned users"
 msgstr "警告用戶"
+
+#, no-php-format
+msgid "was hit {0} time"
+msgid_plural "was hit {0} times"
+msgstr[0] "was hit {0} times"
 
 msgid "was registered during open doors"
 msgstr "在開門期間被註冊"
@@ -15098,6 +15079,10 @@ msgstr[0] "{0} New Reports"
 #, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0}老派拱廊！"
+
+#, no-php-format
+msgid "{0} PMs per page"
+msgstr "每頁{0}個PM"
 
 #, php-format
 msgid "{0} Page"
@@ -15410,6 +15395,10 @@ msgid_plural "{0} years ago"
 msgstr[0] "{0} years ago"
 
 #, no-php-format
+msgid "{0}% out of {1} votes!"
+msgstr "在{1}票中，有{0}％！"
+
+#, no-php-format
 msgid "{0}'s Entertainment"
 msgstr "{0}的娛樂"
 
@@ -15438,16 +15427,8 @@ msgid "{0}Confirm your invitation{1}"
 msgstr "{0}確認邀請{1}"
 
 #, no-php-format
-msgid "{0}FAQ{1}"
-msgstr "{0}常見問題解答{1}"
-
-#, no-php-format
 msgid "{0}IMDb Url{1}"
 msgstr "{0} IMDb網址{1}"
-
-#, no-php-format
-msgid "{0}Rules{1}"
-msgstr "{0}規則{1}"
 
 #, no-php-format
 msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
@@ -15479,11 +15460,11 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 
 #, no-php-format
-msgid "{1} was hit {0} time in {2} seconds"
-msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] "{1} was hit {0} times in {2} seconds"
-
-#, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
 msgstr[0] "{1}: Modded Torrents from {0} days ago"
+
+#, no-php-format
+msgid "{1}: Modded Torrents from {0}, number day ago"
+msgid_plural "{1}: Modded Torrents from {0}, number days ago"
+msgstr[0] "{1}: Modded Torrents from {0}, number days ago"

@@ -54,15 +54,39 @@ msgid ""
 "\n"
 "</head>\n"
 "<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+" </head>\n"
+" <body>\n"
+"     <p> Ați solicitat un nou cont de utilizator pe {0} și ați specificat această adresă ({1}) ca contact utilizator. </p>\n"
+"     <p> Dacă nu ați făcut acest lucru, vă rugăm să ignorați acest e-mail. Persoana care a introdus adresa dvs. de e-mail a avut adresa IP {2}. Vă rugăm să nu răspundeți. </p>\n"
+"     <p> Pentru a confirma înregistrarea utilizatorului, trebuie să urmați acest link: </p>\n"
+"     <p> {3} </p>\n"
+"     <p> După ce faceți acest lucru, veți putea utiliza noul dvs. cont. Dacă nu reușiți să faceți acest lucru, contul dvs. va fi șters în 24 de ore. Vă rugăm să citiți {4} REGULI {5} și {6} FAQ {5} înainte de a începe să utilizați {0}. </p>\n"
+" </body>\n"
+" </html>"
+
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
 "<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
 "<p>The request originated from {1}.</p>\n"
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 msgstr ""
@@ -74,10 +98,10 @@ msgstr ""
 " <p> Dacă nu ați făcut acest lucru, puteți ignora acest e-mail. Vă rugăm să nu răspundeți. </p>\n"
 " <p> Dacă doriți să confirmați această solicitare, vă rugăm să urmați acest link: </p>\n"
 " <br>\n"
-" <p> <b> {2} /recover.php?selector= {3} & token = {4} </b> </p>\n"
+" <p> <b> {2} </b> </p>\n"
 " <br>\n"
 " <p> După ce faceți acest lucru, veți putea să vă autentificați cu noua parolă. </p>\n"
-" <p> - {5} </p>\n"
+" <p> - {3} </p>\n"
 " </body>\n"
 " </html>"
 
@@ -477,8 +501,8 @@ msgid "0-byte NFO"
 msgstr "0-octet NFO"
 
 #, no-php-format
-msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
-msgstr "100 = {0} scalarea fontului <br> 50 = {1} scalarea fontului <br> Aceasta suprapune dimensiunea implicită a fontului."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
+msgstr "100 = {0} scalarea fontului <br> 50 = {1} scalarea fontului <br> Aceasta înlocuiește dimensiunea implicită a fontului."
 
 msgid "1st Post Preview"
 msgstr "Previzualizarea primului post"
@@ -499,12 +523,12 @@ msgid ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -526,9 +550,9 @@ msgstr ""
 " <p> Ați solicitat ca profilul dvs. de utilizator (nume de utilizator <#USERNAME#>) pe <#SITENAME#> să fie actualizat cu această adresă de e-mail (<#USEREMAIL#>) ca contact de utilizator. </p>\n"
 " <p> Dacă nu ați făcut acest lucru, ignorați acest e-mail și nimic nu se va schimba. Persoana care a introdus adresa dvs. de e-mail a avut adresa IP <#IP_ADDRESS#>. Vă rugăm să nu răspundeți la acest e-mail. </p>\n"
 " <br>\n"
-" <p> Pentru a completa actualizarea profilului de utilizator, vă rugăm să urmați acest link: </p >\n"
+" <p> Pentru a completa actualizarea profilului de utilizator, vă rugăm să urmați acest link: </p>\n"
 " <p> <#CHANGE_LINK#> </p>\n"
-" <p> Noua dvs. adresă de e-mail va apărea în profilul dvs. după ce faceți acest lucru. În caz contrar, profilul dvs. va rămâne neschimbat. </p >\n"
+" <p> Noua dvs. adresă de e-mail va apărea în profilul dvs. după ce faceți acest lucru. În caz contrar, profilul dvs. va rămâne neschimbat. </p>\n"
 " <p> - <#SITENAME#> </p>\n"
 " </body>\n"
 " </html>"
@@ -650,10 +674,6 @@ msgstr "AJAX Înălțimea chatului"
 
 msgid "APC(u) Hits: "
 msgstr "APC (u) Accesări:"
-
-#, no-php-format
-msgid "APC(u) Hits: {0}"
-msgstr "APC (u) Accesări: {0}"
 
 msgid "API"
 msgstr "API-ul"
@@ -1056,10 +1076,10 @@ msgstr "Aventură"
 #, no-php-format
 msgid ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 msgstr ""
 "După ce faceți acest lucru, este posibil ca {0} să vă confirme contul. <br>\n"
-"        Vă rugăm să citiți Regulile și întrebările frecvente înainte de a începe să utilizați {1}."
+"        Vă rugăm să citiți {1} REGULI {2} și {3} FAQ {4} înainte de a începe să utilizați {5}."
 
 msgid "Age"
 msgstr "Vârstă"
@@ -1521,6 +1541,9 @@ msgstr "Selectarea avatarului este dezactivată ="
 msgid "Avatar?"
 msgstr "Avatar?"
 
+msgid "Avatars"
+msgstr "Avatare"
+
 msgid "Avatars possible = No"
 msgstr "Avataruri posibile = Nu"
 
@@ -1529,9 +1552,6 @@ msgstr "Avataruri posibile = Da"
 
 msgid "Avatars settings changed!"
 msgstr "Setările avatarurilor s-au schimbat!"
-
-msgid "Avatars:"
-msgstr "Avatare:"
 
 msgid "Avg Row Length"
 msgstr "Lungimea medie a rândului"
@@ -1690,6 +1710,15 @@ msgstr "Pariați pe un număr"
 
 msgid "Bet on color"
 msgstr "Pariați pe culoare"
+
+msgid "Biography"
+msgstr "Biografie"
+
+msgid "Birth Place"
+msgstr "Locul nașterii"
+
+msgid "Birthdate"
+msgstr "Data nasterii"
 
 msgid "Birthday"
 msgstr "Zi de nastere"
@@ -1883,6 +1912,9 @@ msgstr "Încălcarea acestor reguli poate și te va interzice!"
 msgid "Browse Torrents"
 msgstr "Căutați Torrents"
 
+msgid "Browse by IMDb"
+msgstr "Căutați după IMDb"
+
 msgid "Browse default<br>categories"
 msgstr "Căutați categoriile implicite <br>"
 
@@ -1921,6 +1953,9 @@ msgstr "Gandaci"
 
 msgid "Bump a torrent"
 msgstr "Bump un torrent"
+
+msgid "Bumped"
+msgstr "bumped"
 
 msgid "Burning"
 msgstr "Ardere"
@@ -1977,6 +2012,9 @@ msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG Reader"
+
+msgid "CHECKED"
+msgstr "VERIFICAT"
 
 #, no-php-format
 msgid "CLOSED => {0}"
@@ -2042,11 +2080,11 @@ msgstr "Numele pisicii"
 msgid "Catalog"
 msgstr "Catalog"
 
+msgid "Categories"
+msgstr "Categorii"
+
 msgid "Categories as images"
 msgstr "Categorii sub formă de imagini"
-
-msgid "Categories:"
-msgstr "Categorii:"
 
 msgid "Category"
 msgstr "Categorie"
@@ -2508,6 +2546,10 @@ msgid "Congratulations!"
 msgstr "Felicitări!"
 
 #, no-php-format
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+msgstr "Felicitări, ați câștigat: {0}. Acest lucru a fost adăugat la suma dvs. totală de seedbonus. Mulțumesc că ai jucat la Loterie."
+
+#, no-php-format
 msgid "Congratulations, you have just won ''{0}''"
 msgstr "Felicitări, tocmai ați câștigat '' {0} ''"
 
@@ -2662,6 +2704,9 @@ msgstr "Credite:"
 
 msgid "Crime"
 msgstr "crimă"
+
+msgid "Critics"
+msgstr "criticii"
 
 msgid "Cry"
 msgstr "Strigăt"
@@ -2866,6 +2911,9 @@ msgstr "Deathrow"
 msgid "Debug Info"
 msgstr "Informații despre depanare"
 
+msgid "Deceased"
+msgstr "Decedat"
+
 msgid "December"
 msgstr "decembrie"
 
@@ -2928,9 +2976,6 @@ msgstr "Ștergeți PM"
 
 msgid "Delete PMs"
 msgstr "Ștergeți PM-urile"
-
-msgid "Delete PMs:"
-msgstr "Ștergeți PM-urile:"
 
 msgid "Delete Post"
 msgstr "Șterge Postare"
@@ -3243,6 +3288,12 @@ msgstr "Starea donatorului setată de {0}"
 msgid "Donors"
 msgstr "donatorii"
 
+msgid "Double Upload Slot"
+msgstr "Slot de încărcare dublă"
+
+msgid "Double Upload Slot in Use"
+msgstr "Încărcați dublu slot pentru utilizare"
+
 msgid "Doubled Down"
 msgstr "Dublat"
 
@@ -3551,8 +3602,8 @@ msgstr "Interdicția prin e-mail {0} a fost eliminată de {1}"
 msgid "Email has not been verified."
 msgstr "E-mailul nu a fost verificat."
 
-msgid "Email notification:"
-msgstr "Notificare prin e-mail:"
+msgid "Email notification"
+msgstr "Notificare prin e-mail"
 
 #, no-php-format
 msgid "Email: {0} is unavailable."
@@ -3964,8 +4015,8 @@ msgstr "Eveniment"
 msgid "Every torrent downloaded in the happy hour is free"
 msgstr "Fiecare torrent descărcat în happy hour este gratuit"
 
-msgid "Example:"
-msgstr "Exemplu:"
+msgid "Example"
+msgstr "Exemplu"
 
 #, no-php-format
 msgid "Exchange your {0}{1}{2} Karma Bonus Points for goodies!"
@@ -4007,6 +4058,9 @@ msgstr "FPS"
 msgid "FREE Status "
 msgstr "STAT GRATUIT"
 
+msgid "FTPing"
+msgstr "FTPing"
+
 msgid "Failed Attempts"
 msgstr "Încercări eșuate"
 
@@ -4037,8 +4091,8 @@ msgstr "Numele fișierului nu este permis"
 msgid "File not allowed only .srt , .sub , .vtt or .txt files"
 msgstr "Fișierul nu este permis numai fișierele .srt, .sub, .vtt sau .txt"
 
-msgid "File size: "
-msgstr "Mărime fișier:"
+msgid "File size"
+msgstr "Mărime fișier"
 
 msgid "File types supported"
 msgstr "Tipuri de fișiere acceptate"
@@ -4135,8 +4189,8 @@ msgstr "Se toarnă torente"
 msgid "Flush torrents?"
 msgstr "Arătați torentele?"
 
-msgid "Flysystem Cache: "
-msgstr "Cache-sistem Flys:"
+msgid "Flysystem Cache"
+msgstr "Cache de sistem Flys"
 
 msgid "Folder Exists?"
 msgstr "Dosarul există?"
@@ -4247,8 +4301,17 @@ msgstr "Sloturi gratuite Leech"
 msgid "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 msgstr "Bonus de masă gratuit pentru sloturi Leech adăugate - AutoSystem.\n"
 
+msgid "Free Slot"
+msgstr "Slot gratuit"
+
+msgid "Free Slot in Use"
+msgstr "Slot gratuit în utilizare"
+
 msgid "Free Slots added"
 msgstr "S-au adăugat sloturi gratuite"
+
+msgid "Free Torrent"
+msgstr "Torrent gratuit"
 
 msgid "Free Torrent!"
 msgstr "Torrent gratuit!"
@@ -4343,6 +4406,9 @@ msgstr "Freeleech?"
 
 msgid "Freeslots and Freeleech?"
 msgstr "Freeslots și Freeleech?"
+
+msgid "Friday"
+msgstr "vineri"
 
 msgid "Friend was added successfully."
 msgstr "Prietenul a fost adăugat cu succes."
@@ -4521,9 +4587,6 @@ msgstr "Mergeți la ultimul"
 
 msgid "Go back"
 msgstr "Întoarce-te"
-
-msgid "Go to My Bookmarks"
-msgstr "Accesați Marcajele mele"
 
 msgid "Go to the last post in this thread"
 msgstr "Accesați ultima postare din acest thread"
@@ -4827,9 +4890,6 @@ msgstr "Stare maximă pentru încărcător"
 
 msgid "Hip Hop"
 msgstr "Hip Hop"
-
-msgid "His wit's as thick as a Tewkesbury mustard."
-msgstr "Genul lui este la fel de gros ca un muștar Tewkesbury."
 
 msgid "Historical"
 msgstr "Istoric"
@@ -5239,9 +5299,6 @@ msgstr "Dacă considerați că această suspendare este greșită, vă rugăm s�
 msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr "Dacă vreun utilizator câștigă o reputație care depășește cel mai mic nivel negativ, atunci această frază va fi folosită pentru ei. Dacă nu doriți să utilizați această expresie, asigurați-vă că setați o reputație negativă mai mare decât cea mai mare scor (negativ) pe care o are un utilizator de pe forumul dvs."
 
-msgid "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-msgstr "Dacă ați descărcat acest torrent, acesta arată procentul finalizat, altfel arată -."
-
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr "Dacă ți-ai uitat parola, o poți prelua la"
 
@@ -5257,9 +5314,6 @@ msgstr "Dacă economisiți destul de multe dintre ele, le puteți tranzacționa 
 #, no-php-format
 msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr "Dacă credeți că puteți corespunde acestor criterii, nu ezitați să contactați {0} unul dintre administratori."
-
-msgid "If you want to recommend this torrent check this box!"
-msgstr "Dacă doriți să recomandați acest torrent, bifați această casetă!"
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr "Dacă doriți să redenumiți subiectul, trebuie să furnizați un nume!"
@@ -5839,6 +5893,9 @@ msgstr "Ultima postare"
 msgid "Last Post by"
 msgstr "Ultimul mesaj de"
 
+msgid "Last Poster"
+msgstr "Ultimul poster"
+
 msgid "Last Seen"
 msgstr "Vazut ultima data"
 
@@ -5897,8 +5954,8 @@ msgstr "Ultimul articol:"
 msgid "Latest Comments"
 msgstr "Ultimele comentarii"
 
-msgid "Latest Posts"
-msgstr "Ultimele postări"
+msgid "Latest Forum Posts"
+msgstr "Ultimele postări pe forum"
 
 msgid "Leech Warn removed"
 msgstr "Leech Warn a fost eliminat"
@@ -6085,6 +6142,9 @@ msgstr "Loterie"
 msgid "Lottery Config"
 msgstr "Configurare Loterie"
 
+msgid "Lottery Config Closed"
+msgstr "Configurarea Loteriei închise"
+
 msgid "Lottery Configuration"
 msgstr "Configurarea loteriei"
 
@@ -6096,9 +6156,6 @@ msgstr "Bilete la loterie"
 
 msgid "Lottery Winners Info"
 msgstr "Informații despre câștigătorii Loteriei"
-
-msgid "Lottery configuration closed"
-msgstr "Configurația loteriei a fost închisă"
 
 msgid "Lottery configuration was saved!"
 msgstr "Configurația loteriei a fost salvată!"
@@ -6133,6 +6190,9 @@ msgstr "Raporturile scăzute pot duce la consecințe severe, inclusiv interzicer
 
 msgid "MB"
 msgstr "MB"
+
+msgid "MPAA"
+msgstr "MPAA"
 
 msgid "MS Linedraw"
 msgstr "MS Linedraw"
@@ -6584,6 +6644,9 @@ msgstr "Modificat."
 msgid "Modify"
 msgstr "Modifica"
 
+msgid "Monday"
+msgstr "luni"
+
 msgid "Month"
 msgstr "Lună"
 
@@ -6813,6 +6876,9 @@ msgstr "Negativ"
 
 msgid "Never"
 msgstr "Nu"
+
+msgid "New"
+msgstr "Nou"
 
 msgid "New Announcement"
 msgstr "Nou anunț"
@@ -7779,6 +7845,9 @@ msgstr "Prezentare generală"
 msgid "Owner"
 msgstr "Proprietar"
 
+msgid "P2P"
+msgstr "P2P"
+
 msgid "PHP Info"
 msgstr "PHP Info"
 
@@ -8362,11 +8431,11 @@ msgstr "Public"
 msgid "Puke"
 msgstr "vomitat"
 
+msgid "Purchasable shows how many tickets you can afford to purchase."
+msgstr "Achiziționează arată câte bilete vă puteți permite să cumpărați."
+
 msgid "Purchaseable"
 msgstr "achiziționată"
-
-msgid "Purchaseable shows how many tickets you can afford to purchase."
-msgstr "Achiziționează arată câte bilete vă puteți permite să cumpărați."
 
 msgid "Q2 - "
 msgstr "Q2 -"
@@ -8464,6 +8533,9 @@ msgstr "Tracker free ratio în vigoare"
 msgid "Ratio:"
 msgstr "Raport:"
 
+msgid "Re-Animated Torrent"
+msgstr "Torrent reanimat"
+
 msgid "Re-pay!"
 msgstr "Rambursa!"
 
@@ -8493,6 +8565,9 @@ msgstr "Citiți: Utilizator"
 
 msgid "Readable backup folder"
 msgstr "Dosar de rezervă lizibil"
+
+msgid "Real Name"
+msgstr "Nume real"
 
 msgid "Reality"
 msgstr "Realitate"
@@ -8531,9 +8606,6 @@ msgstr "Rețetă: {0} Actualizată"
 
 msgid "Recipes"
 msgstr "Rețete"
-
-msgid "Recommend Torrent"
-msgstr "Recomandă Torrent"
 
 msgid "Recover"
 msgstr "Recupera"
@@ -8598,8 +8670,8 @@ msgstr "Relevanţă"
 msgid "Remaining"
 msgstr "Rămas"
 
-msgid "Remarks:"
-msgstr "Comentarii:"
+msgid "Remarks"
+msgstr "Comentarii"
 
 msgid "Remember Me?"
 msgstr "Amintește-ți de mine?"
@@ -8678,6 +8750,9 @@ msgstr "Eliminat de utilizatorii urmăriți de"
 
 msgid "Removed:"
 msgstr "Îndepărtat:"
+
+msgid "Remuxing"
+msgstr "Remuxing"
 
 msgid "Rename"
 msgstr "Redenumiți"
@@ -8910,9 +8985,6 @@ msgstr "Rezultat"
 msgid "Result Sorting"
 msgstr "Sortarea rezultatelor"
 
-msgid "Result:"
-msgstr "Rezultat:"
-
 msgid "Results as list"
 msgstr "Rezultate ca listă"
 
@@ -8939,6 +9011,9 @@ msgstr "Reveniți la modificări"
 
 msgid "Rock"
 msgstr "stâncă"
+
+msgid "Role"
+msgstr "Rol"
 
 msgid "Role Added"
 msgstr "Rolul adăugat"
@@ -9019,6 +9094,9 @@ msgstr "Control mintal"
 msgid "Sanity check..."
 msgstr "Control mintal..."
 
+msgid "Saturday"
+msgstr "sâmbătă"
+
 msgid "Save"
 msgstr "Salvați"
 
@@ -9036,9 +9114,6 @@ msgstr "Salvați PM"
 
 msgid "Save PMs"
 msgstr "Salvați PM-urile"
-
-msgid "Save PMs:"
-msgstr "Salvați PM:"
 
 msgid "Save as Draft"
 msgstr "Salvează ca ciornă"
@@ -9157,6 +9232,12 @@ msgstr "Căutare după subtitrare"
 
 msgid "Search by Uploader"
 msgstr "Căutare după Uploader"
+
+msgid "Search by genre"
+msgstr "Căutare după gen"
+
+msgid "Search by year"
+msgstr "Căutare după an"
 
 msgid "Search for a torrent"
 msgstr "Căutați un torrent"
@@ -10038,15 +10119,6 @@ msgstr "Fel"
 msgid "Sort By"
 msgstr "Filtrează după"
 
-msgid "Sort By: "
-msgstr "Filtrează după:"
-
-msgid "Sort By: Added"
-msgstr "Sortează după: adăugată"
-
-msgid "Sort By: Name"
-msgstr "Sorteaza dupa nume"
-
 msgid "Sort by newest posts first"
 msgstr "Sortează mai întâi cele mai noi postări"
 
@@ -10061,6 +10133,9 @@ msgstr "Un fel de relaxat"
 
 msgid "Sorted Yer connectable"
 msgstr "Conectat Yer sortat"
+
+msgid "Sourcing"
+msgstr "aprovizionare"
 
 msgid "Speed"
 msgstr "Viteză"
@@ -10380,6 +10455,9 @@ msgstr "Încărcat cu succes!"
 msgid "Summary"
 msgstr "rezumat"
 
+msgid "Sunday"
+msgstr "duminică"
+
 msgid "Super User"
 msgstr "Super utilizator"
 
@@ -10410,8 +10488,8 @@ msgstr "suspensie"
 msgid "Suspicion"
 msgstr "Suspiciune"
 
-msgid "Syntax:"
-msgstr "Sintaxă:"
+msgid "Syntax"
+msgstr "Sintaxă"
 
 msgid "SysOp"
 msgstr "SysOp"
@@ -10612,11 +10690,8 @@ msgstr "Limita PU era de 25 GB și nu am eliminat pe nimeni atunci când am ridi
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "Promoția pe care ați încercat să o utilizați nu există sau a expirat!"
 
-msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "Adresa URL trebuie să se încheie cu <b> .gif </b>, <b> .jepg </b>, <b> .jpg a09a4b739f17f8z8."
-
-msgid "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "URL-ul trebuie să se încheie cu <b> .gif </b>, <b> .jpeg </b>, <b> .jpg </b>."
+msgid "The URL must be an image of type gif, jpeg or png."
+msgstr "Adresa URL trebuie să fie o imagine de tip gif, jpeg sau png."
 
 msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr "Câștigătorii vor fi anunțați odată ce loteria va fi închisă și postată pe pagina de start."
@@ -10636,6 +10711,9 @@ msgstr "Cererea a fost respinsă cu succes. Utilizatorului i-a fost trimisă o n
 msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr "Botul va răspunde la fraza de declanșare selectând unul dintre aceste răspunsuri, la întâmplare."
 
+msgid "The change will take effect as soon as the new email address has been confirmed"
+msgstr "Modificarea va intra în vigoare imediat ce noua adresă de e-mail va fi confirmată"
+
 msgid "The comment has been deleted"
 msgstr "Comentariul a fost șters"
 
@@ -10643,7 +10721,7 @@ msgid "The comment has been updated"
 msgstr "Comentariul a fost actualizat"
 
 #, no-php-format
-msgid "The competiton will end: {0}"
+msgid "The competition will end: {0}"
 msgstr "Competiția se va încheia: {0}"
 
 msgid "The default class of new members."
@@ -10854,19 +10932,19 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "Modul de a rezolva problema implică deschiderea porturilor utilizate pentru conexiunile primite (același interval pe care l-ați definit în clientul dvs.) pe firewall și / sau configurarea serverului NAT pentru a utiliza o formă de bază de NAT pentru acel interval în loc de NAPT (actualul procesul diferă foarte mult între diferite modele de router. Verificați documentația routerului și / sau forumul de asistență. De asemenea, veți găsi o mulțime de informații despre acest subiect la {0} PortForward {1})."
 
 #, no-php-format
-msgid "The winner will get {0} added to their seedbonus amount"
-msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "Câștigătorul va primi {0} la suma lor de seedbonus"
-msgstr[1] "Câștigătorii vor primi {0} la suma lor de seedbonus"
-msgstr[2] "Câștigătorii vor primi {0} la suma lor de seedbonus"
-
-#, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr "{0} a început! Obțineți biletele acum. Potul este {1} și fiecare bilet este doar {2} {3}."
 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "Următorul {0} este destul de inteligent pentru a găsi IP-ul dvs. real, dar are nevoie de proxy pentru a trimite antetul HTTP HTTP_X_FORWARDED_FOR. Dacă proxy-ul dvs. ISP nu are loc, ceea ce se întâmplă este că următorul va interpreta adresa IP a proxy-ului ca adresă IP a clientului. Așadar, atunci când vă conectați și următorul încearcă să se conecteze la clientul dvs. pentru a vedea dacă sunteți NAT / firewalled, va încerca, de fapt, să vă conectați la proxy pe portul pe care îl folosește clientul dvs. pentru conexiunile primite. Desigur, proxy nu va asculta pe acel port, conexiunea va eșua și trackerul va crede că sunteți NAT / firewalled."
+
+#, no-php-format
+msgid "The {0} winner will get {1} added to their seedbonus amount."
+msgid_plural "The {0} winners will get {1} added to their seedbonus amount."
+msgstr[0] "Câștigătorul {0} va primi {1} la suma lor seedbonus."
+msgstr[1] "Câștigătorii {0} vor primi {1} la suma lor de seedbonus."
+msgstr[2] "Câștigătorii {0} vor primi {1} la suma lor de seedbonus."
 
 msgid "Theft summary"
 msgstr "Rezumatul furtului"
@@ -10944,6 +11022,9 @@ msgstr "Nu există torenți care au nevoie de semințe în acest moment."
 
 msgid "There are no torrents."
 msgstr "Nu există torrente."
+
+msgid "There are no valid staff classes."
+msgstr "Nu există clase de personal valabile."
 
 msgid "There are not any cheaters"
 msgstr "Nu există înșelători"
@@ -11200,12 +11281,6 @@ msgstr "Aceasta este folosită doar de descărcătorii auto, cum ar fi CouchPota
 msgid "This is only users that are active on the torrents right now."
 msgstr "Este vorba doar de utilizatorii care sunt activi pe torrente chiar acum."
 
-msgid "This is text is [sub]subscript.[/sub]"
-msgstr "Acesta este textul este [sub] subscript. [/ Sub]"
-
-msgid "This is text is [sup]superscript.[/sup]"
-msgstr "Acesta este textul este [sup] superscript. [/ Sup]"
-
 msgid "This is the first post in the topic, only Staff can delete topics."
 msgstr "Aceasta este prima postare din subiect, numai personalul poate șterge subiecte."
 
@@ -11319,8 +11394,11 @@ msgstr "Acest subiect este blocat"
 msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr "Acest torrent a fost deja încărcat! Vă rugăm să utilizați funcția de căutare înainte de a încărca."
 
-msgid "This torrent is for VIP user only!"
-msgstr "Acest torrent este doar pentru utilizator VIP!"
+msgid "This torrent is for VIP users only!"
+msgstr "Acest torrent este doar pentru utilizatorii VIP!"
+
+msgid "This torrent was Re-Animated!"
+msgstr "Acest torrent a fost re-animat!"
 
 msgid "This user dosen't accept PMs."
 msgstr "Acest utilizator nu acceptă PM-uri."
@@ -11367,6 +11445,9 @@ msgstr "Pictograma firelor"
 
 msgid "Thriller"
 msgstr "film de aventuri"
+
+msgid "Thursday"
+msgstr "joi"
 
 msgid "Ticket Amount"
 msgstr "Suma biletului"
@@ -11669,6 +11750,10 @@ msgid "Torrent {0} ({1}) was uploaded by {2}"
 msgstr "Torrent {0} ({1}) a fost încărcat de {2}"
 
 #, no-php-format
+msgid "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+msgstr "Torrent {0} ({2}) a fost șters. <br> <br> Motiv: {2}"
+
+#, no-php-format
 msgid "Torrent {0} was deleted by {1}"
 msgstr "Torrent {0} a fost șters de {1}"
 
@@ -11713,9 +11798,6 @@ msgstr "Statistici pentru torrente"
 
 msgid "Torrents Uploaded"
 msgstr "Torrents încărcate"
-
-msgid "Torrents Uploaded on"
-msgstr "Torrente încărcate"
 
 msgid "Torrents are automatically deleted after 28 days."
 msgstr "Torrenturile sunt șterse automat după 28 de zile."
@@ -11863,6 +11945,9 @@ msgstr "Încercați să corectați orice „subiecte dezactivate”, mai degrab�
 #, no-php-format
 msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr "Încercați {0} ProxyJudge {1}. Listează anteturile HTTP pe care serverul pe care îl rulează a primit de la dvs. Cele relevante sunt HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR și REMOTE_ADDR."
+
+msgid "Tuesday"
+msgstr "marţi"
 
 msgid "TvMaze API"
 msgstr "API-ul TvMaze"
@@ -12149,6 +12234,10 @@ msgstr "Torrents încărcate"
 
 msgid "Uploaded total altered from "
 msgstr "Total încărcat modificat de la"
+
+#, no-php-format
+msgid "Uploaded {0} by {1}"
+msgstr "Încărcat {0} de {1}"
 
 msgid "Uploader"
 msgstr "Uploader"
@@ -12663,6 +12752,9 @@ msgstr "filigrane"
 msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr "Putem redenumi conturi, nu creați unul nou. Puteți contacta personalul site-ului cu solicitarea dvs."
 
+msgid "We can't say if the user is who they claim to be"
+msgstr "Nu putem spune dacă utilizatorul este cine pretinde"
+
 msgid "We can't use a problem text there is less then 20 chars."
 msgstr "Nu putem folosi un text cu probleme, există mai puțin de 20 de caractere."
 
@@ -12705,6 +12797,9 @@ msgstr "website"
 
 msgid "Website changed"
 msgstr "Website-ul schimbat"
+
+msgid "Wednesday"
+msgstr "miercuri"
 
 msgid "Weekly"
 msgstr "Săptămânal"
@@ -12793,9 +12888,6 @@ msgstr "Ce este această eroare 'IOError - [Errno13] Permis refuzată'?"
 
 msgid "What's this 'TTL' in the browse page?"
 msgstr "Ce este acest „TTL” din pagina de navigare?"
-
-msgid "When"
-msgstr "Cand"
 
 msgid "When Completed"
 msgstr "Când a fost finalizat"
@@ -13337,6 +13429,10 @@ msgid "You have received a PM from %s!"
 msgstr "Ați primit un PM de la %s!"
 
 #, no-php-format
+msgid "You have received a PM from {0}!"
+msgstr "Ați primit un PM de la {0}!"
+
+#, no-php-format
 msgid "You have received a comment on your torrent {0}{1}{2}."
 msgstr "Ați primit un comentariu la torrentul dvs. {0} {1} {2}."
 
@@ -13390,7 +13486,7 @@ msgstr "Ați primit {0} statutul de leechwarn de la {1}."
 msgid "You have received {0} warned Status from {1}."
 msgstr "Ați primit {0} Status avertizat de la {1}."
 
-msgid "You have snatched this torrent but not completed downloading"
+msgid "You have snatched this torrent but you have not completed downloading"
 msgstr "Ați smuls acest torrent, dar nu ați finalizat descărcarea"
 
 msgid "You have successfully deleted the selected accounts!"
@@ -13416,6 +13512,9 @@ msgstr "Ați votat în favoarea acestei oferte."
 
 msgid "You have voted to support this request."
 msgstr "Ați votat pentru a susține această solicitare."
+
+msgid "You have won the lottery"
+msgstr "Ai câștigat la loterie"
 
 #, no-php-format
 msgid "You have {0} Reputation Point."
@@ -13493,6 +13592,9 @@ msgstr "Trebuie să introduceți o descriere sau un Nfo!"
 
 msgid "You must enter a reason to suspend this account!"
 msgstr "Trebuie să introduceți un motiv pentru a suspenda acest cont!"
+
+msgid "You must enter a username!"
+msgstr "Trebuie să introduceți un nume de utilizator!"
 
 msgid "You must enter an email address!"
 msgstr "Trebuie să introduceți o adresă de e-mail!"
@@ -13909,159 +14011,11 @@ msgstr "[introduceți numele de utilizator al membrului căruia doriți să-l tr
 msgid "[ {0}% full ]"
 msgstr "[{0}% plin]"
 
-msgid ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-msgstr ""
-"[*] Acesta este articolul 1\n"
-"[*] Acesta este articolul 2"
-
-msgid "[*]<i>Text</i>"
-msgstr "[*] <i> Text </i>"
-
 msgid "[Doubled Down]"
 msgstr "[Doubled Down]"
 
 msgid "[Implicit - Admin]"
 msgstr "[Implicit - Admin]"
-
-msgid "[b]<i>Text</i>[/b]"
-msgstr "[b] <i> Text </i> [/ b]"
-
-msgid "[b]This is bold text.[/b]"
-msgstr "[b] Acesta este un text cu caractere aldine. [/ b]"
-
-msgid "[center]<i>Text</i>[/center]"
-msgstr "[centru] <i> Text </i> [/ centru]"
-
-msgid "[center]This is text is centered.[/center]"
-msgstr "[centru] Acesta este textul centrat. [/ centru]"
-
-msgid "[code]<i>Text</i>[/code]"
-msgstr "[cod] <i> Text </i> [/ cod]"
-
-msgid "[code]This is code formatted text.[/code]"
-msgstr "[cod] Acesta este text formatat prin cod. [/ cod]"
-
-msgid "[color=#0000ff]This is blue text.[/color]"
-msgstr "[color = # 0000ff] Acesta este textul albastru. [/ color]"
-
-msgid "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-msgstr "[color = # <i> RGB </i>] <i> Text </i> [/ color]"
-
-msgid "[color=<i>Color</i>]<i>Text</i>[/color]"
-msgstr "[color = <i> Culoare </i>] <i> Text </i> [/ color]"
-
-msgid "[color=blue]This is blue text.[/color]"
-msgstr "[culoare = albastru] Acesta este textul albastru. [/ culoare]"
-
-msgid "[font=<i>Font</i>]<i>Text</i>[/font]"
-msgstr "[font = <i> Font </i>] <i> Text </i> [/ font]"
-
-msgid "[font=Impact]Hello world![/font]"
-msgstr "[font = Impact] Salut lume! [/ font]"
-
-msgid "[i]<i>Text</i>[/i]"
-msgstr "[i] <i> Text </i> [/ i]"
-
-msgid "[i]This is italic text.[/i]"
-msgstr "[i] Acesta este un text italic. [/ i]"
-
-msgid "[img=<i>URL</i>]"
-msgstr "[img = <i> URL </i>]"
-
-msgid "[img=http://Pu239.silly/images/logo.png]"
-msgstr "[Img = http: //Pu239.silly/images/logo.png]"
-
-msgid "[img]<i>URL</i>[/img]"
-msgstr "[img] <i> URL </i> [/ img]"
-
-msgid "[img]http://Pu239.silly/images/logo.png[/img]"
-msgstr "[Img] http: //Pu239.silly/images/logo.png [/ img]"
-
-msgid "[justify]<i>Text</i>[/justify]"
-msgstr "[justifica] <i> Text </i> [/ justifica]"
-
-msgid "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-msgstr "[justifica] Acesta este textul este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. Acest lucru este text este justificat. [/ Justifica]"
-
-msgid "[left]<i>Text</i>[/left]"
-msgstr "[stânga] <i> Text </i> [/ stânga]"
-
-msgid "[left]This is text is left aligned.[/left]"
-msgstr "[stânga] Acesta este textul este lăsat aliniat. [/ stânga]"
-
-msgid "[pre]<i>Text</i>[/pre]"
-msgstr "[pre] <i> Text </i> [/ pre]"
-
-msgid "[pre]This is preformatted text.[/pre]"
-msgstr "[pre] Acesta este un text preformatat. [/ pre]"
-
-msgid "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-msgstr "[quote = <i> Author </i>] <i> Text citat </i> [/ quote]"
-
-msgid "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[citat = John Doe] Vulpe maro rapid sare peste câinele leneș. [/ quote]"
-
-msgid "[quote]<i>Quoted text</i>[/quote]"
-msgstr "[citat] <i> Textul citat </i> [/ citat]"
-
-msgid "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[citat] Vulpe maro rapid sare peste câinele leneș. [/ citat]"
-
-msgid "[right]<i>Text</i>[/right]"
-msgstr "[dreapta] <i> Text </i> [/ dreapta]"
-
-msgid "[right]This is text is right aligned.[/right]"
-msgstr "[dreapta] Acesta este textul este aliniat la dreapta. [/ dreapta]"
-
-msgid "[s]<i>Text</i>[/s]"
-msgstr "[s] <i> Text </i> [/ s]"
-
-msgid "[s]This is text is strikethrough.[/s]"
-msgstr "[s] Acesta este textul este strikethrough. [/ s]"
-
-msgid "[size=4]This is size 4.[/size]"
-msgstr "[size = 4] Aceasta este dimensiunea 4. [/ size]"
-
-msgid "[size=<i>n</i>]<i>text</i>[/size]"
-msgstr "[size = <i> n </i>] <i> text </i> [/ size]"
-
-msgid "[sub]<i>Text</i>[/sub]"
-msgstr "[sub] <i> Text </i> [/ sub]"
-
-msgid "[sup]<i>Text</i>[/sup]"
-msgstr "[sup] <i> Text </i> [/ sup]"
-
-msgid "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-msgstr "\" [/ td] [[td] <i> Text </i> [/ td] [td] <i> Text </i> [/ td] [/ tr] [tr] [td] a04927881a0a0a0a0a0a0a0a0a0a / td] [td] <i> Text </i> [/ td] [/ tr] [/ tabel]"
-
-msgid "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-msgstr "[Table] [tr] [td] Text [/ td] [td] Text [/ td] [td] Text [/ td] [/ tr] [tr] [td] Text [/ td] [td] Text [ / td] [td] Text [/ td] [/ tr] [tr] [td] Text [/ td] [td] Text [/ td] [td] Text [/ td] [/ tr] [/ table]"
-
-msgid "[u]<i>Text</i>[/u]"
-msgstr "[u] <i> Text </i> [/ u]"
-
-msgid "[u]This is underlined text.[/u]"
-msgstr "[u] Acesta este textul subliniat. [/ u]"
-
-msgid "[url=<i>URL</i>]<i>Link text</i>[/url]"
-msgstr "[url = <i> URL </i>] <i> Textul linkului </i> [/ url]"
-
-msgid "[url=http://Pu239.silly/]Crafty[/url]"
-msgstr "[Url = http: //Pu239.silly/] Crafty [/ url]"
-
-msgid "[url]<i>URL</i>[/url]"
-msgstr "[url] <i> URL </i> [/ url]"
-
-msgid "[url]http://Pu239.silly/[/url]"
-msgstr "[Url] http: //Pu239.silly/ [/ url]"
-
-msgid "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-msgstr "[Youtube = https: //www.youtube.com/watch? V = u22BXhMu4tI]"
-
-msgid "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
-msgstr "[youtube] <i> https://www.youtube.com/watch?v=u22BXhMu4tI </i> [/ youtube]"
 
 msgid "a thread you subscribed to"
 msgstr "un thread la care v-ați abonat"
@@ -14117,6 +14071,10 @@ msgstr "după cum sugerează și numele, identifică clientul (partea s588 ident
 
 msgid "at"
 msgstr "la"
+
+#, no-php-format
+msgid "at {0}"
+msgstr "la {0}"
 
 msgid "before"
 msgstr "inainte de"
@@ -14468,6 +14426,13 @@ msgstr[1] "în {0} luni"
 msgstr[2] "în {0} luni"
 
 #, no-php-format
+msgid "in {0} second"
+msgid_plural "in {0} seconds"
+msgstr[0] "în {0} secundă"
+msgstr[1] "în {0} secunde"
+msgstr[2] "în {0} secunde"
+
+#, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] "în {0} săptămână"
@@ -14797,6 +14762,9 @@ msgstr "căutare"
 msgid "search messages by this member only"
 msgstr "căutați doar mesaje de către acest membru"
 
+msgid "seedbonus"
+msgstr "seedbonus"
+
 msgid "seeded for"
 msgstr "semănat pentru"
 
@@ -14864,6 +14832,10 @@ msgstr "sql"
 msgid "staff"
 msgstr "personal"
 
+#, no-php-format
+msgid "starts in {0}"
+msgstr "începe în {0}"
+
 msgid "successfully backed-up the database."
 msgstr "backup cu succes al bazei de date."
 
@@ -14882,6 +14854,9 @@ msgstr "acest subiect din lista ta necitită. Pentru a elimina toate, utilizați
 msgid "this tree"
 msgstr "acest copac"
 
+msgid "tickets"
+msgstr "bilete"
+
 msgid "time"
 msgstr "timp"
 
@@ -14896,6 +14871,9 @@ msgstr "pentru a șterge acest anunț"
 
 msgid "to delete it or"
 msgstr "pentru a o șterge sau"
+
+msgid "to go"
+msgstr "a merge"
 
 msgid "to go back"
 msgstr "pentru a reveni"
@@ -14984,6 +14962,13 @@ msgstr "avertizat Status eliminat de {0}."
 
 msgid "warned users"
 msgstr "avertizați utilizatorii"
+
+#, no-php-format
+msgid "was hit {0} time"
+msgid_plural "was hit {0} times"
+msgstr[0] "a fost lovit {0} de timp"
+msgstr[1] "a fost lovit de 0 ori"
+msgstr[2] "a fost lovit de 0 ori"
 
 msgid "was registered during open doors"
 msgstr "a fost înregistrat în timpul ușilor deschise"
@@ -15180,6 +15165,10 @@ msgstr[2] "{0} rapoarte noi"
 #, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0} Old School Arcade!"
+
+#, no-php-format
+msgid "{0} PMs per page"
+msgstr "{0} PM-uri pe pagină"
 
 #, php-format
 msgid "{0} Page"
@@ -15536,6 +15525,10 @@ msgstr[1] "{0} ani în urmă"
 msgstr[2] "{0} ani în urmă"
 
 #, no-php-format
+msgid "{0}% out of {1} votes!"
+msgstr "{0}% din {1} voturi!"
+
+#, no-php-format
 msgid "{0}'s Entertainment"
 msgstr "Distracții {0}"
 
@@ -15564,16 +15557,8 @@ msgid "{0}Confirm your invitation{1}"
 msgstr "{0} Confirmă invitația {1}"
 
 #, no-php-format
-msgid "{0}FAQ{1}"
-msgstr "{0} FAQ {1}"
-
-#, no-php-format
 msgid "{0}IMDb Url{1}"
 msgstr "{0} URL IMDb {1}"
-
-#, no-php-format
-msgid "{0}Rules{1}"
-msgstr "{0} Reguli {1}"
 
 #, no-php-format
 msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
@@ -15607,15 +15592,15 @@ msgstr[1] "{1} tocmai a cumpărat {2} {0} Bilete de loterie! {3} BUNĂ LUCRU!"
 msgstr[2] "{1} tocmai a cumpărat {2} {0} Bilete de loterie! {3} BUNĂ LUCRU!"
 
 #, no-php-format
-msgid "{1} was hit {0} time in {2} seconds"
-msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] "{1} a fost lovit {0} de timp în {2} secunde"
-msgstr[1] "{1} a fost lovit de 0 ori în {2} secunde"
-msgstr[2] "{1} a fost lovit de 0 ori în {2} secunde"
-
-#, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
 msgstr[0] "{1}: Torrents Modded din {0} în urmă cu o zi"
 msgstr[1] "{1}: Torrents Modded din {0} zile în urmă"
 msgstr[2] "{1}: Torrents Modded din {0} zile în urmă"
+
+#, no-php-format
+msgid "{1}: Modded Torrents from {0}, number day ago"
+msgid_plural "{1}: Modded Torrents from {0}, number days ago"
+msgstr[0] "{1}: Torrents Modded de la {0}, cu o zi în urmă"
+msgstr[1] "{1}: Torrents Modded de la {0}, acum câteva zile"
+msgstr[2] "{1}: Torrents Modded de la {0}, acum câteva zile"

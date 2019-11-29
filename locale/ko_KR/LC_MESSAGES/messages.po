@@ -54,15 +54,39 @@ msgid ""
 "\n"
 "</head>\n"
 "<body>\n"
+"    <p>You have requested a new user account on {0} and you have specified this address ({1}) as user contact.</p>\n"
+"    <p>If you did not do this, please ignore this email. The person who entered your email address had the IP address {2}. Please do not reply.</p>\n"
+"    <p>To confirm your user registration, you have to follow this link:</p>\n"
+"    <p>{3}</p>\n"
+"    <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>\n"
+"</body>\n"
+"</html>"
+msgstr ""
+"\n"
+" </head>\n"
+" <body>\n"
+"     <p> {0}에서 새 사용자 계정을 요청했으며이 주소 ({1})를 사용자 연락처로 지정했습니다. </p>\n"
+"     이 작업을 수행하지 않은 경우이 이메일을 무시하십시오. 귀하의 이메일 주소를 입력 한 사람의 IP 주소는 {2}입니다. 답장을 보내지 마십시오. </p>\n"
+"     <p> 사용자 등록을 확인하려면 다음 링크를 따라야합니다 : </p>\n"
+"     <p> {3} </p>\n"
+"     <p> 이렇게하면 새 계정을 사용할 수 있습니다. 그렇지 않으면 24 시간 이내에 계정이 삭제됩니다. {0}을 사용하기 전에 {4} RULES {5} 및 {6} FAQ {5}를 읽어 보시기 바랍니다. </p>\n"
+" </body>\n"
+" </html>"
+
+#, no-php-format
+msgid ""
+"\n"
+"</head>\n"
+"<body>\n"
 "<p>Someone, hopefully you, requested that the password for the account associated with this email address ({0}) be reset.</p>\n"
 "<p>The request originated from {1}.</p>\n"
 "<p>If you did not do this, you can ignore this email. Please do not reply.</p>\n"
 "<p>Should you wish to confirm this request, please follow this link:</p>\n"
 "<br>\n"
-"<p><b>{2}/recover.php?selector={3}&token={4}</b></p>\n"
+"<p><b>{2}</b></p>\n"
 "<br>\n"
 "<p>After you do this, you will be able to log with the new password.</p>\n"
-"<p>--{5}</p>\n"
+"<p>--{3}</p>\n"
 "</body>\n"
 "</html>"
 msgstr ""
@@ -74,10 +98,10 @@ msgstr ""
 " <p>이 작업을 수행하지 않으면이 이메일을 무시할 수 있습니다. 답장을 보내지 마십시오. </p>\n"
 " <p> 요청을 확인하려면 다음 링크를 따르십시오. </p>\n"
 " <br>\n"
-" <p> <b> {2} /recover.php?selector= {3} & token = {4} </b> </p>\n"
+" <p> <b> {2} </b> </p>\n"
 " <br>\n"
 " <p> 이렇게하면 새 비밀번호로 로그인 할 수 있습니다. </p>\n"
-" <p>-{5} </p>\n"
+" <p>-{3} </p>\n"
 " </body>\n"
 " </html>"
 
@@ -475,8 +499,8 @@ msgid "0-byte NFO"
 msgstr "0 바이트 NFO"
 
 #, no-php-format
-msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overides the default font size."
-msgstr "100 = {0} 글꼴 크기 조정 <br> 50 = {1} 글꼴 크기 조정 <br> 기본 글꼴 크기보다 우선합니다."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
+msgstr "100 = {0} 글꼴 크기 조정 <br> 50 = {1} 글꼴 크기 조정 <br> 기본 글꼴 크기를 무시합니다."
 
 msgid "1st Post Preview"
 msgstr "1 차 게시물 미리보기"
@@ -497,12 +521,12 @@ msgid ""
 "    <meta property='og:description' content='{1}'>\n"
 "</head>\n"
 "<body>\n"
-"<p> You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
-"<p>If you did not do this, please ignore this email and nothing will be changed . The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
+"<p>You have requested that your user profile(username <#USERNAME#>) on <#SITENAME#> should be updated with this email address (<#USEREMAIL#>) as user contact.</p>\n"
+"<p>If you did not do this, please ignore this email and nothing will be changed. The person who entered your email address had the IP address <#IP_ADDRESS#>. Please do not reply to this email.</p>\n"
 "<br>\n"
-"<p> To complete the update of your user profile, please follow this link:</p >\n"
+"<p>To complete the update of your user profile, please follow this link:</p>\n"
 "<p><#CHANGE_LINK#></p>\n"
-"<p> Your new email address will appear in your profile after you do this . Otherwise your profile will remain unchanged .</p >\n"
+"<p>Your new email address will appear in your profile after you do this. Otherwise your profile will remain unchanged.</p>\n"
 "<p> --<#SITENAME#></p>\n"
 "</body>\n"
 "</html>"
@@ -512,7 +536,7 @@ msgstr ""
 " <head>\n"
 "     <style> html {가시성 : 숨김; 불투명도 : 0;} </style>\n"
 "     <meta property='og:title' content='Crafty Email Change'>\n"
-"     교묘 한 이메일 변경 </title>\n"
+"     교활한 이메일 변경 </title>\n"
 "     <meta charset='utf-8'>\n"
 "     <meta http-equiv='X-UA-Compatible' content='IE=edge'>\n"
 "     <meta name='viewport' content='width=device-width,initial-scale=1'>\n"
@@ -522,11 +546,11 @@ msgstr ""
 " </head>\n"
 " <body>\n"
 " <p> 귀하는 <#SITENAME#>의 사용자 프로파일 (사용자 이름 <#USERNAME#>)을이 이메일 주소 (<#USEREMAIL#>)로 사용자 연락처로 업데이트하도록 요청했습니다. </p>\n"
-" 이 작업을 수행하지 않은 경우이 이메일을 무시하고 아무 것도 변경되지 않습니다. 귀하의 이메일 주소를 입력 한 사람은 IP 주소 <#IP_ADDRESS#>입니다. 이 메일에 답장하지 마십시오. </p>\n"
+" 이 작업을 수행하지 않은 경우이 이메일을 무시하십시오. 아무 것도 변경되지 않습니다. 귀하의 이메일 주소를 입력 한 사람은 IP 주소 <#IP_ADDRESS#>입니다. 이 메일에 답장하지 마십시오. </p>\n"
 " <br>\n"
-" <p> 사용자 프로필 업데이트를 완료하려면 다음 링크를 따르십시오. </p >\n"
+" <p> 사용자 프로필 업데이트를 완료하려면 다음 링크를 따르십시오. </p>\n"
 " <p> <#CHANGE_LINK#> </p>\n"
-" 이 작업을 수행하면 새 이메일 주소가 프로필에 나타납니다. 그렇지 않으면 프로필이 변경되지 않습니다. </p >\n"
+" <p> 이렇게하면 새 이메일 주소가 프로필에 나타납니다. 그렇지 않으면 프로필이 변경되지 않습니다. </p>\n"
 " <p>-<#SITENAME#> </p>\n"
 " </body>\n"
 " </html>"
@@ -648,10 +672,6 @@ msgstr "AJAX 채팅 높이"
 
 msgid "APC(u) Hits: "
 msgstr "APC (u) 조회수 :"
-
-#, no-php-format
-msgid "APC(u) Hits: {0}"
-msgstr "APC (u) 조회수 : {0}"
 
 msgid "API"
 msgstr "API"
@@ -1054,10 +1074,10 @@ msgstr "모험"
 #, no-php-format
 msgid ""
 "After you do this, {0} may need to confirm your account.<br>\n"
-"        We urge you to read the RULES and FAQ before you start using {1}."
+"        We urge you to read the {1}RULES{2} and {3}FAQ{4} before you start using {5}."
 msgstr ""
-"이를 수행 한 후 {0}은 계정을 확인해야 할 수도 있습니다. <br>\n"
-"        {1} 사용을 시작하기 전에 규칙 및 FAQ를 읽어 보시기 바랍니다."
+"이 작업을 수행 한 후 {0}은 계정을 확인해야 할 수도 있습니다. <br>\n"
+"        {5}를 사용하기 전에 {1} RULES {2} 및 {3} FAQ {4}를 읽어 보시기 바랍니다."
 
 msgid "Age"
 msgstr "나이"
@@ -1517,6 +1537,9 @@ msgstr "아바타 선택 비활성화 ="
 msgid "Avatar?"
 msgstr "화신?"
 
+msgid "Avatars"
+msgstr "아바타"
+
 msgid "Avatars possible = No"
 msgstr "아바타 가능 = 아니오"
 
@@ -1525,9 +1548,6 @@ msgstr "아바타 가능 = 예"
 
 msgid "Avatars settings changed!"
 msgstr "아바타 설정이 변경되었습니다!"
-
-msgid "Avatars:"
-msgstr "아바타 :"
 
 msgid "Avg Row Length"
 msgstr "평균 행 길이"
@@ -1686,6 +1706,15 @@ msgstr "숫자에 베팅"
 
 msgid "Bet on color"
 msgstr "색상에 베팅"
+
+msgid "Biography"
+msgstr "전기"
+
+msgid "Birth Place"
+msgstr "출생지"
+
+msgid "Birthdate"
+msgstr "생일"
 
 msgid "Birthday"
 msgstr "생신"
@@ -1879,6 +1908,9 @@ msgstr "이 규칙을 어기면 금지 될 수 있습니다!"
 msgid "Browse Torrents"
 msgstr "급류 찾아보기"
 
+msgid "Browse by IMDb"
+msgstr "IMDb로 찾아보기"
+
 msgid "Browse default<br>categories"
 msgstr "기본 <br> 카테고리 찾아보기"
 
@@ -1917,6 +1949,9 @@ msgstr "버그"
 
 msgid "Bump a torrent"
 msgstr "급류 범프"
+
+msgid "Bumped"
+msgstr "범프"
 
 msgid "Burning"
 msgstr "타고 있는"
@@ -1973,6 +2008,9 @@ msgstr "CD#"
 
 msgid "CHANGELOG Reader"
 msgstr "CHANGELOG 리더"
+
+msgid "CHECKED"
+msgstr "확인 됨"
 
 #, no-php-format
 msgid "CLOSED => {0}"
@@ -2038,11 +2076,11 @@ msgstr "고양이 이름"
 msgid "Catalog"
 msgstr "목록"
 
+msgid "Categories"
+msgstr "카테고리"
+
 msgid "Categories as images"
 msgstr "이미지 카테고리"
-
-msgid "Categories:"
-msgstr "카테고리:"
 
 msgid "Category"
 msgstr "범주"
@@ -2504,6 +2542,10 @@ msgid "Congratulations!"
 msgstr "축하합니다!"
 
 #, no-php-format
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
+msgstr "축하합니다. {0}. 이것은 당신의 seedbonus 총 금액에 추가되었습니다. 복권을 해주셔서 감사합니다."
+
+#, no-php-format
 msgid "Congratulations, you have just won ''{0}''"
 msgstr "축하합니다. ''{0} ''을 (를) 받았습니다."
 
@@ -2658,6 +2700,9 @@ msgstr "크레딧 :"
 
 msgid "Crime"
 msgstr "범죄"
+
+msgid "Critics"
+msgstr "비평가"
 
 msgid "Cry"
 msgstr "울음 소리"
@@ -2860,6 +2905,9 @@ msgstr "데스 로우"
 msgid "Debug Info"
 msgstr "디버그 정보"
 
+msgid "Deceased"
+msgstr "고인"
+
 msgid "December"
 msgstr "12 월"
 
@@ -2922,9 +2970,6 @@ msgstr "오후 삭제"
 
 msgid "Delete PMs"
 msgstr "PM 삭제"
-
-msgid "Delete PMs:"
-msgstr "PM 삭제 :"
 
 msgid "Delete Post"
 msgstr "게시물 삭제"
@@ -3237,6 +3282,12 @@ msgstr "{0}에 의해 설정된 기증자 상태"
 msgid "Donors"
 msgstr "기부자"
 
+msgid "Double Upload Slot"
+msgstr "이중 업로드 슬롯"
+
+msgid "Double Upload Slot in Use"
+msgstr "이중 업로드 슬롯 사용 중"
+
 msgid "Doubled Down"
 msgstr "두 배로"
 
@@ -3545,8 +3596,8 @@ msgstr "이메일 금지 {0}이 (가) {1}에 의해 제거되었습니다."
 msgid "Email has not been verified."
 msgstr "이메일이 확인되지 않았습니다."
 
-msgid "Email notification:"
-msgstr "이메일 알림:"
+msgid "Email notification"
+msgstr "이메일 알림"
 
 #, no-php-format
 msgid "Email: {0} is unavailable."
@@ -3958,8 +4009,8 @@ msgstr "행사"
 msgid "Every torrent downloaded in the happy hour is free"
 msgstr "행복한 시간에 다운로드 된 모든 토런트는 무료입니다."
 
-msgid "Example:"
-msgstr "예:"
+msgid "Example"
+msgstr "예"
 
 #, no-php-format
 msgid "Exchange your {0}{1}{2} Karma Bonus Points for goodies!"
@@ -4001,6 +4052,9 @@ msgstr "FPS"
 msgid "FREE Status "
 msgstr "무료 상태"
 
+msgid "FTPing"
+msgstr "FTPing"
+
 msgid "Failed Attempts"
 msgstr "실패한 시도"
 
@@ -4031,8 +4085,8 @@ msgstr "파일 이름이 허용되지 않습니다"
 msgid "File not allowed only .srt , .sub , .vtt or .txt files"
 msgstr ".srt, .sub, .vtt 또는 .txt 파일 만 허용되지 않는 파일"
 
-msgid "File size: "
-msgstr "파일 크기 :"
+msgid "File size"
+msgstr "파일 크기"
 
 msgid "File types supported"
 msgstr "지원되는 파일 형식"
@@ -4129,8 +4183,8 @@ msgstr "플러시 급류"
 msgid "Flush torrents?"
 msgstr "급류를 플러시?"
 
-msgid "Flysystem Cache: "
-msgstr "플라이 시스템 캐시 :"
+msgid "Flysystem Cache"
+msgstr "플라이 시스템 캐시"
 
 msgid "Folder Exists?"
 msgstr "폴더가 있습니까?"
@@ -4241,8 +4295,17 @@ msgstr "무료 거머리 슬롯"
 msgid "Free Leech Slots Mass Bonus added - AutoSystem.\n"
 msgstr "무료 거머리 슬롯 대량 보너스 추가-자동 시스템.\n"
 
+msgid "Free Slot"
+msgstr "자유 슬롯"
+
+msgid "Free Slot in Use"
+msgstr "사용중인 슬롯"
+
 msgid "Free Slots added"
 msgstr "무료 슬롯 추가"
+
+msgid "Free Torrent"
+msgstr "무료 토런트"
 
 msgid "Free Torrent!"
 msgstr "무료 토런트!"
@@ -4337,6 +4400,9 @@ msgstr "프리 리치?"
 
 msgid "Freeslots and Freeleech?"
 msgstr "프리 슬롯과 프리 리치?"
+
+msgid "Friday"
+msgstr "금요일"
 
 msgid "Friend was added successfully."
 msgstr "친구가 성공적으로 추가되었습니다."
@@ -4515,9 +4581,6 @@ msgstr "마지막으로 이동"
 
 msgid "Go back"
 msgstr "돌아가"
-
-msgid "Go to My Bookmarks"
-msgstr "내 북마크로 이동"
 
 msgid "Go to the last post in this thread"
 msgstr "이 글타래의 마지막 글로 이동"
@@ -4817,9 +4880,6 @@ msgstr "고속 업 로더 상태."
 
 msgid "Hip Hop"
 msgstr "힙합"
-
-msgid "His wit's as thick as a Tewkesbury mustard."
-msgstr "그의 위트는 Tewkesbury 겨자만큼 두껍습니다."
 
 msgid "Historical"
 msgstr "역사적인"
@@ -5229,9 +5289,6 @@ msgstr "이 정지가 잘못되었다고 생각되면 언제든지 직원에게 
 msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr "사용자가 최저 음수 수준을 초과하는 평판을 얻는 경우이 문구가 사용됩니다. 이 문구를 사용하지 않으려면 포럼 사용자가 가지고있는 최대 점수 (음수)보다 큰 음수 평판을 설정해야합니다."
 
-msgid "If you have downloaded this torrent, it shows your completed percentage, else shows --."
-msgstr "이 토렌트를 다운로드 한 경우 완료된 백분율이 표시되고 그렇지 않으면-가 표시됩니다."
-
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr "비밀번호를 잊어 버린 경우 다음 위치에서 검색 할 수 있습니다."
 
@@ -5247,9 +5304,6 @@ msgstr "충분히 절약하면 보너스 GB와 같은 상품으로 교환하여 
 #, no-php-format
 msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr "이 기준과 일치한다고 생각되면 관리자 중 한 사람에게 {0} 문의 {1}를 주저하지 마십시오."
-
-msgid "If you want to recommend this torrent check this box!"
-msgstr "이 토렌트를 추천하려면이 상자를 체크하십시오!"
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr "주제의 이름을 바꾸려면 이름을 제공해야합니다!"
@@ -5827,6 +5881,9 @@ msgstr "마지막 게시물"
 msgid "Last Post by"
 msgstr "마지막 게시물"
 
+msgid "Last Poster"
+msgstr "마지막 포스터"
+
 msgid "Last Seen"
 msgstr "마지막으로 본"
 
@@ -5885,8 +5942,8 @@ msgstr "최신 기사 :"
 msgid "Latest Comments"
 msgstr "최신 코멘트"
 
-msgid "Latest Posts"
-msgstr "최근 게시물"
+msgid "Latest Forum Posts"
+msgstr "최신 포럼 게시물"
 
 msgid "Leech Warn removed"
 msgstr "거머리 경고 제거"
@@ -6073,6 +6130,9 @@ msgstr "운"
 msgid "Lottery Config"
 msgstr "복권 구성"
 
+msgid "Lottery Config Closed"
+msgstr "복권 구성 마감"
+
 msgid "Lottery Configuration"
 msgstr "복권 구성"
 
@@ -6084,9 +6144,6 @@ msgstr "복권"
 
 msgid "Lottery Winners Info"
 msgstr "복권 당첨자 정보"
-
-msgid "Lottery configuration closed"
-msgstr "복권 구성 마감"
 
 msgid "Lottery configuration was saved!"
 msgstr "복권 구성이 저장되었습니다!"
@@ -6121,6 +6178,9 @@ msgstr "낮은 비율은 극단적 인 경우 금지를 포함하여 심각한 �
 
 msgid "MB"
 msgstr "MB"
+
+msgid "MPAA"
+msgstr "MPAA"
 
 msgid "MS Linedraw"
 msgstr "MS 라인 드로우"
@@ -6570,6 +6630,9 @@ msgstr "수정되었습니다."
 msgid "Modify"
 msgstr "수정"
 
+msgid "Monday"
+msgstr "월요일"
+
 msgid "Month"
 msgstr "달"
 
@@ -6799,6 +6862,9 @@ msgstr "부정"
 
 msgid "Never"
 msgstr "못"
+
+msgid "New"
+msgstr "새로운"
 
 msgid "New Announcement"
 msgstr "새로운 발표"
@@ -7761,6 +7827,9 @@ msgstr "개요"
 msgid "Owner"
 msgstr "소유자"
 
+msgid "P2P"
+msgstr "P2P"
+
 msgid "PHP Info"
 msgstr "PHP 정보"
 
@@ -8344,11 +8413,11 @@ msgstr "공공의"
 msgid "Puke"
 msgstr "구토"
 
+msgid "Purchasable shows how many tickets you can afford to purchase."
+msgstr "구매 가능은 구매할 수있는 티켓 수를 보여줍니다."
+
 msgid "Purchaseable"
 msgstr "구매 가능"
-
-msgid "Purchaseable shows how many tickets you can afford to purchase."
-msgstr "구매 가능은 구매할 수있는 티켓 수를 보여줍니다."
 
 msgid "Q2 - "
 msgstr "Q2-"
@@ -8444,6 +8513,9 @@ msgstr "사실상 비율이없는 추적자"
 msgid "Ratio:"
 msgstr "비율:"
 
+msgid "Re-Animated Torrent"
+msgstr "다시 애니메이션 토런트"
+
 msgid "Re-pay!"
 msgstr "갚다!"
 
@@ -8473,6 +8545,9 @@ msgstr "읽기 : 사용자"
 
 msgid "Readable backup folder"
 msgstr "읽을 수있는 백업 폴더"
+
+msgid "Real Name"
+msgstr "실제 이름"
 
 msgid "Reality"
 msgstr "현실"
@@ -8511,9 +8586,6 @@ msgstr "레시피 : {0} 업데이트"
 
 msgid "Recipes"
 msgstr "레시피"
-
-msgid "Recommend Torrent"
-msgstr "토런트 추천"
 
 msgid "Recover"
 msgstr "다시 덮다"
@@ -8578,8 +8650,8 @@ msgstr "관련성"
 msgid "Remaining"
 msgstr "남은"
 
-msgid "Remarks:"
-msgstr "비고 :"
+msgid "Remarks"
+msgstr "비고"
 
 msgid "Remember Me?"
 msgstr "날 기억해?"
@@ -8658,6 +8730,9 @@ msgstr "님이 본 사용자를 다음에서 삭제했습니다."
 
 msgid "Removed:"
 msgstr "제거 :"
+
+msgid "Remuxing"
+msgstr "리 먹싱"
 
 msgid "Rename"
 msgstr "이름 바꾸기"
@@ -8890,9 +8965,6 @@ msgstr "결과"
 msgid "Result Sorting"
 msgstr "결과 정렬"
 
-msgid "Result:"
-msgstr "결과:"
-
 msgid "Results as list"
 msgstr "목록으로 결과"
 
@@ -8919,6 +8991,9 @@ msgstr "변경 사항 되돌리기"
 
 msgid "Rock"
 msgstr "록"
+
+msgid "Role"
+msgstr "역할"
 
 msgid "Role Added"
 msgstr "역할 추가"
@@ -8999,6 +9074,9 @@ msgstr "위생 검사"
 msgid "Sanity check..."
 msgstr "위생 검사..."
 
+msgid "Saturday"
+msgstr "토요일"
+
 msgid "Save"
 msgstr "저장하기"
 
@@ -9016,9 +9094,6 @@ msgstr "오후 저장"
 
 msgid "Save PMs"
 msgstr "PM 저장"
-
-msgid "Save PMs:"
-msgstr "오후 저장 :"
 
 msgid "Save as Draft"
 msgstr "임시 보관함에 저장"
@@ -9137,6 +9212,12 @@ msgstr "자막으로 검색"
 
 msgid "Search by Uploader"
 msgstr "업 로더로 검색"
+
+msgid "Search by genre"
+msgstr "장르로 검색"
+
+msgid "Search by year"
+msgstr "연도별로 검색"
 
 msgid "Search for a torrent"
 msgstr "급류 검색"
@@ -10018,15 +10099,6 @@ msgstr "종류"
 msgid "Sort By"
 msgstr "정렬 기준"
 
-msgid "Sort By: "
-msgstr "정렬 기준 :"
-
-msgid "Sort By: Added"
-msgstr "정렬 기준 : 추가"
-
-msgid "Sort By: Name"
-msgstr "이름으로 분류하다"
-
 msgid "Sort by newest posts first"
 msgstr "최신 게시물을 먼저 정렬"
 
@@ -10041,6 +10113,9 @@ msgstr "편안한 종류"
 
 msgid "Sorted Yer connectable"
 msgstr "정렬 된 Yer 연결 가능"
+
+msgid "Sourcing"
+msgstr "소싱"
 
 msgid "Speed"
 msgstr "속도"
@@ -10358,6 +10433,9 @@ msgstr "성공적으로 업로드되었습니다!"
 msgid "Summary"
 msgstr "요약"
 
+msgid "Sunday"
+msgstr "일요일"
+
 msgid "Super User"
 msgstr "슈퍼 유저"
 
@@ -10388,8 +10466,8 @@ msgstr "미결"
 msgid "Suspicion"
 msgstr "의혹"
 
-msgid "Syntax:"
-msgstr "통사론:"
+msgid "Syntax"
+msgstr "통사론"
 
 msgid "SysOp"
 msgstr "SysOp"
@@ -10590,11 +10668,8 @@ msgstr "이전에는 PU 한도가 25GB였으며 50GB로 올릴 때 아무도 강
 msgid "The Promotion you have attempted to use does not exist or has expired!"
 msgstr "사용하려는 프로모션이 존재하지 않거나 만료되었습니다!"
 
-msgid "The URL must end with <b>.gif</b>, <b>.jepg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "URL은 <b> .gif </b>, <b> .jepg </b>, <b> .jpg </b> 또는 a0aee833658로 끝나야합니다."
-
-msgid "The URL must end with <b>.gif</b>, <b>.jpeg</b>, <b>.jpg</b> or <b>.png</b>."
-msgstr "URL은 <b> .gif </b>, <b> .jpeg </b>, <b> .jpg </b> 또는 a0aee833658로 끝나야합니다."
+msgid "The URL must be an image of type gif, jpeg or png."
+msgstr "URL은 gif, jpeg 또는 png 유형의 이미지 여야합니다."
 
 msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr "당첨자는 추첨이 마감되고 홈페이지에 게시되면 발표됩니다."
@@ -10614,6 +10689,9 @@ msgstr "신청이 성공적으로 거부되었습니다. 사용자에게 PM 알�
 msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr "봇은 이러한 응답 중 하나를 임의로 선택하여 트리거 문구에 응답합니다."
 
+msgid "The change will take effect as soon as the new email address has been confirmed"
+msgstr "새 이메일 주소가 확인되면 변경 사항이 적용됩니다."
+
 msgid "The comment has been deleted"
 msgstr "댓글이 삭제되었습니다"
 
@@ -10621,8 +10699,8 @@ msgid "The comment has been updated"
 msgstr "댓글이 업데이트되었습니다"
 
 #, no-php-format
-msgid "The competiton will end: {0}"
-msgstr "경쟁 업체가 종료됩니다 : {0}"
+msgid "The competition will end: {0}"
+msgstr "경쟁은 종료됩니다 : {0}"
 
 msgid "The default class of new members."
 msgstr "새 멤버의 기본 클래스입니다."
@@ -10832,17 +10910,17 @@ msgid "The way to solve the problem involves opening the ports used for incoming
 msgstr "문제를 해결하는 방법은 방화벽에서 들어오는 연결에 사용되는 포트 (클라이언트에서 정의한 것과 동일한 범위)를 열고 NAT 서버 대신 해당 범위에 대해 기본 형태의 NAT를 사용하도록 NAT 서버를 구성하는 것입니다 (실제로 라우터 모델 및 지원 포럼을 확인하거나 {0} PortForward {1}에서 해당 주제에 대한 많은 정보를 찾을 수 있습니다."
 
 #, no-php-format
-msgid "The winner will get {0} added to their seedbonus amount"
-msgid_plural "The winners will get {0} added to their seedbonus amount"
-msgstr[0] "The winners will get {0} added to their seedbonus amount"
-
-#, no-php-format
 msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr "{0}이 (가) 시작되었습니다! 지금 티켓을 받으세요. 포트는 {1}이고 각 티켓은 {2} {3}입니다."
 
 #, no-php-format
 msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr "{0} 트래커는 실제 IP를 찾는 데는 현명하지만 HTTP 헤더 HTTP_X_FORWARDED_FOR을 보내려면 프록시가 필요합니다. ISP의 프록시가 그렇지 않으면 추적기는 프록시의 IP 주소를 클라이언트의 IP 주소로 해석합니다. 따라서 로그인하고 추적기가 NAT / 방화벽인지 확인하기 위해 클라이언트에 연결을 시도하면 실제로 클라이언트가 들어오는 연결에 사용한다고보고 한 포트의 프록시에 연결을 시도합니다. 당연히 프록시는 해당 포트에서 수신 대기하지 않으며 연결이 실패하며 추적기는 사용자가 NAT / 방화벽이라고 생각합니다."
+
+#, no-php-format
+msgid "The {0} winner will get {1} added to their seedbonus amount."
+msgid_plural "The {0} winners will get {1} added to their seedbonus amount."
+msgstr[0] "The {0} winners will get {1} added to their seedbonus amount."
 
 msgid "Theft summary"
 msgstr "도난 요약"
@@ -10920,6 +10998,9 @@ msgstr "현재 씨앗이 필요한 급류가 없습니다."
 
 msgid "There are no torrents."
 msgstr "급류가 없습니다."
+
+msgid "There are no valid staff classes."
+msgstr "유효한 교직원 수업이 없습니다."
 
 msgid "There are not any cheaters"
 msgstr "사기꾼이 없습니다"
@@ -11164,12 +11245,6 @@ msgstr "CouchPotato, SickRage 등과 같은 자동 다운로더에서만 사용�
 msgid "This is only users that are active on the torrents right now."
 msgstr "현재 토렌트를 사용중인 사용자 만 있습니다."
 
-msgid "This is text is [sub]subscript.[/sub]"
-msgstr "이것은 텍스트가 [sub] 첨자입니다. [/ sub]"
-
-msgid "This is text is [sup]superscript.[/sup]"
-msgstr "이것은 텍스트가 [sup] 위 첨자입니다. [/ sup]"
-
 msgid "This is the first post in the topic, only Staff can delete topics."
 msgstr "이것은 주제의 첫 번째 게시물이며 교직원 만 주제를 삭제할 수 있습니다."
 
@@ -11281,8 +11356,11 @@ msgstr "이 주제는 잠겨 있습니다"
 msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr "이 토렌트는 이미 업로드되었습니다! 업로드하기 전에 검색 기능을 사용하십시오."
 
-msgid "This torrent is for VIP user only!"
-msgstr "이 토런트는 VIP 사용자 전용입니다!"
+msgid "This torrent is for VIP users only!"
+msgstr "이 토런트는 VIP 사용자만을위한 것입니다!"
+
+msgid "This torrent was Re-Animated!"
+msgstr "이 급류는 다시 애니메이션되었습니다!"
 
 msgid "This user dosen't accept PMs."
 msgstr "이 사용자는 PM을 수락하지 않습니다."
@@ -11327,6 +11405,9 @@ msgstr "스레드 아이콘"
 
 msgid "Thriller"
 msgstr "스릴러"
+
+msgid "Thursday"
+msgstr "목요일"
 
 msgid "Ticket Amount"
 msgstr "티켓 금액"
@@ -11629,6 +11710,10 @@ msgid "Torrent {0} ({1}) was uploaded by {2}"
 msgstr "토런트 {0} ({1})이 {2}에 의해 업로드되었습니다."
 
 #, no-php-format
+msgid "Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}"
+msgstr "토런트 {0} ({2})이 삭제되었습니다. <br> <br> 이유 : {2}"
+
+#, no-php-format
 msgid "Torrent {0} was deleted by {1}"
 msgstr "토런트 {0}이 (가) {1}에 의해 삭제되었습니다."
 
@@ -11672,9 +11757,6 @@ msgid "Torrents Stats"
 msgstr "급류 통계"
 
 msgid "Torrents Uploaded"
-msgstr "급류 업로드"
-
-msgid "Torrents Uploaded on"
 msgstr "급류 업로드"
 
 msgid "Torrents are automatically deleted after 28 days."
@@ -11823,6 +11905,9 @@ msgstr "스레드를 닫는 대신 '주제 이외'를 수정하십시오."
 #, no-php-format
 msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr "{0} ProxyJudge {1}을 (를) 사용해보십시오. 실행중인 서버가 사용자로부터받은 HTTP 헤더를 나열합니다. 관련 사항은 HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR 및 REMOTE_ADDR입니다."
+
+msgid "Tuesday"
+msgstr "화요일"
 
 msgid "TvMaze API"
 msgstr "TVMaze API"
@@ -12109,6 +12194,10 @@ msgstr "업로드 한 급류"
 
 msgid "Uploaded total altered from "
 msgstr "업로드 된 총계가 다음에서 변경되었습니다."
+
+#, no-php-format
+msgid "Uploaded {0} by {1}"
+msgstr "{1}에 의해 {0} 업로드"
 
 msgid "Uploader"
 msgstr "업 로더"
@@ -12623,6 +12712,9 @@ msgstr "워터 마크"
 msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr "계정 이름을 바꿀 수 있습니다. 새 계정을 만들지 마십시오. 귀하의 요청으로 현장 직원에게 연락 할 수 있습니다."
 
+msgid "We can't say if the user is who they claim to be"
+msgstr "사용자가 자신이 누구인지 주장 할 수 없습니다"
+
 msgid "We can't use a problem text there is less then 20 chars."
 msgstr "문자가 20 자 미만인 문제 텍스트를 사용할 수 없습니다."
 
@@ -12663,6 +12755,9 @@ msgstr "웹 사이트"
 
 msgid "Website changed"
 msgstr "웹 사이트가 변경됨"
+
+msgid "Wednesday"
+msgstr "수요일"
 
 msgid "Weekly"
 msgstr "주간"
@@ -12751,9 +12846,6 @@ msgstr "이 'IOError-[Errno13] Permission denied'오류는 무엇입니까?"
 
 msgid "What's this 'TTL' in the browse page?"
 msgstr "찾아보기 페이지에서이 'TTL'은 무엇입니까?"
-
-msgid "When"
-msgstr "언제"
 
 msgid "When Completed"
 msgstr "완료되면"
@@ -13287,6 +13379,10 @@ msgid "You have received a PM from %s!"
 msgstr "%s으로부터 PM을 받았습니다!"
 
 #, no-php-format
+msgid "You have received a PM from {0}!"
+msgstr "{0}에서 PM을 받았습니다!"
+
+#, no-php-format
 msgid "You have received a comment on your torrent {0}{1}{2}."
 msgstr "토렌트 {0} {1} {2}에 대한 의견을 받았습니다."
 
@@ -13340,8 +13436,8 @@ msgstr "{1}에서 {0} leechwarn 등급을 받았습니다."
 msgid "You have received {0} warned Status from {1}."
 msgstr "{1}에서 {0} 경고 상태를 받았습니다."
 
-msgid "You have snatched this torrent but not completed downloading"
-msgstr "이 토런트를 납치했지만 다운로드가 완료되지 않았습니다"
+msgid "You have snatched this torrent but you have not completed downloading"
+msgstr "이 토렌트를 빼앗 았지만 다운로드를 완료하지 않았습니다"
 
 msgid "You have successfully deleted the selected accounts!"
 msgstr "선택한 계정을 성공적으로 삭제했습니다!"
@@ -13366,6 +13462,9 @@ msgstr "이 제안에 찬성하여 투표하셨습니다."
 
 msgid "You have voted to support this request."
 msgstr "이 요청을지지하기로 투표하셨습니다."
+
+msgid "You have won the lottery"
+msgstr "복권 당첨"
 
 #, no-php-format
 msgid "You have {0} Reputation Point."
@@ -13437,6 +13536,9 @@ msgstr "설명이나 Nfo를 입력해야합니다!"
 
 msgid "You must enter a reason to suspend this account!"
 msgstr "이 계정을 정지시키는 이유를 입력해야합니다!"
+
+msgid "You must enter a username!"
+msgstr "사용자 이름을 입력해야합니다!"
 
 msgid "You must enter an email address!"
 msgstr "이메일 주소를 입력해야합니다!"
@@ -13849,159 +13951,11 @@ msgstr "[보내려는 회원의 사용자 이름을 입력하십시오]"
 msgid "[ {0}% full ]"
 msgstr "[{0} % 꽉 참]"
 
-msgid ""
-"[*] This is item 1\n"
-"[*] This is item 2"
-msgstr ""
-"[*] 이것은 항목 1입니다\n"
-"[*] 이쪽의 아이템 2"
-
-msgid "[*]<i>Text</i>"
-msgstr "[*] <i> 텍스트 </i>"
-
 msgid "[Doubled Down]"
 msgstr "[더블 다운]"
 
 msgid "[Implicit - Admin]"
 msgstr "[암시 적-관리자]"
-
-msgid "[b]<i>Text</i>[/b]"
-msgstr "[b] <i> 텍스트 </i> [/ b]"
-
-msgid "[b]This is bold text.[/b]"
-msgstr "[b] 이것은 굵은 글씨입니다. [/ b]"
-
-msgid "[center]<i>Text</i>[/center]"
-msgstr "[중앙] <i> 텍스트 </i> [/ 중앙]"
-
-msgid "[center]This is text is centered.[/center]"
-msgstr "[center] 텍스트가 중앙에 있습니다. [/ center]"
-
-msgid "[code]<i>Text</i>[/code]"
-msgstr "[코드] <i> 텍스트 </i> [/ 코드]"
-
-msgid "[code]This is code formatted text.[/code]"
-msgstr "[code] 코드 형식의 텍스트입니다. [/ code]"
-
-msgid "[color=#0000ff]This is blue text.[/color]"
-msgstr "[color = # 0000ff] 이것은 파란색 텍스트입니다. [/ color]"
-
-msgid "[color=#<i>RGB</i>]<i>Text</i>[/color]"
-msgstr "[color = # <i> RGB </i>] <i> 텍스트 </i> [/ color]"
-
-msgid "[color=<i>Color</i>]<i>Text</i>[/color]"
-msgstr "[색상 = <i> 색상 </i>] <i> 텍스트 </i> [/ 색상]"
-
-msgid "[color=blue]This is blue text.[/color]"
-msgstr "[color = blue] 이것은 파란색 텍스트입니다. [/ color]"
-
-msgid "[font=<i>Font</i>]<i>Text</i>[/font]"
-msgstr "[font = <i> 글꼴 </i>] <i> 텍스트 </i> [/ font]"
-
-msgid "[font=Impact]Hello world![/font]"
-msgstr "[font = Impact] 안녕하세요 세상! [/ font]"
-
-msgid "[i]<i>Text</i>[/i]"
-msgstr "[i] <i> 텍스트 </i> [/ i]"
-
-msgid "[i]This is italic text.[/i]"
-msgstr "[i] 이탤릭체입니다. [/ i]"
-
-msgid "[img=<i>URL</i>]"
-msgstr "[img = <i> URL </i>]"
-
-msgid "[img=http://Pu239.silly/images/logo.png]"
-msgstr "[img = http : //Pu239.silly/images/logo.png]"
-
-msgid "[img]<i>URL</i>[/img]"
-msgstr "[img] <i> URL </i> [/ img]"
-
-msgid "[img]http://Pu239.silly/images/logo.png[/img]"
-msgstr "[img] http : //Pu239.silly/images/logo.png [/ img]"
-
-msgid "[justify]<i>Text</i>[/justify]"
-msgstr "[정의] <i> 텍스트 </i> [/ justify]"
-
-msgid "[justify]This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified. This is text is justified.[/justify]"
-msgstr "[justify] 텍스트가 정당화되었습니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이 텍스트는 정당화됩니다. 이것은 텍스트가 정당하다는 것입니다. [/ justify]"
-
-msgid "[left]<i>Text</i>[/left]"
-msgstr "[왼쪽] <i> 텍스트 </i> [/ 왼쪽]"
-
-msgid "[left]This is text is left aligned.[/left]"
-msgstr "[left] 텍스트가 정렬 된 상태입니다. [/ left]"
-
-msgid "[pre]<i>Text</i>[/pre]"
-msgstr "[중고] <i> 텍스트 </i> [/ 중고]"
-
-msgid "[pre]This is preformatted text.[/pre]"
-msgstr "[pre] 이것은 사전 형식화 된 텍스트입니다. [/ pre]"
-
-msgid "[quote=<i>Author</i>]<i>Quoted text</i>[/quote]"
-msgstr "[quote = <i> 저자 </i>] <i> 인용 된 텍스트 </i> [/ quote]"
-
-msgid "[quote=John Doe]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote = John Doe] 빠른 갈색 여우가 게으른 개 위로 뛰어 넘습니다. [/ quote]"
-
-msgid "[quote]<i>Quoted text</i>[/quote]"
-msgstr "[quote] <i> 인용 된 텍스트 </i> [/ quote]"
-
-msgid "[quote]The quick brown fox jumps over the lazy dog.[/quote]"
-msgstr "[quote] 빠른 갈색 여우가 게으른 개를 뛰어 넘습니다. [/ quote]"
-
-msgid "[right]<i>Text</i>[/right]"
-msgstr "[오른쪽] <i> 텍스트 </i> [/ 오른쪽]"
-
-msgid "[right]This is text is right aligned.[/right]"
-msgstr "[오른쪽]이 텍스트는 오른쪽 정렬입니다. [/ 오른쪽]"
-
-msgid "[s]<i>Text</i>[/s]"
-msgstr "[s] <i> 텍스트 </i> [/ s]"
-
-msgid "[s]This is text is strikethrough.[/s]"
-msgstr "[s] 이것은 텍스트입니다. [/ s]"
-
-msgid "[size=4]This is size 4.[/size]"
-msgstr "[size = 4] 이것은 크기 4입니다. [/ size]"
-
-msgid "[size=<i>n</i>]<i>text</i>[/size]"
-msgstr "[size = <i> n </i>] <i> 텍스트 </i> [/ 크기]"
-
-msgid "[sub]<i>Text</i>[/sub]"
-msgstr "[sub] <i> 텍스트 </i> [/ sub]"
-
-msgid "[sup]<i>Text</i>[/sup]"
-msgstr "[sup] <i> 텍스트 </i> [/ sup]"
-
-msgid "[table][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][tr][td]<i>Text</i>[/td][[td]<i>Text</i>[/td][td]<i>Text</i>[/td][/tr][/table]"
-msgstr "[표] [tr] [td] <i> 텍스트 </i> [/ td] [[td] <i> 텍스트 </i> [/ td] [td] <i> 텍스트 </i> [/ td] [/ td] [t-t] [/ td] [/ td] [/ td] [/ td] [/ td] [t [/ td] [[td] <i> 텍스트 </i> [/ td] [td] <i> 텍스트 </i> [/ td] [/ tr] [tr] [td] <i> 텍스트 </i> [at / td] [td] <i> 텍스트 </i> [/ td] [/ tr] [/ table]"
-
-msgid "[table][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][tr][td]Text[/td][td]Text[/td][td]Text[/td][/tr][/table]"
-msgstr "[표] [tr] [td] 텍스트 [/ td] [td] 텍스트 [/ td] [td] 텍스트 [/ td] [/ tr] [tr] [td] 텍스트 [/ td] [td] 텍스트 [ / td] [td] 텍스트 [/ td] [/ tr] [tr] [td] 텍스트 [/ td] [td] 텍스트 [/ td] [td] 텍스트 [/ td] [/ tr] [/ table]"
-
-msgid "[u]<i>Text</i>[/u]"
-msgstr "[u] <i> 텍스트 </i> [/ u]"
-
-msgid "[u]This is underlined text.[/u]"
-msgstr "[u] 줄이 그어진 텍스트입니다. [/ u]"
-
-msgid "[url=<i>URL</i>]<i>Link text</i>[/url]"
-msgstr "[url = <i> URL </i>] <i> 링크 텍스트 </i> [/ url]"
-
-msgid "[url=http://Pu239.silly/]Crafty[/url]"
-msgstr "[url = http : //Pu239.silly/] Crafty [/ url]"
-
-msgid "[url]<i>URL</i>[/url]"
-msgstr "[url] <i> URL </i> [/ url]"
-
-msgid "[url]http://Pu239.silly/[/url]"
-msgstr "[url] http : //Pu239.silly/ [/ url]"
-
-msgid "[youtube=https://www.youtube.com/watch?v=u22BXhMu4tI]"
-msgstr "[youtube = https : //www.youtube.com/watch? v = u22BXhMu4tI]"
-
-msgid "[youtube]<i>https://www.youtube.com/watch?v=u22BXhMu4tI</i>[/youtube]"
-msgstr "[youtube] <i> https://www.youtube.com/watch?v=u22BXhMu4tI </i> [/ youtube]"
 
 msgid "a thread you subscribed to"
 msgstr "구독 한 스레드"
@@ -14057,6 +14011,10 @@ msgstr "이름에서 알 수 있듯이 클라이언트를 식별합니다 (s588 
 
 msgid "at"
 msgstr "...에서"
+
+#, no-php-format
+msgid "at {0}"
+msgstr "{0}에"
 
 msgid "before"
 msgstr "전에"
@@ -14398,6 +14356,11 @@ msgid_plural "in {0} months"
 msgstr[0] "in {0} months"
 
 #, no-php-format
+msgid "in {0} second"
+msgid_plural "in {0} seconds"
+msgstr[0] "in {0} seconds"
+
+#, no-php-format
 msgid "in {0} week"
 msgid_plural "in {0} weeks"
 msgstr[0] "in {0} weeks"
@@ -14725,6 +14688,9 @@ msgstr "검색"
 msgid "search messages by this member only"
 msgstr "이 회원의 메시지 만 검색"
 
+msgid "seedbonus"
+msgstr "종자"
+
 msgid "seeded for"
 msgstr "시드"
 
@@ -14792,6 +14758,10 @@ msgstr "SQL"
 msgid "staff"
 msgstr "직원"
 
+#, no-php-format
+msgid "starts in {0}"
+msgstr "{0}에서 시작"
+
 msgid "successfully backed-up the database."
 msgstr "데이터베이스를 성공적으로 백업했습니다."
 
@@ -14810,6 +14780,9 @@ msgstr "읽지 않은 목록에서이 주제. 모두 제거하려면 위의 모�
 msgid "this tree"
 msgstr "이 나무"
 
+msgid "tickets"
+msgstr "티켓"
+
 msgid "time"
 msgstr "시각"
 
@@ -14824,6 +14797,9 @@ msgstr "이 발표를 지우려면"
 
 msgid "to delete it or"
 msgstr "삭제하거나"
+
+msgid "to go"
+msgstr "가다"
 
 msgid "to go back"
 msgstr "돌아가다"
@@ -14910,6 +14886,11 @@ msgstr "경고 상태가 {0}에 의해 제거되었습니다."
 
 msgid "warned users"
 msgstr "경고 된 사용자"
+
+#, no-php-format
+msgid "was hit {0} time"
+msgid_plural "was hit {0} times"
+msgstr[0] "was hit {0} times"
 
 msgid "was registered during open doors"
 msgstr "열린 문 중에 등록되었습니다"
@@ -15098,6 +15079,10 @@ msgstr[0] "{0} New Reports"
 #, no-php-format
 msgid "{0} Old School Arcade!"
 msgstr "{0} 올드 스쿨 아케이드!"
+
+#, no-php-format
+msgid "{0} PMs per page"
+msgstr "페이지 당 {0} PM"
 
 #, php-format
 msgid "{0} Page"
@@ -15410,6 +15395,10 @@ msgid_plural "{0} years ago"
 msgstr[0] "{0} years ago"
 
 #, no-php-format
+msgid "{0}% out of {1} votes!"
+msgstr "{1} 투표 중 {0} %!"
+
+#, no-php-format
 msgid "{0}'s Entertainment"
 msgstr "{0}의 엔터테인먼트"
 
@@ -15438,16 +15427,8 @@ msgid "{0}Confirm your invitation{1}"
 msgstr "{0} 초대장 확인 {1}"
 
 #, no-php-format
-msgid "{0}FAQ{1}"
-msgstr "{0} 자주 묻는 질문 {1}"
-
-#, no-php-format
 msgid "{0}IMDb Url{1}"
 msgstr "{0} IMDb URL {1}"
-
-#, no-php-format
-msgid "{0}Rules{1}"
-msgstr "{0} 규칙 {1}"
 
 #, no-php-format
 msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
@@ -15479,11 +15460,11 @@ msgid_plural "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 msgstr[0] "{1} has just bought {2}{0} Lottery Tickets!{3} GOOD LUCK!"
 
 #, no-php-format
-msgid "{1} was hit {0} time in {2} seconds"
-msgid_plural "{1} was hit {0} times in {2} seconds"
-msgstr[0] "{1} was hit {0} times in {2} seconds"
-
-#, no-php-format
 msgid "{1}: Modded Torrents from {0} day ago"
 msgid_plural "{1}: Modded Torrents from {0} days ago"
 msgstr[0] "{1}: Modded Torrents from {0} days ago"
+
+#, no-php-format
+msgid "{1}: Modded Torrents from {0}, number day ago"
+msgid_plural "{1}: Modded Torrents from {0}, number days ago"
+msgstr[0] "{1}: Modded Torrents from {0}, number days ago"
