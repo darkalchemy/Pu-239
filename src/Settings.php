@@ -46,7 +46,8 @@ class Settings
         $badwords = $this->get_badwords();
         $this->class_config();
         $config = array_merge_recursive($env, $staff, $staff_forums, $site_config, $hnrs, $forums, $badwords);
-        $config['site']['badwords'] = array_merge($config['badwords'], $config['site']['bad_words']);
+        $blacklist = file_exists($config['paths']['nameblacklist']) ? array_keys(json_decode(file_get_contents($config['paths']['nameblacklist']), true)) : [];
+        $config['site']['badwords'] = array_merge($config['badwords'], $config['site']['bad_words'], $blacklist);
         unset($config['badwords'], $config['site']['bad_words']);
         $this->recursive_ksort($config);
 
