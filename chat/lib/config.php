@@ -9,7 +9,7 @@ declare(strict_types = 1);
  * @link https://blueimp.net/ajax/
  */
 
-global $site_config;
+global $site_config, $CURUSER;
 
 // Define AJAX Chat user roles:
 define('AJAX_CHAT_CHATBOT', $site_config['chatbot']['role']);
@@ -265,4 +265,4 @@ $config['socketServerChatID'] = 0;
 $config['anonymous_link'] = $site_config['site']['anonymizer_url'];
 
 // Font Scaling
-$config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] - 5 . '%' : '80%';
+$config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] - 5 . '%' : '70%';
