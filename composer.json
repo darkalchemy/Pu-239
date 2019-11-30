@@ -1,6 +1,6 @@
 {
     "require": {
-        "php": ">=7.2.0",
+        "php": ">=7.3.0",
         "ext-bz2": "*",
         "ext-ctype": "*",
         "ext-curl": "*",
