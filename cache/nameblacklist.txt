@@ -1,1 +1,1 @@
-{"Unknown":1,"Cunt":1,"Bastard":1,"crap":1,"shit":1,"fuck":1,"damn":1,"admin":1,"sysop":1,"owner":1,"staff":1,"administrator":1,"user":1,"poweruser":1,"vip":1}
+{"Unknown":1,"Cunt":1,"Bastard":1,"crap":1,"shit":1,"fuck":1,"damn":1,"admin":1,"sysop":1,"owner":1,"staff":1,"administrator":1,"user":1,"poweruser":1,"vip":1,"test":1}
