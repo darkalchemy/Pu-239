@@ -265,4 +265,4 @@ $config['socketServerChatID'] = 0;
 $config['anonymous_link'] = $site_config['site']['anonymizer_url'];
 
 // Font Scaling
-$config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] - 5 . '%' : '70%';
+$config['font_size'] = !empty($CURUSER['font_size']) ? $CURUSER['font_size'] . '%' : '70%';
