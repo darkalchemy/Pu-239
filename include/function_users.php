@@ -36,7 +36,7 @@ function autoshout(string $msg, int $channel = 0, int $ttl = 3600)
             'userRole' => 100,
             'channel' => $channel,
             'dateTime' => gmdate('Y-m-d H:i:s', TIME_NOW),
-            'text' => htmlspecialchars($msg),
+            'text' => $msg,
             'ttl' => $ttl,
         ];
 
