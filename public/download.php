@@ -41,7 +41,7 @@ if (!$user) {
 }
 
 $id = isset($_GET['torrent']) ? (int) $_GET['torrent'] : 0;
-$usessl = $session->get('scheme') === 'https' || $site_config['site']['https_only'] === true ? 'https' : 'http';
+$usessl = $session->get('scheme') === 'https' || $site_config['site']['https_only'] === true ? 'announce_url_ssl' : 'announce_url_nonssl';
 $zipuse = isset($_GET['zip']) && $_GET['zip'] == 1 ? true : false;
 $text = isset($_GET['text']) && $_GET['text'] == 1 ? true : false;
 if (!is_valid_id($id)) {
@@ -159,7 +159,11 @@ $cache->deleteMulti([
 ]);
 
 $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
-$dict['announce'] = $site_config['announce_urls'][$usessl][0] . '?torrent_pass=' . $user['torrent_pass'];
+if ($site_config['tracker']['radiance']) {
+    $dict['announce'] = "{$site_config['tracker'][$usessl][0]}:{$site_config['tracker']['announce_port']}/{$user['torrent_pass']}/announce";
+} else {
+    $dict['announce'] = "{$site_config['tracker'][$usessl][0]}?torrent_pass={$user['torrent_pass']}";
+}
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);
 if ($zipuse) {

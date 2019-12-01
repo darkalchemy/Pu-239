@@ -23,7 +23,7 @@ $users_class = $container->get(User::class);
 $torrents_class = $container->get(Torrent::class);
 if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR, 'coder')) {
     $session = $container->get(Session::class);
-    $usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
+    $usessl = $session->get('scheme') === 'https' || $site_config['site']['https_only'] === true ? 'announce_url_ssl' : 'announce_url_nonssl';
     $user = $users_class->getUserFromId($userid);
     if (!$user) {
         show_error(_('Error'), _('Your download link has an invalid or missing torrent_pass'));
@@ -51,11 +51,14 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     }
     $zip = $container->get(Phpzip::class);
     $zip->open($zipfile, ZipArchive::CREATE);
-    $announce_url = $site_config['announce_urls'][$usessl][0];
     foreach ($torrents as $t_file) {
         $fn = TORRENTS_DIR . $t_file['id'] . '.torrent';
         $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
-        $dict['announce'] = "{$announce_url}?torrent_pass={$user['torrent_pass']}";
+        if ($site_config['tracker']['radiance']) {
+            $dict['announce'] = "{$site_config['tracker'][$usessl][0]}:{$site_config['tracker']['announce_port']}/{$user['torrent_pass']}/announce";
+        } else {
+            $dict['announce'] = "{$site_config['tracker'][$usessl][0]}?torrent_pass={$user['torrent_pass']}";
+        }
         $dict['uid'] = $userid;
         $tor = bencdec::encode($dict);
         if ($tor) {
