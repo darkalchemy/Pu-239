@@ -4931,4 +4931,11 @@ KEY `expires` (`expires`)
         'query' => "DELETE FROM `staffpanel` WHERE `file_name` = 'staffpanel.php?tool=nameblacklist'",
         'flush' => true,
     ],
+    [
+        'id' => 1575223097,
+        'info' => 'Alter table',
+        'date' => '01 Dec, 2019',
+        'query' => "ALTER TABLE `torrents` MODIFY `info_hash` binary(20) DEFAULT NULL",
+        'flush' => true,
+    ],
 ];
