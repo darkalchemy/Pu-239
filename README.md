@@ -28,7 +28,7 @@ The primary goal of this project is to give the site owner a means to create a c
 ##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
-1. Update to PHP 7.3 - default settings
+1. Update to PHP 7.4 - default settings
 2. Error free with MySQL 8.0 strict mode - default settings - Mostly Done
 3. Remove merged bootstrap
 4. Update jquery
@@ -45,7 +45,7 @@ The primary goal of this project is to give the site owner a means to create a c
 15. Replace mysql with PDO/FluentPDO - In progress
 
 This is a fork of U-232 V4.  
-PHP 7.2+ is required.  
+PHP 7.3+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
 [Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
 [NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.13.1.  
