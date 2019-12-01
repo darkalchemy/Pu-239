@@ -92,5 +92,5 @@ function adminer_object()
 
     return new AdminerCustomization($plugins);
 }
-//dd($_SESSION, $_COOKIE);
+
 include ADMIN_DIR . 'adminer.php';

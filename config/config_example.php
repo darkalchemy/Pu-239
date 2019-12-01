@@ -64,7 +64,6 @@ return [
         ],
         'paths' => [
             'flood_file' => CACHE_DIR . 'floodlimits.txt',
-            'nameblacklist' => CACHE_DIR . 'nameblacklist.txt',
             'happyhour' => CACHE_DIR . 'happyhour.cache',
             'sql_error_log' => SQLERROR_LOGS_DIR . 'sql_err_' . date('Y_m_d', TIME_NOW) . '.log',
             'baseurl' => get_scheme() . '://' . (!empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '#baseurl'),
