@@ -157,6 +157,7 @@ function random_gifts($user)
         'reputation',
         'freeslots',
         'freeleech',
+        'doubleseed',
         'bankrupt',
         'porned',
         'missyou',
@@ -210,9 +211,20 @@ function random_gifts($user)
         case 'freeleech':
             $amount = mt_rand(1, 72);
             $hours = $amount * 3600;
+            $personal_freeleech = strtotime($user['personal_freeleech']) > TIME_NOW ? $user['personal_freeleech'] : TIME_NOW;
             $update = [
                 'bonuscomment' => get_date(TIME_NOW, 'DATE', 1) . ' - Awarded ' . $amount . " hours of Freeleech from Chat.\n" . $user['bonuscomment'],
-                'free_switch' => $hours + $user['free_switch'],
+                'personal_freeleech' => get_date($hours + $personal_freeleech, 'MYSQL'),
+            ];
+            $msg = "{$username} has been randomly selected to receive $amount hours of Freeleech from " . $site_config['chatbot']['name'];
+            break;
+        case 'doubleseed':
+            $amount = mt_rand(1, 72);
+            $hours = $amount * 3600;
+            $personal_doubleseed = strtotime($user['personal_doubleseed']) > TIME_NOW ? $user['personal_doubleseed'] : TIME_NOW;
+            $update = [
+                'bonuscomment' => get_date(TIME_NOW, 'DATE', 1) . ' - Awarded ' . $amount . " hours of DoubleSeed from Chat.\n" . $user['bonuscomment'],
+                'personal_doubleseed' => get_date($hours + $personal_doubleseed, 'MYSQL'),
             ];
             $msg = "{$username} has been randomly selected to receive $amount hours of freeleech from " . $site_config['chatbot']['name'];
             break;

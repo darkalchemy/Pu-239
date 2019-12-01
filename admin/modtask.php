@@ -629,29 +629,51 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
         $update['freeslots'] = $freeslots;
         $useredit[] = _('Freeeslots total adjusted = Yes');
     }
-    if (isset($post['free_switch']) && ($free_switch = (int) $post['free_switch'])) {
+    if (isset($post['personal_freeleech']) && ($personal_freeleech = (int) $post['personal_freeleech'])) {
         $free_pm = '';
         if (isset($post['free_pm'])) {
             $free_pm = $post['free_pm'];
         }
         $subject = _('Notification!');
-        if ($free_switch === 255) {
-            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('Freeleech Status enabled by ') . $CURUSER['username'] . ".\n" . _('Reason') . ": $free_pm\n" . $modcomment;
-            $msg = _('You have received Freeleech Status from ') . $username . (!empty($free_pm) ? "\n\n" . _('Reason') . ": $free_pm" : '');
-            $update['free_switch'] = 1;
-            $useredit[] = _('Freeleech enabled = Yes');
-        } elseif ($free_switch === 42) {
-            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('Freeleech Status removed by ') . $CURUSER['username'] . ".\n" . $modcomment;
-            $msg = _('Your Freeleech Status has been removed by ') . $username;
-            $update['free_switch'] = 0;
+        if ($personal_freeleech === 42) {
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Freeleech Status removed by {0}.', $CURUSER['username']) . "\n" . $modcomment;
+            $msg = _fe('Your Freeleech Status has been removed by {0}.', $username);
+            $update['personal_freeleech'] = get_date(TIME_NOW, 'MYSQL');
             $useredit[] = _('Freeleech enabled = No');
         } else {
-            $free_until = $dt + ($free_switch * 604800);
-            $dur = _pfe('{0} week', '{0} weeks', $free_switch);
+            $free_until = get_date($dt + ($personal_freeleech * 604800), 'MYSQL');
+            $dur = _pfe('{0} week', '{0} weeks', $personal_freeleech);
             $msg = _fe('You have received {0} Freeleech Status from {1}.', $dur, $username) . ($free_pm ? "\n\n" . _('Reason') . ": $free_pm" : '');
             $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Freeleech Status for {0} by {1}.', $dur, $CURUSER['username']) . "\n" . _('Reason') . ": $free_pm\n" . $modcomment;
-            $update['free_switch'] = $free_until;
-            $useredit[] = _('Freeleech enabled = ') . get_date((int) $free_until, 'DATE', 0, 1);
+            $update['personal_freeleech'] = $free_until;
+            $useredit[] = _fe('Freeleech enabled = {0}', $free_until);
+        }
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+    }
+    if (isset($post['personal_doubleseed']) && ($personal_doubleseed = (int) $post['personal_doubleseed'])) {
+        $double_pm = '';
+        if (isset($post['double_pm'])) {
+            $double_pm = $post['double_pm'];
+        }
+        $subject = _('Notification!');
+        if ($personal_doubleseed === 42) {
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('DoubleSeed Status removed by {0}.', $CURUSER['username']) . "\n" . $modcomment;
+            $msg = _fe('Your DoubleSeed Status has been removed by {0}.', $username);
+            $update['personal_doubleseed'] = get_date(TIME_NOW, 'MYSQL');
+            $useredit[] = _('DoubleSeed enabled = No');
+        } else {
+            $double_until = get_date($dt + ($personal_doubleseed * 604800), 'MYSQL');
+            $dur = _pfe('{0} week', '{0} weeks', $personal_doubleseed);
+            $msg = _fe('You have received {0} DoubleSeed Status from {1}.', $dur, $username) . ($double_pm ? "\n\n" . _('Reason') . ": $double_pm" : '');
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('DoubleSeed Status for {0} by {1}.', $dur, $CURUSER['username']) . "\n" . _('Reason') . ": $double_pm\n" . $modcomment;
+            $update['personal_doubleseed'] = $double_until;
+            $useredit[] = _fe('DoubleSeed enabled = {0}', $double_until);
         }
         $msgs[] = [
             'poster' => $CURUSER['id'],

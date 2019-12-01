@@ -509,7 +509,7 @@ class Torrent
                                      ->leftJoin('users AS u ON t.owner = u.id')
                                      ->leftJoin('categories AS c ON t.category = c.id')
                                      ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                     ->where('visible = "yes"')
+                                     ->where('t.visible = "yes"')
                                      ->where('t.imdb_id != ""')
                                      ->orderBy('t.added DESC');
 
@@ -678,7 +678,7 @@ class Torrent
                                         ->leftJoin('categories AS p ON c.parent_id = p.id')
                                         ->leftJoin('class_config AS z ON u.class = z.value')
                                         ->where('t.staff_picks != 0')
-                                        ->where('visible = "yes"')
+                                        ->where('t.visible = "yes"')
                                         ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
                                         ->orderBy('t.staff_picks DESC')
                                         ->limit($this->site_config['latest']['staff_picks']);
@@ -742,7 +742,7 @@ class Torrent
                                          ->leftJoin('categories AS c ON t.category = c.id')
                                          ->leftJoin('categories AS p ON c.parent_id = p.id')
                                          ->leftJoin('class_config AS z ON u.class = z.value')
-                                         ->where('visible = "yes"')
+                                         ->where('t.visible = "yes"')
                                          ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
                                          ->orderBy('t.seeders + t.leechers DESC')
                                          ->limit($this->site_config['latest']['torrents_limit']);
@@ -811,7 +811,7 @@ class Torrent
                                             ->leftJoin('class_config AS z ON u.class = z.value')
                                             ->leftJoin('categories AS c ON t.category = c.id')
                                             ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                            ->where('visible = "yes"')
+                                            ->where('t.visible = "yes"')
                                             ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
             if (!empty($categories)) {
                 $latest_torrents = $latest_torrents->where('category IN (' . $in . ')', $categories);

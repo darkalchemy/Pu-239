@@ -38,11 +38,11 @@ if (isset($free)) {
         $isfree['expires'] = $fl['expires'];
     }
 }
-$in_use = (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['free_switch'] != 0 || $isfree['yep']) ? '<span> Free Status ' . ($torrent['free'] != 0 ? $freeimg . '<b><span style="color: ' . $torrent['free_color'] . ';"> Torrent FREE </span></b> ' . ($torrent['free'] > 1 ? ' Expires: ' . get_date((int) $torrent['free'], 'DATE', 1, 0) . '
+$in_use = (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['personal_freeleech'] > TIME_NOW || $isfree['yep']) ? '<span> Free Status ' . ($torrent['free'] != 0 ? $freeimg . '<b><span style="color: ' . $torrent['free_color'] . ';"> Torrent FREE </span></b> ' . ($torrent['free'] > 1 ? ' Expires: ' . get_date((int) $torrent['free'], 'DATE', 1, 0) . '
 (' . mkprettytime($torrent['free'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') : '') . ($torrent['silver'] != 0 ? $silverimg . ' <b><span style="color: ' . $torrent['silver_color'] . ';">Torrent SILVER</span></b> ' . ($torrent['silver'] > 1 ? 'Expires: ' . get_date((int) $torrent['silver'], 'DATE', 1, 0) . ' 
-(' . mkprettytime($torrent['silver'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . ($CURUSER['free_switch'] != 0 ? $freeimg . ' <b><span style="color: ' . $torrent['free_color'] . ';">Personal FREE Status</span></b> ' . ($CURUSER['free_switch'] > 1 ? 'Expires: ' . get_date((int) $CURUSER['free_switch'], 'DATE', 1, 0) . ' 
-(' . mkprettytime($CURUSER['free_switch'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . ($isfree['yep'] ? $freeimg . ' <b><span style="color: ' . $torrent['free_color'] . ';">' . $mode . '</span></b> ' . ($isfree['expires'] != 1 ? 'Expires: ' . get_date((int) $isfree['expires'], 'DATE', 1, 0) . ' 
-(' . mkprettytime($isfree['expires'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['free_switch'] != 0 || $isfree['yep']) ? '</span>' : '') . '';
+(' . mkprettytime($torrent['silver'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . ($CURUSER['personal_freeleech'] > TIME_NOW ? $freeimg . ' <b><span style="color: ' . $torrent['free_color'] . ';">Personal FREE Status</span></b> ' . ($CURUSER['personal_freeleech'] > TIME_NOW ? 'Expires: ' . get_date(strtotime($CURUSER['personal_freeleech']), 'DATE', 1, 0) . ' 
+(' . mkprettytime(strtotime($CURUSER['personal_freeleech']) - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . ($isfree['yep'] ? $freeimg . ' <b><span style="color: ' . $torrent['free_color'] . ';">' . $mode . '</span></b> ' . ($isfree['expires'] != 1 ? 'Expires: ' . get_date((int) $isfree['expires'], 'DATE', 1, 0) . ' 
+(' . mkprettytime($isfree['expires'] - TIME_NOW) . ' to go)<br>' : 'Unlimited<br>') : '') . (($torrent['free'] != 0 || $torrent['silver'] != 0 || $CURUSER['personal_freeleech'] > TIME_NOW || $isfree['yep']) ? '</span>' : '') . '';
 
 if (!empty($in_use)) {
     $title = (!empty($title) ? $title : '') . "<div class='round10 padding20 bg-00 bottom20 level-center'>$in_use</div>";

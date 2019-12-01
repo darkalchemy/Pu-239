@@ -286,7 +286,7 @@ if (PRODUCTION && isset($self) && empty($event) && $self['announcetime'] < $anno
 }
 $upthis = $uploaded;
 $downthis = $downloaded;
-$ratio_free = $site_config['site']['ratio_free'] || $user['free_switch'] > 0 || $torrent['free'] > 0 || $torrent['freeslot'] > 0 ? true : false;
+$ratio_free = $site_config['site']['ratio_free'] || strtotime($user['personal_freeleech']) > TIME_NOW || $torrent['free'] > 0 || $torrent['freeslot'] > 0 ? true : false;
 if (isset($self)) {
     $upthis = max(0, $uploaded - $self['uploaded']);
     $downthis = $ratio_free ? 0 : max(0, $downloaded - $self['downloaded']);

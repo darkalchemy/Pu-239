@@ -79,10 +79,19 @@ if ($bonus['bonus_type'] === 1) {
     ];
     $users_class->update($update, $user['id']);
 } elseif ($bonus['bonus_type'] === 7) {
-    $base = $user['free_switch'] = 0 || $user['free_switch'] <= TIME_NOW ? TIME_NOW : $user['free_switch'];
+    $personal_freeleech = strtotime($user['personal_freeleech']);
+    $base = $user['personal_freeleech'] <= TIME_NOW ? TIME_NOW : $personal_freeleech;
     $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
     $update = [
-        'free_switch' => $base + $bonus['bonus_do'],
+        'personal_freeleech' => get_date($base + $bonus['bonus_do'], 'MYSQL'),
+    ];
+    $users_class->update($update, $user['id']);
+} elseif ($bonus['bonus_type'] === 8) {
+    $personal_doubleseed = strtotime($user['personal_doubleseed']);
+    $base = $user['personal_doubleseed'] <= TIME_NOW ? TIME_NOW : $personal_doubleseed;
+    $msg = _fe("Congratulations, you have just won ''{0}''", $bonus['bonus_desc']);
+    $update = [
+        'personal_doubleseed' => get_date($base + $bonus['bonus_do'], 'MYSQL'),
     ];
     $users_class->update($update, $user['id']);
 }

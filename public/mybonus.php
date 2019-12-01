@@ -138,8 +138,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'freeyear') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
+                $personal_freeleech = strtotime($user['personal_freeleech']);
                 $set = [
-                    'free_switch' => $user['free_switch'] === 0 ? $dt + 365 * 86400 : $user['free_switch'] + 365 * 86400,
+                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 365 * 86400, 'MYSQL') : get_date($dt + 365 * 86400, 'MYSQL'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
                 ];
@@ -153,9 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'king') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
+                $personal_freeleech = strtotime($user['personal_freeleech']);
                 $set = [
                     'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
-                    'free_switch' => $user['free_switch'] === 0 ? $dt + 30 * 86400 : $user['free_switch'] + 30 * 86400,
+                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 30 * 86400, 'MYSQL') : get_date($dt + 30 * 86400, 'MYSQL'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
                 ];
@@ -169,9 +171,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($art === 'pirate') {
         if ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
+                $personal_freeleech = strtotime($user['personal_freeleech']);
                 $set = [
                     'pirate' => $user['pirate'] === 0 ? $dt + 14 * 86400 : $user['king'] + 14 * 86400,
-                    'free_switch' => $user['free_switch'] === 0 ? $dt + 14 * 86400 : $user['free_switch'] + 14 * 86400,
+                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 14 * 86400, 'MYSQL') : get_date($dt + 14 * 86400, 'MYSQL'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
                     'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
                 ];

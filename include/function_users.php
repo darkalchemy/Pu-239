@@ -665,10 +665,10 @@ function clr_forums_cache(int $post_id)
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $cache->deleteMulti([
-                                'forum_last_post_' . $post_id . '_' . $uclass,
-                                'sv_last_post_' . $post_id . '_' . $uclass,
-                                'last_posts_' . $uclass,
-                            ]);
+            'forum_last_post_' . $post_id . '_' . $uclass,
+            'sv_last_post_' . $post_id . '_' . $uclass,
+            'last_posts_' . $uclass,
+        ]);
         ++$uclass;
     }
 }
