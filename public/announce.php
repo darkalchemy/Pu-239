@@ -146,7 +146,7 @@ if (portblacklisted($port)) {
         $cache->set($connkey, $connectable, $conn_ttl);
     }
 }
-if ($site_config['tracker']['require_connectable'] && $connectable === 'no') {
+if ($site_config['tracker']['connectable_required'] && $connectable === 'no') {
     err("Your IP:PORT({$realip}:{$port}) does not appear to be open and/or not properly forwarded. Please visit https://portforward.com/ and review their guides for port forwarding.");
 }
 if ($site_config['site']['ip_logging']) {
@@ -322,7 +322,7 @@ if ($upthis > 0 || $downthis > 0) {
             $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
         }
     }
-    if (($site_config['announce']['incomplete_seed'] || $seeder === 'yes') && $upthis > 0) {
+    if (($site_config['tracker']['incomplete_seed'] || $seeder === 'yes') && $upthis > 0) {
         if (!$crazyhour_on) {
             $user_updateset['uploaded'] = $user['uploaded'] + ($torrent['doubleslot'] != 0 || $isdouble ? ($upthis * 2) : $upthis);
         } else {
@@ -362,7 +362,7 @@ if ($event === 'completed' || ($event === 'started' && $left === 0)) {
     $snatched_values['finished'] = 'yes';
 }
 if (!empty($snatched)) {
-    if ($site_config['announce']['incomplete_seed'] || $seeder === 'yes') {
+    if ($site_config['tracker']['incomplete_seed'] || $seeder === 'yes') {
         $snatched_values['uploaded'] = $snatched['uploaded'] + $upthis;
         $snatched_values['real_uploaded'] = $snatched['real_uploaded'] + $real_uploaded;
     }

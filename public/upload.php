@@ -155,12 +155,13 @@ if ($res_offers) {
             </tr>';
 }
 $session = $container->get(Session::class);
-$usessl = $session->get('scheme') === 'http' ? 'http' : 'https';
-$announce_url = $site_config['announce_urls']['http'][0];
-if ($usessl === 'https') {
-    $announce_url = $site_config['announce_urls']['https'][0];
+$usessl = $session->get('scheme') === 'https' || $site_config['site']['https_only'] === true ? 'announce_url_ssl' : 'announce_url_nonssl';
+if ($site_config['tracker']['radiance']) {
+    $announce_url = "{$site_config['tracker'][$usessl][0]}:{$site_config['tracker']['announce_port']}" . ($site_config['upload']['show_torrent_pass'] ? "/{$user['torrent_pass']}/announce" : '');
+} else {
+    $announce_url = "{$site_config['tracker'][$usessl][0]}/announce.php" . ($site_config['upload']['show_torrent_pass'] ? "?torrent_pass={$user['torrent_pass']}" : '');
 }
-$announce_url = $announce_url . ($site_config['upload']['show_torrent_pass'] ? '?torrent_pass=' . $user['torrent_pass'] : '');
+
 $HTMLOUT .= "
     <form id='upload_form' name='upload_form' action='{$site_config['paths']['baseurl']}/takeupload.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
         <input type='hidden' name='MAX_FILE_SIZE' value='{$site_config['site']['max_torrent_size']}'>

@@ -35,9 +35,9 @@ if (count($argv) === 13) {
             'salty' => bin2hex(random_bytes(16)),
             'skey' => bin2hex(random_bytes(16)),
         ],
-        'announce_urls' => [
-            'http' => $argv[3],
-            'https' => $argv[4],
+        'tracker' => [
+            'announce_url_nonssl' => $argv[3],
+            'announce_url_ssl' => $argv[4],
         ],
         'chatbot' => [
             'name' => $argv[8],
@@ -62,9 +62,9 @@ if (count($argv) === 13) {
             'salty' => bin2hex(random_bytes(16)),
             'skey' => bin2hex(random_bytes(16)),
         ],
-        'announce_urls' => [
-            'http' => readline('Site HTTP URL: '),
-            'https' => readline('Site HTTPS URL: '),
+        'tracer' => [
+            'announce_url_nonssl' => readline('Site HTTP URL: '),
+            'announce_url_ssl' => readline('Site HTTPS URL: '),
         ],
         'chatbot' => [
             'name' => readline('BOT Username: '),
@@ -85,7 +85,7 @@ $clean = preg_replace('/[^\p{L}\p{M}\p{N}]/', '', $vars['site']['name']);
 
 $vars['mysql']['pass'] = quotemeta($vars['mysql']['pass']);
 $vars['admin']['pass'] = quotemeta($vars['admin']['pass']);
-$vars['baseurl'] = str_replace('http://', '', $vars['announce_urls']['http']);
+$vars['baseurl'] = str_replace('http://', '', $vars['tracker']['announce_url_nonssl']);
 $vars['session']['name'] = $clean;
 $vars['session']['domain'] = $vars['baseurl'];
 $vars['session']['prefix'] = $clean . '_';
@@ -197,7 +197,7 @@ if (!empty($userId)) {
     update_user($userId, UC_VIP);
 }
 
-echo "Installation Completed!!\n\nGo to http://{$vars['announce_urls']['http']}/login.php and sign in.\n\n";
+echo "Installation Completed!!\n\nGo to http://{$vars['tracker']['announce_url_nonssl']}/login.php and sign in.\n\n";
 $cache->flushDB();
 
 /**
