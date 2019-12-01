@@ -652,24 +652,6 @@ function get_avatar($avatar)
 }
 
 /**
- * @param string $fo
- *
- * @return bool
- */
-function blacklist(string $fo)
-{
-    global $site_config;
-
-    $badwords = explode('|', $site_config['site']['badwords']);
-    $blacklist = file_exists($site_config['paths']['nameblacklist']) && is_array(json_decode(file_get_contents($site_config['paths']['nameblacklist']), true)) ? json_decode(file_get_contents($site_config['paths']['nameblacklist']), true) : [];
-    if (isset($blacklist[$fo]) && $blacklist[$fo] == 1 || in_array(strtolower($fo), $badwords)) {
-        return false;
-    }
-
-    return true;
-}
-
-/**
  * @param int $post_id
  *
  * @throws DependencyException
@@ -683,10 +665,10 @@ function clr_forums_cache(int $post_id)
     $uclass = UC_MIN;
     while ($uclass <= UC_MAX) {
         $cache->deleteMulti([
-            'forum_last_post_' . $post_id . '_' . $uclass,
-            'sv_last_post_' . $post_id . '_' . $uclass,
-            'last_posts_' . $uclass,
-        ]);
+                                'forum_last_post_' . $post_id . '_' . $uclass,
+                                'sv_last_post_' . $post_id . '_' . $uclass,
+                                'last_posts_' . $uclass,
+                            ]);
         ++$uclass;
     }
 }
