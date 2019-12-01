@@ -1061,7 +1061,7 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
     }
     if (!preg_match("/^[\p{L}\p{M}\p{N}]+$/u", urldecode($username))) {
         if ($ajax) {
-            echo "<div class='has-text-danger'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Invalid characters users.') . '</div>';
+            echo "<div class='has-text-danger'><i class='icon-thumbs-down icon' aria-hidden='true'></i>" . _('Invalid characters used.') . '</div>';
             die();
         }
 
