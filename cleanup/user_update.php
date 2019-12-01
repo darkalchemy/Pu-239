@@ -44,12 +44,6 @@ function user_update($data)
            ->execute();
 
     $fluent->update('users')
-           ->set(['free_switch' => 0])
-           ->where('free_switch > 1')
-           ->where('free_switch < ?', $dt)
-           ->execute();
-
-    $fluent->update('users')
            ->set(['downloadpos' => 1])
            ->where('downloadpos > 1')
            ->where('downloadpos < ?', $dt)

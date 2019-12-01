@@ -488,7 +488,7 @@ $sr = floor(($sr * 1000) / 1000);
 $sr = "
         <img src='{$site_config['paths']['images_baseurl']}smilies/{$s}.gif' alt='' class='emoticon right10'>
         <span class='right10' style='color: " . get_ratio_color($sr) . ";'>" . number_format($sr, 3) . '</span>';
-if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $is_free['free'] > 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || $user['free_switch'] != 0) {
+if ($torrent['free'] >= 1 || $torrent['freetorrent'] >= 1 || $is_free['free'] > 1 || $isfree['yep'] || $free_slot || $double_slot != 0 || strtotime($user['personal_freeleech']) > TIME_NOW) {
     $points .= tr('Ratio After Download', "<div class='left10'><div class='level-left'><del>{$sr} " . _('Your new ratio if you download this torrent') . "</del></div><div class='top10'><span class='has-text-success'>[FREE] </span>(Only upload stats are recorded)</div></div>", 1);
 } else {
     $points .= tr('Ratio After Download', "<div class='level-left left10'>{$sr} " . _('Your new ratio if you download this torrent') . '</div>', 1);

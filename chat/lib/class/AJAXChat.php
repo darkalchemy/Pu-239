@@ -2222,7 +2222,8 @@ class AJAXChat
                 $offset = $stats['dst_in_use'] ? ($stats['time_offset'] + 1) * 3600 : $stats['time_offset'] * 3600;
                 $stats['last_access'] = $stats['last_access'] + $offset;
                 $stats['registered'] = $stats['registered'] + $offset;
-                $stats['free_switch'] = !empty($stats['free_switch']) ? $stats['free_switch'] + $offset : 0;
+                $stats['personal_freeleech'] = !empty($stats['personal_freeleech']) ? strtotime($stats['personal_freeleech']) + $offset : 0;
+                $stats['personal_doubleseed'] = !empty($stats['personal_doubleseed']) ? strtotime($stats['personal_doubleseed']) + $offset : 0;
                 $stats['bj'] = $stats['bj'] * 1024 * 1024 * 1024;
                 $bj = $stats['bj'] > 0 ? '[color=#00FF00]' . mksize($stats['bj']) . '[/color]' : '[color=#CC0000]' . mksize($stats['bj']) . '[/color]';
                 $uploaded = '[color=#00FF00]' . mksize($stats['uploaded']) . '[/color]';
@@ -2249,7 +2250,8 @@ class AJAXChat
                 $freeslots = '[color=#00FF00]' . number_format($stats['freeslots']) . '[/color]';
                 $ircidle = $stats['irctotal'] > 0 ? '[color=#00FF00]' . calc_time_difference((int) $stats['irctotal'], true) . '[/color]' : '[color=#CC0000]' . get_date((int) $stats['irctotal'], 'LONG', 0, 0, true) . '[/color]';
                 $reputation = '[color=#00FF00]' . number_format($stats['reputation']) . '[/color]';
-                $free = get_date((int) $stats['free_switch'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date((int) $stats['free_switch'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $free = get_date((int) $stats['personal_freeleech'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date((int) $stats['personal_freeleech'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
+                $double = get_date((int) $stats['personal_doubleseed'], 'LONG') > date('Y-m-d H:i:s') ? '[color=#00FF00]' . get_date((int) $stats['personal_doubleseed'], 'LONG') . '[/color]' : '[color=#CC0000]Expired[/color]';
                 $joined = '[color=#00FF00]' . get_date((int) $stats['registered'], 'LONG') . '[/color]';
                 $seen = '[color=#00FF00]' . get_date((int) $stats['last_access'], 'LONG') . '[/color]';
                 $seeder = $this->_fluent->from('peers')
@@ -2362,6 +2364,7 @@ class AJAXChat
 [color=#fff]Casino:[/color]               $casino
 [color=#fff]Blackjack:[/color]            $bj
 [color=#fff]Freeleech Until:[/color]      $free
+[color=#fff]DoubleSeed Until:[/color]     $double
 [color=#fff]Free/Double Slots:[/color]    $freeslots
 [/code]";
                 $this->insertChatBotMessage($this->getPrivateMessageID(), $text, 600);

@@ -688,29 +688,72 @@ if ((has_access($viewer['class'], UC_STAFF, 'coder') && $user['class'] < $viewer
                 </tr>";
     }
     if (has_access($viewer['class'], UC_ADMINISTRATOR, 'coder')) {
-        $free_switch = $user['free_switch'] != 0;
-        $HTMLOUT .= "<tr><td class='rowhead'" . (!$free_switch ? ' rowspan="2"' : '') . '>' . _('Freeleech Status') . "</td>
-                <td class='has-text-left w-20'>" . ($free_switch ? "<input name='free_switch' value='42' type='checkbox' class='right5'>" . _('Remove Freeleech Status') . '' : _('No Freeleech Status Set')) . '</td>';
-        if ($free_switch) {
-            if ($user['free_switch'] == 1) {
-                $HTMLOUT .= '<td class="has-text-centered">(' . _('Unlimited Duration') . ')</td></tr>';
-            } else {
-                $HTMLOUT .= "<td class='has-text-centered'>" . _('Until') . ' ' . get_date((int) $user['free_switch'], 'DATE') . ' (' . mkprettytime($user['free_switch'] - TIME_NOW) . ' ' . _('To go') . ')</td></tr>';
-            }
+        $personal_freeleech = strtotime($user['personal_freeleech']);
+        $HTMLOUT .= "
+                <tr>
+                    <td class='rowhead' " . ($personal_freeleech < TIME_NOW ? ' rowspan="2"' : '') . '>' . _('Freeleech Status') . "</td>
+                    <td class='has-text-left w-20'>" . ($personal_freeleech > TIME_NOW ? "
+                        <span class='level-left'>
+                            <input name='personal_freeleech' value='42' type='checkbox' class='right5'>" . _('Remove Freeleech Status') : _('No Freeleech Status Set')) . '
+                        </span>
+                    </td>';
+        if ($personal_freeleech > TIME_NOW) {
+            $HTMLOUT .= "
+                    <td class='has-text-centered'>" . _('Until') . ' ' . get_date($personal_freeleech, 'DATE') . ' (' . mkprettytime($personal_freeleech - TIME_NOW) . ' ' . _('To go') . ')</td>
+                </tr>';
         } else {
-            $HTMLOUT .= '<td>' . _('Freeleech for') . ' <select name="free_switch" class="w-100">
-         <option value="0">------</option>
-         <option value="1">1 ' . _('week') . '</option>
-         <option value="2">2 ' . _('weeks') . '</option>
-         <option value="4">4 ' . _('weeks') . '</option>
-         <option value="8">8 ' . _('weeks') . '</option>
-         <option value="255">' . _('Unlimited') . '</option>
-         </select></td></tr>
-         <tr><td colspan="3" class="has-text-left">' . _('PM comment') . ':<input type="text" class="w-100" name="free_pm"></td></tr>';
+            $HTMLOUT .= '
+                    <td>' . _('Freeleech for') . '
+                        <select name="personal_freeleech" class="w-100">
+                            <option value="0">------</option>
+                            <option value="1">1 ' . _('week') . '</option>
+                            <option value="2">2 ' . _('weeks') . '</option>
+                            <option value="4">4 ' . _('weeks') . '</option>
+                            <option value="8">8 ' . _('weeks') . '</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="has-text-left">' . _('PM comment') . ':
+                        <input type="text" class="w-100" name="free_pm">
+                    </td>
+                </tr>';
+        }
+
+        $personal_doubleseed = strtotime($user['personal_doubleseed']);
+        $HTMLOUT .= "
+                <tr>
+                    <td class='rowhead' " . ($personal_doubleseed < TIME_NOW ? ' rowspan="2"' : '') . '>' . _('DoubleSeed Status') . "</td>
+                    <td class='has-text-left w-20'>" . ($personal_doubleseed > TIME_NOW ? "
+                        <span class='level-left'>
+                            <input name='personal_doubleseed' value='42' type='checkbox' class='right5'>" . _('Remove DoubleSeed Status') : _('No DoubleSeed Status Set')) . '
+                        </span>
+                    </td>';
+        if ($personal_doubleseed > TIME_NOW) {
+            $HTMLOUT .= "
+                    <td class='has-text-centered'>" . _('Until') . ' ' . get_date($personal_doubleseed, 'DATE') . ' (' . mkprettytime($personal_doubleseed - TIME_NOW) . ' ' . _('To go') . ')</td>
+                </tr>';
+        } else {
+            $HTMLOUT .= '
+                    <td>' . _('DoubleSeed for') . '
+                        <select name="personal_doubleseed" class="w-100">
+                            <option value="0">------</option>
+                            <option value="1">1 ' . _('week') . '</option>
+                            <option value="2">2 ' . _('weeks') . '</option>
+                            <option value="4">4 ' . _('weeks') . '</option>
+                            <option value="8">8 ' . _('weeks') . '</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="has-text-left">' . _('PM comment') . ':
+                        <input type="text" class="w-100" name="double_pm">
+                    </td>
+                </tr>';
         }
     }
 
-    if ($viewer['class'] >= UC_STAFF) {
+    if (has_access($viewer['class'], UC_STAFF, 'coder')) {
         $downloadpos = $user['downloadpos'] != 1;
         $HTMLOUT .= "<tr><td class='rowhead'" . (!$downloadpos ? ' rowspan="2"' : '') . '>' . _('Download Possible') . "</td>
                <td class='level-left'>" . ($downloadpos ? "<input name='downloadpos' value='42' type='checkbox' class='right5'>" . _('Remove download disablement') . '' : _('No disablement Status Set')) . '</td>';

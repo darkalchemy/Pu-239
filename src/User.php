@@ -295,7 +295,8 @@ class User
         if ($userid !== false) {
             $dt = TIME_NOW;
             $set = [
-                'free_switch' => $dt + 14 * 86400,
+                'personal_freeleech' => get_date($dt + 14 * 86400, 'MYSQL'),
+                'personal_doubleseed' => get_date($dt + 14 * 86400, 'MYSQL'),
                 'torrent_pass' => bin2hex(random_bytes(32)),
                 'auth' => bin2hex(random_bytes(32)),
                 'apikey' => bin2hex(random_bytes(32)),
