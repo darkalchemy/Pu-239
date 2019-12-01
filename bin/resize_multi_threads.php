@@ -35,7 +35,9 @@ if ($photos > 0 && $photos < $threads * $limit) {
 if (isset($argv[1]) && $argv[1] === 'count') {
     echo "$images images from the image table\n";
     echo "$photos images from the photo table\n";
-    dd($threads, $limit);
+    echo "threads: $threads\n";
+    echo "limit: $limit\n";
+    die();
 }
 if ($threads < 2) {
     passthru('php ' . BIN_DIR . "optimize_resize_images.php $limit 0");
