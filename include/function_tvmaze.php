@@ -56,17 +56,19 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
 
     $persons = $roles = [];
     foreach ($cast as $person) {
-        $roles[] = [
-            'name' => $person['person']['name'],
-            'birthday' => $person['person']['birthday'],
-            'deathday' => $person['person']['deathday'],
-            'character' => $person['character']['name'],
-            'thumb' => $person['character']['image']['medium'],
-            'photo' => $person['character']['image']['original'],
-            'image' => $person['person']['image']['original'],
-            'url' => $person['character']['url'],
-            'id' => $person['character']['id'],
-        ];
+        if (!empty($person['person']['name'])) {
+            $roles[] = [
+                'name' => $person['person']['name'],
+                'birthday' => isset($person['person']['birthday']) ? $person['person']['birthday'] : '',
+                'deathday' => isset($person['person']['deathday']) ? $person['person']['deathday'] : '',
+                'character' => isset($person['character']['name']) ? $person['character']['name'] : '',
+                'thumb' => isset($person['character']['image']['medium']) ? $person['character']['image']['medium'] : '',
+                'photo' => isset($person['character']['image']['original']) ? $person['character']['image']['original'] : '',
+                'image' => isset($person['person']['image']['original']) ? $person['person']['image']['original'] : '',
+                'url' => isset($person['character']['url']) ? $person['character']['url'] : '',
+                'id' => isset($person['character']['id']) ? $person['character']['id'] : '',
+            ];
+        }
     }
 
     foreach ($roles as $role) {
