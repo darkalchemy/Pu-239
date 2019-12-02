@@ -89,11 +89,10 @@ function happyCheck($action, $id = null)
 
     $file = $site_config['paths']['happyhour'];
     $happy = json_decode(file_get_contents($file), true);
-    $happycheck = $happy['catid'];
+    $happycheck = (int) $happy['catid'];
     if ($action === 'check') {
-        return $happycheck['id'];
-    }
-    if ($action === 'checkid' && (($happycheck == '255') || $happycheck == $id)) {
+        return $happycheck;
+    } elseif ($action === 'checkid' && ($happycheck === 255 || $happycheck == $id)) {
         return true;
     }
 
