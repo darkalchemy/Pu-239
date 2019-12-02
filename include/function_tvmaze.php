@@ -87,7 +87,7 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                 $update['died'] = $role['deathday'];
             }
             if (!empty($update)) {
-                $person_class->update($update, $person_info['imdb_id']);
+                $person_class->update_by_imdb($update, $person_info['imdb_id']);
                 $person_info = $person_class->get_person_by_name($role['name']);
             }
 
