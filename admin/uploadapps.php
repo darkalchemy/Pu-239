@@ -29,7 +29,7 @@ $possible_actions = [
     'takeappdelete',
     'app',
 ];
-$action = (isset($_GET['action']) ? htmlsafechars($_GET['action']) : '');
+$action = isset($_GET['action']) ? htmlsafechars($_GET['action']) : 'app';
 if (!in_array($action, $possible_actions)) {
     stderr(_('Error'), _('Invalid action'));
 }

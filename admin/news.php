@@ -32,7 +32,7 @@ $possible_modes = [
     'edit',
     'news',
 ];
-$mode = (isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : '');
+$mode = isset($_GET['mode']) ? htmlsafechars($_GET['mode']) : 'news';
 if (!in_array($mode, $possible_modes)) {
     stderr(_('Error'), _('Invalid Data.'));
 }
