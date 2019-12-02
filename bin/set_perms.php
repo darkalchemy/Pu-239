@@ -10,6 +10,7 @@ if (empty($BLOCKS)) {
     die('BLOCKS are empty');
 }
 
+$start = microtime(true);
 toggle_site_status(true);
 $site_config['cache']['driver'] = 'memory';
 $user = get_username();
@@ -66,6 +67,8 @@ $excludes = [
 ];
 if (isset($argv[1]) && $argv[1] === 'quick') {
     $excludes[] = PROXY_IMAGES_DIR;
+} else {
+    exec("sudo chown -R {$group}:{$group} " . PROXY_IMAGES_DIR);
 }
 $chmod_folders = [
     VENDOR_DIR,
@@ -74,6 +77,7 @@ $chmod_folders = [
 cleanup($group);
 chmod(ROOT_DIR, 0774);
 $i = 1;
+
 
 foreach ($paths as $path) {
     if (file_exists($path)) {
@@ -106,4 +110,7 @@ foreach ($paths as $path) {
 }
 cleanup($group);
 toggle_site_status(false);
-echo "$i files processed\n";
+$end = microtime(true);
+$run = $end - $start;
+echo "Runtime: $run\n";
+echo "$i files processed\n\n";
