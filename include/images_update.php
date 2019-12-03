@@ -511,6 +511,7 @@ function images_update()
     if (!empty($persons)) {
         echo $i . " persons photo proxied\n";
     }
+    passthru('php ' . BIN_DIR . 'resize_multi_threads.php');
 
     $cache->delete('backgrounds_');
     $cache->delete('images_update_');
