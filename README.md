@@ -230,4 +230,5 @@ If you would like to see a specific translation or assist with a current transla
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
 #### Patrons:
-Nico, Ben9, superlarsen, suiziide
+Nico, Ben9, superlarsen, suiziide, 
+RememberForgottenHits
