@@ -41,6 +41,10 @@ if ($images > 0 && $images < $threads * $limit) {
 if ($persons > 0 && $persons < $threads * $limit) {
     $threads = (int) floor($persons / $limit);
 }
+if ($images === 0 && $persons === 0) {
+    $threads = 0;
+}
+
 echo "$images images from the image table\n";
 echo "$persons images from the photo table\n";
 if (isset($argv[1]) && $argv[1] === 'count') {
