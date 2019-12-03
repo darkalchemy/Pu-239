@@ -25,7 +25,7 @@ The primary goal of this project is to give the site owner a means to create a c
 * [Patrons](#patrons)
 * [Wiki](https://github.com/darkalchemy/Pu-239/wiki)
 
-##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+##### I am using Ubuntu 18.04 LTS, PHP 7.4, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
 1. Update to PHP 7.4 - default settings
