@@ -1,14 +1,14 @@
 # Translators:
 # phpBBEesti <argol76@gmail.com>, 2019
-# 
+#
 msgid ""
 msgstr ""
 "Last-Translator: phpBBEesti <argol76@gmail.com>, 2019\n"
 "Language-Team: Estonian (Estonia) (https://www.transifex.com/pu-239/teams/103596/et_EE/)\n"
+"Language: et_EE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: et_EE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, no-php-format
@@ -193,8 +193,7 @@ msgstr ""
 msgid " PMs per page"
 msgstr " PM-id lehel"
 
-msgid ""
-" Please follow these guidelines or else you might end up with a warning!"
+msgid " Please follow these guidelines or else you might end up with a warning!"
 msgstr " Palun järgige neid juhiseid, vastasel juhul võite saada hoiatuse!"
 
 msgid " Please try to follow these guidelines"
@@ -213,8 +212,7 @@ msgid " Torrents On Deathrow"
 msgstr ""
 
 msgid " Torrents violating these rules may be deleted without notice"
-msgstr ""
-" Need reeglitega vastuolus torrenteid võib kustutada ilma ette teatamata"
+msgstr " Need reeglitega vastuolus torrenteid võib kustutada ilma ette teatamata"
 
 msgid " Unread Messages."
 msgstr " Lugemata sõnumid."
@@ -249,12 +247,8 @@ msgstr " alates "
 msgid " has been flagged with an abnormally high upload speed!"
 msgstr " on märgitud ebaharilikult suure üleslaadimiskiirusega!"
 
-msgid ""
-" has been marked as inactive and will be deleted. If you wish to remain a "
-"member at"
-msgstr ""
-" on märgitud passiivseks ja kustutatakse. Kui soovite jääda liikmeks "
-"aadressil"
+msgid " has been marked as inactive and will be deleted. If you wish to remain a member at"
+msgstr " on märgitud passiivseks ja kustutatakse. Kui soovite jääda liikmeks aadressil"
 
 msgid " has blocked PMs from you."
 msgstr " on blokeerinud teie PM-d."
@@ -322,12 +316,8 @@ msgid_plural "{0} weeks ago"
 msgstr[0] ""
 msgstr[1] ""
 
-msgid ""
-"'And/or' means any or both. Your delay will be the largest one for which you"
-" meet at least one condition."
-msgstr ""
-"'Ja/või' tähendab ükskõik kumba või mõlemat. Teie viivitus on suurim, mille "
-"puhul te vastate vähemalt ühele tingimusele."
+msgid "'And/or' means any or both. Your delay will be the largest one for which you meet at least one condition."
+msgstr "'Ja/või' tähendab ükskõik kumba või mõlemat. Teie viivitus on suurim, mille puhul te vastate vähemalt ühele tingimusele."
 
 msgid ""
 "'Boolean' is true or false\n"
@@ -389,8 +379,7 @@ msgid "(Anonymous Status - check to protect your profile!)"
 msgstr "(Anonüümne olek - kontrollige oma profiili kaitsmiseks!)"
 
 msgid "(Anyone begging for VIP status will be automatically disqualified.)"
-msgstr ""
-"(Kõik, kes soovivad saada VIP-staatust, diskvalifitseeritakse automaatselt.)"
+msgstr "(Kõik, kes soovivad saada VIP-staatust, diskvalifitseeritakse automaatselt.)"
 
 msgid "(Check to show all hidden categories!)"
 msgstr "(Märkige kõigi peidetud kategooriate kuvamiseks!)"
@@ -408,31 +397,19 @@ msgid "(Enable/Disable searchcloud on browse!)"
 msgstr "(Otsingupilve lubamine/keelamine sirvimisel!)"
 
 #, no-php-format
-msgid ""
-"(Facultative) Visit {0}ProxyJudge{1}. If you see an HTTP_X_FORWARDED_FOR in "
-"the list followed by your IP then everything should be ok, otherwise choose "
-"another proxy and try again."
+msgid "(Facultative) Visit {0}ProxyJudge{1}. If you see an HTTP_X_FORWARDED_FOR in the list followed by your IP then everything should be ok, otherwise choose another proxy and try again."
 msgstr ""
 
-msgid ""
-"(However, the files you download from us are yours to do as you please. You "
-"can always create another torrent, pointing to some other tracker, and "
-"upload it to the site of your choice.)"
+msgid "(However, the files you download from us are yours to do as you please. You can always create another torrent, pointing to some other tracker, and upload it to the site of your choice.)"
 msgstr ""
 
-msgid ""
-"(In first place, it's unlikely your ISP is doing so. DNS name resolution "
-"and/or network problems are the usual culprits.)"
+msgid "(In first place, it's unlikely your ISP is doing so. DNS name resolution and/or network problems are the usual culprits.)"
 msgstr ""
 
 msgid "(Minimum Poster Width should be 400 px, larger sizes will be scaled.)"
-msgstr ""
-"(Pildi minimaalne laius peaks olema 400 pikslit, suuremaid mõõtmeid "
-"skaleeritakse.)"
+msgstr "(Pildi minimaalne laius peaks olema 400 pikslit, suuremaid mõõtmeid skaleeritakse.)"
 
-msgid ""
-"(Proselytising sidenote: make sure you remember that you did not enjoy the "
-"low speed. Seed so that others will not endure the same.)"
+msgid "(Proselytising sidenote: make sure you remember that you did not enjoy the low speed. Seed so that others will not endure the same.)"
 msgstr ""
 
 msgid "(Self explanatory)"
@@ -441,19 +418,13 @@ msgstr "(Iseenesest mõistetav)"
 msgid "(Taken from Imdb - "
 msgstr "(Võetud IMDB-st - "
 
-msgid ""
-"(The only way to completely stop foreign torrents from showing in profiles "
-"is to forbid users without an individual IP from accessing the site. Yes, "
-"that means you. Complain at your own risk.)"
+msgid "(The only way to completely stop foreign torrents from showing in profiles is to forbid users without an individual IP from accessing the site. Yes, that means you. Complain at your own risk.)"
 msgstr ""
 
-msgid ""
-"(Used for eBooks, ISBN 13 or ISBN 10, no spaces or dashes. Either the ISBN "
-"or a clean title is required for lookup)"
+msgid "(Used for eBooks, ISBN 13 or ISBN 10, no spaces or dashes. Either the ISBN or a clean title is required for lookup)"
 msgstr ""
 
-msgid ""
-"(Used for eBooks, either the ISBN or a clean title is required for lookup)"
+msgid "(Used for eBooks, either the ISBN or a clean title is required for lookup)"
 msgstr ""
 
 msgid "(any class)"
@@ -468,19 +439,14 @@ msgstr "(kui palju jäänud)"
 msgid "(telling the tracker that the client has just started)."
 msgstr "(träkkerile teatamine, et klient on just alustanud)."
 
-msgid ""
-"(this and the following are the relevant ones, and are self-explanatory)"
+msgid "(this and the following are the relevant ones, and are self-explanatory)"
 msgstr "(see ja järgmised on asjakohased ja on iseenesestmõistetavad)"
 
 msgid "*** Error Torrents not flushed ***"
 msgstr ""
 
-msgid ""
-"*** Please note, pm's are automatically sent to all users awarded by the "
-"script."
-msgstr ""
-"*** Pange tähele, PM saadetakse automaatselt kõigile skriptiga määratud "
-"kasutajatele."
+msgid "*** Please note, pm's are automatically sent to all users awarded by the script."
+msgstr "*** Pange tähele, PM saadetakse automaatselt kõigile skriptiga määratud kasutajatele."
 
 msgid "*all flushes are logged, please do not abuse this feature*"
 msgstr ""
@@ -533,9 +499,7 @@ msgid "0-byte NFO"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the "
-"default font size."
+msgid "100 = {0} font scaling<br>50 = {1} font scaling<br>This overrides the default font size."
 msgstr ""
 
 msgid "1st Post Preview"
@@ -568,20 +532,13 @@ msgid ""
 "</html>"
 msgstr ""
 
-msgid ""
-"<b>Always</b> state a reason (in the user comment box) as to why the user is"
-" being banned / warned."
+msgid "<b>Always</b> state a reason (in the user comment box) as to why the user is being banned / warned."
 msgstr ""
 
-msgid ""
-"<b>Disclaimer:</b> Do not upload unauthorized or illegal pictures. Uploaded "
-"pictures should be considered 'Public Domain'. Do not upload pictures you "
-"wouldn't want a stranger to have access to."
-msgstr ""
+msgid "<b>Disclaimer:</b> Do not upload unauthorized or illegal pictures. Uploaded pictures should be considered 'Public Domain'. Do not upload pictures you wouldn't want a stranger to have access to."
+msgstr "<b>Lahtiütlus:</b> Do not upload unauthorized or illegal pictures. Uploaded pictures should be considered 'Public Domain'. Do not upload pictures you wouldn't want a stranger to have access to."
 
-msgid ""
-"<b>Note:</b> In order to change your email address, you will receive a "
-"confirmation email to your new address."
+msgid "<b>Note:</b> In order to change your email address, you will receive a confirmation email to your new address."
 msgstr ""
 
 msgid "<b>Optional.</b> Can only be viewed by power users."
@@ -590,36 +547,28 @@ msgstr ""
 msgid "<i>RGB</i> must be a six digit hexadecimal number."
 msgstr ""
 
-msgid ""
-"<i>n</i> must be an integer in the range 1 (smallest) to 7 (biggest). The "
-"default size is 2."
+msgid "<i>n</i> must be an integer in the range 1 (smallest) to 7 (biggest). The default size is 2."
 msgstr ""
 
 msgid "= bad aspect ratio, ie people appear too fat/thin"
 msgstr ""
 
-msgid ""
-"= bad inverse telecine. process of converting framerates was incorrect."
+msgid "= bad inverse telecine. process of converting framerates was incorrect."
 msgstr ""
 
 msgid "= black lines on movement as the field order is incorrect."
 msgstr ""
 
 msgid ">Why can't I upload torrents?"
-msgstr ""
+msgstr ">Miks ma ei saa torrente üles laadida?"
 
 msgid "A 1:1 ratio on a torrent"
 msgstr ""
 
 msgid "A Ban with that ID could not be found"
-msgstr ""
+msgstr "Selle ID-ga keelustamist ei leitud"
 
-msgid ""
-"A DivX re-enc is a film that has been taken from its original VCD source, "
-"and re-encoded into a small DivX file. Most commonly found on file sharers, "
-"these are usually labeled something like Film.Name.Group(1of2) etc. Common "
-"groups are SMR and TND. These aren't really worth downloading, unless you're"
-" that unsure about a film u only want a 200mb copy of it. Generally avoid."
+msgid "A DivX re-enc is a film that has been taken from its original VCD source, and re-encoded into a small DivX file. Most commonly found on file sharers, these are usually labeled something like Film.Name.Group(1of2) etc. Common groups are SMR and TND. These aren't really worth downloading, unless you're that unsure about a film u only want a 200mb copy of it. Generally avoid."
 msgstr ""
 
 #, no-php-format
@@ -629,118 +578,49 @@ msgstr ""
 msgid "A Recipe has just come out of the oven"
 msgstr ""
 
-msgid ""
-"A cam is a theater rip usually done with a digital video camera. A mini "
-"tripod is sometimes used, but a lot of the time this wont be possible, so "
-"the camera make shake. Also seating placement isn't always idle, and it "
-"might be filmed from an angle. If cropped properly, this is hard to tell "
-"unless there's text on the screen, but a lot of times these are left with "
-"triangular borders on the top and bottom of the screen. Sound is taken from "
-"the onboard microphone of the camera, and especially in comedies, laughter "
-"can often be heard during the film. Due to these factors picture and sound "
-"quality are usually quite poor, but sometimes we're lucky, and the theater "
-"will be' fairly empty and a fairly clear signal will be heard."
+msgid "A cam is a theater rip usually done with a digital video camera. A mini tripod is sometimes used, but a lot of the time this wont be possible, so the camera make shake. Also seating placement isn't always idle, and it might be filmed from an angle. If cropped properly, this is hard to tell unless there's text on the screen, but a lot of times these are left with triangular borders on the top and bottom of the screen. Sound is taken from the onboard microphone of the camera, and especially in comedies, laughter can often be heard during the film. Due to these factors picture and sound quality are usually quite poor, but sometimes we're lucky, and the theater will be' fairly empty and a fairly clear signal will be heard."
 msgstr ""
 
 msgid "A confirmation email has been sent to the address you specified."
 msgstr ""
 
-msgid ""
-"A copy of the final released DVD. If possible this is released PRE retail "
-"(for example, Star Wars episode 2) again, should be excellent quality. "
-"DVDrips are released in SVCD and DivX/XviD."
+msgid "A copy of the final released DVD. If possible this is released PRE retail (for example, Star Wars episode 2) again, should be excellent quality. DVDrips are released in SVCD and DivX/XviD."
 msgstr ""
 
-msgid ""
-"A film can be nuked for various reasons. Individual sites will nuke for "
-"breaking their rules (such as &quot;No Telesyncs&quot;) but if the film has "
-"something extremely wrong with it (no soundtrack for 20mins, CD2 is "
-"incorrect film/game etc) then a global nuke will occur, and people trading "
-"it across sites will lose their credits. Nuked films can still reach other "
-"sources such as p2p/usenet, but its a good idea to check why it was nuked "
-"first in case. If a group realise there is something wrong, they can request"
-" a nuke."
+msgid "A film can be nuked for various reasons. Individual sites will nuke for breaking their rules (such as &quot;No Telesyncs&quot;) but if the film has something extremely wrong with it (no soundtrack for 20mins, CD2 is incorrect film/game etc) then a global nuke will occur, and people trading it across sites will lose their credits. Nuked films can still reach other sources such as p2p/usenet, but its a good idea to check why it was nuked first in case. If a group realise there is something wrong, they can request a nuke."
 msgstr ""
 
-msgid ""
-"A limited movie means it has had a limited theater run, generally opening in"
-" less than 250 theaters, generally smaller films (such as art house films) "
-"are released as limited."
+msgid "A limited movie means it has had a limited theater run, generally opening in less than 250 theaters, generally smaller films (such as art house films) are released as limited."
 msgstr ""
 
-msgid ""
-"A lot of films come from Asian Silvers/PDVD (see below) and these are tagged"
-" by the people responsible. Usually with a letter/initials or a little logo,"
-" generally in one of the corners. Most famous are the 'Z' 'A' and 'Globe' "
-"watermarks."
+msgid "A lot of films come from Asian Silvers/PDVD (see below) and these are tagged by the people responsible. Usually with a letter/initials or a little logo, generally in one of the corners. Most famous are the 'Z' 'A' and 'Globe' watermarks."
 msgstr ""
 
-msgid ""
-"A pre VHS tape, sent to rental stores, and various other places for "
-"promotional use. A screener is supplied on a VHS tape, and is usually in a "
-"4:3 (full screen) a/r, although letterboxed screeners are sometimes found. "
-"The main draw back is a 'ticker' (a message that scrolls past at the bottom "
-"of the screen, with the copyright and anti-copy telephone number). Also, if "
-"the tape contains any serial numbers, or any other markings that could lead "
-"to the source of the tape, these will have to be blocked, usually with a "
-"black mark over the section. This is sometimes only for a few seconds, but "
-"unfortunately on some copies this will last for the entire film, and some "
-"can be quite big. Depending on the equipment used, screener quality can "
-"range from excellent if done from a MASTER copy, to very poor if done on an "
-"old VHS recorder thru poor capture equipment on a copied tape. Most "
-"screeners are transferred to VCD, but a few attempts at SVCD have occurred, "
-"some looking better than others."
+msgid "A pre VHS tape, sent to rental stores, and various other places for promotional use. A screener is supplied on a VHS tape, and is usually in a 4:3 (full screen) a/r, although letterboxed screeners are sometimes found. The main draw back is a 'ticker' (a message that scrolls past at the bottom of the screen, with the copyright and anti-copy telephone number). Also, if the tape contains any serial numbers, or any other markings that could lead to the source of the tape, these will have to be blocked, usually with a black mark over the section. This is sometimes only for a few seconds, but unfortunately on some copies this will last for the entire film, and some can be quite big. Depending on the equipment used, screener quality can range from excellent if done from a MASTER copy, to very poor if done on an old VHS recorder thru poor capture equipment on a copied tape. Most screeners are transferred to VCD, but a few attempts at SVCD have occurred, some looking better than others."
 msgstr ""
 
 msgid "A request you were interested in has been uploaded!"
+msgstr "Teid huvitav päring on üles laaditud!"
+
+msgid "A ruffian that will swear, drink, dance, revel the night, rob, murder and commit the oldest of ins the newest kind of ways."
 msgstr ""
 
-msgid ""
-"A ruffian that will swear, drink, dance, revel the night, rob, murder and "
-"commit the oldest of ins the newest kind of ways."
+msgid "A telecine machine copies the film digitally from the reels. Sound and picture should be very good, but due to the equipment involved and cost telecines are fairly uncommon. Generally the film will be in correct aspect ratio, although 4:3 telecines have existed. A great example is the JURASSIC PARK 3 TC done last year. TC should not be confused with TimeCode , which is a visible counter on screen throughout the film."
 msgstr ""
 
-msgid ""
-"A telecine machine copies the film digitally from the reels. Sound and "
-"picture should be very good, but due to the equipment involved and cost "
-"telecines are fairly uncommon. Generally the film will be in correct aspect "
-"ratio, although 4:3 telecines have existed. A great example is the JURASSIC "
-"PARK 3 TC done last year. TC should not be confused with TimeCode , which is"
-" a visible counter on screen throughout the film."
+msgid "A telesync is the same spec as a CAM except it uses an external audio source (most likely an audio jack in the chair for hard of hearing people). A direct audio source does not ensure a good quality audio source, as a lot of background noise can interfere. A lot of the times a telesync is filmed in an empty cinema or from the projection booth with a professional camera, giving a better picture quality. Quality ranges drastically, check the sample before downloading the full release. A high percentage of Telesyncs are CAMs that have been mislabeled."
 msgstr ""
 
-msgid ""
-"A telesync is the same spec as a CAM except it uses an external audio source"
-" (most likely an audio jack in the chair for hard of hearing people). A "
-"direct audio source does not ensure a good quality audio source, as a lot of"
-" background noise can interfere. A lot of the times a telesync is filmed in "
-"an empty cinema or from the projection booth with a professional camera, "
-"giving a better picture quality. Quality ranges drastically, check the "
-"sample before downloading the full release. A high percentage of Telesyncs "
-"are CAMs that have been mislabeled."
+msgid "A transparent proxy is one that needs no configuration on the clients. It works by automatically redirecting all port 80 traffic to the proxy. (Sometimes used as synonymous for non-anonymous.)"
 msgstr ""
 
-msgid ""
-"A transparent proxy is one that needs no configuration on the clients. It "
-"works by automatically redirecting all port 80 traffic to the proxy. "
-"(Sometimes used as synonymous for non-anonymous.)"
-msgstr ""
-
-msgid ""
-"A transparent proxy may or may not be anonymous, and there are several "
-"levels of anonymity."
+msgid "A transparent proxy may or may not be anonymous, and there are several levels of anonymity."
 msgstr ""
 
 msgid "A weasel hath not such a deal of spleen as you are toss'd with."
 msgstr ""
 
-msgid ""
-"A workprint is a copy of the film that has not been finished. It can be "
-"missing scenes, music, and quality can range from excellent to very poor. "
-"Some WPs are very different from the final print (Men In Black is missing "
-"all the aliens, and has actors in their places) and others can contain extra"
-" scenes (Jay and Silent Bob) . WPs can be nice  additions to the collection "
-"once a good quality final has been obtained."
+msgid "A workprint is a copy of the film that has not been finished. It can be missing scenes, music, and quality can range from excellent to very poor. Some WPs are very different from the final print (Men In Black is missing all the aliens, and has actors in their places) and others can contain extra scenes (Jay and Silent Bob) . WPs can be nice  additions to the collection once a good quality final has been obtained."
 msgstr ""
 
 msgid "AJAX Chat disabled = "
@@ -774,10 +654,10 @@ msgid "API"
 msgstr ""
 
 msgid "API Key"
-msgstr ""
+msgstr "API Võti"
 
 msgid "APIKey "
-msgstr ""
+msgstr "APIVõti"
 
 #, no-php-format
 msgid "APIKey {0} reset to {1}."
@@ -823,9 +703,7 @@ msgid "Access denied. Try "
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Access to the newest torrents is conditional on a good ratio! (See the "
-"{0}FAQ{1} for details."
+msgid "Access to the newest torrents is conditional on a good ratio! (See the {0}FAQ{1} for details."
 msgstr ""
 
 msgid "Account Manager"
@@ -892,7 +770,7 @@ msgid "Activate Stealth"
 msgstr ""
 
 msgid "Active"
-msgstr ""
+msgstr "Aktiivne"
 
 msgid "Active Reports"
 msgstr ""
@@ -904,10 +782,10 @@ msgid "Activity"
 msgstr ""
 
 msgid "Add"
-msgstr ""
+msgstr "Lisa"
 
 msgid "Add - Edit - View"
-msgstr ""
+msgstr "Lisa - Muuda - Vaata"
 
 msgid "Add - Edit - View Watched User"
 msgstr ""
@@ -916,40 +794,40 @@ msgid "Add - Edit - View staff note"
 msgstr ""
 
 msgid "Add - View"
-msgstr ""
+msgstr "Lisa - Vaata"
 
 msgid "Add A New Page"
-msgstr ""
+msgstr "Lisa uus leht"
 
 msgid "Add A New Staff Page"
-msgstr ""
+msgstr "Lisa uus Meeskonna leht"
 
 msgid "Add Attachments"
-msgstr ""
+msgstr "Lisa Manus"
 
 msgid "Add Ban"
-msgstr ""
+msgstr "Lisa keeld"
 
 msgid "Add Bookmark"
-msgstr ""
+msgstr "Lisa järjehoidja"
 
 msgid "Add Bounty"
 msgstr ""
 
 msgid "Add Comment"
-msgstr ""
+msgstr "Lisa kommentaar"
 
 msgid "Add Comment to"
 msgstr ""
 
 msgid "Add Credits"
-msgstr ""
+msgstr "Lisa krediiti"
 
 msgid "Add Done"
 msgstr ""
 
 msgid "Add Invites"
-msgstr ""
+msgstr "Lisa kutseid"
 
 msgid "Add Karma Bonus Points"
 msgstr ""
@@ -964,19 +842,19 @@ msgid "Add Mods & Credits"
 msgstr ""
 
 msgid "Add New"
-msgstr ""
+msgstr "Lisa Uus"
 
 msgid "Add New Mood"
 msgstr ""
 
 msgid "Add New Poll"
-msgstr ""
+msgstr "Lisa uus hääletus"
 
 msgid "Add New Promotion Rule"
 msgstr ""
 
 msgid "Add New Reply"
-msgstr ""
+msgstr "Lisa uus vastus"
 
 msgid "Add New Reputation Level"
 msgstr ""
@@ -1012,7 +890,7 @@ msgid "Add Request"
 msgstr ""
 
 msgid "Add Staff Page"
-msgstr ""
+msgstr "Lisa Meeskonna leht"
 
 msgid "Add To Reputation"
 msgstr ""
@@ -1028,7 +906,7 @@ msgid "Add a Bounty to: {0}"
 msgstr ""
 
 msgid "Add a New Class"
-msgstr ""
+msgstr "Lisa uus klass"
 
 #, no-php-format
 msgid "Add a comment to {0}"
@@ -1048,7 +926,7 @@ msgid "Add an achievement to list."
 msgstr ""
 
 msgid "Add ban"
-msgstr ""
+msgstr "Lisa keeld"
 
 msgid "Add freeslots"
 msgstr ""
@@ -1060,7 +938,7 @@ msgid "Add more attachments"
 msgstr ""
 
 msgid "Add new"
-msgstr ""
+msgstr "Lisa uus"
 
 msgid "Add new class"
 msgstr ""
@@ -1090,9 +968,6 @@ msgid "Add to donor time:"
 msgstr ""
 
 msgid "Add to watched users?"
-msgstr ""
-
-msgid "Add word"
 msgstr ""
 
 #, no-php-format
@@ -1227,18 +1102,10 @@ msgstr ""
 msgid "All files must be in original format (usually 14.3 MB RARs)."
 msgstr ""
 
-msgid ""
-"All info about torrents are hidden from other members except your share "
-"ratio, join date, last seen and PM button if you accept PMs. Your comments "
-"are not hidden, and though your actual stats (up and down) are hidden on the"
-" forums, your actual ratio isn't, also, you will appear on snatched lists."
+msgid "All info about torrents are hidden from other members except your share ratio, join date, last seen and PM button if you accept PMs. Your comments are not hidden, and though your actual stats (up and down) are hidden on the forums, your actual ratio isn't, also, you will appear on snatched lists."
 msgstr ""
 
-msgid ""
-"All of the above will not apply to staff... staff see all and know all... "
-"<br>Even at the highest level of paranoia, you can still be reported (though"
-" they won't know who they are reporting) and you are not immune to our auto "
-"scripts..."
+msgid "All of the above will not apply to staff... staff see all and know all... <br>Even at the highest level of paranoia, you can still be reported (though they won't know who they are reporting) and you are not immune to our auto scripts..."
 msgstr ""
 
 msgid "All postings older than that will be set as read."
@@ -1266,7 +1133,7 @@ msgid "All uploads must include a proper NFO."
 msgstr ""
 
 msgid "All users"
-msgstr ""
+msgstr "Kõik kasutajad"
 
 msgid "Allow BBcode in post"
 msgstr ""
@@ -1283,8 +1150,7 @@ msgstr ""
 msgid "Allow members to have more then one selection"
 msgstr ""
 
-msgid ""
-"Allow members to have more then one selection? Default is 'Single option'!"
+msgid "Allow members to have more then one selection? Default is 'Single option'!"
 msgstr ""
 
 msgid "Allowed Mark Of Cains"
@@ -1320,18 +1186,7 @@ msgstr ""
 msgid "An Error Occured!"
 msgstr ""
 
-msgid ""
-"An internal release is done for several reasons. Classic DVD groups do a lot"
-" of INTERNAL releases, as they wont be dupe'd on it. Also lower quality "
-"theater rips are done INTERNAL so not to lower the reputation of the group, "
-"or due to the amount of rips done already. An INTERNAL release is available "
-"as normal on the groups affiliate sites, but they can't be traded to other "
-"sites without request from the site ops. Some INTERNAL releases still "
-"trickle down to IRC/Newsgroups, it usually depends on the title and the "
-"popularity. Earlier in the year people referred to Centropy going "
-"'internal'. This meant the group were only releasing the movies to their "
-"members and site ops. This is in a different context to the usual "
-"definition."
+msgid "An internal release is done for several reasons. Classic DVD groups do a lot of INTERNAL releases, as they wont be dupe'd on it. Also lower quality theater rips are done INTERNAL so not to lower the reputation of the group, or due to the amount of rips done already. An INTERNAL release is available as normal on the groups affiliate sites, but they can't be traded to other sites without request from the site ops. Some INTERNAL releases still trickle down to IRC/Newsgroups, it usually depends on the title and the popularity. Earlier in the year people referred to Centropy going 'internal'. This meant the group were only releasing the movies to their members and site ops. This is in a different context to the usual definition."
 msgstr ""
 
 msgid "An offer you voted for has been uploaded!"
@@ -1340,17 +1195,13 @@ msgstr ""
 msgid "An unknown error has occurred."
 msgstr ""
 
-msgid ""
-"Analyze text - auto detect IP/Email addresses and search them in the "
-"database"
+msgid "Analyze text - auto detect IP/Email addresses and search them in the database"
 msgstr ""
 
 msgid "Anatomy of a Torrent"
 msgstr ""
 
-msgid ""
-"And needless to say: be polite. Demanding help rarely works, asking for it "
-"usually does the trick."
+msgid "And needless to say: be polite. Demanding help rarely works, asking for it usually does the trick."
 msgstr ""
 
 msgid "And was created: "
@@ -1390,7 +1241,7 @@ msgid "Anonymous User"
 msgstr ""
 
 msgid "Anonymous Users"
-msgstr ""
+msgstr "Anonüümsed kasutajad"
 
 msgid "Anonymous in"
 msgstr ""
@@ -1401,8 +1252,7 @@ msgstr ""
 msgid "Anonymous topic"
 msgstr ""
 
-msgid ""
-"Another cleanup operation is already in progress. Refresh to try again."
+msgid "Another cleanup operation is already in progress. Refresh to try again."
 msgstr ""
 
 msgid "Answered"
@@ -1418,8 +1268,7 @@ msgstr ""
 msgid "Anti-Virus"
 msgstr ""
 
-msgid ""
-"Any active torrents must be downloaded again to continue leeching/seeding."
+msgid "Any active torrents must be downloaded again to continue leeching/seeding."
 msgstr ""
 
 msgid "Append"
@@ -1453,9 +1302,7 @@ msgid "Apply changes"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Appointed by Sysop only. If you think you've got a good candidate, send him "
-"a {0}PM{1}"
+msgid "Appointed by Sysop only. If you think you've got a good candidate, send him a {0}PM{1}"
 msgstr ""
 
 msgid "Approve"
@@ -1482,15 +1329,11 @@ msgstr ""
 msgid "Are all downloads subject to HnR, including incomplete downloads?"
 msgstr ""
 
-msgid ""
-"Are you really sure you want to delete this topic, and not just move it or "
-"merge it?"
+msgid "Are you really sure you want to delete this topic, and not just move it or merge it?"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Are you sure you want to confirm {0}'s account? Click {1}here{2} to confirm "
-"it or {3}here{4} to go back"
+msgid "Are you sure you want to confirm {0}'s account? Click {1}here{2} to confirm it or {3}here{4} to go back"
 msgstr ""
 
 msgid "Are you sure you want to delete the selected backups?"
@@ -1500,9 +1343,7 @@ msgid "Are you sure you want to delete this forum?"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Are you sure you want to delete this invite code? Click {0}here{1} to delete"
-" it or {2}here{3} to go back."
+msgid "Are you sure you want to delete this invite code? Click {0}here{1} to delete it or {2}here{3} to go back."
 msgstr ""
 
 msgid "Are you sure you want to delete this page"
@@ -1512,29 +1353,24 @@ msgid "Are you sure you want to delete this post? If so, click"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Are you sure you want to delete this template? CLick {0}here{1} if you are "
-"sure"
+msgid "Are you sure you want to delete this template? CLick {0}here{1} if you are sure"
 msgstr ""
 
-msgid ""
-"Are you sure you want to delete this topic? If you are sure, click the "
-"delete button."
+msgid "Are you sure you want to delete this topic? If you are sure, click the delete button."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Are you sure you want to delete this torrent?<br>Click {0}here{1} if you "
-"are."
+msgid "Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are."
+msgstr ""
+
+msgid "Are you sure you want to remove this users DoubleSeed Status?"
 msgstr ""
 
 msgid "Are you sure you want to remove this users Freeleech Status?"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Are you sure you would like to report {0} with id {1} to the Staff for "
-"violation of the {2}rules{3}?"
+msgid "Are you sure you would like to report {0} with id {1} to the Staff for violation of the {2}rules{3}?"
 msgstr ""
 
 msgid "Article added by "
@@ -1544,21 +1380,12 @@ msgid "Articles starting with the letter"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"As a {0}, you may have up to {1} PM Box, other than your in, sent and draft "
-"boxes."
-msgid_plural ""
-"As a {0}, you may have up to {1} PM Boxes, other than your in, sent and "
-"draft boxes."
+msgid "As a {0}, you may have up to {1} PM Box, other than your in, sent and draft boxes."
+msgid_plural "As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes."
 msgstr[0] ""
 msgstr[1] ""
 
-msgid ""
-"As explained above peers favour other peers that upload to them. When you "
-"start leeching a new torrent you have nothing to offer to other peers and "
-"they will tend to ignore you. This makes the starts slow, in particular if, "
-"by change, the peers you are connected to include few or no seeders. The "
-"download speed should increase as soon as you have some pieces to share."
+msgid "As explained above peers favour other peers that upload to them. When you start leeching a new torrent you have nothing to offer to other peers and they will tend to ignore you. This makes the starts slow, in particular if, by change, the peers you are connected to include few or no seeders. The download speed should increase as soon as you have some pieces to share."
 msgstr ""
 
 msgid "Ascending"
@@ -1573,9 +1400,7 @@ msgstr ""
 msgid "Asking for a re-seed"
 msgstr ""
 
-msgid ""
-"Assigned by mods at their discretion to users they feel contribute something"
-" special to the site."
+msgid "Assigned by mods at their discretion to users they feel contribute something special to the site."
 msgstr ""
 
 msgid "At Bottom"
@@ -1585,14 +1410,7 @@ msgid "At Top<br>What order you want the posts to be listed in."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"At present there is no way of making this setup always work properly with "
-"{0}. Each torrent will be associated with the user who last accessed the "
-"site from within the LAN before the torrent was started. Unless there is "
-"cooperation between the users mixing of statistics is possible. (User A "
-"accesses the site, downloads a .torrent file, but does not start the torrent"
-" immediately. Meanwhile, user B accesses the site. User A then starts the "
-"torrent. The torrent will count towards user B's statistics, not user A's.)"
+msgid "At present there is no way of making this setup always work properly with {0}. Each torrent will be associated with the user who last accessed the site from within the LAN before the torrent was started. Unless there is cooperation between the users mixing of statistics is possible. (User A accesses the site, downloads a .torrent file, but does not start the torrent immediately. Meanwhile, user B accesses the site. User A then starts the torrent. The torrent will count towards user B's statistics, not user A's.)"
 msgstr ""
 
 msgid "Attach"
@@ -1632,18 +1450,10 @@ msgstr ""
 msgid "Auto correct DST?"
 msgstr ""
 
-msgid ""
-"Automatically given to (and revoked from) users who have been members for at"
-" least 20 days, have uploaded at least 50 GB and have a share ratio above "
-"1.25. Moderator changes of status last only until the next execution of the "
-"script."
+msgid "Automatically given to (and revoked from) users who have been members for at least 20 days, have uploaded at least 50 GB and have a share ratio above 1.25. Moderator changes of status last only until the next execution of the script."
 msgstr ""
 
-msgid ""
-"Automatically given to (and revoked from) users who have been members for at"
-" least 90 days, have uploaded at least 250 GB and have a share ratio above "
-"1.35. Moderator changes of status last only until the next execution of the "
-"script."
+msgid "Automatically given to (and revoked from) users who have been members for at least 90 days, have uploaded at least 250 GB and have a share ratio above 1.35. Moderator changes of status last only until the next execution of the script."
 msgstr ""
 
 msgid "Available Physical Memory"
@@ -1824,19 +1634,10 @@ msgstr "Keelatud e-kirjad"
 msgid "Bans"
 msgstr "Keelud"
 
-msgid ""
-"Basically a middleman. When you are browsing a site through a proxy your "
-"requests are sent to the proxy and the proxy forwards them to the site "
-"instead of you connecting directly to the site. There are several "
-"classifications (the terminology is far from standard):"
+msgid "Basically a middleman. When you are browsing a site through a proxy your requests are sent to the proxy and the proxy forwards them to the site instead of you connecting directly to the site. There are several classifications (the terminology is far from standard):"
 msgstr ""
 
-msgid ""
-"Be considerate. Resize your images to a width of 150 px and a size of no "
-"more than 150 KB. (Browsers will rescale them anyway: smaller images will be"
-" expanded and will not look good; larger images will just waste bandwidth "
-"and CPU cycles.) For now this is just a guideline but it will be "
-"automatically enforced in the near future."
+msgid "Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will rescale them anyway: smaller images will be expanded and will not look good; larger images will just waste bandwidth and CPU cycles.) For now this is just a guideline but it will be automatically enforced in the near future."
 msgstr ""
 
 msgid "Be patient!"
@@ -1845,27 +1646,20 @@ msgstr ""
 msgid "Be sure to fill in the question, and at least two options (max 20)"
 msgstr ""
 
-msgid ""
-"Be tolerant when moderating the Chit-chat section (give them some slack)."
+msgid "Be tolerant when moderating the Chit-chat section (give them some slack)."
 msgstr ""
 
 msgid "Be tolerant! Give the user(s) a chance to reform."
 msgstr ""
 
-msgid ""
-"Before posting read the sticky topics (the ones at the top). Many times new "
-"information that still hasn't been incorporated in the FAQ can be found "
-"there."
+msgid "Before posting read the sticky topics (the ones at the top). Many times new information that still hasn't been incorporated in the FAQ can be found there."
 msgstr ""
 
-msgid ""
-"Before you disable a user account, send him/her a PM and if they reply, put "
-"them on a 2 week trial."
+msgid "Before you disable a user account, send him/her a PM and if they reply, put them on a 2 week trial."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Before you go any further you should read the {0} {1}user agreement{2}."
+msgid "Before you go any further you should read the {0} {1}user agreement{2}."
 msgstr ""
 
 msgid "Begin typing username"
@@ -1877,9 +1671,7 @@ msgstr "Parimad tavad"
 msgid "Bet P2P with other users"
 msgstr ""
 
-msgid ""
-"Bet added, you will receive a PM notifying you of the results when someone "
-"has taken it"
+msgid "Bet added, you will receive a PM notifying you of the results when someone has taken it"
 msgstr ""
 
 msgid "Bet on a colour"
@@ -1924,17 +1716,10 @@ msgstr ""
 msgid "Bitbucket Image Host"
 msgstr ""
 
-msgid ""
-"Bittorrent clients check the data they receive for integrity. When a piece "
-"fails this check it is automatically re-downloaded. Occasional hash fails "
-"are a common occurrence, and you shouldn't worry."
+msgid "Bittorrent clients check the data they receive for integrity. When a piece fails this check it is automatically re-downloaded. Occasional hash fails are a common occurrence, and you shouldn't worry."
 msgstr ""
 
-msgid ""
-"Bittorrent peers tend to favour those other peers that upload to them. This "
-"means that if A and B are leeching the same torrent and A is sending data to"
-" B at high speed then B will try to reciprocate. So due to this effect high "
-"upload speeds lead to high download speeds."
+msgid "Bittorrent peers tend to favour those other peers that upload to them. This means that if A and B are leeching the same torrent and A is sending data to B at high speed then B will try to reciprocate. So due to this effect high upload speeds lead to high download speeds."
 msgstr ""
 
 msgid "Black"
@@ -2084,9 +1869,7 @@ msgstr ""
 msgid "Bounties"
 msgstr ""
 
-msgid ""
-"Bounties are automatically paid when the requestor accepts the uploaded "
-"torrent or 48 hours after the requested torrent has been uploaded."
+msgid "Bounties are automatically paid when the requestor accepts the uploaded torrent or 48 hours after the requested torrent has been uploaded."
 msgstr ""
 
 msgid "Bow"
@@ -2122,9 +1905,7 @@ msgstr ""
 msgid "Browser?"
 msgstr ""
 
-msgid ""
-"Browsing was used just as an example, the same would apply to gaming, IMing,"
-" etc..."
+msgid "Browsing was used just as an example, the same would apply to gaming, IMing, etc..."
 msgstr ""
 
 msgid "Bug Alert Message"
@@ -2151,8 +1932,7 @@ msgstr ""
 msgid "Burning"
 msgstr ""
 
-msgid ""
-"But keep in mind that everything that can get you karma can also be lost..."
+msgid "But keep in mind that everything that can get you karma can also be lost..."
 msgstr ""
 
 msgid "Buy tickets"
@@ -2227,9 +2007,7 @@ msgstr ""
 msgid "Can do just about anything."
 msgstr ""
 
-msgid ""
-"Can edit and delete any uploaded torrents. Can also moderate user comments "
-"and disable accounts."
+msgid "Can edit and delete any uploaded torrents. Can also moderate user comments and disable accounts."
 msgstr ""
 
 msgid "Can view NFO files."
@@ -2292,9 +2070,7 @@ msgstr ""
 msgid "Category:"
 msgstr ""
 
-msgid ""
-"Caveat: This is a large and complex topic. It is not possible to cover all "
-"variations here."
+msgid "Caveat: This is a large and complex topic. It is not possible to cover all variations here."
 msgstr ""
 
 msgid "Centered"
@@ -2409,9 +2185,7 @@ msgstr ""
 msgid "Check this option if you want to enable the Active Poll."
 msgstr ""
 
-msgid ""
-"Check this option if you want to enable the Active Users visited over "
-"24hours."
+msgid "Check this option if you want to enable the Active Users visited over 24hours."
 msgstr ""
 
 msgid "Check this option if you want to enable the Active Users."
@@ -2475,13 +2249,10 @@ msgid "Choose Type"
 msgstr "Valige tüüp"
 
 #, no-php-format
-msgid ""
-"Choose any public non-anonymous proxy that does not use port 80 (e.g. from "
-"{0}this{1}, {2}this{3} or {4}this{5}</a> list)."
+msgid "Choose any public non-anonymous proxy that does not use port 80 (e.g. from {0}this{1}, {2}this{3} or {4}this{5}</a> list)."
 msgstr ""
 
-msgid ""
-"Choose only very high if the bug really is a problem for using the site."
+msgid "Choose only very high if the bug really is a problem for using the site."
 msgstr ""
 
 msgid "Christmas Gift"
@@ -2567,9 +2338,7 @@ msgstr ""
 msgid "Click to view members invite tree"
 msgstr ""
 
-msgid ""
-"Click your username, then Share profile, then Copy to clipboard. Then paste "
-"the link here."
+msgid "Click your username, then Share profile, then Copy to clipboard. Then paste the link here."
 msgstr ""
 
 msgid "Client"
@@ -2688,9 +2457,7 @@ msgstr ""
 msgid "Commercial"
 msgstr ""
 
-msgid ""
-"Complaints from other sites' staff about our torrents being posted on their "
-"sites will result in the banning of the users responsible."
+msgid "Complaints from other sites' staff about our torrents being posted on their sites will result in the banning of the users responsible."
 msgstr ""
 
 msgid "Complete"
@@ -2708,14 +2475,10 @@ msgstr ""
 msgid "Con"
 msgstr ""
 
-msgid ""
-"Conferred by mods at their discretion (not available to Users or Power "
-"Users)."
+msgid "Conferred by mods at their discretion (not available to Users or Power Users)."
 msgstr ""
 
-msgid ""
-"Conferred to users you feel contribute something special to the site. "
-"(Anyone begging for VIP status will be automatically disqualified)"
+msgid "Conferred to users you feel contribute something special to the site. (Anyone begging for VIP status will be automatically disqualified)"
 msgstr ""
 
 msgid "Config Forums"
@@ -2727,12 +2490,7 @@ msgstr ""
 msgid "Configure Forums"
 msgstr ""
 
-msgid ""
-"Configure your computer to use that proxy. For Windows XP, do <i>Start</i>, "
-"<i>Control Panel</i>, <i>Internet Options</i>, <i>Connections</i>, <i>LAN "
-"Settings</i>, <i>Use a Proxy server</i>, <i>Advanced</i> and type in the IP "
-"and port of your chosen proxy. Or from Internet Explorer use <i>Tools</i>, "
-"<i>Internet Options</i>, ..."
+msgid "Configure your computer to use that proxy. For Windows XP, do <i>Start</i>, <i>Control Panel</i>, <i>Internet Options</i>, <i>Connections</i>, <i>LAN Settings</i>, <i>Use a Proxy server</i>, <i>Advanced</i> and type in the IP and port of your chosen proxy. Or from Internet Explorer use <i>Tools</i>, <i>Internet Options</i>, ..."
 msgstr ""
 
 msgid "Confirm"
@@ -2760,9 +2518,7 @@ msgid "Congratulations!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Congratulations, You have won: {0}. This has been added to your seedbonus "
-"total amount. Thanks for playing Lottery."
+msgid "Congratulations, You have won: {0}. This has been added to your seedbonus total amount. Thanks for playing Lottery."
 msgstr ""
 
 #, no-php-format
@@ -2773,10 +2529,7 @@ msgid "Congratulations, your downloaded total has been reset to 0"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Congratulations, your uploader application has been accepted! You have been "
-"given  to Uploader Role and you are now able to upload torrents. Please make"
-" sure you have read the {0}guidelines on uploading{1} before you do."
+msgid "Congratulations, your uploader application has been accepted! You have been given  to Uploader Role and you are now able to upload torrents. Please make sure you have read the {0}guidelines on uploading{1} before you do."
 msgstr ""
 
 msgid "Connectable"
@@ -2821,8 +2574,7 @@ msgstr ""
 msgid "Controls"
 msgstr ""
 
-msgid ""
-"Controls how many ratings to display in the user's profile (userdetails)."
+msgid "Controls how many ratings to display in the user's profile (userdetails)."
 msgstr ""
 
 msgid "Cooker"
@@ -2976,9 +2728,6 @@ msgstr ""
 msgid "Current donation"
 msgstr ""
 
-msgid "Current words on blacklist"
-msgstr ""
-
 msgid "Currently"
 msgstr ""
 
@@ -2998,12 +2747,8 @@ msgid "Currently viewing this topic"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Currently you have {0} custom box. You may add up to {1} additional "
-"mailboxes."
-msgid_plural ""
-"Currently you have {0} custom boxes. You may add up to {1}additional "
-"mailboxes."
+msgid "Currently you have {0} custom box. You may add up to {1} additional mailboxes."
+msgid_plural "Currently you have {0} custom boxes. You may add up to {1}additional mailboxes."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -3019,9 +2764,7 @@ msgstr ""
 msgid "Custom title altered"
 msgstr ""
 
-msgid ""
-"Customised title given to special users only (Not available to Users or "
-"Power Users)."
+msgid "Customised title given to special users only (Not available to Users or Power Users)."
 msgstr ""
 
 msgid "Customised title."
@@ -3163,14 +2906,10 @@ msgstr ""
 msgid "Default is"
 msgstr ""
 
-msgid ""
-"Default setting, nothing is hidden except your IP, passkey, email. the same "
-"as any tracker."
+msgid "Default setting, nothing is hidden except your IP, passkey, email. the same as any tracker."
 msgstr ""
 
-msgid ""
-"Defaults are: zip and rar. Add more at your own risk! Each entry must be "
-"separated by a single space."
+msgid "Defaults are: zip and rar. Add more at your own risk! Each entry must be separated by a single space."
 msgstr ""
 
 msgid "Delete"
@@ -3267,7 +3006,7 @@ msgid "Delete torrent. Reason"
 msgstr ""
 
 msgid "Delete users"
-msgstr ""
+msgstr "Kustuta kasutajaid"
 
 #, no-php-format
 msgid "Delete {0} Request"
@@ -3316,9 +3055,7 @@ msgstr ""
 msgid "Descending - Newest dates first"
 msgstr ""
 
-msgid ""
-"Describe the problem as completely as possible. Please include the entire "
-"error stack, not just part of it."
+msgid "Describe the problem as completely as possible. Please include the entire error stack, not just part of it."
 msgstr ""
 
 msgid "Description"
@@ -3342,9 +3079,7 @@ msgstr ""
 msgid "Direct link to this post"
 msgstr ""
 
-msgid ""
-"Direct link to youtube, will be shown on torrent's details page.<br>Link "
-"should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>"
+msgid "Direct link to youtube, will be shown on torrent's details page.<br>Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>"
 msgstr ""
 
 msgid "Disable"
@@ -3376,16 +3111,10 @@ msgid "Disabled for {0}"
 msgstr ""
 
 msgid "Disabled users"
-msgstr ""
+msgstr "Keelatud kasutajad"
 
 #, php-format
-msgid ""
-"Disclaimer: None of the files shown here are actually hosted on this server."
-" The links are provided solely by this site's users. The administrator of "
-"this site (%s) cannot be held responsible for what its users post, or any "
-"other actions of its users. You may not use this site to distribute or "
-"download any material when you do not have the legal rights to do so. It is "
-"your own responsibility to adhere to these terms."
+msgid "Disclaimer: None of the files shown here are actually hosted on this server. The links are provided solely by this site's users. The administrator of this site (%s) cannot be held responsible for what its users post, or any other actions of its users. You may not use this site to distribute or download any material when you do not have the legal rights to do so. It is your own responsibility to adhere to these terms."
 msgstr ""
 
 msgid "Display as:"
@@ -3402,10 +3131,7 @@ msgid "Displayed on your public page. May contain {0}BBcode{1}."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Disruptive behaviour in the forums or on the site will result in a warning "
-"({0}).<br>You will only get <b>one</b> warning! After that it's bye bye "
-"Kansas!"
+msgid "Disruptive behaviour in the forums or on the site will result in a warning ({0}).<br>You will only get <b>one</b> warning! After that it's bye bye Kansas!"
 msgstr ""
 
 msgid "DivX Re-Enc"
@@ -3433,35 +3159,25 @@ msgid "Do not include the release date in the torrent name."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Do not upload our torrents to other trackers! (See the {0}FAQ{1} for "
-"details.)"
+msgid "Do not upload our torrents to other trackers! (See the {0}FAQ{1} for details.)"
 msgstr ""
 
-msgid ""
-"Do not use potentially offensive material involving porn, religious "
-"material, animal / human cruelty or ideologically charged images. Mods have "
-"wide discretion on what is acceptable. If in doubt PM one."
+msgid "Do not use potentially offensive material involving porn, religious material, animal / human cruelty or ideologically charged images. Mods have wide discretion on what is acceptable. If in doubt PM one."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Do you really want to confirm this person? Click {0}here{1} if you are sure."
+msgid "Do you really want to confirm this person? Click {0}here{1} if you are sure."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Do you really want to delete this friend request? Click {0}here{1} if you "
-"are sure."
+msgid "Do you really want to delete this friend request? Click {0}here{1} if you are sure."
 msgstr ""
 
 msgid "Do you really want to delete this news entry? Click"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Do you really want to delete {0} from your Shit List? Click {1}here{2} if "
-"you are sure."
+msgid "Do you really want to delete {0} from your Shit List? Click {1}here{2} if you are sure."
 msgstr ""
 
 msgid "Do you wish to have your email address visible on the forums?"
@@ -3473,9 +3189,7 @@ msgstr ""
 msgid "Does this apply to other torrent sites?"
 msgstr ""
 
-msgid ""
-"Don't act prematurely, let the users make their mistakes and THEN correct "
-"them."
+msgid "Don't act prematurely, let the users make their mistakes and THEN correct them."
 msgstr ""
 
 msgid "Don't be afraid to say <b>NO</b>! (a.k.a. 'Helshad's rule'.)"
@@ -3484,9 +3198,7 @@ msgstr ""
 msgid "Don't defy another mod in public, instead send a PM or through IM."
 msgstr ""
 
-msgid ""
-"Don't disable a user account until he or she has been a member for at least "
-"4 weeks."
+msgid "Don't disable a user account until he or she has been a member for at least 4 weeks."
 msgstr ""
 
 msgid "Don't leave any field blank"
@@ -3548,6 +3260,45 @@ msgid "Double Upload Slot"
 msgstr ""
 
 msgid "Double Upload Slot in Use"
+msgstr ""
+
+msgid "DoubleSeed Manager"
+msgstr ""
+
+msgid "DoubleSeed Notice!"
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed On All Torrents have been removed by {0}"
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed On All Torrents removed by {0}"
+msgstr ""
+
+msgid "DoubleSeed Status"
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed Status for {0} by {1}."
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed Status removed by {0}."
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed Users ({0})"
+msgstr ""
+
+msgid "DoubleSeed enabled = No"
+msgstr ""
+
+#, no-php-format
+msgid "DoubleSeed enabled = {0}"
+msgstr ""
+
+msgid "DoubleSeed for"
 msgstr ""
 
 msgid "Doubled Down"
@@ -3634,7 +3385,7 @@ msgid "Downloading a torrent = -{0} points"
 msgstr ""
 
 msgid "Downloading rules -"
-msgstr ""
+msgstr "Allalaadimise reeglid -"
 
 #, no-php-format
 msgid "Downloads disabled by {0}."
@@ -3661,25 +3412,10 @@ msgstr ""
 msgid "Drop images or click here to select images."
 msgstr ""
 
-msgid ""
-"Due to scene rules, whoever releases the first Telesync has won that race "
-"(for example). But if the quality of that release is fairly poor, if another"
-" group has another telesync (or the same source in higher quality) then the "
-"tag PROPER is added to the folder to avoid being duped. PROPER is the most "
-"subjective tag in the scene, and a lot of people will generally argue "
-"whether the PROPER is better than the original release. A lot of groups "
-"release PROPERS just out of desperation due to losing the race. A reason for"
-" the PROPER should always be included in the NFO."
+msgid "Due to scene rules, whoever releases the first Telesync has won that race (for example). But if the quality of that release is fairly poor, if another group has another telesync (or the same source in higher quality) then the tag PROPER is added to the folder to avoid being duped. PROPER is the most subjective tag in the scene, and a lot of people will generally argue whether the PROPER is better than the original release. A lot of groups release PROPERS just out of desperation due to losing the race. A reason for the PROPER should always be included in the NFO."
 msgstr ""
 
-msgid ""
-"Due to the way TCP works, when A is downloading something from B it has to "
-"keep telling B that it received the data sent to him. (These are called "
-"acknowledgements - ACKs -, a sort of 'got it!' messages). If A fails to do "
-"this then B will stop sending data and wait. If A is uploading at full speed"
-" there may be no bandwidth left for the ACKs and they will be delayed. So "
-"due to this effect excessively high upload speeds lead to low download "
-"speeds."
+msgid "Due to the way TCP works, when A is downloading something from B it has to keep telling B that it received the data sent to him. (These are called acknowledgements - ACKs -, a sort of 'got it!' messages). If A fails to do this then B will stop sending data and wait. If A is uploading at full speed there may be no bandwidth left for the ACKs and they will be delayed. So due to this effect excessively high upload speeds lead to low download speeds."
 msgstr ""
 
 msgid "Dupe"
@@ -3688,18 +3424,14 @@ msgstr ""
 msgid "Dupe Used"
 msgstr ""
 
-msgid ""
-"Dupe is quite simply, if something exists already, then theres no reason for"
-" it to exist again without proper reason."
+msgid "Dupe is quite simply, if something exists already, then theres no reason for it to exist again without proper reason."
 msgstr ""
 
 msgid "E-mail"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Each ticket costs {0} Karma Bonus Points, which is taken from your seedbonus"
-" amount."
+msgid "Each ticket costs {0} Karma Bonus Points, which is taken from your seedbonus amount."
 msgstr ""
 
 msgid "Earned"
@@ -3718,7 +3450,7 @@ msgid "Edit Category"
 msgstr ""
 
 msgid "Edit Class Settings"
-msgstr ""
+msgstr "Muuda klasside seadeid"
 
 msgid "Edit Comment"
 msgstr ""
@@ -3824,12 +3556,7 @@ msgid "Editing cleanup: "
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Editing the .torrent with Notepad is not recommended. It may look like a "
-"text file, but it is in fact a bencoded file. If for some reason you must "
-"use a plain text editor, change the announce url to {0}, not {1}. (If you're"
-" thinking about changing the number before the announce url instead, you "
-"know too much to be reading this.)"
+msgid "Editing the .torrent with Notepad is not recommended. It may look like a text file, but it is in fact a bencoded file. If for some reason you must use a plain text editor, change the announce url to {0}, not {1}. (If you're thinking about changing the number before the announce url instead, you know too much to be reading this.)"
 msgstr ""
 
 msgid "Editing the poll will re-set all the votes (ie: delete them)."
@@ -3839,9 +3566,7 @@ msgstr ""
 msgid "Editing: {0}"
 msgstr ""
 
-msgid ""
-"Either this or the ISBN must be set in order to lookup the books details. "
-"The ISBN should yield better results."
+msgid "Either this or the ISBN must be set in order to lookup the books details. The ISBN should yield better results."
 msgstr ""
 
 msgid "Elapsed"
@@ -3953,7 +3678,7 @@ msgid "Enable Cooker?"
 msgstr ""
 
 msgid "Enable Disclaimer?"
-msgstr ""
+msgstr "Luba lahtiütlus?"
 
 msgid "Enable Donation Progress?"
 msgstr ""
@@ -3980,7 +3705,7 @@ msgid "Enable IP history"
 msgstr ""
 
 msgid "Enable Latest Comments?"
-msgstr ""
+msgstr "Luba Viimased kommentaarid?"
 
 msgid "Enable Latest Forum Posts?"
 msgstr ""
@@ -4438,12 +4163,7 @@ msgid "First unread post in this thread"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"First, find an image that you like, and that is within the {0}Rules{1}. Then"
-" you will have to find a place to host it, such as our own {2}BitBucket{3}. "
-"(Other popular choices are {4}Photobucket{5}, {6}Upload-It!{7} or "
-"{8}ImageShack{9}). All that is left to do is copy the URL you were given "
-"when uploading it to the avatar field in your {10}profile{11}"
+msgid "First, find an image that you like, and that is within the {0}Rules{1}. Then you will have to find a place to host it, such as our own {2}BitBucket{3}. (Other popular choices are {4}Photobucket{5}, {6}Upload-It!{7} or {8}ImageShack{9}). All that is left to do is copy the URL you were given when uploading it to the avatar field in your {10}profile{11}"
 msgstr ""
 
 msgid "Fix this problem"
@@ -4488,29 +4208,20 @@ msgstr ""
 msgid "For best visual result, install the"
 msgstr ""
 
-msgid ""
-"For every X number of days, users gain 1 point of reputation-altering power."
+msgid "For every X number of days, users gain 1 point of reputation-altering power."
 msgstr ""
 
-msgid ""
-"For every X number of posts, users gain 1 point of reputation-altering "
-"power."
+msgid "For every X number of posts, users gain 1 point of reputation-altering power."
 msgstr ""
 
-msgid ""
-"For every X points of reputation, users gain 1 point of reputation-altering "
-"power."
+msgid "For every X points of reputation, users gain 1 point of reputation-altering power."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"For every hour that you seed a torrent, you are awarded with {0} Karma Bonus"
-" Points"
+msgid "For every hour that you seed a torrent, you are awarded with {0} Karma Bonus Points"
 msgstr ""
 
-msgid ""
-"For the bot to respond, the users text must include each word from one of "
-"the phases below.<br>Click the trigger to view or add responses."
+msgid "For the bot to respond, the users text must include each word from one of the phases below.<br>Click the trigger to view or add responses."
 msgstr ""
 
 msgid "For this to work you must select at least a user!"
@@ -4577,7 +4288,7 @@ msgid "Forumposts?"
 msgstr ""
 
 msgid "Forums"
-msgstr ""
+msgstr "Foorum"
 
 msgid "Forward"
 msgstr ""
@@ -4656,8 +4367,7 @@ msgstr ""
 msgid "Freeleech On All Torrents removed by {0}"
 msgstr ""
 
-#, no-php-format
-msgid "Freeleech Peeps ({0})"
+msgid "Freeleech Slots"
 msgstr ""
 
 msgid "Freeleech Slots:"
@@ -4666,23 +4376,23 @@ msgstr ""
 msgid "Freeleech Status"
 msgstr ""
 
-msgid "Freeleech Status enabled by "
-msgstr ""
-
 #, no-php-format
 msgid "Freeleech Status for {0} by {1}."
 msgstr ""
 
-msgid "Freeleech Status removed by "
+#, no-php-format
+msgid "Freeleech Status removed by {0}."
 msgstr ""
 
-msgid "Freeleech enabled = "
+#, no-php-format
+msgid "Freeleech Users ({0})"
 msgstr ""
 
 msgid "Freeleech enabled = No"
 msgstr ""
 
-msgid "Freeleech enabled = Yes"
+#, no-php-format
+msgid "Freeleech enabled = {0}"
 msgstr ""
 
 msgid "Freeleech for"
@@ -4736,22 +4446,13 @@ msgstr ""
 msgid "From Year Released"
 msgstr ""
 
-msgid ""
-"From here you can also choose to edit or remove any single level. Click the "
-"Edit link to modify the Level description (see Editing a Reputation Level) "
-"or click Remove to delete a level. If you remove a level or modify the "
-"minimum reputation needed to be at a level, all users will be updated to "
-"reflect their new level if necessary."
+msgid "From here you can also choose to edit or remove any single level. Click the Edit link to modify the Level description (see Editing a Reputation Level) or click Remove to delete a level. If you remove a level or modify the minimum reputation needed to be at a level, all users will be updated to reflect their new level if necessary."
 msgstr ""
 
-msgid ""
-"From now on the client will keep send GETs to the tracker. We show only the "
-"first one as an example"
+msgid "From now on the client will keep send GETs to the tracker. We show only the first one as an example"
 msgstr ""
 
-msgid ""
-"From the time that each new torrent is uploaded to the tracker, there is a "
-"period of time that some users must wait before they can download it."
+msgid "From the time that each new torrent is uploaded to the tracker, there is a period of time that some users must wait before they can download it."
 msgstr ""
 
 msgid "From:"
@@ -4787,10 +4488,10 @@ msgid "Game over"
 msgstr ""
 
 msgid "Games"
-msgstr ""
+msgstr "Mängud"
 
 msgid "Games Possible"
-msgstr ""
+msgstr "Võimalikud mängud"
 
 msgid "Games disabled = "
 msgstr ""
@@ -4800,10 +4501,10 @@ msgid "Games disablement for {0} by {1}."
 msgstr ""
 
 msgid "Games possible = No"
-msgstr ""
+msgstr "Võimalikud mängud = Ei"
 
 msgid "Games possible = Yes"
-msgstr ""
+msgstr "Võimalikud mängud = Jah"
 
 #, no-php-format
 msgid "Gaming disablement by {0}."
@@ -4823,13 +4524,13 @@ msgid "Gender?"
 msgstr ""
 
 msgid "General"
-msgstr ""
+msgstr "Üldine"
 
 msgid "General Forum Guidelines -"
 msgstr ""
 
 msgid "General rules"
-msgstr ""
+msgstr "Üldised reeglid"
 
 msgid ""
 "General support questions should be directed \n"
@@ -4872,7 +4573,7 @@ msgid "Giving a gift of karma points to another user"
 msgstr ""
 
 msgid "Global Block Settings"
-msgstr ""
+msgstr "Globaalsed blokeerimisseaded"
 
 msgid "Global stats"
 msgstr ""
@@ -4942,8 +4643,7 @@ msgid "HTML is <b>not</b> allowed."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"HTML is not allowed. {0}Click here{1} for information on available tags."
+msgid "HTML is not allowed. {0}Click here{1} for information on available tags."
 msgstr ""
 
 msgid "Half Download"
@@ -4972,8 +4672,7 @@ msgstr ""
 msgid "Has donated money to {0}."
 msgstr ""
 
-msgid ""
-"He be as good a gentleman as the devil is, as Lucifer and Beelzebub himself."
+msgid "He be as good a gentleman as the devil is, as Lucifer and Beelzebub himself."
 msgstr ""
 
 #, no-php-format
@@ -5005,13 +4704,7 @@ msgstr ""
 msgid "Help"
 msgstr ""
 
-msgid ""
-"Help us in helping you. Do not just say 'it doesn't work!'. Provide details "
-"so that we don't have to guess or waste time asking. What client do you use?"
-" What's your OS? What's your network setup? What's the exact error message "
-"you get, if any? What are the torrents you are having problems with? The "
-"more you tell the easiest it will be for us, and the more probable your post"
-" will get a reply."
+msgid "Help us in helping you. Do not just say 'it doesn't work!'. Provide details so that we don't have to guess or waste time asking. What client do you use? What's your OS? What's your network setup? What's the exact error message you get, if any? What are the torrents you are having problems with? The more you tell the easiest it will be for us, and the more probable your post will get a reply."
 msgstr ""
 
 msgid "Help! I cannot login!? (a.k.a. Login of Death)"
@@ -5098,9 +4791,7 @@ msgid ""
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Hey, your Hit and Run warning was removed by {0}. Please keep in your best "
-"behaviour from now on."
+msgid "Hey, your Hit and Run warning was removed by {0}. Please keep in your best behaviour from now on."
 msgstr ""
 
 msgid "Hey, your Leech warning was removed by "
@@ -5111,9 +4802,7 @@ msgid "Hey, your warning was removed by {0}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Hey, your warning was removed by {0}. Please keep in your best behaviour "
-"from now on."
+msgid "Hey, your warning was removed by {0}. Please keep in your best behaviour from now on."
 msgstr ""
 
 #, no-php-format
@@ -5180,7 +4869,7 @@ msgid "Hit And Run Online:"
 msgstr ""
 
 msgid "Hit And Run Settings"
-msgstr ""
+msgstr "Hit And Run Seaded"
 
 msgid "Hit Me"
 msgstr ""
@@ -5228,7 +4917,7 @@ msgid "Hmmm. Invalid Mood choice."
 msgstr ""
 
 msgid "HnR Settings"
-msgstr ""
+msgstr "HnR Seaded"
 
 msgid "HnRs"
 msgstr ""
@@ -5293,23 +4982,16 @@ msgstr ""
 msgid "How long this poll should run? Default is to 'Run Forever'"
 msgstr ""
 
-msgid ""
-"How many different users must you give reputation to before you can hit the "
-"same person again? Administrators are exempt from this limit."
+msgid "How many different users must you give reputation to before you can hit the same person again? Administrators are exempt from this limit."
 msgstr ""
 
-msgid ""
-"How many posts must a user have before his reputation hits count on others?"
+msgid "How many posts must a user have before his reputation hits count on others?"
 msgstr ""
 
-msgid ""
-"How many reputation clicks can a user give over each 24 hour period? "
-"Administrators are exempt from this limit."
+msgid "How many reputation clicks can a user give over each 24 hour period? Administrators are exempt from this limit."
 msgstr ""
 
-msgid ""
-"How many reputation points does an administrator give or take away with each"
-" click?<br>"
+msgid "How many reputation points does an administrator give or take away with each click?<br>"
 msgstr ""
 
 msgid "How many results should be returned in the RSS feed?"
@@ -5322,15 +5004,11 @@ msgstr ""
 msgid "How much"
 msgstr ""
 
-msgid ""
-"How much reputation must a user have before his reputation hits count on "
-"others?"
+msgid "How much reputation must a user have before his reputation hits count on others?"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"How {0} dealt with this report:<br>Please explain below how this Report has "
-"been dealt with."
+msgid "How {0} dealt with this report:<br>Please explain below how this Report has been dealt with."
 msgstr ""
 
 msgid "Hyperlink (alt. 1)"
@@ -5378,12 +5056,7 @@ msgstr ""
 msgid "I smell a rat!"
 msgstr ""
 
-msgid "I think you forgot the name"
-msgstr ""
-
-msgid ""
-"I understand that I have to keep seeding my torrents until there are at "
-"least two other seeders"
+msgid "I understand that I have to keep seeding my torrents until there are at least two other seeders"
 msgstr ""
 
 msgid "I wear a tin-foil hat"
@@ -5401,8 +5074,7 @@ msgstr ""
 msgid "I've Downloaded a movie and I don't know what CAM/TS/TC/SCR means?"
 msgstr ""
 
-msgid ""
-"I've finished or cancelled a torrent. Why is it still listed in my profile?"
+msgid "I've finished or cancelled a torrent. Why is it still listed in my profile?"
 msgstr ""
 
 msgid "I've lost my user name or password! Can you send it to me?"
@@ -5433,13 +5105,13 @@ msgid "IMDb Link"
 msgstr ""
 
 msgid "IMDb Top 100 Movies"
-msgstr ""
+msgstr "IMDb Top 100 Filmid"
 
 msgid "IMDb URL"
 msgstr ""
 
 msgid "IMDb Upcoming Movies"
-msgstr ""
+msgstr "IMDb Eelseisvad filmid"
 
 msgid "IMDb Url"
 msgstr ""
@@ -5514,37 +5186,25 @@ msgstr ""
 msgid "If IMDb or TMDb not empty, when it was updated"
 msgstr ""
 
-msgid ""
-"If a group releases a bad rip, they will release a Repack which will fix the"
-" problems."
+msgid "If a group releases a bad rip, they will release a Repack which will fix the problems."
 msgstr ""
 
 msgid "If a parent is hidden, then all of the children are also hidden"
 msgstr ""
 
-msgid ""
-"If a torrent you are currently leeching/seeding is not listed on your "
-"profile, just wait or force a manual update."
+msgid "If a torrent you are currently leeching/seeding is not listed on your profile, just wait or force a manual update."
 msgstr ""
 
-msgid ""
-"If for some reason (e.g. pc crash, or frozen client) your client exits "
-"improperly and you restart it, it will have a new peer_id, so it will show "
-"as a new torrent. The old one will never receive a 'event=completed' or "
-"'event=stopped' and will be listed until some tracker timeout. Just ignore "
-"it, it will eventually go away."
+msgid "If for some reason (e.g. pc crash, or frozen client) your client exits improperly and you restart it, it will have a new peer_id, so it will show as a new torrent. The old one will never receive a 'event=completed' or 'event=stopped' and will be listed until some tracker timeout. Just ignore it, it will eventually go away."
 msgstr ""
 
 msgid "If image has been fetched and is in your filesystem"
 msgstr ""
 
-msgid ""
-"If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is "
-"usually not needed.</p>"
+msgid "If it is Red, it probably needs optimizing!<p>Optimizing InnoDB tables is usually not needed.</p>"
 msgstr ""
 
-msgid ""
-"If no buttons appear, you have not earned enough bonus points to trade."
+msgid "If no buttons appear, you have not earned enough bonus points to trade."
 msgstr ""
 
 msgid "If none are selected all are searched."
@@ -5553,25 +5213,16 @@ msgstr ""
 msgid "If sending email failed, you can share this link"
 msgstr ""
 
-msgid ""
-"If somehow your address is indeed blocked in the PG database do not contact "
-"us about it, it is not our policy to open <i>ad hoc</i> exceptions. You "
-"should clear your IP with the database maintainers instead."
+msgid "If somehow your address is indeed blocked in the PG database do not contact us about it, it is not our policy to open <i>ad hoc</i> exceptions. You should clear your IP with the database maintainers instead."
 msgstr ""
 
-msgid ""
-"If the email address exists, a confirmation email will be sent. Please allow"
-" a few minutes for the mail to arrive."
+msgid "If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive."
 msgstr ""
 
-msgid ""
-"If the torrent is not nuked or there is not problem with it , don't use this"
-" as it will delete the torrent and any other entries associated with it!"
+msgid "If the torrent is not nuked or there is not problem with it , don't use this as it will delete the torrent and any other entries associated with it!"
 msgstr ""
 
-msgid ""
-"If the tracker is down, do not stop seeding. As long as the tracker is back "
-"up before you exit the client the stats should update properly."
+msgid "If the tracker is down, do not stop seeding. As long as the tracker is back up before you exit the client the stats should update properly."
 msgstr ""
 
 msgid "If they were bad"
@@ -5583,98 +5234,61 @@ msgstr ""
 msgid "If this one is checked, only VIPs can download this torrent."
 msgstr ""
 
-msgid ""
-"If you are completing a recipe from the Cooker, please select it here so "
-"interested members can be notified."
+msgid "If you are completing a recipe from the Cooker, please select it here so interested members can be notified."
 msgstr ""
 
-msgid ""
-"If you are filling a request please select it here so interested members can"
-" be notified."
+msgid "If you are filling a request please select it here so interested members can be notified."
 msgstr ""
 
-msgid ""
-"If you are running more than one instance of a client it is the overall "
-"upload speed that you must take into account. Some clients (e.g. Azureus) "
-"limit global upload speed, others (e.g. Shad0w's) do it on a per torrent "
-"basis. Know your client. The same applies if you are using your connection "
-"for anything else (e.g. browsing or ftp), always think of the overall upload"
-" speed."
+msgid "If you are running more than one instance of a client it is the overall upload speed that you must take into account. Some clients (e.g. Azureus) limit global upload speed, others (e.g. Shad0w's) do it on a per torrent basis. Know your client. The same applies if you are using your connection for anything else (e.g. browsing or ftp), always think of the overall upload speed."
 msgstr ""
 
-msgid ""
-"If you are uploading one of your offers, please select it here so interested"
-" members will be notified."
+msgid "If you are uploading one of your offers, please select it here so interested members will be notified."
 msgstr ""
 
-msgid ""
-"If you delete the name of one or more boxes, all messages in that directory "
-"will be sent to your inbox!"
+msgid "If you delete the name of one or more boxes, all messages in that directory will be sent to your inbox!"
 msgstr ""
 
 msgid "If you don't know what this will do, go play somewhere else"
 msgstr ""
 
-msgid ""
-"If you feel this suspension is in error, please feel free to contact a staff"
-" member. "
+msgid "If you feel this suspension is in error, please feel free to contact a staff member. "
 msgstr ""
 
-msgid ""
-"If you have any user gain a reputation that exceeds your lowest negative "
-"level, then this phrase will be used for them. If you do not wish to use "
-"this phrase, make sure you set a negative reputation that is larger than the"
-" largest score (negative) that a user on your forum has."
+msgid "If you have any user gain a reputation that exceeds your lowest negative level, then this phrase will be used for them. If you do not wish to use this phrase, make sure you set a negative reputation that is larger than the largest score (negative) that a user on your forum has."
 msgstr ""
 
 msgid "If you have forgotten your password you can retrieve it at"
 msgstr ""
 
-msgid ""
-"If you have something interesting that somehow violate these rules (e.g. not"
-" ISO format), ask a mod and we might make an exception."
+msgid "If you have something interesting that somehow violate these rules (e.g. not ISO format), ask a mod and we might make an exception."
 msgstr ""
 
-msgid ""
-"If you lock a topic, give a brief explanation as to why you're locking it."
+msgid "If you lock a topic, give a brief explanation as to why you're locking it."
 msgstr ""
 
-msgid ""
-"If you save up enough of them, you can trade them in for goodies like bonus "
-"GB(s) to increase your upload stats, also to get more invites, or doing the "
-"real Karma booster... give them to another user!"
+msgid "If you save up enough of them, you can trade them in for goodies like bonus GB(s) to increase your upload stats, also to get more invites, or doing the real Karma booster... give them to another user!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"If you think you can match these criteria do not hesitate to {0}contact{1} "
-"one of the administrators."
+msgid "If you think you can match these criteria do not hesitate to {0}contact{1} one of the administrators."
 msgstr ""
 
 msgid "If you want to rename the topic, you must supply a name!"
 msgstr ""
 
-msgid ""
-"If you wish to contact the staff due to a certain user or just a general "
-"problem please use this!"
+msgid "If you wish to contact the staff due to a certain user or just a general problem please use this!"
 msgstr ""
 
-msgid ""
-"If you wish to delete 1 or more PM boxes, remove the name from the text "
-"field leaving it blank."
+msgid "If you wish to delete 1 or more PM boxes, remove the name from the text field leaving it blank."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"If you wish to delete the messages as well, you can do that from the {0}main"
-" page{1}."
+msgid "If you wish to delete the messages as well, you can do that from the {0}main page{1}."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"If your ISP only allows HTTP traffic through port 80 or blocks the usual "
-"proxy ports then you would need to use something like {0}socks{1} and that "
-"is outside the scope of this FAQ."
+msgid "If your ISP only allows HTTP traffic through port 80 or blocks the usual proxy ports then you would need to use something like {0}socks{1} and that is outside the scope of this FAQ."
 msgstr ""
 
 msgid "Ignore"
@@ -5731,11 +5345,7 @@ msgstr ""
 msgid "In Theaters"
 msgstr ""
 
-msgid ""
-"In particular, do not do it if you have a slow connection. The best speeds "
-"will be found around the half-life of a torrent, when the SLR will be at its"
-" highest. (The downside is that you will not be able to seed so much. It's "
-"up to you to balance the pros and cons of this.)"
+msgid "In particular, do not do it if you have a slow connection. The best speeds will be found around the half-life of a torrent, when the SLR will be at its highest. (The downside is that you will not be able to seed so much. It's up to you to balance the pros and cons of this.)"
 msgstr ""
 
 msgid "In template.php there shall be minimum 4 functions"
@@ -5747,9 +5357,7 @@ msgstr ""
 msgid "In total "
 msgstr ""
 
-msgid ""
-"In using this torrent you are bound by the Crafty Confidentiality Agreement "
-"By Law"
+msgid "In using this torrent you are bound by the Crafty Confidentiality Agreement By Law"
 msgstr ""
 
 #, no-php-format
@@ -5760,7 +5368,7 @@ msgid "In-Progress"
 msgstr ""
 
 msgid "Inactive Users"
-msgstr ""
+msgstr "Mitteaktiivsed kasutajad"
 
 msgid "Inbox"
 msgstr ""
@@ -5790,7 +5398,7 @@ msgid "Index"
 msgstr ""
 
 msgid "Index Display Settings"
-msgstr ""
+msgstr "Avalehe kuvamise seaded"
 
 msgid "Index Size"
 msgstr ""
@@ -5808,9 +5416,7 @@ msgid "Info hash"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Info: If you want a new image, you have to upload it to each of the {0} "
-"directories first."
+msgid "Info: If you want a new image, you have to upload it to each of the {0} directories first."
 msgstr ""
 
 msgid "Information"
@@ -5924,7 +5530,7 @@ msgstr ""
 msgid "Invalid action."
 msgstr ""
 
-msgid "Invalid characters users."
+msgid "Invalid characters used."
 msgstr ""
 
 msgid "Invalid class"
@@ -6012,7 +5618,7 @@ msgid "Invited By"
 msgstr ""
 
 msgid "Invited Users"
-msgstr ""
+msgstr "Kutsutud kasutajad"
 
 msgid "Invited by"
 msgstr ""
@@ -6062,63 +5668,43 @@ msgstr ""
 msgid "Is your avatar offensive"
 msgstr ""
 
-msgid ""
-"Isn't this the same as above? No. Connections limit the number of peers your"
-" client is talking to and/or downloading from. Uploads limit the number of "
-"peers your client is actually uploading to. The ideal number is typically "
-"much lower than the number of connections, and highly dependent on your "
-"(physical) connection."
+msgid "Isn't this the same as above? No. Connections limit the number of peers your client is talking to and/or downloading from. Uploads limit the number of peers your client is actually uploading to. The ideal number is typically much lower than the number of connections, and highly dependent on your (physical) connection."
 msgstr ""
 
-msgid ""
-"It <i>is</i> our policy to allow new accounts to be opened from behind a "
-"proxy."
+msgid "It <i>is</i> our policy to allow new accounts to be opened from behind a proxy."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"It appears something went wrong while sending your application. Please "
-"{0}try again{1}"
+msgid "It appears something went wrong while sending your application. Please {0}try again{1}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"It appears that there are currently no snatches for this {0}torrent.{1}"
+msgid "It appears that there are currently no snatches for this {0}torrent.{1}"
 msgstr ""
 
 msgid "It appears that there is no uploader application with that ID."
 msgstr ""
 
-msgid ""
-"It appears that you don't have any Achievement Bonus Points available to "
-"spend."
+msgid "It appears that you don't have any Achievement Bonus Points available to spend."
 msgstr ""
 
 #, no-php-format
 msgid "It appears that {0} currently has no achievements."
 msgstr ""
 
-msgid ""
-"It appears you are currently pending confirmation of your uploader "
-"application."
+msgid "It appears you are currently pending confirmation of your uploader application."
 msgstr ""
 
-msgid ""
-"It appears you have applied for uploader before and have been rejected. If "
-"you would like a second chance please contact an administrator."
+msgid "It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator."
 msgstr ""
 
-msgid ""
-"It appears you have left the field with the reason why we should promote you"
-" blank."
+msgid "It appears you have left the field with the reason why we should promote you blank."
 msgstr ""
 
-msgid ""
-"It appears you have left the field with the sites you are uploader at blank."
+msgid "It appears you have left the field with the sites you are uploader at blank."
 msgstr ""
 
-msgid ""
-"It appears you have left the field with the things you have to offer blank."
+msgid "It appears you have left the field with the things you have to offer blank."
 msgstr ""
 
 msgid "It appears you have left the field with your upload speed blank."
@@ -6140,18 +5726,10 @@ msgstr ""
 msgid "It's Crazyhour!"
 msgstr ""
 
-msgid ""
-"It's important to distinguish between your overall ratio and the individual "
-"ratio on each torrent you may be seeding or leeching. The overall ratio "
-"takes into account the total uploaded and downloaded from your account since"
-" you joined the site. The individual ratio takes into account those values "
-"for each torrent."
+msgid "It's important to distinguish between your overall ratio and the individual ratio on each torrent you may be seeding or leeching. The overall ratio takes into account the total uploaded and downloaded from your account since you joined the site. The individual ratio takes into account those values for each torrent."
 msgstr ""
 
-msgid ""
-"It's your LAN, the responsibility is yours. Do not ask us to ban other users"
-" with the same IP, we will not do that. (Why should we ban <i>them</i> "
-"instead of <i>you</i>?)"
+msgid "It's your LAN, the responsibility is yours. Do not ask us to ban other users with the same IP, we will not do that. (Why should we ban <i>them</i> instead of <i>you</i>?)"
 msgstr ""
 
 msgid "Italic"
@@ -6181,13 +5759,7 @@ msgstr ""
 msgid "June"
 msgstr "Juuni"
 
-msgid ""
-"Just configure Windows XP as above. When you configure a proxy for Internet "
-"Explorer you're actually configuring a proxy for all HTTP traffic (thank "
-"Microsoft and their 'IE as part of the OS policy' ). On the other hand if "
-"you use another browser (Opera/Mozilla/Firefox) and configure a proxy there "
-"you'll be configuring a proxy just for that browser. We don't know of any BT"
-" client that allows a proxy to be specified explicitly."
+msgid "Just configure Windows XP as above. When you configure a proxy for Internet Explorer you're actually configuring a proxy for all HTTP traffic (thank Microsoft and their 'IE as part of the OS policy' ). On the other hand if you use another browser (Opera/Mozilla/Firefox) and configure a proxy there you'll be configuring a proxy just for that browser. We don't know of any BT client that allows a proxy to be specified explicitly."
 msgstr ""
 
 #, no-php-format
@@ -6336,7 +5908,7 @@ msgid "Latest Article:"
 msgstr ""
 
 msgid "Latest Comments"
-msgstr ""
+msgstr "Viimased kommentaarid"
 
 msgid "Latest Forum Posts"
 msgstr ""
@@ -6422,8 +5994,7 @@ msgstr ""
 msgid "Link"
 msgstr ""
 
-msgid ""
-"Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>"
+msgid "Link should look like <b>http://www.youtube.com/watch?v=camI8yuoy8U</b>"
 msgstr ""
 
 msgid "Link to Forum"
@@ -6506,9 +6077,7 @@ msgid "Look at this members invite tree"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Looks like torrent {0} has been nuked and we want to take back the data you "
-"downloaded!"
+msgid "Looks like torrent {0} has been nuked and we want to take back the data you downloaded!"
 msgstr ""
 
 msgid "Looks like you didn't select any user!"
@@ -6569,14 +6138,10 @@ msgstr ""
 msgid "Low Ratio"
 msgstr ""
 
-msgid ""
-"Low Ratio = If a user in this class falls below this ratio, they will be "
-"demoted back to the previous class."
+msgid "Low Ratio = If a user in this class falls below this ratio, they will be demoted back to the previous class."
 msgstr ""
 
-msgid ""
-"Low ratios may result in severe consequences, including banning in extreme "
-"cases."
+msgid "Low ratios may result in severe consequences, including banning in extreme cases."
 msgstr ""
 
 msgid "MB"
@@ -6598,13 +6163,13 @@ msgid "Mailbox Manager"
 msgstr ""
 
 msgid "Mailbox Manager / PM settings"
-msgstr ""
+msgstr "Postkastihalduri / PM seaded"
 
 msgid "Mailbox: "
 msgstr ""
 
 msgid "Main Forums"
-msgstr ""
+msgstr "Põhifoorumid"
 
 msgid "Make Invincible"
 msgstr ""
@@ -6632,19 +6197,13 @@ msgstr ""
 msgid "Make overforum"
 msgstr ""
 
-msgid ""
-"Make sure not to include any serial numbers, CD keys or similar in the "
-"description (you do <b>not</b> need to edit the NFO!)."
+msgid "Make sure not to include any serial numbers, CD keys or similar in the description (you do <b>not</b> need to edit the NFO!)."
 msgstr ""
 
-msgid ""
-"Make sure you exit your client properly, so that the tracker receives "
-"'event=completed'."
+msgid "Make sure you exit your client properly, so that the tracker receives 'event=completed'."
 msgstr ""
 
-msgid ""
-"Make sure your problem is not really in this FAQ. There's no point in "
-"posting just to be sent back here."
+msgid "Make sure your problem is not really in this FAQ. There's no point in posting just to be sent back here."
 msgstr ""
 
 msgid "Make sure your torrents are well-seeded for at least 24 hours."
@@ -6848,7 +6407,7 @@ msgid "Message Not Found!"
 msgstr ""
 
 msgid "Message Settings"
-msgstr ""
+msgstr "Sõnumi seaded"
 
 msgid "Message block?"
 msgstr ""
@@ -6925,21 +6484,16 @@ msgstr ""
 msgid "Min Time On Site (Days)"
 msgstr ""
 
-msgid ""
-"Min Time On Site = The minimum time a user needs to of been registered with "
-"the site to reach this class."
+msgid "Min Time On Site = The minimum time a user needs to of been registered with the site to reach this class."
 msgstr ""
 
 msgid "Min Uploaded (GB)"
 msgstr ""
 
-msgid ""
-"Min Uploaded = The minimum uploaded amount a user needs to achieve to reach "
-"this class."
+msgid "Min Uploaded = The minimum uploaded amount a user needs to achieve to reach this class."
 msgstr ""
 
-msgid ""
-"Min ratio = The minimum ratio a user needs to achieve to reach this class."
+msgid "Min ratio = The minimum ratio a user needs to achieve to reach this class."
 msgstr ""
 
 msgid "Minimum Post Count"
@@ -7022,13 +6576,13 @@ msgid "Mode"
 msgstr ""
 
 msgid "Moderating Rules -"
-msgstr ""
+msgstr "Modereerimise Reeglid -"
 
 msgid "Moderating options -"
 msgstr ""
 
 msgid "Moderating rules -"
-msgstr ""
+msgstr "Modereerimise reeglid -"
 
 msgid "Moderator"
 msgstr ""
@@ -7119,10 +6673,10 @@ msgid "Movie of the Week"
 msgstr ""
 
 msgid "Movies"
-msgstr ""
+msgstr "Filmid"
 
 msgid "Movies & TV"
-msgstr ""
+msgstr "Filmid & TV"
 
 msgid "Multi"
 msgstr ""
@@ -7133,8 +6687,7 @@ msgstr ""
 msgid "Multiple IPs (Can I login from different computers?)"
 msgstr ""
 
-msgid ""
-"Multiple choice question? (Allows users to select more than one choice)"
+msgid "Multiple choice question? (Allows users to select more than one choice)"
 msgstr ""
 
 msgid "Multiple tags must be seperated by a comma like tag1,tag2"
@@ -7149,19 +6702,13 @@ msgstr ""
 msgid "Must be a positive integer"
 msgstr ""
 
-msgid ""
-"Must have been be a member for at least 20 days, have uploaded at least 50GB"
-" and have a ratio at or above 1.20."
+msgid "Must have been be a member for at least 20 days, have uploaded at least 50GB and have a ratio at or above 1.20."
 msgstr ""
 
-msgid ""
-"Must have been be a member for at least 90 days, have uploaded at least "
-"250GB and have a ratio at or above 1.35."
+msgid "Must have been be a member for at least 90 days, have uploaded at least 250GB and have a ratio at or above 1.35."
 msgstr ""
 
-msgid ""
-"Must match the above accepted file ext's. Add more at your own risk! Each "
-"entry must be separated by a single space"
+msgid "Must match the above accepted file ext's. Add more at your own risk! Each entry must be separated by a single space"
 msgstr ""
 
 msgid "Must ne an image url."
@@ -7392,7 +6939,7 @@ msgid "New topic in"
 msgstr ""
 
 msgid "Newest Movies"
-msgstr ""
+msgstr "Uuemad filmid"
 
 msgid "Newest TV Show Torrents"
 msgstr ""
@@ -7444,6 +6991,9 @@ msgid "No Disable this members forum rights."
 msgstr ""
 
 msgid "No Disable this members signature rights."
+msgstr ""
+
+msgid "No DoubleSeed Status Set"
 msgstr ""
 
 msgid "No Doubleslots left."
@@ -7543,9 +7093,7 @@ msgstr ""
 msgid "No articles starting with letter "
 msgstr ""
 
-msgid ""
-"No blank lines in the poll, each option should be on it's own line, one "
-"line, one option."
+msgid "No blank lines in the poll, each option should be on it's own line, one line, one option."
 msgstr ""
 
 msgid "No body text."
@@ -7587,9 +7135,7 @@ msgstr ""
 msgid "No disablement Status Set"
 msgstr ""
 
-msgid ""
-"No double posting. If you wish to post again, and yours is the last post in "
-"the thread please use the EDIT function, instead of posting a double."
+msgid "No double posting. If you wish to post again, and yours is the last post in the thread please use the EDIT function, instead of posting a double."
 msgstr ""
 
 msgid "No downloader/uploader data available!"
@@ -7617,11 +7163,7 @@ msgstr ""
 msgid "No information to show"
 msgstr ""
 
-msgid ""
-"No information will be available to other members on your details page. Your"
-" comments and thank you(s) on torrents will be anonymous, your userdetails "
-"page will not be accessible, your stats will not appear at all, including "
-"your share ratio."
+msgid "No information will be available to other members on your details page. Your comments and thank you(s) on torrents will be anonymous, your userdetails page will not be accessible, your stats will not appear at all, including your share ratio."
 msgstr ""
 
 msgid "No invitees yet."
@@ -7661,7 +7203,7 @@ msgid "No new posts are allowed"
 msgstr ""
 
 msgid "No news is good news!"
-msgstr ""
+msgstr "Uudiste puudumine on hea uudis!"
 
 msgid "No news item with that ID."
 msgstr ""
@@ -7694,13 +7236,10 @@ msgid "No records found"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"No requesting if there has been no {0}scene{1} release in the last 7 days."
+msgid "No requesting if there has been no {0}scene{1} release in the last 7 days."
 msgstr ""
 
-msgid ""
-"No requesting or posting of serials, CD keys, passwords or cracks in the "
-"forums."
+msgid "No requesting or posting of serials, CD keys, passwords or cracks in the forums."
 msgstr ""
 
 msgid "No results found"
@@ -7788,12 +7327,7 @@ msgid "No {0} with that ID."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"No, not the torrent file. We are a closed, limited-membership community. "
-"Only registered users can use the {0} tracker. Posting our torrents on other"
-" trackers is useless, since most people who attempt to download them will be"
-" unable to connect with us. This generates a lot of frustration and bad-will"
-" against us at {1}, and will therefore not be tolerated."
+msgid "No, not the torrent file. We are a closed, limited-membership community. Only registered users can use the {0} tracker. Posting our torrents on other trackers is useless, since most people who attempt to download them will be unable to connect with us. This generates a lot of frustration and bad-will against us at {1}, and will therefore not be tolerated."
 msgstr ""
 
 msgid "No. Votes"
@@ -7857,24 +7391,10 @@ msgid "Not seeding"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Note also that in the ICS case it is preferable to run the BT client on the "
-"ICS gateway. Clients running on the other computers will be unconnectable "
-"(they will be listed as such, as explained elsewhere in the FAQ) unless you "
-"specify the appropriate services in your ICS configuration (a good "
-"explanation of how to do this for Windows XP can be found {0}here{1}). In "
-"the NAT case you should configure different ranges for clients on different "
-"computers and create appropriate NAT rules in the router. (Details vary "
-"widely from router to router and are outside the scope of this FAQ. Check "
-"your router documentation and/or support forum.)"
+msgid "Note also that in the ICS case it is preferable to run the BT client on the ICS gateway. Clients running on the other computers will be unconnectable (they will be listed as such, as explained elsewhere in the FAQ) unless you specify the appropriate services in your ICS configuration (a good explanation of how to do this for Windows XP can be found {0}here{1}). In the NAT case you should configure different ranges for clients on different computers and create appropriate NAT rules in the router. (Details vary widely from router to router and are outside the scope of this FAQ. Check your router documentation and/or support forum.)"
 msgstr ""
 
-msgid ""
-"Note that the torrent will automatically become visible when there's a "
-"seeder, and will become automatically invisible(dead) when there has been no"
-" seeder for a while.  switch to speed the process up manually . Also note "
-"that invisible(dead) torrents can still be viewed or searched for, it's just"
-" not the default."
+msgid "Note that the torrent will automatically become visible when there's a seeder, and will become automatically invisible(dead) when there has been no seeder for a while.  switch to speed the process up manually . Also note that invisible(dead) torrents can still be viewed or searched for, it's just not the default."
 msgstr ""
 
 msgid "Note: "
@@ -7883,22 +7403,13 @@ msgstr "Märge: "
 msgid "Note: (optional)"
 msgstr "Märge: (valikuline)"
 
-msgid ""
-"Note: The statistics generated are based on the information currently held "
-"in the database"
+msgid "Note: The statistics generated are based on the information currently held in the database"
 msgstr ""
 
-msgid ""
-"Note: This tool will move ALL torrents FROM one category to ANOTHER category"
-" only! It will NOT delete any categories or torrents."
+msgid "Note: This tool will move ALL torrents FROM one category to ANOTHER category only! It will NOT delete any categories or torrents."
 msgstr ""
 
 msgid "Note: if you want no limit for the user class set the limit to 0"
-msgstr ""
-
-msgid ""
-"Note: if you want to submit more then one bad nick at a time separate them "
-"with a comma"
 msgstr ""
 
 msgid "Nothing Configured Atm Sorry"
@@ -7952,37 +7463,17 @@ msgstr ""
 msgid "Nothing to output"
 msgstr ""
 
-msgid ""
-"Notice that now you will be doing all your browsing through a public proxy, "
-"which are typically quite slow. Communications between peers do not use port"
-" 80 so their speed will not be affected by this, and should be better than "
-"when you were 'unconnectable'."
+msgid "Notice that now you will be doing all your browsing through a public proxy, which are typically quite slow. Communications between peers do not use port 80 so their speed will not be affected by this, and should be better than when you were 'unconnectable'."
 msgstr ""
 
-msgid ""
-"Notice that the client IP doesn't show up here (although it can be sent by "
-"the client if it configured to do so). It's up to the tracker to see it and "
-"associate it with the user_id. (Server replies will be omitted, they're just"
-" lists of peer ips and respective ports.) At this stage the user's profile "
-"will be listing this torrent as being leeched."
+msgid "Notice that the client IP doesn't show up here (although it can be sent by the client if it configured to do so). It's up to the tracker to see it and associate it with the user_id. (Server replies will be omitted, they're just lists of peer ips and respective ports.) At this stage the user's profile will be listing this torrent as being leeched."
 msgstr ""
 
-msgid ""
-"Notice that you will always be listed as an 'unconnectable' client because "
-"the tracker will be unable to check that you're capable of accepting "
-"incoming connections."
+msgid "Notice that you will always be listed as an 'unconnectable' client because the tracker will be unable to check that you're capable of accepting incoming connections."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Notice the all-important {0}. It is at this stage that the torrent will be "
-"removed from the user's profile. If for some reason (tracker down, lost "
-"connection, bad client, crash, ...) this last GET doesn't reach the tracker "
-"and this torrent will still be seen in the user profile until some tracker "
-"timeout occurs. It should be stressed that this message will be sent only "
-"when closing the client properly, not when the download is finished. (The "
-"tracker will start listing a torrent as 'currently seeding' after it "
-"receives a GET with {1})."
+msgid "Notice the all-important {0}. It is at this stage that the torrent will be removed from the user's profile. If for some reason (tracker down, lost connection, bad client, crash, ...) this last GET doesn't reach the tracker and this torrent will still be seen in the user profile until some tracker timeout occurs. It should be stressed that this message will be sent only when closing the client properly, not when the download is finished. (The tracker will start listing a torrent as 'currently seeding' after it receives a GET with {1})."
 msgstr ""
 
 msgid "Notification!"
@@ -7991,9 +7482,7 @@ msgstr "Teade!"
 msgid "Notify me when I have received a PM"
 msgstr ""
 
-msgid ""
-"Notify me when a torrent is uploaded in one of my default browsing "
-"categories."
+msgid "Notify me when a torrent is uploaded in one of my default browsing categories."
 msgstr ""
 
 msgid "Nova Torrent"
@@ -8127,19 +7616,13 @@ msgstr ""
 msgid "On Which Day"
 msgstr ""
 
-msgid ""
-"On this page you can modify the minimum amount required for each reputation "
-"level. Make sure you press Update Minimum Levels to save your changes. You "
-"cannot set the same minimum amount to more than one level."
+msgid "On this page you can modify the minimum amount required for each reputation level. Make sure you press Update Minimum Levels to save your changes. You cannot set the same minimum amount to more than one level."
 msgstr ""
 
 msgid "On torrent"
 msgstr ""
 
-msgid ""
-"One last note: some clients have a pause/resume option. This will not send "
-"any message to the server. Do not use it as a way of updating stats more "
-"often, it just doesn't work."
+msgid "One last note: some clients have a pause/resume option. This will not send any message to the server. Do not use it as a way of updating stats more often, it just doesn't work."
 msgstr ""
 
 msgid "One month VIP status"
@@ -8148,9 +7631,7 @@ msgstr ""
 msgid "One month custom smilies for the forums and comments"
 msgstr ""
 
-msgid ""
-"One option per line. There is a minimum of 2 options, and a maximun of 20 "
-"options. BBcode is enabled."
+msgid "One option per line. There is a minimum of 2 options, and a maximun of 20 options. BBcode is enabled."
 msgstr ""
 
 msgid "One to One ratio only works on torrents smaller then 6GB!"
@@ -8168,27 +7649,21 @@ msgstr ""
 msgid "Only Dead"
 msgstr ""
 
-msgid ""
-"Only fill in add as many boxes that you would like to add and click \"Add\""
+msgid "Only fill in add as many boxes that you would like to add and click \"Add\""
 msgstr ""
 
-msgid ""
-"Only in the selected Category, click on HappyHour above here to go to it"
+msgid "Only in the selected Category, click on HappyHour above here to go to it"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Only scene releases. If it's not on {0}NFOrce{1} or {2}grokMusiQ{3} then "
-"forget it!"
+msgid "Only scene releases. If it's not on {0}NFOrce{1} or {2}grokMusiQ{3} then forget it!"
 msgstr ""
 
 msgid "Only site-coders can do this!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Only specially authorized users ({0}Uploaders{1}) have permission to upload "
-"torrents."
+msgid "Only specially authorized users ({0}Uploaders{1}) have permission to upload torrents."
 msgstr ""
 
 msgid "Only staff can view bugs"
@@ -8206,9 +7681,7 @@ msgstr ""
 msgid "Only well written letters with serious intent will be considered."
 msgstr ""
 
-msgid ""
-"Only you and the site moderators can view your IP address and email. Regular"
-" users do not see that information."
+msgid "Only you and the site moderators can view your IP address and email. Regular users do not see that information."
 msgstr ""
 
 msgid "Open"
@@ -8232,12 +7705,8 @@ msgstr ""
 msgid "Open Signups"
 msgstr ""
 
-msgid ""
-"Open the .torrent file. When your client asks you for a location, choose the"
-" location of the existing file(s) and it will resume/reseed the torrent."
-msgstr ""
-"Avage .torrent fail. Kui teie klient küsib teilt asukohta, valige "
-"olemasoleva-te faili(de) asukoht ja see jätkab/taastab torrenti."
+msgid "Open the .torrent file. When your client asks you for a location, choose the location of the existing file(s) and it will resume/reseed the torrent."
+msgstr "Avage .torrent fail. Kui teie klient küsib teilt asukohta, valige olemasoleva-te faili(de) asukoht ja see jätkab/taastab torrenti."
 
 msgid "Optional"
 msgstr ""
@@ -8274,24 +7743,19 @@ msgid "Orignal Sender:"
 msgstr ""
 
 msgid "Other"
-msgstr ""
+msgstr "Muu"
 
 msgid "Other things that will get you karma points"
 msgstr ""
 
 msgid "Other:"
-msgstr ""
+msgstr "Muu:"
 
 msgid "Otherwise you may try the following:"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Our goal is not to become another IPTorrents or Suprnova (not dissing either"
-" of them though). The goal is to provide the absolutely latest stuff. "
-"Therefore, only specially authorised users have permission to upload "
-"torrents. If you have access to 0-day stuff do not hesitate to {0}contact{1}"
-" us!"
+msgid "Our goal is not to become another IPTorrents or Suprnova (not dissing either of them though). The goal is to provide the absolutely latest stuff. Therefore, only specially authorised users have permission to upload torrents. If you have access to 0-day stuff do not hesitate to {0}contact{1} us!"
 msgstr ""
 
 msgid "Over Forum"
@@ -8300,8 +7764,7 @@ msgstr ""
 msgid "Over Forum Manager"
 msgstr ""
 
-msgid ""
-"Over Forum Sort number in use. Please select another Over Forum Sort number!"
+msgid "Over Forum Sort number in use. Please select another Over Forum Sort number!"
 msgstr ""
 
 msgid "Over Forums"
@@ -8391,7 +7854,7 @@ msgid "PM's"
 msgstr ""
 
 msgid "PMs per page settings changed!"
-msgstr ""
+msgstr "PM-de ühe lehe seaded on muudetud!"
 
 msgid "PMs per page:"
 msgstr ""
@@ -8443,9 +7906,7 @@ msgstr ""
 msgid "Password Reset is Disabled"
 msgstr ""
 
-msgid ""
-"Password has been changed. You will now be able to login with your new "
-"password."
+msgid "Password has been changed. You will now be able to login with your new password."
 msgstr ""
 
 msgid "Password has been reset"
@@ -8475,6 +7936,10 @@ msgid "Pay {0} bounty"
 msgstr ""
 
 msgid "Peer ID"
+msgstr ""
+
+#, no-php-format
+msgid "Peer {0} has been deleted."
 msgstr ""
 
 msgid "Peerlist"
@@ -8600,22 +8065,16 @@ msgid "Please define the date ranges and other options below."
 msgstr ""
 
 msgid "Please describe the violated rule."
-msgstr ""
+msgstr "Kirjeldage rikutud reeglit."
 
 #, no-php-format
-msgid ""
-"Please do not make a post just to test your avatar. If everything is "
-"allright you'll see it in your profile {0}details page{1}."
+msgid "Please do not make a post just to test your avatar. If everything is allright you'll see it in your profile {0}details page{1}."
 msgstr ""
 
-msgid ""
-"Please dont use the mass PM too often. we dont want to spam the users, just "
-"let them know they are unconnectable. Every week would be ok."
+msgid "Please dont use the mass PM too often. we dont want to spam the users, just let them know they are unconnectable. Every week would be ok."
 msgstr ""
 
-msgid ""
-"Please ensure all questions are posted in the correct section!<br>(Game "
-"questions in the Games section, Apps questions in the Apps section, etc.)"
+msgid "Please ensure all questions are posted in the correct section!<br>(Game questions in the Games section, Apps questions in the Apps section, etc.)"
 msgstr ""
 
 msgid "Please enter the reason for deleting this torrent."
@@ -8636,9 +8095,7 @@ msgstr ""
 msgid "Please note!"
 msgstr ""
 
-msgid ""
-"Please note, the staff can give or take away points for breaking the rules, "
-"or doing good for the community."
+msgid "Please note, the staff can give or take away points for breaking the rules, or doing good for the community."
 msgstr ""
 
 msgid "Please remember!"
@@ -8808,9 +8265,7 @@ msgid "Post history for"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Post in the {0}Forums{1}, by all means. You'll find they are usually a "
-"friendly and helpful place, provided you follow a few basic guidelines:"
+msgid "Post in the {0}Forums{1}, by all means. You'll find they are usually a friendly and helpful place, provided you follow a few basic guidelines:"
 msgstr ""
 
 msgid "Posted"
@@ -8924,11 +8379,7 @@ msgid "Promotion Settings"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Pu-239 is an active open source project available for download via Github "
-"{0}Zip download{1}. Please note: We do not give any kind of support on the "
-"source code so please don't bug us about it. If it works, great, if not too "
-"bad. Use this software at your own risk!"
+msgid "Pu-239 is an active open source project available for download via Github {0}Zip download{1}. Please note: We do not give any kind of support on the source code so please don't bug us about it. If it works, great, if not too bad. Use this software at your own risk!"
 msgstr ""
 
 msgid "Public"
@@ -9078,13 +8529,13 @@ msgid "Reality"
 msgstr ""
 
 msgid "Reason"
-msgstr ""
+msgstr "Põhjus"
 
 msgid "Reason:"
-msgstr ""
+msgstr "Põhjus:"
 
 msgid "Reason: (optional)"
-msgstr ""
+msgstr "Põhjus: (valikuline)"
 
 msgid "Received"
 msgstr ""
@@ -9125,7 +8576,7 @@ msgid "Recycled"
 msgstr ""
 
 msgid "Red"
-msgstr ""
+msgstr "Punane"
 
 msgid "Redirecting"
 msgstr ""
@@ -9146,13 +8597,13 @@ msgid "Register Date Factor"
 msgstr ""
 
 msgid "Registered"
-msgstr ""
+msgstr "Registreeritud"
 
 msgid "Registration Statistics"
-msgstr ""
+msgstr "Registreerimisstatistika"
 
 msgid "Registration Stats"
-msgstr ""
+msgstr "Registreerimisstatistika"
 
 msgid "Reject"
 msgstr ""
@@ -9181,13 +8632,11 @@ msgstr ""
 msgid "Remember Me?"
 msgstr ""
 
-msgid ""
-"Remember! Write your application carefully! Be sure to include your UL speed"
-" and what kind of stuff you're planning to upload."
+msgid "Remember! Write your application carefully! Be sure to include your UL speed and what kind of stuff you're planning to upload."
 msgstr ""
 
 msgid "Remove"
-msgstr ""
+msgstr "Eemalda"
 
 msgid "Remove Avatar disablement"
 msgstr ""
@@ -9196,6 +8645,12 @@ msgid "Remove Choice"
 msgstr ""
 
 msgid "Remove Class"
+msgstr "Eemalda klass"
+
+msgid "Remove DoubleSeed"
+msgstr ""
+
+msgid "Remove DoubleSeed Status"
 msgstr ""
 
 msgid "Remove Freeleech"
@@ -9232,7 +8687,7 @@ msgid "Remove from Friends"
 msgstr ""
 
 msgid "Remove games disablement"
-msgstr ""
+msgstr "Eemaldage mängude keelamine"
 
 msgid "Remove immune Status"
 msgstr ""
@@ -9250,7 +8705,7 @@ msgid "Remove warned Status"
 msgstr ""
 
 msgid "Remove?"
-msgstr ""
+msgstr "Eemaldada?"
 
 msgid "Removed from watched users by"
 msgstr ""
@@ -9262,7 +8717,7 @@ msgid "Remuxing"
 msgstr ""
 
 msgid "Rename"
-msgstr ""
+msgstr "Nimeta ümber"
 
 msgid "Rename Topic"
 msgstr ""
@@ -9274,7 +8729,7 @@ msgid "Replies"
 msgstr ""
 
 msgid "Reply"
-msgstr ""
+msgstr "Vasta"
 
 #, no-php-format
 msgid "Reply #{0} was [i]NOT[/i] deleted."
@@ -9505,7 +8960,7 @@ msgid "Return to Details"
 msgstr ""
 
 msgid "Return to the Games"
-msgstr ""
+msgstr "Naaske mängude juurde"
 
 msgid "Return to uploader applications page"
 msgstr ""
@@ -9541,7 +8996,7 @@ msgid "Rows"
 msgstr ""
 
 msgid "Rules"
-msgstr ""
+msgstr "Reeglid"
 
 msgid "Run Forever"
 msgstr ""
@@ -9579,29 +9034,17 @@ msgstr ""
 msgid "Safe Mode"
 msgstr ""
 
-msgid ""
-"Same as 'a little paranoid' except your name will not appear on snatched "
-"lists, your ratio and stats as well as anything to do with actual "
-"filesharing will not be visible to other members. You will appear as "
-"'anonymous' on torrent comments, snatched lists et al. The member ratings "
-"and comments on your details page will also be disabled."
+msgid "Same as 'a little paranoid' except your name will not appear on snatched lists, your ratio and stats as well as anything to do with actual filesharing will not be visible to other members. You will appear as 'anonymous' on torrent comments, snatched lists et al. The member ratings and comments on your details page will also be disabled."
 msgstr ""
 
 msgid "Same as PU, but has been around longer."
 msgstr ""
 
-msgid ""
-"Same premise as a screener, but transferred off a DVD. Usually letterbox , "
-"but without the extras that a DVD retail would contain. The ticker is not "
-"usually in the black bars, and will disrupt the viewing. If the ripper has "
-"any skill, a DVDscr should be very good. Usually transferred to SVCD or "
-"DivX/XviD."
+msgid "Same premise as a screener, but transferred off a DVD. Usually letterbox , but without the extras that a DVD retail would contain. The ticker is not usually in the black bars, and will disrupt the viewing. If the ripper has any skill, a DVDscr should be very good. Usually transferred to SVCD or DivX/XviD."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Same privileges as Power User and is considered an Elite Member of {0}. "
-"Immune to automatic demotion."
+msgid "Same privileges as Power User and is considered an Elite Member of {0}. Immune to automatic demotion."
 msgstr ""
 
 msgid "Sanity Check!"
@@ -9638,7 +9081,7 @@ msgid "Save as Draft"
 msgstr ""
 
 msgid "Save the settings"
-msgstr ""
+msgstr "Salvesta seaded"
 
 #, no-php-format
 msgid "Saved Reputation ID: #{0} Successfully"
@@ -9668,7 +9111,7 @@ msgid "Score"
 msgstr ""
 
 msgid "Search"
-msgstr ""
+msgstr "Otsi"
 
 #, no-php-format
 msgid "Search All {0}"
@@ -9681,7 +9124,7 @@ msgid "Search Comments"
 msgstr ""
 
 msgid "Search Forums"
-msgstr ""
+msgstr "Otsi foorumitest"
 
 msgid "Search In"
 msgstr ""
@@ -9696,7 +9139,7 @@ msgid "Search Messages"
 msgstr ""
 
 msgid "Search Movies"
-msgstr ""
+msgstr "Otsi filme"
 
 msgid "Search Results for"
 msgstr ""
@@ -9708,7 +9151,7 @@ msgid "Search Terms"
 msgstr ""
 
 msgid "Search Users"
-msgstr ""
+msgstr "Kasutajate otsimine"
 
 msgid "Search Users To View Invite Tree"
 msgstr ""
@@ -9785,10 +9228,10 @@ msgid "Search text of questions and answers."
 msgstr ""
 
 msgid "Search!"
-msgstr ""
+msgstr "Otsi!"
 
 msgid "Search:"
-msgstr ""
+msgstr "Otsi:"
 
 msgid "Searched Emails"
 msgstr ""
@@ -9830,11 +9273,7 @@ msgstr ""
 msgid "See the <i>{0}Why am I listed as not connectable?{1}</i> section."
 msgstr ""
 
-msgid ""
-"See the hash fails topic. If your client receives bad data it will have to "
-"redownload it, therefore the total downloaded may be larger than the torrent"
-" size. Make sure the 'kick/ban' option is turned on to minimize the extra "
-"downloads."
+msgid "See the hash fails topic. If your client receives bad data it will have to redownload it, therefore the total downloaded may be larger than the torrent size. Make sure the 'kick/ban' option is turned on to minimize the extra downloads."
 msgstr ""
 
 msgid "Seed"
@@ -9956,17 +9395,10 @@ msgstr ""
 msgid "Select a new image"
 msgstr ""
 
-msgid ""
-"Select a start date for this report. Select a month, day, and year. The "
-"selected statistic must be no older than this date for it to be included in "
-"the report."
+msgid "Select a start date for this report. Select a month, day, and year. The selected statistic must be no older than this date for it to be included in the report."
 msgstr ""
 
-msgid ""
-"Select an end date for this report. Select a month, day, and year. The "
-"selected statistic must not be newer than this date for it to be included in"
-" the report. You can use this setting in conjunction with the 'Start Date' "
-"setting to create a window of time for this report."
+msgid "Select an end date for this report. Select a month, day, and year. The selected statistic must not be newer than this date for it to be included in the report. You can use this setting in conjunction with the 'Start Date' setting to create a window of time for this report."
 msgstr ""
 
 msgid "Select how many PMs you would like to see per page."
@@ -10098,8 +9530,7 @@ msgstr ""
 msgid "Set this option to 'On' if you want to enable latest Forum Posts."
 msgstr ""
 
-msgid ""
-"Set this option to 'On' if you want to enable latest torrents banner slider."
+msgid "Set this option to 'On' if you want to enable latest torrents banner slider."
 msgstr ""
 
 msgid "Set this option to 'On' if you want to enable latest torrents marquee."
@@ -10111,8 +9542,7 @@ msgstr ""
 msgid "Set this option to 'On' if you want to enable staff picks."
 msgstr ""
 
-msgid ""
-"Set this option to 'On' if you want to enable the Active Birthday Users."
+msgid "Set this option to 'On' if you want to enable the Active Birthday Users."
 msgstr ""
 
 msgid "Set this option to 'On' if you want to enable the Active Irc Users."
@@ -10121,9 +9551,7 @@ msgstr ""
 msgid "Set this option to 'On' if you want to enable the Active Poll."
 msgstr ""
 
-msgid ""
-"Set this option to 'On' if you want to enable the Active Users visited over "
-"24hours."
+msgid "Set this option to 'On' if you want to enable the Active Users visited over 24hours."
 msgstr ""
 
 msgid "Set this option to 'On' if you want to enable the Active Users."
@@ -10159,8 +9587,7 @@ msgstr ""
 msgid "Set this option to 'On' if you want to enable the Stats."
 msgstr ""
 
-msgid ""
-"Set this option to 'On' if you want to enable the latest movie torrents."
+msgid "Set this option to 'On' if you want to enable the latest movie torrents."
 msgstr ""
 
 msgid "Set this option to 'On' if you want to enable the latest tv torrents."
@@ -10172,22 +9599,16 @@ msgstr ""
 msgid "Set this option to 'On' if you want to enable the torrent freak news."
 msgstr ""
 
-msgid ""
-"Set this option to 'Yes' if you want to enable the User Reputation system."
+msgid "Set this option to 'Yes' if you want to enable the User Reputation system."
 msgstr ""
 
-msgid ""
-"Set this to the lowest member class you wish to be able to view deleted "
-"posts and threads."
+msgid "Set this to the lowest member class you wish to be able to view deleted posts and threads."
 msgstr ""
 
-msgid ""
-"Set this to the lowest member class you wish to give the right to add "
-"attachments to a post."
+msgid "Set this to the lowest member class you wish to give the right to add attachments to a post."
 msgstr ""
 
-msgid ""
-"Set to 0 to have administrators follow the same rules as everyone else."
+msgid "Set to 0 to have administrators follow the same rules as everyone else."
 msgstr ""
 
 msgid "Sets the size of the enclosed text."
@@ -10196,16 +9617,14 @@ msgstr ""
 msgid "Sets the type-face (font) for the enclosed text."
 msgstr ""
 
-msgid ""
-"Setting this to No will give the option for selected class and above to see "
-"deleted posts and threads and decide if they should be deleted."
+msgid "Setting this to No will give the option for selected class and above to see deleted posts and threads and decide if they should be deleted."
 msgstr ""
 
 msgid "Settings"
-msgstr ""
+msgstr "Seaded"
 
 msgid "Settings Check"
-msgstr ""
+msgstr "Seadete kontrollimine"
 
 msgid "Share"
 msgstr ""
@@ -10239,9 +9658,7 @@ msgstr ""
 msgid "Shittyness"
 msgstr ""
 
-msgid ""
-"Short reply: change to an ISP that does not force a proxy upon you. If you "
-"cannot or do not want to then read on."
+msgid "Short reply: change to an ISP that does not force a proxy upon you. If you cannot or do not want to then read on."
 msgstr ""
 
 msgid "Should still seed for"
@@ -10414,7 +9831,7 @@ msgid "Site Peers"
 msgstr ""
 
 msgid "Site Settings"
-msgstr ""
+msgstr "Saidi Seaded"
 
 msgid "Site Staff"
 msgstr ""
@@ -10452,9 +9869,7 @@ msgstr ""
 msgid "Small Description"
 msgstr ""
 
-msgid ""
-"Small Description for the uploaded file. This description is shown on "
-"browse.php under the torrent name."
+msgid "Small Description for the uploaded file. This description is shown on browse.php under the torrent name."
 msgstr ""
 
 msgid "Smile"
@@ -10482,19 +9897,10 @@ msgstr ""
 msgid "Social"
 msgstr "Sotsiaalne"
 
-msgid ""
-"Some clients have an (advanced) option/preference to 'kick/ban clients that "
-"send you bad data' or similar. It should be turned on, since it makes sure "
-"that if a peer repeatedly sends you pieces that fail the hash check it will "
-"be ignored in the future."
+msgid "Some clients have an (advanced) option/preference to 'kick/ban clients that send you bad data' or similar. It should be turned on, since it makes sure that if a peer repeatedly sends you pieces that fail the hash check it will be ignored in the future."
 msgstr ""
 
-msgid ""
-"Some clients, notably TorrentStorm and Nova Torrent, do not report properly "
-"to the tracker when canceling or finishing a torrent. In that case the "
-"tracker will keep waiting for some message - and thus listing the torrent as"
-" seeding or leeching - until some timeout occurs. Just ignore it, it will "
-"eventually go away."
+msgid "Some clients, notably TorrentStorm and Nova Torrent, do not report properly to the tracker when canceling or finishing a torrent. In that case the tracker will keep waiting for some message - and thus listing the torrent as seeding or leeching - until some timeout occurs. Just ignore it, it will eventually go away."
 msgstr ""
 
 msgid "Some fields were left blank"
@@ -10504,22 +9910,10 @@ msgid "Some fields were left blank "
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Some of our torrents use ports other than the usual HTTP port 80. This may "
-"cause problems for some users, for instance those behind some firewall or "
-"proxy configurations. You can easily solve this by editing the .torrent file"
-" yourself with any torrent editor, e.g. {0}MakeTorrent{1}, and replacing the"
-" announce url {2} with {3} or just {4}."
+msgid "Some of our torrents use ports other than the usual HTTP port 80. This may cause problems for some users, for instance those behind some firewall or proxy configurations. You can easily solve this by editing the .torrent file yourself with any torrent editor, e.g. {0}MakeTorrent{1}, and replacing the announce url {2} with {3} or just {4}."
 msgstr ""
 
-msgid ""
-"Some operating systems (like Windows 9x) do not deal well with a large "
-"number of connections, and may even crash. Also some home routers "
-"(particularly when running NAT and/or firewall with stateful inspection "
-"services) tend to become slow or crash when having to deal with too many "
-"connections. There are no fixed values for this, you may try 60 or 100 and "
-"experiment with the value. Note that these numbers are additive, if you have"
-" two instances of a client running the numbers add up."
+msgid "Some operating systems (like Windows 9x) do not deal well with a large number of connections, and may even crash. Also some home routers (particularly when running NAT and/or firewall with stateful inspection services) tend to become slow or crash when having to deal with too many connections. There are no fixed values for this, you may try 60 or 100 and experiment with the value. Note that these numbers are additive, if you have two instances of a client running the numbers add up."
 msgstr ""
 
 msgid "Some things that will cost you karma points"
@@ -10597,15 +9991,11 @@ msgid "Sorry pal"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry you are not a Power User or you don't have enough rep points yet - "
-"Minimum 50 required {0}"
+msgid "Sorry you are not a Power User or you don't have enough rep points yet - Minimum 50 required {0}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry your not a Power User or you don't have enough rep points yet - "
-"Minimum 50 required {0}"
+msgid "Sorry your not a Power User or you don't have enough rep points yet - Minimum 50 required {0}"
 msgstr ""
 
 #, no-php-format
@@ -10613,15 +10003,11 @@ msgid "Sorry {0}, you haven't uploaded {1} yet."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry {0}, you'll have to wait until another player plays your last game "
-"before you can play a new one.<br>You have {1}.<br>{2}Back{3}"
+msgid "Sorry {0}, you'll have to wait until another player plays your last game before you can play a new one.<br>You have {1}.<br>{2}Back{3}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry {0}, you'll have to wait until {1} finishes {2} game before you can "
-"play a new one.<br>{3}Back{4}"
+msgid "Sorry {0}, you'll have to wait until {1} finishes {2} game before you can play a new one.<br>{3}Back{4}"
 msgstr ""
 
 #, no-php-format
@@ -10633,9 +10019,7 @@ msgid "Sorry, The evil villian {0} has stolen your bonus point."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry, We put your achievement bonus point into the collection plate in an "
-"attempt to get {0} a date."
+msgid "Sorry, We put your achievement bonus point into the collection plate in an attempt to get {0} a date."
 msgstr ""
 
 msgid "Sorry, no member was found"
@@ -10653,8 +10037,7 @@ msgstr ""
 msgid "Sorry, user limit reached. Please try again later."
 msgstr ""
 
-msgid ""
-"Sorry, we cannot save scores of this game or there are no scores saved, yet."
+msgid "Sorry, we cannot save scores of this game or there are no scores saved, yet."
 msgstr ""
 
 #, no-php-format
@@ -10673,27 +10056,19 @@ msgstr ""
 msgid "Sorry, you must be a {0} to play these games!"
 msgstr ""
 
-msgid ""
-"Sorry, your uploader application has been rejected. It appears that you are "
-"not qualified enough to become uploader."
+msgid "Sorry, your uploader application has been rejected. It appears that you are not qualified enough to become uploader."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry, {0} has just run over you with his ultra-powered wheelchair. Better "
-"luck next time."
+msgid "Sorry, {0} has just run over you with his ultra-powered wheelchair. Better luck next time."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry, {0} has magically made your achievement bonus point disappear, better"
-" luck next time."
+msgid "Sorry, {0} has magically made your achievement bonus point disappear, better luck next time."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Sorry, {0} has used your achievement bonus point in attempt to buy puppy "
-"chow to lure doggies onto his dinner plate."
+msgid "Sorry, {0} has used your achievement bonus point in attempt to buy puppy chow to lure doggies onto his dinner plate."
 msgstr ""
 
 #, no-php-format
@@ -10791,9 +10166,7 @@ msgid "Staff actions log"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully "
-"cleaned."
+msgid "Staff flushed {0}'s ghost torrents at {1}. {2} torrents where successfully cleaned."
 msgstr ""
 
 msgid "Staff mass bonus - added freeslots to"
@@ -10806,8 +10179,7 @@ msgid "Staff mass bonus - added karma points to"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Staff mass bonus - added upload credit to {0} members in all classes by {1}"
+msgid "Staff mass bonus - added upload credit to {0} members in all classes by {1}"
 msgstr ""
 
 msgid "Staff only"
@@ -10889,9 +10261,7 @@ msgstr ""
 msgid "Stdhead Display Settings"
 msgstr ""
 
-msgid ""
-"Stealth mode means that you can lurk with the expectation you will be "
-"invisible to all on the site including staff =]"
+msgid "Stealth mode means that you can lurk with the expectation you will be invisible to all on the site including staff =]"
 msgstr ""
 
 msgid "Stealth mode!"
@@ -10912,9 +10282,7 @@ msgstr ""
 msgid "Stopped seeding at:"
 msgstr ""
 
-msgid ""
-"Straight To Video. Was never released in theaters, and therefore a lot of "
-"sites do not allow these."
+msgid "Straight To Video. Was never released in theaters, and therefore a lot of sites do not allow these."
 msgstr ""
 
 msgid "Strategy"
@@ -11127,7 +10495,7 @@ msgid "TMDb In Theaters"
 msgstr ""
 
 msgid "TMDb Top 100 Movies"
-msgstr ""
+msgstr "TMDb Top 100 Filmid"
 
 msgid "TMDb may be down, check back later"
 msgstr ""
@@ -11150,15 +10518,7 @@ msgstr ""
 msgid "TV Shows"
 msgstr ""
 
-msgid ""
-"TV episode that is either from Network (capped using digital cable/satellite"
-" boxes are preferable) or PRE-AIR from satellite feeds sending the program "
-"around to networks a few days earlier (do not contain 'dogs' but sometimes "
-"have flickers etc) Some programs such as WWF Raw Is War contain extra parts,"
-" and the 'dark matches' and camera/commentary tests are included on the "
-"rips. PDTV is capped from a digital TV PCI card, generally giving the best "
-"results, and groups tend to release in SVCD for these. VCD/SVCD/DivX/XviD "
-"rips are all supported by the TV scene."
+msgid "TV episode that is either from Network (capped using digital cable/satellite boxes are preferable) or PRE-AIR from satellite feeds sending the program around to networks a few days earlier (do not contain 'dogs' but sometimes have flickers etc) Some programs such as WWF Raw Is War contain extra parts, and the 'dark matches' and camera/commentary tests are included on the rips. PDTV is capped from a digital TV PCI card, generally giving the best results, and groups tend to release in SVCD for these. VCD/SVCD/DivX/XviD rips are all supported by the TV scene."
 msgstr ""
 
 msgid "TVMaze"
@@ -11194,8 +10554,7 @@ msgstr ""
 msgid "Taken ID's"
 msgstr ""
 
-msgid ""
-"Taken from filename if not specified. <b>Please use descriptive names.</b>"
+msgid "Taken from filename if not specified. <b>Please use descriptive names.</b>"
 msgstr ""
 
 msgid "Tease"
@@ -11252,12 +10611,13 @@ msgid "Thank you for your Donation!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Thanks for your support and sharing through year {0}!<br>Merry Christmas and"
-" a Happy New Year from the {1} staff.<br>Redirecting in 5..4..3..2..1"
+msgid "Thanks for your support and sharing through year {0}!<br>Merry Christmas and a Happy New Year from the {1} staff.<br>Redirecting in 5..4..3..2..1"
 msgstr ""
 
 msgid "Thanks list"
+msgstr ""
+
+msgid "That User has No DoubleSeed Status!"
 msgstr ""
 
 msgid "That User has No Freeleech Status!"
@@ -11276,16 +10636,10 @@ msgstr ""
 msgid "That's {0} more than you have!"
 msgstr ""
 
-msgid ""
-"The CODER role has, nearly, the same effect as making the user Sysop, "
-"without the class designation. They will have full access to the site and "
-"the staff panel."
+msgid "The CODER role has, nearly, the same effect as making the user Sysop, without the class designation. They will have full access to the site and the staff panel."
 msgstr ""
 
-msgid ""
-"The Crafty forums supports a number of <i>BBcode tags</i> which you can "
-"embed to modify how your posts are displayed. The last button, from the "
-"left, will display your content."
+msgid "The Crafty forums supports a number of <i>BBcode tags</i> which you can embed to modify how your posts are displayed. The last button, from the left, will display your content."
 msgstr ""
 
 msgid "The Karma bonus system is currently offline for maintainance work"
@@ -11294,9 +10648,7 @@ msgstr ""
 msgid "The Movie Database API"
 msgstr ""
 
-msgid ""
-"The PU limit used to be 25GB and we didn't demote anyone when we raised it "
-"to 50GB."
+msgid "The PU limit used to be 25GB and we didn't demote anyone when we raised it to 50GB."
 msgstr ""
 
 msgid "The Promotion you have attempted to use does not exist or has expired!"
@@ -11305,9 +10657,7 @@ msgstr ""
 msgid "The URL must be an image of type gif, jpeg or png."
 msgstr ""
 
-msgid ""
-"The Winners will be announced once the lottery has closed and posted on the "
-"home page."
+msgid "The Winners will be announced once the lottery has closed and posted on the home page."
 msgstr ""
 
 msgid "The account was deleted."
@@ -11316,24 +10666,16 @@ msgstr ""
 msgid "The allowed formats are .gif, .jpg and .png."
 msgstr ""
 
-msgid ""
-"The application was successfully accepted. The user has been promoted and "
-"has been sent a PM notification."
+msgid "The application was successfully accepted. The user has been promoted and has been sent a PM notification."
 msgstr ""
 
-msgid ""
-"The application was successfully rejected. The user has been sent a PM "
-"notification."
+msgid "The application was successfully rejected. The user has been sent a PM notification."
 msgstr ""
 
-msgid ""
-"The bot will respond to the trigger phrase by selecting one of these "
-"responses, at random."
+msgid "The bot will respond to the trigger phrase by selecting one of these responses, at random."
 msgstr ""
 
-msgid ""
-"The change will take effect as soon as the new email address has been "
-"confirmed"
+msgid "The change will take effect as soon as the new email address has been confirmed"
 msgstr ""
 
 msgid "The comment has been deleted"
@@ -11358,21 +10700,13 @@ msgstr ""
 msgid "The description is too long max 100 chars."
 msgstr ""
 
-msgid ""
-"The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor"
-" download speed is mainly a problem with new and very popular torrents where"
-" the SLR is low."
+msgid "The download speed mostly depends on the seeder-to-leecher ratio (SLR). Poor download speed is mainly a problem with new and very popular torrents where the SLR is low."
 msgstr ""
 
-msgid ""
-"The email address must be valid. You will receive a confirmation email which"
-" you need to respond to. The email address won't be publicly shown anywhere."
+msgid "The email address must be valid. You will receive a confirmation email which you need to respond to. The email address won't be publicly shown anywhere."
 msgstr ""
 
 msgid "The file can't be empty!"
-msgstr ""
-
-msgid "The file was written...wait for redirect"
 msgstr ""
 
 msgid "The filename cannot be empty."
@@ -11382,21 +10716,13 @@ msgid "The filename is too long max 80 chars."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The following characters can be used: {0}. All other characters will be "
-"ignored."
+msgid "The following characters can be used: {0}. All other characters will be ignored."
 msgstr ""
 
 msgid "The forums are currently offline for maintainance work"
-msgstr ""
+msgstr "Foorumid on hooldustööde jaoks praegu suletud"
 
-msgid ""
-"The full effect is a combination of the two. The upload should be kept as "
-"high as possible while allowing the ACKs to get through without delay. A "
-"good thumb rule is keeping the upload at about 80 percent of the theoretical"
-" upload speed. You will have to fine tune yours to find out what works best "
-"for you. (Remember that keeping the upload high has the additional benefit "
-"of helping with your ratio.)"
+msgid "The full effect is a combination of the two. The upload should be kept as high as possible while allowing the ACKs to get through without delay. A good thumb rule is keeping the upload at about 80 percent of the theoretical upload speed. You will have to fine tune yours to find out what works best for you. (Remember that keeping the upload high has the additional benefit of helping with your ratio.)"
 msgstr ""
 
 msgid "The game is up, you rep spammer!"
@@ -11421,11 +10747,7 @@ msgstr ""
 msgid "The minimum grade for deletion"
 msgstr ""
 
-msgid ""
-"The more pieces you have, the harder it becomes to find peers who have "
-"pieces you are missing. That is why downloads sometimes slow down or even "
-"stall when there are just a few percent remaining. Just be patient and you "
-"will, sooner or later, get the remaining pieces."
+msgid "The more pieces you have, the harder it becomes to find peers who have pieces you are missing. That is why downloads sometimes slow down or even stall when there are just a few percent remaining. Just be patient and you will, sooner or later, get the remaining pieces."
 msgstr ""
 
 msgid "The more tickets that are sold the bigger the pot will be!"
@@ -11463,28 +10785,16 @@ msgstr ""
 msgid "The passwords didn't match. Try again."
 msgstr ""
 
-msgid ""
-"The promotion is automatic when these conditions are met. Note that you will"
-" be automatically demoted from this status if your ratio drops below 0.85 at"
-" any time."
+msgid "The promotion is automatic when these conditions are met. Note that you will be automatically demoted from this status if your ratio drops below 0.85 at any time."
 msgstr ""
 
-msgid ""
-"The promotion is automatic when these conditions are met. Note that you will"
-" be automatically demoted from this status if your ratio drops below 1.20 at"
-" any time."
+msgid "The promotion is automatic when these conditions are met. Note that you will be automatically demoted from this status if your ratio drops below 1.20 at any time."
 msgstr ""
 
-msgid ""
-"The proxy sends no client identification to the server. "
-"(HTTP_X_FORWARDED_FOR header is not sent; the server does not see your IP.)"
+msgid "The proxy sends no client identification to the server. (HTTP_X_FORWARDED_FOR header is not sent; the server does not see your IP.)"
 msgstr ""
 
-msgid ""
-"The proxy sends no client nor proxy identification to the server. "
-"(HTTP_X_FORWARDED_FOR, HTTP_VIA and HTTP_PROXY_CONNECTION headers are not "
-"sent; the server doesn't see your IP and doesn't even know you're using a "
-"proxy.)"
+msgid "The proxy sends no client nor proxy identification to the server. (HTTP_X_FORWARDED_FOR, HTTP_VIA and HTTP_PROXY_CONNECTION headers are not sent; the server doesn't see your IP and doesn't even know you're using a proxy.)"
 msgstr ""
 
 msgid "The report system is offline"
@@ -11496,30 +10806,15 @@ msgstr ""
 msgid "The selected class is not a valid staff class."
 msgstr ""
 
-msgid ""
-"The server is overloaded and unresponsive. Just try to keep the session open"
-" until the server responds again. (Flooding the server with consecutive "
-"manual updates is not recommended.)"
+msgid "The server is overloaded and unresponsive. Just try to keep the session open until the server responds again. (Flooding the server with consecutive manual updates is not recommended.)"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The site accepts connections on port 81 besides the usual 80, and using them"
-" may be enough to fool some proxies. So the first thing to try should be "
-"connecting to {0}. Note that even if this works your bt client will still "
-"try to connect to port 80 unless you edit the announce url in the .torrent "
-"file."
+msgid "The site accepts connections on port 81 besides the usual 80, and using them may be enough to fool some proxies. So the first thing to try should be connecting to {0}. Note that even if this works your bt client will still try to connect to port 80 unless you edit the announce url in the .torrent file."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The site blocks addresses listed in the (former) {0}PeerGuardian{1} "
-"database, as well as addresses of banned users. This works at Apache/PHP "
-"level, it's just a script that blocks <i>logins</i> from those addresses. It"
-" should not stop you from reaching the site. In particular it does not block"
-" lower level protocols, you should be able to ping/traceroute the server "
-"even if your address is blacklisted. If you cannot then the reason for the "
-"problem lies elsewhere."
+msgid "The site blocks addresses listed in the (former) {0}PeerGuardian{1} database, as well as addresses of banned users. This works at Apache/PHP level, it's just a script that blocks <i>logins</i> from those addresses. It should not stop you from reaching the site. In particular it does not block lower level protocols, you should be able to ping/traceroute the server even if your address is blacklisted. If you cannot then the reason for the problem lies elsewhere."
 msgstr ""
 
 msgid "The staffpanel is currently offline for maintainance work"
@@ -11544,9 +10839,7 @@ msgstr ""
 msgid "The torrent may have been out-of-sync with the site {0}rules{1}."
 msgstr ""
 
-msgid ""
-"The tracker has determined that you are firewalled or NATed and cannot "
-"accept incoming connections."
+msgid "The tracker has determined that you are firewalled or NATed and cannot accept incoming connections."
 msgstr ""
 
 msgid ""
@@ -11570,9 +10863,7 @@ msgstr ""
 msgid "The upload speed affects the download speed in essentially two ways:"
 msgstr ""
 
-msgid ""
-"The uploader may have deleted it because it was a bad release. A replacement"
-" will probably be uploaded to take its place."
+msgid "The uploader may have deleted it because it was a bad release. A replacement will probably be uploaded to take its place."
 msgstr ""
 
 msgid "The user is cheating. (a.k.a. 'Summary Ban')"
@@ -11582,41 +10873,22 @@ msgid "The user is not signed in."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The user will be informed of your Friend Request, you will be informed via "
-"PM upon confirmation.<br><br>{0}Go to your Friends List{1}"
+msgid "The user will be informed of your Friend Request, you will be informed via PM upon confirmation.<br><br>{0}Go to your Friends List{1}"
 msgstr ""
 
 msgid "The watched members list is empty"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The way to solve the problem involves opening the ports used for incoming "
-"connections (the same range you defined in your client) on the firewall "
-"and/or configuring your NAT server to use a basic form of NAT for that range"
-" instead of NAPT (the actual process differs widely between different router"
-" models. Check your router documentation and/or support forum. You will also"
-" find lots of information on the subject at {0}PortForward{1})."
+msgid "The way to solve the problem involves opening the ports used for incoming connections (the same range you defined in your client) on the firewall and/or configuring your NAT server to use a basic form of NAT for that range instead of NAPT (the actual process differs widely between different router models. Check your router documentation and/or support forum. You will also find lots of information on the subject at {0}PortForward{1})."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The {0} has begun! Get your tickets now. The pot is {1} and each ticket is "
-"only {2} {3}."
+msgid "The {0} has begun! Get your tickets now. The pot is {1} and each ticket is only {2} {3}."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"The {0} tracker is quite smart at finding your real IP, but it does need the"
-" proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy "
-"does not then what happens is that the tracker will interpret the proxy's IP"
-" address as the client's IP address. So when you login and the tracker tries"
-" to connect to your client to see if you are NAT/firewalled it will actually"
-" try to connect to the proxy on the port your client reports to be using for"
-" incoming connections. Naturally the proxy will not be listening on that "
-"port, the connection will fail and the tracker will think you are "
-"NAT/firewalled."
+msgid "The {0} tracker is quite smart at finding your real IP, but it does need the proxy to send the HTTP header HTTP_X_FORWARDED_FOR. If your ISP's proxy does not then what happens is that the tracker will interpret the proxy's IP address as the client's IP address. So when you login and the tracker tries to connect to your client to see if you are NAT/firewalled it will actually try to connect to the proxy on the port your client reports to be using for incoming connections. Naturally the proxy will not be listening on that port, the connection will fail and the tracker will think you are NAT/firewalled."
 msgstr ""
 
 #, no-php-format
@@ -11628,9 +10900,7 @@ msgstr[1] ""
 msgid "Theft summary"
 msgstr ""
 
-msgid ""
-"There are a couple of things that you can try on your end to improve your "
-"speed:"
+msgid "There are a couple of things that you can try on your end to improve your speed:"
 msgstr ""
 
 msgid "There are already"
@@ -11639,9 +10909,7 @@ msgstr ""
 msgid "There are currently no PM boxes to edit."
 msgstr ""
 
-msgid ""
-"There are currently no achievements added to the list!<br>The staff has been"
-" slacking"
+msgid "There are currently no achievements added to the list!<br>The staff has been slacking"
 msgstr ""
 
 msgid "There are currently no uploader applications"
@@ -11681,9 +10949,7 @@ msgstr ""
 msgid "There are no offers."
 msgstr ""
 
-msgid ""
-"There are no other players, so you'll have to wait until someone plays "
-"against you.<br>You will receive a PM with the game results."
+msgid "There are no other players, so you'll have to wait until someone plays against you.<br>You will receive a PM with the game results."
 msgstr ""
 
 msgid "There are no peers and therefore there are no client ID's"
@@ -11735,17 +11001,11 @@ msgstr ""
 msgid "There have been no active users in the last 15 minutes."
 msgstr ""
 
-msgid ""
-"There is a minimum of 2 options, and a maximun of 20 options. you have "
-"entered"
+msgid "There is a minimum of 2 options, and a maximun of 20 options. you have entered"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"There is a {0} users limit. When that number is reached we stop accepting "
-"new members. Accounts inactive for more than 42 days are automatically "
-"deleted, so keep trying. (There is no reservation or queuing system, don't "
-"ask for that.)"
+msgid "There is a {0} users limit. When that number is reached we stop accepting new members. Accounts inactive for more than 42 days are automatically deleted, so keep trying. (There is no reservation or queuing system, don't ask for that.)"
 msgstr ""
 
 msgid "There is message with this id"
@@ -11758,9 +11018,6 @@ msgid "There is no poll with that ID!"
 msgstr ""
 
 msgid "There is no title defined!"
-msgstr ""
-
-msgid "There is no username on the blacklist"
 msgstr ""
 
 #, no-php-format
@@ -11806,11 +11063,7 @@ msgstr[1] ""
 msgid "There may be three reasons for this:"
 msgstr ""
 
-msgid ""
-"There seems to be a lot of confusion about how the statistics updates work. "
-"The following is a capture of a full session to see what's going on behind "
-"the scenes. The client communicates with the tracker via simple http GET "
-"commands. The very first in this case was"
+msgid "There seems to be a lot of confusion about how the statistics updates work. The following is a capture of a full session to see what's going on behind the scenes. The client communicates with the tracker via simple http GET commands. The very first in this case was"
 msgstr ""
 
 msgid "There was a database error, please retry."
@@ -11825,25 +11078,19 @@ msgstr ""
 msgid "There was an error trying to save the image to BitBucket."
 msgstr ""
 
-msgid ""
-"There was an error while executing the update query or nothing was updated "
-"1."
+msgid "There was an error while executing the update query or nothing was updated 1."
 msgstr ""
 
-msgid ""
-"There was an error while executing the update query or nothing was updated "
-"2."
+msgid "There was an error while executing the update query or nothing was updated 2."
 msgstr ""
 
-msgid ""
-"There was an error while executing the update query or nothing was updated."
+msgid "There was an error while executing the update query or nothing was updated."
 msgstr ""
 
 msgid "There was an error while executing the update query."
 msgstr ""
 
-msgid ""
-"There was an error with the file or with the query, please contact staff"
+msgid "There was an error with the file or with the query, please contact staff"
 msgstr ""
 
 msgid "There was an error with the query please contact the staff!"
@@ -11865,38 +11112,19 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, no-php-format
-msgid ""
-"There's a further message that causes the torrent to be removed from the "
-"user's profile, namely {0}. This is usually sent when stopping in the middle"
-" of a download, e.g. by pressing 'Cancel'."
+msgid "There's a further message that causes the torrent to be removed from the user's profile, namely {0}. This is usually sent when stopping in the middle of a download, e.g. by pressing 'Cancel'."
 msgstr ""
 
-msgid ""
-"There's nothing we can do. You should contact your ISP (or get a new one). "
-"Note that you can still visit the site via a proxy, follow the instructions "
-"in the relevant section. In this case it doesn't matter if the proxy is "
-"anonymous or not, or which port it listens to."
+msgid "There's nothing we can do. You should contact your ISP (or get a new one). Note that you can still visit the site via a proxy, follow the instructions in the relevant section. In this case it doesn't matter if the proxy is anonymous or not, or which port it listens to."
 msgstr ""
 
 msgid "These are *WS* for widescreen (letterbox) and *FS* for Fullscreen."
 msgstr ""
 
-msgid ""
-"These are films put out by eastern bootleggers, and these are usually bought"
-" by some groups to put out as their own. Silvers are very cheap and easily "
-"available in a lot of countries, and its easy to put out a release, which is"
-" why there are so many in the scene at the moment, mainly from smaller "
-"groups who don't last more than a few releases. PDVDs are the same thing "
-"pressed onto a DVD. They have removable subtitles, and the quality is "
-"usually better than the silvers. These are ripped like a normal DVD, but "
-"usually released as VCD."
+msgid "These are films put out by eastern bootleggers, and these are usually bought by some groups to put out as their own. Silvers are very cheap and easily available in a lot of countries, and its easy to put out a release, which is why there are so many in the scene at the moment, mainly from smaller groups who don't last more than a few releases. PDVDs are the same thing pressed onto a DVD. They have removable subtitles, and the quality is usually better than the silvers. These are ripped like a normal DVD, but usually released as VCD."
 msgstr ""
 
-msgid ""
-"These clients do not report correctly to the tracker when "
-"canceling/finishing a torrent session. If you use them then a few MB may not"
-" be counted towards the stats near the end, and torrents may still be listed"
-" in your profile for some time after you have closed the client."
+msgid "These clients do not report correctly to the tracker when canceling/finishing a torrent session. If you use them then a few MB may not be counted towards the stats near the end, and torrents may still be listed in your profile for some time after you have closed the client."
 msgstr ""
 
 msgid "Things edited: "
@@ -11933,19 +11161,13 @@ msgstr ""
 msgid "This account is currently on the"
 msgstr ""
 
-msgid ""
-"This allows you to add a new reputation level or edit an existing reputation"
-" level."
+msgid "This allows you to add a new reputation level or edit an existing reputation level."
 msgstr ""
 
-msgid ""
-"This can be a positive or a negative amount. When the user's reputation "
-"points reaches this amount, the above description will be displayed."
+msgid "This can be a positive or a negative amount. When the user's reputation points reaches this amount, the above description will be displayed."
 msgstr ""
 
-msgid ""
-"This delay in downloading will only affect users with a low ratio, and users"
-" with low upload amounts."
+msgid "This delay in downloading will only affect users with a low ratio, and users with low upload amounts."
 msgstr ""
 
 msgid "This does not appear to be a valid URL."
@@ -11957,48 +11179,33 @@ msgstr ""
 msgid "This email address is banned!<br><br><strong>Reason</strong>:"
 msgstr ""
 
-msgid ""
-"This format only works when using the bbcode editor as it strips all but the"
-" video id."
+msgid "This format only works when using the bbcode editor as it strips all but the video id."
 msgstr ""
 
-msgid ""
-"This format works everywhere, but does not display correctly in BBcode "
-"editor."
+msgid "This format works everywhere, but does not display correctly in BBcode editor."
 msgstr ""
 
 msgid "This invite code does not exist."
 msgstr ""
 
-msgid ""
-"This invite code was either not used, or the member who used it is not "
-"longer with us."
+msgid "This invite code was either not used, or the member who used it is not longer with us."
 msgstr ""
 
 msgid "This is a draft"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"This is a private tracker, and you have to register before you can get full "
-"access to the site. Before you do anything here at <b>{0}</b> we suggest you"
-" read the {1}rules{2}! There are only a few rules to abide by, but we do "
-"enforce them!"
+msgid "This is a private tracker, and you have to register before you can get full access to the site. Before you do anything here at <b>{0}</b> we suggest you read the {1}rules{2}! There are only a few rules to abide by, but we do enforce them!"
 msgstr ""
 
-msgid ""
-"This is a very particular case in that all computers in the LAN will appear "
-"to the outside world as having the same IP. We must distinguish between two "
-"cases:"
+msgid "This is a very particular case in that all computers in the LAN will appear to the outside world as having the same IP. We must distinguish between two cases:"
 msgstr ""
 
 msgid "This is already your avatar!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"This is awarded on a per torrent basis (max of {0} even if there are no "
-"leechers on the Torrent you are seeding!"
+msgid "This is awarded on a per torrent basis (max of {0} even if there are no leechers on the Torrent you are seeding!"
 msgstr ""
 
 msgid "This is not your post to delete."
@@ -12007,13 +11214,10 @@ msgstr ""
 msgid "This is not your post to edit."
 msgstr ""
 
-msgid ""
-"This is only used by an upload script, msg any staff member for the details."
+msgid "This is only used by an upload script, msg any staff member for the details."
 msgstr ""
 
-msgid ""
-"This is only used by auto downloaders, such as CouchPotato, SickRage and "
-"others. (API not implemented, yet)."
+msgid "This is only used by auto downloaders, such as CouchPotato, SickRage and others. (API not implemented, yet)."
 msgstr ""
 
 msgid "This is only users that are active on the torrents right now."
@@ -12028,29 +11232,19 @@ msgstr ""
 msgid "This is used for Scars Upload Script and possibly others"
 msgstr ""
 
-msgid ""
-"This is used for auto download scripts, such as CouchPotota, SickRage and "
-"others"
+msgid "This is used for auto download scripts, such as CouchPotota, SickRage and others"
 msgstr ""
 
-msgid ""
-"This is used for downloading and seeding torrents, in your torrent client "
-"and your rss reader."
+msgid "This is used for downloading and seeding torrents, in your torrent client and your rss reader."
 msgstr ""
 
-msgid ""
-"This is what is displayed for the user when their reputation points are "
-"above the amount entered as the minimum."
+msgid "This is what is displayed for the user when their reputation points are above the amount entered as the minimum."
 msgstr ""
 
 msgid "This is your link set up according to your selected categories"
 msgstr ""
 
-msgid ""
-"This means that other peers in the swarm will be unable to connect to you, "
-"only you to them. Even worse, if two peers are both in this state they will "
-"not be able to connect at all. This obviously has a detrimental effect on "
-"the overall speed."
+msgid "This means that other peers in the swarm will be unable to connect to you, only you to them. Even worse, if two peers are both in this state they will not be able to connect at all. This obviously has a detrimental effect on the overall speed."
 msgstr ""
 
 msgid "This member has blocked PMs from you."
@@ -12077,25 +11271,16 @@ msgstr ""
 msgid "This offer is still pending."
 msgstr ""
 
-msgid ""
-"This option will append this topic to the end of the new topic. The dates "
-"will be preserved, but the posts will be added after the last post in the "
-"appended to thread."
+msgid "This option will append this topic to the end of the new topic. The dates will be preserved, but the posts will be added after the last post in the appended to thread."
 msgstr ""
 
-msgid ""
-"This option will mix the two topics together, keeping dates and post numbers"
-" preserved."
+msgid "This option will mix the two topics together, keeping dates and post numbers preserved."
 msgstr ""
 
-msgid ""
-"This option will send this thread to the hidden recycle bin for other staff "
-"to view it."
+msgid "This option will send this thread to the hidden recycle bin for other staff to view it."
 msgstr ""
 
-msgid ""
-"This page allows you to search for reputation comments left by / for "
-"specific users over the specified date range."
+msgid "This page allows you to search for reputation comments left by / for specific users over the specified date range."
 msgstr ""
 
 msgid "This page is not complete."
@@ -12113,35 +11298,26 @@ msgstr ""
 msgid "This post is staff locked, it cannot be modified, quoted or deleted."
 msgstr ""
 
-msgid ""
-"This post staff is locked my friend, deleting the evidence you wont be."
+msgid "This post staff is locked my friend, deleting the evidence you wont be."
 msgstr ""
 
 msgid "This post was not soft deleted, it can't be undeleted"
 msgstr ""
 
-msgid ""
-"This problem sometimes occurs with MSIE. Close all Internet Explorer windows"
-" and open Internet Options in the control panel. Click the Delete Cookie "
-"button. You should now be able to login."
-msgstr ""
+msgid "This problem sometimes occurs with MSIE. Close all Internet Explorer windows and open Internet Options in the control panel. Click the Delete Cookie button. You should now be able to login."
+msgstr "See probleem ilmneb mõnikord MSIE-ga. Sulgege kõik Internet Exploreri aknad ja avage juhtpaneelil Interneti-suvandid. Klõpsake nuppu Kustuta küpsis. Nüüd peaks teil olema võimalik sisse logida."
 
 msgid "This section allows you to configure the User Reputation system."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"This section was written for {0}, a closed, port 80-81 tracker. Other "
-"trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. "
-"The above does not necessarily apply to other trackers."
+msgid "This section was written for {0}, a closed, port 80-81 tracker. Other trackers may be open or closed, and many listen on e.g. ports 6868 or 6969. The above does not necessarily apply to other trackers."
 msgstr ""
 
 msgid "This shall be the same as the folder name"
 msgstr ""
 
-msgid ""
-"This status is given ONLY by the Sysops since only they can verify that they"
-" actually donated something."
+msgid "This status is given ONLY by the Sysops since only they can verify that they actually donated something."
 msgstr ""
 
 msgid "This tag is superfluous; all URLs are automatically hyperlinked."
@@ -12156,9 +11332,7 @@ msgstr ""
 msgid "This topic is locked"
 msgstr ""
 
-msgid ""
-"This torrent has already been uploaded! Please use the search function "
-"before uploading."
+msgid "This torrent has already been uploaded! Please use the search function before uploading."
 msgstr ""
 
 msgid "This torrent is for VIP users only!"
@@ -12185,8 +11359,7 @@ msgstr ""
 msgid "This user is immune to your commands!"
 msgstr ""
 
-msgid ""
-"This users profile is protected, because his or her status is anonymous!"
+msgid "This users profile is protected, because his or her status is anonymous!"
 msgstr ""
 
 msgid "This won't work enter without a decimal point"
@@ -12201,9 +11374,7 @@ msgstr ""
 msgid "Thou bootless toad-spotted ratsbane!"
 msgstr ""
 
-msgid ""
-"Thou hath more hair than wit, and more faults than hairs, and more wealth "
-"than faults."
+msgid "Thou hath more hair than wit, and more faults than hairs, and more wealth than faults."
 msgstr ""
 
 msgid "Thou spongy prick-eared bag of guts!"
@@ -12275,38 +11446,26 @@ msgstr ""
 msgid "To Year Released"
 msgstr ""
 
-msgid ""
-"To add a new site config setting or add to an existing array, select 'New' "
-"from the dropdown menu and fill in the blanks and click 'Apply Changes'."
+msgid "To add a new site config setting or add to an existing array, select 'New' from the dropdown menu and fill in the blanks and click 'Apply Changes'."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"To be notified via PM when there is a new post, go to your {0}profile{1} "
-"page and set 'PM on Subscriptions' to yes."
+msgid "To be notified via PM when there is a new post, go to your {0}profile{1} page and set 'PM on Subscriptions' to yes."
 msgstr ""
 
-msgid ""
-"To delete any config setting, simply clear and leave blank the setting "
-"'Name' and click 'Apply Changes'."
+msgid "To delete any config setting, simply clear and leave blank the setting 'Name' and click 'Apply Changes'."
 msgstr ""
 
 msgid "To go"
 msgstr ""
 
-msgid ""
-"To limit the comments left by a specific user, enter the username here. "
-"Leave this field empty to receive comments left by every user."
+msgid "To limit the comments left by a specific user, enter the username here. Leave this field empty to receive comments left by every user."
 msgstr ""
 
-msgid ""
-"To limit the comments left for a specific user, enter the username here. "
-"Leave this field empty to receive comments left for every user."
+msgid "To limit the comments left for a specific user, enter the username here. Leave this field empty to receive comments left for every user."
 msgstr ""
 
-msgid ""
-"To make sure your torrents show up in your profile you should visit the site"
-" immediately before starting a session."
+msgid "To make sure your torrents show up in your profile you should visit the site immediately before starting a session."
 msgstr ""
 
 msgid "To re-new your donation click"
@@ -12324,9 +11483,7 @@ msgstr ""
 msgid "To save a message in your draft folder, it must have some body text!"
 msgstr ""
 
-msgid ""
-"To search for an invite code, use this box. It will show you who make the "
-"code, and who used it!"
+msgid "To search for an invite code, use this box. It will show you who make the code, and who used it!"
 msgstr ""
 
 msgid "To split this topic, you must supply a name for the new topic!"
@@ -12405,9 +11562,7 @@ msgstr ""
 msgid "Topic / Post"
 msgstr ""
 
-msgid ""
-"Topic ID can be found in the address bar above... the topic id for this "
-"thread is:"
+msgid "Topic ID can be found in the address bar above... the topic id for this thread is:"
 msgstr ""
 
 msgid "Topic Views"
@@ -12543,8 +11698,7 @@ msgid "Torrent {0} was deleted by {1}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Torrent {0} was deleted by {1} and all users were Re-Paid Download credit."
+msgid "Torrent {0} was deleted by {1} and all users were Re-Paid Download credit."
 msgstr ""
 
 #, no-php-format
@@ -12552,9 +11706,7 @@ msgid "Torrent {0}({1}){2} was checked by {3}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Torrent {0}{1}{2} will soon be deleted. Please re-seed this torrent to avoid"
-" deletion."
+msgid "Torrent {0}{1}{2} will soon be deleted. Please re-seed this torrent to avoid deletion."
 msgstr ""
 
 msgid "Torrent:"
@@ -12653,16 +11805,13 @@ msgstr ""
 msgid "Traffic Per Hour"
 msgstr ""
 
-msgid ""
-"Traffic Per Hour. These tables show the network traffic statistics of this "
-"MySQL server since its startup "
+msgid "Traffic Per Hour. These tables show the network traffic statistics of this MySQL server since its startup "
 msgstr ""
 
 msgid "Traffic?"
 msgstr ""
 
-msgid ""
-"Transferred off a retail VHS, mainly skating/sports videos and XXX releases."
+msgid "Transferred off a retail VHS, mainly skating/sports videos and XXX releases."
 msgstr ""
 
 msgid "Transparent"
@@ -12724,8 +11873,7 @@ msgstr ""
 msgid "Try again"
 msgstr ""
 
-msgid ""
-"Try again in a few minutes, or wait. The tracker updates every 15 minutes."
+msgid "Try again in a few minutes, or wait. The tracker updates every 15 minutes."
 msgstr ""
 
 msgid "Try again with a refined search string."
@@ -12735,10 +11883,7 @@ msgid "Try correcting any 'off topics' rather then closing a thread."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is "
-"running received from you. The relevant ones are HTTP_CLIENT_IP, "
-"HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
+msgid "Try {0}ProxyJudge{1}. It lists the HTTP headers that the server where it is running received from you. The relevant ones are HTTP_CLIENT_IP, HTTP_X_FORWARDED_FOR and REMOTE_ADDR."
 msgstr ""
 
 msgid "Tuesday"
@@ -12750,9 +11895,7 @@ msgstr ""
 msgid "TvMaze ID"
 msgstr ""
 
-msgid ""
-"Twix are for kids.. Check at least one application stupid...You can't delete"
-" nothing!"
+msgid "Twix are for kids.. Check at least one application stupid...You can't delete nothing!"
 msgstr ""
 
 msgid "Two announce periods per hour"
@@ -12768,7 +11911,7 @@ msgid "Two uploaded amounts needed for this type of search."
 msgstr ""
 
 msgid "Type"
-msgstr ""
+msgstr "Tüüp"
 
 msgid "Type Of Tool"
 msgstr ""
@@ -12865,7 +12008,7 @@ msgid "Unknown failure occurred"
 msgstr ""
 
 msgid "Unknown type."
-msgstr ""
+msgstr "Tundmatu tüüp."
 
 msgid "Unlike"
 msgstr ""
@@ -13068,7 +12211,7 @@ msgid "Uploading a new torrent = {0} points"
 msgstr ""
 
 msgid "Uploading rules -"
-msgstr ""
+msgstr "Üleslaadimise reeglid -"
 
 msgid "Uploads disabled = "
 msgstr ""
@@ -13110,15 +12253,10 @@ msgstr ""
 msgid "Use gzip compression"
 msgstr ""
 
-msgid ""
-"Use this section to search emails and IPs whithin a block of text. "
-"Everything else will be ignored!"
+msgid "Use this section to search emails and IPs whithin a block of text. Everything else will be ignored!"
 msgstr ""
 
-msgid ""
-"Use this section to search for multiple usernames. The search is not case "
-"sensitive, but you must seperate all usernames with a space! Line breaks are"
-" ignored as are any non alpha numeric charecters except - and _"
+msgid "Use this section to search for multiple usernames. The search is not case sensitive, but you must seperate all usernames with a space! Line breaks are ignored as are any non alpha numeric charecters except - and _"
 msgstr ""
 
 msgid "Use your better judgement!"
@@ -13194,7 +12332,7 @@ msgid "User Search"
 msgstr ""
 
 msgid "User Settings"
-msgstr ""
+msgstr "Kasutaja Seaded"
 
 msgid "User Unlocks"
 msgstr ""
@@ -13206,8 +12344,11 @@ msgid "User account"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
+msgid "User account {0} ){1}) DoubleSeed On All Torrents have been removed by {2}"
+msgstr ""
+
+#, no-php-format
+msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
 msgstr ""
 
 msgid "User class"
@@ -13280,9 +12421,6 @@ msgstr ""
 msgid "Username"
 msgstr ""
 
-msgid "Username Blacklist"
-msgstr ""
-
 msgid "Username Has Been Changed To "
 msgstr ""
 
@@ -13308,10 +12446,10 @@ msgid "Username too long or too short"
 msgstr ""
 
 msgid "Users"
-msgstr ""
+msgstr "Kasutajad"
 
 msgid "Users Online"
-msgstr ""
+msgstr "Kasutajad võrgus"
 
 msgid "Users can win"
 msgstr ""
@@ -13489,9 +12627,7 @@ msgid "Visible on main page"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Visit {0}. Hopefully the tracker will now pickup your real IP (check your "
-"profile to make sure)."
+msgid "Visit {0}. Hopefully the tracker will now pickup your real IP (check your profile to make sure)."
 msgstr ""
 
 msgid "Vote"
@@ -13526,7 +12662,7 @@ msgid "Warned for: {0}"
 msgstr ""
 
 msgid "Warned users"
-msgstr ""
+msgstr "Hoiatatud kasutajad"
 
 #, no-php-format
 msgid "Warned utill {0} - {1}"
@@ -13554,9 +12690,7 @@ msgstr ""
 msgid "Watermarks"
 msgstr ""
 
-msgid ""
-"We can rename accounts, please do not create new one. You can contact site "
-"staff with your request."
+msgid "We can rename accounts, please do not create new one. You can contact site staff with your request."
 msgstr ""
 
 msgid "We can't say if the user is who they claim to be"
@@ -13622,7 +12756,7 @@ msgstr "Tere tulemast tagasi!"
 
 #, no-php-format
 msgid "Welcome to our newest member&nbsp;{0}!"
-msgstr ""
+msgstr "Tere tulemast uus liige&nbsp;{0}!"
 
 #, no-php-format
 msgid "Welcome to {0}!"
@@ -13651,9 +12785,7 @@ msgstr ""
 msgid "What are these 'a piece has failed an hash check' messages?"
 msgstr ""
 
-msgid ""
-"What colors are valid depends on the browser. If you use the basic colors "
-"(red, green, blue, yellow, pink etc) you should be safe."
+msgid "What colors are valid depends on the browser. If you use the basic colors (red, green, blue, yellow, pink etc) you should be safe."
 msgstr ""
 
 msgid "What criteria must I meet before I can join the Uploader team?"
@@ -13682,10 +12814,7 @@ msgstr ""
 msgid "What is this?"
 msgstr ""
 
-msgid ""
-"What reputation level shall new users receive upon registration? Make sure "
-"that you have a reputation level that is at least equal to or less than this"
-" value."
+msgid "What reputation level shall new users receive upon registration? Make sure that you have a reputation level that is at least equal to or less than this value."
 msgstr ""
 
 msgid "What the hell are these Karma Bonus points, and how do I get them?"
@@ -13703,16 +12832,7 @@ msgstr ""
 msgid "When Completed"
 msgstr ""
 
-msgid ""
-"When a torrent is first started, the tracker uses the IP to identify the "
-"user. Therefore the torrent will become associated with the user <i>who last"
-" accessed the site</i> from that IP. If you share your IP in some way (you "
-"are behind NAT/ICS, or using a proxy), and some of the persons you share it "
-"with are also users, you may occasionally see their torrents listed in your "
-"profile. (If they start a torrent session from that IP and you were the last"
-" one to visit the site the torrent will be associated with you). Note that "
-"now torrents listed in your profile will always count towards your total "
-"stats."
+msgid "When a torrent is first started, the tracker uses the IP to identify the user. Therefore the torrent will become associated with the user <i>who last accessed the site</i> from that IP. If you share your IP in some way (you are behind NAT/ICS, or using a proxy), and some of the persons you share it with are also users, you may occasionally see their torrents listed in your profile. (If they start a torrent session from that IP and you were the last one to visit the site the torrent will be associated with you). Note that now torrents listed in your profile will always count towards your total stats."
 msgstr ""
 
 msgid "When any of your uploaded torrents are commented on, you will be PMed."
@@ -13724,9 +12844,7 @@ msgstr ""
 msgid "When someone posts in a subscribed thread, you will be PMed."
 msgstr ""
 
-msgid ""
-"When the account has been parked limits are put on the account, you cannot "
-"use the tracker or browse any of the pages."
+msgid "When the account has been parked limits are put on the account, you cannot use the tracker or browse any of the pages."
 msgstr ""
 
 msgid "When to start the poll. Default is 'Start Now'"
@@ -13735,12 +12853,7 @@ msgstr ""
 msgid "When to start the poll. Default is: Start Now!"
 msgstr ""
 
-msgid ""
-"Whenever the tracker receives these GETs it updates both the stats relative "
-"to the 'currently leeching/seeding' boxes and the total user upload/download"
-" stats. These intermediate GETs will be sent either periodically (every 15 "
-"min or so, depends on the client and tracker) or when you force a manual "
-"announce in the client."
+msgid "Whenever the tracker receives these GETs it updates both the stats relative to the 'currently leeching/seeding' boxes and the total user upload/download stats. These intermediate GETs will be sent either periodically (every 15 min or so, depends on the client and tracker) or when you force a manual announce in the client."
 msgstr ""
 
 msgid "Where can I get a copy of the source code?"
@@ -13749,17 +12862,10 @@ msgstr ""
 msgid "Where does the donated money go?"
 msgstr ""
 
-msgid ""
-"Wherein [art thou] good, but to taste sack and drink it? Wherein neat and "
-"cleanly, but to carve a capon and eat it? Wherein cunning, but in craft? "
-"Wherein crafty but in villainy? Wherein villainous, but in all things? "
-"Wherein worthy but in nothing?"
+msgid "Wherein [art thou] good, but to taste sack and drink it? Wherein neat and cleanly, but to carve a capon and eat it? Wherein cunning, but in craft? Wherein crafty but in villainy? Wherein villainous, but in all things? Wherein worthy but in nothing?"
 msgstr ""
 
-msgid ""
-"While your account is suspended, your posting - uploading - downloading - "
-"commenting - invites will not work, and the only people that you can PM are "
-"staff members."
+msgid "While your account is suspended, your posting - uploading - downloading - commenting - invites will not work, and the only people that you can PM are staff members."
 msgstr ""
 
 msgid "Why I should be promoted"
@@ -13798,8 +12904,7 @@ msgstr ""
 msgid "Why do my downloads sometimes stall at 99%?"
 msgstr ""
 
-msgid ""
-"Why is a torrent I'm leeching/seeding listed several times in my profile?"
+msgid "Why is a torrent I'm leeching/seeding listed several times in my profile?"
 msgstr ""
 
 msgid "Why is my IP displayed on my details page?"
@@ -13880,28 +12985,16 @@ msgstr ""
 msgid "Yes (Low bandwidth user may want to disable this)"
 msgstr ""
 
-msgid ""
-"Yes, the tracker is now capable of following sessions from different IPs for"
-" the same user. A torrent is associated with the user when it starts, and "
-"only at that moment is the IP relevant. So if you want to seed/leech from "
-"computer A and computer B with the same account you should access the site "
-"from computer A, start the torrent there, and then repeat both steps from "
-"computer B (not limited to two computers or to a single torrent on each, "
-"this is just the simplest example). You do not need to login again when "
-"closing the torrent."
+msgid "Yes, the tracker is now capable of following sessions from different IPs for the same user. A torrent is associated with the user when it starts, and only at that moment is the IP relevant. So if you want to seed/leech from computer A and computer B with the same account you should access the site from computer A, start the torrent there, and then repeat both steps from computer B (not limited to two computers or to a single torrent on each, this is just the simplest example). You do not need to login again when closing the torrent."
 msgstr ""
 
-msgid ""
-"Yes. The tracker now updates the stats correctly for all bittorrent clients."
-" However, we still recommend that you avoid the following clients:"
+msgid "Yes. The tracker now updates the stats correctly for all bittorrent clients. However, we still recommend that you avoid the following clients:"
 msgstr ""
 
 msgid "Yikes"
 msgstr ""
 
-msgid ""
-"You MUST enter a reason for this report! Use your back button and fill in "
-"the reason"
+msgid "You MUST enter a reason for this report! Use your back button and fill in the reason"
 msgstr ""
 
 msgid "You MUST read this message before you delete it!!!"
@@ -13915,12 +13008,8 @@ msgid "You already gave points to this torrent."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"You already have {0} open bet. Wait until it is completed before you start "
-"another."
-msgid_plural ""
-"You already have {0} open bets. Wait until they are completed before you "
-"start another."
+msgid "You already have {0} open bet. Wait until it is completed before you start another."
+msgid_plural "You already have {0} open bets. Wait until they are completed before you start another."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -13947,8 +13036,7 @@ msgid "You are allowed"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"You are allowed {0} in the previous 3 days. You have used {1} different IPs"
+msgid "You are allowed {0} in the previous 3 days. You have used {1} different IPs"
 msgstr ""
 
 msgid "You are already subscribed to this topic!"
@@ -13964,9 +13052,7 @@ msgid "You are not allowed to edit this page."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"You are not authorized to upload torrents.  (See {0}Uploading{1} in the "
-"FAQ.)"
+msgid "You are not authorized to upload torrents.  (See {0}Uploading{1} in the FAQ.)"
 msgstr ""
 
 msgid "You are not leeching any torrents"
@@ -13981,17 +13067,13 @@ msgstr ""
 msgid "You are not seeding any torrents"
 msgstr ""
 
-msgid ""
-"You are not yet subscribed to any forums... To subscribe to a forum, click "
-"the 'Subscribe to this Forum' link on the thread page"
-msgstr ""
+msgid "You are not yet subscribed to any forums... To subscribe to a forum, click the 'Subscribe to this Forum' link on the thread page"
+msgstr "Te ei ole veel ühtegi foorumit tellinud... Foorumi tellimiseks klõpsake lehel linki 'Telli see foorum'"
 
 msgid "You are the dealer, you must take a card below 17."
 msgstr ""
 
-msgid ""
-"You are the player, you can double down with any opening hand worth 9, 10, "
-"11."
+msgid "You are the player, you can double down with any opening hand worth 9, 10, 11."
 msgstr ""
 
 #, no-php-format
@@ -14004,9 +13086,7 @@ msgstr ""
 msgid "You are up to date on all topics you've posted in"
 msgstr ""
 
-msgid ""
-"You are using a faulty client. If you want to use an experimental or CVS "
-"version you do it at your own risk."
+msgid "You are using a faulty client. If you want to use an experimental or CVS version you do it at your own risk."
 msgstr ""
 
 msgid "You both had"
@@ -14021,14 +13101,12 @@ msgstr[1] ""
 msgid "You can add comments to users (for other mods and admins to read)."
 msgstr ""
 
-msgid ""
-"You can add your own message, it will appear above the PM being forwarded."
+msgid "You can add your own message, it will appear above the PM being forwarded."
 msgstr ""
 
 #, no-php-format
 msgid "You can buy another {0} ticket if you get get more bonus points."
-msgid_plural ""
-"You can buy another {0} tickets if you get get more bonus points."
+msgid_plural "You can buy another {0} tickets if you get get more bonus points."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -14059,24 +13137,19 @@ msgstr ""
 msgid "You can only buy up to your purchaseable amount."
 msgstr ""
 
-msgid ""
-"You can park your account to prevent it from being deleted because of "
-"inactivity, for example, you go away on a vacation."
+msgid "You can park your account to prevent it from being deleted because of inactivity, for example, you go away on a vacation."
 msgstr ""
 
 msgid "You can see the complete info of all users."
 msgstr ""
 
-msgid ""
-"You can stop reading now because you already knew about these options. ;)"
+msgid "You can stop reading now because you already knew about these options. ;)"
 msgstr ""
 
 msgid "You can use the URL below to view the message (you may have to login)."
 msgstr ""
 
-msgid ""
-"You can use width and/or height as shown in the second link. You can use "
-"auto for one or the other."
+msgid "You can use width and/or height as shown in the second link. You can use auto for one or the other."
 msgstr ""
 
 msgid "You can win"
@@ -14108,9 +13181,7 @@ msgid "You can't give your self points!"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"You can't open your present until Christmas Day! {0} to go.<br>Today: "
-"{1}<br>Christmas Day: {2} [{3}]"
+msgid "You can't open your present until Christmas Day! {0} to go.<br>Today: {1}<br>Christmas Day: {2} [{3}]"
 msgstr ""
 
 msgid "You can't use this!"
@@ -14149,32 +13220,22 @@ msgstr ""
 msgid "You do not have the permission to do that."
 msgstr ""
 
-msgid ""
-"You do not have to anymore. All you have to do is make sure you are logged "
-"in with your actual IP when starting a torrent session. After that, even if "
-"the IP changes mid-session, the seeding or leeching will continue and the "
-"statistics will update without any problem."
+msgid "You do not have to anymore. All you have to do is make sure you are logged in with your actual IP when starting a torrent session. After that, even if the IP changes mid-session, the seeding or leeching will continue and the statistics will update without any problem."
 msgstr ""
 
-msgid ""
-"You do not have to use this tag unless you want to set the link text; all "
-"URLs are automatically hyperlinked."
+msgid "You do not have to use this tag unless you want to set the link text; all URLs are automatically hyperlinked."
 msgstr ""
 
 msgid "You don't ask us, we'll ask you!"
 msgstr ""
 
-msgid ""
-"You don't have enough karma[seedbonus] to download, try seeding back some "
-"torrents =]"
+msgid "You don't have enough karma[seedbonus] to download, try seeding back some torrents =]"
 msgstr ""
 
 msgid "You don't have enough points for that!"
 msgstr ""
 
-msgid ""
-"You don't have enough upload credit to download, try seeding back some "
-"torrents =]"
+msgid "You don't have enough upload credit to download, try seeding back some torrents =]"
 msgstr ""
 
 msgid "You dont have the correct credentials to be here!"
@@ -14239,9 +13300,7 @@ msgid ""
 msgstr ""
 
 #, no-php-format
-msgid ""
-"You have been set as a high speed uploader by {0}. You can now upload "
-"torrents using highspeeds without being flagged as a cheater."
+msgid "You have been set as a high speed uploader by {0}. You can now upload torrents using highspeeds without being flagged as a cheater."
 msgstr ""
 
 #, no-php-format
@@ -14276,9 +13335,7 @@ msgstr ""
 msgid "You have not uploaded any torrents"
 msgstr ""
 
-msgid ""
-"You have not verified you email address. Please check your email and click "
-"the link to verify it."
+msgid "You have not verified you email address. Please check your email and click the link to verify it."
 msgstr ""
 
 msgid "You have not voted for or against this request."
@@ -14291,9 +13348,6 @@ msgid "You have posted here"
 msgstr ""
 
 msgid "You have received"
-msgstr ""
-
-msgid "You have received Freeleech Status from "
 msgstr ""
 
 msgid "You have received a PM from "
@@ -14331,6 +13385,10 @@ msgstr ""
 
 #, no-php-format
 msgid "You have received {0} Avatar disablement from {1}."
+msgstr ""
+
+#, no-php-format
+msgid "You have received {0} DoubleSeed Status from {1}."
 msgstr ""
 
 #, no-php-format
@@ -14441,12 +13499,7 @@ msgstr ""
 msgid "You may edit the names of your PM boxes here."
 msgstr ""
 
-msgid ""
-"You may see two symbols instead of a number: 'Inf.', which is just an "
-"abbreviation for Infinity, and means that you have downloaded 0 bytes while "
-"uploading a non-zero amount (ul/dl becomes infinity); '---', which should be"
-" read as 'non-available', and shows up when you have both downloaded and "
-"uploaded 0 bytes (ul/dl = 0/0 which is an indeterminate amount)."
+msgid "You may see two symbols instead of a number: 'Inf.', which is just an abbreviation for Infinity, and means that you have downloaded 0 bytes while uploading a non-zero amount (ul/dl becomes infinity); '---', which should be read as 'non-available', and shows up when you have both downloaded and uploaded 0 bytes (ul/dl = 0/0 which is an indeterminate amount)."
 msgstr ""
 
 msgid "You missed it, you'll have to wait until Christmas comes again!"
@@ -14455,10 +13508,7 @@ msgstr ""
 msgid "You missing something?<br>Please try again."
 msgstr ""
 
-msgid ""
-"You must be a VIP In order to view details or download this torrent! You may"
-" become a Vip By Donating to our site. Donating ensures we stay online to "
-"provide you more Vip-Only Torrents!"
+msgid "You must be a VIP In order to view details or download this torrent! You may become a Vip By Donating to our site. Donating ensures we stay online to provide you more Vip-Only Torrents!"
 msgstr ""
 
 msgid "You must be able to provide releases that:"
@@ -14566,9 +13616,7 @@ msgstr ""
 msgid "You won the bet"
 msgstr ""
 
-msgid ""
-"You'll have to wait until your last game completes before you play a new "
-"one."
+msgid "You'll have to wait until your last game completes before you play a new one."
 msgstr ""
 
 msgid "You're not authorized"
@@ -14597,6 +13645,10 @@ msgid "Your Avatar rights have been restored by {0}."
 msgstr ""
 
 #, no-php-format
+msgid "Your DoubleSeed Status has been removed by {0}."
+msgstr ""
+
+#, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
 msgstr ""
 
@@ -14608,7 +13660,8 @@ msgstr ""
 msgid "Your Downloads have been enabled by {0}."
 msgstr ""
 
-msgid "Your Freeleech Status has been removed by "
+#, no-php-format
+msgid "Your Freeleech Status has been removed by {0}."
 msgstr ""
 
 msgid "Your IMDb link is invalid"
@@ -14697,9 +13750,7 @@ msgid "Your application has successfully been sent to the staff."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are "
-"sure."
+msgid "Your are about to delete subtitle <b>{0}</b>, Click {1}here{2} if you are sure."
 msgstr ""
 
 msgid "Your avatar has been set to not offensive by "
@@ -14712,8 +13763,7 @@ msgid "Your blocked list is empty."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Your bug has been sent to our coders.<br>You have choosen priority: {0}"
+msgid "Your bug has been sent to our coders.<br>You have choosen priority: {0}"
 msgstr ""
 
 msgid "Your chance"
@@ -14742,18 +13792,11 @@ msgid "Your download privileges have been removed."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Your download speed is always finite. If you are a peer in a fast torrent it"
-" will almost certainly saturate your download bandwidth, and your browsing "
-"will suffer. At the moment there is no client that allows you to limit the "
-"download speed, only the upload. You will have to use a third-party "
-"solution, such as {0}NetLimiter{1}"
+msgid "Your download speed is always finite. If you are a peer in a fast torrent it will almost certainly saturate your download bandwidth, and your browsing will suffer. At the moment there is no client that allows you to limit the download speed, only the upload. You will have to use a third-party solution, such as {0}NetLimiter{1}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Your downloading ability has been disabled by {0}. Please PM {1} for the "
-"reason why."
+msgid "Your downloading ability has been disabled by {0}. Please PM {1} for the reason why."
 msgstr ""
 
 #, no-php-format
@@ -14789,9 +13832,7 @@ msgid "Your high score was {0} and you ranked #{1}."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"Your highspeed upload setting has been disabled by {0}. Please PM {1} for "
-"the reason why."
+msgid "Your highspeed upload setting has been disabled by {0}. Please PM {1} for the reason why."
 msgstr ""
 
 msgid "Your identity has been confirmed."
@@ -14830,9 +13871,7 @@ msgstr ""
 msgid "Your posting rights have been suspended."
 msgstr ""
 
-msgid ""
-"Your ratio on that torrent is fine, you must have selected the wrong torrent"
-" ID."
+msgid "Your ratio on that torrent is fine, you must have selected the wrong torrent ID."
 msgstr ""
 
 #, no-php-format
@@ -14950,17 +13989,13 @@ msgid "approximately 68MB uploaded"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"are genuine scene releases. If it's not on {0}NFOrce{1} or {2}grokMusiQ{3} "
-"then forget it!"
+msgid "are genuine scene releases. If it's not on {0}NFOrce{1} or {2}grokMusiQ{3} then forget it!"
 msgstr ""
 
 msgid "are not older than seven (7) days"
 msgstr ""
 
-msgid ""
-"as the name suggests, identifies the client (the s588 part identifies "
-"Shad0w's 5.8.8, the rest is random)"
+msgid "as the name suggests, identifies the client (the s588 part identifies Shad0w's 5.8.8, the rest is random)"
 msgstr ""
 
 msgid "at"
@@ -14986,9 +14021,7 @@ msgid "between"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"both your ratio of {0} and your total uploaded of {1}GB implies a delay of "
-"{2} hours. Even if your total uploaded is {3}"
+msgid "both your ratio of {0} and your total uploaded of {1}GB implies a delay of {2} hours. Even if your total uploaded is {3}"
 msgstr ""
 
 msgid "box names updated!"
@@ -15277,11 +14310,7 @@ msgid "hrs"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"ie: If you up a torrent then delete it, you will gain and then lose {0} "
-"points, making a post and having it deleted will do the same... and there "
-"are other hidden bonus karma points all over the site which is another way "
-"to help out your ratio!"
+msgid "ie: If you up a torrent then delete it, you will gain and then lose {0} points, making a post and having it deleted will do the same... and there are other hidden bonus karma points all over the site which is another way to help out your ratio!"
 msgstr ""
 
 msgid "if checked the above box selection will be ignored"
@@ -15371,9 +14400,7 @@ msgstr ""
 msgid "is feeling neutral"
 msgstr ""
 
-msgid ""
-"is how the client tells the tracker how many new peers it wants, in this "
-"case 0."
+msgid "is how the client tells the tracker how many new peers it wants, in this case 0."
 msgstr ""
 
 msgid "is invalid"
@@ -15394,9 +14421,7 @@ msgstr ""
 msgid "joined: "
 msgstr ""
 
-msgid ""
-"just tells the tracker which port the client will listen to for incoming "
-"connections"
+msgid "just tells the tracker which port the client will listen to for incoming connections"
 msgstr ""
 
 msgid "karma per hour"
@@ -15557,9 +14582,7 @@ msgstr ""
 msgid "orphaned"
 msgstr ""
 
-msgid ""
-"out of 10, 1 being not so shitty, 10 being really shitty... Please select "
-"one."
+msgid "out of 10, 1 being not so shitty, 10 being really shitty... Please select one."
 msgstr ""
 
 msgid "p2p"
@@ -15594,9 +14617,7 @@ msgid "please fill in the reason for adding {0} to the watched user list."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"please note: you have a maximum of {0} PM's for all mail boxes that are not "
-"sentbox."
+msgid "please note: you have a maximum of {0} PM's for all mail boxes that are not sentbox."
 msgstr ""
 
 msgid "points"
@@ -15654,7 +14675,7 @@ msgid "save as draft"
 msgstr ""
 
 msgid "search"
-msgstr ""
+msgstr "otsi"
 
 msgid "search messages by this member only"
 msgstr ""
@@ -15742,13 +14763,10 @@ msgstr ""
 msgid "system messages"
 msgstr ""
 
-msgid ""
-"this is a list of common reasons a film can be nuked for (generally DVDRip)"
+msgid "this is a list of common reasons a film can be nuked for (generally DVDRip)"
 msgstr ""
 
-msgid ""
-"this topic from your unread list. To remove all, use the: Mark All As Read "
-"link above"
+msgid "this topic from your unread list. To remove all, use the: Mark All As Read link above"
 msgstr ""
 
 msgid "this tree"
@@ -15917,33 +14935,27 @@ msgstr ""
 msgid "you lost me"
 msgstr ""
 
-msgid ""
-"you may add, edit or delete the text below without changing their status."
+msgid "you may add, edit or delete the text below without changing their status."
 msgstr ""
 
-msgid ""
-"you must select yes or no if you wish to change the watched user status!"
+msgid "you must select yes or no if you wish to change the watched user status!"
 msgstr ""
 
 msgid "you won"
 msgstr ""
 
-msgid ""
-"you'll be able to seed, or make sure are well-seeded, for at least 24 hours."
+msgid "you'll be able to seed, or make sure are well-seeded, for at least 24 hours."
 msgstr ""
 
 msgid "your ratio is under"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"your ratio of {0} implies a delay of {1} hours. Even if your ratio is {2}GB"
+msgid "your ratio of {0} implies a delay of {1} hours. Even if your ratio is {2}GB"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"your total uploaded of {0}GB implies a delay of {1} hours. Even if your "
-"total uploaded in {2}GB"
+msgid "your total uploaded of {0}GB implies a delay of {1} hours. Even if your total uploaded in {2}GB"
 msgstr ""
 
 #, no-php-format
@@ -16097,8 +15109,7 @@ msgid "{0} Points for a seedtime fix on torrent: {1} => {2}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
+msgid "{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''."
 msgstr ""
 
 #, no-php-format
@@ -16119,7 +15130,7 @@ msgstr ""
 
 #, no-php-format
 msgid "{0} Rules"
-msgstr ""
+msgstr "{0} Reeglid"
 
 #, no-php-format
 msgid "{0} The Max allowed bet is {1} GB!"
@@ -16160,9 +15171,7 @@ msgid "{0} You bought {1} for {2} Karma."
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0} You bought {1} for {2} Karma. Please keep on your best behaviour from "
-"now on."
+msgid "{0} You bought {1} for {2} Karma. Please keep on your best behaviour from now on."
 msgstr ""
 
 #, no-php-format
@@ -16232,12 +15241,8 @@ msgstr[0] ""
 msgstr[1] ""
 
 #, no-php-format
-msgid ""
-"{0} ghost torrent was successfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
-msgid_plural ""
-"{0} ghost torrents were successfully cleaned. You may now restart your "
-"torrents, the tracker has been updated."
+msgid "{0} ghost torrent was successfully cleaned. You may now restart your torrents, the tracker has been updated."
+msgid_plural "{0} ghost torrents were successfully cleaned. You may now restart your torrents, the tracker has been updated."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -16250,13 +15255,11 @@ msgid "{0} has accessed the {1}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
+msgid "{0} has added you to their Friends List. See all Friend Requests {1}here{2}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0} has just confirmed your Friendship Request. See your Friends {1}here{2}"
+msgid "{0} has just confirmed your Friendship Request. See your Friends {1}here{2}"
 msgstr ""
 
 #, no-php-format
@@ -16286,17 +15289,11 @@ msgid "{0} is not currently a supported locale."
 msgstr ""
 
 #, no-php-format
-msgid "{0} is not writable"
-msgstr ""
-
-#, no-php-format
 msgid "{0} is on the watched user list already! back to {1}'s profile"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0} is situated on a dedicated server in the Hinterlands. For the moment we "
-"have monthly running costs of approximately &#36;{1}."
+msgid "{0} is situated on a dedicated server in the Hinterlands. For the moment we have monthly running costs of approximately &#36;{1}."
 msgstr ""
 
 #, no-php-format
@@ -16450,15 +15447,11 @@ msgid "{0}IMDb Url{1}"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown "
-"-R {4}.{5}sudo php bin/set_perms.php"
+msgid "{0}Unable to delete file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
 msgstr ""
 
 #, no-php-format
-msgid ""
-"{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown "
-"-R {4}.{5}sudo php bin/set_perms.php"
+msgid "{0}Unable to modify file:{1}.{2}Please check your permissions.{3}sudo chown -R {4}.{5}sudo php bin/set_perms.php"
 msgstr ""
 
 #, no-php-format
