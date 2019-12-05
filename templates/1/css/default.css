@@ -197,17 +197,6 @@ input:invalid {
     transition-delay: 250ms;
 }
 
-.masonry-item,
-.trivia-pointer {
-    transition: opacity .5s;
-}
-
-.masonry-item:hover,
-.trivia-pointer:hover {
-    transform: scale(1.25);
-    z-index:   10;
-}
-
 .cooker_notify,
 .show_in_navbar,
 #mlike,
@@ -539,11 +528,10 @@ span.is-wrapped {
 }
 
 .torrent-name {
-    display:    inline-block;
-    max-width:  100%;
-    overflow:   hidden;
-    text-align: left;
-    word-wrap:  break-word;
+    display:       inline-block;
+    max-width:     100%;
+    overflow-wrap: break-word;
+    text-align:    left;
 }
 
 .inner-wrapper {
@@ -1315,16 +1303,27 @@ img.bar {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 }
 
-.masonry-item-clean,
-.masonry-item {
-    background-color: rgba(0, 0, 0, .4);
-    padding:          var(--default-radius);
-}
-
 .masonry-item,
 .masonry-item img {
     position:      relative;
     border-radius: var(--default-radius);
+}
+
+.masonry-item-clean,
+.masonry-item,
+.trivia-pointer {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding:          var(--default-radius);
+    z-index:          1;
+    transition:       all .5s ease-in-out;
+}
+
+.masonry-item:hover,
+.trivia-pointer:hover {
+    transform:        scale(1.1);
+    z-index:          10;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition:       all .5s ease-in-out;
 }
 
 .vertical_center {

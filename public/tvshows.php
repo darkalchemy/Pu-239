@@ -148,7 +148,7 @@ foreach ($select as $torrent) {
                             <img src='{$image}' alt='" . htmlsafechars($torrent['name']) . "'>
                         </div>
                         <div class='column'>
-                            <div class='has-text-left size_4'>$name <span class='size_2'>({$year})</span></div>
+                            <div class='has-text-left size_4 torrent-name'>$name <span class='size_2'>({$year})</span></div>
                             $rating
                             <div class='size_2'>
                                 <span class='has-text-primary'>" . _('Peers') . ":</span>
