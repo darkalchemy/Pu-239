@@ -6,6 +6,7 @@ use Delight\Auth\Auth;
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
+use Pu239\Database;
 use Pu239\Roles;
 use Pu239\Session;
 use Pu239\User;
@@ -89,10 +90,15 @@ function get_access($script)
     $cache = $container->get(Cache::class);
     $class = $cache->get('av_class_' . $ending);
     if ($class === false || is_null($class)) {
-        $classid = sql_query("SELECT av_class FROM staffpanel WHERE file_name LIKE '%$ending'") or sqlerr(__FILE__, __LINE__);
-        $classid = mysqli_fetch_assoc($classid);
-        $class = (int) $classid['av_class'];
-        $cache->set('av_class_' . $ending, $class, 0);
+        $fluent = $container->get(Database::class);
+        $class = $fluent->from('staffpanel')
+                        ->select('av_class')
+                        ->where('file_name LIKE ?', "%$ending")
+                        ->fetch('av_class');
+
+        if (!empty($class)) {
+            $cache->set('av_class_' . $ending, $class, 0);
+        }
     }
 
     return $class;

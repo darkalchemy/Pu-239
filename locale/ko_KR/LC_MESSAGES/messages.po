@@ -993,9 +993,6 @@ msgstr "기증자 시간에 추가 :"
 msgid "Add to watched users?"
 msgstr "시청 한 사용자에게 추가 하시겠습니까?"
 
-msgid "Add word"
-msgstr "단어 추가"
-
 #, no-php-format
 msgid "Add {0} to the Watched Users List"
 msgstr "감시 대상 사용자 목록에 {0} 추가"
@@ -1390,6 +1387,11 @@ msgstr "이 주제를 삭제 하시겠습니까? 확실하다면 삭제 버튼�
 #, no-php-format
 msgid "Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are."
 msgstr "이 토렌트를 삭제 하시겠습니까? <br> {0} 여기 {1}를 클릭하십시오."
+
+#, fuzzy
+#| msgid "Are you sure you want to remove this users Freeleech Status?"
+msgid "Are you sure you want to remove this users DoubleSeed Status?"
+msgstr "이 사용자 Freeleech Status를 제거 하시겠습니까?"
 
 msgid "Are you sure you want to remove this users Freeleech Status?"
 msgstr "이 사용자 Freeleech Status를 제거 하시겠습니까?"
@@ -2752,9 +2754,6 @@ msgstr "현재 금지"
 msgid "Current donation"
 msgstr "현재 기부"
 
-msgid "Current words on blacklist"
-msgstr "블랙리스트의 현재 단어"
-
 msgid "Currently"
 msgstr "현재"
 
@@ -3287,6 +3286,61 @@ msgstr "이중 업로드 슬롯"
 
 msgid "Double Upload Slot in Use"
 msgstr "이중 업로드 슬롯 사용 중"
+
+#, fuzzy
+#| msgid "Bonus Manager"
+msgid "DoubleSeed Manager"
+msgstr "보너스 매니저"
+
+#, fuzzy
+#| msgid "Freeleech Notice!"
+msgid "DoubleSeed Notice!"
+msgstr "프리 리치 공지!"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents have been removed by {0}"
+msgid "DoubleSeed On All Torrents have been removed by {0}"
+msgstr "Freeleech On 모든 급류가 {0}에 의해 제거되었습니다"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents removed by {0}"
+msgid "DoubleSeed On All Torrents removed by {0}"
+msgstr "{0}에 의해 제거 된 모든 급류에 대한 Freeleech"
+
+#, fuzzy
+#| msgid "Select Status"
+msgid "DoubleSeed Status"
+msgstr "상태 선택"
+
+#, fuzzy, no-php-format
+#| msgid "warned Status for {0} by {1}."
+msgid "DoubleSeed Status for {0} by {1}."
+msgstr "{1}에 의해 {0}의 상태를 경고했습니다."
+
+#, fuzzy, no-php-format
+#| msgid "warned Status removed by {0}."
+msgid "DoubleSeed Status removed by {0}."
+msgstr "경고 상태가 {0}에 의해 제거되었습니다."
+
+#, fuzzy, no-php-format
+#| msgid "or<br>Seed for {0}"
+msgid "DoubleSeed Users ({0})"
+msgstr "또는 {0}에 대한 <br> 시드"
+
+#, fuzzy
+#| msgid "Freeleech enabled = No"
+msgid "DoubleSeed enabled = No"
+msgstr "프리 리치 활성화 = 아니오"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "DoubleSeed enabled = {0}"
+msgstr "프리 리치 활성화 ="
+
+#, fuzzy
+#| msgid "Doubled Down"
+msgid "DoubleSeed for"
+msgstr "두 배로"
 
 msgid "Doubled Down"
 msgstr "두 배로"
@@ -4354,9 +4408,10 @@ msgstr "Freeleech On 모든 급류가 {0}에 의해 제거되었습니다"
 msgid "Freeleech On All Torrents removed by {0}"
 msgstr "{0}에 의해 제거 된 모든 급류에 대한 Freeleech"
 
-#, no-php-format
-msgid "Freeleech Peeps ({0})"
-msgstr "프리 리치 핍 ({0})"
+#, fuzzy
+#| msgid "Freeleech Slots:"
+msgid "Freeleech Slots"
+msgstr "프리 리치 슬롯 :"
 
 msgid "Freeleech Slots:"
 msgstr "프리 리치 슬롯 :"
@@ -4364,24 +4419,27 @@ msgstr "프리 리치 슬롯 :"
 msgid "Freeleech Status"
 msgstr "프리 리치 상태"
 
-msgid "Freeleech Status enabled by "
-msgstr "프리 리치 상태"
-
 #, no-php-format
 msgid "Freeleech Status for {0} by {1}."
 msgstr "{1}의 {0}에 대한 프리 리치 상태."
 
-msgid "Freeleech Status removed by "
+#, fuzzy, no-php-format
+#| msgid "Freeleech Status removed by "
+msgid "Freeleech Status removed by {0}."
 msgstr "Freeleech 상태가 다음에 의해 제거되었습니다."
 
-msgid "Freeleech enabled = "
-msgstr "프리 리치 활성화 ="
+#, fuzzy, no-php-format
+#| msgid "Freeleech Peeps ({0})"
+msgid "Freeleech Users ({0})"
+msgstr "프리 리치 핍 ({0})"
 
 msgid "Freeleech enabled = No"
 msgstr "프리 리치 활성화 = 아니오"
 
-msgid "Freeleech enabled = Yes"
-msgstr "프리 리치 활성화 = 예"
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "Freeleech enabled = {0}"
+msgstr "프리 리치 활성화 ="
 
 msgid "Freeleech for"
 msgstr "프리 리치"
@@ -5084,9 +5142,6 @@ msgstr "계정을 등록했지만 확인 이메일을받지 못했습니다!"
 msgid "I smell a rat!"
 msgstr "쥐 냄새가나요!"
 
-msgid "I think you forgot the name"
-msgstr "이름을 잊어 버린 것 같아"
-
 msgid "I understand that I have to keep seeding my torrents until there are at least two other seeders"
 msgstr "나는 적어도 두 명의 다른 파종자가있을 때까지 급류를 파종해야한다는 것을 알고 있습니다."
 
@@ -5561,7 +5616,9 @@ msgstr "잘못된 행동"
 msgid "Invalid action."
 msgstr "잘못된 조치입니다."
 
-msgid "Invalid characters users."
+#, fuzzy
+#| msgid "Invalid characters users."
+msgid "Invalid characters used."
 msgstr "잘못된 문자 사용자"
 
 msgid "Invalid class"
@@ -7022,6 +7079,11 @@ msgstr "아니요이 회원 포럼 권한을 비활성화하십시오."
 msgid "No Disable this members signature rights."
 msgstr "아니오이 회원의 서명 권한을 비활성화하십시오."
 
+#, fuzzy
+#| msgid "No disablement Status Set"
+msgid "No DoubleSeed Status Set"
+msgstr "비활성화 상태 세트 없음"
+
 msgid "No Doubleslots left."
 msgstr "더블 슬롯이 남아 있지 않습니다."
 
@@ -7437,9 +7499,6 @@ msgstr "참고 :이 도구는 한 범주의 모든 급류를 다른 범주로만
 
 msgid "Note: if you want no limit for the user class set the limit to 0"
 msgstr "참고 : 사용자 클래스에 대한 제한을 원하지 않으면 제한을 0으로 설정하십시오."
-
-msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
-msgstr "참고 : 한 번에 둘 이상의 불량 닉을 제출하려면 쉼표로 구분하십시오."
 
 msgid "Nothing Configured Atm Sorry"
 msgstr "구성된 ATM이 없습니다. 죄송합니다."
@@ -7966,6 +8025,11 @@ msgstr "{0} 현상금 지불"
 
 msgid "Peer ID"
 msgstr "동료 ID"
+
+#, fuzzy, no-php-format
+#| msgid "{0} was deleted."
+msgid "Peer {0} has been deleted."
+msgstr "{0}이 (가) 삭제되었습니다."
 
 msgid "Peerlist"
 msgstr "피어리스트"
@@ -8670,6 +8734,16 @@ msgstr "선택 제거"
 
 msgid "Remove Class"
 msgstr "수업 제거"
+
+#, fuzzy
+#| msgid "Remove Shout disablement"
+msgid "Remove DoubleSeed"
+msgstr "Shout 비활성화 제거"
+
+#, fuzzy
+#| msgid "Remove warned Status"
+msgid "Remove DoubleSeed Status"
+msgstr "경고 상태 제거"
 
 msgid "Remove Freeleech"
 msgstr "프리 리치 제거"
@@ -10634,6 +10708,11 @@ msgstr "{0} 년 동안 귀하의 지원과 공유에 감사드립니다! <br> {1
 msgid "Thanks list"
 msgstr "감사 목록"
 
+#, fuzzy
+#| msgid "That User has No Freeleech Status!"
+msgid "That User has No DoubleSeed Status!"
+msgstr "해당 사용자에게는 프리 리치 상태가 없습니다!"
+
 msgid "That User has No Freeleech Status!"
 msgstr "해당 사용자에게는 프리 리치 상태가 없습니다!"
 
@@ -10722,9 +10801,6 @@ msgstr "이메일 주소는 유효해야합니다. 응답해야하는 확인 이
 
 msgid "The file can't be empty!"
 msgstr "파일은 비워 둘 수 없습니다!"
-
-msgid "The file was written...wait for redirect"
-msgstr "파일이 작성되었습니다 ... 리디렉션 대기"
 
 msgid "The filename cannot be empty."
 msgstr "파일 이름은 비워 둘 수 없습니다."
@@ -11044,9 +11120,6 @@ msgstr "해당 ID로 설문 조사가 없습니다!"
 
 msgid "There is no title defined!"
 msgstr "제목이 정의되어 있지 않습니다!"
-
-msgid "There is no username on the blacklist"
-msgstr "블랙리스트에 사용자 이름이 없습니다"
 
 #, no-php-format
 msgid "There is no {0}"
@@ -12363,6 +12436,11 @@ msgstr "사용자 투표"
 msgid "User account"
 msgstr "사용자 계정"
 
+#, fuzzy, no-php-format
+#| msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
+msgid "User account {0} ){1}) DoubleSeed On All Torrents have been removed by {2}"
+msgstr "사용자 계정 {0}) {1}) Freeleech On 모든 급류가 {2}에 의해 제거되었습니다."
+
 #, no-php-format
 msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
 msgstr "사용자 계정 {0}) {1}) Freeleech On 모든 급류가 {2}에 의해 제거되었습니다."
@@ -12436,9 +12514,6 @@ msgstr "Userhits?"
 
 msgid "Username"
 msgstr "사용자 이름"
-
-msgid "Username Blacklist"
-msgstr "사용자 이름 블랙리스트"
 
 msgid "Username Has Been Changed To "
 msgstr "사용자 이름이 다음으로 변경되었습니다"
@@ -13368,9 +13443,6 @@ msgstr "당신은 여기에 게시했습니다"
 msgid "You have received"
 msgstr "당신은 받았습니다"
 
-msgid "You have received Freeleech Status from "
-msgstr "에서 Freeleech 상태를 받았습니다."
-
 msgid "You have received a PM from "
 msgstr "에서 PM을 받았습니다"
 
@@ -13407,6 +13479,11 @@ msgstr "{1}에서 {0} AJAX 채팅 사용 중지를 받았습니다."
 #, no-php-format
 msgid "You have received {0} Avatar disablement from {1}."
 msgstr "{1}에서 {0} 아바타를 사용할 수 없습니다."
+
+#, fuzzy, no-php-format
+#| msgid "You have received {0} warned Status from {1}."
+msgid "You have received {0} DoubleSeed Status from {1}."
+msgstr "{1}에서 {0} 경고 상태를 받았습니다."
 
 #, no-php-format
 msgid "You have received {0} Download disablement from {1}."
@@ -13656,6 +13733,11 @@ msgstr "귀하의 아바타 권한이 {0}에 의해 비활성화되었습니다.
 msgid "Your Avatar rights have been restored by {0}."
 msgstr "귀하의 아바타 권한이 {0}에 의해 복원되었습니다."
 
+#, fuzzy, no-php-format
+#| msgid "Your warned Status has been removed by {0}"
+msgid "Your DoubleSeed Status has been removed by {0}."
+msgstr "경고 상태가 {0}에 의해 제거되었습니다"
+
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
 msgstr "{0}에 의해 귀하의 다운로드 권한이 비활성화되었습니다"
@@ -13668,7 +13750,9 @@ msgstr "귀하의 다운로드 권한이 {0}에 의해 복원되었습니다"
 msgid "Your Downloads have been enabled by {0}."
 msgstr "{0}에 의해 귀하의 다운로드가 활성화되었습니다."
 
-msgid "Your Freeleech Status has been removed by "
+#, fuzzy, no-php-format
+#| msgid "Your Freeleech Status has been removed by "
+msgid "Your Freeleech Status has been removed by {0}."
 msgstr "Freeleech 상태가 다음에 의해 제거되었습니다."
 
 msgid "Your IMDb link is invalid"
@@ -15280,10 +15364,6 @@ msgid "{0} is not currently a supported locale."
 msgstr "{0}은 현재 지원되는 로케일이 아닙니다."
 
 #, no-php-format
-msgid "{0} is not writable"
-msgstr "{0}은 쓰기 가능하지 않다"
-
-#, no-php-format
 msgid "{0} is on the watched user list already! back to {1}'s profile"
 msgstr "{0}이 (가) 이미 본 사용자 목록에 있습니다! {1}의 프로필로 돌아 가기"
 
@@ -15468,3 +15548,36 @@ msgstr[0] "{1}: Modded Torrents from {0} days ago"
 msgid "{1}: Modded Torrents from {0}, number day ago"
 msgid_plural "{1}: Modded Torrents from {0}, number days ago"
 msgstr[0] "{1}: Modded Torrents from {0}, number days ago"
+
+#~ msgid "Add word"
+#~ msgstr "단어 추가"
+
+#~ msgid "Current words on blacklist"
+#~ msgstr "블랙리스트의 현재 단어"
+
+#~ msgid "Freeleech Status enabled by "
+#~ msgstr "프리 리치 상태"
+
+#~ msgid "Freeleech enabled = Yes"
+#~ msgstr "프리 리치 활성화 = 예"
+
+#~ msgid "I think you forgot the name"
+#~ msgstr "이름을 잊어 버린 것 같아"
+
+#~ msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
+#~ msgstr "참고 : 한 번에 둘 이상의 불량 닉을 제출하려면 쉼표로 구분하십시오."
+
+#~ msgid "The file was written...wait for redirect"
+#~ msgstr "파일이 작성되었습니다 ... 리디렉션 대기"
+
+#~ msgid "There is no username on the blacklist"
+#~ msgstr "블랙리스트에 사용자 이름이 없습니다"
+
+#~ msgid "Username Blacklist"
+#~ msgstr "사용자 이름 블랙리스트"
+
+#~ msgid "You have received Freeleech Status from "
+#~ msgstr "에서 Freeleech 상태를 받았습니다."
+
+#~ msgid "{0} is not writable"
+#~ msgstr "{0}은 쓰기 가능하지 않다"

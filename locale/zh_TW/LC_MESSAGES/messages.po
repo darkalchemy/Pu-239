@@ -993,9 +993,6 @@ msgstr "增加捐助時間："
 msgid "Add to watched users?"
 msgstr "添加到關注的用戶？"
 
-msgid "Add word"
-msgstr "加字"
-
 #, no-php-format
 msgid "Add {0} to the Watched Users List"
 msgstr "將{0}添加到監視的用戶列表"
@@ -1390,6 +1387,11 @@ msgstr "您確定要刪除此主題嗎？如果確定，請單擊刪除按鈕。
 #, no-php-format
 msgid "Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are."
 msgstr "您確定要刪除該種子嗎？ <br>如果存在，請單擊{0}此處{1}。"
+
+#, fuzzy
+#| msgid "Are you sure you want to remove this users Freeleech Status?"
+msgid "Are you sure you want to remove this users DoubleSeed Status?"
+msgstr "您確定要刪除此用戶的Freeleech狀態嗎？"
 
 msgid "Are you sure you want to remove this users Freeleech Status?"
 msgstr "您確定要刪除此用戶的Freeleech狀態嗎？"
@@ -2752,9 +2754,6 @@ msgstr "目前的禁令"
 msgid "Current donation"
 msgstr "目前捐款"
 
-msgid "Current words on blacklist"
-msgstr "黑名單上的當前單詞"
-
 msgid "Currently"
 msgstr "目前"
 
@@ -3287,6 +3286,61 @@ msgstr "雙上載廣告位"
 
 msgid "Double Upload Slot in Use"
 msgstr "正在使用雙重上傳廣告位"
+
+#, fuzzy
+#| msgid "Bonus Manager"
+msgid "DoubleSeed Manager"
+msgstr "獎金經理"
+
+#, fuzzy
+#| msgid "Freeleech Notice!"
+msgid "DoubleSeed Notice!"
+msgstr "Freeleech公告！"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents have been removed by {0}"
+msgid "DoubleSeed On All Torrents have been removed by {0}"
+msgstr "Freeleech on All Torrents已被{0}移除"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents removed by {0}"
+msgid "DoubleSeed On All Torrents removed by {0}"
+msgstr "Freeleech在所有種子上被{0}刪除"
+
+#, fuzzy
+#| msgid "Select Status"
+msgid "DoubleSeed Status"
+msgstr "選擇狀態"
+
+#, fuzzy, no-php-format
+#| msgid "warned Status for {0} by {1}."
+msgid "DoubleSeed Status for {0} by {1}."
+msgstr "由{1}警告{0}的狀態。"
+
+#, fuzzy, no-php-format
+#| msgid "warned Status removed by {0}."
+msgid "DoubleSeed Status removed by {0}."
+msgstr "警告狀態已被{0}刪除。"
+
+#, fuzzy, no-php-format
+#| msgid "or<br>Seed for {0}"
+msgid "DoubleSeed Users ({0})"
+msgstr "或{0}的<br>種子"
+
+#, fuzzy
+#| msgid "Freeleech enabled = No"
+msgid "DoubleSeed enabled = No"
+msgstr "Freeleech已啟用=否"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "DoubleSeed enabled = {0}"
+msgstr "Freeleech已啟用="
+
+#, fuzzy
+#| msgid "Doubled Down"
+msgid "DoubleSeed for"
+msgstr "加倍下來"
 
 msgid "Doubled Down"
 msgstr "加倍下來"
@@ -4354,9 +4408,10 @@ msgstr "Freeleech on All Torrents已被{0}移除"
 msgid "Freeleech On All Torrents removed by {0}"
 msgstr "Freeleech在所有種子上被{0}刪除"
 
-#, no-php-format
-msgid "Freeleech Peeps ({0})"
-msgstr "Freeleech偷看（{0}）"
+#, fuzzy
+#| msgid "Freeleech Slots:"
+msgid "Freeleech Slots"
+msgstr "Freeleech插槽："
 
 msgid "Freeleech Slots:"
 msgstr "Freeleech插槽："
@@ -4364,24 +4419,27 @@ msgstr "Freeleech插槽："
 msgid "Freeleech Status"
 msgstr "自由狀態"
 
-msgid "Freeleech Status enabled by "
-msgstr "Freeleech狀態啟用者"
-
 #, no-php-format
 msgid "Freeleech Status for {0} by {1}."
 msgstr "{0}的{1}的閒話狀態。"
 
-msgid "Freeleech Status removed by "
+#, fuzzy, no-php-format
+#| msgid "Freeleech Status removed by "
+msgid "Freeleech Status removed by {0}."
 msgstr "Freeleech狀態被刪除"
 
-msgid "Freeleech enabled = "
-msgstr "Freeleech已啟用="
+#, fuzzy, no-php-format
+#| msgid "Freeleech Peeps ({0})"
+msgid "Freeleech Users ({0})"
+msgstr "Freeleech偷看（{0}）"
 
 msgid "Freeleech enabled = No"
 msgstr "Freeleech已啟用=否"
 
-msgid "Freeleech enabled = Yes"
-msgstr "啟用Freeleech =是"
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "Freeleech enabled = {0}"
+msgstr "Freeleech已啟用="
 
 msgid "Freeleech for"
 msgstr "Freeleech為"
@@ -5084,9 +5142,6 @@ msgstr "我註冊了一個帳戶，但是沒有收到確認電子郵件！"
 msgid "I smell a rat!"
 msgstr "我聞到老鼠了！"
 
-msgid "I think you forgot the name"
-msgstr "我想你忘了名字"
-
 msgid "I understand that I have to keep seeding my torrents until there are at least two other seeders"
 msgstr "我知道我必須繼續給種子添加種子，直到至少有兩個其他種子"
 
@@ -5561,7 +5616,9 @@ msgstr "無效的動作"
 msgid "Invalid action."
 msgstr "無效的動作。"
 
-msgid "Invalid characters users."
+#, fuzzy
+#| msgid "Invalid characters users."
+msgid "Invalid characters used."
 msgstr "無效字符的用戶。"
 
 msgid "Invalid class"
@@ -7022,6 +7079,11 @@ msgstr "否禁用此成員的論壇權限。"
 msgid "No Disable this members signature rights."
 msgstr "否禁用此成員的簽名權。"
 
+#, fuzzy
+#| msgid "No disablement Status Set"
+msgid "No DoubleSeed Status Set"
+msgstr "未設置禁用狀態"
+
 msgid "No Doubleslots left."
 msgstr "沒有剩餘的雙插槽。"
 
@@ -7437,9 +7499,6 @@ msgstr "注意：此工具只會將所有種子從一個類別移動到另一個
 
 msgid "Note: if you want no limit for the user class set the limit to 0"
 msgstr "注意：如果您不希望限制用戶類別，請將限制設置為0"
-
-msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
-msgstr "注意：如果您要提交更多的暱稱，請一次用逗號隔開"
 
 msgid "Nothing Configured Atm Sorry"
 msgstr "沒有配置Atm對不起"
@@ -7966,6 +8025,11 @@ msgstr "支付{0}賞金"
 
 msgid "Peer ID"
 msgstr "對等ID"
+
+#, fuzzy, no-php-format
+#| msgid "{0} was deleted."
+msgid "Peer {0} has been deleted."
+msgstr "{0}已被刪除。"
 
 msgid "Peerlist"
 msgstr "同行名單"
@@ -8670,6 +8734,16 @@ msgstr "刪除選擇"
 
 msgid "Remove Class"
 msgstr "刪除課程"
+
+#, fuzzy
+#| msgid "Remove Shout disablement"
+msgid "Remove DoubleSeed"
+msgstr "刪除喊叫禁用"
+
+#, fuzzy
+#| msgid "Remove warned Status"
+msgid "Remove DoubleSeed Status"
+msgstr "刪除警告狀態"
 
 msgid "Remove Freeleech"
 msgstr "刪除Freeleech"
@@ -10634,6 +10708,11 @@ msgstr "感謝您在{0}年的支持和分享！ {1}員工祝您聖誕節快樂�
 msgid "Thanks list"
 msgstr "感謝名單"
 
+#, fuzzy
+#| msgid "That User has No Freeleech Status!"
+msgid "That User has No DoubleSeed Status!"
+msgstr "該用戶沒有閒聊狀態！"
+
 msgid "That User has No Freeleech Status!"
 msgstr "該用戶沒有閒聊狀態！"
 
@@ -10722,9 +10801,6 @@ msgstr "該電子郵件地址必須有效。您將收到一封確認電子郵件
 
 msgid "The file can't be empty!"
 msgstr "該文件不能為空！"
-
-msgid "The file was written...wait for redirect"
-msgstr "該文件已寫入...等待重定向"
 
 msgid "The filename cannot be empty."
 msgstr "文件名不能為空。"
@@ -11044,9 +11120,6 @@ msgstr "沒有使用該ID的民意調查！"
 
 msgid "There is no title defined!"
 msgstr "沒有標題！"
-
-msgid "There is no username on the blacklist"
-msgstr "黑名單上沒有用戶名"
 
 #, no-php-format
 msgid "There is no {0}"
@@ -12363,6 +12436,11 @@ msgstr "用戶投票"
 msgid "User account"
 msgstr "用戶帳號"
 
+#, fuzzy, no-php-format
+#| msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
+msgid "User account {0} ){1}) DoubleSeed On All Torrents have been removed by {2}"
+msgstr "用戶帳戶{0}）{1}）所有種子上的Freeleech已由{2}刪除"
+
 #, no-php-format
 msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
 msgstr "用戶帳戶{0}）{1}）所有種子上的Freeleech已由{2}刪除"
@@ -12436,9 +12514,6 @@ msgstr "用戶點擊率？"
 
 msgid "Username"
 msgstr "用戶名"
-
-msgid "Username Blacklist"
-msgstr "用戶名黑名單"
 
 msgid "Username Has Been Changed To "
 msgstr "用戶名已更改為"
@@ -13368,9 +13443,6 @@ msgstr "您已在此處發布"
 msgid "You have received"
 msgstr "你收到了"
 
-msgid "You have received Freeleech Status from "
-msgstr "您已收到來自的閒聊狀態"
-
 msgid "You have received a PM from "
 msgstr "您已收到來自的下午"
 
@@ -13407,6 +13479,11 @@ msgstr "您已從{1}收到{0} AJAX聊天禁用"
 #, no-php-format
 msgid "You have received {0} Avatar disablement from {1}."
 msgstr "您已從{1}收到{0}頭像禁用功能。"
+
+#, fuzzy, no-php-format
+#| msgid "You have received {0} warned Status from {1}."
+msgid "You have received {0} DoubleSeed Status from {1}."
+msgstr "您已收到來自{1}的{0}警告狀態。"
 
 #, no-php-format
 msgid "You have received {0} Download disablement from {1}."
@@ -13656,6 +13733,11 @@ msgstr "您的頭像權限已被{0}禁用。"
 msgid "Your Avatar rights have been restored by {0}."
 msgstr "您的頭像權限已由{0}恢復。"
 
+#, fuzzy, no-php-format
+#| msgid "Your warned Status has been removed by {0}"
+msgid "Your DoubleSeed Status has been removed by {0}."
+msgstr "您的警告狀態已被{0}刪除"
+
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
 msgstr "您的下載權限已被{0}禁用"
@@ -13668,7 +13750,9 @@ msgstr "您的下載權限已由{0}恢復"
 msgid "Your Downloads have been enabled by {0}."
 msgstr "您的下載已通過{0}啟用。"
 
-msgid "Your Freeleech Status has been removed by "
+#, fuzzy, no-php-format
+#| msgid "Your Freeleech Status has been removed by "
+msgid "Your Freeleech Status has been removed by {0}."
 msgstr "您的Freeleech狀態已被刪除"
 
 msgid "Your IMDb link is invalid"
@@ -15280,10 +15364,6 @@ msgid "{0} is not currently a supported locale."
 msgstr "{0}當前不是受支持的語言環境。"
 
 #, no-php-format
-msgid "{0} is not writable"
-msgstr "{0}不可寫"
-
-#, no-php-format
 msgid "{0} is on the watched user list already! back to {1}'s profile"
 msgstr "{0}已在監視的用戶列表中！返回{1}的個人資料"
 
@@ -15468,3 +15548,36 @@ msgstr[0] "{1}: Modded Torrents from {0} days ago"
 msgid "{1}: Modded Torrents from {0}, number day ago"
 msgid_plural "{1}: Modded Torrents from {0}, number days ago"
 msgstr[0] "{1}: Modded Torrents from {0}, number days ago"
+
+#~ msgid "Add word"
+#~ msgstr "加字"
+
+#~ msgid "Current words on blacklist"
+#~ msgstr "黑名單上的當前單詞"
+
+#~ msgid "Freeleech Status enabled by "
+#~ msgstr "Freeleech狀態啟用者"
+
+#~ msgid "Freeleech enabled = Yes"
+#~ msgstr "啟用Freeleech =是"
+
+#~ msgid "I think you forgot the name"
+#~ msgstr "我想你忘了名字"
+
+#~ msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
+#~ msgstr "注意：如果您要提交更多的暱稱，請一次用逗號隔開"
+
+#~ msgid "The file was written...wait for redirect"
+#~ msgstr "該文件已寫入...等待重定向"
+
+#~ msgid "There is no username on the blacklist"
+#~ msgstr "黑名單上沒有用戶名"
+
+#~ msgid "Username Blacklist"
+#~ msgstr "用戶名黑名單"
+
+#~ msgid "You have received Freeleech Status from "
+#~ msgstr "您已收到來自的閒聊狀態"
+
+#~ msgid "{0} is not writable"
+#~ msgstr "{0}不可寫"

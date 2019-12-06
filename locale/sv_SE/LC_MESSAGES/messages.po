@@ -994,9 +994,6 @@ msgstr "Lägg till givartid:"
 msgid "Add to watched users?"
 msgstr "Lägg till till tittade användare?"
 
-msgid "Add word"
-msgstr "Lägg till ord"
-
 #, no-php-format
 msgid "Add {0} to the Watched Users List"
 msgstr "Lägg till {0} i listan över övervakade användare"
@@ -1391,6 +1388,11 @@ msgstr "Är du säker på att du vill ta bort det här ämnet? Om du är säker 
 #, no-php-format
 msgid "Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are."
 msgstr "Är du säker på att du vill ta bort den här torrenten? <br> Klicka på {0} här {1} om du är det."
+
+#, fuzzy
+#| msgid "Are you sure you want to remove this users Freeleech Status?"
+msgid "Are you sure you want to remove this users DoubleSeed Status?"
+msgstr "Är du säker på att du vill ta bort dessa användare Freeleech Status?"
 
 msgid "Are you sure you want to remove this users Freeleech Status?"
 msgstr "Är du säker på att du vill ta bort dessa användare Freeleech Status?"
@@ -2754,9 +2756,6 @@ msgstr "Nuvarande förbud"
 msgid "Current donation"
 msgstr "Nuvarande donation"
 
-msgid "Current words on blacklist"
-msgstr "Aktuella ord på svartlista"
-
 msgid "Currently"
 msgstr "För närvarande"
 
@@ -3290,6 +3289,61 @@ msgstr "Dubbel uppladdningslucka"
 
 msgid "Double Upload Slot in Use"
 msgstr "Dubbel uppladdningslucka som används"
+
+#, fuzzy
+#| msgid "Bonus Manager"
+msgid "DoubleSeed Manager"
+msgstr "Bonuschef"
+
+#, fuzzy
+#| msgid "Freeleech Notice!"
+msgid "DoubleSeed Notice!"
+msgstr "Freeleech meddelande!"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents have been removed by {0}"
+msgid "DoubleSeed On All Torrents have been removed by {0}"
+msgstr "Freeleech On All Torrents har tagits bort av {0}"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents removed by {0}"
+msgid "DoubleSeed On All Torrents removed by {0}"
+msgstr "Freeleech On All Torrents tas bort av {0}"
+
+#, fuzzy
+#| msgid "Select Status"
+msgid "DoubleSeed Status"
+msgstr "Välj status"
+
+#, fuzzy, no-php-format
+#| msgid "warned Status for {0} by {1}."
+msgid "DoubleSeed Status for {0} by {1}."
+msgstr "varnade Status för {0} av {1}."
+
+#, fuzzy, no-php-format
+#| msgid "warned Status removed by {0}."
+msgid "DoubleSeed Status removed by {0}."
+msgstr "varnar Status borttagen av {0}."
+
+#, fuzzy, no-php-format
+#| msgid "or<br>Seed for {0}"
+msgid "DoubleSeed Users ({0})"
+msgstr "eller <br> Frö för {0}"
+
+#, fuzzy
+#| msgid "Freeleech enabled = No"
+msgid "DoubleSeed enabled = No"
+msgstr "Freeleech aktiverat = Nej"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "DoubleSeed enabled = {0}"
+msgstr "Freeleech aktiverat ="
+
+#, fuzzy
+#| msgid "Doubled Down"
+msgid "DoubleSeed for"
+msgstr "Fördubblats"
 
 msgid "Doubled Down"
 msgstr "Fördubblats"
@@ -4357,9 +4411,10 @@ msgstr "Freeleech On All Torrents har tagits bort av {0}"
 msgid "Freeleech On All Torrents removed by {0}"
 msgstr "Freeleech On All Torrents tas bort av {0}"
 
-#, no-php-format
-msgid "Freeleech Peeps ({0})"
-msgstr "Freeleech Peeps ({0})"
+#, fuzzy
+#| msgid "Freeleech Slots:"
+msgid "Freeleech Slots"
+msgstr "Freeleech Slots:"
 
 msgid "Freeleech Slots:"
 msgstr "Freeleech Slots:"
@@ -4367,24 +4422,27 @@ msgstr "Freeleech Slots:"
 msgid "Freeleech Status"
 msgstr "Freeleech-status"
 
-msgid "Freeleech Status enabled by "
-msgstr "Freeleech Status aktiverat av"
-
 #, no-php-format
 msgid "Freeleech Status for {0} by {1}."
 msgstr "Freeleech-status för {0} av {1}."
 
-msgid "Freeleech Status removed by "
+#, fuzzy, no-php-format
+#| msgid "Freeleech Status removed by "
+msgid "Freeleech Status removed by {0}."
 msgstr "Freeleech-status tas bort av"
 
-msgid "Freeleech enabled = "
-msgstr "Freeleech aktiverat ="
+#, fuzzy, no-php-format
+#| msgid "Freeleech Peeps ({0})"
+msgid "Freeleech Users ({0})"
+msgstr "Freeleech Peeps ({0})"
 
 msgid "Freeleech enabled = No"
 msgstr "Freeleech aktiverat = Nej"
 
-msgid "Freeleech enabled = Yes"
-msgstr "Freeleech aktiverat = Ja"
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "Freeleech enabled = {0}"
+msgstr "Freeleech aktiverat ="
 
 msgid "Freeleech for"
 msgstr "Freeleech för"
@@ -5089,9 +5147,6 @@ msgstr "Jag registrerade ett konto men fick inte bekräftelsen via e-post!"
 msgid "I smell a rat!"
 msgstr "Jag känner lukten av en råtta!"
 
-msgid "I think you forgot the name"
-msgstr "Jag tror att du har glömt namnet"
-
 msgid "I understand that I have to keep seeding my torrents until there are at least two other seeders"
 msgstr "Jag förstår att jag måste fortsätta sådd mina torrenter tills det finns minst två andra såmaskiner"
 
@@ -5566,7 +5621,9 @@ msgstr "Ogiltig åtgärd"
 msgid "Invalid action."
 msgstr "Ogiltig åtgärd."
 
-msgid "Invalid characters users."
+#, fuzzy
+#| msgid "Invalid characters users."
+msgid "Invalid characters used."
 msgstr "Ogiltiga teckenanvändare."
 
 msgid "Invalid class"
@@ -7031,6 +7088,11 @@ msgstr "Nej Inaktivera det här forumets rättigheter."
 msgid "No Disable this members signature rights."
 msgstr "Nej Avaktivera medlemmarnas signaturrättigheter."
 
+#, fuzzy
+#| msgid "No disablement Status Set"
+msgid "No DoubleSeed Status Set"
+msgstr "Ingen inställningsstatus inställd"
+
 msgid "No Doubleslots left."
 msgstr "Inga dubbletter kvar."
 
@@ -7446,9 +7508,6 @@ msgstr "Obs: Det här verktyget flyttar ALLA torrenter från en kategori till en
 
 msgid "Note: if you want no limit for the user class set the limit to 0"
 msgstr "Obs! Om du inte vill ha någon gräns för användarklassen ska du ställa in gränsen till 0"
-
-msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
-msgstr "Obs! Om du vill skicka in mer, då en dålig nick i taget, separera dem med komma"
 
 msgid "Nothing Configured Atm Sorry"
 msgstr "Ingenting konfigurerad Atm Tyvärr"
@@ -7975,6 +8034,11 @@ msgstr "Betala {0} premie"
 
 msgid "Peer ID"
 msgstr "Peer ID"
+
+#, fuzzy, no-php-format
+#| msgid "{0} was deleted."
+msgid "Peer {0} has been deleted."
+msgstr "{0} raderades."
 
 msgid "Peerlist"
 msgstr "Peerlist"
@@ -8680,6 +8744,16 @@ msgstr "Ta bort valet"
 
 msgid "Remove Class"
 msgstr "Ta bort klass"
+
+#, fuzzy
+#| msgid "Remove Shout disablement"
+msgid "Remove DoubleSeed"
+msgstr "Ta bort avstängning av rop"
+
+#, fuzzy
+#| msgid "Remove warned Status"
+msgid "Remove DoubleSeed Status"
+msgstr "Ta bort varnade status"
 
 msgid "Remove Freeleech"
 msgstr "Ta bort Freeleech"
@@ -10645,6 +10719,11 @@ msgstr "Tack för ditt stöd och delning genom året {0}! <br> God jul och ett g
 msgid "Thanks list"
 msgstr "Tacklista"
 
+#, fuzzy
+#| msgid "That User has No Freeleech Status!"
+msgid "That User has No DoubleSeed Status!"
+msgstr "Den användaren har ingen Freeleech-status!"
+
 msgid "That User has No Freeleech Status!"
 msgstr "Den användaren har ingen Freeleech-status!"
 
@@ -10733,9 +10812,6 @@ msgstr "E-postadressen måste vara giltig. Du kommer att få ett bekräftelsemed
 
 msgid "The file can't be empty!"
 msgstr "Filen kan inte vara tom!"
-
-msgid "The file was written...wait for redirect"
-msgstr "Filen skrevs ... vänta på omdirigering"
 
 msgid "The filename cannot be empty."
 msgstr "Filnamnet kan inte vara tomt."
@@ -11056,9 +11132,6 @@ msgstr "Det finns ingen enkät med det ID!"
 
 msgid "There is no title defined!"
 msgstr "Det finns ingen titel definierad!"
-
-msgid "There is no username on the blacklist"
-msgstr "Det finns inget användarnamn på svartlistan"
 
 #, no-php-format
 msgid "There is no {0}"
@@ -12383,6 +12456,11 @@ msgstr "Användarens röster"
 msgid "User account"
 msgstr "Användarkonto"
 
+#, fuzzy, no-php-format
+#| msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
+msgid "User account {0} ){1}) DoubleSeed On All Torrents have been removed by {2}"
+msgstr "Användarkonto {0}) {1}) Freeleech On All Torrents har tagits bort av {2}"
+
 #, no-php-format
 msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
 msgstr "Användarkonto {0}) {1}) Freeleech On All Torrents har tagits bort av {2}"
@@ -12456,9 +12534,6 @@ msgstr "Userhits?"
 
 msgid "Username"
 msgstr "Användarnamn"
-
-msgid "Username Blacklist"
-msgstr "Användarnamn svartlista"
 
 msgid "Username Has Been Changed To "
 msgstr "Användarnamn har ändrats till"
@@ -13393,9 +13468,6 @@ msgstr "Du har lagt ut här"
 msgid "You have received"
 msgstr "Du har fått"
 
-msgid "You have received Freeleech Status from "
-msgstr "Du har fått Freeleech-status från"
-
 msgid "You have received a PM from "
 msgstr "Du har fått en PM från"
 
@@ -13432,6 +13504,11 @@ msgstr "Du har fått {0} AJAX Chat-inaktivering från {1}"
 #, no-php-format
 msgid "You have received {0} Avatar disablement from {1}."
 msgstr "Du har fått {0} Avatar inaktivering från {1}."
+
+#, fuzzy, no-php-format
+#| msgid "You have received {0} warned Status from {1}."
+msgid "You have received {0} DoubleSeed Status from {1}."
+msgstr "Du har fått {0} varnade status från {1}."
 
 #, no-php-format
 msgid "You have received {0} Download disablement from {1}."
@@ -13686,6 +13763,11 @@ msgstr "Dina Avatar-rättigheter har inaktiverats av {0}."
 msgid "Your Avatar rights have been restored by {0}."
 msgstr "Dina Avatar-rättigheter har återställts av {0}."
 
+#, fuzzy, no-php-format
+#| msgid "Your warned Status has been removed by {0}"
+msgid "Your DoubleSeed Status has been removed by {0}."
+msgstr "Din varnade status har tagits bort av {0}"
+
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
 msgstr "Dina nedladdningsrättigheter har inaktiverats av {0}"
@@ -13698,7 +13780,9 @@ msgstr "Dina nedladdningsrättigheter har återställts av {0}"
 msgid "Your Downloads have been enabled by {0}."
 msgstr "Dina nedladdningar har aktiverats av {0}."
 
-msgid "Your Freeleech Status has been removed by "
+#, fuzzy, no-php-format
+#| msgid "Your Freeleech Status has been removed by "
+msgid "Your Freeleech Status has been removed by {0}."
 msgstr "Din Freeleech-status har tagits bort av"
 
 msgid "Your IMDb link is invalid"
@@ -15334,10 +15418,6 @@ msgid "{0} is not currently a supported locale."
 msgstr "{0} är för närvarande inte ett språk som stöds."
 
 #, no-php-format
-msgid "{0} is not writable"
-msgstr "{0} är inte skrivbart"
-
-#, no-php-format
 msgid "{0} is on the watched user list already! back to {1}'s profile"
 msgstr "{0} finns redan på den övervakade användarlistan! tillbaka till {1} s profil"
 
@@ -15536,3 +15616,36 @@ msgid "{1}: Modded Torrents from {0}, number day ago"
 msgid_plural "{1}: Modded Torrents from {0}, number days ago"
 msgstr[0] "{1}: Modded Torrents från {0}, antal dagar sedan"
 msgstr[1] "{1}: Modded Torrents från {0}, antal dagar sedan"
+
+#~ msgid "Add word"
+#~ msgstr "Lägg till ord"
+
+#~ msgid "Current words on blacklist"
+#~ msgstr "Aktuella ord på svartlista"
+
+#~ msgid "Freeleech Status enabled by "
+#~ msgstr "Freeleech Status aktiverat av"
+
+#~ msgid "Freeleech enabled = Yes"
+#~ msgstr "Freeleech aktiverat = Ja"
+
+#~ msgid "I think you forgot the name"
+#~ msgstr "Jag tror att du har glömt namnet"
+
+#~ msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
+#~ msgstr "Obs! Om du vill skicka in mer, då en dålig nick i taget, separera dem med komma"
+
+#~ msgid "The file was written...wait for redirect"
+#~ msgstr "Filen skrevs ... vänta på omdirigering"
+
+#~ msgid "There is no username on the blacklist"
+#~ msgstr "Det finns inget användarnamn på svartlistan"
+
+#~ msgid "Username Blacklist"
+#~ msgstr "Användarnamn svartlista"
+
+#~ msgid "You have received Freeleech Status from "
+#~ msgstr "Du har fått Freeleech-status från"
+
+#~ msgid "{0} is not writable"
+#~ msgstr "{0} är inte skrivbart"

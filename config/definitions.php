@@ -230,6 +230,7 @@ return [
             Codes::DE_DE,
             Codes::EN_US,
             Codes::ES_ES,
+            Codes::ET_EE,
             Codes::FI_FI,
             Codes::FR_FR,
             Codes::IT_IT,

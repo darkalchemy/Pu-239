@@ -162,7 +162,7 @@ $dict = bencdec::decode_file($fn, $site_config['site']['max_torrent_size']);
 if ($site_config['tracker']['radiance']) {
     $dict['announce'] = "{$site_config['tracker'][$usessl][0]}:{$site_config['tracker']['announce_port']}/{$user['torrent_pass']}/announce";
 } else {
-    $dict['announce'] = "{$site_config['tracker'][$usessl][0]}?torrent_pass={$user['torrent_pass']}";
+    $dict['announce'] = "{$site_config['tracker'][$usessl][0]}/announce.php?torrent_pass={$user['torrent_pass']}";
 }
 $dict['uid'] = (int) $user['id'];
 $tor = bencdec::encode($dict);

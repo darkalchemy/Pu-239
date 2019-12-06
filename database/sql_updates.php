@@ -4987,4 +4987,18 @@ KEY `expires` (`expires`)
         'query' => "UPDATE `site_config` SET `value` = REPLACE(`value`, '/announce.php', '') WHERE `parent` = 'tracker'",
         'flush' => true,
     ],
+    [
+        'id' => 1575322408,
+        'info' => 'Change file_name',
+        'date' => '02 Dec, 2019',
+        'query' => "UPDATE `staffpanel` SET `file_name` = 'staffpanel.php?tool=uploadapps' WHERE `file_name` = 'staffpanel.php?tool=uploadapps&action=app'",
+        'flush' => false,
+    ],
+    [
+        'id' => 1575322410,
+        'info' => 'Change file_name',
+        'date' => '02 Dec, 2019',
+        'query' => "UPDATE `staffpanel` SET `file_name` = 'staffpanel.php?tool=news' WHERE `file_name` = 'staffpanel.php?tool=news&mode=news'",
+        'flush' => false,
+    ],
 ];

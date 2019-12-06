@@ -994,9 +994,6 @@ msgstr "Lisää lahjoittajien aika:"
 msgid "Add to watched users?"
 msgstr "Lisää seurattuihin käyttäjiin?"
 
-msgid "Add word"
-msgstr "Lisää sana"
-
 #, no-php-format
 msgid "Add {0} to the Watched Users List"
 msgstr "Lisää {0} tarkkailtujen käyttäjien luetteloon"
@@ -1391,6 +1388,11 @@ msgstr "Haluatko varmasti poistaa tämän aiheen? Jos olet varma, napsauta Poist
 #, no-php-format
 msgid "Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are."
 msgstr "Haluatko varmasti poistaa tämän torrentin? <br> Napsauta {0} täällä {1}, jos olet."
+
+#, fuzzy
+#| msgid "Are you sure you want to remove this users Freeleech Status?"
+msgid "Are you sure you want to remove this users DoubleSeed Status?"
+msgstr "Haluatko varmasti poistaa nämä käyttäjät Freeleech Status?"
 
 msgid "Are you sure you want to remove this users Freeleech Status?"
 msgstr "Haluatko varmasti poistaa nämä käyttäjät Freeleech Status?"
@@ -2754,9 +2756,6 @@ msgstr "Nykyiset kiellot"
 msgid "Current donation"
 msgstr "Nykyinen lahjoitus"
 
-msgid "Current words on blacklist"
-msgstr "Nykyiset sanat mustalla listalla"
-
 msgid "Currently"
 msgstr "Tällä hetkellä"
 
@@ -3290,6 +3289,61 @@ msgstr "Tuplalatauspaikka"
 
 msgid "Double Upload Slot in Use"
 msgstr "Kaksoislähetyspaikka käytössä"
+
+#, fuzzy
+#| msgid "Bonus Manager"
+msgid "DoubleSeed Manager"
+msgstr "Bonuspäällikkö"
+
+#, fuzzy
+#| msgid "Freeleech Notice!"
+msgid "DoubleSeed Notice!"
+msgstr "Freeleech-ilmoitus!"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents have been removed by {0}"
+msgid "DoubleSeed On All Torrents have been removed by {0}"
+msgstr "Freeleech On All Torrent on poistettu {0}"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech On All Torrents removed by {0}"
+msgid "DoubleSeed On All Torrents removed by {0}"
+msgstr "Freeleech On All Torrent poistettu {0}"
+
+#, fuzzy
+#| msgid "Select Status"
+msgid "DoubleSeed Status"
+msgstr "Valitse Tila"
+
+#, fuzzy, no-php-format
+#| msgid "warned Status for {0} by {1}."
+msgid "DoubleSeed Status for {0} by {1}."
+msgstr "varoitti tilan {0} lähettäjältä {1}."
+
+#, fuzzy, no-php-format
+#| msgid "warned Status removed by {0}."
+msgid "DoubleSeed Status removed by {0}."
+msgstr "varoitettu tila poistettu {0}."
+
+#, fuzzy, no-php-format
+#| msgid "or<br>Seed for {0}"
+msgid "DoubleSeed Users ({0})"
+msgstr "tai <br> siemen {0}"
+
+#, fuzzy
+#| msgid "Freeleech enabled = No"
+msgid "DoubleSeed enabled = No"
+msgstr "Freeleech käytössä = Ei"
+
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "DoubleSeed enabled = {0}"
+msgstr "Freeleech käytössä ="
+
+#, fuzzy
+#| msgid "Doubled Down"
+msgid "DoubleSeed for"
+msgstr "Tuplastui"
 
 msgid "Doubled Down"
 msgstr "Tuplastui"
@@ -4357,9 +4411,10 @@ msgstr "Freeleech On All Torrent on poistettu {0}"
 msgid "Freeleech On All Torrents removed by {0}"
 msgstr "Freeleech On All Torrent poistettu {0}"
 
-#, no-php-format
-msgid "Freeleech Peeps ({0})"
-msgstr "Freeleech Peeps ({0})"
+#, fuzzy
+#| msgid "Freeleech Slots:"
+msgid "Freeleech Slots"
+msgstr "Freeleech-hedelmäpelit:"
 
 msgid "Freeleech Slots:"
 msgstr "Freeleech-hedelmäpelit:"
@@ -4367,24 +4422,27 @@ msgstr "Freeleech-hedelmäpelit:"
 msgid "Freeleech Status"
 msgstr "Freeleech-tila"
 
-msgid "Freeleech Status enabled by "
-msgstr "Freeleech-tila on käytössä"
-
 #, no-php-format
 msgid "Freeleech Status for {0} by {1}."
 msgstr "{0} Freeleech-tila {{}."
 
-msgid "Freeleech Status removed by "
+#, fuzzy, no-php-format
+#| msgid "Freeleech Status removed by "
+msgid "Freeleech Status removed by {0}."
 msgstr "Freeleech-tilan poistanut"
 
-msgid "Freeleech enabled = "
-msgstr "Freeleech käytössä ="
+#, fuzzy, no-php-format
+#| msgid "Freeleech Peeps ({0})"
+msgid "Freeleech Users ({0})"
+msgstr "Freeleech Peeps ({0})"
 
 msgid "Freeleech enabled = No"
 msgstr "Freeleech käytössä = Ei"
 
-msgid "Freeleech enabled = Yes"
-msgstr "Freeleech käytössä = Kyllä"
+#, fuzzy, no-php-format
+#| msgid "Freeleech enabled = "
+msgid "Freeleech enabled = {0}"
+msgstr "Freeleech käytössä ="
 
 msgid "Freeleech for"
 msgstr "Freeleech varten"
@@ -5089,9 +5147,6 @@ msgstr "Rekisteröinnyt tilin, mutta en saanut vahvistusviestiä!"
 msgid "I smell a rat!"
 msgstr "Haistan rotan!"
 
-msgid "I think you forgot the name"
-msgstr "Luulen että unohdit nimen"
-
 msgid "I understand that I have to keep seeding my torrents until there are at least two other seeders"
 msgstr "Ymmärrän, että minun on jatkettava siementen torjuntaa, kunnes siellä on ainakin kaksi muuta kylvölaitetta"
 
@@ -5566,7 +5621,9 @@ msgstr "Virheellinen toiminta"
 msgid "Invalid action."
 msgstr "Virheellinen toiminta."
 
-msgid "Invalid characters users."
+#, fuzzy
+#| msgid "Invalid characters users."
+msgid "Invalid characters used."
 msgstr "Virheelliset merkkien käyttäjät."
 
 msgid "Invalid class"
@@ -7031,6 +7088,11 @@ msgstr "Ei Poista tämän jäsenfoorumin oikeudet käytöstä."
 msgid "No Disable this members signature rights."
 msgstr "Ei Poista tämän jäsenen allekirjoitusoikeudet käytöstä."
 
+#, fuzzy
+#| msgid "No disablement Status Set"
+msgid "No DoubleSeed Status Set"
+msgstr "Ei käytöstä poistamisen tilaa asetettu"
+
 msgid "No Doubleslots left."
 msgstr "Yhtään parikilpailua ei ole jäljellä."
 
@@ -7446,9 +7508,6 @@ msgstr "Huomaa: Tämä työkalu siirtää KAIKKI torrentit yhdestä luokasta vai
 
 msgid "Note: if you want no limit for the user class set the limit to 0"
 msgstr "Huomautus: Jos et halua käyttäjärajalle mitään rajoituksia, aseta rajaksi 0"
-
-msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
-msgstr "Huomaa: Jos haluat lähettää enemmän kuin yksi huono nimimerkki kerrallaan, erota ne pilkulla"
 
 msgid "Nothing Configured Atm Sorry"
 msgstr "Mikään ei määritetty Atm Valitettavasti"
@@ -7975,6 +8034,11 @@ msgstr "Maksa {0} palkkio"
 
 msgid "Peer ID"
 msgstr "Vertaistunnus"
+
+#, fuzzy, no-php-format
+#| msgid "{0} was deleted."
+msgid "Peer {0} has been deleted."
+msgstr "{0} poistettiin."
 
 msgid "Peerlist"
 msgstr "Peerlist"
@@ -8680,6 +8744,16 @@ msgstr "Poista valinta"
 
 msgid "Remove Class"
 msgstr "Poista luokka"
+
+#, fuzzy
+#| msgid "Remove Shout disablement"
+msgid "Remove DoubleSeed"
+msgstr "Poista huutaminen käytöstä"
+
+#, fuzzy
+#| msgid "Remove warned Status"
+msgid "Remove DoubleSeed Status"
+msgstr "Poista varoitettu tila"
 
 msgid "Remove Freeleech"
 msgstr "Poista Freeleech"
@@ -10645,6 +10719,11 @@ msgstr "Kiitos tuestasi ja jakamisesta läpi vuoden {0}! <br> Hyvää joulua ja 
 msgid "Thanks list"
 msgstr "Kiitosluettelo"
 
+#, fuzzy
+#| msgid "That User has No Freeleech Status!"
+msgid "That User has No DoubleSeed Status!"
+msgstr "Tällä käyttäjällä ei ole Freeleech-tilaa!"
+
 msgid "That User has No Freeleech Status!"
 msgstr "Tällä käyttäjällä ei ole Freeleech-tilaa!"
 
@@ -10733,9 +10812,6 @@ msgstr "Sähköpostiosoitteen on oltava kelvollinen. Saat vahvistusviestin, joho
 
 msgid "The file can't be empty!"
 msgstr "Tiedosto ei voi olla tyhjä!"
-
-msgid "The file was written...wait for redirect"
-msgstr "Tiedosto kirjoitettiin ... odota uudelleenohjausta"
 
 msgid "The filename cannot be empty."
 msgstr "Tiedostonimi ei voi olla tyhjä."
@@ -11056,9 +11132,6 @@ msgstr "Tällä tunnuksella ei ole kyselyä!"
 
 msgid "There is no title defined!"
 msgstr "Otsikkoa ei ole määritelty!"
-
-msgid "There is no username on the blacklist"
-msgstr "Mustalla listalla ei ole käyttäjänimeä"
 
 #, no-php-format
 msgid "There is no {0}"
@@ -12383,6 +12456,11 @@ msgstr "Käyttäjien äänet"
 msgid "User account"
 msgstr "Käyttäjätili"
 
+#, fuzzy, no-php-format
+#| msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
+msgid "User account {0} ){1}) DoubleSeed On All Torrents have been removed by {2}"
+msgstr "Käyttäjätili {0}) {1}) Freeleech On All Torrentit on poistettu {2}"
+
 #, no-php-format
 msgid "User account {0} ){1}) Freeleech On All Torrents have been removed by {2}"
 msgstr "Käyttäjätili {0}) {1}) Freeleech On All Torrentit on poistettu {2}"
@@ -12456,9 +12534,6 @@ msgstr "Userhits?"
 
 msgid "Username"
 msgstr "Käyttäjätunnus"
-
-msgid "Username Blacklist"
-msgstr "Käyttäjätunnus Musta lista"
 
 msgid "Username Has Been Changed To "
 msgstr "Käyttäjätunnus on muutettu"
@@ -13393,9 +13468,6 @@ msgstr "Olet lähettänyt tänne"
 msgid "You have received"
 msgstr "Sinä olet saanut"
 
-msgid "You have received Freeleech Status from "
-msgstr "Olet saanut Freeleech-tilan osoitteesta"
-
 msgid "You have received a PM from "
 msgstr "Olet vastaanottanut PM: n lähettäjältä"
 
@@ -13432,6 +13504,11 @@ msgstr "Olet saanut {0} AJAX-keskustelun käytöstä osoitteesta {1}"
 #, no-php-format
 msgid "You have received {0} Avatar disablement from {1}."
 msgstr "Olet saanut {0} Avatar-käytöstä käytöstä {1}."
+
+#, fuzzy, no-php-format
+#| msgid "You have received {0} warned Status from {1}."
+msgid "You have received {0} DoubleSeed Status from {1}."
+msgstr "Olet saanut {0} varoitetun tilan {1}."
 
 #, no-php-format
 msgid "You have received {0} Download disablement from {1}."
@@ -13686,6 +13763,11 @@ msgstr "Avatar-oikeutesi on poistettu käytöstä {0}."
 msgid "Your Avatar rights have been restored by {0}."
 msgstr "Avatar-oikeutesi on palautettu {0}."
 
+#, fuzzy, no-php-format
+#| msgid "Your warned Status has been removed by {0}"
+msgid "Your DoubleSeed Status has been removed by {0}."
+msgstr "Varoitettu tila on poistettu {0}"
+
 #, no-php-format
 msgid "Your Downloading rights have been disabled by {0}"
 msgstr "Latausoikeutesi on poistettu käytöstä {0}"
@@ -13698,7 +13780,9 @@ msgstr "Latausoikeudet on palautettu {0}"
 msgid "Your Downloads have been enabled by {0}."
 msgstr "Latauksesi on otettu käyttöön {0}."
 
-msgid "Your Freeleech Status has been removed by "
+#, fuzzy, no-php-format
+#| msgid "Your Freeleech Status has been removed by "
+msgid "Your Freeleech Status has been removed by {0}."
 msgstr "Freeleech-tila on poistunut"
 
 msgid "Your IMDb link is invalid"
@@ -15334,10 +15418,6 @@ msgid "{0} is not currently a supported locale."
 msgstr "{0} ei ole tällä hetkellä tuettu kieli."
 
 #, no-php-format
-msgid "{0} is not writable"
-msgstr "{0} ei ole kirjoitettavissa"
-
-#, no-php-format
 msgid "{0} is on the watched user list already! back to {1}'s profile"
 msgstr "{0} on jo tarkkailtujen käyttäjien luettelossa! takaisin käyttäjän {1} profiiliin"
 
@@ -15536,3 +15616,36 @@ msgid "{1}: Modded Torrents from {0}, number day ago"
 msgid_plural "{1}: Modded Torrents from {0}, number days ago"
 msgstr[0] "{1}: Muokatut torrentit alkaen {0}, numero päivä sitten"
 msgstr[1] "{1}: Muokatut torrentit alkaen {0}, useita päiviä sitten"
+
+#~ msgid "Add word"
+#~ msgstr "Lisää sana"
+
+#~ msgid "Current words on blacklist"
+#~ msgstr "Nykyiset sanat mustalla listalla"
+
+#~ msgid "Freeleech Status enabled by "
+#~ msgstr "Freeleech-tila on käytössä"
+
+#~ msgid "Freeleech enabled = Yes"
+#~ msgstr "Freeleech käytössä = Kyllä"
+
+#~ msgid "I think you forgot the name"
+#~ msgstr "Luulen että unohdit nimen"
+
+#~ msgid "Note: if you want to submit more then one bad nick at a time separate them with a comma"
+#~ msgstr "Huomaa: Jos haluat lähettää enemmän kuin yksi huono nimimerkki kerrallaan, erota ne pilkulla"
+
+#~ msgid "The file was written...wait for redirect"
+#~ msgstr "Tiedosto kirjoitettiin ... odota uudelleenohjausta"
+
+#~ msgid "There is no username on the blacklist"
+#~ msgstr "Mustalla listalla ei ole käyttäjänimeä"
+
+#~ msgid "Username Blacklist"
+#~ msgstr "Käyttäjätunnus Musta lista"
+
+#~ msgid "You have received Freeleech Status from "
+#~ msgstr "Olet saanut Freeleech-tilan osoitteesta"
+
+#~ msgid "{0} is not writable"
+#~ msgstr "{0} ei ole kirjoitettavissa"

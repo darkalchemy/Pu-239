@@ -25,7 +25,7 @@ The primary goal of this project is to give the site owner a means to create a c
 * [Patrons](#patrons)
 * [Wiki](https://github.com/darkalchemy/Pu-239/wiki)
 
-##### I am using Ubuntu 18.04 LTS, PHP 7.3, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+##### I am using Ubuntu 18.04 LTS, PHP 7.4, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
 1. Update to PHP 7.4 - default settings
@@ -54,7 +54,7 @@ A simple bash script to install everything required to host Pu-239 is [here](htt
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177).  
-There is a demo site available at [Pu-239](https://Pu-239.pw). It's a bit slow, but it's all I can do.  
+There is a demo site available at [Pu-239](https://Pu-239.pw).  
   
 #### Prior to install:
 ##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.
@@ -230,4 +230,5 @@ If you would like to see a specific translation or assist with a current transla
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
 #### Patrons:
-Nico, Ben9, superlarsen, suiziide
+Nico, Ben9, superlarsen, suiziide, 
+RememberForgottenHits
