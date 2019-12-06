@@ -1,15 +1,15 @@
 .mentioned {
-    color: var(--main-bdr-color);
+    color:       var(--main-bdr-color);
     text-shadow: 1px 1px #000;
 }
 
 a {
-    color: var(--default-link-color);
+    color:           var(--default-link-color);
     text-decoration: none;
 }
 
 a:hover {
-    color: var(--default-link-hover-color);
+    color:           var(--default-link-hover-color);
     text-decoration: none;
 }
 
@@ -21,10 +21,10 @@ select {
 
 .circle {
     list-style-type: circle;
-    color: #c00;
+    color:           #c00;
 }
 
 .disc {
     list-style-type: disc;
-    color: #0f0;
+    color:           #0f0;
 }

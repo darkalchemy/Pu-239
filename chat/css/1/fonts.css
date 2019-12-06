@@ -4,7 +4,7 @@
 }
 
 #loginContent h1 {
-    font-size: 1.3em;
+    font-size:   1.3em;
     font-weight: bold;
 }
 
@@ -29,7 +29,7 @@
 }
 
 #content h1 {
-    font-size: 1.3em;
+    font-size:   1.3em;
     font-weight: bold;
 }
 
@@ -71,8 +71,8 @@
 
 #content #chatList q {
     -webkit-font-feature-settings: "c2sc";
-    font-feature-settings: "c2sc";
-    font-variant: small-caps;
+    font-feature-settings:         "c2sc";
+    font-variant:                  small-caps;
 }
 
 #content #chatList code {
