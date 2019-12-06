@@ -36,11 +36,6 @@ ajaxChat.view = {
             if (self.isMobile()) {
                 ajaxChat.updateChatlistView();
             }
-            if (self.isTinyScreen()) {
-                ajaxChat.showHide('onlineListContainer', 'none');
-                ajaxChat.showHide('settingsContainer', 'none');
-                ajaxChat.showHide('helpContainer', 'none');
-            }
         });
     },
     useDebounce: function (callback) {
@@ -73,10 +68,6 @@ ajaxChat.view = {
 };
 
 function initialize() {
-    if (ajaxChat.view.isMobile()) {
-        ajaxChat.setSetting('blink', false);
-        ajaxChat.view.toggleContainer('onlineListContainer', ['settingsContainer', 'helpContainer']);
-    }
     ajaxChat.view.bindPopups();
     ajaxChat.addEvent(window, 'resize', function () {
         ajaxChat.view.renderResize();

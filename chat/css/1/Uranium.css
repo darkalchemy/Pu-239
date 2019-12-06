@@ -9,21 +9,21 @@ html {
 
 input, select, textarea, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #onlineListContainer h3, #content #helpContainer h3, #content #settingsContainer h3, #content #inputFieldContainer, #loginContent input {
-    border-radius: 5px;
+    border-radius:         5px;
     -webkit-border-radius: 5px;
-    border: 0;
+    border:                0;
 }
 
 #content #inputFieldContainer {
     background: #0e0e0e;
-    padding: 0;
+    padding:    0;
 }
 
 #content #inputFieldContainer #inputField {
     box-shadow: inset 1px 1px 5px 1px #000;
-    border: 0;
-    padding: 3px 12px;
-    width: calc(100% - 27px);
+    border:     0;
+    padding:    3px 12px;
+    width:      calc(100% - 27px);
 }
 
 #content #inputFieldContainer #inputField:focus {
@@ -32,8 +32,8 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #loginContent #loginButton {
     background-color: #424242;
-    color: #b0b8a8;
-    border-radius: 3px;
+    color:            #b0b8a8;
+    border-radius:    3px;
 }
 
 #loginContent #errorContainer {
@@ -41,19 +41,19 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #errorContainer {
-    font-size: 2em;
+    font-size:   2em;
     text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 }
 
 .ajax-chat {
-    height: 100%;
+    height:           100%;
     background-color: #464646;
     background-image: linear-gradient(to bottom, #464646, #181818);
-    color: #b0b8a8;
+    color:            #b0b8a8;
 }
 
 .ajax-chat h1, .ajax-chat h3 {
-    color: #e2e9db;
+    color:       #e2e9db;
     text-shadow: 1px 1px 2px #191919;
 }
 
@@ -63,55 +63,55 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #loginContent input, #loginContent select {
     background: #171717;
-    color: #b0b8a8;
+    color:      #b0b8a8;
 }
 
 #content input, #content select, #content textarea {
     background-color: #0e0e0e;
-    color: #b0b8a8;
+    color:            #b0b8a8;
 }
 
 .ajax-chat .popup, #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer,
 #content #inputFieldContainer, #loginContent input[type=text], #loginContent input[type=password] {
-    box-shadow: 0 0 8px 1px #495a49;
+    box-shadow:         0 0 8px 1px #495a49;
     -webkit-box-shadow: 0 0 8px 1px #495a49;
 }
 
 .logoutChannelInner .popup {
-    box-shadow: none;
+    box-shadow:         none;
     -webkit-box-shadow: none;
 }
 
 #content #chatList, #content #onlineListContainer, #content #helpContainer, #content #settingsContainer {
     background-color: #171717;
-    border: 0;
+    border:           0;
 }
 
 #content #chatList:after, #content #chatList:before {
-    content: '';
-    display: block;
-    position: absolute;
+    content:       '';
+    display:       block;
+    position:      absolute;
     border-radius: 5px;
 }
 
 #content #chatList:before {
-    top: 17px;
-    left: 0;
-    width: 0;
-    height: 98%;
+    top:        17px;
+    left:       0;
+    width:      0;
+    height:     98%;
     box-shadow: 1px 0 8px 1px #000;
 }
 
 #content #chatList:after {
-    top: 0;
-    left: 17px;
-    width: 98%;
-    height: 0;
+    top:        0;
+    left:       17px;
+    width:      98%;
+    height:     0;
     box-shadow: 0 1px 8px 1px #000;
 }
 
 #content #onlineListContainer #onlineList div {
-    margin: 0 1px 1px 1px;
+    margin:     0 1px 1px 1px;
     background: none;
 }
 
@@ -129,7 +129,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 #content #bbCodeContainer {
-    border: 0;
+    border:       0;
     padding-left: 0;
 }
 
@@ -149,7 +149,7 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 #content #bbCodeContainer input {
     background-color: #d8ffd6;
     background-image: linear-gradient(to bottom, #d8ffd6, #467a44);
-    color: #1d1d1d;
+    color:            #1d1d1d;
 }
 
 #content #bbCodeContainer input:hover {
@@ -164,9 +164,9 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 #content #logoutButton, #content #submitButton, #loginContent #loginButton {
     background-color: #4fff58;
     background-image: linear-gradient(to bottom, #4fff58, #194221);
-    font-weight: bold;
-    color: #fff;
-    text-shadow: 0 0 5px #000;
+    font-weight:      bold;
+    color:            #fff;
+    text-shadow:      0 0 5px #000;
 }
 
 #content #logoutButton:hover, #content #submitButton:hover, #loginContent #loginButton:hover {
@@ -175,21 +175,21 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 }
 
 .ajax-chat .popup, .ajax-chat #content .popup#colorCodesContainer {
-    border: 0;
+    border:     0;
     background: rgba(0, 0, 0, 0.7);
-    padding: 5px;
+    padding:    5px;
 }
 
 #content #colorCodesContainer a {
     border-radius: 10px;
-    box-shadow: 0 0 3px 1px rgba(255, 255, 255, 0.3);
-    margin: 5px;
-    border: 0;
+    box-shadow:    0 0 3px 1px rgba(255, 255, 255, 0.3);
+    margin:        5px;
+    border:        0;
 }
 
 #content #optionsContainer input.button {
-    border: 0;
-    padding: 0;
+    border:       0;
+    padding:      0;
     margin-right: 5px;
 }
 
@@ -220,11 +220,11 @@ input, select, textarea, #content #chatList, #content #onlineListContainer, #con
 
 #content #chatList span.dateTime {
     font-family: "Lucida Console", Monaco, monospace;
-    font-size: .7em;
+    font-size:   .7em;
 }
 
 .text-center {
-    text-align: center;
-    margin-left: auto;
+    text-align:   center;
+    margin-left:  auto;
     margin-right: auto;
 }

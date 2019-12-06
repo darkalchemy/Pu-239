@@ -2464,7 +2464,7 @@ var ajaxChat = {
                 + '</a>'
                 + '<ul class="inlineUserMenu" id="'
                 + this.getInlineUserMenuDocumentID(this.userMenuCounter, i)
-                + '" style="display:none;">'
+                + '" style="display: none;">'
                 + '</ul>';
         }
         this.userMenuCounter++;

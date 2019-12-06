@@ -13,17 +13,17 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_0d323377.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_39493463.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_73f03df8.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_6f2a0742.css";
         case 'index_css':
             return "{$site_config['paths']['baseurl']}/css/1/index_64c2c5b0.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_2f4ef440.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_6e9ebeef.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_b433f43a.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_1b5f8a99.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_350df18c.css";
         case 'last_css':
             return "{$site_config['paths']['baseurl']}/css/1/last_33d8c190.css";
         case 'main_js':
@@ -33,9 +33,9 @@ function get_file_name($file)
         case 'jquery_js':
             return "{$site_config['paths']['baseurl']}/js/1/jquery_21c3cb84.js";
         case 'chat_main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/chat_main_bbb6db4a.js";
+            return "{$site_config['paths']['baseurl']}/js/1/chat_main_a886f5cf.js";
         case 'chat_js':
-            return "{$site_config['paths']['baseurl']}/js/1/chat_8dfdde8e.js";
+            return "{$site_config['paths']['baseurl']}/js/1/chat_01895136.js";
         case 'chat_log_js':
             return "{$site_config['paths']['baseurl']}/js/1/chat_log_399ae856.js";
         case 'categories_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_acfd1fe1.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_4fc94d08.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_e83d6a3b.js";
         case 'user_search_js':
