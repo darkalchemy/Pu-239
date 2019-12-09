@@ -167,20 +167,22 @@ $stdfoot = [
         get_file_name('check_username_js'),
     ],
 ];
-$signup_vars = [
-    'wantusername' => '',
-    'email' => '',
-];
 
 $signup_vars = $session->get('signup_variables');
 if (!empty($signup_vars)) {
     $signup_vars = json_decode($signup_vars, true);
+} else {
+    $signup_vars = [
+        'username' => '',
+        'email' => '',
+    ];
 }
 
 $HTMLOUT = "
     <form method='post' action='{$site_config['paths']['baseurl']}/signup.php' enctype='multipart/form-data' accept-charset='utf-8'>";
 
 $disabled = !empty($email) ? 'disabled' : 'required';
+
 if (!empty($email)) {
     $email_form = "<input type='hidden' name='email' class='w-100' value='{$email}'>{$email}";
 } else {
