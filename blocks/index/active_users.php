@@ -48,7 +48,7 @@ $active_users .= "
         <a id='activeusers-hash'></a>
         <div id='activeusers' class='box'>
             <div class='bordered'>
-                <div class='alt_bordered bg-00'>
+                <div class='alt_bordered bg-00 has-text-centered'>
                     <div class='bg-00 padding10 bottom10 has-text-centered round5 size_5'>
                         " . _pfe('{0} Active User', '{0} Active Users', $active['actcount']) . "
                     </div>
