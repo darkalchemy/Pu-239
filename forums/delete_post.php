@@ -51,7 +51,14 @@ if ($arr_post['first_post'] == $post_id && $CURUSER['class'] < UC_STAFF) {
     stderr(_('Error'), _('This is the first post in the topic, only Staff can delete topics.'));
 }
 if ($arr_post['first_post'] == $post_id && $CURUSER['class'] >= UC_STAFF) {
-    stderr(_('Error'), _('This is the first post in the topic, you must use') . ' <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=forums_admin&amp;action_2=delete_topic&amp;topic_id=' . $topic_id . '">' . _('Delete Topic') . '</a>.');
+    $delete = "
+    	<form action='forums.php?action=staff_actions' method='post' accept-charset='utf-8'>
+	        <input type='hidden' name='action_2' value='delete_topic'>
+	        <input type='hidden' name='sanity_check' value='1'>
+	        <input type='hidden' name='topic_id' value='{$topic_id}'>
+	        <input type='submit' name='button' class='top20 button is-small' value='" . _('Delete Topic') . "'>
+	    </form>";
+    stderr(_('Error'), _('This is the first post in the topic, are you sure you want to delete the topic?') . $delete);
 }
 if ($sanity_check > 0) {
     if ($site_config['forum_config']['delete_for_real']) {
