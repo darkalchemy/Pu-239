@@ -13,7 +13,7 @@ require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
 $user = check_user_status();
-$id = (int) $_GET['id'];
+$id = isset($_GET['id']) ? (int) $_GET['id'] : $user['id'];
 if (!is_valid_id($id)) {
     stderr(_('Error'), _('Invalid ID'));
 }

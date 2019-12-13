@@ -93,6 +93,8 @@ if ($sanity_check > 0) {
     header('Location: ' . $_SERVER['PHP_SELF'] . '?action=view_topic&topic_id=' . $topic_id);
     die();
 } else {
+    global $page;
+
     $breadcrumbs = [
         "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
         "<a href='{$site_config['paths']['baseurl']}/forums.php?action=view_topic&topic_id={$topic_id}'>" . _('Topic') . '</a>',

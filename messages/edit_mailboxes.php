@@ -245,7 +245,7 @@ $HTMLOUT .= $top_links . '<h1>' . _('Mailbox Manager') . ' / ' . _('Message Sett
 $body = '
             <tr>
                 <td colspan="2" class="has-text-centered">
-                    ' . _pfe('As a {0}, you may have up to {1} PM Box, other than your in, sent and draft boxes.', 'As a {0}, you may have up to {1} PM Boxes, other than your in, sent and draft boxes.', get_user_class_name((int) $CURUSER['class']), $maxboxes) . '<br>' . _pfe('Currently you have {0} custom box. You may add up to {1} additional mailboxes.', 'Currently you have {0} custom boxes. You may add up to {1}additional mailboxes.', $count_boxes, $maxboxes - $count_boxes) . '
+                    ' . _pfe('As a {1}, you may have up to {0} PM Box, other than your in, sent and draft boxes.', 'As a {1}, you may have up to {0} PM Boxes, other than your in, sent and draft boxes.', $maxboxes, get_user_class_name((int) $CURUSER['class'])) . '<br>' . _pfe('Currently you have {0} custom box. You may add up to {1} additional mailboxes.', 'Currently you have {0} custom boxes. You may add up to {1}additional mailboxes.', $count_boxes, $maxboxes - $count_boxes) . '
                     <p class="top10">
                         <span>' . _fe('The following characters can be used: {0}. All other characters will be ignored.', 'a-z, A-Z, 1-9, - and _') . '
                     </p>

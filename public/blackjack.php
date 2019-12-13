@@ -180,7 +180,7 @@ if ($game) {
             $points = $aces = 0;
         }
         $points = 0;
-        $gameover = ($playerarr['gameover'] === 'yes' ? true : false);
+        $gameover = $playerarr['gameover'] === 'yes' ? true : false;
         cheater_check($gameover && ($game === 'hit' ^ $game === 'stop'));
         $cards = $playerarr['cards'];
         $usedcards = explode(' ', $cards);
@@ -240,7 +240,7 @@ if ($game) {
                 //player card 1
                 $card = getCard($cardcount, $blackjack['gameid'], true);
                 $cardids[] = $card;
-                // delaer card 1
+                // dealer card 1
                 $dealer_card = getCard($cardcount, $blackjack['gameid'], false);
                 $dealer_cardids[] = $dealer_card;
                 $player_showcards .= "
@@ -384,11 +384,11 @@ if ($game) {
             for ($i = 0; $i < $aces; ++$i) {
                 $points += ($points < 11 && $aces - $i == 1 ? 11 : 1);
             }
-            $sql = "UPDATE blackjack SET $update_ddown, points = " . sqlesc($points) . ", cards = '" . $cards . ' ' . $cardid . "' WHERE game_id=" . sqlesc($blackjack['gameid']) . ' AND userid=' . sqlesc($user['id']);
+            $sql = "UPDATE blackjack SET $update_ddown, points = " . sqlesc($points) . ", cards = '" . $cards . ' ' . $cardid . "' WHERE game_id = " . sqlesc($blackjack['gameid']) . ' AND userid = ' . sqlesc($user['id']);
             sql_query($sql) or sqlerr(__FILE__, __LINE__);
         }
         if ($points == 21 || $points > 21) {
-            $sql = 'SELECT COUNT(userid) AS c FROM blackjack WHERE game_id=' . sqlesc($blackjack['gameid']) . " AND status = 'waiting' AND userid != " . sqlesc($user['id']);
+            $sql = 'SELECT COUNT(userid) AS c FROM blackjack WHERE game_id = ' . sqlesc($blackjack['gameid']) . " AND status = 'waiting' AND userid != " . sqlesc($user['id']);
             $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
             $waitarr = mysqli_fetch_assoc($res);
             $HTMLOUT .= "
@@ -424,7 +424,7 @@ if ($game) {
         }
         if ($points == 21) {
             if ($waitarr['c'] > 0) {
-                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id=b.userid WHERE game_id=' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($user['id']) . ' ORDER BY b.date LIMIT 1';
+                $sql = 'SELECT b.*, u.username, u.class, u.id, u.uploaded, u.downloaded, u.bjwins, u.bjlosses FROM blackjack AS b LEFT JOIN users AS u ON u.id = b.userid WHERE game_id = ' . sqlesc($blackjack['gameid']) . " AND b.status = 'waiting' AND b.userid != " . sqlesc($user['id']) . ' ORDER BY b.date LIMIT 1';
                 $res = sql_query($sql) or sqlerr(__FILE__, __LINE__);
                 $a = mysqli_fetch_assoc($res);
                 $points_text = htmlsafechars($a['points']) . ' ' . _('points') . '';
@@ -435,17 +435,17 @@ if ($game) {
                     $blackjack['modifier'] = $blackjack['modifier'] * 2;
                     $dbl_text = '[' . _('Doubled Down') . ']';
                     $doubleddown = true;
-                } elseif ($card_count === 2 && $a['points'] == 21 && $playerarr['points'] != 21) {
+                } elseif ($card_count === 2 && $a['points'] == 21 && isset($playerarr) && $playerarr['points'] != 21) {
                     $blackjack['mb'] = $blackjack['mb'] * 1.5;
                     $blackjack['modifier'] = $blackjack['modifier'] * 1.5;
                     $points_text = 'Blackjack';
                 }
                 if ($a['points'] != 21) {
                     $winorlose = _('you won') . ' ' . mksize($blackjack['mb']);
-                    $sql = "UPDATE users SET uploaded = uploaded + {$blackjack['mb']}, bjwins = bjwins + {$blackjack['modifier']} WHERE id=" . sqlesc($user['id']);
+                    $sql = "UPDATE users SET uploaded = uploaded + {$blackjack['mb']}, bjwins = bjwins + {$blackjack['modifier']} WHERE id = " . sqlesc($user['id']);
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
-                    $sql = "UPDATE users SET uploaded = uploaded - {$blackjack['mb']}, bjlosses = bjlosses + {$blackjack['modifier']} WHERE id=" . sqlesc($a['userid']);
+                    $sql = "UPDATE users SET uploaded = uploaded - {$blackjack['mb']}, bjlosses = bjlosses + {$blackjack['modifier']} WHERE id = " . sqlesc($a['userid']);
                     sql_query($sql) or sqlerr(__FILE__, __LINE__);
 
                     $update['uploaded'] = $User['uploaded'] + $blackjack['mb'];
