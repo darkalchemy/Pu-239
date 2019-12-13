@@ -1090,6 +1090,7 @@ p + p {
 
 .is-wrapped {
     flex-wrap: wrap;
+    display: flex;
 }
 
 .cast > img {
