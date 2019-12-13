@@ -89,7 +89,9 @@ if ((isset($_POST['nfoaction'])) && ($_POST['nfoaction'] === 'update')) {
         ], file_get_contents($_FILES['nfo']['tmp_name']));
         $updateset[] = 'nfo = ' . sqlesc($nfo_content);
         $torrent_cache['nfo'] = $nfo_content;
-        unlink(NFO_DIR . $id . '.png');
+        if (file_exists(NFO_DIR . $id . '.png')) {
+            unlink(NFO_DIR . $id . '.png');
+        }
     }
 } elseif ($nfoaction === 'remove') {
     $updateset[] = "nfo = ''";
