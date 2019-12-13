@@ -69,7 +69,7 @@ $active_users_24 .= "
                     <div class='bg-00 padding10 bottom10 round5 size_5'>
                         " . _pfe('{0} Member visited during the last 24 hours', '{0} Members visited during the last 24 hours', $active24['totalonline24']) . "
                     </div>
-                    <div class='top10 bottom10 is-wrapped top10 bottom10 padding20'>
+                    <div class='top10 bottom10 level-center-center is-wrapped top10 bottom10 padding20'>
                         {$active24['activeusers24']}
                     </div>
                     <div class='bg-00 padding10 has-text-centered round5 size_3'>
