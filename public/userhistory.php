@@ -101,7 +101,7 @@ if ($action === 'viewposts') {
     $breadcrumbs = [
         "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
     ];
-    echo stdhead($title, $stdhead, 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot($stdfoot);
+    echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
 } elseif ($action === 'viewcomments') {
     $select_is = 'COUNT(t.id)';
     $from_is = 'comments AS c LEFT JOIN torrents as t
@@ -136,7 +136,7 @@ if ($action === 'viewposts') {
             $torrent = substr($torrent, 0, 52) . '...';
         }
         $torrentid = (int) $arr['t_id'];
-        $subres = sql_query('SELECT COUNT(id) FROM comments WHERE torrent = ' . sqlesc($torrentid) . ' AND id < ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
+        $subres = sql_query("SELECT COUNT(id) FROM comments WHERE torrent = " . sqlesc($torrentid) . ' AND id < ' . sqlesc($commentid)) or sqlerr(__FILE__, __LINE__);
         $subrow = mysqli_fetch_row($subres);
         $count = $subrow[0];
         $comm_page = floor($count / 20);
