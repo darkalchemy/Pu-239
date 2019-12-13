@@ -68,7 +68,9 @@ if ($curuser['id'] === $userid || has_access($curuser['class'], UC_ADMINISTRATOR
     }
     $zip->close();
     $zip->force_download($zipfile);
-    unlink($zipfile);
+    if (file_exists($zipfile)) {
+        unlink($zipfile);
+    }
 } else {
     stderr(_('Error'), _('You do not have the permission to do that.'));
 }
