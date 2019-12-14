@@ -20,11 +20,11 @@ if (!empty($search)) {
 }
 //== Delete items older than 1 month
 $secs = 30 * 86400;
-sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added>$secs") or sqlerr(__FILE__, __LINE__);
+sql_query('DELETE FROM infolog WHERE ' . TIME_NOW . " - added > $secs") or sqlerr(__FILE__, __LINE__);
 $res = sql_query("SELECT COUNT(id) FROM infolog $where");
 $row = mysqli_fetch_array($res);
 $count = (int) $row[0];
-$perpage = 15;
+$perpage = 50;
 $pager = pager($perpage, $count, 'staffpanel.php?tool=sysoplog&amp;action=sysoplog&amp;' . (!empty($search) ? "search=$search&amp;" : '') . '');
 $HTMLOUT = '';
 $res = sql_query("SELECT added, txt FROM infolog $where ORDER BY added DESC {$pager['limit']}") or sqlerr(__FILE__, __LINE__);

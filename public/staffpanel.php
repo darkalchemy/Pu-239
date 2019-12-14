@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Radiance;
 use Pu239\Session;
 
 require_once __DIR__ . '/../include/bittorrent.php';
@@ -16,11 +17,21 @@ require_once CLASS_DIR . 'class_check.php';
 $user = check_user_status();
 global $container, $site_config;
 
+if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] === 'reset=1') {
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=op&reset=1');
+    die();
+} elseif (isset($_SERVER['REQUEST_URI']) && $_SERVER['REQUEST_URI'] === '/staffpanel.php?') {
+    header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=op');
+    die();
+}
 $session = $container->get(Session::class);
-
+$radiance = $container->get(Radiance::class);
 class_check(UC_STAFF);
 if (!$site_config['site']['staffpanel_online']) {
-    stderr(_('Information'), _('The staffpanel is currently offline for maintainance work'));
+    stderr(_('Information'), _('The staffpanel is currently offline for maintenance work'));
+}
+if ($site_config['tracker']['radiance'] && !file_exists($site_config['tracker']['config_path'])) {
+    $session->set('is-danger', "{$site_config['tracker']['config_path']} does not exist. Please set the path correctly in the site settings -> tracker.");
 }
 $stdhead = [
     'css' => [
@@ -145,6 +156,22 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
         $session->set('is-success', 'You deleted [i]all[/i] messages in AJAX Chat.');
         header('Location: ' . $_SERVER['PHP_SELF']);
         die();
+    } elseif ($action === 'radiance_start' && has_access($user['class'], UC_SYSOP, 'coder')) {
+        if (empty($radiance->start_radiance())) {
+            $session->set('is-success', 'Radiance has started.');
+        } else {
+            $session->set('is-danger', 'Radiance has failed to start, please check it manually.');
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
+    } elseif ($action === 'radiance_reload' && has_access($user['class'], UC_SYSOP, 'coder')) {
+        if (empty($radiance->reload_radiance('SIGUSR1'))) {
+            $session->set('is-success', 'You have reloaded radiance.');
+        } else {
+            $session->set('is-danger', 'Radiance has failed to reload, please check it manually.');
+        }
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        die();
     } elseif ($action === 'toggle_status' && has_access($user['class'], UC_SYSOP, 'coder')) {
         if (toggle_site_status($site_config['site']['online'])) {
             $session->set('is-success', _('Site is Online.'));
@@ -201,7 +228,7 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                 $errors[] = _('The selected class is not a valid staff class.');
             }
             if (!empty($file_name) && !is_file($file_name . '.php') && !preg_match('/.php/', $file_name)) {
-                $errors[] = _('Inexistent php file.');
+                $errors[] = _('Non-existent php file.');
             }
             if (!empty($page_name) && strlen($page_name) < 4) {
                 $errors[] = _('The page name is too short (min 4 chars).');
@@ -400,7 +427,13 @@ if (in_array($tool, $staff_tools) && file_exists(ADMIN_DIR . $staff_tools[$tool]
                     </li>
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=flush' class='tooltipper' title='" . _('Flush Cache') . "'>" . _('Flush Cache') . "</a>
-                    </li>
+                    </li>" . ($site_config['tracker']['radiance'] ? empty($radiance->check_status()) ? "
+                    <li class='margin10'>
+                        <a href='{$_SERVER['PHP_SELF']}?action=radiance_start' class='tooltipper' title='" . _('Start Radiance Server') . "'>" . _('Start Radiance') . "</a>
+                    </li>" : "
+                    <li class='margin10'>
+                        <a href='{$_SERVER['PHP_SELF']}?action=radiance_reload' class='tooltipper' title='" . _('Reload torrent list, user list and client blacklist') . "'>" . _('Reload Radiance') . "</a>
+                    </li>" : '') . "
                     <li class='margin10'>
                         <a href='{$_SERVER['PHP_SELF']}?action=toggle_status' class='tooltipper' title='" . _('Toggle Site Online/Offline') . "'>" . _('Toggle Site') . '</a>
                     </li>

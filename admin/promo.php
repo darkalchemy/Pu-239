@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
                 ->fetch('name');
 
     if ($sure === 'no') {
-        stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($r) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $id . '&amp;sure=yes"><span class="has-text-danger">here</span></a>');
+        stderr('Sanity check...', 'You are about to delete promo <b>' . htmlsafechars($r) . '</b>, if you are sure click <a href="' . $_SERVER['PHP_SELF'] . '?tool=promo&amp;do=delete&amp;id=' . $id . '&amp;sure=yes"><span class="has-text-danger">here</span></a>');
     } elseif ($sure === 'yes') {
         $deleted = $fluent->deleteFrom('promo')
                           ->where('id = ?', $id)
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $do === 'addpromo') {
     }
     $HTMLOUT .= '
         <h1 class="has-text-centered">Add Promo Link</h1>
-        <form action="' . $_SERVER['PHP_SELF'] . '" method="post" enctype="multipart/form-data" accept-charset="utf-8">';
+        <form action="' . $_SERVER['PHP_SELF'] . '?tool=promo" method="post" enctype="multipart/form-data" accept-charset="utf-8">';
     $body = "
             <tr>
                 <td class='has-text-right'>Promo Name</td>
@@ -195,12 +195,12 @@ if (empty($_POST)) {
     $r = $fluent->from('promo')
                 ->fetchAll();
     if (empty($r)) {
-        stderr(_('Error'), 'There is no promo if you want to make one click <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo">here</a>', 'bottom20');
+        stderr(_('Error'), _fe('There are no promotions. If you want to make one click {0}here{1}', '<a href="' . $_SERVER['PHP_SELF'] . '?tool=promo&amp;do=addpromo">', '</a>'), 'bottom20');
     } else {
         $HTMLOUT .= '
                 <div class="has-text-centered bottom20"> 
                     <h1>Current Promos</h1>
-                    <a href="' . $_SERVER['PHP_SELF'] . '?do=addpromo"><span class="size_3">Add promo</span></a>
+                    <a href="' . $_SERVER['PHP_SELF'] . '?tool=promo&amp;do=addpromo"><span class="size_3">Add promo</span></a>
                 </div>';
         $heading = "
             <tr class='has-text-centered'>
@@ -228,12 +228,12 @@ if (empty($_POST)) {
                 <td class='has-text-centered'>" . get_date($ar['added'], 'LONG') . "</td>
                 <td class='has-text-centered'>" . get_date($ar['added'] + (86400 * $ar['days_valid']), 'LONG', 1, 0) . "</td>
                 <td class='has-text-centered'>" . $ar['max_users'] . "</td>
-                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="' . $_SERVER['PHP_SELF'] . '?do=accounts&amp;link=' . $ar['link'] . '">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
+                <td class='has-text-centered'>" . ($ar['accounts_made'] > 0 ? '<a href="' . $_SERVER['PHP_SELF'] . '?tool=promo&amp;do=accounts&amp;link=' . $ar['link'] . '">' . $ar['accounts_made'] . '</a>' : 0) . "</td>
                 <td class='has-text-centered'>" . mksize($ar['bonus_upload'] * 1073741824) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_invites']) . "</td>
                 <td class='has-text-centered'>" . number_format($ar['bonus_karma']) . "</td>
                 <td class='has-text-centered'>" . format_username($ar['creator']) . "</a></td>
-                <td class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?do=delete&amp;id=' . $ar['id'] . "'><i class='icon-trash-empty icon has-text-danger'></i></a></td>
+                <td class='has-text-centered'><a href='" . $_SERVER['PHP_SELF'] . '?tool=promo&amp;do=delete&amp;id=' . $ar['id'] . "'><i class='icon-trash-empty icon has-text-danger'></i></a></td>
             </tr>";
         }
         $HTMLOUT .= main_table($body, $heading);

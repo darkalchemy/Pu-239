@@ -205,7 +205,7 @@ if (isset($_GET['act'])) {
             $session->set('is-danger', _('Something Went Wrong'));
         } else {
             clear_template_cache();
-            $session->set('is-success', _('Succesfully Edited'));
+            $session->set('is-success', _('Successfully Edited'));
         }
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
@@ -240,7 +240,7 @@ if (isset($_GET['act'])) {
                ->execute();
 
         clear_template_cache();
-        $session->set('is-success', _('Succesfully Deleted'));
+        $session->set('is-success', _('Successfully Deleted'));
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
     }
@@ -272,7 +272,7 @@ if (isset($_GET['act'])) {
                ->execute();
 
         clear_template_cache();
-        $session->set('is-success', _('Succesfully Edited'));
+        $session->set('is-success', _('Successfully Edited'));
         header("Location: {$site_config['paths']['baseurl']}/staffpanel.php?tool=themes&action=themes");
         die();
     }
@@ -297,7 +297,7 @@ if (isset($_GET['act'])) {
                ->execute();
 
         clear_template_cache();
-        $session->set('is-success', _('Succesfully Added'));
+        $session->set('is-success', _('Successfully Added'));
         header('Location: ' . $_SERVER['PHP_SELF'] . '?tool=themes&action=themes');
         die();
     }
@@ -316,7 +316,6 @@ if (!isset($_GET['act'])) {
 
     $templates = $fluent->from('stylesheets')
                         ->orderBy('id');
-
     $body = '';
     foreach ($templates as $template) {
         $body .= "
@@ -352,4 +351,4 @@ $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/staffpanel.php'>" . _('Staff Panel') . '</a>',
     "<a href='{$_SERVER['PHP_SELF']}'>$title</a>",
 ];
-echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . stdfoot();
+echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTML) . stdfoot();
