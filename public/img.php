@@ -24,11 +24,11 @@ function valid_path($root, $input)
 if (isset($_SERVER['REQUEST_URI'])) {
     $image = valid_path(BITBUCKET_DIR, $_SERVER['QUERY_STRING']);
     if (empty($image)) {
-        die();
+        $image = IMAGES_DIR . 'noposter.png';
     }
     $pi = @pathinfo($image);
     if (empty($pi['extension']) || !preg_match('#^(jpg|jpeg|gif|png)$#i', $pi['extension'])) {
-        die();
+        $image = IMAGES_DIR . 'noposter.png';
     }
     $img['last_mod'] = filemtime($image);
     $img['date_fmt'] = 'D, d M Y H:i:s T';
