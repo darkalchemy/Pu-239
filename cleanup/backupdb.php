@@ -64,22 +64,20 @@ function backupdb($data)
     $bdir = BACKUPS_DIR . 'db' . DIRECTORY_SEPARATOR . date('Y.m.d', $dt) . DIRECTORY_SEPARATOR;
     make_dir($bdir, 0774);
     if ($site_config['backup']['use_gzip']) {
-        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ' | ' . GZIP . " -q9>{$bdir}{$filename}.gz");
+        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db " . tables() . ' | ' . GZIP . " -q9>{$bdir}{$filename}.gz");
     } else {
-        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db " . tables('peers') . ">{$bdir}{$filename}");
+        exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db " . tables() . ">{$bdir}{$filename}");
     }
 
     $bdir = BACKUPS_DIR . 'table' . DIRECTORY_SEPARATOR . date('Y.m.d', $dt) . DIRECTORY_SEPARATOR;
     make_dir($bdir, 0774);
     $tables = explode(' ', tables());
     foreach ($tables as $table) {
-        if ($table !== 'peers') {
-            $filename = "tbl_{$table}_" . date('Y.m.d-H.i.s', $dt) . '.sql';
-            if ($site_config['backup']['use_gzip']) {
-                exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db $table | " . GZIP . " -q9>{$bdir}{$filename}.gz");
-            } else {
-                exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db $table>{$bdir}{$filename}");
-            }
+        $filename = "tbl_{$table}_" . date('Y.m.d-H.i.s', $dt) . '.sql';
+        if ($site_config['backup']['use_gzip']) {
+            exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db $table | " . GZIP . " -q9>{$bdir}{$filename}.gz");
+        } else {
+            exec(MYSQLDUMP . " -h $host -u'{$user}' -p'{$pass}' $db $table>{$bdir}{$filename}");
         }
     }
 
@@ -87,12 +85,19 @@ function backupdb($data)
     if ($site_config['backup']['use_gzip']) {
         $filename = $filename . '.gz';
     }
+    $fluent = $container->get(Database::class);
+    $set = [
+        'last_access' => $dt,
+    ];
+    $fluent->update('users')
+           ->set($set)
+           ->where('id = ?', $site_config['chatbot']['id'])
+           ->execute();
     $values = [
         'name' => $filename,
         'added' => $dt,
         'userid' => $site_config['site']['owner'],
     ];
-    $fluent = $container->get(Database::class);
     $fluent->insertInto('dbbackup')
            ->values($values)
            ->execute();
