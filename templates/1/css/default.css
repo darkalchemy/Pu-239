@@ -383,7 +383,7 @@ span.is-wrapped {
 
 .spacer {
     width:      var(--default-page-width);
-    height:     40px;
+    height:     30px;
     background: 0 0;
 }
 
@@ -1090,7 +1090,7 @@ p + p {
 
 .is-wrapped {
     flex-wrap: wrap;
-    display: flex;
+    display:   flex;
 }
 
 .cast > img {
@@ -1538,7 +1538,7 @@ ul li ul li {
     }
 
     .spacer {
-        height: 50px;
+        height: 40px;
     }
 
     .page-wrapper {
