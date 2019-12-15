@@ -428,7 +428,7 @@ function StatusBar()
     $StatusBar .= "
                     <div id='base_usermenu' class='left10 level-item'>
                         <div class='tooltipper-ajax'>" . format_username($CURUSER['id'], true, false) . "</div>
-                        <div id='clock' class='left10 right10 has-text-info tooltipper' onclick='hide_by_id()' title='" . _('Click to show the background image') . "'>{$clock}</div>
+                        <div id='clock' class='left10 has-text-info tooltipper' onclick='hide_by_id()' title='" . _('Click to show the background image') . "'>{$clock}</div>
                     </div>";
 
     return $StatusBar;
@@ -514,12 +514,12 @@ function platform_menu()
                                     <i class='icon-cubes icon' aria-hidden='true'></i>
                                 </a>
                             </li>";
-    $menu = "
+    return "
         <div id='platform-menu' class='platform-menu'>
             <div class='platform-wrapper'>
                 <div class='columns is-marginless searchbar'>
-                    <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-left size_3 left10'>" . (PRODUCTION ? $buttons : "
+                    <div class='column middle is-paddingless user-buttons'>
+                        <ul class='level-left size_3'>" . (PRODUCTION ? $buttons : "
                             <li>
                                 <a href='" . url_proxy('https://github.com/darkalchemy/Pu-239') . "'>
                                     Pu-239 {$site_config['sourcecode']['version']}
@@ -527,24 +527,22 @@ function platform_menu()
                             </li>") . "
                         </ul>
                     </div>
-                    <div class='column is-paddingless middle'>
-                        <ul class='level-center'>
+                    <div class='column middle is-paddingless'>
+                        <ul class='level-center-center right10'>
                             <li>
                                 <form action='{$site_config['paths']['baseurl']}/browse.php'>
                                     <div class='search round5 middle bg-light'>
-                                        <input type='text' name='sn' id='search-title' placeholder='&#xe811; " . _('Search') . "' class='fontello-fonts bg-none has-text-black' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
+                                        <input type='text' name='sn' id='search-title' placeholder='&#xe811; " . _('Search') . "' class='fontello-fonts bg-none has-text-black min-150' onfocus=\"toggle_buttons('user-buttons')\" onblur=\"toggle_buttons('user-buttons')\" autocomplete='off'>
                                     </div>
                                 </form>
                             </li>
                         </ul>
                     </div>
-                    <div class='column is-paddingless middle user-buttons'>
-                        <ul class='level-right size_3 right10'>" . (!PRODUCTION ? $buttons : '') . StatusBar() . $styles . '
+                    <div class='column middle is-paddingless user-buttons'>
+                        <ul class='level-right size_3'>" . (!PRODUCTION ? $buttons : '') . StatusBar() . $styles . '
                         </ul>
                     </div>
                 </div>
             </div>
         </div>';
-
-    return $menu;
 }
