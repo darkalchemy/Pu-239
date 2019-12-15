@@ -6,9 +6,9 @@ require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_users.php';
 check_user_status();
-$html = '';
 global $site_config;
 
+$html = '';
 $use_limit = true;
 $limit = 15;
 $icount = 1;

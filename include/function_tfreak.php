@@ -25,7 +25,11 @@ function rsstfreakinfo()
 
     $html = $cache->get('tfreaknewsrss_block_');
     if ($html === false || is_null($html)) {
-        $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
+        $xml = $cache->get('tfreaknewsrss_');
+        if ($xml === false || is_null($xml)) {
+            $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
+            $cache->set('tfreaknewsrss_', $xml, 300);
+        }
 
         if (empty($xml)) {
             return null;
@@ -42,7 +46,7 @@ function rsstfreakinfo()
                 '<![CDATA[',
                 ']]>',
             ], '', htmlsafechars($item->getElementsByTagName('creator')
-                                      ->item(0)->nodeValue));
+                                                             ->item(0)->nodeValue));
             $date = htmlsafechars($item->getElementsByTagName('pubDate')
                                        ->item(0)->nodeValue);
             $content = str_replace([
@@ -54,7 +58,7 @@ function rsstfreakinfo()
                 '',
                 'href="' . $site_config['site']['anonymizer_url'],
             ], preg_replace('/<p>/', "<p class='has-text-primary'>", $item->getElementsByTagName('description')
-                                                                    ->item(0)->nodeValue, 1));
+                                                                                                 ->item(0)->nodeValue, 1));
             $link = "
                             <a href='{$site_config['site']['anonymizer_url']}" . $item->getElementsByTagName('link')
                                                                                       ->item(0)->nodeValue . "' target='_blank'>
