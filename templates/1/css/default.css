@@ -149,8 +149,11 @@ input:invalid {
     box-shadow: 0 0 5px 2px #00f;
 }
 
+.platform-menu {
+    padding: 0 10px;
+}
 .platform-wrapper > div > div {
-    margin: 2px auto;
+    /*margin: 2px auto;*/
 }
 
 .user-buttons {
@@ -784,7 +787,7 @@ textarea {
 }
 
 .platform-wrapper {
-    height:    31px;
+    height:    25px;
     font-size: 1.25em;
 }
 
@@ -1192,9 +1195,8 @@ option.head {
 }
 
 .middle {
-    height:      27px;
-    line-height: 27px;
-    text-align:  center;
+    height:      21px;
+    line-height: 21px;
 }
 
 .droppable {
