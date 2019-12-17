@@ -6,6 +6,7 @@ use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
 use Delight\I18n\Codes;
 use Delight\I18n\I18n;
+use Pu239\Radiance;
 use function DI\autowire;
 use Imdb\Config;
 use Jobby\Jobby;
@@ -95,6 +96,7 @@ return [
     Poll::class => autowire(),
     PollVoter::class => autowire(),
     Post::class => autowire(),
+    Radiance::class => autowire(),
     Referrer::class => autowire(),
     Request::class => autowire(),
     Searchcloud::class => autowire(),
