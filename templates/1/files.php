@@ -23,7 +23,7 @@ function get_file_name($file)
         case 'sceditor_css':
             return "{$site_config['paths']['baseurl']}/css/1/sceditor_8e72d6ff.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_d5c1437d.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_248f1543.css";
         case 'last_css':
             return "{$site_config['paths']['baseurl']}/css/1/last_33d8c190.css";
         case 'main_js':
