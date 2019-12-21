@@ -53,7 +53,6 @@ This code explicitly sets the php default timezone to 'UTC'. Further down, you w
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jump start the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177).  
 I run my forums on this code and they are available here: [Pu-239](https://Pu-239.pw:59595).  
 There is a admin demo available at [Pu-239](https://Admin.Pu-239.pw:59595). This site gives you full access to everything  
   
