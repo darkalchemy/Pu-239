@@ -1,4 +1,4 @@
-# Pu-239 v0.62
+# Pu-239 v0.62 - No longer being developed
 
 ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.62)
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
