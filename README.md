@@ -1,4 +1,4 @@
-# Pu-239 v0.62 - No longer being developed
+# Pu-239 v0.62
 
 ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/v0.62)
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239RidPT/blob/master/LICENSE)
@@ -53,8 +53,7 @@ This code explicitly sets the php default timezone to 'UTC'. Further down, you w
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jump start the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-I run my forums on this code and they are available here: [Pu-239](https://Pu-239.pw:59595).  
-There is a admin demo available at [Pu-239](https://Admin.Pu-239.pw:59595). This site gives you full access to everything  
+I run my forums on this code and they are available here: [Pu-239](https://Pu239.glorious-trash.com).  
   
 #### Prior to install:
 ##### Please log in as a non-privileged user, NOT root, to install this. Please read this entire document before installing.
