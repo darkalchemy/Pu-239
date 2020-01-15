@@ -324,7 +324,7 @@ if (!empty($topic_arrs)) {
 
         $last_unread_post_res = sql_query('SELECT last_post_read FROM read_posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $last_unread_post_arr = mysqli_fetch_row($last_unread_post_res);
-        $last_unread_post_id = ($last_unread_post_arr[0] > 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id']);
+        $last_unread_post_id = !empty($last_unread_post_arr[0]) && $last_unread_post_arr[0] > 0 ? $last_unread_post_arr[0] : $first_post_arr['first_post_id'];
         $did_i_post_here = sql_query('SELECT user_id FROM posts WHERE user_id=' . sqlesc($CURUSER['id']) . ' AND topic_id=' . sqlesc($topic_id)) or sqlerr(__FILE__, __LINE__);
         $posted = (mysqli_num_rows($did_i_post_here) > 0 ? 1 : 0);
 
