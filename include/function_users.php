@@ -431,7 +431,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     $peers = $peer->getPeersFromUserId($user_id);
     $tag = $tag ? '@' : '';
 
-    if ($users_data['id'] === 0) {
+    if (empty($users_data['id']) || $users_data['id'] === 0) {
         return 'System';
     } elseif (empty($users_data['username'])) {
         return "<span class='has-text-danger'>unknown_userid[$user_id]</span>";
