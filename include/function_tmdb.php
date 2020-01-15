@@ -308,7 +308,7 @@ function get_movies($json)
 
     $movies = [];
     foreach ($json['results'] as $movie) {
-        if ($movie['original_language'] === 'en') {
+        if (!empty($movie['original_language']) && $movie['original_language'] === 'en') {
             if (!empty($movie['id'])) {
                 $images = '';
                 if (!empty($movie['poster_path'])) {
