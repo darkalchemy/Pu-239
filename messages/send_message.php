@@ -48,7 +48,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === _('Send')) {
             case 'yes':
                 $r = sql_query('SELECT id FROM blocks WHERE userid = ' . sqlesc($receiver) . ' AND blockid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $block = mysqli_fetch_row($r);
-                if ($block[0] > 0) {
+                if (!empty($block[0]) && $block[0] > 0) {
                     stderr(_('Refused'), htmlsafechars($arr_receiver['username']) . _(' has blocked PMs from you.'));
                 }
                 break;
@@ -56,7 +56,7 @@ if (isset($_POST['buttonval']) && $_POST['buttonval'] === _('Send')) {
             case 'friends':
                 $r = sql_query('SELECT id FROM friends WHERE userid = ' . sqlesc($receiver) . ' AND friendid = ' . sqlesc($CURUSER['id'])) or sqlerr(__FILE__, __LINE__);
                 $friend = mysqli_fetch_row($r);
-                if ($friend[0] == 0) {
+                if (!empty($friend[0]) && (int) $friend[0] === 0) {
                     stderr('Refused', htmlsafechars($arr_receiver['username']) . ' only accepts PMs from members in their friends list.');
                 }
                 break;
