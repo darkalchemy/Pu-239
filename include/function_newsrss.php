@@ -220,12 +220,15 @@ function github_shout($links = [])
                     $commit = trim($match[1]);
                     $title = trim($devices['title']);
                     $link = trim($devices['link']['@attributes']['href']);
+                    $updated = trim($devices['updated']);
 
-                    $pubs[] = [
-                        'title' => replace_unicode_strings($title),
-                        'link' => replace_unicode_strings($link),
-                        'commit' => replace_unicode_strings($commit),
-                    ];
+                    if ((TIME_NOW - strtotime($updated)) < 14 * 86400) {
+                        $pubs[] = [
+                            'title' => replace_unicode_strings($title),
+                            'link' => replace_unicode_strings($link),
+                            'commit' => replace_unicode_strings($commit),
+                        ];
+                    }
                 }
             }
             $pubs = array_reverse($pubs);
