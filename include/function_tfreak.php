@@ -27,7 +27,7 @@ function rsstfreakinfo()
     if ($html === false || is_null($html)) {
         $xml = $cache->get('tfreaknewsrss_');
         if ($xml === false || is_null($xml)) {
-            $xml = fetch('http://feed.torrentfreak.com/Torrentfreak/');
+            $xml = fetch('https://feeds.feedburner.com/Torrentfreak');
             $cache->set('tfreaknewsrss_', $xml, 300);
         }
 
