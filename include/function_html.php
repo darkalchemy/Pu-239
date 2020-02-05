@@ -460,7 +460,13 @@ function send_mail($email, $subject, $html, $plain)
     $mail = $container->get(PHPMailer::class);
     if ($mail) {
         $mail->setFrom("{$site_config['site']['email']}", "{$site_config['chatbot']['name']}");
-        $mail->addAddress($email);
+        try {
+            $mail->addAddress($email);
+        } catch (Exception $e) {
+            $mail->smtp->reset();
+
+            return false;
+        }
         $mail->addReplyTo($site_config['site']['email']);
         $mail->isHTML(true);
         $mail->Subject = $subject;
@@ -471,11 +477,16 @@ function send_mail($email, $subject, $html, $plain)
 
             return true;
         } catch (Exception $e) {
-            stderr('PHPMailer Error', $e->getMessage());
+            $mail->smtp->reset();
+
+            return false;
+        } finally {
+            $mail->clearAddresses();
         }
     }
 
     return false;
+
 }
 
 /**
