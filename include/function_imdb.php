@@ -542,7 +542,7 @@ function get_imdb_info_short($imdb_id)
                     </a>
                     <div class='has-text-centered top10'>{$imdb_data['title']}</div>
                     <div class='tooltip_templates'>
-                        <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background' " . (!empty($background) ? "style='background-image: url({$background});'" : '') . ">
+                        <div id='movie_{$imdb_data['id']}_tooltip' class='round10 tooltip-background'" . (!empty($background) ? " style='background-image: url(" . url_proxy($background) . ");'" : '') . ">
                             <div class='columns is-marginless is-paddingless'>
                                 <div class='column padding10 is-4'>
                                     <span>
