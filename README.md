@@ -51,9 +51,8 @@ MySQL 5.6 is required. MySQL 8.0 recommended.
 [NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.13.2.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jump start the installation process.     
-A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  (Not tested recently)  
+A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  
 A quick site intro video is available [here](https://www.youtube.com/watch?v=LyWp1dBs4cw&feature=youtu.be). (Outdated)  
-I run my forums on this code and they are available here: [Pu-239](https://Pu239.glorious-trash.com).  
 If you like this project, please consider supporting me on [Patreon](https://www.patreon.com/user?u=15795177)  
   
 #### Prior to install:
