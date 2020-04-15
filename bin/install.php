@@ -62,7 +62,7 @@ if (count($argv) === 13) {
             'salty' => bin2hex(random_bytes(16)),
             'skey' => bin2hex(random_bytes(16)),
         ],
-        'tracer' => [
+        'tracker' => [
             'announce_url_nonssl' => readline('Site HTTP URL: '),
             'announce_url_ssl' => readline('Site HTTPS URL: '),
         ],
