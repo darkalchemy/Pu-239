@@ -96,9 +96,10 @@ function get_access($script)
                         ->where('file_name LIKE ?', "%$ending")
                         ->fetch('av_class');
 
-        if (!empty($class)) {
-            $cache->set('av_class_' . $ending, $class, 0);
+        if (empty($class)) {
+            return UC_MAX;
         }
+        $cache->set('av_class_' . $ending, $class, 0);
     }
 
     return $class;
