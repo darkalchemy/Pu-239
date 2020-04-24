@@ -5057,4 +5057,11 @@ KEY `expires` (`expires`)
         'query' => "DROP TABLE `users_main`",
         'flush' => false,
     ],
+    [
+        'id' => 1587743723,
+        'info' => 'Add index',
+        'date' => '24 Apr, 2020',
+        'query' => "ALTER TABLE `person` ADD INDEX `photo`(`photo`)",
+        'flush' => false,
+    ],
 ];
