@@ -111,8 +111,8 @@ header#navbar .nav_container ul > li > ul a:hover {
     width: 25px;
     height: 24px;
     position: fixed;
-    right: 10px;
-    top: 10px;
+    right: 15px;
+    top: 15px;
     cursor: pointer;
 }
 
