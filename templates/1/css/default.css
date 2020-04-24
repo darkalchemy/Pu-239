@@ -386,7 +386,7 @@ span.is-wrapped {
 
 .spacer {
     width:      var(--default-page-width);
-    height:     30px;
+    height:     40px;
     background: 0 0;
 }
 
@@ -1120,7 +1120,7 @@ option.head {
 .responsive-container {
     position:       relative;
     padding-bottom: 53.25%;
-    padding-top:    30px;
+    padding-top:    40px;
     height:         0;
     overflow:       hidden;
 }

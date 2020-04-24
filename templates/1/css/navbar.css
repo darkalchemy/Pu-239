@@ -4,7 +4,7 @@ header#navbar {
     left: var(--default-page-width-width);
     right: var(--default-page-width-width);
     z-index: 100;
-    height: 30px;
+    height: 40px;
     transition: top .35s;
 }
 
@@ -18,7 +18,7 @@ header#navbar {
 }
 
 .nav_container {
-    height: 30px;
+    height: 40px;
 }
 
 header#navbar #menuWrapper {
@@ -45,9 +45,7 @@ header#navbar ul > li > a {
     font-weight: lighter;
     text-decoration: none;
     transition: all .35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    line-height: 30px;
-    height: 100%;
-    display: block;
+    line-height: 40px;
     padding-left: 20px;
     padding-right: 20px;
 }
@@ -75,7 +73,7 @@ header#navbar .nav_container ul > li > ul > li {
 }
 
 header#navbar .nav_container ul > li > ul > li > a {
-    border-bottom: 0;
+    border-bottom: none;
     display: block;
     padding: 0 10%;
     text-transform: none;
@@ -100,7 +98,7 @@ li:hover ul.hov li {
 header#navbar .nav_container ul > li:hover ul {
     opacity: 1;
     pointer-events: auto;
-    top: 30px;
+    top: 40px;
 }
 
 header#navbar .nav_container ul > li > ul .ico:hover,
@@ -131,8 +129,8 @@ header#navbar .nav_container ul > li > ul a:hover {
     position: fixed;
     top: 0;
     right: 0;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     z-index: 1200;
     display: none;
     cursor: pointer;
@@ -201,6 +199,10 @@ header#navbar .nav_container ul > li > ul a:hover {
         display: inline-block;
     }
 
+    .hide-mobile {
+        display: none;
+    }
+
     header#navbar #menuWrapper {
         display: none;
     }
@@ -235,7 +237,7 @@ header#navbar .nav_container ul > li > ul a:hover {
     }
 
     header#navbar ul > li {
-        border-bottom: none;
+        border-bottom: 1px solid #555555;
         padding: 0;
     }
 
@@ -263,7 +265,7 @@ header#navbar .nav_container ul > li > ul a:hover {
 
     header#navbar.showNav {
         background-color: #333;
-        height: calc(100%);
+        min-height: 2000px;
     }
 
     header#navbar.showNav #menuWrapper {
