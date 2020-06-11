@@ -103,7 +103,7 @@ innodb_file_per_table = 1
 max_allowed_packet = 128M ## this may need to be increased as your user count increases
 
 # add/modify this in [mysqld] to stop autoincrement on insert ignore(optional)
-innodb_autoinc_lock_mode = 3
+innodb_autoinc_lock_mode = 0
 
 # set timezone to UTC to match PHP
 default_time_zone='+00:00'
