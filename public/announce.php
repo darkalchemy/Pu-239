@@ -13,8 +13,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'confi
 require_once INCL_DIR . 'function_announce.php';
 require_once INCL_DIR . 'function_common.php';
 
-// utorrent 2.2.1 sends cookie header, to allow utorrent to work with this tracker you must not block if cookie header is set
-if (PRODUCTION && (isset($_SERVER['HTTP_COOKIE']) || isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET']))) {
+if (PRODUCTION && (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || isset($_SERVER['HTTP_ACCEPT_CHARSET']))) {
     die("It takes 46 muscles to frown but only 4 to flip 'em the bird.");
 }
 
