@@ -21,17 +21,17 @@ function get_file_name($file)
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_2f4ef440.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_8e72d6ff.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_6231ef6a.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_248f1543.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_1cbfe5c9.css";
         case 'last_css':
             return "{$site_config['paths']['baseurl']}/css/1/last_33d8c190.css";
         case 'main_js':
-            return "{$site_config['paths']['baseurl']}/js/1/main_af533bcc.js";
+            return "{$site_config['paths']['baseurl']}/js/1/main_43ccb7bf.js";
         case 'vendor_js':
             return "{$site_config['paths']['baseurl']}/js/1/vendor_775593f4.js";
         case 'jquery_js':
-            return "{$site_config['paths']['baseurl']}/js/1/jquery_21c3cb84.js";
+            return "{$site_config['paths']['baseurl']}/js/1/jquery_7b335910.js";
         case 'chat_main_js':
             return "{$site_config['paths']['baseurl']}/js/1/chat_main_a886f5cf.js";
         case 'chat_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_6424ab4b.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_118e7a4a.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_e83d6a3b.js";
         case 'user_search_js':
@@ -69,7 +69,7 @@ function get_file_name($file)
         case 'lightbox_js':
             return "{$site_config['paths']['baseurl']}/js/1/lightbox_dab5af27.js";
         case 'tooltipster_js':
-            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_f0def356.js";
+            return "{$site_config['paths']['baseurl']}/js/1/tooltipster_6b8024b5.js";
         case 'site_config_js':
             return "{$site_config['paths']['baseurl']}/js/1/site_config_07db2f4b.js";
         case 'offer_js':

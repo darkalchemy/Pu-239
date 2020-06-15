@@ -5064,4 +5064,18 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `person` ADD INDEX `photo`(`photo`)",
         'flush' => false,
     ],
+    [
+        'id' => 1592182581,
+        'info' => 'Drop constraint',
+        'date' => '14 Jun, 2020',
+        'query' => "ALTER TABLE `peers` DROP CONSTRAINT `peers_ibfk_1`",
+        'flush' => false,
+    ],
+    [
+        'id' => 1592182582,
+        'info' => 'Drop constraint',
+        'date' => '14 Jun, 2020',
+        'query' => "ALTER TABLE `peers` DROP CONSTRAINT `peers_ibfk_2`",
+        'flush' => false,
+    ],
 ];
