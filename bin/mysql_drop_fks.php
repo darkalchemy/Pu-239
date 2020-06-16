@@ -9,7 +9,7 @@ $rs = sql_query($sql) or sqlerr(__FILE__, __LINE__);
 while ($row = mysqli_fetch_assoc($rs)) {
     $tbl = $row['TABLE_NAME'];
     $fk = $row['CONSTRAINT_NAME'];
-    $sql = "ALTER TABLE `$db`.`$tbl` DROP FOREIGN KEY `$fk`";
+    $sql = "ALTER TABLE `" . sqlesc($site_config['db']['database']) . "`.`$tbl` DROP FOREIGN KEY `$fk`";
     echo $sql . "\n";
     sql_query($sql);
 }
