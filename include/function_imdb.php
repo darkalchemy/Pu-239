@@ -858,10 +858,12 @@ function get_top_movies(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
-            foreach ($matches[1] as $match) {
-                if (!in_array($match, $top)) {
-                    $top[] = $match;
+            if (!empty($html)) {
+                preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
+                foreach ($matches[1] as $match) {
+                    if (!in_array($match, $top)) {
+                        $top[] = $match;
+                    }
                 }
             }
         }
@@ -988,10 +990,12 @@ function get_top_tvshows(int $count)
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
             $html = fetch($url);
-            preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
-            foreach ($matches[1] as $match) {
-                if (!in_array($match, $top)) {
-                    $top[] = $match;
+            if (!empty($html)) {
+                preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
+                foreach ($matches[1] as $match) {
+                    if (!in_array($match, $top)) {
+                        $top[] = $match;
+                    }
                 }
             }
         }
