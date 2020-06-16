@@ -15,7 +15,7 @@ use DI\NotFoundException;
 function goaccess_cleanup($data)
 {
     $time_start = microtime(true);
-    if (file_exists('/usr/bin/goaccess')) {
+    if (file_exists('/usr/bin/goaccess') && file_exists('/var/log/nginx/access.log.gz')) {
         $path = '/dev/shm/goaccess/';
         if (!make_dir($path, 0775) || !is_writable($path)) {
             $path = CACHE_DIR . 'goaccess';
