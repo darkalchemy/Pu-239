@@ -20,7 +20,7 @@ function rsstfreakinfo()
     $cache = $container->get(Cache::class);
     require_once INCL_DIR . 'function_html.php';
     $use_limit = true;
-    $limit = 5;
+    $limit = 10;
     $i = 0;
 
     $html = $cache->get('tfreaknewsrss_block_');

@@ -486,7 +486,6 @@ function send_mail($email, $subject, $html, $plain)
     }
 
     return false;
-
 }
 
 /**

@@ -52,11 +52,11 @@ class Torrent
     public function delete_by_id(int $tid)
     {
         $this->fluent->deleteFrom('torrents')
-                     ->where('id = ?', $tid)
-                     ->execute();
+            ->where('id = ?', $tid)
+            ->execute();
 
         $query = $this->fluent->getPdo()
-                              ->prepare('DELETE likes, comments
+            ->prepare('DELETE likes, comments
                        FROM likes
                        LEFT JOIN comments ON comments.id=likes.comment_id
                        WHERE comments.torrent = ?');
@@ -64,36 +64,36 @@ class Torrent
         $query->execute();
 
         $this->fluent->deleteFrom('comments')
-                     ->where('torrent = ?', $tid)
-                     ->execute();
+            ->where('torrent = ?', $tid)
+            ->execute();
 
         $this->fluent->deleteFrom('coins')
-                     ->where('torrentid = ?', $tid)
-                     ->execute();
+            ->where('torrentid = ?', $tid)
+            ->execute();
 
         $this->fluent->deleteFrom('rating')
-                     ->where('torrent = ?', $tid)
-                     ->execute();
+            ->where('torrent = ?', $tid)
+            ->execute();
 
         $this->fluent->deleteFrom('snatched')
-                     ->where('torrentid = ?', $tid)
-                     ->execute();
+            ->where('torrentid = ?', $tid)
+            ->execute();
 
         $this->fluent->deleteFrom('peers')
-                     ->where('torrent = ?', $tid)
-                     ->execute();
+            ->where('torrent = ?', $tid)
+            ->execute();
 
         $this->fluent->deleteFrom('deathrow')
-                     ->where('tid = ?', $tid)
-                     ->execute();
+            ->where('tid = ?', $tid)
+            ->execute();
         $update = [
             'torrentid' => 0,
             'status' => 'sourcing',
         ];
         $this->fluent->update('upcoming')
-                     ->set($update)
-                     ->where('torrentid != 0')
-                     ->execute();
+            ->set($update)
+            ->where('torrentid != 0')
+            ->execute();
 
         if (file_exists(TORRENTS_DIR . $tid . '.torrent')) {
             unlink(TORRENTS_DIR . $tid . '.torrent');
@@ -112,6 +112,7 @@ class Torrent
      * @throws Exception
      *
      * @return bool|mixed
+     *
      */
     public function get_items(array $items, int $tid)
     {
@@ -150,38 +151,39 @@ class Torrent
      * @throws Exception
      *
      * @return bool|mixed
+     *
      */
     public function get(int $tid, bool $fresh = false)
     {
         $torrent = $this->cache->get('torrent_details_' . $tid);
         if ($torrent === false || is_null($torrent) || $fresh) {
             $torrent = $this->fluent->from('torrents')
-                                    ->select('HEX(info_hash) AS info_hash')
-                                    ->select('LENGTH(nfo) AS nfosz')
-                                    ->select("IF(num_ratings < {$this->site_config['site']['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
-                                    ->where('id = ?', $tid)
-                                    ->fetch();
+                ->select('HEX(info_hash) AS info_hash')
+                ->select('LENGTH(nfo) AS nfosz')
+                ->select("IF(num_ratings < {$this->site_config['site']['minvotes']}, NULL, ROUND(rating_sum / num_ratings, 1)) AS rating")
+                ->where('id = ?', $tid)
+                ->fetch();
             if (empty($torrent)) {
                 return $torrent;
             }
 
             $torrent['previous'] = $this->fluent->from('torrents')
-                                                ->select(null)
-                                                ->select('id')
-                                                ->select('name')
-                                                ->where('id < ?', $tid)
-                                                ->orderBy('id DESC')
-                                                ->limit(1)
-                                                ->fetch();
+                ->select(null)
+                ->select('id')
+                ->select('name')
+                ->where('id < ?', $tid)
+                ->orderBy('id DESC')
+                ->limit(1)
+                ->fetch();
 
             $torrent['next'] = $this->fluent->from('torrents')
-                                            ->select(null)
-                                            ->select('id')
-                                            ->select('name')
-                                            ->where('id > ?', $tid)
-                                            ->orderBy('id')
-                                            ->limit(1)
-                                            ->fetch();
+                ->select(null)
+                ->select('id')
+                ->select('name')
+                ->where('id > ?', $tid)
+                ->orderBy('id')
+                ->limit(1)
+                ->fetch();
 
             $this->cache->set('torrent_details_' . $tid, $torrent, $this->site_config['expires']['torrent_details']);
         }
@@ -196,16 +198,17 @@ class Torrent
      * @throws Exception
      *
      * @return mixed
+     *
      */
     public function get_all_snatched(int $userid)
     {
         $torrents = $this->fluent->from('torrents AS t')
-                                 ->select(null)
-                                 ->select('t.id')
-                                 ->select('t.filename')
-                                 ->innerJoin('snatched AS s ON t.id=s.torrentid')
-                                 ->where('s.userid = ?', $userid)
-                                 ->orderBy('id DESC');
+            ->select(null)
+            ->select('t.id')
+            ->select('t.filename')
+            ->innerJoin('snatched AS s ON t.id=s.torrentid')
+            ->where('s.userid = ?', $userid)
+            ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -217,15 +220,16 @@ class Torrent
      * @throws Exception
      *
      * @return mixed
+     *
      */
     public function get_all_by_owner(int $userid)
     {
         $torrents = $this->fluent->from('torrents')
-                                 ->select(null)
-                                 ->select('id')
-                                 ->select('filename')
-                                 ->where('owner = ?', $userid)
-                                 ->orderBy('id DESC');
+            ->select(null)
+            ->select('id')
+            ->select('filename')
+            ->where('owner = ?', $userid)
+            ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -237,16 +241,17 @@ class Torrent
      * @throws Exception
      *
      * @return mixed
+     *
      */
     public function get_all(string $visible)
     {
         $torrents = $this->fluent->from('torrents')
-                                 ->select(null)
-                                 ->select('id')
-                                 ->select('filename')
-                                 ->select('hits')
-                                 ->where('visible = ?', $visible)
-                                 ->orderBy('id DESC');
+            ->select(null)
+            ->select('id')
+            ->select('filename')
+            ->select('hits')
+            ->where('visible = ?', $visible)
+            ->orderBy('id DESC');
 
         return $torrents;
     }
@@ -293,17 +298,18 @@ class Torrent
      * @param int   $tid
      * @param bool  $seeders
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool|int|PDOStatement
+     *
      */
     public function update(array $set, int $tid, bool $seeders = false)
     {
         $query = $this->fluent->update('torrents')
-                              ->set($set)
-                              ->where('id = ?', $tid)
-                              ->execute();
+            ->set($set)
+            ->where('id = ?', $tid)
+            ->execute();
 
         if ($query) {
             $this->cache->update_row('torrent_details_' . $tid, $set, $this->site_config['expires']['torrent_details']);
@@ -329,10 +335,11 @@ class Torrent
      * @param null|int $owner
      * @param null|int $added
      *
-     * @throws UnbegunTransaction
      * @throws Exception
+     * @throws UnbegunTransaction
      *
      * @return bool
+     *
      */
     public function remove_torrent(string $infohash, int $tid = null, int $owner = null, int $added = null)
     {
@@ -376,9 +383,9 @@ class Torrent
                 'seedbonus' => $seedbonus - $this->site_config['bonus']['per_delete'],
             ];
             $this->fluent->update('users')
-                         ->set($set)
-                         ->where('id = ?', $owner)
-                         ->execute();
+                ->set($set)
+                ->where('id = ?', $owner)
+                ->execute();
 
             $this->cache->update_row('user_' . $owner, $set, $this->site_config['expires']['user_cache']);
         }
@@ -393,6 +400,7 @@ class Torrent
      * @throws Exception
      *
      * @return array|bool
+     *
      */
     public function get_torrent_from_hash(string $info_hash)
     {
@@ -401,10 +409,10 @@ class Torrent
         $torrent = $this->cache->get($key);
         if ($torrent === false || is_null($torrent) || !is_array($torrent)) {
             $tid = $this->fluent->from('torrents')
-                                ->select(null)
-                                ->select('id')
-                                ->where('HEX(info_hash) = ?', bin2hex($info_hash))
-                                ->fetch('id');
+                ->select(null)
+                ->select('id')
+                ->where('HEX(info_hash) = ?', bin2hex($info_hash))
+                ->fetch('id');
             if (!empty($tid)) {
                 $torrent = $this->get($tid);
                 $this->cache->set($key, $torrent, $ttl);
@@ -443,12 +451,13 @@ class Torrent
      * @throws Exception
      *
      * @return bool|int
+     *
      */
     public function add(array $values)
     {
         $id = $this->fluent->insertInto('torrents')
-                           ->values($values)
-                           ->execute();
+            ->values($values)
+            ->execute();
 
         return $id;
     }
@@ -457,15 +466,16 @@ class Torrent
      * @throws Exception
      *
      * @return bool|mixed
+     *
      */
     public function get_torrent_count()
     {
         $count = $this->cache->get('get_torrent_count_');
         if ($count === false || is_null($count)) {
             $count = $this->fluent->from('torrents')
-                                  ->select(null)
-                                  ->select('COUNT(id) AS count')
-                                  ->fetch('count');
+                ->select(null)
+                ->select('COUNT(id) AS count')
+                ->fetch('count');
 
             $this->cache->set('get_torrent_count_', $count, 86400);
         }
@@ -477,6 +487,7 @@ class Torrent
      * @throws Exception
      *
      * @return array
+     *
      */
     public function get_latest_scroller()
     {
@@ -484,34 +495,34 @@ class Torrent
         $torrents = $this->cache->get('scroller_torrents_');
         if ($torrents === false || is_null($torrents)) {
             $torrents = $this->fluent->from('torrents AS t')
-                                     ->select(null)
-                                     ->select('t.id')
-                                     ->select('t.added')
-                                     ->select('t.seeders')
-                                     ->select('t.leechers')
-                                     ->select('t.name')
-                                     ->select('t.size')
-                                     ->select('t.poster')
-                                     ->select('t.anonymous')
-                                     ->select('t.owner')
-                                     ->select('t.imdb_id')
-                                     ->select('t.times_completed')
-                                     ->select('t.rating')
-                                     ->select('t.year')
-                                     ->select('t.subs AS subtitles')
-                                     ->select('t.audios')
-                                     ->select('t.newgenre AS genre')
-                                     ->select('u.username')
-                                     ->select('u.class')
-                                     ->select('p.name AS parent_name')
-                                     ->select('c.name AS cat')
-                                     ->select('c.image')
-                                     ->leftJoin('users AS u ON t.owner = u.id')
-                                     ->leftJoin('categories AS c ON t.category = c.id')
-                                     ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                     ->where('t.visible = "yes"')
-                                     ->where('t.imdb_id != ""')
-                                     ->orderBy('t.added DESC');
+                ->select(null)
+                ->select('t.id')
+                ->select('t.added')
+                ->select('t.seeders')
+                ->select('t.leechers')
+                ->select('t.name')
+                ->select('t.size')
+                ->select('t.poster')
+                ->select('t.anonymous')
+                ->select('t.owner')
+                ->select('t.imdb_id')
+                ->select('t.times_completed')
+                ->select('t.rating')
+                ->select('t.year')
+                ->select('t.subs AS subtitles')
+                ->select('t.audios')
+                ->select('t.newgenre AS genre')
+                ->select('u.username')
+                ->select('u.class')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->where('t.visible = "yes"')
+                ->where('t.imdb_id != ""')
+                ->orderBy('t.added DESC');
 
             $scrollers = [];
             foreach ($torrents as $torrent) {
@@ -524,12 +535,12 @@ class Torrent
                     $images = $this->cache->get('posters_' . $torrent['imdb_id']);
                     if ($images === false || is_null($images)) {
                         $images = $this->fluent->from('images')
-                                               ->select(null)
-                                               ->select('url')
-                                               ->where('type = "poster"')
-                                               ->where('imdb_id = ?', $torrent['imdb_id'])
-                                               ->where('fetched = "yes"')
-                                               ->fetchAll();
+                            ->select(null)
+                            ->select('url')
+                            ->where('type = "poster"')
+                            ->where('imdb_id = ?', $torrent['imdb_id'])
+                            ->where('fetched = "yes"')
+                            ->fetchAll();
 
                         if (!empty($images)) {
                             $this->cache->set('posters_' . $torrent['imdb_id'], $images, 86400);
@@ -556,8 +567,8 @@ class Torrent
                         shuffle($images);
                         $torrent['poster'] = $images[0]['url'];
                     }
-                    $scroller_torrents[] = $torrent;
                 }
+                $scroller_torrents[] = $torrent;
             }
         }
 
@@ -568,23 +579,23 @@ class Torrent
      * @throws Exception
      *
      * @return array
+     *
      */
     public function get_latest_slider()
     {
         $sliding_torrents = $imdb_ids = [];
-        //$this->cache->delete('slider_torrents_');
         $torrents = $this->cache->get('slider_torrents_');
         if ($torrents === false || is_null($torrents)) {
             $torrents = $this->fluent->from('torrents AS t')
-                                     ->select(null)
-                                     ->select('t.imdb_id')
-                                     ->select('p.name AS parent_name')
-                                     ->select('c.name AS cat')
-                                     ->select('c.image')
-                                     ->leftJoin('categories AS c ON t.category = c.id')
-                                     ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                     ->where('t.imdb_id != ""')
-                                     ->orderBy('t.added DESC');
+                ->select(null)
+                ->select('t.imdb_id')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->where('t.imdb_id != ""')
+                ->orderBy('t.added DESC');
 
             $sliders = [];
             foreach ($torrents as $torrent) {
@@ -594,12 +605,12 @@ class Torrent
                 $banners = $this->cache->get('banners_' . $torrent['imdb_id']);
                 if ($banners === false || is_null($banners)) {
                     $banners = $this->fluent->from('images')
-                                            ->select(null)
-                                            ->select('url')
-                                            ->where('type = "banner"')
-                                            ->where('fetched = "yes"')
-                                            ->where('imdb_id = ?', $torrent['imdb_id'])
-                                            ->fetchAll();
+                        ->select(null)
+                        ->select('url')
+                        ->where('type = "banner"')
+                        ->where('fetched = "yes"')
+                        ->where('imdb_id = ?', $torrent['imdb_id'])
+                        ->fetchAll();
                     if (!empty($banners)) {
                         $this->cache->set('banners_' . $torrent['imdb_id'], $banners, 86400);
                     } else {
@@ -642,6 +653,7 @@ class Torrent
      * @throws Exception
      *
      * @return array|bool|mixed
+     *
      */
     public function get_staff_picks()
     {
@@ -649,39 +661,39 @@ class Torrent
         $staff_picks = $this->cache->get('staff_picks_');
         if ($staff_picks === false || is_null($staff_picks)) {
             $staff_picks = $this->fluent->from('torrents AS t')
-                                        ->select(null)
-                                        ->select('t.id')
-                                        ->select('t.added')
-                                        ->select('t.seeders')
-                                        ->select('t.leechers')
-                                        ->select('t.name')
-                                        ->select('t.size')
-                                        ->select('t.poster')
-                                        ->select('t.anonymous')
-                                        ->select('t.owner')
-                                        ->select('t.imdb_id')
-                                        ->select('t.times_completed')
-                                        ->select('t.rating')
-                                        ->select('t.year')
-                                        ->select('t.subs AS subtitles')
-                                        ->select('t.audios')
-                                        ->select('t.newgenre AS genre')
-                                        ->select('t.comments')
-                                        ->select('u.username')
-                                        ->select('u.class')
-                                        ->select('p.name AS parent_name')
-                                        ->select('c.name AS cat')
-                                        ->select('c.image')
-                                        ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
-                                        ->leftJoin('users AS u ON t.owner = u.id')
-                                        ->leftJoin('categories AS c ON t.category = c.id')
-                                        ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                        ->leftJoin('class_config AS z ON u.class = z.value')
-                                        ->where('t.staff_picks != 0')
-                                        ->where('t.visible = "yes"')
-                                        ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
-                                        ->orderBy('t.staff_picks DESC')
-                                        ->limit($this->site_config['latest']['staff_picks']);
+                ->select(null)
+                ->select('t.id')
+                ->select('t.added')
+                ->select('t.seeders')
+                ->select('t.leechers')
+                ->select('t.name')
+                ->select('t.size')
+                ->select('t.poster')
+                ->select('t.anonymous')
+                ->select('t.owner')
+                ->select('t.imdb_id')
+                ->select('t.times_completed')
+                ->select('t.rating')
+                ->select('t.year')
+                ->select('t.subs AS subtitles')
+                ->select('t.audios')
+                ->select('t.newgenre AS genre')
+                ->select('t.comments')
+                ->select('u.username')
+                ->select('u.class')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->leftJoin('class_config AS z ON u.class = z.value')
+                ->where('t.staff_picks != 0')
+                ->where('t.visible = "yes"')
+                ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
+                ->orderBy('t.staff_picks DESC')
+                ->limit($this->site_config['latest']['staff_picks']);
 
             foreach ($staff_picks as $torrent) {
                 if (!empty($torrent['parent_name'])) {
@@ -707,6 +719,7 @@ class Torrent
      * @throws Exception
      *
      * @return array|bool|mixed
+     *
      */
     public function get_top()
     {
@@ -714,38 +727,38 @@ class Torrent
         $top_torrents = $this->cache->get('top_torrents_');
         if ($top_torrents === false || is_null($top_torrents)) {
             $top_torrents = $this->fluent->from('torrents AS t')
-                                         ->select(null)
-                                         ->select('t.id')
-                                         ->select('t.added')
-                                         ->select('t.seeders')
-                                         ->select('t.leechers')
-                                         ->select('t.name')
-                                         ->select('t.size')
-                                         ->select('t.poster')
-                                         ->select('t.anonymous')
-                                         ->select('t.owner')
-                                         ->select('t.imdb_id')
-                                         ->select('t.times_completed')
-                                         ->select('t.rating')
-                                         ->select('t.year')
-                                         ->select('t.subs AS subtitles')
-                                         ->select('t.audios')
-                                         ->select('t.newgenre AS genre')
-                                         ->select('t.comments')
-                                         ->select('u.username')
-                                         ->select('u.class')
-                                         ->select('p.name AS parent_name')
-                                         ->select('c.name AS cat')
-                                         ->select('c.image')
-                                         ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
-                                         ->leftJoin('users AS u ON t.owner = u.id')
-                                         ->leftJoin('categories AS c ON t.category = c.id')
-                                         ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                         ->leftJoin('class_config AS z ON u.class = z.value')
-                                         ->where('t.visible = "yes"')
-                                         ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
-                                         ->orderBy('t.seeders + t.leechers DESC')
-                                         ->limit($this->site_config['latest']['torrents_limit']);
+                ->select(null)
+                ->select('t.id')
+                ->select('t.added')
+                ->select('t.seeders')
+                ->select('t.leechers')
+                ->select('t.name')
+                ->select('t.size')
+                ->select('t.poster')
+                ->select('t.anonymous')
+                ->select('t.owner')
+                ->select('t.imdb_id')
+                ->select('t.times_completed')
+                ->select('t.rating')
+                ->select('t.year')
+                ->select('t.subs AS subtitles')
+                ->select('t.audios')
+                ->select('t.newgenre AS genre')
+                ->select('t.comments')
+                ->select('u.username')
+                ->select('u.class')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->leftJoin('class_config AS z ON u.class = z.value')
+                ->where('t.visible = "yes"')
+                ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')")
+                ->orderBy('t.seeders + t.leechers DESC')
+                ->limit($this->site_config['latest']['torrents_limit']);
 
             foreach ($top_torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
@@ -774,6 +787,7 @@ class Torrent
      * @throws Exception
      *
      * @return array|bool|mixed
+     *
      */
     public function get_latest(array $categories)
     {
@@ -783,41 +797,41 @@ class Torrent
         $latest_torrents = $this->cache->get('latest_torrents_' . $string);
         if ($latest_torrents === false || is_null($latest_torrents)) {
             $latest_torrents = $this->fluent->from('torrents AS t')
-                                            ->select(null)
-                                            ->select('t.id')
-                                            ->select('t.added')
-                                            ->select('t.seeders')
-                                            ->select('t.leechers')
-                                            ->select('t.name')
-                                            ->select('t.size')
-                                            ->select('t.poster')
-                                            ->select('t.anonymous')
-                                            ->select('t.owner')
-                                            ->select('t.imdb_id')
-                                            ->select('t.times_completed')
-                                            ->select('t.rating')
-                                            ->select('t.year')
-                                            ->select('t.subs AS subtitles')
-                                            ->select('t.audios')
-                                            ->select('t.newgenre AS genre')
-                                            ->select('t.comments')
-                                            ->select('u.username')
-                                            ->select('u.class')
-                                            ->select('p.name AS parent_name')
-                                            ->select('c.name AS cat')
-                                            ->select('c.image')
-                                            ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
-                                            ->leftJoin('users AS u ON t.owner = u.id')
-                                            ->leftJoin('class_config AS z ON u.class = z.value')
-                                            ->leftJoin('categories AS c ON t.category = c.id')
-                                            ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                            ->where('t.visible = "yes"')
-                                            ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
+                ->select(null)
+                ->select('t.id')
+                ->select('t.added')
+                ->select('t.seeders')
+                ->select('t.leechers')
+                ->select('t.name')
+                ->select('t.size')
+                ->select('t.poster')
+                ->select('t.anonymous')
+                ->select('t.owner')
+                ->select('t.imdb_id')
+                ->select('t.times_completed')
+                ->select('t.rating')
+                ->select('t.year')
+                ->select('t.subs AS subtitles')
+                ->select('t.audios')
+                ->select('t.newgenre AS genre')
+                ->select('t.comments')
+                ->select('u.username')
+                ->select('u.class')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('class_config AS z ON u.class = z.value')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->where('t.visible = "yes"')
+                ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
             if (!empty($categories)) {
                 $latest_torrents = $latest_torrents->where('category IN (' . $in . ')', $categories);
             }
             $latest_torrents = $latest_torrents->orderBy('t.added DESC')
-                                               ->limit($this->site_config['latest']['torrents_limit']);
+                ->limit($this->site_config['latest']['torrents_limit']);
 
             foreach ($latest_torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
@@ -843,6 +857,7 @@ class Torrent
      * @throws Exception
      *
      * @return array|bool|mixed
+     *
      */
     public function get_mow()
     {
@@ -850,38 +865,38 @@ class Torrent
         if ($motw === false || is_null($motw)) {
             $motw = [];
             $torrents = $this->fluent->from('torrents AS t')
-                                     ->select(null)
-                                     ->select('t.id')
-                                     ->select('t.added')
-                                     ->select('t.seeders')
-                                     ->select('t.leechers')
-                                     ->select('t.name')
-                                     ->select('t.size')
-                                     ->select('t.poster')
-                                     ->select('t.anonymous')
-                                     ->select('t.owner')
-                                     ->select('t.imdb_id')
-                                     ->select('t.times_completed')
-                                     ->select('t.rating')
-                                     ->select('t.year')
-                                     ->select('t.subs AS subtitles')
-                                     ->select('t.audios')
-                                     ->select('t.newgenre AS genre')
-                                     ->select('t.comments')
-                                     ->select('u.username')
-                                     ->select('u.class')
-                                     ->select('p.name AS parent_name')
-                                     ->select('c.name AS cat')
-                                     ->select('c.image')
-                                     ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
-                                     ->leftJoin('users AS u ON t.owner = u.id')
-                                     ->leftJoin('categories AS c ON t.category = c.id')
-                                     ->leftJoin('categories AS p ON c.parent_id = p.id')
-                                     ->leftJoin('class_config AS z ON u.class = z.value')
-                                     ->leftJoin('avps AS a ON t.id = a.value_u')
-                                     ->orderBy('t.seeders + t.leechers DESC')
-                                     ->where('a.arg', 'bestfilmofweek')
-                                     ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
+                ->select(null)
+                ->select('t.id')
+                ->select('t.added')
+                ->select('t.seeders')
+                ->select('t.leechers')
+                ->select('t.name')
+                ->select('t.size')
+                ->select('t.poster')
+                ->select('t.anonymous')
+                ->select('t.owner')
+                ->select('t.imdb_id')
+                ->select('t.times_completed')
+                ->select('t.rating')
+                ->select('t.year')
+                ->select('t.subs AS subtitles')
+                ->select('t.audios')
+                ->select('t.newgenre AS genre')
+                ->select('t.comments')
+                ->select('u.username')
+                ->select('u.class')
+                ->select('p.name AS parent_name')
+                ->select('c.name AS cat')
+                ->select('c.image')
+                ->select("REPLACE(LOWER(z.classname), ' ', '_') AS classname")
+                ->leftJoin('users AS u ON t.owner = u.id')
+                ->leftJoin('categories AS c ON t.category = c.id')
+                ->leftJoin('categories AS p ON c.parent_id = p.id')
+                ->leftJoin('class_config AS z ON u.class = z.value')
+                ->leftJoin('avps AS a ON t.id = a.value_u')
+                ->orderBy('t.seeders + t.leechers DESC')
+                ->where('a.arg', 'bestfilmofweek')
+                ->where("z.name NOT IN ('UC_MIN', 'UC_STAFF', 'UC_MAX')");
 
             foreach ($torrents as $torrent) {
                 if (!empty($torrent['parent_name'])) {
@@ -910,10 +925,10 @@ class Torrent
         $imdbs = $this->cache->get('imdbs_');
         if ($imdbs === false || is_null($imdbs)) {
             $imdbs = $this->fluent->from('torrents')
-                                  ->select(null)
-                                  ->select('imdb_id')
-                                  ->where('imdb_id != ""')
-                                  ->fetchAll();
+                ->select(null)
+                ->select('imdb_id')
+                ->where('imdb_id != ""')
+                ->fetchAll();
 
             $this->cache->set('imdbs_', $imdbs, 3600);
         }
@@ -929,16 +944,17 @@ class Torrent
      * @throws Exception
      *
      * @return bool|mixed|null
+     *
      */
     public function get_plot(string $imdb)
     {
         $plot = $this->cache->get('imdb_plot_' . $imdb);
         if ($plot === false || is_null($plot)) {
             $plot = $this->fluent->from('imdb_info')
-                                 ->select(null)
-                                 ->select('plot')
-                                 ->where('imdb_id = ?', str_replace('tt', '', $imdb))
-                                 ->fetch('plot');
+                ->select(null)
+                ->select('plot')
+                ->where('imdb_id = ?', str_replace('tt', '', $imdb))
+                ->fetch('plot');
 
             if (!empty($plot)) {
                 $this->cache->set('imdb_plot_' . $imdb, $plot, 86400);
@@ -957,12 +973,13 @@ class Torrent
      *
      * @param int $torrentid
      *
-     * @throws InvalidManipulation
      * @throws Exception
      * @throws DependencyException
      * @throws NotFoundException
+     * @throws InvalidManipulation
      *
      * @return false|mixed|string|string[]|null
+     *
      */
     public function format_descr(int $torrentid)
     {
