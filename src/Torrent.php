@@ -348,9 +348,11 @@ class Torrent
         }
         if (empty($tid) || empty($owner) || empty($added)) {
             $torrent = $this->get_torrent_from_hash($infohash);
-            $tid = $torrent['id'];
-            $owner = $torrent['owner'];
-            $added = $torrent['added'];
+            if (!empty($torrent)) {
+                $tid = $torrent['id'];
+                $owner = $torrent['owner'];
+                $added = $torrent['added'];
+            }
         }
         if (!empty($tid) && !empty($owner)) {
             $key = 'torrent_hash_' . bin2hex($infohash);

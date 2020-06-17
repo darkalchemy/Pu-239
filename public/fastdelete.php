@@ -42,12 +42,12 @@ if (!$tid) {
 $sure = isset($_GET['sure']) && (int) $_GET['sure'];
 if (!$sure) {
     $returnto = !empty($_GET['returnto']) ? '&amp;returnto=' . urlencode($_GET['returnto']) : '';
-    stderr(_('Security Check'), _fe('Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are.', "<a href='{$site_config['paths']['baseurl']}/fastdelete.php?id={$_GET['id']}&sure=1{$returnto}' class='is-link'>", '</a>'));
+    stderr(_('Sanity Check'), _fe('Are you sure you want to delete this torrent?<br>Click {0}here{1} if you are.', "<a href='{$site_config['paths']['baseurl']}/fastdelete.php?id={$_GET['id']}&sure=1{$returnto}' class='is-link'>", '</a>'));
 }
 
 $torrents_class = $container->get(Torrent::class);
-$torrents_class->delete_by_id($tid['id']);
 $torrents_class->remove_torrent($tid['info_hash']);
+$torrents_class->delete_by_id($tid['id']);
 if ($user['id'] != $tid['owner']) {
     $msg = sqlesc(_fe('Your upload {0} has been deleted by {1}', "[b]{$tid['name']}[/b]", $user['username']));
     sql_query('INSERT INTO messages (sender, receiver, added, msg) VALUES (2, ' . sqlesc($tid['owner']) . ', ' . TIME_NOW . ", {$msg})") or sqlerr(__FILE__, __LINE__);
@@ -72,7 +72,7 @@ if ($site_config['bonus']['on']) {
     }
 }
 $session = $container->get(Session::class);
-$session->set('is-success', _fe('Torrent deleted<br>{0}', format_comment($tid['name'])));
+$session->set('is-success', _fe("Torrent deleted\n[b]{0}[/b]", format_comment($tid['name'])));
 if (isset($_GET['returnto'])) {
     header("Location: {$site_config['paths']['baseurl']}{$_GET['returnto']}");
 } else {
