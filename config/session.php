@@ -27,4 +27,13 @@ ini_set('session.lazy_write', '0');
 ini_set('session.cookie_httponly', '1');
 ini_set('max_execution_time', '300');
 ini_set('session.cookie_domain', '');
+
+ini_set('memory_limit', '1024M');
+ini_set('zlib.output_compression', 'Off');
+ini_set('display_errors', 'Off');
+ini_set('log_errors', 'On');
+ini_set('ignore_repeated_errors', 'On');
+ini_set('error_reporting', 'E_ALL');
+ini_set('error_log', PHPERROR_LOGS_DIR . 'error.log');
+
 Session::start('Strict');
