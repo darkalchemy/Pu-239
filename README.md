@@ -1,7 +1,7 @@
 # Pu-239 v0.7.0
 
 ##### I am no longer developing this code. But, if there are enough people willing to contribute their time and energy to help with this source, I would be willing to get active again.
-I have a demo site running [https://pu-239.pw/](here), if you would like to take a look at it or join the conversation.  
+I have a demo site running [https://Pu-239.jbmatrix.net/](here), if you would like to take a look at it or join the conversation.  
 
 ![GitHub commits since tagged version](https://img.shields.io/github/commits-since/darkalchemy/Pu-239/0.7.0)
 [![GitHub license](https://img.shields.io/github/license/darkalchemy/Pu-239.svg)](https://github.com/darkalchemy/Pu-239/blob/master/LICENSE)
@@ -28,7 +28,7 @@ The primary goal of this project is to give the site owner a means to create a c
 * [Patrons](#patrons)
 * [Wiki](https://github.com/darkalchemy/Pu-239/wiki)
 
-##### I am using Ubuntu 18.04 LTS, PHP 7.4, Percona MySQL 8.0, nginx 1.16.1 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
+##### I am using Ubuntu 20.04 LTS, PHP 7.4, Percona MySQL 8.0, nginx 1.18.0 for developing this code. You may need to adjust the instructions below to fit you current server setup. 
 
 ### Goals:
 1. Update to PHP 7.4 - default settings
@@ -50,8 +50,8 @@ The primary goal of this project is to give the site owner a means to create a c
 This is a fork of U-232 V4.  
 PHP 7.3+ is required.  
 MySQL 5.6 is required. MySQL 8.0 recommended.  
-[Composer](https://getcomposer.org/download/) is required. Version ^1.8.6.  
-[NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.13.2.  
+[Composer](https://getcomposer.org/download/) is required. Version ^2.0.8.  
+[NPM/NPX](https://nodejs.org/en/download/package-manager/) is required and comes with nodejs. Version ^6.14.10.  
 This code explicitly sets the php default timezone to 'UTC'. Further down, you will set MySQL default timezone to the same. It is very important that PHP and MySQL be set to the same time, else your site will display incorrect times to your users.  
 A simple bash script to install everything required to host Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Installer) and can be used to jump start the installation process.     
 A simple php script to upload to Pu-239 is [here](https://github.com/darkalchemy/Pu-239-Uploader).  
@@ -232,5 +232,4 @@ If you would like to see a specific translation or assist with a current transla
 All Credit goes to the original code creators of U-232, tbdev, etc. Without them, this would not be possible.
 
 #### Patrons:
-Nico, Ben9, superlarsen, suiziide, 
-RememberForgottenHits
+Nico, Ben9, superlarsen, suiziide, RememberForgottenHits
