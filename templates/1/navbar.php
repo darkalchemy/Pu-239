@@ -239,7 +239,7 @@ function staff_panel()
             if (substr($key, 1) === 'Settings') {
                 $panel .= "
                 <li class='staff-narrow'>
-                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='#' class='has-text-weight-bold'>" . _('Staff Panel') . "</a>
+                    <a id='staff_" . strtolower(substr($key, 1)) . "' href='staffpanel.php' class='has-text-weight-bold'>" . _('Staff Panel') . "</a>
                     <ul class='ddFade ddFadeFast'>{$link}" . implode('', $value) . '
                     </ul>
                 </li>';
