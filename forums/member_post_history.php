@@ -237,7 +237,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		<td class="forum_head"><a id="' . $post_id . '"></a></td>
 		<td class="forum_head"><span style="white - space:nowrap;">' . $post_icon . '
 		<a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . _('Link to Post') . '">
-		' . $post_title . ' </a>&nbsp;&nbsp;' . $post_status_image . ' & nbsp;&nbsp; ' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span></td>
+		' . $post_title . ' </a>&nbsp;&nbsp;' . $post_status_image . ' &nbsp;&nbsp; ' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span></td>
 		<td class="forum_head"><span style="white-space:nowrap;">
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt = "' . _('Top') . '" class="emoticon"></a>
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt = "' . _('Bottom') . '" class="emoticon"></a></span></td>
@@ -248,7 +248,7 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
 		</tr>
         </table>';
     }
-    $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . ' < a id="bottom"></a>';
+    $HTMLOUT .= ($count > $perpage ? $menu_bottom : '') . ' <a id="bottom"></a>';
 }
 $breadcrumbs = [
     "<a href='{$site_config['paths']['baseurl']}/forums.php'>" . _('Forums') . '</a>',
