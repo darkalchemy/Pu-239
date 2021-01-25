@@ -171,12 +171,12 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => sqlesc($score),
-        'whoadded' => sqlesc($user['id']),
+        'whoadded' => sqlesc((int)$user['id']),
         'reason' => sqlesc($reason),
         'dateadd' => sqlesc(TIME_NOW),
         'locale' => sqlesc($rep_locale),
         'postid' => sqlesc((int)$input['pid']),
-        'userid' => sqlesc($res['userid']),
+        'userid' => sqlesc((int)$res['userid']),
     ];
 
     sql_query(
@@ -434,26 +434,26 @@ function fetch_reppower($user = [], $rep = 'pos')
     if (!$GVARS['g_rep_use']) { // allowed to rep at all?
         $rep = 0;
     } elseif ($is_mod && $GVARS['rep_adminpower']) { // is a mod and has loadsa power?
-        $reppower = ($rep != 'pos') ? (int)$GVARS['rep_adminpower'] * -1 : intval($GVARS['rep_adminpower']);
+        $reppower = $rep != 'pos' ? (int)$GVARS['rep_adminpower'] * -1 : (int)$GVARS['rep_adminpower'];
     } elseif (($user['posts'] < $GVARS['rep_minpost']) || ($user['reputation'] < $GVARS['rep_minrep'])) { // not an admin, then work out postal based power
         $reppower = 0;
     } else { // ok failed all tests, so ratio is 1:1 but not negative, unless allowed
         $reppower = 1;
         if ($GVARS['rep_pcpower']) { // percentage power
-            $reppower += intval($user['posts'] / $GVARS['rep_pcpower']);
+            $reppower += (int)($user['posts'] / $GVARS['rep_pcpower']);
         }
         if ($GVARS['rep_kppower']) { // rep as based upon a constant of kppower global
-            $reppower += intval($user['reputation'] / $GVARS['rep_kppower']);
+            $reppower += (int)($user['reputation'] / $GVARS['rep_kppower']);
         }
         if ($GVARS['rep_rdpower']) { // time based power
             $reppower += TIME_NOW - $user['registered'] / 86400 / $GVARS['rep_rdpower'];
         }
         if ($rep != 'pos') {
-            $reppower = intval($reppower / 2);
+            $reppower = (int)($reppower / 2);
             $reppower = ($reppower < 1) ? 1 : $reppower;
             $reppower *= -1;
         }
     }
 
-    return $reppower;
+    return (int)$reppower;
 }
