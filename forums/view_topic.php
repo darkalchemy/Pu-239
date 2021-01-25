@@ -369,7 +369,7 @@ if ($arr['user_likes'] > 0) {
 if (!empty($likes) && $count > 0) {
     if (in_array($CURUSER['id'], $user_likes)) {
         if ($count === 1) {
-            $att_str = " < span class='chg'>You like this </span>";
+            $att_str = " <span class='chg'>You like this </span>";
         } else {
             $att_str = "<span class='chg'>You and " . (($count - 1) === 1 ? '1 other person likes this' : ($count - 1) . ' others like this') . '</span>';
         }
@@ -383,14 +383,14 @@ if (!empty($likes) && $count > 0) {
 }
 $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
 
-$like_button = " < div class='level-right margin10'>
+$like_button = " <div class='level-right margin10'>
                     <span class='tot-{$arr['topic_id']} left10'>{
         $att_str}</span>
                     <span data-id='{$arr['topic_id']}' data-type = 'topic' class='mlike button is-small left10'>" . ucfirst($wht) . '</span>
                 </div>';
 
 $locked_or_reply_button = $locked === 'yes' ? "
-    <span class='tooltipper' title='" . _('This topic is locked') . ", you may not post in this thread.'>" . _('This topic is locked') . '' : ($CURUSER['forum_post'] === 'no' ? " < span class='tooltipper' title='Your posting rights have been removed. You may not post.'>Disabled</span>" : "
+    <span class='tooltipper' title='" . _('This topic is locked') . ", you may not post in this thread.'>" . _('This topic is locked') . '' : ($CURUSER['forum_post'] === 'no' ? " <span class='tooltipper' title='Your posting rights have been removed. You may not post.'>Disabled</span>" : "
     <a href='{$site_config['paths']['baseurl']}/forums.php?action=post_reply&amp;topic_id={$topic_id}'>Add Reply </a>");
 
 if ($arr['parent_forum'] > 0) {

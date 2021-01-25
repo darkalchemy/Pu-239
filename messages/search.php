@@ -91,7 +91,7 @@ $body = '
                         <option value="added" ' . ($sort === 'added' ? 'selected' : '') . '>' . _('Added') . '</option>
                         <option value="' . $sender_reciever . '" ' . ($sort === $sender_reciever ? 'selected' : '') . '>' . _('Member') . ' </option>
                     </select>
-                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? 'checked' : '') . '>' . _(' Ascending ') . ' < input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? 'checked' : '') . '>' . _('  Descending') . ' </td>
+                        <input name="ASC" type="radio" value="1" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 1) ? 'checked' : '') . '>' . _(' Ascending ') . ' <input name="ASC" type="radio" value="2" ' . ((isset($_POST['ASC']) && $_POST['ASC'] == 2 || !isset($_POST['ASC'])) ? 'checked' : '') . '>' . _('  Descending') . ' </td>
                 </tr>
                 <tr>
                     <td><span> ' . _('Show:') . ' </span></td>
@@ -110,7 +110,7 @@ $body = '
                     <td><span> ' . _('Display as:') . ' </span></td>
                     <td><input name="as_list_post" type="radio" value="1" ' . ($as_list_post == 1 ? 'checked' : '') . '><span> ' . _('List') . ' </span>
                     <input name="as_list_post" type="radio" value="2" ' . ($as_list_post == 2 ? 'checked' : '') . '><span> ' . _('Message') . ' </span></td>
-                </tr> ' : '') . ' < tr class="no_hover">
+                </tr> ' : '') . ' <tr class="no_hover">
                     <td colspan="2" class="has-text-centered margin20">
                     <input type="submit" class="button is-small" name="change" value="' . _('search') . '"></td>
                 </tr> ';

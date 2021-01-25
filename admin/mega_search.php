@@ -334,7 +334,7 @@ if (isset($_POST['msg_to_analyze'])) {
     if (!empty($body) && empty($no_matches_for_this_ip)) {
         $HTMLOUT .= main_table($body, $heading, 'top20');
     } else {
-        $HTMLOUT .= main_div(" < div class='has-text-centered'>
+        $HTMLOUT .= main_div(" <div class='has-text-centered'>
                     <h1>" . _('No matches for the following IPs') . "</h1>
                     <div class='bg-02 padding20 round20'>$no_matches_for_this_ip
                     </div>
