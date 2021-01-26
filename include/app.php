@@ -14,11 +14,11 @@ $builder = new ContainerBuilder();
 if (PRODUCTION) {
     $builder->enableCompilation(DI_CACHE_DIR);
 }
-$builder->addDefinitions(CONFIG_DIR . '/config.php');
-$builder->addDefinitions(CONFIG_DIR . '/emoticons.php');
-$builder->addDefinitions(CONFIG_DIR . '/subtitles.php');
-$builder->addDefinitions(CONFIG_DIR . '/whereis.php');
-$builder->addDefinitions(CONFIG_DIR . '/definitions.php');
+$builder->addDefinitions(CONFIG_DIR . 'config.php');
+$builder->addDefinitions(CONFIG_DIR . 'emoticons.php');
+$builder->addDefinitions(CONFIG_DIR . 'subtitles.php');
+$builder->addDefinitions(CONFIG_DIR . 'whereis.php');
+$builder->addDefinitions(CONFIG_DIR . 'definitions.php');
 $builder->useAutowiring(true);
 $builder->useAnnotations(false);
 try {

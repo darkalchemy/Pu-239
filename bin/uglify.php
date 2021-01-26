@@ -288,9 +288,6 @@ function run_uglify($argv = [])
             'details_js' => [
                 SCRIPTS_DIR . 'descr.js',
                 SCRIPTS_DIR . 'jquery.thanks.js',
-                SCRIPTS_DIR . 'imdb.js',
-                SCRIPTS_DIR . 'isbn.js',
-                SCRIPTS_DIR . 'tvmaze.js',
             ],
             'forums_js' => [
                 SCRIPTS_DIR . 'jquery.trilemma.js',
