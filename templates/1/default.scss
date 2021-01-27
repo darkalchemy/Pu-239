@@ -17,7 +17,7 @@ $warning: #ff0099;
 $info: #e6fb04;
 
 @import "../../node_modules/bulma/sass/utilities/functions.sass";
-@import "../../node_modules/bulma/sass/utilities/derived-variables.scss";
+@import "../../node_modules/bulma/sass/utilities/derived-variables.sass";
 
 $primary-invert: findColorInvert($primary);
 $green-invert: findColorInvert($green);
