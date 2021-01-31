@@ -19,8 +19,8 @@
 //$primary-invert: $pink-invert;
 // 4. Import the rest of Bulma
 //@import "../node_modules/bulma/bulma";
-@import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../templates/1/default.scss";
+@import "../node_modules/bulma/sass/utilities/_all.sass";
 @import "../node_modules/bulma/sass/base/animations.sass";
 @import "../node_modules/bulma/sass/utilities/mixins.sass";
 @import "../node_modules/bulma/sass/utilities/controls.sass";
