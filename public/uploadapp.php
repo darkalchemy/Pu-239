@@ -22,38 +22,40 @@ $fluent = $container->get(Database::class);
 $cache = $container->get(Cache::class);
 $messages_class = $container->get(Message::class);
 $auth = $container->get(Auth::class);
-if (isset($_POST['form']) != 1) {
+if (isset($_POST['form']) && $_POST['form'] != 1) {
     $res = sql_query('SELECT status FROM uploadapp WHERE userid = ' . sqlesc($user['id'])) or sqlerr(__FILE__, __LINE__);
     $arr = mysqli_fetch_assoc($res);
     /*if ($auth->hasRole(Roles::UPLOADER)) {
         stderr(_('Access Denied'), _('It appears you are already part of our uploading team.'));
     } else*/
-    if ($arr['status'] === 'pending') {
-        stderr(_('Access Denied'), _('It appears you are currently pending confirmation of your uploader application.'));
-    } elseif ($arr['status'] === 'rejected') {
-        stderr(_('Access Denied'), _('It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.'));
-    } else {
-        $HTMLOUT .= '
+    if (!empty($arr)) {
+    	if ($arr['status'] === 'pending') {
+            stderr(_('Access Denied'), _('It appears you are currently pending confirmation of your uploader application.'));
+    	} elseif ($arr['status'] === 'rejected') {
+            stderr(_('Access Denied'), _('It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.'));
+        }
+    }
+    $HTMLOUT .= '
         <h1 class="has-text-centered">' . _('Uploader application') . "</h1>
         <form action='./uploadapp.php' method='post' enctype='multipart/form-data' accept-charset='utf-8'>
             <table class='table table-bordered table-striped'>";
-        $ratio = member_ratio($user['uploaded'], $user['downloaded']);
-        $connect = $fluent->from('peers')
+    $ratio = member_ratio($user['uploaded'], $user['downloaded']);
+    $connect = $fluent->from('peers')
             ->select(null)
             ->select('connectable')
             ->where('userid = ?', $user['id'])
             ->fetch();
-        if (!empty($connect)) {
-            $Conn_Y = 'yes';
-            if ($connect == $Conn_Y) {
-                $connectable = 'Yes';
-            } else {
-                $connectable = 'No';
-            }
+    if (!empty($connect)) {
+        $Conn_Y = 'yes';
+        if ($connect == $Conn_Y) {
+            $connectable = 'Yes';
         } else {
-            $connectable = 'Pending';
+            $connectable = 'No';
         }
-        $HTMLOUT .= "
+    } else {
+        $connectable = 'Pending';
+    }
+    $HTMLOUT .= "
                 <tr>
                     <td class='rowhead'>" . _('My username is') . "</td>
                     <td>
@@ -154,7 +156,6 @@ if (isset($_POST['form']) != 1) {
                 <input type='submit' name='Submit' value='" . _('Send') . "' class='button is-small'>
             </div>
         </form>";
-    }
 } else {
     if (!is_valid_id((int) $_POST['userid'])) {
         stderr(_('Error'), _fe('It appears something went wrong while sending your application. Please {0}try again{1}', "<a href='{$site_config['paths']['baseurl']}/uploadapp.php'>", '</a>'));
