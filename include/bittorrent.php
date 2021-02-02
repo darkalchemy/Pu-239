@@ -1404,7 +1404,7 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 {
     global $container;
 
-    $expires = mt_rand(86400, 172800);
+    $expires = mt_rand(43200, 86400);
     $cache = $container->get(Cache::class);
     $key = hash('sha256', $url);
     if (!$fresh) {
@@ -1428,8 +1428,7 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
     try {
         if ($res = $client->request('GET', $url)) {
             if ($res->getStatusCode() === 200) {
-                $contents = $res->getBody()
-                                ->getContents();
+                $contents = $res->getBody()->getContents();
                 if (!$fresh) {
                     $cache->set($key, $contents, $expires);
                 }

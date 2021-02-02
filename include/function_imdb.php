@@ -7,6 +7,7 @@ require_once INCL_DIR . 'function_tmdb.php';
 require_once INCL_DIR . 'function_imdb.php';
 require_once INCL_DIR . 'function_details.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_bbcode.php';
 
 use DI\DependencyException;
 use DI\NotFoundException;
@@ -556,25 +557,25 @@ function get_imdb_info_short($imdb_id)
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Title') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span>" . htmlsafechars($imdb_data['title']) . "</span>
+                                                <span>" . format_comment($imdb_data['title']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('MPAA') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span class='size_4'>" . htmlsafechars($imdb_data['mpaa_reason']) . "</span>
+                                                <span class='size_4'>" . format_comment($imdb_data['mpaa_reason']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Critics') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span class='size_4'>" . htmlsafechars($imdb_data['critics']) . "</span>
+                                                <span class='size_4'>" . format_comment($imdb_data['critics']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Rating') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span class='size_4'>" . htmlsafechars($imdb_data['rating']) . "</span>
+                                                <span class='size_4'>" . format_comment($imdb_data['rating']) . "</span>
                                             </div>
                                             <div class='column padding5 is-4'>
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Votes') . ": </span>
@@ -586,7 +587,7 @@ function get_imdb_info_short($imdb_id)
                                                 <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Overview') . ": </span>
                                             </div>
                                             <div class='column padding5 is-8'>
-                                                <span class='size_4'>" . htmlsafechars(strip_tags($imdb_data['plotoutline'])) . '</span>
+                                                <span class='size_4'>" . format_comment(strip_tags($imdb_data['plotoutline'])) . '</span>
                                             </div>
                                         </div>
                                     </div>
@@ -622,8 +623,8 @@ function get_upcoming()
     $imdb_data = $cache->get('imdb_upcoming_');
     if ($imdb_data === false || is_null($imdb_data)) {
         $url = 'https://www.imdb.com/movies-coming-soon/';
-        $imdb_data = fetch($url);
-        if ($imdb_data) {
+        $imdb_data = fetch($url, false);
+        if (!empty($imdb_data)) {
             $cache->set('imdb_upcoming_', $imdb_data, 86400);
         } else {
             $cache->set('imdb_upcoming_', 'failed', 3600);
@@ -662,7 +663,7 @@ function get_upcoming()
                 get_imdb_info($imdb, true, true, null, null);
             }
         }
-
+        $cache->set('imdb_upcoming_movies_', $imdbs, 3600);
         return $imdbs;
     }
 
@@ -857,7 +858,7 @@ function get_top_movies(int $count)
         $top = [];
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=top_1000&sort=user_rating,desc&view=simple&start=' . $i;
-            $html = fetch($url);
+            $html = fetch($url, false);
             if (!empty($html)) {
                 preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
                 foreach ($matches[1] as $match) {
@@ -898,7 +899,7 @@ function get_in_theaters()
     $imdb_data = $cache->get('imdb_in_theaters_');
     if ($imdb_data === false || is_null($imdb_data)) {
         $url = 'https://www.imdb.com/movies-in-theaters';
-        $imdb_data = fetch($url);
+        $imdb_data = fetch($url, false);
         if ($imdb_data) {
             $cache->set('imdb_in_theaters_', $imdb_data, 86400);
         } else {
@@ -916,7 +917,7 @@ function get_in_theaters()
         foreach ($imdbs as $imdb) {
             get_imdb_info($imdb, true, true, null, null);
         }
-
+        $cache->set('imdb_in_theaters_display_', $imdbs, 86400);
         return $imdbs;
     }
 
@@ -948,7 +949,7 @@ function movies_by_release_date(int $count)
         $top = [];
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title/?title_type=feature&sort=release_date,desc&view=simple&start=' . $i;
-            $html = fetch($url);
+            $html = fetch($url, false);
             preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
@@ -989,7 +990,7 @@ function get_top_tvshows(int $count)
         $top = [];
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?title_type=tv_series&num_votes=30000,&countries=us&sort=user_rating,desc&view=simple&start=' . $i;
-            $html = fetch($url);
+            $html = fetch($url, false);
             if (!empty($html)) {
                 preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
                 foreach ($matches[1] as $match) {
@@ -1030,7 +1031,7 @@ function get_top_anime(int $count)
         $top = [];
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?genres=drama&keywords=anime&num_votes=2000,sort=user_rating,desc&view=simple&start=' . $i;
-            $html = fetch($url);
+            $html = fetch($url, false);
             preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
@@ -1066,7 +1067,7 @@ function get_oscar_winners(int $count)
         $top = [];
         for ($i = 1; $i <= $count; $i += 50) {
             $url = 'https://www.imdb.com/search/title?groups=oscar_winner&sort=user_rating,desc&view=simple&start=' . $i;
-            $html = fetch($url);
+            $html = fetch($url, false);
             preg_match_all('#<a href=\"/title/(tt\d{7,8})/\?ref_=adv_li_i\"\s*>#', $html, $matches);
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {

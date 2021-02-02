@@ -92,7 +92,7 @@ if (!empty($user) && is_array($user)) {
     </span>";
     }
 
-    $got_moods = ($user['opt2'] & user_options_2::GOT_MOODS) === user_options_2::GOT_MOODS;
+    $got_moods = ($user['opt2'] & class_user_options_2::GOT_MOODS) === class_user_options_2::GOT_MOODS;
     $StatusBar .= "
     <span class='level is-marginless'>
         <span class='navbar-start'>" . _('Uploading Files') . "</span>

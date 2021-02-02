@@ -3,9 +3,9 @@
 declare(strict_types = 1);
 
 /**
- * Class block_stdhead.
+ * Class class_blocks_stdhead.
  */
-class block_stdhead
+class class_blocks_stdhead
 {
     const STDHEAD_DEMOTION = 0x1; // 1
     const STDHEAD_STAFF_MESSAGE = 0x2; // 2

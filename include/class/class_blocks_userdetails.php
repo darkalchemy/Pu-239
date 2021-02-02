@@ -3,9 +3,9 @@
 declare(strict_types = 1);
 
 /**
- * Class block_userdetails.
+ * Class class_block_userdetails.
  */
-class block_userdetails
+class class_blocks_userdetails
 {
     const USERCOMMENTS = 0x1; //          1
     const FLUSH = 0x2; //          2

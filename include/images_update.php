@@ -11,6 +11,8 @@ use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
+global $container;
+$cache = $container->get(Cache::class);
 if (!empty($argv[1]) && $argv[1] === 'force') {
     $cache->delete('images_update_');
 }
@@ -54,50 +56,61 @@ function images_update()
     $torrent = $container->get(Torrent::class);
 
     $fluent->deleteFrom('images')
-           ->where("url = 'N/A' OR url = '' OR url IS NULL")
-           ->execute();
+        ->where("url = 'N/A' OR url = '' OR url IS NULL")
+        ->execute();
     $fluent->deleteFrom('person')
-           ->where("imdb_id = '' OR imdb_id IS NULL")
-           ->execute();
+        ->where("imdb_id = '' OR imdb_id IS NULL")
+        ->execute();
+    echo "Caching IMDb Movies Coming Soon\n";
     get_upcoming();
     get_upcoming();
+    echo "Caching IMDb Movies In Theaters\n";
     get_in_theaters();
-    $item_count = (int) $cache->get('item_count_') + 10;
-    $item_count = $item_count >= 1000 ? 1000 : $item_count;
+    $item_count = (int) $cache->get('item_count_') + 5;
+    $item_count = $item_count >= 1500 ? 1500 : $item_count;
     echo "Caching IMDb Top {$item_count} Movies\n";
     get_top_movies($item_count);
     echo "Caching IMDb Top {$item_count} TV Shows\n";
     get_top_tvshows($item_count);
     echo "Caching IMDb {$item_count} Newest Movies\n";
     movies_by_release_date($item_count);
-    echo "Caching TMDb Top 150 Movies\n";
-    get_movies_by_vote_average(150);
+    echo "Caching IMDb {$item_count} Oscar Winners\n";
+    get_oscar_winners($item_count);
+    echo "Caching IMDb {$item_count} Top Anime\n";
+    get_top_anime($item_count);
+    echo "Caching TMDb Top " . ($item_count >= 250 ? 250 : $item_count) . " Movies\n";
+    get_movies_by_vote_average($item_count >= 500 ? 500 : $item_count);
     $cache->set('item_count_', $item_count, 0);
+    echo "Caching TMDb Movies In Theaters\n";
     get_movies_in_theaters();
+    echo "Caching New Releases from Blu-ray.com \n";
     get_bluray_info();
+    echo "Caching TVMaze TV Schedule\n";
     get_schedule();
 
     $today = date('Y-m-d');
     $date = new DateTime($today);
-    $yesterday = $date->modify('-1 day')
-                      ->format('Y-m-d');
-    $tomorrow = $date->modify('+1 day')
-                     ->format('Y-m-d');
-    $day_after = $date->modify('+2 day')
-                      ->format('Y-m-d');
+    $yesterday = $date->modify('-1 day')->format('Y-m-d');
+    $tomorrow = $date->modify('+1 day')->format('Y-m-d');
+    $day_after = $date->modify('+2 day')->format('Y-m-d');
 
+    echo "Caching TMDb TV for $yesterday\n";
     get_tv_by_day($yesterday);
+    echo "Caching TMDb TV for $today\n";
     get_tv_by_day($today);
+    echo "Caching TMDb TV for $tomorrow\n";
     get_tv_by_day($tomorrow);
+    echo "Caching TMDb TV for $day_after\n";
     get_tv_by_day($day_after);
     $no_posters = $fluent->from('torrents')
-                         ->select(null)
-                         ->select('DISTINCT imdb_id')
-                         ->where('imdb_id IS NOT NULL')
-                         ->where('poster = ""')
-                         ->fetchAll();
+        ->select(null)
+        ->select('DISTINCT imdb_id')
+        ->where('imdb_id IS NOT NULL')
+        ->where('poster = ""')
+        ->fetchAll();
 
     $fanart_images = $temp = [];
+    echo "Getting Movie images from Fanart.com\n";
     foreach ($no_posters as $no_poster) {
         $temp = getMovieImagesByID($no_poster['imdb_id'], false, 'moviebackground');
         if (!empty($temp)) {
@@ -121,19 +134,20 @@ function images_update()
     echo 'Checked ' . count($no_posters) . ' torrents that do not have posters' . "\n";
 
     $images = $fluent->from('images')
-                     ->select(null)
-                     ->select('imdb_id')
-                     ->select('url')
-                     ->where('imdb_id IS NOT NULL')
-                     ->where('tmdb_id = 0')
-                     ->where('checked + 604800 < ?', TIME_NOW)
-                     ->orderBy('added DESC')
-                     ->limit(50)
-                     ->fetchAll();
+        ->select(null)
+        ->select('imdb_id')
+        ->select('url')
+        ->where('imdb_id IS NOT NULL')
+        ->where('tmdb_id = 0')
+        ->where('checked + 604800 < ?', TIME_NOW)
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     $values = [];
     foreach ($images as $imdb_id) {
         get_movie_id($imdb_id['imdb_id'], 'tmdb_id');
+        get_imdb_info_short($imdb_id['imdb_id']);
         $values[] = [
             'checked' => TIME_NOW,
             'url' => $imdb_id['url'],
@@ -148,21 +162,22 @@ function images_update()
     echo 'Checked ' . count($values) . " image tmdb_ids\n";
 
     $images = $fluent->from('images')
-                     ->select(null)
-                     ->select('tmdb_id')
-                     ->select('url')
-                     ->select('type')
-                     ->where('tmdb_id != 0')
-                     ->where('imdb_id IS NULL')
-                     ->where('checked + 604800 < ?', TIME_NOW)
-                     ->orderBy('added DESC')
-                     ->limit(50)
-                     ->fetchAll();
+        ->select(null)
+        ->select('tmdb_id')
+        ->select('url')
+        ->select('type')
+        ->where('tmdb_id != 0')
+        ->where('imdb_id IS NULL')
+        ->where('checked + 604800 < ?', TIME_NOW)
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     $values1 = $values = [];
     foreach ($images as $image) {
         $imdb = get_imdbid($image['tmdb_id']);
         if (!empty($imdb['imdb_id'])) {
+            get_imdb_info_short($imdb['imdb_id']);
             $values[] = [
                 'imdb_id' => $imdb['imdb_id'],
                 'url' => $image['url'],
@@ -193,17 +208,18 @@ function images_update()
     echo 'Checked and failed to find ' . count($values1) . " image imdb_ids\n";
 
     $imdb_ids = $fluent->from('images')
-                       ->select(null)
-                       ->select('imdb_id')
-                       ->select('url')
-                       ->where('imdb_id IS NOT NULL')
-                       ->where('updated + 604800 < ?', TIME_NOW)
-                       ->orderBy('added DESC')
-                       ->limit(50)
-                       ->fetchAll();
+        ->select(null)
+        ->select('imdb_id')
+        ->select('url')
+        ->where('imdb_id IS NOT NULL')
+        ->where('updated + 604800 < ?', TIME_NOW)
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     foreach ($imdb_ids as $id) {
         $temp = getMovieImagesByID($id['imdb_id'], false, 'moviebackground');
+        get_imdb_info_short($id['imdb_id']);
         if (!empty($temp)) {
             foreach ($temp as $item) {
                 $fanart_images[] = $item;
@@ -225,17 +241,18 @@ function images_update()
     echo 'Checked ' . count($imdb_ids) . ' images with empty tmdb_id' . "\n";
 
     $tmdb_ids = $fluent->from('images')
-                       ->select(null)
-                       ->select('tmdb_id')
-                       ->select('url')
-                       ->where('tmdb_id > 0')
-                       ->where('updated + 604800 < ?', TIME_NOW)
-                       ->orderBy('added DESC')
-                       ->limit(50)
-                       ->fetchAll();
+        ->select(null)
+        ->select('tmdb_id')
+        ->select('url')
+        ->where('tmdb_id > 0')
+        ->where('updated + 604800 < ?', TIME_NOW)
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     foreach ($tmdb_ids as $id) {
         $temp = getMovieImagesByID((string) $id['tmdb_id'], false, 'moviebackground');
+        get_imdb_info_short($id['imdb_id']);
         if (!empty($temp)) {
             foreach ($temp as $item) {
                 $fanart_images[] = $item;
@@ -268,22 +285,22 @@ function images_update()
     }
 
     $images = $fluent->from('images')
-                     ->select(null)
-                     ->select('url')
-                     ->select('type')
-                     ->where('fetched = "no"')
-                     ->orderBy('added DESC')
-                     ->limit(50)
-                     ->fetchAll();
+        ->select(null)
+        ->select('url')
+        ->select('type')
+        ->where('fetched = "no"')
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     if (empty($images)) {
         $images = $fluent->from('images')
-                         ->select(null)
-                         ->select('url')
-                         ->select('type')
-                         ->orderBy('added DESC')
-                         ->limit(500)
-                         ->fetchAll();
+            ->select(null)
+            ->select('url')
+            ->select('type')
+            ->orderBy('added DESC')
+            ->limit(500)
+            ->fetchAll();
     }
     $values = [];
     echo 'Fetching, resizing and optimizing ' . count($images) . "\n";
@@ -313,17 +330,17 @@ function images_update()
     echo 'Fetched, optimized and resized ' . count($values) . " images\n";
 
     $books = $fluent->from('torrents')
-                    ->select(null)
-                    ->select('id')
-                    ->select('title')
-                    ->select('isbn')
-                    ->select('poster')
-                    ->where('info_updated + 604800 < ?', TIME_NOW)
-                    ->where('isbn IS NOT NULL')
-                    ->where("isbn != ''")
-                    ->orderBy('id DESC')
-                    ->limit(50)
-                    ->fetchAll();
+        ->select(null)
+        ->select('id')
+        ->select('title')
+        ->select('isbn')
+        ->select('poster')
+        ->where('info_updated + 604800 < ?', TIME_NOW)
+        ->where('isbn IS NOT NULL')
+        ->where("isbn != ''")
+        ->orderBy('id DESC')
+        ->limit(50)
+        ->fetchAll();
 
     echo 'Fetching book data for ' . count($books) . "\n";
     foreach ($books as $book) {
@@ -333,23 +350,23 @@ function images_update()
                     'info_updated' => TIME_NOW,
                 ];
                 $fluent->update('torrents')
-                       ->set($set)
-                       ->where('id = ?', $book['id'])
-                       ->execute();
+                    ->set($set)
+                    ->where('id = ?', $book['id'])
+                    ->execute();
             }
         }
     }
     echo count($books) . " torrents google books info cached\n";
 
     $imdbids = $fluent->from('torrents')
-                      ->select(null)
-                      ->select('id')
-                      ->select('imdb_id')
-                      ->where('imdb_id IS NOT NULL')
-                      ->where('info_updated + 604800 < ?', TIME_NOW)
-                      ->orderBy('id DESC')
-                      ->limit(50)
-                      ->fetchAll();
+        ->select(null)
+        ->select('id')
+        ->select('imdb_id')
+        ->where('imdb_id IS NOT NULL')
+        ->where('info_updated + 604800 < ?', TIME_NOW)
+        ->orderBy('id DESC')
+        ->limit(50)
+        ->fetchAll();
     echo 'Fetching IMDb data and finding images for ' . count($imdbids) . ' torrents with imdb_id set' . "\n";
     foreach ($imdbids as $imdbid) {
         get_imdb_info($imdbid['imdb_id'], true, false, $imdbid['id'], null);
@@ -361,16 +378,16 @@ function images_update()
             'info_updated' => TIME_NOW,
         ];
         $fluent->update('torrents')
-               ->set($set)
-               ->where('imdb_id = ?', $imdbid['imdb_id'])
-               ->execute();
+            ->set($set)
+            ->where('imdb_id = ?', $imdbid['imdb_id'])
+            ->execute();
     }
     echo count($imdbids) . " torrents imdb info cached\n";
 
     $torrents = $fluent->from('torrents')
-                       ->select(null)
-                       ->select('id')
-                       ->where('descr != ""');
+        ->select(null)
+        ->select('id')
+        ->where('descr != ""');
     $count = 0;
     foreach ($torrents as $tor) {
         $torrent->format_descr($tor['id']);
@@ -381,12 +398,12 @@ function images_update()
     if ($BLOCKS['tvmaze_api_on']) {
         $in = str_repeat('?,', count($site_config['categories']['tv']) - 1) . '?';
         $torrents = $fluent->from('torrents')
-                           ->select(null)
-                           ->select('id')
-                           ->select('name')
-                           ->select('imdb_id')
-                           ->select('poster')
-                           ->where('category IN (' . $in . ')', $site_config['categories']['tv']);
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('imdb_id')
+            ->select('poster')
+            ->where('category IN (' . $in . ')', $site_config['categories']['tv']);
 
         $count = 0;
         foreach ($torrents as $tor) {
@@ -411,14 +428,14 @@ function images_update()
     }
 
     $offer_links = $fluent->from('offers')
-                          ->select(null)
-                          ->select('id')
-                          ->select('url')
-                          ->where('url IS NOT NULL')
-                          ->where('updated + 604800 < ?', TIME_NOW)
-                          ->orderBy('id DESC')
-                          ->limit(50)
-                          ->fetchAll();
+        ->select(null)
+        ->select('id')
+        ->select('url')
+        ->where('url IS NOT NULL')
+        ->where('updated + 604800 < ?', TIME_NOW)
+        ->orderBy('id DESC')
+        ->limit(50)
+        ->fetchAll();
     foreach ($offer_links as $link) {
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $link['url'], $imdb);
         $imdb = !empty($imdb[2]) ? $imdb[2] : '';
@@ -432,9 +449,9 @@ function images_update()
                 'updated' => TIME_NOW,
             ];
             $fluent->update('offers')
-                   ->set($set)
-                   ->where('id = ?', $link['id'])
-                   ->execute();
+                ->set($set)
+                ->where('id = ?', $link['id'])
+                ->execute();
         }
     }
     if (!empty($offer_links)) {
@@ -442,14 +459,14 @@ function images_update()
     }
 
     $request_links = $fluent->from('requests')
-                            ->select(null)
-                            ->select('id')
-                            ->select('url')
-                            ->where('url IS NOT NULL')
-                            ->where('updated + 604800 < ?', TIME_NOW)
-                            ->orderBy('id DESC')
-                            ->limit(50)
-                            ->fetchAll();
+        ->select(null)
+        ->select('id')
+        ->select('url')
+        ->where('url IS NOT NULL')
+        ->where('updated + 604800 < ?', TIME_NOW)
+        ->orderBy('id DESC')
+        ->limit(50)
+        ->fetchAll();
 
     foreach ($request_links as $link) {
         preg_match('/^https?\:\/\/(.*?)imdb\.com\/title\/(tt[\d]{7,8})/i', $link['url'], $imdb);
@@ -464,9 +481,9 @@ function images_update()
                 'updated' => TIME_NOW,
             ];
             $fluent->update('requests')
-                   ->set($set)
-                   ->where('id = ?', $link['id'])
-                   ->execute();
+                ->set($set)
+                ->where('id = ?', $link['id'])
+                ->execute();
         }
     }
     if (!empty($request_links)) {
@@ -474,22 +491,22 @@ function images_update()
     }
 
     $persons = $fluent->from('person')
-                      ->select(null)
-                      ->select('imdb_id')
-                      ->select('photo')
-                      ->where('updated + 604800 < ?', TIME_NOW)
-                      ->orderBy('added DESC')
-                      ->limit(50)
-                      ->fetchAll();
+        ->select(null)
+        ->select('imdb_id')
+        ->select('photo')
+        ->where('updated + 604800 < ?', TIME_NOW)
+        ->orderBy('added DESC')
+        ->limit(50)
+        ->fetchAll();
 
     if (empty($persons)) {
         $persons = $fluent->from('person')
-                          ->select(null)
-                          ->select('imdb_id')
-                          ->select('photo')
-                          ->orderBy('added DESC')
-                          ->limit(500)
-                          ->fetchAll();
+            ->select(null)
+            ->select('imdb_id')
+            ->select('photo')
+            ->orderBy('added DESC')
+            ->limit(500)
+            ->fetchAll();
     }
     foreach ($persons as $person) {
         get_imdb_person($person['imdb_id']);

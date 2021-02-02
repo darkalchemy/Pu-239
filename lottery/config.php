@@ -138,7 +138,7 @@ if (!empty($lottery_config)) {
                             <select name='end_date' class='w-100'>";
         for ($i = 7; $i >= 1; --$i) {
             $table .= "
-                                <option value='" . (TIME_NOW + (84600 * $i)) . "'>" . _pfe('{0} day', '{0} days', $i) . '</option>';
+                                <option value='" . (TIME_NOW + (86400 * $i)) . "'>" . _pfe('{0} day', '{0} days', $i) . '</option>';
         }
         $table .= "
                             </select>

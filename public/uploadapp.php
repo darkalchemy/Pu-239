@@ -29,9 +29,9 @@ if (isset($_POST['form']) && $_POST['form'] != 1) {
         stderr(_('Access Denied'), _('It appears you are already part of our uploading team.'));
     } else*/
     if (!empty($arr)) {
-    	if ($arr['status'] === 'pending') {
+        if ($arr['status'] === 'pending') {
             stderr(_('Access Denied'), _('It appears you are currently pending confirmation of your uploader application.'));
-    	} elseif ($arr['status'] === 'rejected') {
+        } elseif ($arr['status'] === 'rejected') {
             stderr(_('Access Denied'), _('It appears you have applied for uploader before and have been rejected. If you would like a second chance please contact an administrator.'));
         }
     }

@@ -106,7 +106,7 @@ function format_row(array $cat, string $parent, string $cat_name, array $grouped
         $js = 'onclick="return showMe(event);"';
     }
     $link = "{$_SERVER['PHP_SELF']}?cats[]={$cat['id']}&amp;" . implode('&amp;', $list) . $terms;
-    $image = !empty($cat['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
+    $image = !empty($cat['image']) && $CURUSER['opt2'] & class_user_options_2::BROWSE_ICONS ? "
         <div class='left10 tooltipper' title='" . _fe('Search All {0}', $parent === 'child' ? format_comment("{$cat_name} :: {$cat['name']}") : format_comment($cat['name'])) . "'>
             <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . format_comment($cat['image']) . "' alt='" . format_comment($cat['name']) . "'>
         </div>" : "

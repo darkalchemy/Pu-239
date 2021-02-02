@@ -484,7 +484,7 @@ foreach ($posts as $arr) {
         }
         $attachments .= '</td></tr></table>';
     }
-    $signature = $CURUSER['opt1'] & user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] === '1' && !get_anonymous($usersdata['id']) ? format_comment($usersdata['signature']) : '';
+    $signature = $CURUSER['opt1'] & class_user_options::SIGNATURES && !empty($usersdata['signature']) && $arr['anonymous'] === '1' && !get_anonymous($usersdata['id']) ? format_comment($usersdata['signature']) : '';
     $post_status = htmlsafechars($arr['post_status']);
     switch ($post_status) {
         case 'ok':

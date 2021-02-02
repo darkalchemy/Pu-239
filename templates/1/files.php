@@ -13,17 +13,17 @@ function get_file_name($file)
 
     switch ($file) {
         case 'chat_css_trans':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_977de212.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_trans_50ab9207.css";
         case 'chat_css_uranium':
-            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_0cceb0be.css";
+            return "{$site_config['paths']['baseurl']}/css/1/chat_uranium_97f46429.css";
         case 'index_css':
             return "{$site_config['paths']['baseurl']}/css/1/index_64c2c5b0.css";
         case 'cookieconsent_css':
             return "{$site_config['paths']['baseurl']}/css/1/cookieconsent_2f4ef440.css";
         case 'sceditor_css':
-            return "{$site_config['paths']['baseurl']}/css/1/sceditor_880cb7cd.css";
+            return "{$site_config['paths']['baseurl']}/css/1/sceditor_5ae426a0.css";
         case 'main_css':
-            return "{$site_config['paths']['baseurl']}/css/1/main_64e5df72.css";
+            return "{$site_config['paths']['baseurl']}/css/1/main_d92f91e8.css";
         case 'last_css':
             return "{$site_config['paths']['baseurl']}/css/1/last_33d8c190.css";
         case 'main_js':
@@ -61,7 +61,7 @@ function get_file_name($file)
         case 'navbar_show_js':
             return "{$site_config['paths']['baseurl']}/js/1/navbar_show_6a493036.js";
         case 'sceditor_js':
-            return "{$site_config['paths']['baseurl']}/js/1/sceditor_6783b85e.js";
+            return "{$site_config['paths']['baseurl']}/js/1/sceditor_bf00ac90.js";
         case 'cheaters_js':
             return "{$site_config['paths']['baseurl']}/js/1/cheaters_e83d6a3b.js";
         case 'user_search_js':

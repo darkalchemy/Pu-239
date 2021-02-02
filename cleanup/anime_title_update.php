@@ -29,7 +29,7 @@ function anime_titles_update($data)
     $anime_data = $cache->get('anime_data_');
     if ($anime_data === false || is_null($anime_data)) {
         $url = 'https://raw.githubusercontent.com/manami-project/anime-offline-database/master/anime-offline-database.json';
-        $json = fetch($url);
+        $json = fetch($url, false);
         if (!empty($json)) {
             $anime_data = json_decode($json, true);
             $cache->set('anime_data_', TIME_NOW, 43200);

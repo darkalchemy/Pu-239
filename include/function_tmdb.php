@@ -83,7 +83,8 @@ function get_tv_by_day($dates)
  */
 function get_movies_by_week($dates)
 {
-    global $site_config, $BLOCKS;
+    global $site_config, $BLOCKS, $container;
+    $cache = $container->get(Cache::class);
 
     if (!$BLOCKS['tmdb_api_on']) {
         return false;
@@ -190,7 +191,6 @@ function get_movies_by_vote_average($count)
 
     $page = $count / 20;
     $cache = $container->get(Cache::class);
-    $cache->delete('tmdb_movies_vote_average_' . $count);
     $tmdb_data = $cache->get('tmdb_movies_vote_average_' . $count);
     if ($tmdb_data === false || is_null($tmdb_data)) {
         $apikey = $site_config['api']['tmdb'];

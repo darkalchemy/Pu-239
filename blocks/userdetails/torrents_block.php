@@ -10,7 +10,7 @@ global $container, $user;
 $session = $container->get(Session::class);
 require_once INCL_DIR . 'function_html.php';
 require_once INCL_DIR . 'function_pager.php';
-if ($user['paranoia'] < 2 || $user['opt1'] & user_options::HIDECUR || $curuser['id'] === $user['id'] || $curuser['class'] >= UC_STAFF) {
+if ($user['paranoia'] < 2 || $user['opt1'] & class_user_options::HIDECUR || $curuser['id'] === $user['id'] || $curuser['class'] >= UC_STAFF) {
     $table_data .= "
         <tr>
             <td class='rowhead'>" . _('Uploaded Torrents') . "</td>

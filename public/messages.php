@@ -108,9 +108,9 @@ if (isset($_GET['change_pm_number'])) {
 
 if (isset($_GET['show_pm_avatar'])) {
     if ($_GET['show_pm_avatar'] === 'yes') {
-        $opt2 = $user['opt2'] | user_options_2::SHOW_PM_AVATAR;
+        $opt2 = $user['opt2'] | class_user_options_2::SHOW_PM_AVATAR;
     } else {
-        $opt2 = $user['opt2'] & ~user_options_2::SHOW_PM_AVATAR;
+        $opt2 = $user['opt2'] & ~class_user_options_2::SHOW_PM_AVATAR;
     }
     $update = [
         'opt2' => $opt2,

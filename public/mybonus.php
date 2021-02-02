@@ -378,7 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($options[$option]['enabled'] === 'yes') {
             if ($user['seedbonus'] >= $options[$option]['points']) {
                 $setbits = $clrbits = 0;
-                $setbits |= user_options_2::GOT_MOODS;
+                $setbits |= class_user_options_2::GOT_MOODS;
                 $set = [
                     'opt2' => new Literal('((opt2 | ' . $setbits . ') & ~' . $clrbits . ')'),
                     'seedbonus' => $user['seedbonus'] - $options[$option]['points'],

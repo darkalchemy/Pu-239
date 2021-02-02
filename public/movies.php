@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+use Pu239\Cache;
+
 require_once __DIR__ . '/../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_bbcode.php';
@@ -13,7 +15,8 @@ require_once INCL_DIR . 'function_bluray.php';
 require_once INCL_DIR . 'function_fanart.php';
 $user = check_user_status();
 $image = placeholder_image();
-global $site_config;
+global $site_config, $container;
+$cache = $container->get(Cache::class);
 
 $lists = [
     'upcoming',
@@ -26,6 +29,7 @@ $lists = [
     'imdb_theaters',
 ];
 $list = 'upcoming';
+$title = _('Poster Views');
 if (!empty($_GET['list']) && in_array($_GET['list'], $lists)) {
     $list = $_GET['list'];
 }
@@ -33,7 +37,7 @@ if (!empty($_GET['list']) && in_array($_GET['list'], $lists)) {
 switch ($list) {
     case 'bluray':
         $title = _('Bluray Releases');
-        $pubs = get_bluray_info();
+        $pubs = $cache->get('bluray_pubs_');
         if (is_array($pubs)) {
             $div = "
         <div class='masonry padding20'>";
@@ -44,21 +48,29 @@ switch ($list) {
         </div>';
             $div = main_div($div);
         } else {
-            $div = main_div("<p class='has-text-centered'>" . _('Blu-ray.com may be down, check back later') . '</p>', '', 'padding20');
+            $div = main_div("<p class='has-text-centered'>" . _('Blu-ray.com may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
         $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('Bluray Releases') . '</h1>' . $div;
+        <h1 class='has-text-centered'>$title</h1>" . $div;
 
         break;
 
     case 'tvmaze':
         $title = _('TV Schedule');
-        $tvmaze_data = get_schedule();
+        if (($data = $cache->get('tvmaze_schedule_')) !== false) {
+            $json = bzdecompress($data);
+            $tvmaze_data = json_decode($json, true);
+        }
         if (is_array($tvmaze_data)) {
             $today = date('Y-m-d');
             $shows = [];
             foreach ($tvmaze_data as $listing) {
-                if (!empty($listing['airstamp']) && !empty($listing['airdate']) && $listing['airdate'] === $today && $listing['_embedded']['show']['language'] === 'English') {
+                if (
+                    !empty($listing['airstamp']) &&
+                    !empty($listing['airdate']) &&
+                    $listing['airdate'] === $today &&
+                    $listing['_embedded']['show']['language'] === 'English'
+                ) {
                     $shows[] = $listing;
                 }
             }
@@ -80,7 +92,7 @@ switch ($list) {
                             'episode' => $tv['number'],
                             'runtime' => !empty($tv['runtime']) ? "{$tv['runtime']} minutes" : '',
                             'type' => $tv['_embedded']['show']['type'],
-                            'airtime' => !empty($tv['airtime']) ? get_date((int) $airtime, 'WITHOUT_SEC', 0, 1) : '',
+                            'airtime' => !empty($tv['airtime']) ? get_date((int) $airtime, 'WITHOUT_SEC', 1, 0) : '',
                             'id' => $tv['_embedded']['show']['id'],
                             'overview' => str_replace([
                                 '<p>',
@@ -108,7 +120,7 @@ switch ($list) {
             }
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('TVMaze TV Today') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TVMaze may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>" . _('TVMaze TV Today') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TVMaze may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -121,10 +133,10 @@ switch ($list) {
         }
         $date = new DateTime($today);
         $yesterday = $date->modify('-1 day')
-                          ->format('Y-m-d');
+            ->format('Y-m-d');
         $date = new DateTime($today);
         $tomorrow = $date->modify('+1 day')
-                         ->format('Y-m-d');
+            ->format('Y-m-d');
         $date = new DateTime($today);
         $display = $date->format('l Y-m-d');
 
@@ -135,7 +147,7 @@ switch ($list) {
         <a href='{$_SERVER['PHP_SELF']}?list=tv&amp;date={$base}' class='tooltipper' title='GoTo {$base}'><h2>{$display}</h2></a>
         <a href='{$_SERVER['PHP_SELF']}?list=tv&amp;date={$tomorrow}' class='tooltipper' title='{$tomorrow}'>{$tomorrow}</a>
     </div>";
-        $tvs = get_tv_by_day($today);
+        $tvs = $cache->get('tmdb_tv_' . $today);
         if (is_array($tvs)) {
             $titles = $body = [];
             foreach ($tvs as $tv) {
@@ -170,7 +182,7 @@ switch ($list) {
             $HTMLOUT .= main_div($div);
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('TMBb TV Airing By Date') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TMDb may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>" . _('TMBb TV Airing By Date') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -178,8 +190,8 @@ switch ($list) {
     case 'theaters':
         $title = _('TMDb In Theaters');
         $HTMLOUT = "
-    <h1 class='has-text-centered'>" . _('TMDb In Theaters') . '</h1>';
-        $movies = get_movies_in_theaters();
+    <h1 class='has-text-centered'>$title</h1>";
+        $movies = $cache->get('tmdb_movies_in_theaters_');
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -196,7 +208,7 @@ switch ($list) {
             $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('TMDb In Theaters') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TMDb may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('TMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -205,7 +217,7 @@ switch ($list) {
         $title = _('IMDb In Theaters');
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$title}</h1>";
-        $movies = get_in_theaters();
+        $movies = $cache->get('imdb_in_theaters_display_');
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -221,7 +233,7 @@ switch ($list) {
             $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('IMDb Upcoming Movies') . '</h1>' . main_div("<p class='has-text-centered'>" . _('IMDb.com may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -230,7 +242,7 @@ switch ($list) {
         $title = _('IMDb Top 100 Movies');
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$title}</h1>";
-        $movies = get_top_movies(100);
+        $movies = $cache->get('imdb_top_movies_100');
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -246,7 +258,7 @@ switch ($list) {
             $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('IMDb Upcoming Movies') . '</h1>' . main_div("<p class='has-text-centered'>" . _('IMDb.com may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -254,7 +266,7 @@ switch ($list) {
         $title = _('TMDb Top 100 Movies');
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$title}</h1>";
-        $movies = get_movies_by_vote_average(100);
+        $movies = $cache->get('tmdb_movies_vote_average_100');
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -273,7 +285,7 @@ switch ($list) {
             $HTMLOUT .= main_div($body);
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('TMDb Top 100 Movies') . '</h1>' . main_div("<p class='has-text-centered'>" . _('TMDb may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('TMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 
         break;
@@ -281,12 +293,12 @@ switch ($list) {
     case 'upcoming':
         $title = _('IMDb Upcoming Movies');
         $HTMLOUT = '';
-        $imdbs = get_upcoming();
+        $imdbs = $cache->get('imdb_upcoming_movies_');
         if (is_array($imdbs)) {
             foreach ($imdbs as $key => $imdb) {
                 $body = '';
                 $HTMLOUT .= "
-        <h1 class='has-text-centered'>" . _('IMDb Upcoming Movies') . " $key</h1>";
+        <h1 class='has-text-centered'>$title $key</h1>";
 
                 $body .= "
         <div class='masonry padding20'>";
@@ -304,7 +316,7 @@ switch ($list) {
             }
         } else {
             $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('IMDb Upcoming Movies') . '</h1>' . main_div("<p class='has-text-centered'>" . _('IMDb.com may be down, check back later') . '</p>', '', 'padding20');
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
         }
 }
 

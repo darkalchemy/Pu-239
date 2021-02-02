@@ -35,7 +35,7 @@ function tvmaze_update($data)
     $values = [];
     foreach ($pages as $page) {
         $url = "http://api.tvmaze.com/shows?page=$page";
-        $json = fetch($url);
+        $json = fetch($url, false);
         if (empty($json)) {
             return false;
         }

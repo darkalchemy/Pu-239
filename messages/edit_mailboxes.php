@@ -114,9 +114,9 @@ if (isset($_POST['action2'])) {
             $change_pm_number = isset($_POST['change_pm_number']) ? (int) $_POST['change_pm_number'] : 20;
             $setbits = $clrbits = 0;
             if ($_POST['show_pm_avatar'] === 'yes') {
-                $setbits |= user_options_2::SHOW_PM_AVATAR;
+                $setbits |= class_user_options_2::SHOW_PM_AVATAR;
             } else {
-                $clrbits |= user_options_2::SHOW_PM_AVATAR;
+                $clrbits |= class_user_options_2::SHOW_PM_AVATAR;
             }
             $acceptpms = isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'yes' ? 'yes' : (isset($_POST['acceptpms']) && $_POST['acceptpms'] === 'friends' ? 'friends' : 'no');
             $save_pms = isset($_POST['save_pms']) ? 'yes' : 'no';
@@ -215,7 +215,7 @@ $i = 0;
 if (!empty($category_set)) {
     foreach ($category_set as $a) {
         if ($a['parent_id'] != 0) {
-            $image = !empty($a['image']) && $CURUSER['opt2'] & user_options_2::BROWSE_ICONS ? "
+            $image = !empty($a['image']) && $CURUSER['opt2'] & class_user_options_2::BROWSE_ICONS ? "
                     <span class='left10'>
                         <a href='{$site_config['paths']['baseurl']}/browse.php?c{$a['id']}'>
                             <img class='caticon' src='{$site_config['paths']['images_baseurl']}caticons/{$CURUSER['categorie_icon']}/" . format_comment($a['image']) . "' alt='" . format_comment($a['name']) . "'>
@@ -280,7 +280,7 @@ $HTMLOUT .= main_table($all_my_boxes);
 $HTMLOUT .= '
         </form>';
 $cache->delete('user_' . $CURUSER['id']);
-$show_pm_avatar = ($CURUSER['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
+$show_pm_avatar = ($CURUSER['opt2'] & class_user_options_2::SHOW_PM_AVATAR) === class_user_options_2::SHOW_PM_AVATAR;
 $HTMLOUT .= '<h2 class="top20 has-text-centered">' . _('Message Settings') . '</h2>';
 $HTMLOUT .= main_table('
     <tr>

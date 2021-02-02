@@ -38,7 +38,7 @@ function adminer_object()
     /**
      * Class AdminerCustomization.
      */
-    class AdminerCustomization extends AdminerPlugin
+    class view_sql extends AdminerPlugin
     {
         public $plugins;
 

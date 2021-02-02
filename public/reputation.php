@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 use Pu239\Cache;
 
@@ -29,7 +29,7 @@ if (isset($input['done'])) {
     rep_output(_('Reputation added!'));
 }
 
-$input['pid'] = isset($input['pid']) ? (int)$input['pid'] : 0;
+$input['pid'] = isset($input['pid']) ? (int) $input['pid'] : 0;
 $check = isset($input['pid']) ? is_valid_id($input['pid']) : false;
 $locales = [
     'posts',
@@ -111,9 +111,9 @@ if (mysqli_num_rows($repeat) > 0 && $rep_locale != 'users') {
 
 if (!$is_mod) {
     if ($GVARS['rep_maxperday'] >= $GVARS['rep_repeat']) {
-        $klimit = (int)($GVARS['rep_maxperday'] + 1);
+        $klimit = (int) ($GVARS['rep_maxperday'] + 1);
     } else {
-        $klimit = (int)($GVARS['rep_repeat'] + 1);
+        $klimit = (int) ($GVARS['rep_repeat'] + 1);
     }
 
     $flood = sql_query(
@@ -158,7 +158,7 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $score = fetch_reppower($user, $input['reputation']);
     $res['reputation'] += $score;
     sql_query(
-        'UPDATE users SET reputation = ' . (int)$res['reputation'] . ' WHERE id=' . sqlesc($res['userid'])
+        'UPDATE users SET reputation = ' . (int) $res['reputation'] . ' WHERE id=' . sqlesc($res['userid'])
     ) or sqlerr(__FILE__, __LINE__);
     $cache = $container->get(Cache::class);
     $cache->update_row(
@@ -171,12 +171,12 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
     $cache->delete('user_rep_' . $res['userid']);
     $save = [
         'reputation' => sqlesc($score),
-        'whoadded' => sqlesc((int)$user['id']),
+        'whoadded' => sqlesc((int) $user['id']),
         'reason' => sqlesc($reason),
         'dateadd' => sqlesc(TIME_NOW),
         'locale' => sqlesc($rep_locale),
-        'postid' => sqlesc((int)$input['pid']),
-        'userid' => sqlesc((int)$res['userid']),
+        'postid' => sqlesc((int) $input['pid']),
+        'userid' => sqlesc((int) $res['userid']),
     ];
 
     sql_query(
@@ -207,8 +207,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                 }
                 if ($GVARS['g_rep_seeown']) {
                     $postrep['reason'] = $postrep['reason'] . " <span class='desc'>" . _(
-                            'Left by'
-                        ) . ' ' . format_username((int)$postrep['leftby_id']) . '</span>';
+                        'Left by'
+                    ) . ' ' . format_username((int) $postrep['leftby_id']) . '</span>';
                 }
                 $reasonbits .= "<tr>
     <td class='row2'><img src='{$site_config['paths']['images_baseurl']}rep/reputation_$posneg.gif' alt=''></td>
@@ -308,8 +308,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
         $html = "
                         <tr>
                             <td class='has-text-centered'>" . _('Add To Reputation') . ' <b>' . htmlsafechars(
-                $res['username']
-            ) . "</b></td>
+            $res['username']
+        ) . "</b></td>
                         </tr>
                         <tr>
                             <td class='row2'>
@@ -323,8 +323,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                         <div>
                                                             <label for='rb_reputation_pos'>
                                                                 <input type='radio' name='reputation' value='pos' id='rb_reputation_pos' checked class='radiobutton'> &#160;" . _(
-                'I Approve'
-            ) . '
+            'I Approve'
+        ) . '
                                                             </label>
                                                         </div>';
         if ($negativerep) {
@@ -332,8 +332,8 @@ if (isset($input['do']) && $input['do'] === 'addrep') {
                                                         <div>
                                                             <label for='rb_reputation_neg'>
                                                                 <input type='radio' name='reputation' value='neg' id='rb_reputation_neg' class='radiobutton'> &#160;" . _(
-                    'I Disapprove'
-                ) . '
+                'I Disapprove'
+            ) . '
                                                             </label>
                                                         </div>';
         }
@@ -417,7 +417,7 @@ function rep_output($msg = '', $html = '')
 }
 
 /**
- * @param array $user
+ * @param array  $user
  * @param string $rep
  *
  * @return int|string
@@ -434,26 +434,26 @@ function fetch_reppower($user = [], $rep = 'pos')
     if (!$GVARS['g_rep_use']) { // allowed to rep at all?
         $rep = 0;
     } elseif ($is_mod && $GVARS['rep_adminpower']) { // is a mod and has loadsa power?
-        $reppower = $rep != 'pos' ? (int)$GVARS['rep_adminpower'] * -1 : (int)$GVARS['rep_adminpower'];
+        $reppower = $rep != 'pos' ? (int) $GVARS['rep_adminpower'] * -1 : (int) $GVARS['rep_adminpower'];
     } elseif (($user['posts'] < $GVARS['rep_minpost']) || ($user['reputation'] < $GVARS['rep_minrep'])) { // not an admin, then work out postal based power
         $reppower = 0;
     } else { // ok failed all tests, so ratio is 1:1 but not negative, unless allowed
         $reppower = 1;
         if ($GVARS['rep_pcpower']) { // percentage power
-            $reppower += (int)($user['posts'] / $GVARS['rep_pcpower']);
+            $reppower += (int) ($user['posts'] / $GVARS['rep_pcpower']);
         }
         if ($GVARS['rep_kppower']) { // rep as based upon a constant of kppower global
-            $reppower += (int)($user['reputation'] / $GVARS['rep_kppower']);
+            $reppower += (int) ($user['reputation'] / $GVARS['rep_kppower']);
         }
         if ($GVARS['rep_rdpower']) { // time based power
             $reppower += TIME_NOW - $user['registered'] / 86400 / $GVARS['rep_rdpower'];
         }
         if ($rep != 'pos') {
-            $reppower = (int)($reppower / 2);
+            $reppower = (int) ($reppower / 2);
             $reppower = ($reppower < 1) ? 1 : $reppower;
             $reppower *= -1;
         }
     }
 
-    return (int)$reppower;
+    return (int) $reppower;
 }

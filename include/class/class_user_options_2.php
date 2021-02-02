@@ -3,9 +3,9 @@
 declare(strict_types = 1);
 
 /**
- * Class user_options_2.
+ * Class class_user_options_2.
  */
-class user_options_2
+class class_user_options_2
 {
     const PM_ON_DELETE = 0x1; // 1 exclude
     const COMMENTPM = 0x2; // 2 exclude

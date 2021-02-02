@@ -84,7 +84,7 @@ if ($site_config['bonus']['on']) {
     }
 }
 $msg = _fe('Torrent {0} ({2}) has been deleted.<br><br>Reason: {2}', $id, htmlsafechars($row['name']), $reasonstr);
-if ($user['id'] != $row['owner'] && ($user['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE) {
+if ($user['id'] != $row['owner'] && ($user['opt2'] & class_user_options_2::PM_ON_DELETE) === class_user_options_2::PM_ON_DELETE) {
     $subject = 'Torrent Deleted';
     $msgs_buffer[] = [
         'receiver' => $row['owner'],

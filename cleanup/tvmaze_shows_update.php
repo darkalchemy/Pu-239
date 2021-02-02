@@ -32,7 +32,7 @@ function tvmaze_shows_update($data)
     $updates = $cache->get('tvmaze_shows_data_');
     if ($updates === false || is_null($updates)) {
         $url = 'http://api.tvmaze.com/updates/shows';
-        $json = fetch($url);
+        $json = fetch($url, false);
         if (empty($json)) {
             return false;
         }
@@ -53,7 +53,7 @@ function tvmaze_shows_update($data)
         if (isset($updates[$tvmaze_id]) && $updates[1] > $updated) {
             $start_time = microtime(true);
             $url = 'http://api.tvmaze.com/shows/' . $tvmaze_id;
-            $json = fetch($url);
+            $json = fetch($url, false);
             if (empty($json)) {
                 return false;
             }

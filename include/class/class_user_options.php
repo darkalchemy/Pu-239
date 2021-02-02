@@ -3,9 +3,9 @@
 declare(strict_types = 1);
 
 /**
- * Class user_options.
+ * Class class_user_options.
  */
-class user_options
+class class_user_options
 {
     const DONOR = 0x2; // 2  exclude
     const DELETEPMS = 0x4; // 4

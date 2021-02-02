@@ -15,7 +15,7 @@ $id = (isset($_GET['id']) ? $_GET['id'] : $user['id']);
 if (!is_valid_id($id) || $user['class'] < UC_STAFF) {
     $id = $user['id'];
 }
-$got_moods = $user['opt2'] & user_options_2::GOT_MOODS === user_options_2::GOT_MOODS;
+$got_moods = $user['opt2'] & class_user_options_2::GOT_MOODS === class_user_options_2::GOT_MOODS;
 if ($user['class'] < UC_STAFF && $got_moods) {
     stderr(_('Error'), "Time shall unfold what plighted cunning hides\n\nWho cover faults, at last shame them derides.... Yer simply no tall enough.");
     die();

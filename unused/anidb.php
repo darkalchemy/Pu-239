@@ -7,7 +7,7 @@ use Envms\FluentPDO\Literal;
 $time_start = microtime(true);
 require_once __DIR__ . '/../include/bittorrent.php';
 if (!file_exists(CACHE_DIR . 'anime-titles.dat.gz')) {
-    $dat = fetch('http://anidb.net/api/anime-titles.dat.gz');
+    $dat = fetch('http://anidb.net/api/anime-titles.dat.gz', false);
     file_put_contents(CACHE_DIR . 'anime-titles.dat.gz', $dat);
 }
 

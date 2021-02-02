@@ -605,15 +605,15 @@ if ($action === 'avatar') {
                                             <input type='checkbox' name='hidden' value='1' " . ($user['hidden'] === 1 ? 'checked' : '') . '> ' . _('(Check to show all hidden categories!)') . '', 1);
     $HTMLOUT .= tr(_('Browse default<br>categories'), $categories, 1);
     $HTMLOUT .= tr(_('Manually Clear New Tag'), "
-                                            <input type='checkbox' name='clear_new_tag_manually' value='yes' " . (($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) ? 'checked' : '') . '> ' . _('(Check to use - Default value is no!)') . '', 1);
+                                            <input type='checkbox' name='clear_new_tag_manually' value='yes' " . (($user['opt1'] & class_user_options::CLEAR_NEW_TAG_MANUALLY) ? 'checked' : '') . '> ' . _('(Check to use - Default value is no!)') . '', 1);
     $HTMLOUT .= tr(_('Search Cloud'), "
-                                            <input type='checkbox' name='viewscloud' value='yes' " . (($user['opt1'] & user_options::VIEWSCLOUD) ? 'checked' : '') . '> ' . _('(Enable/Disable searchcloud on browse!)') . '', 1);
+                                            <input type='checkbox' name='viewscloud' value='yes' " . (($user['opt1'] & class_user_options::VIEWSCLOUD) ? 'checked' : '') . '> ' . _('(Enable/Disable searchcloud on browse!)') . '', 1);
 
-    $split = ($user['opt2'] & user_options_2::SPLIT) === user_options_2::SPLIT;
+    $split = ($user['opt2'] & class_user_options_2::SPLIT) === class_user_options_2::SPLIT;
     $HTMLOUT .= tr(_('Split Torrents by Days'), "
                                             <input type='checkbox' name='split' " . ($split ? 'checked' : '') . " value='yes'> (Split torrents uploaded by days)", 1);
 
-    $browse_icons = ($user['opt2'] & user_options_2::BROWSE_ICONS) === user_options_2::BROWSE_ICONS;
+    $browse_icons = ($user['opt2'] & class_user_options_2::BROWSE_ICONS) === class_user_options_2::BROWSE_ICONS;
     $HTMLOUT .= tr(_('Categories as images'), "
                                             <input type='checkbox' name='browse_icons' " . ($browse_icons ? 'checked' : '') . " value='yes'> (View categories as icons)", 1);
 
@@ -743,12 +743,12 @@ if ($action === 'avatar') {
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'no' ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When someone posts in a subscribed thread, you will be PMed.'), 1);
 
-        $pm_on_delete = ($user['opt2'] & user_options_2::PM_ON_DELETE) === user_options_2::PM_ON_DELETE;
+        $pm_on_delete = ($user['opt2'] & class_user_options_2::PM_ON_DELETE) === class_user_options_2::PM_ON_DELETE;
         $HTMLOUT .= tr(_('Torrent deletion PM'), "
                                             <input type='radio' name='pm_on_delete' " . ($pm_on_delete ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='pm_on_delete' " . (!$pm_on_delete ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are deleted, you will be PMed.'), 1);
 
-        $commentpm = ($user['opt2'] & user_options_2::COMMENTPM) === user_options_2::COMMENTPM;
+        $commentpm = ($user['opt2'] & class_user_options_2::COMMENTPM) === class_user_options_2::COMMENTPM;
         $HTMLOUT .= tr(_('Torrent comment PM'), "
                                             <input type='radio' name='commentpm' " . ($commentpm ? 'checked' : '') . " value='yes'> " . _('Yes') . "
                                             <input type='radio' name='commentpm' " . (!$commentpm ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are commented on, you will be PMed.'), 1);

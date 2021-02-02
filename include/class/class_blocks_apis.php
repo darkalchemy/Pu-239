@@ -5,7 +5,7 @@ declare(strict_types = 1);
 /**
  * Class block_index.
  */
-class block_apis
+class class_blocks_apis
 {
     const FANART_API = 0x1; // 1
     const TMDB_API = 0x2; // 2

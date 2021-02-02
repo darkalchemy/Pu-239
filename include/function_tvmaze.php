@@ -247,7 +247,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
     $episode_info = $cache->get('tvshow_episode_info_' . $tvmaze_id . $season . $episode);
     if ($episode_info === false || is_null($episode_info)) {
         $tvmaze_link = "https://api.tvmaze.com/shows/{$tvmaze_id}/episodebynumber?season={$season}&number={$episode}";
-        $content = fetch($tvmaze_link);
+        $content = fetch($tvmaze_link, false);
         if (empty($content)) {
             return false;
         }
@@ -319,7 +319,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
     $tvmaze_show_data = $cache->get('tvmaze_' . $tvmaze_id);
     if ($tvmaze_show_data === false || is_null($tvmaze_show_data)) {
         $tvmaze_link = "https://api.tvmaze.com/shows/{$tvmaze_id}?embed=cast";
-        $content = fetch($tvmaze_link);
+        $content = fetch($tvmaze_link, false);
         if (empty($content)) {
             $cache->set('tvmaze_' . $tvmaze_id, 'failed', 86400);
 
@@ -413,7 +413,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
  * @throws DependencyException
  * @throws NotFoundException
  *
- * @return bool|mixed
+ * * @return bool|mixed
  */
 function get_schedule($use_cache = true)
 {
@@ -426,7 +426,7 @@ function get_schedule($use_cache = true)
     $cache = $container->get(Cache::class);
     $tvmaze_data = $cache->get('tvmaze_schedule_');
     if (!$use_cache || $tvmaze_data === false || is_null($tvmaze_data)) {
-        $content = fetch($url);
+        $content = fetch($url, false);
         if (!$content) {
             $cache->set('tvmaze_schedule_', 'failed', 3600);
 

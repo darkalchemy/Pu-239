@@ -9,7 +9,7 @@ $user = check_user_status();
 require_once INCL_DIR . 'function_users.php';
 global $container, $site_config;
 
-$show_pm_avatar = ($user['opt2'] & user_options_2::SHOW_PM_AVATAR) === user_options_2::SHOW_PM_AVATAR;
+$show_pm_avatar = ($user['opt2'] & class_user_options_2::SHOW_PM_AVATAR) === class_user_options_2::SHOW_PM_AVATAR;
 $message_class = $container->get(Message::class);
 $fluent = $container->get(Database::class);
 if ($mailbox > 1) {

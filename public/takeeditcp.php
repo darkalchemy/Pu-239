@@ -283,24 +283,24 @@ if ($action === 'avatar') {
     $curuser_cache['torrentsperpage'] = $torrentspp;
     $user_cache['torrentsperpage'] = $torrentspp;
     if (isset($_POST['viewscloud'])) {
-        $setbits |= user_options::VIEWSCLOUD;
+        $setbits |= class_user_options::VIEWSCLOUD;
     } else {
-        $clrbits |= user_options::VIEWSCLOUD;
+        $clrbits |= class_user_options::VIEWSCLOUD;
     }
     if (isset($_POST['clear_new_tag_manually'])) {
-        $setbits |= user_options::CLEAR_NEW_TAG_MANUALLY;
+        $setbits |= class_user_options::CLEAR_NEW_TAG_MANUALLY;
     } else {
-        $clrbits |= user_options::CLEAR_NEW_TAG_MANUALLY;
+        $clrbits |= class_user_options::CLEAR_NEW_TAG_MANUALLY;
     }
     if (isset($_POST['split'])) {
-        $setbits2 |= user_options_2::SPLIT;
+        $setbits2 |= class_user_options_2::SPLIT;
     } else {
-        $clrbits2 |= user_options_2::SPLIT;
+        $clrbits2 |= class_user_options_2::SPLIT;
     }
     if (isset($_POST['browse_icons'])) {
-        $setbits2 |= user_options_2::BROWSE_ICONS;
+        $setbits2 |= class_user_options_2::BROWSE_ICONS;
     } else {
-        $clrbits2 |= user_options_2::BROWSE_ICONS;
+        $clrbits2 |= class_user_options_2::BROWSE_ICONS;
     }
     $hidden = isset($_POST['hidden']) ? 1 : 0;
     if ($hidden != $user['hidden']) {
@@ -429,14 +429,14 @@ if ($action === 'avatar') {
     $action = 'location';
 } elseif ($action === 'default') {
     if (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'yes') {
-        $setbits2 |= user_options_2::PM_ON_DELETE;
+        $setbits2 |= class_user_options_2::PM_ON_DELETE;
     } elseif (isset($_POST['pm_on_delete']) && $_POST['pm_on_delete'] === 'no') {
-        $clrbits2 |= user_options_2::PM_ON_DELETE;
+        $clrbits2 |= class_user_options_2::PM_ON_DELETE;
     }
     if (isset($_POST['commentpm']) && $_POST['commentpm'] === 'yes') {
-        $setbits2 |= user_options_2::COMMENTPM;
+        $setbits2 |= class_user_options_2::COMMENTPM;
     } elseif (isset($_POST['commentpm']) && $_POST['commentpm'] === 'no') {
-        $clrbits2 |= user_options_2::COMMENTPM;
+        $clrbits2 |= class_user_options_2::COMMENTPM;
     }
 
     $pmnotif = isset($_POST['pmnotif']) ? $_POST['pmnotif'] : '';

@@ -354,7 +354,7 @@ if ($count > 0) {
                    ->offset($pager['pdo']['offset'])
                    ->fetchAll();
 }
-if ($user['opt1'] & user_options::VIEWSCLOUD) {
+if ($user['opt1'] & class_user_options::VIEWSCLOUD) {
     $HTMLOUT .= main_div("<div class='cloud has-text-centered round10 padding20'>" . cloud() . '</div>', 'bottom20');
 }
 
@@ -367,7 +367,7 @@ if ($today) {
 
 require_once PARTIALS_DIR . 'categories.php';
 
-if ($user['opt1'] & user_options::CLEAR_NEW_TAG_MANUALLY) {
+if ($user['opt1'] & class_user_options::CLEAR_NEW_TAG_MANUALLY) {
     $new_button = "
         <div class='has-text-centered margin20'>
             <a href='{$site_config['paths']['baseurl']}/browse.php?clear_new=1'><input type='submit' value='" . _('clear new tag') . "' class='button is-small'></a>

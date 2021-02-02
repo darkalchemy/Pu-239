@@ -3,9 +3,9 @@
 declare(strict_types = 1);
 
 /**
- * Class block_index.
+ * Class class_blocks_index.
  */
-class block_index
+class class_blocks_index
 {
     const ACTIVE_USERS = 0x1; // 1
     const NEWS = 0x2; // 2
