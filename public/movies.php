@@ -20,16 +20,21 @@ $cache = $container->get(Cache::class);
 
 $lists = [
     'upcoming',
-    'top100',
-    'theaters',
+    'tmdb_top_movies',
+    'tmdb_theaters',
     'tv',
     'tvmaze',
     'bluray',
-    'imdb_top100',
+    'imdb_top_movies',
+    'imdb_top_oscar',
+    'imdb_top_tv',
+    'imdb_top_anime',
     'imdb_theaters',
 ];
 $list = 'upcoming';
 $title = _('Poster Views');
+$count = (int) $cache->get('item_count_');
+$count = $count >= 100 ? 100 : $count;
 if (!empty($_GET['list']) && in_array($_GET['list'], $lists)) {
     $list = $_GET['list'];
 }
@@ -187,7 +192,7 @@ switch ($list) {
 
         break;
 
-    case 'theaters':
+    case 'tmdb_theaters':
         $title = _('TMDb In Theaters');
         $HTMLOUT = "
     <h1 class='has-text-centered'>$title</h1>";
@@ -238,11 +243,12 @@ switch ($list) {
 
         break;
 
-    case 'imdb_top100':
-        $title = _('IMDb Top 100 Movies');
+    case 'imdb_top_movies':
+        $movies = $cache->get('imdb_top_movies_' . $count);
+        $count = $movies ? count($movies) : $count;
+        $title = _('IMDb Top ' . $count . ' Movies');
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$title}</h1>";
-        $movies = $cache->get('imdb_top_movies_100');
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -262,11 +268,91 @@ switch ($list) {
         }
 
         break;
-    case 'top100':
-        $title = _('TMDb Top 100 Movies');
+
+    case 'imdb_top_oscar':
+        $movies = $cache->get('imdb_oscar_winners_' . $count);
+        $count = $movies ? count($movies) : $count;
+        $title = _('IMDb Top ' . $count . ' Oscar Winning Movies');
         $HTMLOUT = "
     <h1 class='has-text-centered'>{$title}</h1>";
-        $movies = $cache->get('tmdb_movies_vote_average_100');
+        if (is_array($movies)) {
+            $body = "
+        <div class='masonry padding20'>";
+            foreach ($movies as $imdb_id) {
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
+                }
+            }
+            $body .= '
+        </div>';
+
+            $HTMLOUT .= main_div($body);
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
+        }
+
+        break;
+
+    case 'imdb_top_tv':
+        $movies = $cache->get('imdb_top_tvshows_' . $count);
+        $count = $movies ? count($movies) : $count;
+        $title = _('IMDb Top ' . $count . ' TV Shows');
+        $HTMLOUT = "
+    <h1 class='has-text-centered'>{$title}</h1>";
+        if (is_array($movies)) {
+            $body = "
+        <div class='masonry padding20'>";
+            foreach ($movies as $imdb_id) {
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
+                }
+            }
+            $body .= '
+        </div>';
+
+            $HTMLOUT .= main_div($body);
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
+        }
+
+        break;
+
+    case 'imdb_top_anime':
+        $movies = $cache->get('imdb_top_anime_' . $count);
+        $count = $movies ? count($movies) : $count;
+        $title = _('IMDb Top ' . $count . ' Anime');
+        $HTMLOUT = "
+    <h1 class='has-text-centered'>{$title}</h1>";
+        if (is_array($movies)) {
+            $body = "
+        <div class='masonry padding20'>";
+            foreach ($movies as $imdb_id) {
+                $movie = get_imdb_info_short($imdb_id);
+                if (!empty($movie)) {
+                    $body .= $movie;
+                }
+            }
+            $body .= '
+        </div>';
+
+            $HTMLOUT .= main_div($body);
+        } else {
+            $HTMLOUT = "
+        <h1 class='has-text-centered'>$title</h1>" . main_div("<p class='has-text-centered'>" . _('IMDb may be down or caching queue is incomplete, check back later') . '</p>', '', 'padding20');
+        }
+
+        break;
+
+    case 'tmdb_top_movies':
+        $movies = $cache->get('tmdb_movies_vote_average_' . $count);
+        $count = $movies ? count($movies) : $count;
+        $title = _('TMDb Top ' . $count . ' Movies');
+        $HTMLOUT = "
+    <h1 class='has-text-centered'>{$title}</h1>";
         if (is_array($movies)) {
             $body = "
         <div class='masonry padding20'>";
@@ -333,10 +419,13 @@ echo stdhead($title, [], 'page-wrapper', $breadcrumbs) . wrapper($HTMLOUT) . std
  */
 function generate_html(array $data)
 {
+    global $site_config;
     $html = "
      <div class='masonry-item-clean padding10 bg-04 round10'>
         <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
-            <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+            <a href='{$site_config['baseurl']}browse.php?sna=" . urlencode($data['title']) . "'>
+                <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
+            </a>
             <div class='has-text-centered top10'>{$data['title']}</div>";
 
     if (!empty($data['airtime'])) {
@@ -366,7 +455,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Title') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['title']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['title']) . '</span>
                                     </div>';
     }
     if (!empty($data['ep_title'])) {
@@ -375,7 +464,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Episode Title') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['ep_title']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['ep_title']) . '</span>
                                     </div>';
     }
     if (!empty($data['season'])) {
@@ -402,7 +491,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Runtime') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['runtime']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['runtime']) . '</span>
                                     </div>';
     }
     if (!empty($data['type'])) {
@@ -411,7 +500,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Type') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['type']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['type']) . '</span>
                                     </div>';
     }
     if (!empty($data['release_date'])) {
@@ -420,7 +509,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Release Date') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['release_date']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['release_date']) . '</span>
                                     </div>';
     }
     if (!empty($data['popularity'])) {
@@ -447,7 +536,7 @@ function generate_html(array $data)
                                         <span class='size_4 right10 has-text-primary has-text-wight-bold'>" . _('Overview') . ": </span>
                                     </div>
                                     <div class='column padding5 is-8'>
-                                        <span class='size_4'>" . htmlsafechars($data['overview']) . '</span>
+                                        <span class='size_4'>" . format_comment($data['overview']) . '</span>
                                     </div>';
     }
     $html .= '

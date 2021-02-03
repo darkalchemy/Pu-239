@@ -44,12 +44,15 @@ function navbar()
                                 <li class='hide-mobile'><span class='left10 has-text-weight-bold'>" . _('Blu-Ray.com') . "</span></li>
                                 <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=bluray'>" . _('Bluray Releases') . '</a></li>' : '') . ($BLOCKS['imdb_api_on'] ? "
                                 <li class='hide-mobile'><span class='left10 has-text-weight-bold'>" . _('IMDb') . "</span></li>
-                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top100'>" . _('Top 100') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top_movies'>" . _('Top Movies') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top_oscar'>" . _('Top Oscar Winners') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top_tv'>" . _('Top TV Shows') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_top_anime'>" . _('Top Anime') . "</a></li>
                                 <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=imdb_theaters'>" . _('In Theaters') . "</a></li>
                                 <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=upcoming'>" . _('Upcoming') . '</a></li>' : '') . ($BLOCKS['tmdb_api_on'] ? "
                                 <li class='hide-mobile'><span class='left10 has-text-weight-bold'>" . _('TMDb') . "</span></li>
-                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=top100'>" . _('Top 100') . "</a></li>
-                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=theaters'>" . _('In Theaters') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=tmdb_top_movies'>" . _('Top Movies') . "</a></li>
+                                <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=tmdb_theaters'>" . _('In Theaters') . "</a></li>
                                 <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=tv'>" . _('TV Airing') . '</a></li>' : '') . ($BLOCKS['tvmaze_api_on'] ? "
                                 <li class='hide-mobile'><span class='left10 has-text-weight-bold'>" . _('TVMaze') . "</span></li>
                                 <li class='hide-mobile'><a href='{$site_config['paths']['baseurl']}/movies.php?list=tvmaze'>" . _('TV Airing') . '</a></li>' : '') . '

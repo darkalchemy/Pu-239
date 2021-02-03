@@ -269,9 +269,6 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
     } elseif (!empty($episode_info['airtime']) && !empty($episode_info['airdate'])) {
         $episode_info['showtime'] = get_date(strtotime($episode_info['airtime'] . ' ' . $episode_info['airdate']), 'LONG', 1, 0);
     }
-    if (empty($episode_info['showtime'])) {
-        dd($episode_info, 'crap');
-    }
     $episode_info['season_episode'] = !empty($episode_info['season']) && !empty($episode_info['number']) ? 'S' . sprintf('%02d', $episode_info['season']) . 'E' . sprintf('%02d', $episode_info['number']) : '';
     if (!empty($episode_info['airdate'])) {
         preg_match('/(\d{4})/', $episode_info['airdate'], $match);
@@ -433,10 +430,10 @@ function get_schedule($use_cache = true)
             return false;
         }
         $tvmaze_data = bzcompress($content, 9);
-        $cache->set('tvmaze_schedule_', $tvmaze_data, 0);
+        $cache->set('tvmaze_schedule_', $tvmaze_data, 86400);
     }
 
-    if (!empty($tvmaze_data)) {
+    if (!empty($tvmaze_data) || $tvmaze_data === 'failed') {
         $data = bzdecompress($tvmaze_data);
 
         return json_decode($data, true);

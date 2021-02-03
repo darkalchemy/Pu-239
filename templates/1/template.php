@@ -110,7 +110,7 @@ function stdhead(string $title, array $stdhead, string $class, array $breadcrumb
             $htmlout .= platform_menu();
             $htmlout .= "
                 <div id='base_globelmessage'>
-                    <div class='top5 bottom5'>
+                    <div class='top10'>
                         <ul class='level-center tags'>";
 
             if ($curuser['blocks']['global_stdhead'] & class_blocks_stdhead::STDHEAD_REPORTS && $BLOCKS['global_staff_report_on']) {

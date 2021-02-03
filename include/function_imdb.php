@@ -36,6 +36,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
  * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
+ *
  */
 function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid, ?string $poster)
 {
@@ -45,7 +46,6 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
     if (!$BLOCKS['imdb_api_on']) {
         return false;
     }
-
     $imdbid = $imdb_id;
     $imdb_id = str_replace('tt', '', $imdb_id);
     $imdb_data = $cache->get('imdb_' . $imdb_id);
@@ -130,23 +130,23 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         $fluent = $container->get(Database::class);
         if (!empty($persons)) {
             $fluent->insertInto('person')
-                   ->values($persons)
-                   ->ignore()
-                   ->execute();
+                ->values($persons)
+                ->ignore()
+                ->execute();
         }
 
         if (!empty($cast)) {
             $fluent->insertInto('imdb_person')
-                   ->values($cast)
-                   ->ignore()
-                   ->execute();
+                ->values($cast)
+                ->ignore()
+                ->execute();
         }
 
         if (!empty($roles)) {
             $fluent->insertInto('imdb_role')
-                   ->values($roles)
-                   ->ignore()
-                   ->execute();
+                ->values($roles)
+                ->ignore()
+                ->execute();
         }
 
         unset($cast, $persons, $roles);
@@ -154,18 +154,20 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         if (!empty($imdb_data['plotoutline'])) {
             $values = [
                 'imdb_id' => $imdb_id,
+                'title' => $imdb_data['title'],
                 'plot' => $imdb_data['plotoutline'],
                 'top250' => $imdb_data['top250'],
                 'rating' => $imdb_data['rating'],
             ];
             $update = [
+                'title' => $imdb_data['title'],
                 'plot' => $imdb_data['plotoutline'],
                 'top250' => $imdb_data['top250'],
                 'rating' => $imdb_data['rating'],
             ];
             $fluent->insertInto('imdb_info', $values)
-                   ->onDuplicateKeyUpdate($update)
-                   ->execute();
+                ->onDuplicateKeyUpdate($update)
+                ->execute();
         }
 
         $cache->delete('cast_' . $imdb_id);
@@ -187,7 +189,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
         $torrents_class->update($set, $tid);
     }
 
-    if (empty($imdb_data)) {
+    if (empty($imdb_data) || $imdb_data === 'failed') {
         $cache->set('imdb_' . $imdb_id, 'failed', 86400);
 
         return false;
@@ -434,6 +436,7 @@ function get_imdb_info(string $imdb_id, bool $title, bool $data_only, ?int $tid,
  * @throws Exception
  *
  * @return bool|mixed
+ *
  */
 function get_imdb_title($imdb_id)
 {
@@ -458,6 +461,7 @@ function get_imdb_title($imdb_id)
  * @throws Exception
  *
  * @return bool|string|string[]|null
+ *
  */
 function get_imdb_info_short($imdb_id)
 {
@@ -604,13 +608,14 @@ function get_imdb_info_short($imdb_id)
 }
 
 /**
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return array|bool
+ *
  */
 function get_upcoming()
 {
@@ -630,7 +635,7 @@ function get_upcoming()
             $cache->set('imdb_upcoming_', 'failed', 3600);
         }
     }
-    if (empty($imdb_data)) {
+    if (empty($imdb_data) || $imdb_data === 'failed') {
         return false;
     }
     preg_match_all('/<h4.*<a (name|id)=.*>(.*)&nbsp;/i', $imdb_data, $timestamp);
@@ -674,13 +679,14 @@ function get_upcoming()
  *
  * @param string $imdb_id
  *
- * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
+ * @throws NotFoundException
  *
  * @return bool
+ *
  */
 function update_torrent_data(string $imdb_id)
 {
@@ -705,16 +711,16 @@ function update_torrent_data(string $imdb_id)
     ]);
     $fluent = $container->get(Database::class);
     $result = $fluent->update('torrents')
-                     ->set($set)
-                     ->where('imdb_id = ?', 'tt' . $imdb_id)
-                     ->execute();
+        ->set($set)
+        ->where('imdb_id = ?', 'tt' . $imdb_id)
+        ->execute();
 
     if ($result) {
         $torrents = $fluent->from('torrents')
-                           ->select(null)
-                           ->select('id')
-                           ->where('imdb_id = ?', 'tt' . $imdb_id)
-                           ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->where('imdb_id = ?', 'tt' . $imdb_id)
+            ->fetchAll();
 
         foreach ($torrents as $torrent) {
             $cache->update_row('torrent_details_' . $torrent['id'], $set, $site_config['expires']['torrent_details']);
@@ -727,12 +733,13 @@ function update_torrent_data(string $imdb_id)
 /**
  * @param $person_id
  *
- * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool|mixed
+ *
  */
 function get_imdb_person($person_id)
 {
@@ -746,9 +753,9 @@ function get_imdb_person($person_id)
     $fluent = $container->get(Database::class);
     if ($imdb_person === false || is_null($imdb_person)) {
         $imdb_person = $fluent->from('person')
-                              ->where('imdb_id = ?', $person_id)
-                              ->where('updated + 2592000 > ?', TIME_NOW)
-                              ->fetch();
+            ->where('imdb_id = ?', $person_id)
+            ->where('updated + 2592000 > ?', TIME_NOW)
+            ->fetch();
 
         if (!empty($imdb_person)) {
             $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
@@ -767,9 +774,9 @@ function get_imdb_person($person_id)
                 'updated' => TIME_NOW,
             ];
             $fluent->update('person')
-                   ->set($set)
-                   ->where('imdb_id = ?', $person_id)
-                   ->execute();
+                ->set($set)
+                ->where('imdb_id = ?', $person_id)
+                ->execute();
 
             return false;
         }
@@ -819,8 +826,8 @@ function get_imdb_person($person_id)
         $update = $imdb_person;
         unset($update['name']);
         $fluent->insertInto('person', $imdb_person)
-               ->onDuplicateKeyUpdate($update)
-               ->execute();
+            ->onDuplicateKeyUpdate($update)
+            ->execute();
 
         $cache->set('imdb_person_' . $person_id, $imdb_person, 604800);
     } else {
@@ -828,9 +835,9 @@ function get_imdb_person($person_id)
             'updated' => TIME_NOW,
         ];
         $fluent->update('person')
-               ->set($set)
-               ->where('imdb_id = ?', $person_id)
-               ->execute();
+            ->set($set)
+            ->where('imdb_id = ?', $person_id)
+            ->execute();
     }
 
     return $imdb_person;
@@ -840,13 +847,14 @@ function get_imdb_person($person_id)
  *
  * @param int $count
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return array|bool|mixed
+ *
  */
 function get_top_movies(int $count)
 {
@@ -865,6 +873,9 @@ function get_top_movies(int $count)
                     if (!in_array($match, $top)) {
                         $top[] = $match;
                     }
+                    if (count($top) >= $count) {
+                        continue(2);
+                    }
                 }
             }
         }
@@ -880,13 +891,14 @@ function get_top_movies(int $count)
 }
 
 /**
- * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
  *
  * @return array|bool
+ *
  */
 function get_in_theaters()
 {
@@ -928,13 +940,14 @@ function get_in_theaters()
  *
  * @param int $count
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return array|bool|mixed
+ *
  */
 function movies_by_release_date(int $count)
 {
@@ -955,6 +968,9 @@ function movies_by_release_date(int $count)
                 if (!in_array($match, $top)) {
                     $top[] = $match;
                 }
+                if (count($top) >= $count) {
+                    continue(2);
+                }
             }
         }
         if (!empty($top)) {
@@ -972,13 +988,14 @@ function movies_by_release_date(int $count)
  *
  * @param int $count
  *
- * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  *
  * @return array|bool|mixed
+ *
  */
 function get_top_tvshows(int $count)
 {
@@ -996,6 +1013,9 @@ function get_top_tvshows(int $count)
                 foreach ($matches[1] as $match) {
                     if (!in_array($match, $top)) {
                         $top[] = $match;
+                    }
+                    if (count($top) >= $count) {
+                        continue(2);
                     }
                 }
             }
@@ -1015,11 +1035,12 @@ function get_top_tvshows(int $count)
  *
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
+ *
  */
 function get_top_anime(int $count)
 {
@@ -1037,6 +1058,9 @@ function get_top_anime(int $count)
                 if (!in_array($match, $top)) {
                     $top[] = $match;
                 }
+                if (count($top) >= $count) {
+                    continue(2);
+                }
             }
         }
         if (!empty($top)) {
@@ -1051,11 +1075,12 @@ function get_top_anime(int $count)
  *
  * @param int $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
+ *
  */
 function get_oscar_winners(int $count)
 {
@@ -1072,6 +1097,9 @@ function get_oscar_winners(int $count)
             foreach ($matches[1] as $match) {
                 if (!in_array($match, $top)) {
                     $top[] = $match;
+                }
+                if (count($top) >= $count) {
+                    continue(2);
                 }
             }
         }

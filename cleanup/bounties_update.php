@@ -44,7 +44,6 @@ function bounties_update($data)
                        ->groupBy('r.id')
                        ->groupBy('r.filled_by_user_id')
                        ->fetchAll();
-    //dd($bounties);
     $msgs_buffer = [];
     if (!empty($bounties)) {
         $bounty_class = $container->get(Bounty::class);

@@ -109,9 +109,6 @@ if ($action === 'viewbug') {
     if (empty($bug)) {
         stderr(_('Error'), _('Invalid ID'));
     }
-    if (empty($bug['added'])) {
-        dd($id, $_POST, $_GET);
-    }
     $title = format_comment($bug['title']);
     $added = get_date($bug['added'], 'LONG', 0, 1);
     $addedby = format_username($bug['sender']) . '<i>(' . get_user_class_name($bug['class']) . ')</i>';

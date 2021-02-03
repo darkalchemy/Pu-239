@@ -214,6 +214,7 @@ function get_movies_by_vote_average($count)
             $json = json_decode($content, true);
             $tmdb_data = array_merge($tmdb_data, get_movies($json));
         }
+        $tmdb_data = array_slice($tmdb_data, 0, $count);
         $cache->set('tmdb_movies_vote_average_' . $count, $tmdb_data, 86400);
     }
     if (!empty($tmdb_data)) {

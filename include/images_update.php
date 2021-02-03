@@ -11,6 +11,7 @@ use Pu239\Torrent;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'bittorrent.php';
+
 global $container;
 $cache = $container->get(Cache::class);
 if (!empty($argv[1]) && $argv[1] === 'force') {
@@ -26,14 +27,14 @@ global $site_config;
 if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
     images_update();
 } else {
-    echo "Already running.\n";
+    echo "Already running since " . get_date($cleanup_check, 'LONG', 0, 0) . ".\n";
 }
 
 /**
  * @throws \Envms\FluentPDO\Exception
  * @throws UnbegunTransaction
  * @throws InvalidManipulation
- * @throws Exception
+ * @throws Exception`
  */
 function images_update()
 {
@@ -46,15 +47,15 @@ function images_update()
     require_once INCL_DIR . 'function_books.php';
     require_once INCL_DIR . 'function_fanart.php';
     require_once INCL_DIR . 'function_get_images.php';
+    $max = 5000;
     $time_start = microtime(true);
     set_time_limit(1800);
     ignore_user_abort(true);
     $cache = $container->get(Cache::class);
-    $cache->set('images_update_', 'running', 1800);
+    $cache->set('images_update_', time(), 1800);
     $fluent = $container->get(Database::class);
     $images_class = $container->get(Image::class);
     $torrent = $container->get(Torrent::class);
-
     $fluent->deleteFrom('images')
         ->where("url = 'N/A' OR url = '' OR url IS NULL")
         ->execute();
@@ -67,7 +68,7 @@ function images_update()
     echo "Caching IMDb Movies In Theaters\n";
     get_in_theaters();
     $item_count = (int) $cache->get('item_count_') + 5;
-    $item_count = $item_count >= 1500 ? 1500 : $item_count;
+    $item_count = $item_count >= $max ? $max : $item_count;
     echo "Caching IMDb Top {$item_count} Movies\n";
     get_top_movies($item_count);
     echo "Caching IMDb Top {$item_count} TV Shows\n";
@@ -78,8 +79,23 @@ function images_update()
     get_oscar_winners($item_count);
     echo "Caching IMDb {$item_count} Top Anime\n";
     get_top_anime($item_count);
-    echo "Caching TMDb Top " . ($item_count >= 250 ? 250 : $item_count) . " Movies\n";
+    echo "Caching TMDb Top " . ($item_count >= 500 ? 500 : $item_count) . " Movies\n";
     get_movies_by_vote_average($item_count >= 500 ? 500 : $item_count);
+    if ($item_count >= 100) {
+        $count = 100;
+        echo "Caching IMDb Top {$count} Movies\n";
+        get_top_movies($count);
+        echo "Caching IMDb Top {$count} TV Shows\n";
+        get_top_tvshows($count);
+        echo "Caching IMDb {$count} Newest Movies\n";
+        movies_by_release_date($count);
+        echo "Caching IMDb {$count} Oscar Winners\n";
+        get_oscar_winners($count);
+        echo "Caching IMDb {$count} Top Anime\n";
+        get_top_anime($count);
+        echo "Caching TMDb Top $count Movies\n";
+        get_movies_by_vote_average($count);
+    }
     $cache->set('item_count_', $item_count, 0);
     echo "Caching TMDb Movies In Theaters\n";
     get_movies_in_theaters();
@@ -110,7 +126,7 @@ function images_update()
         ->fetchAll();
 
     $fanart_images = $temp = [];
-    echo "Getting Movie images from Fanart.com\n";
+    echo "Getting Movie images from Fanart.com for torrents\n";
     foreach ($no_posters as $no_poster) {
         $temp = getMovieImagesByID($no_poster['imdb_id'], false, 'moviebackground');
         if (!empty($temp)) {
@@ -293,15 +309,6 @@ function images_update()
         ->limit(50)
         ->fetchAll();
 
-    if (empty($images)) {
-        $images = $fluent->from('images')
-            ->select(null)
-            ->select('url')
-            ->select('type')
-            ->orderBy('added DESC')
-            ->limit(500)
-            ->fetchAll();
-    }
     $values = [];
     echo 'Fetching, resizing and optimizing ' . count($images) . "\n";
     foreach ($images as $image) {
@@ -328,7 +335,52 @@ function images_update()
         $images_class->update($values, $update);
     }
     echo 'Fetched, optimized and resized ' . count($values) . " images\n";
+    $imdb_ids = [];
+    $data = $fluent->from('images')
+        ->select(null)
+        ->select('DISTINCT(imdb_id)')
+        ->where('imdb_id IS NOT NULL')
+        ->fetchAll();
+    foreach ($data as $item) {
+        $imdb_ids[] = $item['imdb_id'];
+    }
 
+    $data = $fluent->from('person')
+        ->select(null)
+        ->select('DISTINCT(imdb_id)')
+        ->where('imdb_id IS NOT NULL')
+        ->fetchAll();
+    foreach ($data as $item) {
+        $imdb_ids[] = 'tt' . $item['imdb_id'];
+    }
+
+    $data = $fluent->from('torrents')
+        ->select(null)
+        ->select('DISTINCT(imdb_id)')
+        ->where('imdb_id IS NOT NULL')
+        ->fetchAll();
+    foreach ($data as $item) {
+        $imdb_ids[] = 'tt' . $item['imdb_id'];
+    }
+
+    $data = $fluent->from('imdb_info')
+        ->select(null)
+        ->select('DISTINCT(imdb_id)')
+        ->where('imdb_id IS NOT NULL')
+        ->fetchAll();
+    foreach ($data as $item) {
+        $imdb_ids[] = 'tt' . $item['imdb_id'];
+    }
+    $imdb_ids = array_unique($imdb_ids);
+    if (!empty($imdb_ids)) {
+        echo 'Fetching data for ' . count($imdb_ids) . " items\n";
+    }
+    foreach ($imdb_ids as $imdb_id) {
+        get_imdb_info_short($imdb_ids['imdb_id']);
+    }
+    if (!empty($imdb_ids)) {
+        echo 'Cached data for ' . count($imdb_ids) . " items\n";
+    }
     $books = $fluent->from('torrents')
         ->select(null)
         ->select('id')
@@ -456,6 +508,8 @@ function images_update()
     }
     if (!empty($offer_links)) {
         echo count($offer_links) . " offers imdb info cached\n";
+    } else {
+        echo "0 offers imdb info cached\n";
     }
 
     $request_links = $fluent->from('requests')
@@ -488,6 +542,8 @@ function images_update()
     }
     if (!empty($request_links)) {
         echo count($request_links) . " requests imdb info cached\n";
+    } else {
+        echo "0 requests imdb info cached\n";
     }
 
     $persons = $fluent->from('person')
@@ -499,15 +555,6 @@ function images_update()
         ->limit(50)
         ->fetchAll();
 
-    if (empty($persons)) {
-        $persons = $fluent->from('person')
-            ->select(null)
-            ->select('imdb_id')
-            ->select('photo')
-            ->orderBy('added DESC')
-            ->limit(500)
-            ->fetchAll();
-    }
     foreach ($persons as $person) {
         get_imdb_person($person['imdb_id']);
     }
@@ -516,18 +563,6 @@ function images_update()
         echo count($persons) . " persons imdb info cached\n";
     }
 
-    $i = 0;
-    foreach ($persons as $person) {
-        if (!empty($person['photo'])) {
-            url_proxy($person['photo'], true, 250);
-            url_proxy($person['photo'], true, null, 110);
-            ++$i;
-        }
-    }
-
-    if (!empty($persons)) {
-        echo $i . " persons photo proxied\n";
-    }
     passthru('php ' . BIN_DIR . 'resize_multi_threads.php');
 
     $cache->delete('backgrounds_');

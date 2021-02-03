@@ -5,6 +5,7 @@ declare(strict_types = 1);
 use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
+use Pu239\Database;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
@@ -34,7 +35,7 @@ function get_bluray_info()
             $cache->set('bluray_xml_', 'failed', 3600);
         }
     }
-    if (empty($bluray_data)) {
+    if (empty($bluray_data) || $bluray_data === 'failed') {
         return null;
     }
     $pubs = $cache->get('bluray_pubs_');
@@ -74,29 +75,40 @@ function get_bluray_info()
                 }
             }
 
+            $fluent = $container->get(Database::class);
+            $imdb_info = $fluent->from('imdb_info')
+                ->select('null')
+                ->select('imdb_id')
+                ->select('plot')
+                ->select('runtime')
+                ->where('title = ?', $movie)
+                ->limit(1)
+                ->fetch();
+
             $pubs[] = [
                 'title' => $movie,
                 'pubDate' => replace_unicode_strings($pubDate),
                 'genre' => replace_unicode_strings($description[0]),
                 'year' => replace_unicode_strings($description[1]),
-                'runtime' => replace_unicode_strings($description[2]),
+                'runtime' => $imdb_info['runtime'] ?? replace_unicode_strings($description[2]),
                 'mpaa' => replace_unicode_strings($description[3]),
                 'release_date' => replace_unicode_strings($description[4]),
-                'description' => replace_unicode_strings($description[5]),
+                'overview' => $imdb_info['plot'] ?? replace_unicode_strings($description[5]),
                 'poster' => $poster,
                 'placeholder' => $placeholder,
-                'imdbid' => $i,
+                'imdbid' => $imdb_info['imdb_id'] ?? $i,
                 'id' => $i,
+                'vote_average' => $imdb_info['rating'] ?? '',
             ];
         }
 
         if (!empty($pubs)) {
-            $cache->set('bluray_pubs_', $pubs, 1800);
+            $cache->set('bluray_pubs_', $pubs, 86400);
         } else {
             $cache->set('bluray_pubs_', 'failed', 900);
         }
     }
-    if (empty($pubs)) {
+    if (empty($pubs) || $pubs === 'failed') {
         return false;
     }
 

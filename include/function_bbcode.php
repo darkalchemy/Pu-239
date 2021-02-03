@@ -8,6 +8,7 @@ use Pu239\User;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 require_once INCL_DIR . 'function_html.php';
+
 require_once INCL_DIR . 'function_users.php';
 
 /**

@@ -321,8 +321,8 @@ function write_class_files($template)
     $t = 'define(';
     $configfile = "<?php\n\ndeclare(strict_types = 1);\n\n";
     $res = $fluent->from('class_config')
-                  ->orderBy('value')
-                  ->where('template = ?', $template);
+        ->orderBy('value')
+        ->where('template = ?', $template);
     foreach ($res as $arr) {
         $configfile .= $t . "'{$arr['name']}', {$arr['value']});\n";
         if ($arr['name'] !== 'UC_STAFF' && $arr['name'] !== 'UC_MIN' && $arr['name'] !== 'UC_MAX') {
@@ -370,10 +370,11 @@ function clear_image_cache()
  * @param int    $height
  * @param string $color
  *
- * @throws DependencyException
  * @throws NotFoundException
+ * @throws DependencyException
  *
  * @return bool|Image|mixed|string
+ *
  */
 function placeholder_image(int $width = 10, int $height = 10, string $color = '#7d7e7d')
 {
@@ -439,16 +440,12 @@ function doc_head(string $title, bool $hidden = true)
  * @param $html
  * @param $plain
  *
- * @throws DependencyException
  * @throws NotFoundException
- * @throws AuthError
- * @throws NotLoggedInException
- * @throws \Envms\FluentPDO\Exception
- * @throws UnbegunTransaction
  * @throws \PHPMailer\PHPMailer\Exception
- * @throws InvalidManipulation
+ * @throws DependencyException
  *
  * @return bool
+ *
  */
 function send_mail($email, $subject, $html, $plain)
 {
@@ -463,7 +460,7 @@ function send_mail($email, $subject, $html, $plain)
         try {
             $mail->addAddress($email);
         } catch (Exception $e) {
-            $mail->smtp->reset();
+            file_put_contents(PHPERROR_LOGS_DIR . 'mailer.log', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}" . PHP_EOL, FILE_APPEND);
 
             return false;
         }
@@ -477,7 +474,7 @@ function send_mail($email, $subject, $html, $plain)
 
             return true;
         } catch (Exception $e) {
-            $mail->smtp->reset();
+            file_put_contents(PHPERROR_LOGS_DIR . 'mailer.log', "Message could not be sent. Mailer Error: {$mail->ErrorInfo}" . PHP_EOL, FILE_APPEND);
 
             return false;
         } finally {
@@ -493,26 +490,25 @@ function send_mail($email, $subject, $html, $plain)
  * @param int    $id
  * @param string $code
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
+ *
  */
 function validate_invite(int $id, string $code)
 {
     global $container;
 
     $fluent = $container->get(Database::class);
-    $email = $fluent->from('invite_codes')
-                    ->select(null)
-                    ->select('email')
-                    ->where('id = ?', $id)
-                    ->where('code = ?', $code)
-                    ->where('status = "Pending"')
-                    ->fetch('email');
-
-    return $email;
+    return $fluent->from('invite_codes')
+        ->select(null)
+        ->select('email')
+        ->where('id = ?', $id)
+        ->where('code = ?', $code)
+        ->where('status = "Pending"')
+        ->fetch('email');
 }
 
 /**
@@ -520,11 +516,12 @@ function validate_invite(int $id, string $code)
  * @param string $code
  * @param bool   $full
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return mixed
+ *
  */
 function validate_promo(string $code, bool $full)
 {
@@ -532,10 +529,10 @@ function validate_promo(string $code, bool $full)
 
     $fluent = $container->get(Database::class);
     $valid = $fluent->from('promo')
-                    ->where('link = ?', htmlsafechars($code))
-                    ->where('UNIX_TIMESTAMP(NOW()) < added + (days_valid * 86400)')
-                    ->where('accounts_made < max_users')
-                    ->fetch();
+        ->where('link = ?', htmlsafechars($code))
+        ->where('UNIX_TIMESTAMP(NOW()) < added + (days_valid * 86400)')
+        ->where('accounts_made < max_users')
+        ->fetch();
 
     if (!empty($valid)) {
         if ($full) {
@@ -552,11 +549,12 @@ function validate_promo(string $code, bool $full)
  *
  * @param array $classes
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return string
+ *
  */
 function category_dropdown(array $classes = [])
 {

@@ -58,7 +58,6 @@ class Bounty
 
                 return $this->update($update, $values['userid'], $values['requestid']);
             }
-            dd($e->getMessage());
         }
 
         return false;

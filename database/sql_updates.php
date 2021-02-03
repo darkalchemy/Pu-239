@@ -5078,4 +5078,11 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `peers` DROP CONSTRAINT `peers_ibfk_2`",
         'flush' => false,
     ],
+    [
+        'id' => 1612306905,
+        'info' => 'Add column title',
+        'date' => '2 Feb, 2021',
+        'query' => "ALTER TABLE `imdb_info` ADD COLUMN `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `imdb_id`",
+        'flush' => false,
+    ],
 ];

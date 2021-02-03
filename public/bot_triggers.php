@@ -125,7 +125,6 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             $session->set('is-warning', _fe('Reply: {0} failed to be updated.', $add_reply));
         }
     } elseif (!empty($approve_trigger)) {
-        dd(3);
         $update = [
             'approved_by' => $user['id'],
         ];
@@ -135,7 +134,6 @@ if (has_access($user['class'], UC_ADMINISTRATOR, 'coder') && !empty($data)) {
             $session->set('is-warning', _('Trigger Approval Failed.'));
         }
     } elseif (!empty($approve_reply)) {
-        dd(4);
         $update = [
             'approved_by' => $user['id'],
         ];

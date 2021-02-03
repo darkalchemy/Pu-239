@@ -15,7 +15,7 @@ use Pu239\User;
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  *
- * @return bool
+ * @return string:bool
  */
 function account_delete(int $userid)
 {

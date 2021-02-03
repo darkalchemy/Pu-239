@@ -25,7 +25,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 $starttime = microtime(true);
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'define.php';
 require_once INCL_DIR . 'app.php';
-
+global $container;
 $env = $container->get('env');
 $settings = $container->get(Settings::class);
 $site_config = $settings->get_settings();
@@ -49,14 +49,15 @@ if (!PRODUCTION) {
         $site_config['sourcecode']['version'] = $pu239_version->getVersion();
     }
 }
-$load = sys_getloadavg();
 $cache = $container->get(Cache::class);
 $cores = $cache->get('cores_');
-if (!$cores || is_null($cores)) {
+if (!$cores) {
     $cores = `grep -c processor /proc/cpuinfo`;
     $cores = empty($cores) ? 1 : (int) $cores;
     $cache->set('cores_', $cores, 0);
 }
+
+$load = sys_getloadavg();
 if ($load[0] > $cores * 2) {
     die("Load is too high. Don't continuously refresh, or you will just make the problem last longer");
 }
@@ -81,11 +82,13 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return string
+ *
+ *
  */
 function getip()
 {
@@ -110,11 +113,13 @@ function getip()
 }
 
 /**
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return mixed
+ *
+ *
  */
 function get_stylesheet()
 {
@@ -158,14 +163,16 @@ function get_category_icons()
 }
 
 /**
- * @throws DependencyException
- * @throws NotFoundException
  * @throws NotLoggedInException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
+ * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return mixed
+ *
+ *
  */
 function get_language()
 {
@@ -218,11 +225,13 @@ function get_template()
  * @param string $key
  * @param bool   $clear
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return array|bool|mixed
+ *
+ *
  */
 function make_freeslots(int $userid, string $key, bool $clear)
 {
@@ -236,8 +245,8 @@ function make_freeslots(int $userid, string $key, bool $clear)
     if ($slot === false || is_null($slot)) {
         $fluent = $container->get(Database::class);
         $slot = $fluent->from('freeslots')
-                       ->where('userid = ?', $userid)
-                       ->fetchAll();
+            ->where('userid = ?', $userid)
+            ->fetchAll();
 
         $cache->set($key . $userid, $slot, 86400 * 7);
     }
@@ -437,6 +446,8 @@ function write_log($text)
  * @throws DependencyException
  *
  * @return int
+ *
+ *
  */
 function get_userid()
 {
@@ -452,11 +463,13 @@ function get_userid()
 }
 
 /**
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return float|int
+ *
+ *
  */
 function get_time_offset()
 {
@@ -718,14 +731,16 @@ function force_logout(int $userid)
  *
  * @param string $type
  *
- * @throws UnbegunTransaction
- * @throws \Envms\FluentPDO\Exception
  * @throws AuthError
  * @throws DependencyException
  * @throws NotFoundException
  * @throws NotLoggedInException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|User
+ *
+ *
  */
 function check_user_status(string $type = 'browse')
 {
@@ -797,6 +812,8 @@ function check_user_status(string $type = 'browse')
  * @throws NotFoundException
  *
  * @return bool
+ *
+ *
  */
 function has_access(int $userclass, int $class, ?string $role)
 {
@@ -858,11 +875,13 @@ function random_color($minVal = 0, $maxVal = 255)
 /**
  * @param $user_id
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool
+ *
+ *
  */
 function user_exists($user_id)
 {
@@ -937,11 +956,13 @@ function array_msort(array $array, array $cols)
 }
 
 /**
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return array|bool|mixed
+ *
+ *
  */
 function countries()
 {
@@ -952,12 +973,12 @@ function countries()
     if ($countries === false || is_null($countries)) {
         $fluent = $container->get(Database::class);
         $countries = $fluent->from('countries')
-                            ->select(null)
-                            ->select('id')
-                            ->select('name')
-                            ->select('flagpic')
-                            ->orderBy('name')
-                            ->fetchAll();
+            ->select(null)
+            ->select('id')
+            ->select('name')
+            ->select('flagpic')
+            ->orderBy('name')
+            ->fetchAll();
 
         $cache->set('countries_arr_', $countries, $site_config['expires']['user_flag']);
     }
@@ -1039,6 +1060,8 @@ function plural(int $int)
  * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|string
+ *
+ *
  */
 function valid_username(string $username, bool $ajax = false, bool $in_use = false)
 {
@@ -1101,6 +1124,8 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
  * @throws Exception
  *
  * @return bool
+ *
+ *
  */
 function Christmas($celebrate = true)
 {
@@ -1155,6 +1180,8 @@ function get_anonymous_name()
  * @throws \Envms\FluentPDO\Exception
  *
  * @return string
+ *
+ *
  */
 function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $height = null, ?int $quality = null)
 {
@@ -1211,11 +1238,13 @@ function get_show_name(string $name)
  *
  * @param string $name
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed|null
+ *
+ *
  */
 function get_show_id(string $name)
 {
@@ -1231,8 +1260,8 @@ function get_show_id(string $name)
     if ($id_array === false || is_null($id_array)) {
         $fluent = $container->get(Database::class);
         $items = $fluent->from('tvmaze')
-                        ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
-                        ->fetchAll();
+            ->where('MATCH (name) AGAINST (? IN NATURAL LANGUAGE MODE)', $name)
+            ->fetchAll();
         if ($items) {
             $id_array = $items[0];
             foreach ($items as $item) {
@@ -1255,11 +1284,13 @@ function get_show_id(string $name)
  *
  * @param string $imdbid
  *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed|null
+ *
+ *
  */
 function get_show_id_by_imdb(string $imdbid)
 {
@@ -1273,8 +1304,8 @@ function get_show_id_by_imdb(string $imdbid)
     if ($id_array === false || is_null($id_array)) {
         $fluent = $container->get(Database::class);
         $id_array = $fluent->from('tvmaze')
-                           ->where('imdb_id = ?', $imdbid)
-                           ->fetch();
+            ->where('imdb_id = ?', $imdbid)
+            ->fetch();
         if ($id_array) {
             $cache->set('tvshow_ids_' . $imdbid, $id_array, 0);
         }
@@ -1291,11 +1322,13 @@ function get_show_id_by_imdb(string $imdbid)
  * @param      $timestamp
  * @param bool $sec
  *
+ * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
- * @throws NotFoundException
  *
  * @return false|mixed|string
+ *
+ *
  */
 function time24to12($timestamp, $sec = false)
 {
@@ -1362,11 +1395,13 @@ function formatQuery($query)
  * @param string $type
  * @param int    $userid
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool
+ *
+ *
  */
 function insert_update_ip(string $type, int $userid)
 {
@@ -1394,21 +1429,32 @@ function insert_update_ip(string $type, int $userid)
  * @param bool|null $fresh
  * @param bool|null $async
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return bool|mixed|string
+ *
+ *
  */
 function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 {
     global $container;
 
-    $expires = mt_rand(43200, 86400);
+    $expires = 86400;
     $cache = $container->get(Cache::class);
     $key = hash('sha256', $url);
+    $file = URL_CACHE_DIR . $key . '.cache';
+    $gzip = $file . '.gz';
     if (!$fresh) {
         $result = $cache->get($key);
+        if (empty($result) && file_exists($gzip)) {
+            if (filemtime($gzip) <= (time() - $expires)) {
+                unlink($gzip);
+            } else {
+                $result = file_get_contents('compress.zlib://' . $gzip);
+            }
+        }
         if (!empty($result)) {
             return $result;
         }
@@ -1431,6 +1477,10 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
                 $contents = $res->getBody()->getContents();
                 if (!$fresh) {
                     $cache->set($key, $contents, $expires);
+                    file_put_contents($file, $contents);
+                    if (gzCompressFile($file)) {
+                        unlink($file);
+                    }
                 }
 
                 return $contents;
@@ -1446,14 +1496,47 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
 }
 
 /**
+ * @param $source
+ * @param int $level
+ *
+ * @return false|string
+ */
+function gzCompressFile($source, $level = 9)
+{
+    $dest = $source . '.gz';
+    $mode = 'wb' . $level;
+    $error = false;
+    if ($fp_out = gzopen($dest, $mode)) {
+        if ($fp_in = fopen($source, 'rb')) {
+            while (!feof($fp_in)) {
+                gzwrite($fp_out, fread($fp_in, 1024 * 512));
+            }
+            fclose($fp_in);
+        } else {
+            $error = true;
+        }
+        gzclose($fp_out);
+    } else {
+        $error = true;
+    }
+    if ($error) {
+        return false;
+    } else {
+        return $dest;
+    }
+}
+
+/**
  *
  * @param bool $details
  *
+ * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  *
  * @return mixed|string
+ *
+ *
  */
 function get_body_image(bool $details)
 {
@@ -1466,11 +1549,11 @@ function get_body_image(bool $details)
         $images = $cache->get('backgrounds_' . $imdb_id);
         if ($images === false || is_null($images)) {
             $images = $fluent->from('images')
-                             ->select(null)
-                             ->select('url')
-                             ->where('type = "background"')
-                             ->where('imdb_id = ?', $imdb_id)
-                             ->fetchAll();
+                ->select(null)
+                ->select('url')
+                ->where('type = "background"')
+                ->where('imdb_id = ?', $imdb_id)
+                ->fetchAll();
             if (!empty($images)) {
                 $cache->set('backgrounds_' . $imdb_id, $images, 86400);
             } else {
@@ -1489,9 +1572,9 @@ function get_body_image(bool $details)
     $backgrounds = $cache->get('backgrounds_');
     if ($backgrounds === false || is_null($backgrounds)) {
         $results = $fluent->from('images')
-                          ->select(null)
-                          ->select('url')
-                          ->where('type = "background"');
+            ->select(null)
+            ->select('url')
+            ->where('type = "background"');
 
         $backgrounds = [];
         foreach ($results as $background) {
@@ -1519,11 +1602,13 @@ function get_body_image(bool $details)
 }
 
 /**
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return bool|mixed
+ *
+ *
  */
 function get_random_useragent()
 {
@@ -1535,11 +1620,11 @@ function get_random_useragent()
     if ($browsers === false || is_null($browsers)) {
         $fluent = $container->get(Database::class);
         $results = $fluent->from('users')
-                          ->select(null)
-                          ->select('DISTINCT browser AS browser')
-                          ->where('browser IS NOT null')
-                          ->limit(100)
-                          ->fetchAll();
+            ->select(null)
+            ->select('DISTINCT browser AS browser')
+            ->where('browser IS NOT null')
+            ->limit(100)
+            ->fetchAll();
         $browsers = [];
         if (empty($results)) {
             $browsers = [

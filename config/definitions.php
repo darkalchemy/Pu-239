@@ -6,56 +6,9 @@ use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
 use Delight\I18n\Codes;
 use Delight\I18n\I18n;
-use Pu239\Radiance;
-use function DI\autowire;
 use Imdb\Config;
-use Jobby\Jobby;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Container\ContainerInterface;
-use Pu239\Ach_bonus;
-use Pu239\Achievement;
-use Pu239\Achievementlist;
-use Pu239\Ban;
-use Pu239\Block;
-use Pu239\Bonuslog;
-use Pu239\Bookmark;
-use Pu239\BotReplies;
-use Pu239\BotTriggers;
-use Pu239\Bounty;
-use Pu239\Cache;
-use Pu239\Casino;
-use Pu239\CasinoBets;
-use Pu239\Coin;
-use Pu239\Comment;
-use Pu239\Database;
-use Pu239\FailedLogin;
-use Pu239\Forum;
-use Pu239\HappyLog;
-use Pu239\Image;
-use Pu239\ImageProxy;
-use Pu239\IP;
-use Pu239\Message;
-use Pu239\Mood;
-use Pu239\Notify;
-use Pu239\Offer;
-use Pu239\Peer;
-use Pu239\Phpzip;
-use Pu239\Poll;
-use Pu239\PollVoter;
-use Pu239\Post;
-use Pu239\Referrer;
-use Pu239\Request;
-use Pu239\Searchcloud;
-use Pu239\Session;
-use Pu239\Settings;
-use Pu239\Sitelog;
-use Pu239\Snatched;
-use Pu239\Torrent;
-use Pu239\Upcoming;
-use Pu239\User;
-use Pu239\Userblock;
-use Pu239\Usersachiev;
-use Pu239\Wiki;
 use Rakit\Validation\Validator;
 use Scriptotek\GoogleBooks\GoogleBooks;
 use SlashTrace\EventHandler\DebugHandler;
@@ -65,9 +18,7 @@ use SlashTrace\SlashTrace;
 return [
     Auth::class => DI\factory(function (ContainerInterface $c) {
         $pdo = $c->get(PDO::class);
-        $auth = new Auth($pdo, null, null, PRODUCTION);
-
-        return $auth;
+        return new Auth($pdo, null, null, PRODUCTION);
     }),
     PDO::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
@@ -75,9 +26,7 @@ return [
         $username = $env['db']['username'];
         $password = $env['db']['password'];
         $attributes = $env['db']['attributes'];
-        $pdo = new ExtendedPdo($dsn, $username, $password, $attributes);
-
-        return $pdo;
+        return new ExtendedPdo($dsn, $username, $password, $attributes);
     }),
     SlashTrace::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
@@ -148,6 +97,8 @@ return [
     Config::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');
         $config = new Config();
+        $config->usecache = true;
+        $config->usezip = true;
         $config->language = $env['language']['imdb'];
         $config->cachedir = IMDB_CACHE_DIR;
         $config->throwHttpExceptions = 0;
@@ -174,12 +125,10 @@ return [
         return null;
     }),
     Validator::class => DI\factory(function () {
-        $validator = new Validator();
-
-        return $validator;
+        return new Validator();
     }),
     I18n::class => DI\factory(function () {
-        $i18n = new I18n([
+        return new I18n([
             Codes::AF_ZA,
             Codes::DA_DK,
             Codes::DE_DE,
@@ -199,7 +148,5 @@ return [
             Codes::ZH_CN,
             Codes::ZH_TW,
         ]);
-
-        return $i18n;
     }),
 ];
