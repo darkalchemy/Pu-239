@@ -9,13 +9,13 @@ use Pu239\Database;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
- * @throws \Envms\FluentPDO\Exception
- * @throws InvalidManipulation
- * @throws DependencyException
- * @throws NotFoundException
- *
  * @return array|bool|mixed
  *
+ * @throws InvalidManipulation
+ * @throws DependencyException
+ * @throws NotFoundException*@throws Exception
+ *
+ * @throws \Envms\FluentPDO\Exception
  */
 function get_bluray_info()
 {
@@ -84,6 +84,10 @@ function get_bluray_info()
                 ->where('title = ?', $movie)
                 ->limit(1)
                 ->fetch();
+
+            if (!empty($imdb_info['imdb_id'])) {
+                get_imdb_info_short($imdb_info['imdb_id']);
+            }
 
             $pubs[] = [
                 'title' => $movie,

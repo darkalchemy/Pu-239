@@ -1032,15 +1032,15 @@ function get_top_tvshows(int $count)
 }
 
 /**
- *
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
- *
  */
 function get_top_anime(int $count)
 {
@@ -1064,6 +1064,9 @@ function get_top_anime(int $count)
             }
         }
         if (!empty($top)) {
+            foreach ($top as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
             $cache->set('imdb_top_anime_' . $count, $top, 604800);
         }
     }
@@ -1072,15 +1075,15 @@ function get_top_anime(int $count)
 }
 
 /**
- *
  * @param int $count
  *
- * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws InvalidManipulation
  * @throws NotFoundException
+ * @throws UnbegunTransaction
+ * @throws \Envms\FluentPDO\Exception
  *
  * @return array|bool|mixed
- *
  */
 function get_oscar_winners(int $count)
 {
@@ -1104,6 +1107,9 @@ function get_oscar_winners(int $count)
             }
         }
         if (!empty($top)) {
+            foreach ($top as $imdb) {
+                get_imdb_info($imdb, true, true, null, null);
+            }
             $cache->set('imdb_oscar_winners_' . $count, $top, 604800);
         }
     }

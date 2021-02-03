@@ -92,7 +92,9 @@ function tvmaze_format($tvmaze_data, $tvmaze_type)
                 $person_class->update_by_imdb($update, $person_info['imdb_id']);
                 $person_info = $person_class->get_person_by_name($role['name']);
             }
-
+            if (!empty($person_info['imdb_id'])) {
+                get_imdb_person($person_info['imdb_id']);
+            }
             if (!empty($person_info['birthday'])) {
                 $birthdate = date('F j, Y', strtotime($person_info['birthday']));
                 $birthday = "
@@ -301,9 +303,10 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @throws InvalidManipulation
  * @throws NotFoundException
  * @throws UnbegunTransaction
- * @throws \Envms\FluentPDO\Exception
+ * @throws \Envms\FluentPDO\Exception*@throws Exception
  *
  * @return bool|string
+ *
  */
 function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, string $poster = '')
 {
@@ -368,6 +371,7 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
             ];
             if (!empty($tvmaze_show_data['_embedded']['show']['externals']['imdb'])) {
                 $values['imdb_id'] = $tvmaze_show_data['_embedded']['show']['externals']['imdb'];
+                get_imdb_info_short($values['imdb_id']);
             }
             $images_class = $container->get(Image::class);
             $images_class->insert($values);

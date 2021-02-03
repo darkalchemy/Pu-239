@@ -423,7 +423,7 @@ function generate_html(array $data)
     $html = "
      <div class='masonry-item-clean padding10 bg-04 round10'>
         <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
-            <a href='{$site_config['baseurl']}browse.php?sna=" . urlencode($data['title']) . "'>
+            <a href='{$site_config['paths']['baseurl']}browse.php?sna=" . urlencode($data['title']) . "'>
                 <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
             </a>
             <div class='has-text-centered top10'>{$data['title']}</div>";

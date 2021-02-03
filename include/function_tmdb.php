@@ -11,11 +11,12 @@ use Pu239\Image;
 /**
  * @param $dates
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
+ * @throws DependencyException*@throws Exception
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
+ *
  */
 function get_tv_by_day($dates)
 {
@@ -66,6 +67,9 @@ function get_tv_by_day($dates)
             if (!empty($movie['backdrop_path'])) {
                 insert_image((int) $movie['id'], $imdb_id, "https://image.tmdb.org/t/p/original{$movie['backdrop_path']}", 'background');
             }
+            if (!empty($imdb_id)) {
+                get_imdb_info_short($imdb_id);
+            }
         }
     }
 
@@ -75,11 +79,12 @@ function get_tv_by_day($dates)
 /**
  * @param $dates
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool
+ *
  */
 function get_movies_by_week($dates)
 {
@@ -115,11 +120,12 @@ function get_movies_by_week($dates)
 }
 
 /**
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
+ *
  */
 function get_movies_in_theaters()
 {
@@ -175,11 +181,12 @@ function get_movies_in_theaters()
 /**
  * @param $count
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return array|bool|mixed
+ *
  */
 function get_movies_by_vote_average($count)
 {
@@ -243,6 +250,7 @@ function get_movies_by_vote_average($count)
  * @throws Exception
  *
  * @return bool|mixed
+ *
  */
 function get_movie_id($imdbid, $type)
 {
@@ -253,11 +261,11 @@ function get_movie_id($imdbid, $type)
     }
     $fluent = $container->get(Database::class);
     $id = $fluent->from('images')
-                 ->select(null)
-                 ->select($type)
-                 ->where('imdb_id = ?', $imdbid)
-                 ->limit(1)
-                 ->fetch($type);
+        ->select(null)
+        ->select($type)
+        ->where('imdb_id = ?', $imdbid)
+        ->limit(1)
+        ->fetch($type);
 
     if ($id) {
         if ($type === 'tmdb_id') {
@@ -293,11 +301,12 @@ function get_movie_id($imdbid, $type)
 /**
  * @param $json
  *
- * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
+ * @throws DependencyException
  *
  * @return array|bool
+ *
  */
 function get_movies($json)
 {
@@ -359,27 +368,27 @@ function dateSort($a, $b)
  * @throws Exception
  *
  * @return array
+ *
  */
 function getStartAndEndDate($year, $week)
 {
     return [
         // Sunday
-        (new DateTime())->setISODate($year, $week, 0)
-                        ->format('Y-m-d'),
+        (new DateTime())->setISODate($year, $week, 0)->format('Y-m-d'),
         // Saturday
-        (new DateTime())->setISODate($year, $week, 6)
-                        ->format('Y-m-d'),
+        (new DateTime())->setISODate($year, $week, 6)->format('Y-m-d'),
     ];
 }
 
 /**
  * @param $tmdbid
  *
- * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
+ * @throws NotFoundException
  *
  * @return bool|null
+ *
  */
 function get_imdbid($tmdbid)
 {
@@ -421,9 +430,9 @@ function update_tmdb_id($tmdb_id, $imdb_id)
     ];
     $fluent = $container->get(Database::class);
     $fluent->update('images')
-           ->set($set)
-           ->where('imdb_id = ?', $imdb_id)
-           ->execute();
+        ->set($set)
+        ->where('imdb_id = ?', $imdb_id)
+        ->execute();
 }
 
 /**

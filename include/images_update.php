@@ -335,52 +335,7 @@ function images_update()
         $images_class->update($values, $update);
     }
     echo 'Fetched, optimized and resized ' . count($values) . " images\n";
-    $imdb_ids = [];
-    $data = $fluent->from('images')
-        ->select(null)
-        ->select('DISTINCT(imdb_id)')
-        ->where('imdb_id IS NOT NULL')
-        ->fetchAll();
-    foreach ($data as $item) {
-        $imdb_ids[] = $item['imdb_id'];
-    }
 
-    $data = $fluent->from('person')
-        ->select(null)
-        ->select('DISTINCT(imdb_id)')
-        ->where('imdb_id IS NOT NULL')
-        ->fetchAll();
-    foreach ($data as $item) {
-        $imdb_ids[] = 'tt' . $item['imdb_id'];
-    }
-
-    $data = $fluent->from('torrents')
-        ->select(null)
-        ->select('DISTINCT(imdb_id)')
-        ->where('imdb_id IS NOT NULL')
-        ->fetchAll();
-    foreach ($data as $item) {
-        $imdb_ids[] = 'tt' . $item['imdb_id'];
-    }
-
-    $data = $fluent->from('imdb_info')
-        ->select(null)
-        ->select('DISTINCT(imdb_id)')
-        ->where('imdb_id IS NOT NULL')
-        ->fetchAll();
-    foreach ($data as $item) {
-        $imdb_ids[] = 'tt' . $item['imdb_id'];
-    }
-    $imdb_ids = array_unique($imdb_ids);
-    if (!empty($imdb_ids)) {
-        echo 'Fetching data for ' . count($imdb_ids) . " items\n";
-    }
-    foreach ($imdb_ids as $imdb_id) {
-        get_imdb_info_short($imdb_ids['imdb_id']);
-    }
-    if (!empty($imdb_ids)) {
-        echo 'Cached data for ' . count($imdb_ids) . " items\n";
-    }
     $books = $fluent->from('torrents')
         ->select(null)
         ->select('id')
@@ -508,8 +463,6 @@ function images_update()
     }
     if (!empty($offer_links)) {
         echo count($offer_links) . " offers imdb info cached\n";
-    } else {
-        echo "0 offers imdb info cached\n";
     }
 
     $request_links = $fluent->from('requests')
@@ -542,10 +495,7 @@ function images_update()
     }
     if (!empty($request_links)) {
         echo count($request_links) . " requests imdb info cached\n";
-    } else {
-        echo "0 requests imdb info cached\n";
     }
-
     $persons = $fluent->from('person')
         ->select(null)
         ->select('imdb_id')
