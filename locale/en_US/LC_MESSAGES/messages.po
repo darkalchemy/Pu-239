@@ -3405,9 +3405,6 @@ msgstr "Downloaded total altered from "
 msgid "Downloading"
 msgstr "Downloading"
 
-msgid "Downloading Files"
-msgstr "Downloading Files"
-
 #, no-php-format
 msgid "Downloading a torrent = -{0} points"
 msgstr "Downloading a torrent = -{0} points"
@@ -11703,6 +11700,9 @@ msgstr "Torrent Age Group 3 Over"
 msgid "Torrent Catalof"
 msgstr "Torrent Catalof"
 
+msgid "Torrent Client Connectable"
+msgstr "Torrent Client Connectable"
+
 msgid "Torrent Clients"
 msgstr "Torrent Clients"
 
@@ -11836,8 +11836,14 @@ msgstr "Torrents Based on Connectable Status"
 msgid "Torrents Flushed from the system. You may now start your client again!"
 msgstr "Torrents Flushed from the system. You may now start your client again!"
 
+msgid "Torrents Leeching"
+msgstr "Torrents Leeching"
+
 msgid "Torrents Needing Seeds"
 msgstr "Torrents Needing Seeds"
+
+msgid "Torrents Seeding"
+msgstr "Torrents Seeding"
 
 msgid "Torrents Statistics"
 msgstr "Torrents Statistics"
@@ -12311,9 +12317,6 @@ msgstr "Uploaders"
 
 msgid "Uploading"
 msgstr "Uploading"
-
-msgid "Uploading Files"
-msgstr "Uploading Files"
 
 #, no-php-format
 msgid "Uploading a new torrent = {0} points"
@@ -15615,6 +15618,9 @@ msgstr[1] "{1}: Modded Torrents from {0}, number days ago"
 #~ msgid "Current words on blacklist"
 #~ msgstr "Current words on blacklist"
 
+#~ msgid "Downloading Files"
+#~ msgstr "Downloading Files"
+
 #~ msgid "Freeleech Status enabled by "
 #~ msgstr "Freeleech Status enabled by "
 
@@ -15652,6 +15658,9 @@ msgstr[1] "{1}: Modded Torrents from {0}, number days ago"
 
 #~ msgid "Top 100"
 #~ msgstr "Top 100"
+
+#~ msgid "Uploading Files"
+#~ msgstr "Uploading Files"
 
 #~ msgid "Username Blacklist"
 #~ msgstr "Username Blacklist"
