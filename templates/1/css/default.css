@@ -1330,6 +1330,12 @@ img.bar {
     transition:       all .5s ease-in-out;
 }
 
+.vertical_spread {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 .vertical_center {
     transform: translate(0, 50%);
 }
