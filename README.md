@@ -220,6 +220,7 @@ An image proxy for hot linked images is built in and enabled by default, disable
   * update_db.php : updates the database to the current schema 
   * usersfix.php : adds users to userblocks and usersachiev tables, usually not needed
   * validate_images.php : verifies the images in public/images/proxy/ are valid images, removes those that may be invalid
+  * localize.sh : create and update locale files
 
 #### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
