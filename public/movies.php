@@ -422,21 +422,23 @@ function generate_html(array $data)
     global $site_config;
     $html = "
      <div class='masonry-item-clean padding10 bg-04 round10'>
-        <div class='dt-tooltipper-large has-text-centered' data-tooltip-content='#movie_{$data['id']}_tooltip'>
+        <div class='dt-tooltipper-large has-text-centered vertical_spread h-100' data-tooltip-content='#movie_{$data['id']}_tooltip'>
             <a href='{$site_config['paths']['baseurl']}browse.php?sna=" . urlencode($data['title']) . "'>
                 <img src='{$data['placeholder']}' data-src='{$data['poster']}' alt='Poster' class='lazy tooltip-poster'>
             </a>
-            <div class='has-text-centered top10'>{$data['title']}</div>";
+            <div class='has-text-centered top10'>
+                <div>{$data['title']}</div>";
 
     if (!empty($data['airtime'])) {
         $html .= "
-                    <div class='has-text-centered top10'>{$data['airtime']}</div>";
+                <div class='has-text-centered top10'>{$data['airtime']}</div>";
     }
     if (!empty($data['release_date'])) {
         $html .= "
-            <div class='has-text-centered'>{$data['release_date']}</div>";
+                <div class='has-text-centered'>{$data['release_date']}</div>";
     }
     $html .= "
+        </div>
             <div class='tooltip_templates'>
                 <div id='movie_{$data['id']}_tooltip' class='round10 tooltip-background' " . (!empty($data['backdrop']) ? "style='background-image: url({$data['backdrop']});'" : '') . ">
                     <div class='columns is-marginless is-paddingless'>
