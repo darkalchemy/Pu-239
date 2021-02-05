@@ -541,7 +541,7 @@ function get_imdb_info_short($imdb_id)
     $background = $images_class->find_images($imdbid, $type = 'background');
     $imdb_info = "
             <div class='masonry-item-clean padding10 bg-04 round10'>
-                <div class='dt-tooltipper-large has-text-centered vertical-spread h-100' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
+                <div class='dt-tooltipper-large has-text-centered vertical_spread h-100' data-tooltip-content='#movie_{$imdb_data['id']}_tooltip'>
                     <a href='{$site_config['paths']['baseurl']}/browse.php?si=tt{$imdb_id}'>
                         <img src='{$imdb_data['placeholder']}' data-src='{$imdb_data['poster']}' alt='Poster' class='lazy tooltip-poster'>
                     </a>
