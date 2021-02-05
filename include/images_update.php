@@ -27,7 +27,7 @@ global $site_config;
 if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
     images_update();
 } else {
-    echo "Already running since " . get_date($cleanup_check, 'LONG', 0, 0) . ".\n";
+    echo _f("Already started ") . get_date($cleanup_check, 'LONG', 0, 0) . ".\n";
 }
 
 /**
@@ -63,45 +63,45 @@ function images_update()
         ->where("imdb_id = '' OR imdb_id IS NULL")
         ->execute();
     fetch_person_info(50);
-    echo "Caching IMDb Movies Coming Soon\n";
+    echo _('Caching IMDb Movies Coming Soon') . "\n";
     get_upcoming(true);
-    echo "Caching IMDb Movies In Theaters\n";
+    echo _('Caching IMDb Movies In Theaters') . "\n";
     get_in_theaters(true);
     $item_count = (int) $cache->get('item_count_') + 5;
     $item_count = $item_count >= $max ? $max : $item_count;
-    echo "Caching IMDb Top {$item_count} Movies\n";
+    echo _f('Caching IMDb Top %d Movies', $item_count) . "\n";
     get_top_movies($item_count, $item_count <= 100);
-    echo "Caching IMDb Top {$item_count} TV Shows\n";
+    echo _f('Caching IMDb Top %d TV Shows', $item_count) . "\n";
     get_top_tvshows($item_count, $item_count <= 100);
-    echo "Caching IMDb {$item_count} Newest Movies\n";
+    echo _f('Caching IMDb %d Newest Movies', $item_count) . "\n";
     movies_by_release_date($item_count, $item_count <= 100);
-    echo "Caching IMDb {$item_count} Oscar Winners\n";
+    echo _f('Caching IMDb %d Oscar Winners', $item_count) . "\n";
     get_oscar_winners($item_count, $item_count <= 100);
-    echo "Caching IMDb {$item_count} Top Anime\n";
+    echo _f('Caching IMDb %d Top Anime', $item_count) . "\n";
     get_top_anime($item_count, $item_count <= 100);
-    echo "Caching TMDb Top " . ($item_count >= 500 ? 500 : $item_count) . " Movies\n";
+    echo _f('Caching TMDb Top %d Movies', $item_count >= 500 ? 500 : $item_count) . "\n";
     get_movies_by_vote_average($item_count >= 500 ? 500 : $item_count, $item_count <= 100);
     if ($item_count >= 100) {
         $count = 100;
-        echo "Caching IMDb Top {$count} Movies\n";
+        echo _f('Caching IMDb Top %d Movies', $count) . "\n";
         get_top_movies($count, true);
-        echo "Caching IMDb Top {$count} TV Shows\n";
+        echo _f('Caching IMDb Top %d TV Shows', $count) . "\n";
         get_top_tvshows($count, true);
-        echo "Caching IMDb {$count} Newest Movies\n";
+        echo _f('Caching IMDb %d Newest Movies', $count) . "\n";
         movies_by_release_date($count, true);
-        echo "Caching IMDb {$count} Oscar Winners\n";
+        echo _f('Caching IMDb %d Oscar Winners', $count) . "\n";
         get_oscar_winners($count, true);
-        echo "Caching IMDb {$count} Top Anime\n";
+        echo _f('Caching IMDb %d Top Anime', $count) . "\n";
         get_top_anime($count, true);
-        echo "Caching TMDb Top $count Movies\n";
+        echo _f('Caching TMDb Top %d Movies', $count) . "\n";
         get_movies_by_vote_average($count, true);
     }
     $cache->set('item_count_', $item_count, 0);
-    echo "Caching TMDb Movies In Theaters\n";
+    echo _('Caching TMDb Movies In Theaters') . "\n";
     get_movies_in_theaters(true);
-    echo "Caching New Releases from Blu-ray.com \n";
+    echo _('Caching New Releases from Blu-ray.com') . "\n";
     get_bluray_info();
-    echo "Caching TVMaze TV Schedule\n";
+    echo _('Caching TVMaze TV Schedule') . "\n";
     get_schedule();
 
     $today = date('Y-m-d');
@@ -110,13 +110,13 @@ function images_update()
     $tomorrow = $date->modify('+1 day')->format('Y-m-d');
     $day_after = $date->modify('+2 day')->format('Y-m-d');
 
-    echo "Caching TMDb TV for $yesterday\n";
+    echo _f('Caching TMDb TV for %s', $yesterday) . "\n";
     get_tv_by_day($yesterday);
-    echo "Caching TMDb TV for $today\n";
+    echo _f('Caching TMDb TV for %s', $today) . "\n";
     get_tv_by_day($today);
-    echo "Caching TMDb TV for $tomorrow\n";
+    echo _f('Caching TMDb TV for %s', $tomorrow) . "\n";
     get_tv_by_day($tomorrow);
-    echo "Caching TMDb TV for $day_after\n";
+    echo _f('Caching TMDb TV for %s', $day_after) . "\n";
     get_tv_by_day($day_after);
     $no_posters = $fluent->from('torrents')
         ->select(null)
@@ -127,7 +127,7 @@ function images_update()
 
     fetch_person_info(50);
     $fanart_images = $temp = [];
-    echo "Fetching images from Fanart.com for torrents\n";
+    echo _('Fetching images from Fanart.com for torrents') . "\n";
     foreach ($no_posters as $no_poster) {
         $temp = getMovieImagesByID($no_poster['imdb_id'], false, 'moviebackground');
         if (!empty($temp)) {
@@ -148,7 +148,7 @@ function images_update()
             }
         }
     }
-    echo 'Checked ' . count($no_posters) . ' torrents that do not have posters' . "\n";
+    echo _f('Checked %d torrents that do not have posters', count($no_posters)) . "\n";
 
     $images = $fluent->from('images')
         ->select(null)
@@ -176,7 +176,7 @@ function images_update()
         ];
         $images_class->update($values, $update);
     }
-    echo 'Checked ' . count($values) . " image tmdb_ids\n";
+    echo _f('Checked %d image tmdb_ids', count($values)) . "\n";
 
     $images = $fluent->from('images')
         ->select(null)
@@ -214,7 +214,7 @@ function images_update()
         ];
         $images_class->update($values, $update);
     }
-    echo 'Checked ' . count($values) . " image imdb_ids\n";
+    echo _f('Checked %d image imdb_ids', count($values)) . "\n";
 
     if (!empty($values1)) {
         $update = [
@@ -222,7 +222,7 @@ function images_update()
         ];
         $images_class->update($values1, $update);
     }
-    echo 'Checked and failed to find ' . count($values1) . " image imdb_ids\n";
+    echo _f('Checked and failed to find %d image imdb_ids', count($values1)) . "\n";
 
     $imdb_ids = $fluent->from('images')
         ->select(null)
@@ -255,7 +255,7 @@ function images_update()
             }
         }
     }
-    echo 'Checked ' . count($imdb_ids) . ' images with empty tmdb_id' . "\n";
+    echo _f('Checked %d images with empty tmdb_id', count($imdb_ids)) . "\n";
 
     $tmdb_ids = $fluent->from('images')
         ->select(null)
@@ -288,7 +288,7 @@ function images_update()
             }
         }
     }
-    echo 'Checked ' . count($tmdb_ids) . ' images with empty imdb_id' . "\n";
+    echo _f('Checked %d images with empty imdb_id', count($tmdb_ids)) . "\n";
     if (!empty($fanart_images)) {
         $images_class->insert_update($fanart_images);
     }
@@ -297,7 +297,7 @@ function images_update()
             'updated' => TIME_NOW,
         ];
         $images_class->update($values, $update);
-        echo 'Updated ' . count($values) . " image imdb_ids\n";
+        echo _f('Updated %d image imdb_ids', count($values)) . "\n";
         unset($values);
     }
 
@@ -311,7 +311,7 @@ function images_update()
         ->fetchAll();
 
     $values = [];
-    echo 'Fetching, resizing and optimizing ' . count($images) . " images\n";
+    echo _f('Fetching, resizing and optimizing %d images', count($images)) . "\n";
     foreach ($images as $image) {
         if (url_proxy($image['url'], true)) {
             $values[] = [
@@ -335,7 +335,7 @@ function images_update()
         ];
         $images_class->update($values, $update);
     }
-    echo 'Fetched, optimized and resized ' . count($values) . " images\n";
+    echo _f('Fetched, optimized and resized %d images', count($values)) . "\n";
 
     $books = $fluent->from('torrents')
         ->select(null)
@@ -350,7 +350,7 @@ function images_update()
         ->limit(50)
         ->fetchAll();
 
-    echo 'Fetching book data for ' . count($books) . " books\n";
+    echo _f('Fetching book data for %d books', count($books)) . "\n";
     foreach ($books as $book) {
         if (!empty($book['isbn']) || !empty($book['title'])) {
             if (get_book_info($book['isbn'], $book['title'], $book['id'], $book['poster'])) {
@@ -365,7 +365,7 @@ function images_update()
         }
     }
     if (!empty($books)) {
-        echo count($books) . " torrents google books info cached\n";
+        echo _f('%d torrents google books info cached', count($books)) . "\n";
     }
 
     $imdbids = $fluent->from('torrents')
@@ -377,7 +377,7 @@ function images_update()
         ->orderBy('id DESC')
         ->limit(50)
         ->fetchAll();
-    echo 'Fetching IMDb data and finding images for ' . count($imdbids) . ' torrents with imdb_id set' . "\n";
+    echo _f('Fetching IMDb data and finding images for %d torrents with imdb_id set', count($imdbids)) . "\n";
     foreach ($imdbids as $imdbid) {
         get_imdb_info($imdbid['imdb_id'], true, false, $imdbid['id'], null);
         $images_class->find_images($imdbid['imdb_id'], 'poster');
@@ -392,7 +392,7 @@ function images_update()
             ->where('imdb_id = ?', $imdbid['imdb_id'])
             ->execute();
     }
-    echo count($imdbids) . " torrents imdb info cached\n";
+    echo _f('%d torrents imdb info cached', count($imdbids)) . "\n";
 
     $torrents = $fluent->from('torrents')
         ->select(null)
@@ -403,7 +403,7 @@ function images_update()
         $torrent->format_descr($tor['id']);
         ++$count;
     }
-    echo $count . " torrents descr info cached\n";
+    echo _f('%d torrents descr info cached', $count) . "\n";
 
     if ($BLOCKS['tvmaze_api_on']) {
         $in = str_repeat('?,', count($site_config['categories']['tv']) - 1) . '?';
@@ -434,7 +434,7 @@ function images_update()
                 ++$count;
             }
         }
-        echo $count . " torrents tvmaze info cached\n";
+        echo _f('%d torrents tvmaze info cached', $count) . "\n";
     }
 
     $offer_links = $fluent->from('offers')
@@ -465,7 +465,7 @@ function images_update()
         }
     }
     if (!empty($offer_links)) {
-        echo count($offer_links) . " offers imdb info cached\n";
+        echo _f('%d offers imdb info cached', count($offer_links)) . "\n";
     }
 
     $request_links = $fluent->from('requests')
@@ -497,7 +497,7 @@ function images_update()
         }
     }
     if (!empty($request_links)) {
-        echo count($request_links) . " requests imdb info cached\n";
+        echo _f('%d requests imdb info cached', count($request_links)) . "\n";
     }
     fetch_person_info(50);
     passthru('php ' . BIN_DIR . 'resize_multi_threads.php');
@@ -507,7 +507,7 @@ function images_update()
 
     $time_end = microtime(true);
     $run_time = $time_end - $time_start;
-    echo "Run time: $run_time seconds\n";
+    echo _f('Run time: %s seconds', $run_time) . "\n";
 
     write_log('Images Cleanup: Completed');
 }
@@ -525,12 +525,12 @@ function fetch_person_info(int $count): void
         ->limit($count)
         ->fetchAll();
 
-    echo "Fetching imdb_info for " . count($persons) . " persons\n";
+    echo _f('Fetching imdb_info for %d persons', count($persons)) . "\n";
     foreach ($persons as $person) {
         get_imdb_person($person['imdb_id']);
     }
 
     if (!empty($persons)) {
-        echo count($persons) . " persons imdb info cached\n";
+        echo _f('%d persons imdb info cached', count($persons)) . "\n";
     }
 }

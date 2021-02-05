@@ -313,6 +313,34 @@ msgstr "% Items: "
 msgid "% Misses: "
 msgstr "% Misses: "
 
+#, php-format
+msgid "%d offers imdb info cached"
+msgstr "%d offers imdb info cached"
+
+#, php-format
+msgid "%d persons imdb info cached"
+msgstr "%d persons imdb info cached"
+
+#, php-format
+msgid "%d requests imdb info cached"
+msgstr "%d requests imdb info cached"
+
+#, php-format
+msgid "%d torrents descr info cached"
+msgstr "%d torrents descr info cached"
+
+#, php-format
+msgid "%d torrents google books info cached"
+msgstr "%d torrents google books info cached"
+
+#, php-format
+msgid "%d torrents imdb info cached"
+msgstr "%d torrents imdb info cached"
+
+#, php-format
+msgid "%d torrents tvmaze info cached"
+msgstr "%d torrents tvmaze info cached"
+
 #, no-php-format
 msgid "%{0} week ago"
 msgid_plural "{0} weeks ago"
@@ -1190,6 +1218,10 @@ msgstr "Allows you to change your user class on the fly."
 msgid "Almost any modern video file player will play these files."
 msgstr "Almost any modern video file player will play these files."
 
+#, php-format
+msgid "Already started "
+msgstr "Already started "
+
 msgid "Also, clients in alpha or beta version should be avoided."
 msgstr "Also, clients in alpha or beta version should be avoided."
 
@@ -2026,6 +2058,49 @@ msgstr "CPU usage."
 msgid "Cache doesn't exist or zero length"
 msgstr "Cache doesn't exist or zero length"
 
+#, php-format
+msgid "Caching IMDb %d Newest Movies"
+msgstr "Caching IMDb %d Newest Movies"
+
+#, php-format
+msgid "Caching IMDb %d Oscar Winners"
+msgstr "Caching IMDb %d Oscar Winners"
+
+#, php-format
+msgid "Caching IMDb %d Top Anime"
+msgstr "Caching IMDb %d Top Anime"
+
+msgid "Caching IMDb Movies Coming Soon"
+msgstr "Caching IMDb Movies Coming Soon"
+
+msgid "Caching IMDb Movies In Theaters"
+msgstr "Caching IMDb Movies In Theaters"
+
+#, php-format
+msgid "Caching IMDb Top %d Movies"
+msgstr "Caching IMDb Top %d Movies"
+
+#, php-format
+msgid "Caching IMDb Top %d TV Shows"
+msgstr "Caching IMDb Top %d TV Shows"
+
+msgid "Caching New Releases from Blu-ray.com"
+msgstr "Caching New Releases from Blu-ray.com"
+
+msgid "Caching TMDb Movies In Theaters"
+msgstr "Caching TMDb Movies In Theaters"
+
+#, php-format
+msgid "Caching TMDb TV for %s"
+msgstr "Caching TMDb TV for %s"
+
+#, php-format
+msgid "Caching TMDb Top %d Movies"
+msgstr "Caching TMDb Top %d Movies"
+
+msgid "Caching TVMaze TV Schedule"
+msgstr "Caching TVMaze TV Schedule"
+
 msgid "Can I bypass my ISP's proxy?"
 msgstr "Can I bypass my ISP's proxy?"
 
@@ -2260,6 +2335,30 @@ msgstr "Check this to post anonymously"
 
 msgid "Checked"
 msgstr "Checked"
+
+#, php-format
+msgid "Checked %d image imdb_ids"
+msgstr "Checked %d image imdb_ids"
+
+#, php-format
+msgid "Checked %d image tmdb_ids"
+msgstr "Checked %d image tmdb_ids"
+
+#, php-format
+msgid "Checked %d images with empty imdb_id"
+msgstr "Checked %d images with empty imdb_id"
+
+#, php-format
+msgid "Checked %d images with empty tmdb_id"
+msgstr "Checked %d images with empty tmdb_id"
+
+#, php-format
+msgid "Checked %d torrents that do not have posters"
+msgstr "Checked %d torrents that do not have posters"
+
+#, php-format
+msgid "Checked and failed to find %d image imdb_ids"
+msgstr "Checked and failed to find %d image imdb_ids"
 
 msgid "Chef"
 msgstr "Chef"
@@ -4113,6 +4212,29 @@ msgstr "Female"
 
 msgid "Fetched"
 msgstr "Fetched"
+
+#, php-format
+msgid "Fetched, optimized and resized %d images"
+msgstr "Fetched, optimized and resized %d images"
+
+#, php-format
+msgid "Fetching IMDb data and finding images for %d torrents with imdb_id set"
+msgstr "Fetching IMDb data and finding images for %d torrents with imdb_id set"
+
+#, php-format
+msgid "Fetching book data for %d books"
+msgstr "Fetching book data for %d books"
+
+msgid "Fetching images from Fanart.com for torrents"
+msgstr "Fetching images from Fanart.com for torrents"
+
+#, php-format
+msgid "Fetching imdb_info for %d persons"
+msgstr "Fetching imdb_info for %d persons"
+
+#, php-format
+msgid "Fetching, resizing and optimizing %d images"
+msgstr "Fetching, resizing and optimizing %d images"
 
 msgid "File Edit Log"
 msgstr "File Edit Log"
@@ -9084,6 +9206,10 @@ msgstr "Run it now"
 msgid "Run now"
 msgstr "Run now"
 
+#, php-format
+msgid "Run time: %s seconds"
+msgstr "Run time: %s seconds"
+
 msgid "Runs day to day matters on site"
 msgstr "Runs day to day matters on site"
 
@@ -12220,6 +12346,10 @@ msgstr "Update:"
 
 msgid "Updated"
 msgstr "Updated"
+
+#, php-format
+msgid "Updated %d image imdb_ids"
+msgstr "Updated %d image imdb_ids"
 
 msgid "Updated avatar to"
 msgstr "Updated avatar to"
