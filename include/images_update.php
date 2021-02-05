@@ -269,7 +269,6 @@ function images_update()
 
     foreach ($tmdb_ids as $id) {
         $temp = getMovieImagesByID((string) $id['tmdb_id'], false, 'moviebackground');
-        get_imdb_info_short($id['imdb_id']);
         if (!empty($temp)) {
             foreach ($temp as $item) {
                 $fanart_images[] = $item;
