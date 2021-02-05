@@ -95,15 +95,15 @@ if (!empty($user) && is_array($user)) {
     $got_moods = ($user['opt2'] & class_user_options_2::GOT_MOODS) === class_user_options_2::GOT_MOODS;
     $StatusBar .= "
     <span class='level is-marginless'>
-        <span class='navbar-start'>" . _('Uploading Files') . "</span>
+        <span class='navbar-start'>" . _('Torrents Seeding') . "</span>
         <span>{$seed['yes']}</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>" . _('Downloading Files') . "</span>
+        <span class='navbar-start'>" . _('Torrents Leeching') . "</span>
         <span>{$seed['no']}</span>
     </span>
     <span class='level is-marginless'>
-        <span class='navbar-start'>" . _('Connectable') . "</span>
+        <span class='navbar-start'>" . _('Torrent Client Connectable') . "</span>
         <span>{$connectable}</span>
     </span>
     " . ($user['class'] >= UC_STAFF || $user['got_blocks'] === 'yes' ? "
