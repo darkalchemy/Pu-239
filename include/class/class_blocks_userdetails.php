@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 /**
- * Class class_block_userdetails.
+ * Class class_blocks_userdetails.
  */
 class class_blocks_userdetails
 {

@@ -234,165 +234,165 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     //==Userdetails
     if (isset($_POST['userdetails_flush'])) {
-        $setbits_userdetails_page |= class_block_userdetails::FLUSH;
+        $setbits_userdetails_page |= class_blocks_userdetails::FLUSH;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::FLUSH;
+        $clrbits_userdetails_page |= class_blocks_userdetails::FLUSH;
     }
     if (isset($_POST['userdetails_joined'])) {
-        $setbits_userdetails_page |= class_block_userdetails::JOINED;
+        $setbits_userdetails_page |= class_blocks_userdetails::JOINED;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::JOINED;
+        $clrbits_userdetails_page |= class_blocks_userdetails::JOINED;
     }
     if (isset($_POST['userdetails_online_time'])) {
-        $setbits_userdetails_page |= class_block_userdetails::ONLINETIME;
+        $setbits_userdetails_page |= class_blocks_userdetails::ONLINETIME;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::ONLINETIME;
+        $clrbits_userdetails_page |= class_blocks_userdetails::ONLINETIME;
     }
     if (isset($_POST['userdetails_browser'])) {
-        $setbits_userdetails_page |= class_block_userdetails::BROWSER;
+        $setbits_userdetails_page |= class_blocks_userdetails::BROWSER;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::BROWSER;
+        $clrbits_userdetails_page |= class_blocks_userdetails::BROWSER;
     }
     if (isset($_POST['userdetails_reputation'])) {
-        $setbits_userdetails_page |= class_block_userdetails::REPUTATION;
+        $setbits_userdetails_page |= class_blocks_userdetails::REPUTATION;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::REPUTATION;
+        $clrbits_userdetails_page |= class_blocks_userdetails::REPUTATION;
     }
     if (isset($_POST['userdetails_user_hits'])) {
-        $setbits_userdetails_page |= class_block_userdetails::PROFILE_HITS;
+        $setbits_userdetails_page |= class_blocks_userdetails::PROFILE_HITS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::PROFILE_HITS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::PROFILE_HITS;
     }
     if (isset($_POST['userdetails_birthday'])) {
-        $setbits_userdetails_page |= class_block_userdetails::BIRTHDAY;
+        $setbits_userdetails_page |= class_blocks_userdetails::BIRTHDAY;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::BIRTHDAY;
+        $clrbits_userdetails_page |= class_blocks_userdetails::BIRTHDAY;
     }
     if (isset($_POST['userdetails_birthday'])) {
-        $setbits_userdetails_page |= class_block_userdetails::BIRTHDAY;
+        $setbits_userdetails_page |= class_blocks_userdetails::BIRTHDAY;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::BIRTHDAY;
+        $clrbits_userdetails_page |= class_blocks_userdetails::BIRTHDAY;
     }
     if (isset($_POST['userdetails_contact_info'])) {
-        $setbits_userdetails_page |= class_block_userdetails::CONTACT_INFO;
+        $setbits_userdetails_page |= class_blocks_userdetails::CONTACT_INFO;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::CONTACT_INFO;
+        $clrbits_userdetails_page |= class_blocks_userdetails::CONTACT_INFO;
     }
     // used only in userdetails.php
     if (isset($_POST['userdetails_avatar'])) {
-        $setbits_userdetails_page |= class_block_userdetails::AVATAR;
+        $setbits_userdetails_page |= class_blocks_userdetails::AVATAR;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::AVATAR;
+        $clrbits_userdetails_page |= class_blocks_userdetails::AVATAR;
     }
     if (isset($_POST['userdetails_iphistory'])) {
-        $setbits_userdetails_page |= class_block_userdetails::IPHISTORY;
+        $setbits_userdetails_page |= class_blocks_userdetails::IPHISTORY;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::IPHISTORY;
+        $clrbits_userdetails_page |= class_blocks_userdetails::IPHISTORY;
     }
     if (isset($_POST['userdetails_traffic'])) {
-        $setbits_userdetails_page |= class_block_userdetails::TRAFFIC;
+        $setbits_userdetails_page |= class_blocks_userdetails::TRAFFIC;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::TRAFFIC;
+        $clrbits_userdetails_page |= class_blocks_userdetails::TRAFFIC;
     }
     if (isset($_POST['userdetails_share_ratio'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SHARE_RATIO;
+        $setbits_userdetails_page |= class_blocks_userdetails::SHARE_RATIO;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SHARE_RATIO;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SHARE_RATIO;
     }
     if (isset($_POST['userdetails_seedtime_ratio'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SEEDTIME_RATIO;
+        $setbits_userdetails_page |= class_blocks_userdetails::SEEDTIME_RATIO;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SEEDTIME_RATIO;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SEEDTIME_RATIO;
     }
     if (isset($_POST['userdetails_seedbonus'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SEEDBONUS;
+        $setbits_userdetails_page |= class_blocks_userdetails::SEEDBONUS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SEEDBONUS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SEEDBONUS;
     }
     if (isset($_POST['userdetails_irc_stats'])) {
-        $setbits_userdetails_page |= class_block_userdetails::IRC_STATS;
+        $setbits_userdetails_page |= class_blocks_userdetails::IRC_STATS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::IRC_STATS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::IRC_STATS;
     }
     if (isset($_POST['userdetails_connectable_port'])) {
-        $setbits_userdetails_page |= class_block_userdetails::CONNECTABLE_PORT;
+        $setbits_userdetails_page |= class_blocks_userdetails::CONNECTABLE_PORT;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::CONNECTABLE_PORT;
+        $clrbits_userdetails_page |= class_blocks_userdetails::CONNECTABLE_PORT;
     }
     if (isset($_POST['userdetails_userclass'])) {
-        $setbits_userdetails_page |= class_block_userdetails::USERCLASS;
+        $setbits_userdetails_page |= class_blocks_userdetails::USERCLASS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::USERCLASS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::USERCLASS;
     }
     if (isset($_POST['userdetails_gender'])) {
-        $setbits_userdetails_page |= class_block_userdetails::GENDER;
+        $setbits_userdetails_page |= class_blocks_userdetails::GENDER;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::GENDER;
+        $clrbits_userdetails_page |= class_blocks_userdetails::GENDER;
     }
     if (isset($_POST['userdetails_freestuffs'])) {
-        $setbits_userdetails_page |= class_block_userdetails::FREESTUFFS;
+        $setbits_userdetails_page |= class_blocks_userdetails::FREESTUFFS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::FREESTUFFS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::FREESTUFFS;
     }
     if (isset($_POST['userdetails_comments'])) {
-        $setbits_userdetails_page |= class_block_userdetails::COMMENTS;
+        $setbits_userdetails_page |= class_blocks_userdetails::COMMENTS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::COMMENTS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::COMMENTS;
     }
     if (isset($_POST['userdetails_forumposts'])) {
-        $setbits_userdetails_page |= class_block_userdetails::FORUMPOSTS;
+        $setbits_userdetails_page |= class_blocks_userdetails::FORUMPOSTS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::FORUMPOSTS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::FORUMPOSTS;
     }
     if (isset($_POST['userdetails_invitedby'])) {
-        $setbits_userdetails_page |= class_block_userdetails::INVITEDBY;
+        $setbits_userdetails_page |= class_blocks_userdetails::INVITEDBY;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::INVITEDBY;
+        $clrbits_userdetails_page |= class_blocks_userdetails::INVITEDBY;
     }
     if (isset($_POST['userdetails_torrents_block'])) {
-        $setbits_userdetails_page |= class_block_userdetails::TORRENTS_BLOCK;
+        $setbits_userdetails_page |= class_blocks_userdetails::TORRENTS_BLOCK;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::TORRENTS_BLOCK;
+        $clrbits_userdetails_page |= class_blocks_userdetails::TORRENTS_BLOCK;
     }
     if (isset($_POST['userdetails_completed'])) {
-        $setbits_userdetails_page |= class_block_userdetails::COMPLETED;
+        $setbits_userdetails_page |= class_blocks_userdetails::COMPLETED;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::COMPLETED;
+        $clrbits_userdetails_page |= class_blocks_userdetails::COMPLETED;
     }
     if (isset($_POST['userdetails_snatched_staff'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SNATCHED_STAFF;
+        $setbits_userdetails_page |= class_blocks_userdetails::SNATCHED_STAFF;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SNATCHED_STAFF;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SNATCHED_STAFF;
     }
     if (isset($_POST['userdetails_userinfo'])) {
-        $setbits_userdetails_page |= class_block_userdetails::USERINFO;
+        $setbits_userdetails_page |= class_blocks_userdetails::USERINFO;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::USERINFO;
+        $clrbits_userdetails_page |= class_blocks_userdetails::USERINFO;
     }
     if (isset($_POST['userdetails_showpm'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SHOWPM;
+        $setbits_userdetails_page |= class_blocks_userdetails::SHOWPM;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SHOWPM;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SHOWPM;
     }
     if (isset($_POST['userdetails_report_user'])) {
-        $setbits_userdetails_page |= class_block_userdetails::REPORT_USER;
+        $setbits_userdetails_page |= class_blocks_userdetails::REPORT_USER;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::REPORT_USER;
+        $clrbits_userdetails_page |= class_blocks_userdetails::REPORT_USER;
     }
     if (isset($_POST['userdetails_user_status'])) {
-        $setbits_userdetails_page |= class_block_userdetails::USERSTATUS;
+        $setbits_userdetails_page |= class_blocks_userdetails::USERSTATUS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::USERSTATUS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::USERSTATUS;
     }
     if (isset($_POST['userdetails_user_comments'])) {
-        $setbits_userdetails_page |= class_block_userdetails::USERCOMMENTS;
+        $setbits_userdetails_page |= class_blocks_userdetails::USERCOMMENTS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::USERCOMMENTS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::USERCOMMENTS;
     }
     if (isset($_POST['userdetails_show_friends'])) {
-        $setbits_userdetails_page |= class_block_userdetails::SHOWFRIENDS;
+        $setbits_userdetails_page |= class_blocks_userdetails::SHOWFRIENDS;
     } else {
-        $clrbits_userdetails_page |= class_block_userdetails::SHOWFRIENDS;
+        $clrbits_userdetails_page |= class_blocks_userdetails::SHOWFRIENDS;
     }
     //== set n clear
     if ($setbits_index_page) {
@@ -486,10 +486,10 @@ $checkbox_global_crazyhour = $user['blocks']['global_stdhead'] & class_blocks_st
 $checkbox_global_bugmessage = $user['blocks']['global_stdhead'] & class_blocks_stdhead::STDHEAD_BUG_MESSAGE ? 'checked' : '';
 $checkbox_global_freeleech_contribution = $user['blocks']['global_stdhead'] & class_blocks_stdhead::STDHEAD_FREELEECH_CONTRIBUTION ? 'checked' : '';
 //==Userdetails
-$checkbox_userdetails_flush = $user['blocks']['userdetails_page'] & class_block_userdetails::FLUSH ? 'checked' : '';
-$checkbox_userdetails_joined = $user['blocks']['userdetails_page'] & class_block_userdetails::JOINED ? 'checked' : '';
-$checkbox_userdetails_onlinetime = $user['blocks']['userdetails_page'] & class_block_userdetails::ONLINETIME ? 'checked' : '';
-$checkbox_userdetails_browser = $user['blocks']['userdetails_page'] & class_block_userdetails::BROWSER ? 'checked' : '';
+$checkbox_userdetails_flush = $user['blocks']['userdetails_page'] & class_blocks_userdetails::FLUSH ? 'checked' : '';
+$checkbox_userdetails_joined = $user['blocks']['userdetails_page'] & class_blocks_userdetails::JOINED ? 'checked' : '';
+$checkbox_userdetails_onlinetime = $user['blocks']['userdetails_page'] & class_blocks_userdetails::ONLINETIME ? 'checked' : '';
+$checkbox_userdetails_browser = $user['blocks']['userdetails_page'] & class_blocks_userdetails::BROWSER ? 'checked' : '';
 $checkbox_userdetails_reputation = $user['blocks']['userdetails_page'] & block_userdetails::REPUTATION ? 'checked' : '';
 $checkbox_userdetails_userhits = $user['blocks']['userdetails_page'] & block_userdetails::PROFILE_HITS ? 'checked' : '';
 $checkbox_userdetails_birthday = $user['blocks']['userdetails_page'] & block_userdetails::BIRTHDAY ? 'checked' : '';
