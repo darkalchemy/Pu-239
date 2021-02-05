@@ -6,18 +6,22 @@ use DI\DependencyException;
 use DI\NotFoundException;
 use Pu239\Cache;
 use Pu239\Database;
+use Pu239\Image;
 use Spatie\Image\Exceptions\InvalidManipulation;
 
 /**
+ * @param bool $images
+ *
+ * @throws DependencyException
+ * @throws InvalidManipulation
+ * @throws NotFoundException
+ * @throws Exception
+ * @throws \Envms\FluentPDO\Exception
+ *
  * @return array|bool|mixed
  *
- * @throws InvalidManipulation
- * @throws DependencyException
- * @throws NotFoundException*@throws Exception
- *
- * @throws \Envms\FluentPDO\Exception
  */
-function get_bluray_info()
+function get_bluray_info(bool $images = false)
 {
     global $container, $BLOCKS, $site_config;
 
@@ -87,6 +91,12 @@ function get_bluray_info()
 
             if (!empty($imdb_info['imdb_id'])) {
                 get_imdb_info_short($imdb_info['imdb_id']);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb_info['imdb_id'], 'poster');
+                    $images_class->find_images($imdb_info['imdb_id'], 'banner');
+                    $images_class->find_images($imdb_info['imdb_id'], 'background');
+                }
             }
 
             $pubs[] = [

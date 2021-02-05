@@ -608,6 +608,10 @@ function get_imdb_info_short($imdb_id)
 }
 
 /**
+ *
+ *
+ * @param bool $images
+ *
  * @throws NotFoundException
  * @throws UnbegunTransaction
  * @throws \Envms\FluentPDO\Exception
@@ -615,9 +619,8 @@ function get_imdb_info_short($imdb_id)
  * @throws InvalidManipulation
  *
  * @return array|bool
- *
  */
-function get_upcoming()
+function get_upcoming(bool $images = false)
 {
     global $container, $BLOCKS;
 
@@ -666,6 +669,12 @@ function get_upcoming()
         foreach ($imdbs as $day) {
             foreach ($day as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
         }
         $cache->set('imdb_upcoming_movies_', $imdbs, 3600);
@@ -845,7 +854,8 @@ function get_imdb_person($person_id)
 
 /**
  *
- * @param int $count
+ * @param int  $count
+ * @param bool $images
  *
  * @throws NotFoundException
  * @throws UnbegunTransaction
@@ -856,7 +866,7 @@ function get_imdb_person($person_id)
  * @return array|bool|mixed
  *
  */
-function get_top_movies(int $count)
+function get_top_movies(int $count, bool $images = false)
 {
     global $container;
 
@@ -882,6 +892,12 @@ function get_top_movies(int $count)
         if (!empty($top)) {
             foreach ($top as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
             $cache->set('imdb_top_movies_' . $count, $top, 604800);
         }
@@ -891,6 +907,10 @@ function get_top_movies(int $count)
 }
 
 /**
+ *
+ *
+ * @param bool $images
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -898,9 +918,8 @@ function get_top_movies(int $count)
  * @throws UnbegunTransaction
  *
  * @return array|bool
- *
  */
-function get_in_theaters()
+function get_in_theaters(bool $images = false)
 {
     global $container, $BLOCKS;
 
@@ -928,6 +947,12 @@ function get_in_theaters()
     if (!empty($imdbs)) {
         foreach ($imdbs as $imdb) {
             get_imdb_info($imdb, true, true, null, null);
+            if ($images) {
+                $images_class = $container->get(Image::class);
+                $images_class->find_images($imdb, 'poster');
+                $images_class->find_images($imdb, 'banner');
+                $images_class->find_images($imdb, 'background');
+            }
         }
         $cache->set('imdb_in_theaters_display_', $imdbs, 86400);
         return $imdbs;
@@ -938,7 +963,8 @@ function get_in_theaters()
 
 /**
  *
- * @param int $count
+ * @param int  $count
+ * @param bool $images
  *
  * @throws NotFoundException
  * @throws UnbegunTransaction
@@ -949,7 +975,7 @@ function get_in_theaters()
  * @return array|bool|mixed
  *
  */
-function movies_by_release_date(int $count)
+function movies_by_release_date(int $count, bool $images = false)
 {
     global $container, $BLOCKS;
 
@@ -976,6 +1002,12 @@ function movies_by_release_date(int $count)
         if (!empty($top)) {
             foreach ($top as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
             $cache->set('movies_by_release_date_' . $count, $top, 604800);
         }
@@ -986,7 +1018,8 @@ function movies_by_release_date(int $count)
 
 /**
  *
- * @param int $count
+ * @param int  $count
+ * @param bool $images
  *
  * @throws NotFoundException
  * @throws UnbegunTransaction
@@ -997,7 +1030,7 @@ function movies_by_release_date(int $count)
  * @return array|bool|mixed
  *
  */
-function get_top_tvshows(int $count)
+function get_top_tvshows(int $count, bool $images = false)
 {
     global $container;
 
@@ -1023,6 +1056,12 @@ function get_top_tvshows(int $count)
         if (!empty($top)) {
             foreach ($top as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
             $cache->set('imdb_top_tvshows_' . $count, $top, 604800);
         }
@@ -1032,7 +1071,8 @@ function get_top_tvshows(int $count)
 }
 
 /**
- * @param int $count
+ * @param int  $count
+ * @param bool $images
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -1042,7 +1082,7 @@ function get_top_tvshows(int $count)
  *
  * @return array|bool|mixed
  */
-function get_top_anime(int $count)
+function get_top_anime(int $count, bool $images = false)
 {
     global $container;
 
@@ -1066,6 +1106,12 @@ function get_top_anime(int $count)
         if (!empty($top)) {
             foreach ($top as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
             $cache->set('imdb_top_anime_' . $count, $top, 604800);
         }
@@ -1075,7 +1121,8 @@ function get_top_anime(int $count)
 }
 
 /**
- * @param int $count
+ * @param int  $count
+ * @param bool $images
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -1085,7 +1132,7 @@ function get_top_anime(int $count)
  *
  * @return array|bool|mixed
  */
-function get_oscar_winners(int $count)
+function get_oscar_winners(int $count, bool $images = false)
 {
     global $container;
 
@@ -1109,6 +1156,12 @@ function get_oscar_winners(int $count)
         if (!empty($top)) {
             foreach ($top as $imdb) {
                 get_imdb_info($imdb, true, true, null, null);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb, 'poster');
+                    $images_class->find_images($imdb, 'banner');
+                    $images_class->find_images($imdb, 'background');
+                }
             }
             $cache->set('imdb_oscar_winners_' . $count, $top, 604800);
         }

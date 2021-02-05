@@ -10,6 +10,7 @@ use Pu239\Image;
 
 /**
  * @param $dates
+ * @param bool $images
  *
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException*@throws Exception
@@ -18,7 +19,7 @@ use Pu239\Image;
  * @return array|bool|mixed
  *
  */
-function get_tv_by_day($dates)
+function get_tv_by_day($dates, bool $images = false)
 {
     global $container, $site_config, $BLOCKS;
 
@@ -69,6 +70,12 @@ function get_tv_by_day($dates)
             }
             if (!empty($imdb_id)) {
                 get_imdb_info_short($imdb_id);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb_id, 'poster');
+                    $images_class->find_images($imdb_id, 'banner');
+                    $images_class->find_images($imdb_id, 'background');
+                }
             }
         }
     }
@@ -120,14 +127,17 @@ function get_movies_by_week($dates)
 }
 
 /**
+ *
+ *
+ * @param bool $images
+ *
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
  * @throws NotFoundException
  *
  * @return array|bool|mixed
- *
  */
-function get_movies_in_theaters()
+function get_movies_in_theaters(bool $images = false)
 {
     global $container, $site_config, $BLOCKS;
 
@@ -171,6 +181,12 @@ function get_movies_in_theaters()
             }
             if (!empty($imdb_id)) {
                 get_imdb_info_short($imdb_id);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb_id, 'poster');
+                    $images_class->find_images($imdb_id, 'banner');
+                    $images_class->find_images($imdb_id, 'background');
+                }
             }
         }
     }
@@ -180,6 +196,7 @@ function get_movies_in_theaters()
 
 /**
  * @param $count
+ * @param bool $images
  *
  * @throws \Envms\FluentPDO\Exception
  * @throws DependencyException
@@ -188,7 +205,7 @@ function get_movies_in_theaters()
  * @return array|bool|mixed
  *
  */
-function get_movies_by_vote_average($count)
+function get_movies_by_vote_average($count, bool $images = false)
 {
     global $container, $site_config, $BLOCKS;
 
@@ -236,6 +253,12 @@ function get_movies_by_vote_average($count)
             }
             if (!empty($imdb_id)) {
                 get_imdb_info_short($imdb_id);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($imdb_id, 'poster');
+                    $images_class->find_images($imdb_id, 'banner');
+                    $images_class->find_images($imdb_id, 'background');
+                }
             }
         }
     }

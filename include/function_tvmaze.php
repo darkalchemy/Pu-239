@@ -298,6 +298,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @param int    $season
  * @param int    $episode
  * @param string $poster
+ * @param bool   $images
  *
  * @throws DependencyException
  * @throws InvalidManipulation
@@ -308,7 +309,7 @@ function get_episode($tvmaze_id, $season, $episode, $tid)
  * @return bool|string
  *
  */
-function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, string $poster = '')
+function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, string $poster = '', bool $images = false)
 {
     global $container, $site_config, $BLOCKS;
 
@@ -372,6 +373,12 @@ function tvmaze(int $tvmaze_id, int $tid, int $season = 0, int $episode = 0, str
             if (!empty($tvmaze_show_data['_embedded']['show']['externals']['imdb'])) {
                 $values['imdb_id'] = $tvmaze_show_data['_embedded']['show']['externals']['imdb'];
                 get_imdb_info_short($values['imdb_id']);
+                if ($images) {
+                    $images_class = $container->get(Image::class);
+                    $images_class->find_images($values['imdb_id'], 'poster');
+                    $images_class->find_images($values['imdb_id'], 'banner');
+                    $images_class->find_images($values['imdb_id'], 'background');
+                }
             }
             $images_class = $container->get(Image::class);
             $images_class->insert($values);
