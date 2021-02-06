@@ -45,35 +45,37 @@ class Cache extends TransactionalStore
 
         switch ($this->env['cache']['driver']) {
             case 'couchbase':
+                if (!extension_loaded(couchbase)) {
+                    die('<h1>Error</h1><p>php-couchbase is not available</p>');
+                }
                 $cluster = new CouchbaseCluster('couchbase://localhost');
                 $bucket = $cluster->openBucket('default');
                 $this->cache = new Couchbase($bucket);
+
                 break;
 
             case 'apcu':
-                if (extension_loaded('apcu')) {
-                    $this->cache = new Apc();
-                } else {
+                if (!extension_loaded('apcu')) {
                     die('<h1>Error</h1><p>php-apcu is not available</p>');
                 }
+                $this->cache = new Apc();
 
                 break;
 
             case 'memcached':
-                if (extension_loaded('memcached')) {
-                    $this->cache = $this->container->get(Memcached::class);
-                } else {
+                if (!extension_loaded('memcached')) {
                     die('<h1>Error</h1><p>php-memcached is not available</p>');
                 }
+                $this->cache = $this->container->get(Memcached::class);
 
                 break;
 
             case 'redis':
-                if (extension_loaded('redis')) {
-                    $this->cache = $this->container->get(Redis::class);
-                } else {
+                if (!extension_loaded('redis')) {
                     die('<h1>Error</h1><p>php-redis is not available</p>');
                 }
+                $this->cache = $this->container->get(Redis::class);
+
                 break;
 
             case 'memory':
@@ -81,6 +83,10 @@ class Cache extends TransactionalStore
                 break;
 
             case 'file':
+                if (!class_exists('Flysystem')) {
+                    die('<h1>Error</h1><p>Class Flysystem is not available</p>');
+                }
+
                 $adapter = new Local($this->env['files']['path'], LOCK_EX);
                 $filesystem = new Filesystem($adapter);
                 $this->cache = new Flysystem($filesystem);
