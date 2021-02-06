@@ -1,6 +1,9 @@
 <?php
 
 declare(strict_types = 1);
+
+use Delight\I18n\Codes;
+
 require_once CONFIG_DIR . 'functions.php';
 /*
 Any changes to this file will require that the DI_CACHE_DIR be emptied
@@ -45,6 +48,10 @@ return [
             'driver' => 'memory',
             'prefix' => '#cookie_prefix',
         ],
+        'peer_cache' => [
+            'driver' => 'memcached',
+            'prefix' => 'Peers_',
+        ],
         'redis' => [
             'host' => '127.0.0.1',
             'password' => null,
@@ -88,6 +95,9 @@ return [
         ],
         'webserver' => [
             'username' => 'www-data',
+        ],
+        'available_languages' => [
+            Codes::EN_US,
         ],
     ],
 ];

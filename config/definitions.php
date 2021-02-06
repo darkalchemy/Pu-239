@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 use Aura\Sql\ExtendedPdo;
 use Delight\Auth\Auth;
-use Delight\I18n\Codes;
 use Delight\I18n\I18n;
 use Imdb\Config;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -127,26 +126,8 @@ return [
     Validator::class => DI\factory(function () {
         return new Validator();
     }),
-    I18n::class => DI\factory(function () {
-        return new I18n([
-            Codes::AF_ZA,
-            Codes::DA_DK,
-            Codes::DE_DE,
-            Codes::EN_US,
-            Codes::ES_ES,
-            Codes::ET_EE,
-            Codes::FI_FI,
-            Codes::FR_FR,
-            Codes::IT_IT,
-            Codes::KO_KR,
-            Codes::NB_NO,
-            Codes::NL_NL,
-            Codes::PL_PL,
-            Codes::RO_RO,
-            Codes::RU_RU,
-            Codes::SV_SE,
-            Codes::ZH_CN,
-            Codes::ZH_TW,
-        ]);
+    I18n::class => DI\factory(function (ContainerInterface $c) {
+        $env = $c->get('env');
+        return new I18n($env['available_languages']);
     }),
 ];
