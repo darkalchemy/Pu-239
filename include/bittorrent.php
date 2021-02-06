@@ -29,6 +29,7 @@ global $container;
 $env = $container->get('env');
 $settings = $container->get(Settings::class);
 $site_config = $settings->get_settings();
+ini_set('error_log', PHPERROR_LOGS_DIR . 'error.log');
 
 require_once INCL_DIR . 'function_common.php';
 require_once INCL_DIR . 'database.php';
@@ -722,7 +723,8 @@ function force_logout(int $userid)
 
     if ($forced_logout) {
         $user = $container->get(User::class);
-        $cache->delete('user_' . $userid);
+        $user->delete_user_cache([$userid]);
+        unset($GLOBALS['CURUSER']);
         $user->logout($userid, true);
     }
 }
@@ -764,7 +766,7 @@ function check_user_status(string $type = 'browse')
         }
         if (!($users_data['perms'] & PERMS_BYPASS_BAN)) {
             $bans_class = $container->get(Ban::class);
-            if ($bans_class->check_bans($auth->getIpAddress())) {
+            if ($bans_class->check_bans(getip())) {
                 $update = [
                     'status' => 2,
                 ];
@@ -1406,19 +1408,8 @@ function formatQuery($query)
 function insert_update_ip(string $type, int $userid)
 {
     global $container;
-
-    $added = get_date(TIME_NOW, 'MYSQL', 1, 0);
-    $values = [
-        'ip' => getip(),
-        'userid' => $userid,
-        'type' => $type,
-        'last_access' => $added,
-    ];
-    $update = [
-        'last_access' => $added,
-    ];
     $ips_class = $container->get(IP::class);
-    $ips_class->insert($values, $update, $userid);
+    $ips_class->insert($userid, $type, getip());
 
     return true;
 }

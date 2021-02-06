@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Pu239;
 
-use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -13,106 +12,111 @@ use Psr\Container\ContainerInterface;
 class IP
 {
     protected $cache;
-    protected $fluent;
     protected $user;
     protected $container;
 
-    /**
-     * IP constructor.
-     *
-     * @param Cache              $cache
-     * @param Database           $fluent
-     * @param User               $user
-     * @param ContainerInterface $c
-     */
-    public function __construct(Cache $cache, Database $fluent, User $user, ContainerInterface $c)
+    public function __construct(PeerCache $cache, User $user, ContainerInterface $c)
     {
         $this->container = $c;
-        $this->fluent = $fluent;
         $this->cache = $cache;
         $this->user = $user;
     }
 
-    /**
-     *
-     * @param int $userid
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
-    public function get(int $userid)
+    public function get(int $userid): array
     {
-        $ips = $this->fluent->from('ips')
-                            ->select('INET6_NTOA(ip) AS ip')
-                            ->where('userid = ?', $userid)
-                            ->groupBy('ip')
-                            ->groupBy('id')
-                            ->fetchAll();
-
-        return $ips;
+        return $this->cache->get('ips_by_userid_' . $userid) ?: [];
     }
 
-    /**
-     * @param array $values
-     * @param array $update
-     * @param int   $userid
-     *
-     * @throws Exception
-     */
-    public function insert(array $values, array $update, int $userid)
+    protected function set(int $userid, string $ip): void
     {
-        $type = $values['type'];
-        $ttl = $type === 'announce' ? 60 : 300;
-        $ip = $values['ip'];
-        $cached_ip = $this->cache->get($type . '_ip_' . $userid . '_' . $ip);
-        if ($cached_ip === false || is_null($cached_ip)) {
-            $values['ip'] = inet_pton($ip);
-            $this->fluent->insertInto('ips', $values)
-                         ->onDuplicateKeyUpdate($update)
-                         ->execute();
-            $this->cache->set($type . '_ip_' . $userid . '_' . $ip, $ip, $ttl);
+        $ips = $this->get($userid);
+        if (!in_array($ip, $ips)) {
+            $ips[] = $ip;
+            $this->cache->set('ips_by_userid_' . $userid, $ips);
         }
     }
 
-    /**
-     * @param int $id
-     *
-     * @throws Exception
-     */
-    public function delete(int $id)
+    public function get_data_set(int $userid): array
     {
-        $this->fluent->delete('ips')
-                     ->where('id = ?', $id)
-                     ->execute();
+        return $this->cache->get('ip_dataset_by_userid_' . $userid) ?: [];
     }
 
-    /**
-     *
-     * @param string $ip
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
+    public function set_data_set(int $userid, array $dataset): void
+    {
+        $this->cache->set('ip_dataset_by_userid_' . $userid, $dataset, 0);
+    }
+
+    protected function add_ip_to_user(int $userid, string $ip, string $type): void
+    {
+        $this->set($userid, $ip);
+        $data = $this->get_data_set($userid);
+        foreach ($data as $key => $value) {
+            if ($type === $value['type'] && $ip === $value['ip']) {
+                unset($data[$key]);
+            }
+        }
+        $data[] = [
+            'ip' => $ip,
+            'type' => $type,
+            'last_access' => TIME_NOW,
+        ];
+        $this->set_data_set($userid, array_values($data));
+    }
+
+    protected function get_users_by_ip(string $ip): array
+    {
+        return $this->cache->get('users_by_ip_' . $ip) ?: [];
+    }
+
+    protected function add_user_to_ip(int $userid, string $ip): void
+    {
+        $user_ids = $this->get_users_by_ip($ip);
+        if (!in_array($userid, $user_ids)) {
+            $user_ids[] = $userid;
+            $this->cache->set('users_by_ip_' . $ip, $user_ids, 0);
+        }
+    }
+
+    protected function get_all_ips(): array
+    {
+        return $this->cache->get('all_ips_') ?: [];
+    }
+
+    protected function add_ip_to_ips(string $ip): void
+    {
+        $ips = $this->get_all_ips();
+        if (!in_array($ip, $ips)) {
+            $ips[] = $ip;
+            $this->cache->set('all_ips_', $ips, 0);
+        }
+    }
+
+    public function insert(int $userid, string $type, string $ip): void
+    {
+        $this->add_ip_to_ips($ip);
+        $this->add_ip_to_user($userid, $ip, $type);
+        $this->add_user_to_ip($userid, $ip);
+    }
+
+    public function delete(int $userid, string $ip, string $type)
+    {
+        $data = $this->get_data_set($userid);
+        foreach ($data as $key => $value) {
+            if ($ip === $value['ip'] && $type === $value['type']) {
+                unset($data[$key]);
+            }
+        }
+        $this->set_data_set($userid, $data);
+    }
+
     public function getUsersFromIP(string $ip)
     {
-        $ips = $this->fluent->from('ips AS i')
-                            ->select(null)
-                            ->select('i.type')
-                            ->select('u.id AS userid')
-                            ->select('INET6_NTOA(i.ip) AS ip')
-                            ->innerJoin('users AS u ON i.userid = u.id')
-                            ->where('i.ip = ?', inet_pton($ip))
-                            ->orderBy('u.id')
-                            ->fetchAll();
-
+        $data = $this->get_users_by_ip($ip);
         $users = [];
-        foreach ($ips as $select) {
-            $user = $this->user->getUserFromId($select['userid']);
+        foreach ($data as $userid) {
+            $user = $this->user->getUserFromId($userid);
             if (!empty($user)) {
                 $user['ip'] = $ip;
-                $user['type'] = $select['type'];
                 $users[] = $user;
             }
         }
@@ -120,38 +124,65 @@ class IP
         return $users;
     }
 
-    /**
-     * @param string $date
-     *
-     * @throws Exception
-     */
-    public function delete_by_age(string $date)
+    public function delete_by_age(int $timestamp)
     {
-        $this->fluent->deleteFrom('ips')
-                     ->where('last_access < ?', $date)
-                     ->execute();
+        $all = $this->get_all_ips();
+        $users = [];
+        foreach ($all as $ip) {
+            $users = array_merge($users, $this->get_users_by_ip($ip));
+        }
+        foreach ($users as $userid) {
+            $data = $this->get_data_set($userid);
+            foreach ($data as $key => $value) {
+                if ($value['last_access'] <= $timestamp) {
+                    unset($data[$key]);
+                }
+            }
+            if (empty($data)) {
+                $this->cache->deleteMulti([
+                    'ip_dataset_by_userid_' . $userid,
+                    'ips_by_userid_' . $userid,
+                ]);
+            } else {
+                $this->set_data_set($userid, $data);
+            }
+        }
     }
 
-    /**
-     *
-     * @param int    $userid
-     * @param int    $days
-     * @param string $type
-     *
-     * @throws Exception
-     *
-     * @return mixed
-     */
-    public function get_ip_count(int $userid, int $days, string $type)
+    public function get_user_count(string $ip): int
     {
-        $count = $this->fluent->from('ips')
-                              ->select(null)
-                              ->select('COUNT(ip) AS count')
-                              ->where('type = ?', $type)
-                              ->where('userid = ?', $userid)
-                              ->where('last_access >= NOW() - INTERVAL ? DAY', $days)
-                              ->fetch('count');
+        return count($this->get_users_by_ip($ip));
+    }
 
-        return $count;
+    public function get_ip_count(int $userid, int $days, string $type): int
+    {
+        $array = $this->get_data_set($userid);
+        if ($days === 0 && $type === 'all') {
+            return count($array);
+        }
+        foreach ($array as $key => $value) {
+            if (($days > 0 && $value['last_access'] <= (TIME_NOW - (86400 * $days))) || ($type !== 'all' && $type != $value['type'])) {
+                unset($array[$key]);
+            }
+        }
+        return count($array);
+    }
+
+    public function get_duplicates()
+    {
+        $ips = $this->get_all_ips();
+        $data = $users = [];
+        foreach ($ips as $ip) {
+            $users[$ip] = $this->get_users_by_ip($ip);
+        }
+        array_multisort(array_map('count', $users), SORT_DESC, $users);
+        foreach ($users as $key => $value) {
+            $data[] = [
+                'ip' => $key,
+                'count' => count($value),
+                'users' => $value,
+            ];
+        }
+        return $data;
     }
 }

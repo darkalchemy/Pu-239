@@ -156,18 +156,8 @@ if ($site_config['site']['ip_logging']) {
     }
     $added = date('Y-m-d H:i:s');
     if (!$no_log_ip) {
-        $values = [
-            'ip' => inet_pton($ip),
-            'userid' => $user['id'],
-            'type' => 'announce',
-            'last_access' => $added,
-        ];
-        $update = [
-            'last_access' => $added,
-        ];
         $ips_class = $container->get(IP::class);
-        $ips_class->insert($values, $update, $user['id']);
-        unset($values, $update);
+        $ips_class->insert($user['id'], 'announce', $ip);
     }
 }
 $torrent_modifier = get_slots($torrent['id'], $user['id']);

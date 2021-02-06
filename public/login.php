@@ -3,6 +3,7 @@
 declare(strict_types = 1);
 
 use Delight\Auth\Auth;
+use Pu239\Ban;
 use Pu239\IP;
 use Pu239\Session;
 use Pu239\User;
@@ -18,8 +19,11 @@ if ($auth->isLoggedIn()) {
     header("Location: {$site_config['paths']['baseurl']}");
     die();
 }
-
 get_template();
+$bans_class = $container->get(Ban::class);
+if ($bans_class->get_count($ip = getip()) > 0) {
+    stderr(_('Error'), _fe('This IP ({0}) address has been banned.', $ip));
+}
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $session = $container->get(Session::class);
     $validator = $container->get(Validator::class);

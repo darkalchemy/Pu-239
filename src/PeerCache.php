@@ -7,13 +7,14 @@ namespace Pu239;
 use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 use MatthiasMullie\Scrapbook\Adapters\Memcached;
 use MatthiasMullie\Scrapbook\Buffered\BufferedStore;
-use MatthiasMullie\Scrapbook\Scale\StampedeProtector;
+use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
+use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Psr\Container\ContainerInterface;
 
 /**
  * Class PeerCache.
  */
-class PeerCache extends StampedeProtector
+class PeerCache extends TransactionalStore
 {
     protected $cache;
     protected $container;
@@ -33,9 +34,9 @@ class PeerCache extends StampedeProtector
             die('<h1>Error</h1><p>php-memcached is not available</p>');
         }
         $client = $this->container->get(Memcached::class);
-        $client = new PrefixKeys($client, $this->env['paar_cache']['prefix']);
+        $client = new PrefixKeys($client, $this->env['peer_cache']['prefix']);
         $client = new BufferedStore($client);
-        $this->cache = new StampedeProtector($client);
+        $this->cache = new TransactionalStore($client);
 
         parent::__construct($this->cache);
     }

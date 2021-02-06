@@ -14,46 +14,34 @@ require_once INCL_DIR . 'geoipregionvars.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $container, $site_config;
+global $container, $site_config, $CURUSER;
 
 $fluent = $container->get(Database::class);
-$id = $color = '';
+$bans_class = $container->get(Ban::class);
+$color = '';
 $id = (int) $_GET['id'];
 if (!is_valid_id($id)) {
     stderr(_('Error'), _('Invalid ID'));
 }
 $ips_class = $container->get(IP::class);
 if (isset($_GET['remove'])) {
-    $remove = (int) htmlsafechars($_GET['remove']);
-    $username2 = htmlsafechars($_GET['username2']);
-    $deleteip = htmlsafechars($_GET['deleteip']);
-    $ips_class->delete($remove);
+    $ip = htmlsafechars($_GET['remove']);
+    $type = htmlsafechars(($_GET['type']));
+    $ips_class->delete($id, $ip, $type);
+    unset($ip, $type);
 }
-if (isset($_GET['setseedbox'])) {
-    $setseedbox = intval($_GET['setseedbox']);
-    if (is_valid_id($setseedbox)) {
-        $set = [
-            'seedbox' => 1,
-        ];
-        $ips_class->set($set, $setseedbox);
-    }
+if (isset($_GET['banthisuser'])) {
+    $ip = htmlsafechars($_GET['banthisip']);
+    $bans_class->add_ban($ip, $CURUSER['id'], 'Banned');
 }
-if (isset($_GET['setseedbox2'])) {
-    $setseedbox2 = intval($_GET['setseedbox2']);
-    if (is_valid_id($setseedbox2)) {
-        $set = [
-            'seedbox' => 0,
-        ];
-        $ips_class->set($set, $setseedbox2);
-    }
-}
+
 $users_class = $container->get(User::class);
 $user = $users_class->getUserFromId($id);
 $username = htmlsafechars($user['username']);
-$resip = $ips_class->get($id);
-$ipcount = count($resip);
+$resip = $ips_class->get_data_set($id);
+$ipcount = $ips_class->get_ip_count($id, 0, 'all');
 $HTMLOUT = "
-        <h1 class='has-text-centered'>" . _('IP addresses used by ') . format_username((int) $id) . "</h1>
+        <h1 class='has-text-centered'>" . _('IP addresses used by ') . format_username($id) . "</h1>
         <p class='has-text-centered'>" . _('Total Unique IP Addresses') . " <b>$username</b> " . _('Has Logged In With') . " <b><u>$ipcount</u></b>.</p>
         <p class='has-text-centered'>
             <span class='is-blue'>" . _('Single') . "</span> - <span class='has-text-danger'>" . _('Banned') . "</span> - <span class='has-text-success'>" . _('Dupe Used') . '</span>
@@ -66,7 +54,6 @@ $heading = '
             <th>' . _('ISP/Host Name') . '</th>
             <th>' . _('Location') . '</th>
             <th>' . _('Type') . '</th>
-            <th>' . _('SeedBox') . '</th>
             <th>' . _('Delete') . '</th>
             <th>' . _('Ban') . '</th>
         </tr>';
@@ -78,40 +65,14 @@ foreach ($resip as $iphistory) {
     }
     $host = gethostbyaddr($iphistory['ip']); //Hostname
     $userip = htmlsafechars($iphistory['ip']); //Users Ip
-    $ipid = (int) $iphistory['id']; // IP ID
-    if ($host == $userip) {
+    if ($host === $userip) {
         $host = "<span class='has-text-danger'><b>" . _('Not Found') . '</b></span>';
-    }
-    $seedboxdetected = 'no';
-    $seedboxes = [
-        'kimsufi.com',
-        'leaseweb.com',
-        'ovh.net',
-        'powserv.com',
-        'server.lu',
-        'xirvik.com',
-        'feralhosting.com',
-    ];
-    foreach ($seedboxes as $seedbox) {
-        if (stripos($host, $seedbox) !== false) {
-            $seedboxdetected = 'yes';
-        }
-    }
-    if ($seedboxdetected === 'yes') {
-        $set = [
-            'seedbox' => 1,
-        ];
-        $ips_class->set($set, $ipid);
     }
     $lastannounce = $iphistory['type'] === 'announce' ? $iphistory['last_access'] : 0;
     $lastbrowse = $iphistory['type'] === 'browse' ? $iphistory['last_access'] : 0;
     $lastlogin = $iphistory['type'] === 'login' ? $iphistory['last_access'] : 0;
     $iptype = htmlsafechars($iphistory['type']);
-    $queryc = 'SELECT COUNT(id) FROM(SELECT u.id FROM users AS u WHERE INET6_NTOA(u.ip) = ' . sqlesc($iphistory['ip']) . ' UNION SELECT u.id FROM users AS u RIGHT JOIN ips ON u.id=ips.userid WHERE INET6_NTOA(ips.ip) = ' . sqlesc($iphistory['ip']) . ' GROUP BY u.id) AS ipsearch';
-    $resip2 = sql_query($queryc) or sqlerr(__FILE__, __LINE__);
-    $arrip2 = mysqli_fetch_row($resip2);
-    $ipcount = $arrip2[0];
-    $bans_class = $container->get(Ban::class);
+    $ipcount = $ips_class->get_user_count($iphistory['ip']);
     $count = $bans_class->get_count($iphistory['ip']);
     if ($count === 0) {
         if ($ipcount > 1) {
@@ -135,42 +96,22 @@ foreach ($resip as $iphistory) {
     $listregion = @$citybyip->region;
     geoip_close($gi);
     // end fetch geoip code
-    //Is this a seedbox check
-    $seedbox = htmlsafechars($iphistory['seedbox']);
-
-    if ($seedbox == '0') {
-        $seedbox = "<a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox=" . (int) $iphistory['id'] . "'><span class='has-text-danger'><b>" . _('No') . '</b></span></a>';
-        $body .= '
+    $body .= '
         <tr>
-            <td>' . _('Browse: ') . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . get_date((int) $lastannounce, '') . "</td>
+            <td>' . _('Browse') . ': ' . get_date((int) $lastbrowse, '') . '<br>' . _('Login') . ': ' . get_date((int) $lastlogin, '') . '<br>' . _('Announce') . ': ' . get_date((int) $lastannounce, '') . "</td>
             <td>$ipshow</td>
             <td>$host</td>
             <td>$listcity, $listregion<br>$listcountry</td>
             <td>$iptype</td>
-            <td>$seedbox</td>
-            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>" . _('Delete') . "</b></a></td>
-            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>" . _('Ban') . '</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;id=$id&amp;remove=" . urlencode($iphistory['ip']) . "&amp;type={$iptype}'><b>" . _('Delete') . "</b></a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;id=$id&amp;banthisuser=$username&amp;banthisip=$userip'><b>" . _('Ban') . '</b></a></td>
         </tr>';
-    } else {
-        $seedbox = "<a class='is-link' href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id={$id}&amp;setseedbox2=" . (int) $iphistory['id'] . "'><span class='is-success'><b>" . _('Yes') . '</b></span></a>';
-        $body .= '
-        <tr>
-            <td>' . _('Browse: ') . get_date((int) $lastbrowse, '') . '<br>' . _('Login: ') . get_date((int) $lastlogin, '') . '<br>' . _('Announce: ') . get_date((int) $lastannounce, '') . "</td>
-            <td>$ipshow</td>
-            <td>$host</td>
-            <td>$listcity, $listregion<br>$listcountry</td>
-            <td>$iptype</td>
-            <td>$seedbox</td>
-            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=iphistory&amp;id=$id&amp;remove=$ipid&amp;deleteip=$userip&amp;username2=$username'><b>" . _('Delete') . "</b></a></td>
-            <td><a href='{$site_config['paths']['baseurl']}/staffpanel.php?tool=iphistory&amp;action=bans&amp;banthisuser=$username&amp;banthisip=$userip'><b>" . _('Ban') . '</b></a></td>
-        </tr>';
-    }
 }
 
 if (!empty($body)) {
     $HTMLOUT .= main_table($body, $heading, 'top20');
 } else {
-    $HTMLOUT .= main_div('No IP Data Available');
+    $HTMLOUT .= stdmsg(_('Error'), _("There is no IP data available."));
 }
 $title = _('IP History');
 $breadcrumbs = [

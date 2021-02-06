@@ -160,12 +160,10 @@ class User
                                  ->select('c.win - c.lost AS casino')
                                  ->select('a.achpoints')
                                  ->select('a.spentpoints')
-                                 ->select('INET6_NTOA(i.ip) AS ip')
                                  ->leftJoin('casino AS c ON u.id = c.userid')
                                  ->leftJoin('usersachiev AS a ON u.id = a.userid')
-                                 ->leftJoin('ips AS i ON u.id = i.userid')
                                  ->where('u.id = ?', $userid)
-                                 ->orderBy('i.last_access DESC')
+                                 ->orderBy('u.last_access DESC')
                                  ->fetch();
 
             if ($user) {
@@ -467,7 +465,6 @@ class User
      */
     public function logout(int $userid, bool $redirect)
     {
-        $this->cache->delete('forced_logout_' . $userid);
         if (empty($userid)) {
             $userid = $this->auth->getUserId();
         }
@@ -748,6 +745,7 @@ class User
                     'port_data_' . $userid,
                     'shitlist_' . $userid,
                     'user' . $userid,
+                    'user_' . $userid,
                     'useravatar_' . $userid,
                     'userclasses_' . $username,
                     'user_friends_' . $userid,
@@ -757,6 +755,7 @@ class User
                     'user_snatches_data_' . $userid,
                     'userstatus_' . $userid,
                 ]);
+                unset($user);
             }
         }
     }

@@ -5085,4 +5085,11 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `imdb_info` ADD COLUMN `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL AFTER `imdb_id`",
         'flush' => false,
     ],
+    [
+        'id' => 1612588425,
+        'info' => 'Drop ips table',
+        'date' => '6 Feb, 2021',
+        'query' => "DROP TABLE `ips`",
+        'flush' => false,
+    ],
 ];

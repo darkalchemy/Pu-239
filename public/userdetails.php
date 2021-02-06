@@ -70,8 +70,7 @@ if (isset($_GET['force_logout']) && ($viewer['id'] != $user['id'] && has_access(
     $session->set('is-success', 'This user will be forced to logout on next page view');
 }
 if (has_access($viewer['class'], UC_STAFF, 'coder') || $user['id'] === $viewer['id']) {
-    $auth = $container->get(Auth::class);
-    $ip = $auth->getIpAddress();
+    $ip = getip();
     $addr = gethostbyaddr($ip) . "($ip)";
 }
 if ($user['perms'] & PERMS_STEALTH) {

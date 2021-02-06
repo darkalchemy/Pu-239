@@ -2,15 +2,19 @@
 
 declare(strict_types = 1);
 
+use Pu239\IP;
+use Pu239\User;
+
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
-global $site_config;
+global $site_config, $container;
 
-$res = sql_query("SELECT count(*) AS dupl, INET6_NTOA(ip) AS ip FROM users WHERE status = 0 AND ip != '' AND INET6_NTOA(ip) NOT IN ('127.0.0.1', '10.0.0.1', '10.10.10.10') GROUP BY users.ip ORDER BY dupl DESC, ip") or sqlerr(__FILE__, __LINE__);
-
+$users_class = $container->get(User::class);
+$ips_class = $container->get(IP::class);
+$data = $ips_class->get_duplicates();
 $heading = '
     <tr>
         <th>' . _('User') . '</th>
@@ -25,24 +29,21 @@ $heading = '
 $ip = '';
 $uc = 0;
 $body = '';
-while ($ras = mysqli_fetch_assoc($res)) {
-    if ($ras['dupl'] <= 1) {
+foreach ($data as $ras) {
+    if ($ras['count'] <= 1) {
         break;
     }
-    if ($ras['ip'] != $ip) {
-        $ros = $users_class->getUsersFromIP($ras['ip']);
+    if ($ras['ip'] !== $ip) {
+        $ros = $ips_class->getUsersFromIP($ras['ip']);
         if (count($ros) > 1) {
             ++$uc;
             foreach ($ros as $arr) {
-                if ($arr['added'] == '0') {
-                    $arr['added'] = '-';
-                }
                 if ($arr['last_access'] == '0') {
                     $arr['last_access'] = '-';
                 }
                 $uploaded = mksize($arr['uploaded']);
                 $downloaded = mksize($arr['downloaded']);
-                $added = get_date((int) $arr['added'], 'DATE', 1, 0);
+                $added = get_date((int) $arr['registered'], 'DATE', 1, 0);
                 $last_access = get_date((int) $arr['last_access'], '', 1, 0);
                 $body .= '
                 <tr>
