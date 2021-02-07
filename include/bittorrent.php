@@ -95,6 +95,10 @@ function getip()
 {
     global $site_config, $container;
 
+    if (!$site_config['site']['ip_logging']) {
+        return '10.0.0.1';
+    }
+
     $auth = $container->get(Auth::class);
     $ip = $auth->getIpAddress();
     $userid = $auth->getUserId();
@@ -102,12 +106,9 @@ function getip()
         $user_class = $container->get(User::class);
         $user = $user_class->getUserFromId($userid);
         $no_log_ip = isset($user) && $user['perms'] & PERMS_NO_IP;
-        if (!$site_config['site']['ip_logging'] || $no_log_ip) {
-            return '127.0.0.1';
-        }
     }
-    if (!validip($ip)) {
-        $ip = '127.0.0.1';
+    if (!validip($ip) || $no_log_ip) {
+        return '10.0.0.1';
     }
 
     return $ip;
