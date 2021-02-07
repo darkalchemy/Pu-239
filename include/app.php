@@ -6,7 +6,6 @@ require_once CONFIG_DIR . 'classes.php';
 require_once VENDOR_DIR . 'autoload.php';
 
 use DI\ContainerBuilder;
-use SlashTrace\SlashTrace;
 
 date_default_timezone_set('UTC');
 
@@ -27,4 +26,3 @@ try {
     die("try 'composer install', then check that definitions.php matches src directory");
 }
 require_once CONFIG_DIR . 'session.php';
-$container->get(SlashTrace::class);
