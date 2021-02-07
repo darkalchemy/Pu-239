@@ -90,9 +90,6 @@ return [
         'language' => [
             'imdb' => 'en-US',
         ],
-        'api' => [
-            'sentry' => '',
-        ],
         'webserver' => [
             'username' => 'www-data',
         ],

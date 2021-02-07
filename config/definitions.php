@@ -10,9 +10,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Container\ContainerInterface;
 use Rakit\Validation\Validator;
 use Scriptotek\GoogleBooks\GoogleBooks;
-use SlashTrace\EventHandler\DebugHandler;
-use SlashTrace\Sentry\SentryHandler;
-use SlashTrace\SlashTrace;
 
 return [
     Auth::class => DI\factory(function (ContainerInterface $c) {
@@ -26,21 +23,6 @@ return [
         $password = $env['db']['password'];
         $attributes = $env['db']['attributes'];
         return new ExtendedPdo($dsn, $username, $password, $attributes);
-    }),
-    SlashTrace::class => DI\factory(function (ContainerInterface $c) {
-        $env = $c->get('env');
-        if (!PRODUCTION) {
-            $slashtrace = new SlashTrace();
-            $slashtrace->addHandler(new DebugHandler());
-            $slashtrace->register();
-        } else {
-            if (!empty($env['api']['sentry'])) {
-                $handler = new SentryHandler("{$env['api']['sentry']}");
-                $slashtrace = new SlashTrace();
-                $slashtrace->addHandler($handler);
-                $slashtrace->register();
-            }
-        }
     }),
     mysqli::class => DI\factory(function (ContainerInterface $c) {
         $env = $c->get('env');

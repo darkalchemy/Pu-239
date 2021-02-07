@@ -46,10 +46,9 @@
         "rakit/validation": "^1.1",
         "scriptotek/google-books": "^0.2.4",
         "sebastian/version": "^2.0",
-        "slashtrace/slashtrace": "^1.1",
-        "slashtrace/slashtrace-sentry": "^1.0",
         "spatie/image": "^1.7",
-        "spatie/image-optimizer": "^1.1"
+        "spatie/image-optimizer": "^1.1",
+        "umpirsky/composer-permissions-handler": "^1.6"
     },
     "autoload": {
         "psr-4": {
@@ -72,7 +71,8 @@
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.14",
-        "mp091689/dump-die": "^1.0"
+        "roave/security-advisories": "dev-latest",
+        "symfony/var-dumper": "^5.2"
     },
     "repositories": [
         {
