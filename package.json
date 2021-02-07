@@ -43,6 +43,6 @@
         "release": "standard-version"
     },
     "dependencies": {
-        "postcss": "^8.2.4"
+        "postcss": "^8.2.5"
     }
 }
