@@ -5099,4 +5099,32 @@ KEY `expires` (`expires`)
         'query' => "ALTER TABLE `person` ADD INDEX `added`(`added`)",
         'flush' => false,
     ],
+    [
+        'id' => 1612747594,
+        'info' => 'Drop index on update',
+        'date' => '7 Feb, 2021',
+        'query' => "ALTER TABLE `person` DROP INDEX `updated`",
+        'flush' => false,
+    ],
+    [
+        'id' => 1612747595,
+        'info' => 'Add desc index on updated',
+        'date' => '7 Feb, 2021',
+        'query' => "ALTER TABLE `person` ADD INDEX `updated`(`updated` DESC)",
+        'flush' => false,
+    ],
+    [
+        'id' => 1612747596,
+        'info' => 'Drop index on added',
+        'date' => '7 Feb, 2021',
+        'query' => "ALTER TABLE `person` DROP INDEX `added`",
+        'flush' => false,
+    ],
+    [
+        'id' => 1612747597,
+        'info' => 'Add DESC index on added',
+        'date' => '7 Feb, 2021',
+        'query' => "ALTER TABLE `person` ADD INDEX `added`(`added` DESC)",
+        'flush' => false,
+    ],
 ];
