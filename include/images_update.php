@@ -519,8 +519,8 @@ function fetch_person_info(int $count): void
         ->select(null)
         ->select('imdb_id')
         ->select('photo')
-        ->where('updated + 604800 < ?', TIME_NOW)
-        ->orderBy('added DESC')
+        ->where('updated < UNIX_TIMESTAMP() - 604800')
+        ->orderBy('updated DESC')
         ->limit($count)
         ->fetchAll();
 
