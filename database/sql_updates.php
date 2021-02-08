@@ -5092,4 +5092,11 @@ KEY `expires` (`expires`)
         'query' => "DROP TABLE `ips`",
         'flush' => false,
     ],
+    [
+        'id' => 1612747593,
+        'info' => 'Add index on added',
+        'date' => '7 Feb, 2021',
+        'query' => "ALTER TABLE `person` ADD INDEX `added`(`added`)",
+        'flush' => false,
+    ],
 ];
