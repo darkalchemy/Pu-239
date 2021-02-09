@@ -225,6 +225,10 @@ An image proxy for hot linked images is built in and enabled by default, disable
 #### Notes: 
 If sudo is necessary to run uglify.php without errors, then you have the permissions set incorrectly. See the wiki for a brief example.
 
+#### IP Addresses
+With the exception of the peers table, this project does not store the IP address of any user in the database. In addition, the users IP is not stored by default, the site administrator must manually change this setting to store IP addresses using memcached.  
+In time, the peers table will also be replaced with memcached, so that no IP will stored in the database.  
+
 #### Translations:
 This project uses gettext to manage text strings. Unfortunately, it is not yet 100%. There are still quite a few hard coded strings left here and there.  
 If you would like to see a specific translation or assist with a current translation, please join us at [Transifex](https://www.transifex.com/pu-239/).  
