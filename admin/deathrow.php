@@ -16,6 +16,7 @@ use Spatie\Image\Exceptions\InvalidManipulation;
 require_once INCL_DIR . 'function_users.php';
 require_once INCL_DIR . 'function_pager.php';
 require_once INCL_DIR . 'function_html.php';
+require_once INCL_DIR . 'function_bbcode.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
@@ -257,7 +258,7 @@ if ($count) {
         <tr>' . ($CURUSER['class'] >= UC_STAFF ? '
             <td>' . format_username((int) $queued['uid']) . '</td>' : '
             <td>' . _('Hidden') . '</td>') . "
-            <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>" . htmlsafechars($queued['torrent_name']) . "</a></td>
+            <td><a href='{$site_config['paths']['baseurl']}/details.php?id={$id}&amp;hit=1'>" . format_comment($queued['torrent_name']) . "</a></td>
             <td>{$reason}</td>
             <td>" . get_date((int) $queued['notified'], 'LONG', 0, 1) . "</td>
             <td><input type='checkbox' name='remove[]' value='{$id}' class='tooltipper' title='" . _('Delete') . "'></td>

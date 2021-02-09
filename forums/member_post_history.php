@@ -228,15 +228,15 @@ if (!isset($member_id) || !is_valid_id($member_id)) {
         <table class="table table-bordered table-striped">
         <tr>
 		<td colspan="3">' . _('Forum') . ':
-		<a class="is-link" href="forums . php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . _('Link to Forum') . '">
+		<a class="is-link" href="forums.php?action=view_forum&amp;forum_id=' . (int) $arr['forum_id'] . '" title="' . _('Link to Forum') . '">
 		<span style="color: white;font-weight: bold;">' . htmlsafechars((string) $arr['forum_name']) . '</span></a>&nbsp;&nbsp;&nbsp;&nbsp;
-		' . _('Topic') . ': <a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . _('Link to Forum') . '">
+		' . _('Topic') . ': <a class="is-link" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '" title="' . _('Link to Forum') . '">
 		<span style="color: white;font-weight: bold;">' . htmlsafechars((string) $arr['topic_name']) . '</span></a>' . $topic_status_image . '</td>
 		</tr>
 		<tr>
 		<td class="forum_head"><a id="' . $post_id . '"></a></td>
 		<td class="forum_head"><span style="white - space:nowrap;">' . $post_icon . '
-		<a class="is-link" href="forums . php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . _('Link to Post') . '">
+		<a class="is-link" href="forums.php?action=view_topic&amp;topic_id=' . (int) $arr['topic_id'] . '&amp;page = ' . $page . '#' . (int) $arr['post_id'] . '" title="' . _('Link to Post') . '">
 		' . $post_title . ' </a>&nbsp;&nbsp;' . $post_status_image . ' &nbsp;&nbsp; ' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span></td>
 		<td class="forum_head"><span style="white-space:nowrap;">
 		<a href="forums.php?action=view_my_posts&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt = "' . _('Top') . '" class="emoticon"></a>

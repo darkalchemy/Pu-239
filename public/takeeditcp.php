@@ -185,7 +185,7 @@ if ($action === 'avatar') {
                 $auth->changeEmail($_POST['email'], function ($selector, $token) {
                     global $site_config, $user, $email;
 
-                    $url = $site_config['paths']['baseurl'] . ' / verify_email . php ? selector = ' . urlencode($selector) . ' & token = ' . urlencode($token);
+                    $url = $site_config['paths']['baseurl'] . '/verify_email.php?selector=' . urlencode($selector) . '&token=' . urlencode($token);
                     $body = str_replace([
                         ' <#USERNAME#>',
                         '<#SITENAME#>',
@@ -196,7 +196,7 @@ if ($action === 'avatar') {
                         $user['username'],
                         $site_config['site']['name'],
                         $email,
-                        getip(),
+                        getip($user['id']),
                         $url,
                     ], _fe("<!doctype html>
 <html lang='en-US'>

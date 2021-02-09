@@ -270,7 +270,7 @@ class User
     <p>{3}</p>
     <p>After you do this, you will be able to use your new account. If you fail to do this, your account will be deleted within 24 hours. We urge you to read the {4}RULES{5} and {6}FAQ{5} before you start using {0}.</p>
 </body>
-</html>', $this->site_config['site']['name'], strip_tags($values['email']), getip(), $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token), "<a href='{$this->site_config['paths']['baseurl']}/rules.php'>", '</a>', "<a href='{$this->site_config['paths']['baseurl']}/faq.php'>");
+</html>', $this->site_config['site']['name'], strip_tags($values['email']), getip(0), $this->site_config['paths']['baseurl'] . '/verify_email.php?selector=' . htmlsafechars($selector) . '&token=' . urlencode($token), "<a href='{$this->site_config['paths']['baseurl']}/rules.php'>", '</a>', "<a href='{$this->site_config['paths']['baseurl']}/faq.php'>");
                     send_mail(strip_tags($values['email']), "{$this->site_config['site']['name']} " . _('user registration confirmation'), $body, strip_tags($body));
                     $this->session->set('is-success', 'We will send a confirmation email to ' . strip_tags($values['email']));
                 });
@@ -592,7 +592,7 @@ class User
 <p>After you do this, you will be able to log with the new password.</p>
 <p>--{3}</p>
 </body>
-</html>', $email, getip(), "{$this->site_config['paths']['baseurl']}/recover.php?selector=" . urlencode($selector) . '&token=' . urlencode($token), $this->site_config['site']['name']);
+</html>', $email, getip(0), "{$this->site_config['paths']['baseurl']}/recover.php?selector=" . urlencode($selector) . '&token=' . urlencode($token), $this->site_config['site']['name']);
                 send_mail($email, "{$this->site_config['site']['name']} " . _('password reset confirmation'), $body, strip_tags($body));
             });
             stderr(_('Success'), _('If the email address exists, a confirmation email will be sent. Please allow a few minutes for the mail to arrive.'));

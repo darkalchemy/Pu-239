@@ -15,6 +15,13 @@ class IP
     protected $user;
     protected $container;
 
+    /**
+     * IP constructor.
+     *
+     * @param PeerCache          $cache
+     * @param User               $user
+     * @param ContainerInterface $c
+     */
     public function __construct(PeerCache $cache, User $user, ContainerInterface $c)
     {
         $this->container = $c;
@@ -22,11 +29,20 @@ class IP
         $this->user = $user;
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return array
+     */
     public function get(int $userid): array
     {
         return $this->cache->get('ips_by_userid_' . $userid) ?: [];
     }
 
+    /**
+     * @param int    $userid
+     * @param string $ip
+     */
     protected function set(int $userid, string $ip): void
     {
         $ips = $this->get($userid);
@@ -36,16 +52,49 @@ class IP
         }
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return string
+     */
+    public function get_current(int $userid): string
+    {
+        return $this->cache->get('current_ip_by_userid_' . $userid) ?: '';
+    }
+
+    /**
+     * @param int    $userid
+     * @param string $ip
+     */
+    protected function set_current(int $userid, string $ip): void
+    {
+        $this->cache->set('current_ip_by_userid_' . $userid, $ip);
+    }
+
+    /**
+     * @param int $userid
+     *
+     * @return array
+     */
     public function get_data_set(int $userid): array
     {
         return $this->cache->get('ip_dataset_by_userid_' . $userid) ?: [];
     }
 
+    /**
+     * @param int   $userid
+     * @param array $dataset
+     */
     public function set_data_set(int $userid, array $dataset): void
     {
         $this->cache->set('ip_dataset_by_userid_' . $userid, $dataset, 0);
     }
 
+    /**
+     * @param int    $userid
+     * @param string $ip
+     * @param string $type
+     */
     protected function add_ip_to_user(int $userid, string $ip, string $type): void
     {
         $this->set($userid, $ip);
@@ -63,11 +112,20 @@ class IP
         $this->set_data_set($userid, array_values($data));
     }
 
+    /**
+     * @param string $ip
+     *
+     * @return array
+     */
     protected function get_users_by_ip(string $ip): array
     {
         return $this->cache->get('users_by_ip_' . $ip) ?: [];
     }
 
+    /**
+     * @param int    $userid
+     * @param string $ip
+     */
     protected function add_user_to_ip(int $userid, string $ip): void
     {
         $user_ids = $this->get_users_by_ip($ip);
@@ -77,11 +135,17 @@ class IP
         }
     }
 
+    /**
+     * @return array
+     */
     protected function get_all_ips(): array
     {
         return $this->cache->get('all_ips_') ?: [];
     }
 
+    /**
+     * @param string $ip
+     */
     protected function add_ip_to_ips(string $ip): void
     {
         $ips = $this->get_all_ips();
@@ -91,13 +155,24 @@ class IP
         }
     }
 
+    /**
+     * @param int    $userid
+     * @param string $type
+     * @param string $ip
+     */
     public function insert(int $userid, string $type, string $ip): void
     {
         $this->add_ip_to_ips($ip);
         $this->add_ip_to_user($userid, $ip, $type);
         $this->add_user_to_ip($userid, $ip);
+        $this->set_current($userid, $ip);
     }
 
+    /**
+     * @param int    $userid
+     * @param string $ip
+     * @param string $type
+     */
     public function delete(int $userid, string $ip, string $type)
     {
         $data = $this->get_data_set($userid);
@@ -109,6 +184,13 @@ class IP
         $this->set_data_set($userid, $data);
     }
 
+    /**
+     * @param string $ip
+     *
+     * @throws \Envms\FluentPDO\Exception
+     *
+     * @return array
+     */
     public function getUsersFromIP(string $ip)
     {
         $data = $this->get_users_by_ip($ip);
@@ -124,6 +206,9 @@ class IP
         return $users;
     }
 
+    /**
+     * @param int $timestamp
+     */
     public function delete_by_age(int $timestamp)
     {
         $all = $this->get_all_ips();
@@ -149,11 +234,23 @@ class IP
         }
     }
 
+    /**
+     * @param string $ip
+     *
+     * @return int
+     */
     public function get_user_count(string $ip): int
     {
         return count($this->get_users_by_ip($ip));
     }
 
+    /**
+     * @param int    $userid
+     * @param int    $days
+     * @param string $type
+     *
+     * @return int
+     */
     public function get_ip_count(int $userid, int $days, string $type): int
     {
         $array = $this->get_data_set($userid);
@@ -168,6 +265,9 @@ class IP
         return count($array);
     }
 
+    /**
+     * @return array
+     */
     public function get_duplicates()
     {
         $ips = $this->get_all_ips();

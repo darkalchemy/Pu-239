@@ -7,6 +7,8 @@ require_once INCL_DIR . 'function_html.php';
 require_once CLASS_DIR . 'class_check.php';
 $class = get_access(basename($_SERVER['REQUEST_URI']));
 class_check($class);
+$user = check_user_status();
+global $site_config;
 $HTMLOUT = '';
 if (strtoupper(substr(PHP_OS, 0, 3) === 'WIN')) {
     $windows = 1;
@@ -21,11 +23,11 @@ $unix = (bool) $unix;
 $win = (bool) $windows;
 if ($register_globals) {
     $ip = getenv($_SERVER['REMOTE_ADDR']);
-    $self = $PHP_SELF;
+    $self = $_SERVER['PHP_SELF'];
 } else {
     $action = isset($_POST['action']) ? $_POST['action'] : '';
     $host = isset($_POST['host']) ? $_POST['host'] : '';
-    $ip = getip();
+    $ip = getip($user['id']);
     $self = $_SERVER['SCRIPT_NAME'];
 }
 if ($action === 'do') {

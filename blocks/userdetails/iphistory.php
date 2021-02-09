@@ -8,8 +8,8 @@ use Pu239\IP;
 global $container, $site_config, $CURUSER, $user, $id, $HTMLOUT;
 
 $cache = $container->get(Cache::class);
-$user['ip'] = getip();
-if ($user['paranoia'] < 2 || $CURUSER['id'] === $id) {
+$user['ip'] = getip($id);
+if (has_access($CURUSER['class'], UC_STAFF, '') || $CURUSER['id'] === $id) {
     $cache->delete('ip_history_' . $id);
     $iphistory = $cache->get('ip_history_' . $id);
     if ($iphistory === false || is_null($iphistory)) {

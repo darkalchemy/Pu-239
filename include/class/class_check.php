@@ -45,7 +45,7 @@ function class_check(int $class = UC_STAFF)
         stderr(_('Error'), 'No Permission. Page is for ' . get_user_class_name((int) $class) . ' and above. Read the FAQ.');
     }
     if ($user['class'] > UC_MAX || (!in_array($user['id'], $site_config['is_staff']) && (!$user['roles_mask'] & Roles::CODER))) {
-        $ip = getip();
+        $ip = getip($user['id']);
         $body = "User: [url={$site_config['paths']['baseurl']}/userdetails.php?id={$user['id']}][color=user]{$user['username']}[/color][/url] - {$ip}[br]Class {$user['class']}[br]Current page: {$_SERVER['PHP_SELF']}[br]Previous page: " . (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'no referer') . '[br]Action: ' . $_SERVER['REQUEST_URI'] . '[br] Member has been disabled and demoted by class check system.';
         $subject = 'Warning Class Check System!';
         if (user_exists($site_config['chatbot']['id'])) {

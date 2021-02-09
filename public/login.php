@@ -21,7 +21,7 @@ if ($auth->isLoggedIn()) {
 }
 get_template();
 $bans_class = $container->get(Ban::class);
-if ($bans_class->get_count($ip = getip()) > 0) {
+if ($bans_class->get_count($ip = getip(0)) > 0) {
     stderr(_('Error'), _fe('This IP ({0}) address has been banned.', $ip));
 }
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'remember' => 'in:1',
     ]);
     if ($validation->fails()) {
-        write_log(_fe('{0} has tried to login using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_fe('{0} has tried to login using invalid data. ', getip(0)) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }

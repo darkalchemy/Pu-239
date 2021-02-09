@@ -83,32 +83,38 @@ function htmlsafechars(string $txt, bool $strip = true)
 }
 
 /**
+ *
+ * @param int $user_id
+ *
+ * @throws DependencyException
  * @throws NotFoundException
  * @throws \Envms\FluentPDO\Exception
- * @throws DependencyException
  *
  * @return string
- *
- *
  */
-function getip()
+function getip(int $user_id): string
 {
-    global $site_config, $container;
+    global $site_config, $container, $cache;
 
     if (!$site_config['site']['ip_logging']) {
-        return '10.0.0.1';
+        return '127.0.0.1';
+    }
+    $auth = $container->get(Auth::class);
+    $userid = $auth->getUserId();
+    $ips_class = $container->get(IP::class);
+    if ($user_id === 0 || $user_id === $userid) {
+        $ip = $auth->getIpAddress();
+    } else {
+        $ip = $ips_class->get_current($user_id);
     }
 
-    $auth = $container->get(Auth::class);
-    $ip = $auth->getIpAddress();
-    $userid = $auth->getUserId();
     if ($userid) {
         $user_class = $container->get(User::class);
         $user = $user_class->getUserFromId($userid);
         $no_log_ip = isset($user) && $user['perms'] & PERMS_NO_IP;
     }
     if (!validip($ip) || $no_log_ip) {
-        return '10.0.0.1';
+        return '127.0.0.1';
     }
 
     return $ip;
@@ -767,7 +773,7 @@ function check_user_status(string $type = 'browse')
         }
         if (!($users_data['perms'] & PERMS_BYPASS_BAN)) {
             $bans_class = $container->get(Ban::class);
-            if ($bans_class->check_bans(getip())) {
+            if ($bans_class->check_bans(getip($userid))) {
                 $update = [
                     'status' => 2,
                 ];
@@ -1410,7 +1416,7 @@ function insert_update_ip(string $type, int $userid)
 {
     global $container;
     $ips_class = $container->get(IP::class);
-    $ips_class->insert($userid, $type, getip());
+    $ips_class->insert($userid, $type, getip($userid));
 
     return true;
 }

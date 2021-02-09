@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
     if ($validation->fails() || !valid_username($post['username'], false, true)) {
         $session->set('is-warning', _('Invalid information provided, please try again.'));
-        write_log(getip() . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(getip(0) . ' has used invalid data to signup. ' . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     } else {

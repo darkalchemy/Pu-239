@@ -156,7 +156,6 @@ function sqlerr($file = '', $line = '')
         $_error_string .= "\n Date: " . date('r');
         $_error_string .= "\n Error Number: " . $the_error_no;
         $_error_string .= "\n Error: " . $the_error;
-        $_error_string .= "\n IP Address: " . getip();
         $_error_string .= "\n in file " . $file . ' on line ' . $line;
         $_error_string = !empty($_SERVER['REQUEST_URI']) ? $_error_string . "\n URL: {$_SERVER['REQUEST_URI']}" : '';
         $_error_string .= "\n Username: {$CURUSER['username']}[{$CURUSER['id']}]";

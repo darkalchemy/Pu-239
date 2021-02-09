@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'email' => 'required|email',
     ]);
     if ($validation->fails()) {
-        write_log(_fe('{0} has tried to reset password using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_fe('{0} has tried to reset password using invalid data. ', getip(0)) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'confirm_password' => 'required|same:password',
     ]);
     if ($validation->fails()) {
-        write_log(_fe('{0} has tried to reset password using invalid data. ', getip()) . json_encode($post, JSON_PRETTY_PRINT));
+        write_log(_fe('{0} has tried to reset password using invalid data. ', getip(0)) . json_encode($post, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }
@@ -66,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['selector'])) {
         'token' => 'required|alpha_dash',
     ]);
     if ($validation->fails()) {
-        write_log(_fe('{0} has tried to reset password using invalid data. ', getip()) . json_encode($get, JSON_PRETTY_PRINT));
+        write_log(_fe('{0} has tried to reset password using invalid data. ', getip(0)) . json_encode($get, JSON_PRETTY_PRINT));
         header("Location: {$_SERVER['PHP_SELF']}");
         die();
     }

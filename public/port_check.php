@@ -25,7 +25,7 @@ $completed .= main_div("
     <div id='ipports' data-uid='{$id}' class='bg-04 round10'></div>
     <div class='columns top10 is-variable is-0-mobile is-1-tablet is-2-desktop padding20'>
         <div class='has-text-centered column is-one-third'>
-            <input class='w-100' type='text' id='userip' placeholder='" . _fe('Your Torrent Client IP [{0}]', getip()) . "'>
+            <input class='w-100' type='text' id='userip' placeholder='" . _fe('Your Torrent Client IP [{0}]', getip($id)) . "'>
         </div>
         <div class='has-text-centered column is-one-third'>
             <input class='w-100' type='text' id='userport' placeholder='" . _('Your Torrent Client Port') . "'>
