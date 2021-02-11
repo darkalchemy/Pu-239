@@ -260,7 +260,7 @@ if ($BLOCKS['imdb_api_on'] && (in_array($torrent['category'], $site_config['cate
     }
 }
 if (!empty($torrent['youtube'])) {
-    preg_match('/(watch\?v=|watch\?.+&v=)(.{11})/i', $torrent['youtube'], $match);
+    preg_match('/(watch\?v=|watch\?.+&v=)(.{8,11})/i', $torrent['youtube'], $match);
     if (isset($match[2])) {
         $youtube_id = $match[2];
         $youtube = "
