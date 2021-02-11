@@ -207,7 +207,7 @@ if ($do === 'view_page') {
         }
     }
 } elseif ($do === 'send_email') {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = isset($_POST['email']) ? htmlsafechars($_POST['email']) : '';
         $invite = isset($_POST['code']) ? htmlsafechars($_POST['code']) : '';
         $secret = isset($_POST['secret']) ? (int) $_POST['secret'] : 0;

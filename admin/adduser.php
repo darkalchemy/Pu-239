@@ -24,7 +24,7 @@ $stdfoot = [
     ],
 ];
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $post = $_POST;
     unset($_POST, $_GET, $_FILES);
     $validator = $container->get(Validator::class);

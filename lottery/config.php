@@ -16,7 +16,7 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
     $lottery_config[$ac['name']] = $ac['value'];
 }
 $session = $container->get(Session::class);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ([
         'ticket_amount' => 0,
         'class_allowed' => 1,

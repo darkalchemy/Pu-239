@@ -15,7 +15,7 @@ while ($ac = mysqli_fetch_assoc($lconf)) {
 global $container, $site_config, $CURUSER;
 
 $session = $container->get(Session::class);
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $fail = false;
     $tickets = isset($_POST['tickets']) ? (int) $_POST['tickets'] : '';
     if (!$tickets) {

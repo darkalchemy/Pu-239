@@ -10,7 +10,7 @@ class_check($class);
 global $site_config;
 
 $rep_set_cache = CACHE_DIR . 'rep_settings_cache.php';
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_POST['submit']);
     //print_r($_POST);
     rep_cache();
