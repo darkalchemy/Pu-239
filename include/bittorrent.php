@@ -766,9 +766,9 @@ function check_user_status(string $type = 'browse')
         $session = $container->get(Session::class);
         if (!$site_config['site']['online']) {
             if ($users_data['class'] < UC_STAFF) {
-                die('Site is down for maintenance, please check back again later... thanks<br>');
+                die(_('Site is down for maintenance, please check back again later... thanks') . '<br>');
             } elseif ($users_data['class'] >= UC_STAFF) {
-                $session->set('is-danger', 'Site is currently offline, only staff can access site.');
+                $session->set('is-danger', _('Site is currently offline, only staff can access site.'));
             }
         }
         if (!($users_data['perms'] & PERMS_BYPASS_BAN)) {

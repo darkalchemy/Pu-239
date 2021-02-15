@@ -428,7 +428,7 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
     $users_data = $users_class->getUserFromId($user_id);
     $achpoints = isset($users_data['achpoints']) ? $users_data['achpoints'] : 0;
     $peer = $container->get(Peer::class);
-    $peers = $peer->getPeersFromUserId($user_id);
+    $peers = $peer->get_peers_from_userid($user_id);
     $tag = $tag ? '@' : '';
 
     if (empty($users_data['id']) || $users_data['id'] === 0) {
@@ -467,11 +467,11 @@ function format_username(int $user_id, $icons = true, $tooltipper = true, $tag =
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>" . _('Seeding') . ": </span>
-                                <span class='level-right'>" . number_format($peers['yes']) . "</span>
+                                <span class='level-right'>" . number_format($peers['yes'] ?? 0) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>" . _('Leeching') . ": </span>
-                                <span class='level-right'>" . number_format($peers['no']) . "</span>
+                                <span class='level-right'>" . number_format($peers['no'] ?? 0) . "</span>
                             </span>
                             <span class='level is-marginless'>
                                 <span class='level-left'>" . _('Achievements') . ": </span>

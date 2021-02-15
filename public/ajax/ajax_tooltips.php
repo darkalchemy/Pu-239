@@ -16,7 +16,7 @@ if (!empty($user) && is_array($user)) {
     $upped = mksize($user['uploaded']);
     $downed = mksize($user['downloaded']);
     $peer = $container->get(Peer::class);
-    $seed = $peer->getPeersFromUserId($user['id']);
+    $seed = $peer->get_peers_from_userid($user['id']);
 
     if (!empty($seed['conn'])) {
         switch ($seed['conn']) {

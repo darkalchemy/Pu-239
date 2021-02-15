@@ -7,14 +7,12 @@ namespace Pu239;
 use MatthiasMullie\Scrapbook\Adapters\Collections\Utils\PrefixKeys;
 use MatthiasMullie\Scrapbook\Adapters\Memcached;
 use MatthiasMullie\Scrapbook\Buffered\BufferedStore;
-use MatthiasMullie\Scrapbook\Buffered\TransactionalStore;
-use MatthiasMullie\Scrapbook\Exception\UnbegunTransaction;
 use Psr\Container\ContainerInterface;
 
 /**
  * Class PeerCache.
  */
-class PeerCache extends TransactionalStore
+class PeerCache extends BufferedStore
 {
     protected $cache;
     protected $container;
@@ -35,8 +33,7 @@ class PeerCache extends TransactionalStore
         }
         $client = $this->container->get(Memcached::class);
         $client = new PrefixKeys($client, $this->env['peer_cache']['prefix']);
-        $client = new BufferedStore($client);
-        $this->cache = new TransactionalStore($client);
+        $this->cache = new BufferedStore($client);
 
         parent::__construct($this->cache);
     }

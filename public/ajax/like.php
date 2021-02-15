@@ -9,7 +9,7 @@ use Pu239\Database;
 
 require_once __DIR__ . '/../../include/bittorrent.php';
 require_once INCL_DIR . 'function_users.php';
-$user = check_user_status('like');
+$user = check_user_status();
 
 $fields = [
     'comment' => 'comments',

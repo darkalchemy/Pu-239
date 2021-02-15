@@ -50,18 +50,19 @@ if (isset($_GET['delete']) && is_valid_id((int) $_GET['delete'])) {
     $session = $container->get(Session::class);
     $session->set('is-success', 'Peer ' . $_GET['delete'] . ' has been deleted.');
 }
-$pagerlink = $ascdesc = '';
+$pagerlink = '';
+$ascdesc = SORT_ASC;
 $type = isset($_GET['type']) ? $_GET['type'] : 'desc';
 foreach ($valid_sort as $key => $value) {
     if ($value === $column) {
         switch (htmlsafechars($type)) {
             case 'desc':
-                $ascdesc = 'DESC';
+                $ascdesc = SORT_DESC;
                 $linkascdesc = 'desc';
                 break;
 
             default:
-                $ascdesc = '';
+                $ascdesc = SORT_ASC;
                 $linkascdesc = 'asc';
                 break;
         }

@@ -42,7 +42,7 @@ function class_check(int $class = UC_STAFF)
     $userid = $user['id'];
     if (!has_access($user['class'], $class, 'coder')) {
         write_info("{$user['username']} attempted to access a staff page");
-        stderr(_('Error'), 'No Permission. Page is for ' . get_user_class_name((int) $class) . ' and above. Read the FAQ.');
+        stderr(_('Error'), _fe('No Permission. Page is for {0} and above. Read the FAQ.', get_user_class_name((int) $class)));
     }
     if ($user['class'] > UC_MAX || (!in_array($user['id'], $site_config['is_staff']) && (!$user['roles_mask'] & Roles::CODER))) {
         $ip = getip($user['id']);

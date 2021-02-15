@@ -402,7 +402,7 @@ $torrents_class->remove_torrent($infohash);
 $torrents_class->get_torrent_from_hash($infohash);
 $cache->delete('peers_' . $owner_id);
 $peer_class = $container->get(Peer::class);
-$peer_class->getPeersFromUserId($owner_id);
+$peer_class->get_peers_from_userid($owner_id);
 clear_image_cache();
 
 $files = $container->get(Files::class);
