@@ -69,7 +69,7 @@ function run_uglify($argv = [])
 
     $purpose = '--beautify';
     $short = 'Beautified';
-    $spurpose = "-02 'all:on;mergeSemantically:off;removeUnusedAtRules:off' --skip-rebase --format beautify";
+    $spurpose = "-O2 'all:on;mergeSemantically:off;removeUnusedAtRules:off' --format beautify";
     $css_ext = '.css';
     $js_ext = '.js';
     $jstmp = BIN_DIR . 'temp.js';
@@ -78,7 +78,7 @@ function run_uglify($argv = [])
     if (PRODUCTION) {
         $purpose = '--compress --mangle';
         $short = 'Minified';
-        $spurpose = "-02 'all:on;mergeSemantically:off;removeUnusedAtRules:off' --skip-rebase";
+        $spurpose = "-O2 'all:on;mergeSemantically:off;removeUnusedAtRules:off'";
         $css_ext = '.min.css';
         $js_ext = '.min.js';
     }
