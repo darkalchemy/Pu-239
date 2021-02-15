@@ -150,7 +150,7 @@ input:invalid {
 }
 
 .platform-menu {
-    padding: 0 10px;
+    padding: 1px 10px;
 }
 .platform-wrapper > div > div {
     /*margin: 2px auto;*/
@@ -1197,6 +1197,7 @@ option.head {
 .middle {
     height:      21px;
     line-height: 21px;
+    margin-top: 1px;
 }
 
 .droppable {
