@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Pu239;
 
+use Envms\FluentPDO\Exception;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -28,6 +29,11 @@ class Peer
         $this->limit = $this->env['db']['query_limit'];
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return array
+     */
     public function get_peers_from_userid(int $userid): array
     {
         $hashes = $this->get_user_peers($userid);
@@ -58,12 +64,24 @@ class Peer
         return $peers;
     }
 
+    /**
+     * @param int $tid
+     *
+     * @return array
+     */
     public function get_torrent_peers_from_id(int $tid): array
     {
         $hashes = $this->get_torrent_peers($tid);
         return $this->cache->getMulti($hashes) ?: [];
     }
 
+    /**
+     * @param int    $tid
+     * @param int    $userid
+     * @param string $peer_id
+     *
+     * @return int[]
+     */
     public function get_torrent_count(int $tid, int $userid, string $peer_id): array
     {
         $values = $this->get_user_peers($userid);
@@ -97,6 +115,11 @@ class Peer
         ];
     }
 
+    /**
+     * @param array $values
+     *
+     * @return bool
+     */
     public function delete_peer(array $values): bool
     {
         $hash = $this->set_peer_hash($values['userid'], $values['torrent'], $values['ip'], $values['port']);
@@ -125,11 +148,19 @@ class Peer
         return $this->cache->delete($hash);
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return bool
+     */
     public function flush(int $userid): bool
     {
         return $this->cache->delete('peers_user_' . $userid);
     }
 
+    /**
+     * @return int
+     */
     public function get_count(): int
     {
         $hashes = [];
@@ -140,6 +171,13 @@ class Peer
         return count($hashes);
     }
 
+    /**
+     * @param array $values
+     *
+     * @throws Exception
+     *
+     * @return bool
+     */
     public function insert_update(array $values): bool
     {
         $torrent = $this->torrent->get($values['torrent']);
@@ -155,12 +193,26 @@ class Peer
         return $this->cache->set($hash, $values, 2100);
     }
 
+    /**
+     * @param int    $userid
+     * @param int    $torrent
+     * @param string $ip
+     * @param int    $port
+     *
+     * @return string
+     */
     protected function set_peer_hash(int $userid, int $torrent, string $ip, int $port): string
     {
         return base64_encode(sprintf("%d_%d_%s_%d", $userid, $torrent, $ip, $port));
     }
 
-    protected function cache_peers(string $key, array $peers)
+    /**
+     * @param string $key
+     * @param array  $peers
+     *
+     * @return bool
+     */
+    protected function cache_peers(string $key, array $peers): bool
     {
         if (empty($peers)) {
             return $this->cache->delete($key);
@@ -170,6 +222,11 @@ class Peer
         return $this->cache->set($key, $compressed, 2100);
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return bool
+     */
     protected function set_all_peer_ids(int $userid): bool
     {
         $peers = $this->get_all_peer_ids();
@@ -179,6 +236,9 @@ class Peer
         return $this->cache_peers('peers_all_user_ids_' . $userid, $peers);
     }
 
+    /**
+     * @return array
+     */
     protected function get_all_peer_ids(): array
     {
         $peers = $this->cache->get('peers_all_user_ids_') ?: [];
@@ -188,6 +248,12 @@ class Peer
         return $peers;
     }
 
+    /**
+     * @param int    $userid
+     * @param string $hash
+     *
+     * @return bool
+     */
     protected function set_user_peers(int $userid, string $hash): bool
     {
         $peers = $this->get_user_peers($userid);
@@ -197,6 +263,11 @@ class Peer
         return $this->cache_peers('peers_user_' . $userid, $peers);
     }
 
+    /**
+     * @param int $userid
+     *
+     * @return array
+     */
     protected function get_user_peers(int $userid): array
     {
         $peers = $this->cache->get('peers_user_' . $userid) ?: [];
@@ -206,6 +277,12 @@ class Peer
         return $peers;
     }
 
+    /**
+     * @param int    $torrent
+     * @param string $hash
+     *
+     * @return bool
+     */
     protected function set_torrent_peer(int $torrent, string $hash): bool
     {
         $peers = $this->get_torrent_peers($torrent);
@@ -215,6 +292,11 @@ class Peer
         return $this->cache_peers('peers_torrent_' . $torrent, $peers);
     }
 
+    /**
+     * @param int $torrent
+     *
+     * @return array
+     */
     protected function get_torrent_peers(int $torrent): array
     {
         $peers = $this->cache->get('peers_torrent_' . $torrent) ?: [];
