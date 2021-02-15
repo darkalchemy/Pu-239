@@ -107,12 +107,13 @@ function getip(int $user_id): string
     } else {
         $ip = $ips_class->get_current($user_id);
     }
-
+    $no_log_ip = false;
     if ($userid) {
         $user_class = $container->get(User::class);
         $user = $user_class->getUserFromId($userid);
         $no_log_ip = isset($user) && $user['perms'] & PERMS_NO_IP;
     }
+
     if (!validip($ip) || $no_log_ip) {
         return '127.0.0.1';
     }
