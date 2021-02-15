@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Pu239;
 
@@ -31,15 +31,31 @@ class Peer
     public function get_peers_from_userid(int $userid): array
     {
         $hashes = $this->get_user_peers($userid);
-        $peers = $this->cache->getMulti($hashes) ?: [];
-        foreach ($peers as $peer) {
-            if ($peer['seeder'] === 'yes') {
-                ++$seeder;
-            } else {
-                ++$leecher;
+        $user_peers = $this->cache->getMulti($hashes) ?: [];
+        $peers['yes'] = $peers['no'] = $peers['conn_yes'] = $peers['conn_no'] = $peers['count'] = 0;
+        $peers['conn'] = 3;
+        $peers['percentage'] = 0;
+        foreach ($user_peers as $a) {
+            $key = $a['seeder'] === 'yes' ? 'yes' : 'no';
+            ++$peers[$key];
+            $conn = $a['connectable'] === 'yes' ? 'conn_yes' : 'conn_no';
+            ++$peers[$conn];
+            ++$peers['count'];
+            if ($peers['conn_no'] === 0 && $peers['conn_yes'] > 0) {
+                $peers['conn'] = 2;
+            } elseif ($peers['conn_no'] > 0) {
+                $peers['conn'] = 1;
             }
-
+            if ($peers['count'] > 0) {
+                if ($peers['conn_no'] === 0 && $peers['conn_yes'] > 0) {
+                    $peers['percentage'] = 100;
+                } elseif ($peers['conn_yes'] > 0) {
+                    $peers['percentage'] = ceil(($peers['conn_yes'] / $peers['count']) * 100);
+                }
+            }
         }
+
+        return $peers;
     }
 
     public function get_torrent_peers_from_id(int $tid): array
@@ -54,11 +70,19 @@ class Peer
         $peers = $this->cache->getMulti($values);
         $seeder = $leecher = $no_seed = 0;
         foreach ($peers as $peer) {
-            if ($peer_id === $peer['peer_id'] && $peer['torrent'] === $tid) {
+            if (!$tid) {
                 if ($peer['seeder'] === 'yes') {
                     ++$seeder;
                 } else {
                     ++$leecher;
+                }
+            } else {
+                if ($peer_id === $peer['peer_id'] && $peer['torrent'] === $tid) {
+                    if ($peer['seeder'] === 'yes') {
+                        ++$seeder;
+                    } else {
+                        ++$leecher;
+                    }
                 }
             }
             if ($peer['to_go'] > 0) {
