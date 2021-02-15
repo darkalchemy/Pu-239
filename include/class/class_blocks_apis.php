@@ -3,7 +3,7 @@
 declare(strict_types = 1);
 
 /**
- * Class block_index.
+ * Class class_blocks_apis.
  */
 class class_blocks_apis
 {
