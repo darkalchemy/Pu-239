@@ -27,7 +27,8 @@ global $site_config;
 if (user_exists($site_config['chatbot']['id']) && ($cleanup_check === false || is_null($cleanup_check))) {
     images_update();
 } else {
-    echo _f("Already started ") . get_date($cleanup_check, 'LONG', 0, 0) . ".\n";
+    $item_count = (int) $cache->get('item_count_');
+    echo _fe("Already started {0}. Processing items {1}", get_date($cleanup_check, 'LONG', 0, 0), $item_count) . ".\n";
 }
 
 /**
