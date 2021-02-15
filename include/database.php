@@ -47,11 +47,11 @@ function debug_pdo()
         $paramaters = $BaseQuery->getParameters();
         $time = $BaseQuery->getExecutionTime();
         if (!empty($paramaters) && count($paramaters) >= 1) {
+            $pdo = $container->get(PDO::class);
             foreach ($paramaters as $param) {
                 if (is_int($param)) {
                     $params[] = $param;
                 } else {
-                    $pdo = $container->get(PDO::class);
                     $params[] = $pdo->quote($param);
                 }
             }
@@ -140,7 +140,6 @@ function sqlesc_noquote($x)
  *
  * @throws DependencyException
  * @throws NotFoundException
- * @throws \Envms\FluentPDO\Exception
  */
 function sqlerr($file = '', $line = '')
 {
