@@ -1214,14 +1214,12 @@ if ($BLOCKS['userdetails_user_comments_on']) {
                 <label for='userdetails_user_comments'></label></div>
                 <div class='w-100 has-text-centered'>" . _('Enable user comments') . '</div>';
 }
-if ($user['class'] >= UC_STAFF) {
-    if ($BLOCKS['news_on']) {
-        $contents[] = "
-        <div class='w-100 has-text-centered'>" . _('Completed?') . "</div>
-        <div class='slideThree'><input type='checkbox' id='userdetails_completed' name='userdetails_completed' value='yes' $checkbox_userdetails_completed>
-        <label for='userdetails_completed'></label></div>
-        <div class='w-100 has-text-centered'>" . _('Enable completed torrents') . '</div>';
-    }
+if (($user['class'] >= UC_STAFF) && $BLOCKS['news_on']) {
+    $contents[] = "
+    <div class='w-100 has-text-centered'>" . _('Completed?') . "</div>
+    <div class='slideThree'><input type='checkbox' id='userdetails_completed' name='userdetails_completed' value='yes' $checkbox_userdetails_completed>
+    <label for='userdetails_completed'></label></div>
+    <div class='w-100 has-text-centered'>" . _('Enable completed torrents') . '</div>';
 }
 
 foreach ($contents as $content) {

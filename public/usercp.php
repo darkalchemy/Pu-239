@@ -327,10 +327,8 @@ if ($action === 'avatar') {
     $objects = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(LOCALES_DIR, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::SELF_FIRST);
     foreach ($objects as $name => $object) {
         $basename = basename($name);
-        if (is_dir($name) && $basename !== 'LC_MESSAGES') {
-            if (in_array(str_replace('_', '-', $basename), $supported_locales)) {
-                $available_languages[$basename] = $i18n->getLocaleName($basename);
-            }
+        if (is_dir($name) && $basename !== 'LC_MESSAGES' && in_array(str_replace('_', '-', $basename), $supported_locales)) {
+            $available_languages[$basename] = $i18n->getLocaleName($basename);
         }
     }
     natsort($available_languages);
@@ -707,63 +705,61 @@ if ($action === 'avatar') {
                                 </tbody>
                             </table>
                         </div>";
-} else {
-    if ($action === 'default') {
-        $HTMLOUT .= "
-                        <div class='table-wrapper $width'>
-                            <table class='table table-bordered table-striped'>
-                                <thead>
-                                    <tr>
-                                        <th colspan='2'>
-                                            <input type='hidden' name='action' value='default'>
-                                            " . _('PM options') . '
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>';
-        $HTMLOUT .= tr(_('Email Notification'), "
-                                            <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pm]') !== false ? 'checked' : '') . " value='yes'> " . _('Notify me when I have received a PM') . '', 1);
-        $HTMLOUT .= tr(_('Accept PMs'), "
-                                            <div class='level'>
-                                                <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('All (except blocks)') . "
-                                                </span>
-                                                <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'friends' ? 'checked' : '') . " value='friends'> " . _('Friends only') . "
-                                                </span>
-                                                <span>
-                                                    <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'no' ? 'checked' : '') . " value='no'> " . _('Staff only') . '
-                                                </span>
-                                            </div>', 1);
-        $HTMLOUT .= tr(_('Delete PMs'), "
-                                            <input type='checkbox' name='deletepms' " . ($user['deletepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Delete PM on reply")') . '', 1);
-        $HTMLOUT .= tr(_('Save PMs'), "
-                                            <input type='checkbox' name='savepms' " . ($user['savepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Save PM to Sentbox")') . '', 1);
-        $HTMLOUT .= tr(_('Forum Subscribe PM'), "
-                                            <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('Yes') . "
-                                            <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'no' ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When someone posts in a subscribed thread, you will be PMed.'), 1);
+} elseif ($action === 'default') {
+    $HTMLOUT .= "
+                    <div class='table-wrapper $width'>
+                        <table class='table table-bordered table-striped'>
+                            <thead>
+                                <tr>
+                                    <th colspan='2'>
+                                        <input type='hidden' name='action' value='default'>
+                                        " . _('PM options') . '
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>';
+    $HTMLOUT .= tr(_('Email Notification'), "
+                                        <input type='checkbox' name='pmnotif' " . (!empty($user['notifs']) && strpos($user['notifs'], '[pm]') !== false ? 'checked' : '') . " value='yes'> " . _('Notify me when I have received a PM') . '', 1);
+    $HTMLOUT .= tr(_('Accept PMs'), "
+                                        <div class='level'>
+                                            <span>
+                                                <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('All (except blocks)') . "
+                                            </span>
+                                            <span>
+                                                <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'friends' ? 'checked' : '') . " value='friends'> " . _('Friends only') . "
+                                            </span>
+                                            <span>
+                                                <input type='radio' name='acceptpms' " . ($user['acceptpms'] === 'no' ? 'checked' : '') . " value='no'> " . _('Staff only') . '
+                                            </span>
+                                        </div>', 1);
+    $HTMLOUT .= tr(_('Delete PMs'), "
+                                        <input type='checkbox' name='deletepms' " . ($user['deletepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Delete PM on reply")') . '', 1);
+    $HTMLOUT .= tr(_('Save PMs'), "
+                                        <input type='checkbox' name='savepms' " . ($user['savepms'] === 'yes' ? 'checked' : '') . '> ' . _('(Default value for "Save PM to Sentbox")') . '', 1);
+    $HTMLOUT .= tr(_('Forum Subscribe PM'), "
+                                        <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'yes' ? 'checked' : '') . " value='yes'> " . _('Yes') . "
+                                        <input type='radio' name='subscription_pm' " . ($user['subscription_pm'] === 'no' ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When someone posts in a subscribed thread, you will be PMed.'), 1);
 
-        $pm_on_delete = ($user['opt2'] & class_user_options_2::PM_ON_DELETE) === class_user_options_2::PM_ON_DELETE;
-        $HTMLOUT .= tr(_('Torrent deletion PM'), "
-                                            <input type='radio' name='pm_on_delete' " . ($pm_on_delete ? 'checked' : '') . " value='yes'> " . _('Yes') . "
-                                            <input type='radio' name='pm_on_delete' " . (!$pm_on_delete ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are deleted, you will be PMed.'), 1);
+    $pm_on_delete = ($user['opt2'] & class_user_options_2::PM_ON_DELETE) === class_user_options_2::PM_ON_DELETE;
+    $HTMLOUT .= tr(_('Torrent deletion PM'), "
+                                        <input type='radio' name='pm_on_delete' " . ($pm_on_delete ? 'checked' : '') . " value='yes'> " . _('Yes') . "
+                                        <input type='radio' name='pm_on_delete' " . (!$pm_on_delete ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are deleted, you will be PMed.'), 1);
 
-        $commentpm = ($user['opt2'] & class_user_options_2::COMMENTPM) === class_user_options_2::COMMENTPM;
-        $HTMLOUT .= tr(_('Torrent comment PM'), "
-                                            <input type='radio' name='commentpm' " . ($commentpm ? 'checked' : '') . " value='yes'> " . _('Yes') . "
-                                            <input type='radio' name='commentpm' " . (!$commentpm ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are commented on, you will be PMed.'), 1);
-        $HTMLOUT .= "
-                                    <tr>
-                                        <td colspan='2'>
-                                            <div class='has-text-centered'>
-                                                <input class='button is-small' type='submit' value='" . _('Submit Changes') . "'>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>";
-    }
+    $commentpm = ($user['opt2'] & class_user_options_2::COMMENTPM) === class_user_options_2::COMMENTPM;
+    $HTMLOUT .= tr(_('Torrent comment PM'), "
+                                        <input type='radio' name='commentpm' " . ($commentpm ? 'checked' : '') . " value='yes'> " . _('Yes') . "
+                                        <input type='radio' name='commentpm' " . (!$commentpm ? 'checked' : '') . " value='no'> " . _('No') . '<br>' . _('When any of your uploaded torrents are commented on, you will be PMed.'), 1);
+    $HTMLOUT .= "
+                                <tr>
+                                    <td colspan='2'>
+                                        <div class='has-text-centered'>
+                                            <input class='button is-small' type='submit' value='" . _('Submit Changes') . "'>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>";
 }
 
 $HTMLOUT .= '

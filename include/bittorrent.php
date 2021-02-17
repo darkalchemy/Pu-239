@@ -203,27 +203,21 @@ function get_template()
     if (!empty($CURUSER)) {
         if (file_exists(TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php")) {
             require_once TEMPLATE_DIR . "{$CURUSER['stylesheet']}/template.php";
-        } else {
-            if (isset($site_config)) {
-                if (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
-                    require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
-                } else {
-                    echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
-                }
+        } elseif (isset($site_config)) {
+            if (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
+                require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
             } else {
-                if (file_exists(TEMPLATE_DIR . '1/template.php')) {
-                    require_once TEMPLATE_DIR . '1/template.php';
-                } else {
-                    echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
-                }
+                echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
             }
-        }
+        } elseif (file_exists(TEMPLATE_DIR . '1/template.php')) {
+                require_once TEMPLATE_DIR . '1/template.php';
+            } else {
+                echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
+            }
+    } elseif (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
+        require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
     } else {
-        if (file_exists(TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php")) {
-            require_once TEMPLATE_DIR . "{$site_config['site']['stylesheet']}/template.php";
-        } else {
-            echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
-        }
+        echo 'Sorry, Templates do not seem to be working properly and missing some code. Please report this to the programmers/owners.';
     }
 }
 
@@ -621,22 +615,21 @@ function referer()
 
     $referrer_class = $container->get(Referrer::class);
     $http_referer = !empty($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
-    if (filter_var($http_referer, FILTER_VALIDATE_URL)) {
-        if (!empty($_SERVER['HTTP_HOST']) && !empty($http_referer) && strstr($http_referer, $_SERVER['HTTP_HOST']) === false) {
-            $http_agent = $_SERVER['HTTP_USER_AGENT'];
-            $http_page = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
-            if (!empty($_SERVER['QUERY_STRING'])) {
-                $http_page .= '?' . $_SERVER['QUERY_STRING'];
+    if (filter_var($http_referer, FILTER_VALIDATE_URL) && !empty($_SERVER['HTTP_HOST']) && !empty($http_referer) && strstr($http_referer,
+            $_SERVER['HTTP_HOST']) === false) {
+                $http_agent = $_SERVER['HTTP_USER_AGENT'];
+                $http_page = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['SCRIPT_NAME'];
+                if (!empty($_SERVER['QUERY_STRING'])) {
+                    $http_page .= '?' . $_SERVER['QUERY_STRING'];
+                }
+                $values = [
+                    'browser' => $http_agent,
+                    'referer' => $http_referer,
+                    'page' => $http_page,
+                    'date' => TIME_NOW,
+                ];
+                $referrer_class->insert($values);
             }
-            $values = [
-                'browser' => $http_agent,
-                'referer' => $http_referer,
-                'page' => $http_page,
-                'date' => TIME_NOW,
-            ];
-            $referrer_class->insert($values);
-        }
-    }
 }
 
 /**
@@ -1116,11 +1109,9 @@ function valid_username(string $username, bool $ajax = false, bool $in_use = fal
             }
 
             return false;
-        } else {
-            if ($ajax) {
-                echo "<div class='has-text-success tooltipper bottom20' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . '</b></div>';
-                die();
-            }
+        } elseif ($ajax) {
+            echo "<div class='has-text-success tooltipper bottom20' title='" . _('Username is Available') . "'><i class='icon-thumbs-up icon' aria-hidden='true'></i><b>" . _('Username is Available') . '</b></div>';
+            die();
         }
     }
 
@@ -1199,11 +1190,11 @@ function url_proxy(string $url, bool $image = false, ?int $width = null, ?int $h
     if (empty($url)) {
         return $url;
     }
-    if ((stripos($url, $site_config['session']['domain']) !== false || stripos($url, $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) && stripos($url, 'logo') === false) {
-        if (stripos($url, 'img.php') === false) {
-            return $url;
-        }
-    }
+    if ((stripos($url, $site_config['session']['domain']) !== false || stripos($url,
+                $site_config['paths']['images_baseurl']) !== false || stripos($url, $site_config['paths']['baseurl']) !== false) && stripos($url,
+            'logo') === false && stripos($url, 'img.php') === false) {
+                return $url;
+            }
     if (!$image) {
         return (!empty($site_config['site']['anonymizer_url']) ? $site_config['site']['anonymizer_url'] : '') . $url;
     }
@@ -1470,19 +1461,17 @@ function fetch(string $url, ?bool $fresh = true, ?bool $async = false)
         'verify' => false,
     ]);
     try {
-        if ($res = $client->request('GET', $url)) {
-            if ($res->getStatusCode() === 200) {
-                $contents = $res->getBody()->getContents();
-                if (!$fresh) {
-                    $cache->set($key, $contents, $expires);
-                    file_put_contents($file, $contents);
-                    if (gzCompressFile($file)) {
-                        unlink($file);
-                    }
+        if (($res = $client->request('GET', $url)) && $res->getStatusCode() === 200) {
+            $contents = $res->getBody()->getContents();
+            if (!$fresh) {
+                $cache->set($key, $contents, $expires);
+                file_put_contents($file, $contents);
+                if (gzCompressFile($file)) {
+                    unlink($file);
                 }
-
-                return $contents;
             }
+
+            return $contents;
         }
     } catch (GuzzleHttp\Exception\GuzzleException $e) {
     }

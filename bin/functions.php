@@ -148,10 +148,8 @@ function cleanup(string $group)
             }
         }
     }
-    if (php_sapi_name() === 'cli') {
-        if (file_exists(DI_CACHE_DIR)) {
-            passthru("sudo chown -R $group:$group " . DI_CACHE_DIR);
-        }
+    if ((php_sapi_name() === 'cli') && file_exists(DI_CACHE_DIR)) {
+        passthru("sudo chown -R $group:$group " . DI_CACHE_DIR);
     }
 }
 

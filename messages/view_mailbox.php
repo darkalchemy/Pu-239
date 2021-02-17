@@ -85,26 +85,24 @@ if (empty($messages)) {
     foreach ($messages as $row) {
         if ($mailbox === $site_config['pm']['drafts'] || $row['id'] === 0 || $row['sender'] === $user['id'] || $row['poster'] === $user['id']) {
             $friends = '';
+        } elseif ($row['friend'] > 0) {
+            $friends = '
+                <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . $row['id'] . '">
+                    <small><i class="icon-minus has-text-danger tooltipper" title="' . _('remove from friends') . '"></i></small>
+                </a>';
+        } elseif ($row['blocked'] > 0) {
+            $friends = '
+                <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . $row['id'] . '">
+                    <small><i class="icon-minus has-text-danger tooltipper" title="' . _('remove from blocks') . '"></i></small>
+                </a>';
         } else {
-            if ($row['friend'] > 0) {
-                $friends = '
-                    <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=delete&amp;type=friend&amp;targetid=' . $row['id'] . '">
-                        <small><i class="icon-minus has-text-danger tooltipper" title="' . _('remove from friends') . '"></i></small>
-                    </a>';
-            } elseif ($row['blocked'] > 0) {
-                $friends = '
-                    <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=delete&amp;type=block&amp;targetid=' . $row['id'] . '">
-                        <small><i class="icon-minus has-text-danger tooltipper" title="' . _('remove from blocks') . '"></i></small>
-                    </a>';
-            } else {
-                $friends = '
-                    <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . $row['id'] . '">
-                        <small><i class="icon-user-plus icon has-text-success tooltipper" title="' . _('add to friends') . '"></i></small>
-                    </a>
-                    <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . $row['id'] . '">
-                        <small><i class="icon-user-times icon has-text-danger tooltipper" title="' . _('add to blocks') . '"></i></small>
-                    </a>';
-            }
+            $friends = '
+                <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=add&amp;type=friend&amp;targetid=' . $row['id'] . '">
+                    <small><i class="icon-user-plus icon has-text-success tooltipper" title="' . _('add to friends') . '"></i></small>
+                </a>
+                <a href="' . $site_config['paths']['baseurl'] . '/friends.php?action=add&amp;type=block&amp;targetid=' . $row['id'] . '">
+                    <small><i class="icon-user-times icon has-text-danger tooltipper" title="' . _('add to blocks') . '"></i></small>
+                </a>';
         }
         $subject = !empty($row['subject']) ? format_comment($row['subject']) : _('No Subject');
         $who_sent_it = $row['id'] === 0 || $row['id'] === 2 ? '<span style="font-weight: bold;">' . _('System') . '</span>' : format_username((int) $row['id']) . $friends;

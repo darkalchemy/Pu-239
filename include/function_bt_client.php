@@ -31,12 +31,10 @@ function StdDecodePeerId($id_data, $id_name)
                 $version_str .= '.';
                 break;
             }
+        } elseif ($c != '-' && ctype_alnum($c)) {
+            $version_str .= "$c.";
         } else {
-            if ($c != '-' && ctype_alnum($c)) {
-                $version_str .= "$c.";
-            } else {
-                break;
-            }
+            break;
         }
     }
     $version_str = substr($version_str, 0, strlen($version_str) - 1);
@@ -418,12 +416,10 @@ function getclient($httpagent, $peer_id)
             $build = $buildv;
         } elseif ($ver < 180) {
             $build = $buildv & 16383;
+        } elseif ($beta && $buildv & 49152) {
+            $build = $buildv & 16383;
         } else {
-            if ($beta && $buildv & 49152) {
-                $build = $buildv & 16383;
-            } else {
-                $build = $buildv;
-            }
+            $build = $buildv;
         }
         if ($matches[1] === 'M') {
             return "\xB5" . 'TorrentMac/' . $matches[2][0] . '.' . $matches[2][1] . '.' . $matches[2][2] . ' (' . $build . ')';

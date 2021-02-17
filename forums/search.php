@@ -151,152 +151,150 @@ if ($search || $author_id) {
                        ->offset($pager['pdo']['offset']);
     if ($count === 0) {
         $content .= stdmsg(_('Nothing Found'), _('Please try again with a refined search string.'), 'top20');
-    } else {
-        if (empty($author_error)) {
-            if ($show_as === 'list') {
-                $content .= "<div class='top20'></div>" . ($count > $perpage ? $menu_top : '') . '
-        <a id="results"></a>';
-                $heading = '
-        <tr>
-            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></th>
-            <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Thread Icon') . '" title="' . _('Thread Icon') . '" class="emoticon tooltipper"></th>
-            <th class="w-40">' . _('Topic / Post') . '</th>
-            <th class="w-40">' . _('in Forum') . '</th>
-            <th class="w-1">' . _('Replies') . '</th>
-            <th class="w-1">' . _('Views') . '</th>
-            <th class="w-1">' . _('Date') . '</th>
-        </tr>';
-                foreach ($results as $arr) {
-                    $table_body = '';
-                    if ($search_what === 'all' || $search_what === 'title') {
-                        $topic_title = highlightWords(htmlsafechars((string) $arr['topic_title']), $search);
-                        $topic_desc = highlightWords(htmlsafechars((string) $arr['topic_desc']), $search);
-                        $post_title = highlightWords(htmlsafechars((string) $arr['post_title']), $search);
-                    } else {
-                        $topic_title = htmlsafechars((string) $arr['topic_title']);
-                        $topic_desc = htmlsafechars((string) $arr['topic_desc']);
-                        $post_title = htmlsafechars((string) $arr['post_title']);
-                    }
-                    $body = format_comment($arr['body'], true, false);
-                    $post_id = $arr['post_id'];
-                    $posts = $arr['post_count'];
-                    $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . _('Post Preview') . '');
-                    $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
-                    $table_body .= '
-        <tr>
-            <td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></td>
-            <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars((string) $arr['icon']) . '.gif" alt="' . htmlsafechars((string) $arr['icon']) . '" title="' . htmlsafechars((string) $arr['icon']) . '" class="emoticon tooltipper">') . '</td>
-            <td>
-                <div class="padding20">
-                    <div class="columns">
-                        <div class="column is-one-fifth">
-                            <span class="has-text-weight-bold">' . _('Post') . ': </span>
-                        </div>
-                        <div class="column">
-                            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . _('go to the post') . '">' . (empty($post_title) ? '' . _('Link to Post') . '' : $post_title) . '</a>
-                        </div>
+    } elseif (empty($author_error)) {
+        if ($show_as === 'list') {
+            $content .= "<div class='top20'></div>" . ($count > $perpage ? $menu_top : '') . '
+    <a id="results"></a>';
+            $heading = '
+    <tr>
+        <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></th>
+        <th class="w-1"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Thread Icon') . '" title="' . _('Thread Icon') . '" class="emoticon tooltipper"></th>
+        <th class="w-40">' . _('Topic / Post') . '</th>
+        <th class="w-40">' . _('in Forum') . '</th>
+        <th class="w-1">' . _('Replies') . '</th>
+        <th class="w-1">' . _('Views') . '</th>
+        <th class="w-1">' . _('Date') . '</th>
+    </tr>';
+            foreach ($results as $arr) {
+                $table_body = '';
+                if ($search_what === 'all' || $search_what === 'title') {
+                    $topic_title = highlightWords(htmlsafechars((string) $arr['topic_title']), $search);
+                    $topic_desc = highlightWords(htmlsafechars((string) $arr['topic_desc']), $search);
+                    $post_title = highlightWords(htmlsafechars((string) $arr['post_title']), $search);
+                } else {
+                    $topic_title = htmlsafechars((string) $arr['topic_title']);
+                    $topic_desc = htmlsafechars((string) $arr['topic_desc']);
+                    $post_title = htmlsafechars((string) $arr['post_title']);
+                }
+                $body = format_comment($arr['body'], true, false);
+                $post_id = $arr['post_id'];
+                $posts = $arr['post_count'];
+                $post_text = bubble("<i class='icon-search icon' aria-hidden='true'></i>", $body, '' . _('Post Preview') . '');
+                $rpic = ($arr['num_ratings'] != 0 ? ratingpic_forums(round($arr['rating_sum'] / $arr['num_ratings'], 1)) : '');
+                $table_body .= '
+    <tr>
+        <td><img src="' . $site_config['paths']['images_baseurl'] . 'forums/' . ($posts < 30 ? ($arr['locked'] === 'yes' ? 'locked' : 'topic') : 'hot_topic') . '.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon tooltipper"></td>
+        <td>' . (empty($arr['icon']) ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="' . _('Topic') . '" title="' . _('Topic') . '" class="emoticon">' : '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars((string) $arr['icon']) . '.gif" alt="' . htmlsafechars((string) $arr['icon']) . '" title="' . htmlsafechars((string) $arr['icon']) . '" class="emoticon tooltipper">') . '</td>
+        <td>
+            <div class="padding20">
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <span class="has-text-weight-bold">' . _('Post') . ': </span>
                     </div>
-                    <div class="columns">
-                        <div class="column is-one-fifth">
-                            <span style="font-style: italic;">by: </span>
-                        </div>
-                        <div class="column">
-                            ' . ($arr['pan'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . '
-                        </div>
+                    <div class="column">
+                        <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=15&amp;page=p' . $arr['post_id'] . '&amp;search=' . $search_post . '#' . $arr['post_id'] . '" title="' . _('go to the post') . '">' . (empty($post_title) ? '' . _('Link to Post') . '' : $post_title) . '</a>
                     </div>
-                    <div class="columns">
-                        <div class="column is-one-fifth">
-                            <span style="font-style: italic;">' . _('In topic') . ': </span>
-                        </div>
-                        <div class="column">
-                            ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . _('Pinned') . '" title="' . _('Pinned') . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
-                                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('go to topic') . '">' . $topic_title . '</a>' . $post_text . '
-                        </div>' . (!empty($rpic) ? '
-                        <div class="column is-1">
-                            ' . $rpic . '
-                        </div>' : '') . '
-                    </div>' . (!empty($topic_desc) ? '
-                    <div class="columns">
-                        <div class="column is-one-fifth"></div>
-                        <div class="column">
-                            &#9658; <span style="font-size: x-small;">' . $topic_desc . '</span>
-                        </div>
-                    </div>' : '') . '
                 </div>
-            </td>
-            <td>
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('go to forum') . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
-                ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars((string) $arr['forum_desc']) . '</span>' : '') . '
-            </td>
-            <td>' . number_format($posts - 1) . '</td>
-            <td>' . number_format($arr['views']) . '</td>
-            <td><span style="white-space:nowrap;">' . get_date((int) $arr['added'], '') . '</span></td>
-        </tr>';
-                    $content .= main_table($table_body, $heading, 'top20') . ($count > $perpage ? $menu_bottom : '');
-                }
-            } elseif ($show_as === 'posts') {
-                $content .= "<div class='top20'></div>" . ($count > $perpage ? $menu_top : '') . '
-        <a id="results"></a>';
-                $x = 0;
-                foreach ($results as $arr) {
-                    $user = $users_class->getUserFromId((int) $arr['userid']);
-                    $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title']) . '</span>' : 'Link to Post');
-                    if ($search_what === 'all' || $search_what === 'title') {
-                        $topic_title = highlightWords(htmlsafechars($arr['topic_title']), $search);
-                        $topic_desc = highlightWords(htmlsafechars($arr['topic_desc']), $search);
-                        $post_title = highlightWords($post_title, $search);
-                    } else {
-                        $topic_title = htmlsafechars($arr['topic_title']);
-                        $topic_desc = htmlsafechars($arr['topic_desc']);
-                    }
-                    $post_id = $arr['post_id'];
-                    $posts = $arr['post_count'];
-                    $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
-                    $edited_by = '';
-                    if ($arr['edit_date'] > 0) {
-                        $edited_username = $users_class->get_item('username', (int) $arr['edited_by']);
-                        $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
-                    }
-                    $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
-                    $table_body = '
-        <tr>
-            <td colspan="3">in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('Link to %s', 'Forum') . '">
-                    <span>' . htmlsafechars($arr['forum_name']) . '</span>
-                </a> in:
-                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('Link to %s', 'Ttopic') . '">
-                    <span>' . $topic_title . '</span>
-                </a>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <a id="' . $post_id . '"></a>
-            </td>
-            <td>
-                <span style="white-space:nowrap;">' . $post_icon . '
-                    <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
-                    </a>
-                    <span class="left20">' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
-                </span>
-            </td>
-            <td>
-                <span>
-                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . _('Top') . '" title="' . _('Top') . '" class="emoticon tooltipper"></a>
-                    <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . _('Bottom') . '" title="' . _('Bottom') . '" class="emoticon tooltipper"></a>
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . ($arr['anonymous'] === '1' || empty($user['title']) ? '' : '
-                <span class="size_2">[' . htmlsafechars($user['title']) . ']</span>') . '<span> ' . ($arr['anonymous'] === '1' ? '' : get_user_class_name((int) $user['class'])) . '</span>
-            </td>
-            <td colspan="2">' . $body . $edited_by . '</td>
-        </tr>';
-                    $content .= main_table($table_body, '', ($x++ === 0 ? '' : 'top20'));
-                }
-                $content .= ($count > $perpage ? $menu_bottom : '');
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <span style="font-style: italic;">by: </span>
+                    </div>
+                    <div class="column">
+                        ' . ($arr['pan'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . '
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column is-one-fifth">
+                        <span style="font-style: italic;">' . _('In topic') . ': </span>
+                    </div>
+                    <div class="column">
+                        ' . ($arr['sticky'] === 'yes' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/pinned.gif" alt="' . _('Pinned') . '" title="' . _('Pinned') . '" class="emoticon tooltipper">' : '') . ($arr['poll_id'] > 0 ? '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/poll.gif" alt="Poll" title="Poll" class="emoticon tooltipper">' : '') . '
+                            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('go to topic') . '">' . $topic_title . '</a>' . $post_text . '
+                    </div>' . (!empty($rpic) ? '
+                    <div class="column is-1">
+                        ' . $rpic . '
+                    </div>' : '') . '
+                </div>' . (!empty($topic_desc) ? '
+                <div class="columns">
+                    <div class="column is-one-fifth"></div>
+                    <div class="column">
+                        &#9658; <span style="font-size: x-small;">' . $topic_desc . '</span>
+                    </div>
+                </div>' : '') . '
+            </div>
+        </td>
+        <td>
+            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('go to forum') . '">' . htmlsafechars((string) $arr['forum_name']) . '</a>
+            ' . ($arr['forum_desc'] != '' ? '&#9658; <span style="font-size: x-small;">' . htmlsafechars((string) $arr['forum_desc']) . '</span>' : '') . '
+        </td>
+        <td>' . number_format($posts - 1) . '</td>
+        <td>' . number_format($arr['views']) . '</td>
+        <td><span style="white-space:nowrap;">' . get_date((int) $arr['added'], '') . '</span></td>
+    </tr>';
+                $content .= main_table($table_body, $heading, 'top20') . ($count > $perpage ? $menu_bottom : '');
             }
+        } elseif ($show_as === 'posts') {
+            $content .= "<div class='top20'></div>" . ($count > $perpage ? $menu_top : '') . '
+    <a id="results"></a>';
+            $x = 0;
+            foreach ($results as $arr) {
+                $user = $users_class->getUserFromId((int) $arr['userid']);
+                $post_title = (!empty($arr['post_title']) ? '<span style="font-weight: bold; font-size: x-small;">' . htmlsafechars($arr['post_title']) . '</span>' : 'Link to Post');
+                if ($search_what === 'all' || $search_what === 'title') {
+                    $topic_title = highlightWords(htmlsafechars($arr['topic_title']), $search);
+                    $topic_desc = highlightWords(htmlsafechars($arr['topic_desc']), $search);
+                    $post_title = highlightWords($post_title, $search);
+                } else {
+                    $topic_title = htmlsafechars($arr['topic_title']);
+                    $topic_desc = htmlsafechars($arr['topic_desc']);
+                }
+                $post_id = $arr['post_id'];
+                $posts = $arr['post_count'];
+                $post_icon = ($arr['icon'] != '' ? '<img src="' . $site_config['paths']['images_baseurl'] . 'smilies/' . htmlsafechars($arr['icon']) . '.gif" alt="icon" title="icon" class="emoticon tooltipper"> ' : '<img src="' . $site_config['paths']['images_baseurl'] . 'forums/topic_normal.gif" alt="Normal Topic" class="emoticon"> ');
+                $edited_by = '';
+                if ($arr['edit_date'] > 0) {
+                    $edited_username = $users_class->get_item('username', (int) $arr['edited_by']);
+                    $edited_by = '<span style="font-weight: bold; font-size: x-small;">Last edited by <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/member_details.php?id=' . $arr['edited_by'] . '">' . htmlsafechars($edited_username) . '</a> at ' . get_date((int) $arr['edit_date'], '') . ' GMT ' . ($arr['edit_reason'] != '' ? ' </span>[ Reason: ' . htmlsafechars($arr['edit_reason']) . ' ] <span style="font-weight: bold; font-size: x-small;">' : '');
+                }
+                $body = ($arr['bbcode'] === 'yes' ? highlightWords(format_comment($arr['body']), $search) : highlightWords(format_comment_no_bbcode($arr['body']), $search));
+                $table_body = '
+    <tr>
+        <td colspan="3">in:
+            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_forum&amp;forum_id=' . $arr['forum_id'] . '" title="' . _('Link to %s', 'Forum') . '">
+                <span>' . htmlsafechars($arr['forum_name']) . '</span>
+            </a> in:
+            <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '" title="' . _('Link to %s', 'Ttopic') . '">
+                <span>' . $topic_title . '</span>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a id="' . $post_id . '"></a>
+        </td>
+        <td>
+            <span style="white-space:nowrap;">' . $post_icon . '
+                <a class="is-link tooltipper" href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_topic&amp;topic_id=' . $arr['topic_id'] . '&amp;page=' . $page . '#' . $arr['post_id'] . '" title="Link to Post">' . $post_title . '
+                </a>
+                <span class="left20">' . _('Posted') . ': ' . get_date((int) $arr['added'], '') . ' [' . get_date((int) $arr['added'], '', 0, 1) . ']</span>
+            </span>
+        </td>
+        <td>
+            <span>
+                <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#top"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/up.gif" alt="' . _('Top') . '" title="' . _('Top') . '" class="emoticon tooltipper"></a>
+                <a href="' . $site_config['paths']['baseurl'] . '/forums.php?action=view_my_GETs&amp;page=' . $page . '#bottom"><img src="' . $site_config['paths']['images_baseurl'] . 'forums/down.gif" alt="' . _('Bottom') . '" title="' . _('Bottom') . '" class="emoticon tooltipper"></a>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <td class="has-text-centered w-15 mw-150">' . get_avatar($arr) . ($arr['anonymous'] === '1' ? '<i>' . get_anonymous_name() . '</i>' : format_username((int) $arr['userid'])) . ($arr['anonymous'] === '1' || empty($user['title']) ? '' : '
+            <span class="size_2">[' . htmlsafechars($user['title']) . ']</span>') . '<span> ' . ($arr['anonymous'] === '1' ? '' : get_user_class_name((int) $user['class'])) . '</span>
+        </td>
+        <td colspan="2">' . $body . $edited_by . '</td>
+    </tr>';
+                $content .= main_table($table_body, '', ($x++ === 0 ? '' : 'top20'));
+            }
+            $content .= ($count > $perpage ? $menu_bottom : '');
         }
     }
 }

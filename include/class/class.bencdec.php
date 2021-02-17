@@ -271,10 +271,8 @@ class bencdec
             self::$ext_valid = true;
         }
         $data = self::bdecode();
-        if (self::$ext_valid) {
-            if (self::$bdata_position < self::$bdata_length) {
-                return self::decode_error('Garbage data at end');
-            }
+        if (self::$ext_valid && self::$bdata_position < self::$bdata_length) {
+            return self::decode_error('Garbage data at end');
         }
         self::$bdata_position = 0;
         self::$bdata_length = 0;

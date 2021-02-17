@@ -41,10 +41,8 @@ function happyHour($action)
     $happyDate = $happyHour;
     $curDate = TIME_NOW;
     $nextDate = $happyHour + 3600;
-    if ($action === 'check') {
-        if ($happyDate < $curDate && $nextDate >= $curDate) {
-            return true;
-        }
+    if (($action === 'check') && $happyDate < $curDate && $nextDate >= $curDate) {
+        return true;
     }
     if ($action === 'time') {
         $timeLeft = mkprettytime(($happyHour + 3600) - TIME_NOW);

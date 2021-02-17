@@ -98,13 +98,11 @@ class AJAXChatLanguage
                 // Join the current langCodeParts:
                 $langCode = strtolower(implode('-', $langCodeParts));
                 // Check if the langCode is in the available list:
-                if (in_array($langCode, $this->_availableLangCodes)) {
-                    // Check the quality setting:
-                    if ($langQuality > $currentLangQuality) {
-                        $currentLangCode = $langCode;
-                        $currentLangQuality = $langQuality;
-                        break;
-                    }
+                // Check the quality setting:
+                if (in_array($langCode, $this->_availableLangCodes) && $langQuality > $currentLangQuality) {
+                    $currentLangCode = $langCode;
+                    $currentLangQuality = $langQuality;
+                    break;
                 }
                 // If strict mode is set, don't minimalize the language code:
                 if ($this->_strictMode) {

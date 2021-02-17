@@ -138,15 +138,13 @@ if ($queryed === 1) {
         $count->where('t.banned != "yes"');
         $query->where('t.banned != "yes"');
     }
+} elseif ($queryed === 2) {
+    $addparam .= 'incldead=2&amp;';
+    $count->where('t.visible = "no"');
+    $query->where('t.visible = "no"');
 } else {
-    if ($queryed === 2) {
-        $addparam .= 'incldead=2&amp;';
-        $count->where('t.visible = "no"');
-        $query->where('t.visible = "no"');
-    } else {
-        $count->where('t.visible = "yes"');
-        $query->where('t.visible = "yes"');
-    }
+    $count->where('t.visible = "yes"');
+    $query->where('t.visible = "yes"');
 }
 
 if (isset($_GET['only_free']) && $_GET['only_free'] == 1) {

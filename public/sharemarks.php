@@ -158,12 +158,10 @@ function sharetable($res, $userid, $user, $variant = 'index')
         }
         if (!$row['comments']) {
             $body .= '<td>' . (int) $row['comments'] . "</td>\n";
+        } elseif ($variant === 'index') {
+            $body .= "<td><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . "</a></b></td>\n";
         } else {
-            if ($variant === 'index') {
-                $body .= "<td><b><a href='details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . "</a></b></td>\n";
-            } else {
-                $body .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . "</a></b></td>\n";
-            }
+            $body .= "<td><b><a href='details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . "</a></b></td>\n";
         }
         $body .= '<td><span>' . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>\n";
         $body .= '

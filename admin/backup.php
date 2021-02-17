@@ -19,10 +19,8 @@ if (is_array($required_class)) {
     if (!in_array($CURUSER['class'], $required_class)) {
         stderr(_('Error'), _('You do not have permission to do this.'));
     }
-} else {
-    if ($required_class != $CURUSER['class']) {
-        stderr(_('Error'), _('Access denied!'));
-    }
+} elseif ($required_class != $CURUSER['class']) {
+    stderr(_('Error'), _('Access denied!'));
 }
 $mode = (isset($_GET['mode']) ? $_GET['mode'] : (isset($_POST['mode']) ? $_POST['mode'] : ''));
 

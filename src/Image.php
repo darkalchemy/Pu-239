@@ -203,18 +203,16 @@ class Image
             ])
             ) {
                 $count = $count->where('type = :type', [':type' => $term]);
+            } elseif (is_numeric($term)) {
+                $count = $count->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
+                    ':tmdb' => $term,
+                    ':tvmaze' => $term,
+                ]);
             } else {
-                if (is_numeric($term)) {
-                    $count = $count->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
-                        ':tmdb' => $term,
-                        ':tvmaze' => $term,
-                    ]);
-                } else {
-                    $count = $count->where('imdb_id = :imdb OR isbn = :isbn', [
-                        ':imdb' => $term,
-                        ':isbn' => $term,
-                    ]);
-                }
+                $count = $count->where('imdb_id = :imdb OR isbn = :isbn', [
+                    ':imdb' => $term,
+                    ':isbn' => $term,
+                ]);
             }
         }
         $count = $count->fetch('count');
@@ -245,18 +243,16 @@ class Image
             ])
             ) {
                 $query = $query->where('type = :type', [':type' => $term]);
+            } elseif (is_numeric($term)) {
+                $query = $query->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
+                    ':tmdb' => $term,
+                    ':tvmaze' => $term,
+                ]);
             } else {
-                if (is_numeric($term)) {
-                    $query = $query->where('tmdb_id = :tmdb OR tvmaze_id = :tvmaze', [
-                        ':tmdb' => $term,
-                        ':tvmaze' => $term,
-                    ]);
-                } else {
-                    $query = $query->where('imdb_id = :imdb OR isbn = :isbn', [
-                        ':imdb' => $term,
-                        ':isbn' => $term,
-                    ]);
-                }
+                $query = $query->where('imdb_id = :imdb OR isbn = :isbn', [
+                    ':imdb' => $term,
+                    ':isbn' => $term,
+                ]);
             }
         }
         $query = $query->limit($limit)

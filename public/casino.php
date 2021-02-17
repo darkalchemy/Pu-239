@@ -193,12 +193,10 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
             do {
                 $fake_winner = random_int(1, 6);
             } while ($_POST['number'] == $fake_winner);
+        } elseif ($_POST['color'] === 'black') {
+            $fake_winner = 'red';
         } else {
-            if ($_POST['color'] === 'black') {
-                $fake_winner = 'red';
-            } else {
-                $fake_winner = 'black';
-            }
+            $fake_winner = 'black';
         }
         $update = [
             'uploaded' => $user['uploaded'] - $betmb,
@@ -373,10 +371,8 @@ if (isset($color_options[$post_color], $number_options[$post_number]) || isset($
 
         $newups = $user['uploaded'] - $nobits;
         $debt = $nobits - $user['uploaded'];
-        if ($user['uploaded'] < $nobits) {
-            if ($alwdebt != 1) {
-                stderr(_('Sorry'), '<h2>' . _fe("That's {0} more than you have!", mksize($debt)) . "</h2>$goback", 'bottom20');
-            }
+        if (($user['uploaded'] < $nobits) && $alwdebt != 1) {
+            stderr(_('Sorry'), '<h2>' . _fe("That's {0} more than you have!", mksize($debt)) . "</h2>$goback", 'bottom20');
         }
         $betsp = $casino_bets->get_bets($user['id']);
         $session->set('is-success', _('Bet added, you will receive a PM notifying you of the results when someone has taken it'));

@@ -624,12 +624,8 @@ class User
             }
             $where = $this->container->get('where');
             $request = $_SERVER['REQUEST_URI'] === '/' ? '/index.php' : $_SERVER['REQUEST_URI'];
-            if (preg_match('/\/(.*?)\.php/is', $request, $whereis_temp)) {
-                if (isset($where[$whereis_temp[1]])) {
-                    $whereis = sprintf($where[$whereis_temp[1]], $user['username'], htmlsafechars($request));
-                } else {
-                    $whereis = sprintf($where['unknown'], $user['username']);
-                }
+            if (preg_match('/\/(.*?)\.php/is', $request, $whereis_temp) && isset($where[$whereis_temp[1]])) {
+                $whereis = sprintf($where[$whereis_temp[1]], $user['username'], htmlsafechars($request));
             } else {
                 $whereis = sprintf($where['unknown'], $user['username']);
             }

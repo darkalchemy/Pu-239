@@ -306,10 +306,8 @@ if ($upthis > 0 || $downthis > 0) {
         $downthis = $downthis / 2;
     }
     $crazyhour_on = $site_config['bonus']['crazy_hour'] ? crazyhour_announce() : false;
-    if ($downthis > 0) {
-        if (!$crazyhour_on && !$ratio_free) {
-            $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
-        }
+    if (($downthis > 0) && !$crazyhour_on && !$ratio_free) {
+        $user_updateset['downloaded'] = $user['downloaded'] + $downthis;
     }
     if (($site_config['tracker']['incomplete_seed'] || $seeder === 'yes') && $upthis > 0) {
         if (!$crazyhour_on) {
@@ -416,13 +414,11 @@ if (isset($self) && $event === 'stopped') {
     $updated = $peer_class->insert_update($values, $update);
     unset($values, $update);
     $cache->delete('peers_' . $user['id']);
-    if (!empty($updated)) {
-        if ($seeder != $self['seeder']) {
-            if ($seeder === 'yes') {
-                $torrents_class->adjust_torrent_peers($torrent['id'], 1, -1, 0);
-            } else {
-                $torrents_class->adjust_torrent_peers($torrent['id'], -1, 1, 0);
-            }
+    if (!empty($updated) && $seeder != $self['seeder']) {
+        if ($seeder === 'yes') {
+            $torrents_class->adjust_torrent_peers($torrent['id'], 1, -1, 0);
+        } else {
+            $torrents_class->adjust_torrent_peers($torrent['id'], -1, 1, 0);
         }
     }
 } else {

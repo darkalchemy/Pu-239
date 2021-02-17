@@ -115,10 +115,8 @@ if ($action === 'avatar') {
         }
     }
 
-    if (!empty($_POST['chmailpass'])) {
-        if (strlen($_POST['chmailpass']) > 72) {
-            stderr(_('Error'), _('Sorry, password is too long(max is 40 chars)'));
-        }
+    if (!empty($_POST['chmailpass']) && strlen($_POST['chmailpass']) > 72) {
+        stderr(_('Error'), _('Sorry, password is too long(max is 40 chars)'));
     }
 
     if ($_POST['email'] != $user['email']) {
@@ -141,17 +139,13 @@ if ($action === 'avatar') {
         }
         $changedemail = 1;
     }
-    if ($user['status'] === 1) {
-        if (isset($_POST['parked'])) {
-            if ($_POST['parked'] === 'no') {
-                $updateset[] = 'status = 0';
-                $updateset[] = 'parked_until = 0';
-                $curuser_cache['status'] = 0;
-                $curuser_cache['parked_until'] = 0;
-                $user_cache['status'] = 0;
-                $user_cache['parked_until'] = 0;
-            }
-        }
+    if (($user['status'] === 1) && isset($_POST['parked']) && $_POST['parked'] === 'no') {
+        $updateset[] = 'status = 0';
+        $updateset[] = 'parked_until = 0';
+        $curuser_cache['status'] = 0;
+        $curuser_cache['parked_until'] = 0;
+        $user_cache['status'] = 0;
+        $user_cache['parked_until'] = 0;
     }
     if ($user['anonymous_until'] != 0) {
         $anonymous = isset($_POST['anonymous']) && $_POST['anonymous'] != '' ? TIME_NOW + (365 * 86400) : 0;

@@ -176,14 +176,12 @@ function bookmarktable($res, $userid, $variant = 'index')
         if (!$row['comments']) {
             $body .= "
                         <td class='has-text-right'>" . (int) $row['comments'] . '</td>';
+        } elseif ($variant === 'index') {
+            $body .= "
+                    <td class='has-text-right'><b><a href='{$site_config['paths']['baseurl']}/details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . '</a></b></td>';
         } else {
-            if ($variant === 'index') {
-                $body .= "
-                        <td class='has-text-right'><b><a href='{$site_config['paths']['baseurl']}/details.php?id=$id&amp;hit=1&amp;tocomm=1'>" . (int) $row['comments'] . '</a></b></td>';
-            } else {
-                $body .= "
-                        <td class='has-text-right'><b><a href='{$site_config['paths']['baseurl']}/details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . '</a></b></td>';
-            }
+            $body .= "
+                    <td class='has-text-right'><b><a href='{$site_config['paths']['baseurl']}/details.php?id=$id&amp;page=0#startcomments'>" . (int) $row['comments'] . '</a></b></td>';
         }
         $body .= "
                         <td class='has-text-centered'><span>" . str_replace(',', '<br>', get_date((int) $row['added'], '')) . "</span></td>

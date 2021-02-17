@@ -48,76 +48,74 @@ while ($hit_and_run_arr = mysqli_fetch_assoc($hit_and_run_rez)) {
     $S_date = (int) $hit_and_run_arr['start_date'];
     $T_ID = (int) $hit_and_run_arr['torrentid'];
     $C_Date = (int) $hit_and_run_arr['complete_date'];
-    if ($Xbt_Seed) {
-        if ($Uid_ID !== $hit_and_run_arr['owner']) {
-            $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['down']);
-            $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['dload']);
-            $ratio_site = member_ratio((float) $hit_and_run_arr['up'], (float) $hit_and_run_arr['down']);
-            $ratio_torrent = member_ratio((float) $hit_and_run_arr['uload'], (float) $hit_and_run_arr['dload']);
-            $avatar = get_avatar($hit_and_run_arr);
-            $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
-            switch (true) {
-                case $hit_and_run_arr['class'] <= $site_config['hnr_config']['firstclass']:
-                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
-                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
-                    break;
+    if ($Xbt_Seed && $Uid_ID !== $hit_and_run_arr['owner']) {
+        $site_ratio = $hit_and_run_arr['up'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['down']);
+        $torrent_ratio = $hit_and_run_arr['uload'] / ($site_config['site']['ratio_free'] ? 1 : (int) $hit_and_run_arr['dload']);
+        $ratio_site = member_ratio((float) $hit_and_run_arr['up'], (float) $hit_and_run_arr['down']);
+        $ratio_torrent = member_ratio((float) $hit_and_run_arr['uload'], (float) $hit_and_run_arr['dload']);
+        $avatar = get_avatar($hit_and_run_arr);
+        $torrent_needed_seed_time = $hit_and_run_arr['seedtime'];
+        switch (true) {
+            case $hit_and_run_arr['class'] <= $site_config['hnr_config']['firstclass']:
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600;
+                break;
 
-                case $hit_and_run_arr['class'] < $site_config['hnr_config']['secondclass']:
-                    $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
-                    $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
-                    break;
+            case $hit_and_run_arr['class'] < $site_config['hnr_config']['secondclass']:
+                $days_3 = $site_config['hnr_config']['_3day_second'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_second'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_second'] * 3600;
+                break;
 
-                case $hit_and_run_arr['class'] >= $site_config['hnr_config']['thirdclass']:
-                    $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
-                    $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
-                    $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
-                    break;
+            case $hit_and_run_arr['class'] >= $site_config['hnr_config']['thirdclass']:
+                $days_3 = $site_config['hnr_config']['_3day_third'] * 3600;
+                $days_14 = $site_config['hnr_config']['_14day_third'] * 3600;
+                $days_over_14 = $site_config['hnr_config']['_14day_over_third'] * 3600;
+                break;
 
-                default:
-                    $days_3 = $site_config['hnr_config']['_3day_first'] * 3600; //== 1 days
-                    $days_14 = $site_config['hnr_config']['_14day_first'] * 3600; //== 1 days
-                    $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
-            }
-            switch (true) {
-                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
-                    $minus_ratio = $days_3 - $torrent_needed_seed_time;
-                    break;
-
-                case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
-                    $minus_ratio = $days_14 - $torrent_needed_seed_time;
-                    break;
-
-                case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
-                    $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
-                    break;
-
-                default:
-                    $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
-            }
-            $minus_ratio = $minus_ratio < 0 ? 0 : $minus_ratio;
-            $color = $minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen';
-            $users = $hit_and_run_arr;
-            $users['id'] = (int) $Uid_ID;
-            $HTMLOUT .= '<tr><td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
-            <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name((int) $hit_and_run_arr['class']) . ' ]
-</td>
-            <td><a class="is-link" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
-            ' . _('Leechers:') . ' ' . (int) $hit_and_run_arr['numleeching'] . '<br>
-            ' . _('Seeders:') . ' ' . (int) $hit_and_run_arr['numseeding'] . '
-         </td>
-            <td>' . _('Finished DL at:') . ' ' . get_date($C_Date, 'LONG') . '<br>
-            ' . _('Stopped seeding at:') . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
-            ' . _('Seeded for:') . ' ' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
-            **' . _('Should still seed for') . ': ' . mkprettytime($minus_ratio) . '</td>
-            <td>' . _('Uploaded') . ': ' . mksize($hit_and_run_arr['uload']) . '<br>
-            ' . ($site_config['site']['ratio_free'] ? ' ' : _('Downloaded') . mksize($hit_and_run_arr['dload']) . '<br>') . '
-            ' . _('Torrent ratio') . ': <span style="color: " ' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
-            ' . _('Site ratio') . ': <span style="color: "' . get_ratio_color($site_ratio) . '" title="' . _('includes all bonus and karma stuff') . '">' . $ratio_site . '</font></td>
-            <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . _('Send this user a PM') . '"></a><br>
-            <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . _('Shit') . '"></a></td></tr>';
+            default:
+                $days_3 = $site_config['hnr_config']['_3day_first'] * 3600; //== 1 days
+                $days_14 = $site_config['hnr_config']['_14day_first'] * 3600; //== 1 days
+                $days_over_14 = $site_config['hnr_config']['_14day_over_first'] * 3600; //== 1 day
         }
+        switch (true) {
+            case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage1'] * 86400:
+                $minus_ratio = $days_3 - $torrent_needed_seed_time;
+                break;
+
+            case ($S_date - $hit_and_run_arr['torrent_added']) < $site_config['hnr_config']['torrentage2'] * 86400:
+                $minus_ratio = $days_14 - $torrent_needed_seed_time;
+                break;
+
+            case ($S_date - $hit_and_run_arr['torrent_added']) >= $site_config['hnr_config']['torrentage3'] * 86400:
+                $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
+                break;
+
+            default:
+                $minus_ratio = $days_over_14 - $torrent_needed_seed_time;
+        }
+        $minus_ratio = $minus_ratio < 0 ? 0 : $minus_ratio;
+        $color = $minus_ratio > 0 ? get_ratio_color($minus_ratio) : 'limegreen';
+        $users = $hit_and_run_arr;
+        $users['id'] = (int) $Uid_ID;
+        $HTMLOUT .= '<tr><td class="has-text-centered w-15 mw-150">' . $avatar . '</td>
+        <td><a class="is-link" href="' . $site_config['paths']['baseurl'] . '/userdetails.php?id=' . (int) $Uid_ID . '&amp;completed=1#completed">' . htmlsafechars($users['username']) . '</a>  [ ' . get_user_class_name((int) $hit_and_run_arr['class']) . ' ]
+</td>
+        <td><a class="is-link" href="details.php?id=' . (int) $T_ID . '&amp;hit=1">' . htmlsafechars($hit_and_run_arr['name']) . '</a><br>
+        ' . _('Leechers:') . ' ' . (int) $hit_and_run_arr['numleeching'] . '<br>
+        ' . _('Seeders:') . ' ' . (int) $hit_and_run_arr['numseeding'] . '
+     </td>
+        <td>' . _('Finished DL at:') . ' ' . get_date($C_Date, 'LONG') . '<br>
+        ' . _('Stopped seeding at:') . ' ' . get_date((int) $hit_and_run_arr['hit_and_run'], '') . '<br>
+        ' . _('Seeded for:') . ' ' . mkprettytime($hit_and_run_arr['seedtime']) . '<br>
+        **' . _('Should still seed for') . ': ' . mkprettytime($minus_ratio) . '</td>
+        <td>' . _('Uploaded') . ': ' . mksize($hit_and_run_arr['uload']) . '<br>
+        ' . ($site_config['site']['ratio_free'] ? ' ' : _('Downloaded') . mksize($hit_and_run_arr['dload']) . '<br>') . '
+        ' . _('Torrent ratio') . ': <span style="color: " ' . get_ratio_color($torrent_ratio) . '">' . $ratio_torrent . '</span><br>
+        ' . _('Site ratio') . ': <span style="color: "' . get_ratio_color($site_ratio) . '" title="' . _('includes all bonus and karma stuff') . '">' . $ratio_site . '</font></td>
+        <td><a href="messages.php?action=send_message&amp;receiver=' . (int) $Uid_ID . '"><img src="' . $site_config['paths']['images_baseurl'] . 'pm.gif" alt="PM" title="' . _('Send this user a PM') . '"></a><br>
+        <a class="is-link" href="' . $site_config['paths']['baseurl'] . '/staffpanel.php?tool=shit_list&amp;action2=new&amp;shit_list_id=' . (int) $Uid_ID . '&amp;return_to=staffpanel.php?tool=hit_and_run"><img src="' . $site_config['paths']['images_baseurl'] . 'smilies/shit.gif" alt="Shit" title="' . _('Shit') . '"></a></td></tr>';
     }
 }
 $HTMLOUT .= '</table>' . ($count > $perpage ? '<p>' . $menu_bottom . '</p>' : '');

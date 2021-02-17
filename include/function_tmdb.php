@@ -341,21 +341,19 @@ function get_movies($json)
 
     $movies = [];
     foreach ($json['results'] as $movie) {
-        if (!empty($movie['original_language']) && $movie['original_language'] === 'en') {
-            if (!empty($movie['id'])) {
-                $images = '';
-                if (!empty($movie['poster_path'])) {
-                    $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['poster_path']}', 'poster')";
-                }
-                if (!empty($movie['backdrop_path'])) {
-                    $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['backdrop_path']}', 'background')";
-                }
-                if (!empty($images)) {
-                    $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
-                    sql_query($sql) or sqlerr(__FILE__, __LINE__);
-                }
-                $movies[] = $movie;
+        if (!empty($movie['original_language']) && $movie['original_language'] === 'en' && !empty($movie['id'])) {
+            $images = '';
+            if (!empty($movie['poster_path'])) {
+                $images .= "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['poster_path']}', 'poster')";
             }
+            if (!empty($movie['backdrop_path'])) {
+                $images .= (empty($images) ? '' : ', ') . "({$movie['id']}, 'https://image.tmdb.org/t/p/original{$movie['backdrop_path']}', 'background')";
+            }
+            if (!empty($images)) {
+                $sql = "INSERT IGNORE INTO images (tmdb_id, url, type) VALUES $images";
+                sql_query($sql) or sqlerr(__FILE__, __LINE__);
+            }
+            $movies[] = $movie;
         }
     }
 

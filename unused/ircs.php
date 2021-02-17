@@ -92,20 +92,18 @@ if ((isset($_GET['pass']) && $_GET['pass'] == $password) && (isset($_GET['hash']
         $who = isset($_GET['whom']) ? htmlsafechars($_GET['whom']) : '';
         if ($nsetusername < 1) {
             echo $who . ' - ' . _('No such user or is staff, please try again.');
+        } elseif ($nnewname) {
+            echo $newname . ' - ' . _('Is taken, please try again.');
         } else {
-            if ($nnewname) {
-                echo $newname . ' - ' . _('Is taken, please try again.');
-            } else {
-                $modd = isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '';
-                $newusername = isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '';
-                $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
-                sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
-                $cache->update_row('user_' . $nsetusername['id'], [
-                    'username' => $newname,
-                    'modcomment' => $modcomment,
-                ], $site_config['expires']['user_cache']);
-                echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
-            }
+            $modd = isset($_GET['mod']) ? htmlsafechars($_GET['mod']) : '';
+            $newusername = isset($_GET['newname']) ? htmlsafechars($_GET['newname']) : '';
+            $modcomment = sqlesc(get_date((int) TIME_NOW, 'DATE', 1) . ' IRC: ' . $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd . "\n");
+            sql_query("UPDATE users SET username = $newname, modcomment = CONCAT($modcomment,modcomment) WHERE username = $whom") or sqlerr(__FILE__, __LINE__);
+            $cache->update_row('user_' . $nsetusername['id'], [
+                'username' => $newname,
+                'modcomment' => $modcomment,
+            ], $site_config['expires']['user_cache']);
+            echo $who . 's name was changed from: ' . $who . ' to ' . $newusername . ' by ' . $modd;
         }
     } elseif (isset($_GET['topirc'])) {
         $res = sql_query("SELECT id, username, class, irctotal FROM users WHERE onirc = 'yes' GROUP BY class ORDER BY irctotal DESC") or sqlerr(__FILE__, __LINE__);

@@ -79,13 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                        ->where('name = ?', $name)
                        ->execute();
                 $session->set('is-success', "$parentname " . _('Updated'));
-            } else {
-                if (!isset($item)) {
-                    $fluent->insertInto('site_config')
-                           ->values($set)
-                           ->execute();
-                    $session->set('is-success', "$parentname " . _('Added'));
-                }
+            } elseif (!isset($item)) {
+                $fluent->insertInto('site_config')
+                       ->values($set)
+                       ->execute();
+                $session->set('is-success', "$parentname " . _('Added'));
             }
         } else {
             $results = $fluent->update('site_config')

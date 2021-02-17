@@ -105,11 +105,9 @@ if (!$server_load_found) {
             $statline = explode(',', str_replace('"', '', $serverstats[0]));
             $load_limit = round($statline[1], 4);
         }
-    } else {
-        if ($serverstats = @exec('uptime')) {
-            preg_match("/(?:averages)?\: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/", $serverstats, $load);
-            $load_limit = $load[1];
-        }
+    } elseif ($serverstats = @exec('uptime')) {
+        preg_match("/(?:averages)?\: ([0-9\.]+),[\s]+([0-9\.]+),[\s]+([0-9\.]+)/", $serverstats, $load);
+        $load_limit = $load[1];
     }
     if ($load_limit) {
         sql_query("UPDATE avps SET value_s = '" . $load_limit . '-' . time() . "' WHERE arg = 'loadlimit'") or sqlerr(__FILE__, __LINE__);

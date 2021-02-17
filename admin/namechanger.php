@@ -34,10 +34,8 @@ if (isset($mode) && $mode == 'change') {
         $added = TIME_NOW;
         $changed = sqlesc(_('Your Username Has Been Changed To') . " $uname");
         $subject = sqlesc(_('Username changed'));
-        if (!$change) {
-            if (((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
-                stderr(_('Borked'), _('Username already exists!'));
-            }
+        if (!$change && ((is_object($mysqli)) ? mysqli_errno($mysqli) : (($___mysqli_res = mysqli_connect_errno()) ? $___mysqli_res : false)) == 1062) {
+            stderr(_('Borked'), _('Username already exists!'));
         }
         sql_query("INSERT INTO messages (sender, receiver, msg, subject, added) VALUES(2, $uid, $changed, $subject, $added)") or sqlerr(__FILE__, __LINE__);
         header("Refresh: 2; url={$site_config['paths']['baseurl']}/staffpanel.php?tool=namechanger");

@@ -65,155 +65,141 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $auth = $container->get(Auth::class);
 
     if (in_array($option, $traffic1) && $art === 'traffic') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'uploaded' => $user['uploaded'] + $options[$option]['menge'],
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'uploaded' => $user['uploaded'] + $options[$option]['menge'],
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif (in_array($option, $traffic2) && $art === 'traffic2') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points'] && $user['downloaded'] > 0) {
-                $set = [
-                    'downloaded' => $user['downloaded'] - $options[$option]['menge'] > 0 ? $user['downloaded'] - $options[$option]['menge'] : 0,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points'] && $user['downloaded'] > 0) {
+            $set = [
+                'downloaded' => $user['downloaded'] - $options[$option]['menge'] > 0 ? $user['downloaded'] - $options[$option]['menge'] : 0,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif (in_array($option, $donations)) {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $donate) {
-                $set = [
-                    'seedbonus' => $user['seedbonus'] - $donate,
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
-                        $end = 86400 * 3 + $dt;
-                        $message = _('FreeLeech [ON]');
-                        set_event(1, $dt, $end, $user['id'], $message);
-                        $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
-                        $values = [
-                            'donation' => $donate,
-                            'type' => $options[$option]['art'],
-                            'added_at' => $dt,
-                            'user_id' => $user['id'],
-                        ];
-                        $update = [
-                            'pointspool' => $excess,
-                        ];
-                    } else {
-                        $values = [
-                            'donation' => $donate,
-                            'type' => $options[$option]['art'],
-                            'added_at' => $dt,
-                            'user_id' => $user['id'],
-                        ];
-                        $update = [
-                            'pointspool' => (int) $options[$option]['pointspool'] + $donate,
-                        ];
-                    }
-                    $fluent->update('bonus')
-                           ->set($update)
-                           ->where('id = ?', $post['option'])
-                           ->execute();
-                    $bonuslog->insert($values);
-                    $session->set('is-success', _fe('{0} You donated {1} Karma {2} to the {3} fund.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($donate), number_format($options[$option]['points'])));
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $donate) {
+            $set = [
+                'seedbonus' => $user['seedbonus'] - $donate,
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                if (($options[$option]['pointspool'] + $donate) >= $options[$option]['points']) {
+                    $end = 86400 * 3 + $dt;
+                    $message = _('FreeLeech [ON]');
+                    set_event(1, $dt, $end, $user['id'], $message);
+                    $excess = ($donate + $options[$option]['pointspool']) % $options[$option]['pointspool'];
+                    $values = [
+                        'donation' => $donate,
+                        'type' => $options[$option]['art'],
+                        'added_at' => $dt,
+                        'user_id' => $user['id'],
+                    ];
+                    $update = [
+                        'pointspool' => $excess,
+                    ];
                 } else {
-                    $session->set('is-warning', _('Something went wrong'));
+                    $values = [
+                        'donation' => $donate,
+                        'type' => $options[$option]['art'],
+                        'added_at' => $dt,
+                        'user_id' => $user['id'],
+                    ];
+                    $update = [
+                        'pointspool' => (int) $options[$option]['pointspool'] + $donate,
+                    ];
                 }
+                $fluent->update('bonus')
+                       ->set($update)
+                       ->where('id = ?', $post['option'])
+                       ->execute();
+                $bonuslog->insert($values);
+                $session->set('is-success', _fe('{0} You donated {1} Karma {2} to the {3} fund.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($donate), number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'freeyear') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $personal_freeleech = strtotime($user['personal_freeleech']);
-                $set = [
-                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 365 * 86400, 'MYSQL') : get_date($dt + 365 * 86400, 'MYSQL'),
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $personal_freeleech = strtotime($user['personal_freeleech']);
+            $set = [
+                'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 365 * 86400, 'MYSQL') : get_date($dt + 365 * 86400, 'MYSQL'),
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 year Freeleech Status.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'king') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $personal_freeleech = strtotime($user['personal_freeleech']);
-                $set = [
-                    'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
-                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 30 * 86400, 'MYSQL') : get_date($dt + 30 * 86400, 'MYSQL'),
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $personal_freeleech = strtotime($user['personal_freeleech']);
+            $set = [
+                'king' => $user['king'] === 0 ? $dt + 30 * 86400 : $user['king'] + 30 * 86400,
+                'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 30 * 86400, 'MYSQL') : get_date($dt + 30 * 86400, 'MYSQL'),
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month King Status.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'pirate') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $personal_freeleech = strtotime($user['personal_freeleech']);
-                $set = [
-                    'pirate' => $user['pirate'] === 0 ? $dt + 14 * 86400 : $user['king'] + 14 * 86400,
-                    'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 14 * 86400, 'MYSQL') : get_date($dt + 14 * 86400, 'MYSQL'),
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $personal_freeleech = strtotime($user['personal_freeleech']);
+            $set = [
+                'pirate' => $user['pirate'] === 0 ? $dt + 14 * 86400 : $user['king'] + 14 * 86400,
+                'personal_freeleech' => $personal_freeleech > TIME_NOW ? get_date($personal_freeleech + 14 * 86400, 'MYSQL') : get_date($dt + 14 * 86400, 'MYSQL'),
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 2 weeks Pirate + freeleech Status.') . "\n " . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'gift_1') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $bonusgift) {
-                $gift_user_id = $users_class->getUserIdFromName($username);
-                if ($gift_user_id) {
-                    $gift_user = $users_class->getUserFromId((int) $gift_user_id);
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $bonusgift) {
+            $gift_user_id = $users_class->getUserIdFromName($username);
+            if ($gift_user_id) {
+                $gift_user = $users_class->getUserFromId((int) $gift_user_id);
+                $set = [
+                    'seedbonus' => $user['seedbonus'] - $bonusgift,
+                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $bonusgift . ' ' . _fe('Points as gift to {0}.', $username) . "\n " . $user['bonuscomment'],
+                ];
+                if ($users_class->update($set, $user['id'])) {
                     $set = [
-                        'seedbonus' => $user['seedbonus'] - $bonusgift,
-                        'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $bonusgift . ' ' . _fe('Points as gift to {0}.', $username) . "\n " . $user['bonuscomment'],
+                        'seedbonus' => $gift_user['seedbonus'] + $bonusgift,
+                        'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . ' ' . _fe('Points as gift from {0}.', $user['username']) . "\n " . $gift_user['bonuscomment'],
                     ];
-                    if ($users_class->update($set, $user['id'])) {
-                        $set = [
-                            'seedbonus' => $gift_user['seedbonus'] + $bonusgift,
-                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - recieved ' . $bonusgift . ' ' . _fe('Points as gift from {0}.', $user['username']) . "\n " . $gift_user['bonuscomment'],
-                        ];
-                        $users_class->update($set, $gift_user['id']);
-                        $msgs_buffer[] = [
-                            'receiver' => $gift_user_id,
-                            'added' => $dt,
-                            'msg' => _fe('You have been given a gift of {0} Karma points by {1}', $bonusgift, $user['username']),
-                            'subject' => _('Someone Loves you'),
-                        ];
-                        $session->set('is-success', _fe('{0} You donated {1} Karma to {2}.', ':woot:', number_format($bonusgift), $username));
-                    } else {
-                        $session->set('is-warning', _('Something went wrong'));
-                    }
+                    $users_class->update($set, $gift_user['id']);
+                    $msgs_buffer[] = [
+                        'receiver' => $gift_user_id,
+                        'added' => $dt,
+                        'msg' => _fe('You have been given a gift of {0} Karma points by {1}', $bonusgift, $user['username']),
+                        'subject' => _('Someone Loves you'),
+                    ];
+                    $session->set('is-success', _fe('{0} You donated {1} Karma to {2}.', ':woot:', number_format($bonusgift), $username));
                 } else {
-                    $session->set('is-warning', _('Invalid User Name'));
+                    $session->set('is-warning', _('Something went wrong'));
                 }
+            } else {
+                $session->set('is-warning', _('Invalid User Name'));
             }
         }
     } elseif ($art === 'bounty') {
@@ -342,34 +328,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($art === 'immunity') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'immunity' => $user['immunity'] === 0 ? $dt + 30 * 86400 : $user['immunity'] + 30 * 86400,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Immunity Status.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'immunity' => $user['immunity'] === 0 ? $dt + 30 * 86400 : $user['immunity'] + 30 * 86400,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Immunity Status.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'parked') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'status' => 1,
-                    'parked_until' => $user['parked_until'] === 0 ? $dt + 365 * 86400 : $user['parked_until'] + 365 * 86400,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for  1 Year Parked Profile.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'status' => 1,
+                'parked_until' => $user['parked_until'] === 0 ? $dt + 365 * 86400 : $user['parked_until'] + 365 * 86400,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for  1 Year Parked Profile.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'userunlock') {
@@ -409,166 +391,148 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif ($art === 'anonymous') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'anonymous_until' => $user['anonymous_until'] === 0 ? $dt + 28 * 86400 : $user['anonymous_until'] + 28 * 86400,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 14 Days Anonymous Profile.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                    $cache->deleteMulti([
-                        'last24_users_',
-                        'birthdayusers_',
-                        'ircusers_',
-                        'activeusers_',
-                        'site_stats_',
-                    ]);
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'anonymous_until' => $user['anonymous_until'] === 0 ? $dt + 28 * 86400 : $user['anonymous_until'] + 28 * 86400,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 14 Days Anonymous Profile.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+                $cache->deleteMulti([
+                    'last24_users_',
+                    'birthdayusers_',
+                    'ircusers_',
+                    'activeusers_',
+                    'site_stats_',
+                ]);
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'smile') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'smile_until' => $user['smile_until'] === 0 ? $dt + 30 * 86400 : $user['smile_until'] + 30 * 86400,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Custom Smilies.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'smile_until' => $user['smile_until'] === 0 ? $dt + 30 * 86400 : $user['smile_until'] + 30 * 86400,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 1 month Custom Smilies.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'reputation') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'reputation' => $user['reputation'] + 100,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 100 Reputation Points.') . "\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'reputation' => $user['reputation'] + 100,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . $options[$option]['points'] . ' ' . _('Points for 100 Reputation Points.') . "\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'invite') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'invites' => $user['invites'] + $options[$option]['menge'],
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invites for {1} Karma.', $options[$option]['menge'], $options[$option]['points']) . ".\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} Invite for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'invites' => $user['invites'] + $options[$option]['menge'],
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invites for {1} Karma.', $options[$option]['menge'], $options[$option]['points']) . ".\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} Invite for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'itrade') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['invites'] >= $options[$option]['points']) {
-                $set = [
-                    'invites' => $user['invites'] - $options[$option]['points'],
-                    'seedbonus' => $user['seedbonus'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Karma.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You sold {1} Invite {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['menge'])));
-                    $session->set('is-success', ":woot: You sold [b]{$options[$option]['points']} Invite[/b] for {$options[$option]['menge']} Karma");
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['invites'] >= $options[$option]['points']) {
+            $set = [
+                'invites' => $user['invites'] - $options[$option]['points'],
+                'seedbonus' => $user['seedbonus'] + $options[$option]['menge'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Karma.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You sold {1} Invite {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['menge'])));
+                $session->set('is-success', ":woot: You sold [b]{$options[$option]['points']} Invite[/b] for {$options[$option]['menge']} Karma");
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'itrade2') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['invites'] >= $options[$option]['points']) {
-                $set = [
-                    'invites' => $user['invites'] - $options[$option]['points'],
-                    'freeslots' => $user['freeslots'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Freeslots.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You traded {1} Invites for {2} Freeslots.', ':woot:', "[b]{$options[$option]['points']}[/b]", number_format($options[$option]['menge'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['invites'] >= $options[$option]['points']) {
+            $set = [
+                'invites' => $user['invites'] - $options[$option]['points'],
+                'freeslots' => $user['freeslots'] + $options[$option]['menge'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Invite for {1} Freeslots.', $options[$option]['points'], $options[$option]['menge']) . ".\n" . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You traded {1} Invites for {2} Freeslots.', ':woot:', "[b]{$options[$option]['points']}[/b]", number_format($options[$option]['menge'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'freeslots') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $set = [
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'freeslots' => $user['freeslots'] + $options[$option]['menge'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points for Freeslots.', $options[$option]['points']) . "\n " . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} Freeslots for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $set = [
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'freeslots' => $user['freeslots'] + $options[$option]['menge'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points for Freeslots.', $options[$option]['points']) . "\n " . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} Freeslots for {2} Karma.', ':woot:', "[b]{$options[$option]['menge']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'title') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                foreach ($site_config['site']['badwords'] as $badword) {
-                    $title = str_replace($badword, '', $title);
-                }
-                if (empty($title)) {
-                    $title = 'I just wasted my karma';
-                }
-                $set = [
-                    'title' => $title,
-                    'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                    'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe("{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''.", $options[$option]['points'], $user['title'], $title) . "\n " . $user['bonuscomment'],
-                ];
-                if ($users_class->update($set, $user['id'])) {
-                    $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
-                } else {
-                    $session->set('is-warning', _('Something went wrong'));
-                }
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            foreach ($site_config['site']['badwords'] as $badword) {
+                $title = str_replace($badword, '', $title);
+            }
+            if (empty($title)) {
+                $title = 'I just wasted my karma';
+            }
+            $set = [
+                'title' => $title,
+                'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe("{0} Points for custom title. Old title was ''{1}'' new title is ''{2}''.", $options[$option]['points'], $user['title'], $title) . "\n " . $user['bonuscomment'],
+            ];
+            if ($users_class->update($set, $user['id'])) {
+                $session->set('is-success', _fe('{0} You bought {1} for {2} Karma.', ':woot:', "[b]{$options[$option]['bonusname']}[/b]", number_format($options[$option]['points'])));
+            } else {
+                $session->set('is-warning', _('Something went wrong'));
             }
         }
     } elseif ($art === 'bump') {
-        if ($options[$option]['enabled'] === 'yes') {
-            if ($user['seedbonus'] >= $options[$option]['points']) {
-                $torrents_class = $container->get(Torrent::class);
-                $torrent = $torrents_class->get((int) $torrent_id);
-                if ($torrent) {
+        if (($options[$option]['enabled'] === 'yes') && $user['seedbonus'] >= $options[$option]['points']) {
+            $torrents_class = $container->get(Torrent::class);
+            $torrent = $torrents_class->get((int) $torrent_id);
+            if ($torrent) {
+                $set = [
+                    'bump' => 'yes',
+                    'free' => 7 * 86400 + $dt,
+                    'added' => $dt,
+                ];
+                if ($torrents_class->update($set, (int) $torrent_id)) {
                     $set = [
-                        'bump' => 'yes',
-                        'free' => 7 * 86400 + $dt,
-                        'added' => $dt,
+                        'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
+                        'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points to Reanimate torrent: {1}.', $options[$option]['points'], $torrent['name']) . "\n " . $user['bonuscomment'],
                     ];
-                    if ($torrents_class->update($set, (int) $torrent_id)) {
-                        $set = [
-                            'seedbonus' => $user['seedbonus'] - $options[$option]['points'],
-                            'bonuscomment' => get_date((int) $dt, 'DATE', 1) . ' - ' . _fe('{0} Points to Reanimate torrent: {1}.', $options[$option]['points'], $torrent['name']) . "\n " . $user['bonuscomment'],
-                        ];
-                        if ($users_class->update($set, $user['id'])) {
-                            $session->set('is-success', _fe('{0} You reanimated {1} for {2} Karma.', ':woot:', "[b]{$torrent['name']}[/b]", number_format($options[$option]['points'])));
-                        } else {
-                            $session->set('is-warning', 'Something went wrong');
-                        }
+                    if ($users_class->update($set, $user['id'])) {
+                        $session->set('is-success', _fe('{0} You reanimated {1} for {2} Karma.', ':woot:', "[b]{$torrent['name']}[/b]", number_format($options[$option]['points'])));
                     } else {
-                        $session->set('is-warning', _('Something went wrong'));
+                        $session->set('is-warning', 'Something went wrong');
                     }
                 } else {
-                    $session->set('is-warning', _('Invalid Torrent ID'));
+                    $session->set('is-warning', _('Something went wrong'));
                 }
+            } else {
+                $session->set('is-warning', _('Invalid Torrent ID'));
             }
         }
     }

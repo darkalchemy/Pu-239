@@ -52,12 +52,10 @@ if (!empty($users_friends)) {
         </td>
     </tr>";
     }
-} else {
-    if (empty($users_friends)) {
-        $HTMLOUT .= '
-        <tr>
-            <td>' . _('Friends ') . '</td>
-            <td>' . _('No Friends yet.') . '</td>
-        </tr>';
-    }
+} elseif (empty($users_friends)) {
+    $HTMLOUT .= '
+    <tr>
+        <td>' . _('Friends ') . '</td>
+        <td>' . _('No Friends yet.') . '</td>
+    </tr>';
 }

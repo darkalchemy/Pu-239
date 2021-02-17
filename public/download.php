@@ -178,14 +178,12 @@ if ($zipuse) {
     $zip->close();
     $zip->force_download($zipfile);
     unlink($zipfile);
+} elseif ($text) {
+    header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['name'] . '.txt"');
+    header('Content-Type: text/plain');
+    echo $tor;
 } else {
-    if ($text) {
-        header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['name'] . '.txt"');
-        header('Content-Type: text/plain');
-        echo $tor;
-    } else {
-        header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['filename'] . '"');
-        header('Content-Type: application/x-bittorrent');
-        echo $tor;
-    }
+    header('Content-Disposition: attachment; filename="[' . $site_config['site']['name'] . ']' . $row['filename'] . '"');
+    header('Content-Type: application/x-bittorrent');
+    echo $tor;
 }

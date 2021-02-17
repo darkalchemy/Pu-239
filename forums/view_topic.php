@@ -373,12 +373,10 @@ if (!empty($likes) && $count > 0) {
         } else {
             $att_str = "<span class='chg'>You and " . (($count - 1) === 1 ? '1 other person likes this' : ($count - 1) . ' others like this') . '</span>';
         }
+    } elseif ($count === 1) {
+        $att_str = '1 person likes this';
     } else {
-        if ($count === 1) {
-            $att_str = '1 person likes this';
-        } else {
-            $att_str = $count . ' others like this';
-        }
+        $att_str = $count . ' others like this';
     }
 }
 $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';
@@ -534,12 +532,10 @@ foreach ($posts as $arr) {
             } else {
                 $att_str = "<span class='chg'>You and " . (($count - 1) === 1 ? '1 other person likes this' : ($count - 1) . ' others like this') . '</span>';
             }
+        } elseif ($count === 1) {
+            $att_str = '1 person likes this';
         } else {
-            if ($count === 1) {
-                $att_str = '1 person likes this';
-            } else {
-                $att_str = $count . ' others like this';
-            }
+            $att_str = $count . ' others like this';
         }
     }
     $wht = $count > 0 && in_array($CURUSER['id'], $user_likes) ? 'unlike' : 'like';

@@ -31,10 +31,8 @@ if ($count > ($maxbox * 6) && !has_access($CURUSER['class'], UC_STAFF, '')) {
     stderr(_('Sorry'), _('Members mailbox is full.'));
 }
 
-if ($CURUSER['status'] === 5) {
-    if (!has_access($to_user['class'], UC_STAFF, '')) {
-        stderr(_('Error'), _('Your account is suspended, you may only forward PMs to staff!'));
-    }
+if (($CURUSER['status'] === 5) && !has_access($to_user['class'], UC_STAFF, '')) {
+    stderr(_('Error'), _('Your account is suspended, you may only forward PMs to staff!'));
 }
 
 if (!has_access($CURUSER['class'], UC_STAFF, '')) {

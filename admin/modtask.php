@@ -203,41 +203,39 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
             'total_donated' => $user['total_donated'] + $donated,
         ];
     }
-    if (isset($post['donorlength']) && (($donorlength = (int) $post['donorlength']))) {
-        if ($donorlength > 0) {
-            if ($donorlength === 255) {
-                $msg = _fe('You have received donor status from {0}', $username);
-                $subject = _('Thank you for your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . "\n" . $modcomment;
-                $donoruntil = $dt + (2607 * 604800);
-            } else {
-                $donoruntil = $dt + ($donorlength * 604800);
-                $dur = _pfe('{0} week', '{0} weeks', $donorlength);
-                $msg = _('Dear') . $user['username'] . _fe('
-       {0}
-       Thanks for your support to {1}!
-       Your donation helps us in the costs of running the site!
-       As a donor, you are given some bonus gigs added to your uploaded amount, the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy!
-       cheers,
-       {3} Staff
-       PS. Your donator status will last for {4} and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
-                $subject = _('Thank You for Your Donation!');
-                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . ".\n" . $modcomment;
-            }
-            $update['donoruntil'] = $donoruntil;
-            $msgs[] = [
-                'poster' => $CURUSER['id'],
-                'receiver' => $userid,
-                'added' => $dt,
-                'msg' => $msg,
-                'subject' => $subject,
-            ];
-            $update['donor'] = 'yes';
-            $useredit[] = _('Donor = Yes');
-            if ($user['class'] < UC_VIP) {
-                $update['class'] = UC_VIP;
-                $update['vipclass_before'] = $user['class'];
-            }
+    if (isset($post['donorlength']) && (($donorlength = (int)$post['donorlength'])) && $donorlength > 0) {
+        if ($donorlength === 255) {
+            $msg = _fe('You have received donor status from {0}', $username);
+            $subject = _('Thank you for your Donation!');
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . "\n" . $modcomment;
+            $donoruntil = $dt + (2607 * 604800);
+        } else {
+            $donoruntil = $dt + ($donorlength * 604800);
+            $dur = _pfe('{0} week', '{0} weeks', $donorlength);
+            $msg = _('Dear') . $user['username'] . _fe('
+   {0}
+   Thanks for your support to {1}!
+   Your donation helps us in the costs of running the site!
+   As a donor, you are given some bonus gigs added to your uploaded amount, the status of VIP, and the warm fuzzy feeling you get inside for helping to support this site that we all know and love {2} so, thanks again, and enjoy!
+   cheers,
+   {3} Staff
+   PS. Your donator status will last for {4} and can be found on your user details page and can only be seen by you {5} It was set by {6}', ':wave:', $site_config['site']['name'], ':smile:', $site_config['site']['name'], $dur, ':smile:', $username);
+            $subject = _('Thank You for Your Donation!');
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _fe('Donor status set by {0}', $CURUSER['username']) . ".\n" . $modcomment;
+        }
+        $update['donoruntil'] = $donoruntil;
+        $msgs[] = [
+            'poster' => $CURUSER['id'],
+            'receiver' => $userid,
+            'added' => $dt,
+            'msg' => $msg,
+            'subject' => $subject,
+        ];
+        $update['donor'] = 'yes';
+        $useredit[] = _('Donor = Yes');
+        if ($user['class'] < UC_VIP) {
+            $update['class'] = UC_VIP;
+            $update['vipclass_before'] = $user['class'];
         }
     }
     if (isset($post['donorlengthadd'])) {
@@ -858,26 +856,24 @@ if (!empty($_POST) && $_POST['action'] === 'edituser') {
                 'msg' => $msg,
                 'subject' => $subject,
             ];
-        } else {
-            if ($userstatus === 1) {
-                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('Account UnParked by ') . $CURUSER['username'] . ".\n" . $modcomment;
-                $useredit[] = _('Account parked = ') . 'no';
-            } elseif ($userstatus === 2) {
-                $modcomment = get_date($dt, 'DATE', 1) . ' ' . _('- Enabled by ') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
-                $useredit[] = _('Enabled = ') . 'yes';
-            } elseif ($userstatus === 5) {
-                $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('This account has been Un-suspended by ') . $CURUSER['username'] . ".\n" . $modcomment;
-                $useredit[] = _('Account suspended = No');
-                $subject = _('Account Un-Suspended!');
-                $msg = _fe("Your account has had it's suspension lifted by {0}\n\ncheers,\n{1} Staff", $username, $site_config['site']['name']);
-                $msgs[] = [
-                    'poster' => $CURUSER['id'],
-                    'receiver' => $userid,
-                    'added' => $dt,
-                    'msg' => $msg,
-                    'subject' => $subject,
-                ];
-            }
+        } elseif ($userstatus === 1) {
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('Account UnParked by ') . $CURUSER['username'] . ".\n" . $modcomment;
+            $useredit[] = _('Account parked = ') . 'no';
+        } elseif ($userstatus === 2) {
+            $modcomment = get_date($dt, 'DATE', 1) . ' ' . _('- Enabled by ') . ' ' . $CURUSER['username'] . ".\n" . $modcomment;
+            $useredit[] = _('Enabled = ') . 'yes';
+        } elseif ($userstatus === 5) {
+            $modcomment = get_date($dt, 'DATE', 1) . ' - ' . _('This account has been Un-suspended by ') . $CURUSER['username'] . ".\n" . $modcomment;
+            $useredit[] = _('Account suspended = No');
+            $subject = _('Account Un-Suspended!');
+            $msg = _fe("Your account has had it's suspension lifted by {0}\n\ncheers,\n{1} Staff", $username, $site_config['site']['name']);
+            $msgs[] = [
+                'poster' => $CURUSER['id'],
+                'receiver' => $userid,
+                'added' => $dt,
+                'msg' => $msg,
+                'subject' => $subject,
+            ];
         }
     }
     if ((isset($post['hit_and_run_total'])) && (($hit_and_run_total = (int) $post['hit_and_run_total']) !== $user['hit_and_run_total'])) {

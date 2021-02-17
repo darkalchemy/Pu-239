@@ -43,10 +43,8 @@ if (!$_POST['nullvote']) {
         }
     }
     foreach ($_POST as $k => $v) {
-        if (preg_match("#^choice_(\d+)_(\d+)$#", $k, $matches)) {
-            if ($_POST[$k] == 1) {
-                $vote_cast[$matches[1]][] = $matches[2];
-            }
+        if (preg_match("#^choice_(\d+)_(\d+)$#", $k, $matches) && $_POST[$k] == 1) {
+            $vote_cast[$matches[1]][] = $matches[2];
         }
     }
     $poll_answers = json_decode($poll_data['choices'], true);

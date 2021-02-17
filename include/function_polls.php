@@ -48,11 +48,9 @@ function parse_poll()
         $poll_footer = 'You created this poll and are not allowed to vote';
     }
 
-    if ($GVARS['allow_result_view'] === 1) {
-        if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
-            $check = 1;
-            $poll_footer = '';
-        }
+    if (($GVARS['allow_result_view'] === 1) && isset($_GET['mode']) && $_GET['mode'] == 'show') {
+        $check = 1;
+        $poll_footer = '';
     }
 
     if ($check === 1) {
@@ -129,19 +127,17 @@ function parse_poll()
     $htmlout .= poll_footer();
     if ($poll_footer != '') {
         $htmlout = str_replace('<!--VOTE-->', $poll_footer, $htmlout);
-    } else {
-        if ($GVARS['allow_result_view'] == 1) {
-            if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
-                $htmlout = str_replace('<!--SHOW-->', button_show_voteable(), $htmlout);
-            } else {
-                $htmlout = str_replace('<!--SHOW-->', button_show_results(), $htmlout);
-                $htmlout = str_replace('<!--VOTE-->', button_vote(), $htmlout);
-            }
+    } elseif ($GVARS['allow_result_view'] == 1) {
+        if (isset($_GET['mode']) && $_GET['mode'] == 'show') {
+            $htmlout = str_replace('<!--SHOW-->', button_show_voteable(), $htmlout);
         } else {
-            //this section not for reviewing votes!
+            $htmlout = str_replace('<!--SHOW-->', button_show_results(), $htmlout);
             $htmlout = str_replace('<!--VOTE-->', button_vote(), $htmlout);
-            $htmlout = str_replace('<!--SHOW-->', button_null_vote(), $htmlout);
         }
+    } else {
+        //this section not for reviewing votes!
+        $htmlout = str_replace('<!--VOTE-->', button_vote(), $htmlout);
+        $htmlout = str_replace('<!--SHOW-->', button_null_vote(), $htmlout);
     }
 
     return $htmlout;
