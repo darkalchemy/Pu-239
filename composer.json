@@ -33,7 +33,7 @@
         "blocktrail/cryptojs-aes-php": "^0.1.0",
         "delight-im/auth": "^8.1",
         "delight-im/i18n": "^1.0",
-        "envms/fluentpdo": "dev-debug_enabled as 2.2.0",
+        "envms/fluentpdo": "^2.2",
         "erusev/parsedown": "^1.7",
         "guzzlehttp/guzzle": "^6.3",
         "hellogerard/jobby": "^3.4",
@@ -73,11 +73,5 @@
         "friendsofphp/php-cs-fixer": "^2.14",
         "roave/security-advisories": "dev-latest",
         "symfony/var-dumper": "^5.2"
-    },
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/darkalchemy/fluentpdo"
-        }
-    ]
+    }
 }
