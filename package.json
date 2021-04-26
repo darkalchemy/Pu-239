@@ -24,14 +24,14 @@
         "eslint-plugin-promise": "^4.3.1",
         "jquery": "^3.5.1",
         "lightbox2": "^2.11.3",
-        "node-sass": "^5.0.0",
+        "node-sass": "5.0.0",
         "normalize.css": "^8.0.1",
         "postcss-cli": "^8.3.1",
         "postcss-preset-env": "^6.7.0",
         "raphael": "^2.3.0",
         "sceditor": "^3.0.0",
         "tooltipster": "^4.2.8",
-        "uglify-es": "^3.3.9"
+        "uglify-es": "3.3.9"
     },
     "config": {
         "commitizen": {
