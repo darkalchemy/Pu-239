@@ -15,7 +15,6 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
-        "ext-memcached": "*",
         "ext-mysqli": "*",
         "ext-pcntl": "*",
         "ext-pdo": "*",
